@@ -2,11 +2,15 @@ package gov.nih.nci.cananolab.restful.publication;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.PublicationUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleSearchPublicationBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -34,8 +38,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 public class SearchPublicationBO extends BaseAnnotationBO {
 	
 	public List search(SearchPublicationForm form,
-			HttpServletRequest request, HttpServletResponse response)
+			HttpServletRequest request)
 			throws Exception {
+		List<String> messages = new ArrayList<String>();
 		HttpSession session = request.getSession();
 		// get the page number from request
 		int displayPage = getDisplayPage(request);
@@ -53,13 +58,8 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 				session.setAttribute("publicationSearchResults",
 						publicationBeans);
 			} else {
-			//	ActionMessages msgs = new ActionMessages();
-			//	ActionMessage msg = new ActionMessage(
-			//			"message.searchPublication.noresult");
-			//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			//	saveMessages(request, msgs);
-			//	return mapping.getInputForward();
-			//	return publicationBeans;
+				messages.add(PropertyUtil.getProperty("publication", "message.searchPublication.noresult"));
+				return messages;
 			}
 		}
 		// load publicationBean details 25 at a time for displaying
@@ -67,6 +67,10 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 		List<PublicationBean> pubBeansPerPage = getPublicationsPerPage(
 				publicationBeans, displayPage,
 				Constants.DISPLAY_TAG_TABLE_SIZE, request);
+		if (pubBeansPerPage.isEmpty()) {
+			messages.add(PropertyUtil.getProperty("publication", "message.searchPublication.noresult"));
+			return messages;
+		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (user != null) {
 			loadUserAccess(request, pubBeansPerPage);
@@ -80,8 +84,23 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 				.setAttribute("resultSize",
 						new Integer(publicationBeans.size()));
 	//	return mapping.findForward("success");
-		return pubBeansPerPage;
+		List<SimpleSearchPublicationBean> simplePubBeans = transfertoSimplePubBeans(pubBeansPerPage);
+		return simplePubBeans;
 	}
+
+	protected List<SimpleSearchPublicationBean> transfertoSimplePubBeans(
+			List<PublicationBean> pubBeansPerPage) {
+     List<SimpleSearchPublicationBean> simpleBeans = new ArrayList<SimpleSearchPublicationBean>();
+		
+		for (PublicationBean bean : pubBeansPerPage) {
+			SimpleSearchPublicationBean simpleBean = new SimpleSearchPublicationBean();
+			simpleBean.transferSampleBeanForBasicResultView(bean);
+			simpleBeans.add(simpleBean);
+		}
+		
+		return simpleBeans;
+	}
+	
 
 	private void loadUserAccess(HttpServletRequest request,
 			List<PublicationBean> publicationBeans) throws Exception {

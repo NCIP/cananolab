@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
@@ -15,12 +16,15 @@ import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditPublicationBean;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
+import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
+import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -165,4 +169,27 @@ private Logger logger = Logger.getLogger(SampleServices.class);
 		}
 	}
 
+	@POST
+	@Path("/searchPublication")
+	@Produces ("application/json")
+	public Response searchPublication(@Context HttpServletRequest httpRequest, SearchPublicationForm searchForm ) {
+	
+		try {
+			SearchPublicationBO searchPublicationBO = 
+					(SearchPublicationBO) applicationContext.getBean("searchPublicationBO");
+			
+						
+			List results = searchPublicationBO.search(searchForm, httpRequest);
+			
+			Object result = results.get(0);
+			if (result instanceof String) {
+				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
+			} else
+				return Response.ok(results).build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.ok("Error while searching for samples").build();
+		}
+	}
 }
