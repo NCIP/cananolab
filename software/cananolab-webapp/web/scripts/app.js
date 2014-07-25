@@ -67,7 +67,7 @@ app.config(function ($routeProvider, $httpProvider) {
        controller: 'IndSampleCtrl'
       })       
       .when('/editSample', {
-       templateUrl: 'views/editSample.html',
+       templateUrl: 'views/sample/edit/editSample.html',
        controller: 'editSampleCtrl'
       })       
       .when('/composition', {
