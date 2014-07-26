@@ -29,6 +29,8 @@ import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleAddressBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
@@ -265,8 +267,7 @@ public class SampleBO extends BaseAnnotationBO {
 		//TODO: Check credential with user name ?
 		
 		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
-		
-		
+
 		this.setServiceInSession(request);
 
 		// "setupSample()" will retrieve and return the SampleBean.
@@ -296,16 +297,23 @@ public class SampleBO extends BaseAnnotationBO {
 		}
 
 		//form.setSampleBean(sampleBean);
-		sampleEdit.transferSampleBeanData(request, sampleBean);
+		sampleEdit.transferSampleBeanData(request, this.getCurationService(), sampleBean);
 		
 		request.getSession().setAttribute("updateSample", "true");
 		
-		//TODO: decide later - Shan
-		setupLookups(request);
+		//need to save sampleBean in session for other edit feature.
+		//new in rest implement
+		request.getSession().setAttribute("theSample", sampleBean);
+		
+		//Moved to sampleEdit.transferSampleBeanData
+		//setupLookups(request);
 
-		//TODO: need to see how we'll do this - Shan
-//		setUpSubmitForReviewButton(request, sampleBean.getDomain().getId()
-//				.toString(), sampleBean.getPublicStatus());
+		//Moved to sampleEdit.transferSampleBeanData
+		//setUpSubmitForReviewButton(request, sampleBean.getDomain().getId()
+		//		.toString(), sampleBean.getPublicStatus());
+		
+		
+		
 	
 		return sampleEdit;
 	}
@@ -388,18 +396,47 @@ public class SampleBO extends BaseAnnotationBO {
 	 * For Rest call: 1. when add POC and save are clicked
 	 * 				  2. when edit POC and save are clicked
 	 */
-	public void savePointOfContact(SampleForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public void savePointOfContact(String sampleId, SimplePointOfContactBean pocBean, HttpServletRequest request) throws Exception {
 		if (!validateToken(request)) {
 		//	return mapping.findForward("sampleMessage");
 			
 		}
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		SampleBean sample = (SampleBean) form.getSampleBean();
+		
+		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");//(SampleBean) form.getSampleBean();
 
-		PointOfContactBean thePOC = sample.getThePOC();
+		PointOfContactBean thePOC = new PointOfContactBean(); //sample.getThePOC();		
+		
+		long pocId = pocBean.getId();
+		String orgName = pocBean.getOrganizationName();
+		String fName = pocBean.getFirstName();
+		String lName = pocBean.getLastName();
+		String mInit = pocBean.getMiddleInitial();
+//		SimpleAddressBean addrBean = pocBean.getAddress();
+//		if (addrBean != null) {
+//			addrBean.getCity();
+//			addrBean.getCountry();
+//			addrBean.getLine1();
+//			addrBean.getLine2();
+//			addrBean.getStateProvince();
+//			addrBean.getZip();
+//		}
+	
+		String phone = pocBean.getPhoneNumber();
+		String email = pocBean.getEmail();
+		String role = pocBean.getRole();
+		
+		//TODO: validate input
+		
+		//transfer data to thePOC
+		
 		thePOC.setupDomain(user.getLoginName());
+		
+		
+		
+		
+		
 		Long oldPOCId = thePOC.getDomain().getId();
 		// set up one sampleService
 		SampleService service = setServiceInSession(request);
@@ -434,8 +471,12 @@ public class SampleBO extends BaseAnnotationBO {
 					.toString());
 		//	forward = summaryEdit(mapping, form, request, response);
 		}
+		
+		//TODO: check on this
 		InitSampleSetup.getInstance().persistPOCDropdowns(request, sample);
 		// return forward;
+		
+		//TODO: call summaryEdit()
 	}
 
 	public void removePointOfContact(SampleForm form, HttpServletRequest request,
