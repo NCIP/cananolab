@@ -2,11 +2,13 @@ package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
+import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -40,6 +42,8 @@ public class SampleEditGeneralBean {
 	List<String> contactRoles;
 	List<String> allGroupNames;
 	Map<String, String> filteredUsers;
+	
+	boolean showReviewButton;
 
 	List<String> errors = new ArrayList<String>();
 
@@ -99,6 +103,14 @@ public class SampleEditGeneralBean {
 		this.userIsCurator = userIsCurator;
 	}
 
+	public boolean isShowReviewButton() {
+		return showReviewButton;
+	}
+
+	public void setShowReviewButton(boolean showReviewButton) {
+		this.showReviewButton = showReviewButton;
+	}
+
 	public List<String> getAllGroupNames() {
 		return allGroupNames;
 	}
@@ -139,7 +151,8 @@ public class SampleEditGeneralBean {
 		this.errors = errors;
 	}
 	
-	public void transferSampleBeanData(HttpServletRequest request, SampleBean sampleBean) {
+	public void transferSampleBeanData(HttpServletRequest request, CurationService curatorService, SampleBean sampleBean) 
+	throws Exception {
 		
 		this.sampleName = sampleBean.getDomain().getName();
 		this.sampleId = sampleBean.getDomain().getId();
@@ -147,7 +160,6 @@ public class SampleEditGeneralBean {
 		
 		transferPointOfContactData(sampleBean);
 		
-		String keywords = sampleBean.getKeywordsStr();
 		this.keywords = new ArrayList<String>(sampleBean.getKeywordSet());
 
 		transferAccessibilityData(sampleBean);
@@ -156,7 +168,90 @@ public class SampleEditGeneralBean {
 		
 		transferLookups(request);
 		transferGroupNamesForNewAccess(request);
+		transferFilteredUsersParamForNewAccess(request, sampleBean.getDomain().getCreatedBy());
 			
+		setReviewButton(request, curatorService, sampleBean);
+	}
+	
+	/**
+	 * Logic moved from SampleAction.setUpSubmitForReviewButton()
+	 * @param request
+	 * @param curatorService
+	 * @param sampleBean
+	 * @throws Exception
+	 */
+	protected void setReviewButton(HttpServletRequest request, CurationService curatorService, SampleBean sampleBean) 
+	throws Exception {
+		boolean publicData = sampleBean.getPublicStatus();
+		if (!publicData) {
+			UserBean user = (UserBean) request.getSession()
+					.getAttribute("user");
+			//SecurityService securityService = getSecurityServiceFromSession(request);
+			SecurityService securityService = (SecurityService) request
+					.getSession().getAttribute("securityService");
+			DataReviewStatusBean reviewStatus = curatorService
+					.findDataReviewStatusBeanByDataId(sampleBean.getDomain().getId()
+							.toString(), securityService);
+
+			if (!user.isCurator()
+					&& (reviewStatus == null || reviewStatus != null
+							&& reviewStatus.getReviewStatus().equals(
+									DataReviewStatusBean.RETRACTED_STATUS))) {
+				this.showReviewButton = true;
+			} else {
+				this.showReviewButton = false;
+			}
+		} else {
+			this.showReviewButton = false;
+		}
+	}
+	
+	/**
+	 * Logic for DWRAccessibilityManager.getMatchedUsers()
+	 * 
+	 * @param request
+	 * @param dataOwner
+	 */
+	protected void transferFilteredUsersParamForNewAccess(HttpServletRequest request, String dataOwner) {
+		
+		try {
+			SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
+			List<UserBean> matchedUsers = sampleService.findUserBeans("");
+			List<UserBean> updatedUsers = new ArrayList<UserBean>(matchedUsers);
+			// remove current user from the list
+			UserBean user = (UserBean) request.getSession().getAttribute("user");
+			updatedUsers.remove(user);
+
+			// remove data owner from the list if owner is not the current user
+			if (!dataOwner.equalsIgnoreCase(user.getLoginName())) {
+				for (UserBean userBean : matchedUsers) {
+					if (userBean.getLoginName().equalsIgnoreCase(dataOwner)) {
+						updatedUsers.remove(userBean);
+						break;
+					}
+				}
+			}
+			// exclude curators;
+			SecurityService securityService = (SecurityService) request
+					.getSession().getAttribute("securityService");
+			List<String> curators = securityService
+					.getUserNames(AccessibilityBean.CSM_DATA_CURATOR);
+			for (UserBean userBean : matchedUsers) {
+				for (String curator : curators) {
+					if (userBean.getLoginName().equalsIgnoreCase(curator)) {
+						updatedUsers.remove(userBean);
+					}
+				}
+			}
+
+			UserBean[] users = updatedUsers.toArray(new UserBean[updatedUsers.size()]);
+			this.filteredUsers = new HashMap<String, String>();
+			for (UserBean u :users) {
+				this.filteredUsers.put(u.getLoginName(), u.getDisplayName());
+			}
+		} catch (Exception e) {
+			logger.error("Got error while setting up params for adding access");
+		}
 	}
 	
 	protected void transferGroupNamesForNewAccess(HttpServletRequest request) {
@@ -209,6 +304,10 @@ public class SampleEditGeneralBean {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param request
+	 */
 	protected void transferLookups(HttpServletRequest request) {
 		try {
 			InitSampleSetup.getInstance().setPOCDropdowns(request);
