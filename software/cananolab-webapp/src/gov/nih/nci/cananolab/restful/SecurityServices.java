@@ -77,7 +77,8 @@ public class SecurityServices {
 		RegisterUserBO registerBo = (RegisterUserBO) applicationContext.getBean("registerUserBO");
 		List<String> errors = registerBo.register(title, firstName, lastName, email, phone, organization, fax, comment, registerToUserList);
 		
-		return (errors == null || errors.size() == 0) ? Response.ok("success").build() : Response.ok(errors).build();
+		return (errors == null || errors.size() == 0) ? Response.ok("success").build() : 
+			Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
     }
 	
 	@POST
@@ -115,7 +116,8 @@ public class SecurityServices {
 		
 		HttpSession session = httpRequest.getSession(false);
 		if (session == null) 
-			return Response.ok(null).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity("No valid user session to complete request").build();
 		
 		UserBean user = (UserBean)session.getAttribute("user");
 		SecurityService service = (SecurityService) session.getAttribute("securityService");
@@ -129,10 +131,12 @@ public class SecurityServices {
 				return Response.ok(userGroups).build();
 			} catch (Exception e) {
 				//logger.error("Erro while logging in user: " + username + "|" + password + ". " + e.getMessage());
-				return Response.ok("Unable to get group for user").build();
+				return Response.status(Response.Status.NOT_FOUND)
+						.entity("Unable to get group for user. Error: " + e.getMessage()).build();
 			}
 		}
 		
-		return Response.ok(null).build();
+		return Response.status(Response.Status.NOT_FOUND)
+				.entity("Unable to get userGroup due to unknow reason.").build();
 	}
 }
