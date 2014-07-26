@@ -2,34 +2,33 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
-import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
-import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
@@ -55,7 +54,8 @@ public class SampleServices {
 
 			return Response.ok(dropdownTypeLists).build();
 		} catch (Exception e) {
-			return Response.ok("Error while setting up drop down lists").build();
+			//return Response.ok("Error while setting up drop down lists").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while setting up drop down lists").build();
 		}
 	}
 	
@@ -74,7 +74,7 @@ public class SampleServices {
 			List<String> characterizations = searchSampleBO.getCharacterizationByType(httpRequest, type);
 			return Response.ok(characterizations).build();
 		} catch (Exception e) {
-			return Response.ok("Error while getting characterization by type").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while getting characterization by type").build();
 		}
 	}
 	
@@ -123,7 +123,8 @@ public class SampleServices {
 			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
-			return Response.ok("Error while viewing the search results").build();
+			//return Response.ok("Error while viewing the search results").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while viewing the search results").build();
 		}
 	}
 	
@@ -147,7 +148,8 @@ public class SampleServices {
 			return Response.ok(sampleBean).build();
 			
 		} catch (Exception e) {
-			return Response.ok(e.getMessage()).build();
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while getting data availability data").build();
 		}
 	}
 	
@@ -169,7 +171,8 @@ public class SampleServices {
 			return Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
-			return Response.ok(e.getMessage()).build();
+			//return Response.ok(e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
 		}
 		
 	}
@@ -241,40 +244,32 @@ public class SampleServices {
 
 		try {
 			SampleEditGeneralBean sampleBean = sampleBO.summaryEdit(sampleId,httpRequest);
-
-			//SimpleSampleBean view = new SimpleSampleBean();
-			//view.transferSampleBeanForSummaryView(sampleBean);
-
 			return Response.ok(sampleBean).build();
 		} 
 
 		catch (Exception ioe) {
 			return Response.status(Response.Status.BAD_REQUEST).entity(ioe.getMessage()).build();
 		}
+	}	
+	
+	@POST
+	@Path("/savePOC")
+	//@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces ("application/json")
+	public Response savePOC(@Context HttpServletRequest httpRequest, 
+			@DefaultValue("") @FormParam("sampleId")String parentSampleId,  SimplePointOfContactBean searchForm) {
+		
+		try {
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+			
+			//sampleBO.savePointOfContact(form, request, response)
+			
+			return null;
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while searching for samples: " + e.getMessage()).build();
+		}
 	}
-	
-//	@GET
-//	@Path("/printCharacterizationView")
-//	@Produces("application/json")
-//	 public Response printCharacterizationView(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-//	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
-//	
-//		try {
-//			CharacterizationBO characterizationBO = 
-//					(CharacterizationBO) applicationContext.getBean("characterizationBO");
-//			
-//			CharacterizationSummaryViewBean viewBean = characterizationBO.summaryPrint(sampleId, httpRequest, httpResponse);
-//			SimpleCharacterizationSummaryViewBean simpleViewBean = new SimpleCharacterizationSummaryViewBean();
-//			List<SimpleCharacterizationsByTypeBean> simpleBean = simpleViewBean.transferData(viewBean);
-//			
-//			return Response.ok(simpleBean).build();
-//		} 
-//		
-//		catch (Exception ioe) {
-//			return Response.ok(ioe.getMessage()).build();
-//		}
-//	}
-	
-	
-	
 }
