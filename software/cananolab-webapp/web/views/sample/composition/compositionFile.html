@@ -29,13 +29,13 @@
                                                             ng-href="/caNanoLab/rest/sample/download?fileId={{indFile.fileId}}">
                                                             {{indFile.URI}}
                                                     </a>
-                                                    &nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new">Disclaimer</a>]
+                                                    &nbsp;[<a class="disclaimerLink" href="/caNanoLab/html/cananoDisclaimer.html" target="new">Disclaimer</a>]
                                             </span>
                                             <span ng-if="indFile.isImage">
                                                 {{indFile.Title}}
                                                 <br />
                                                 <a href="#" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}', '{{indFile.fileId}}')">
-                                                	<img src="/caNanoLab/rest/sample/downloadImage?fileId=24947970" border="0" width="150" alt="uploaded image"> 
+                                                	<img src="/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}" border="0" width="150" alt="uploaded image"> 
                                                 </a>        
                                                 </span>
                                                 <span ng-if="!indFile.ExternalURI && !indFile.isImage">

@@ -13,6 +13,11 @@ angular.module('angularApp',[
                 $scope.chemicalassociation = data.chemicalassociation;
                 $scope.compositionfile = data.compositionfile;
                 $scope.loader = false;
+                
+                $scope.nanomaterialentityEmpty = utilsService.isHashEmpty(data.nanomaterialentity);
+                $scope.functionalizingentityEmpty = utilsService.isHashEmpty(data.functionalizingentity);
+                $scope.chemicalassociationEmpty = utilsService.isHashEmpty($scope.chemicalassociation);
+                $scope.compositionfileEmpty = utilsService.isHashEmpty(data.compositionfile);
 
             }).
             error(function(data, status, headers, config) {

@@ -7,9 +7,10 @@
       <script src="../bower_components/angular/angular.js"></script>
 </head>  
 <body ng-app="angularApp">
-<table class="summaryViewNoTop" width="100%" summary="layout" ng-controller="PrintCompositionCtrl">
+<div ng-controller="PrintCompositionCtrl">
+<table class="summaryViewNoTop" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
-    <tr ng-if="nanomaterialentity != ''">
+    <tr ng-if="!nanomaterialentityEmpty">
         <td>
             <!-- <c:set scope='request' var='index' value='${index + 1}'/>
             <jsp:include
@@ -25,7 +26,7 @@
 </table>
 <table class="summaryViewNoTop" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
-    <tr ng-if="functionalizingentity != ''">
+    <tr ng-if="!functionalizingentityEmpty">
         <td>
             <!-- <c:set scope='request' var='index' value='${index + 1}'/>
             <jsp:include
@@ -33,7 +34,6 @@
                 <jsp:param name="sampleId" value="{{sampleId}}" />
                 <jsp:param name="index" value="{{index}}" />
             </jsp:include> -->
-
             <ng-include src="'sample/composition/functionalizingentity/functionalizingEntitySummaryView.html'"></ng-include>
 
         </td>
@@ -41,7 +41,7 @@
 </table>
 <table class="summaryViewNoTop" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
-    <tr ng-if="chemicalAssociations != ''">
+    <tr ng-if="!chemicalassociationEmpty">
         <td>
             <!-- <c:set scope='request' var='index' value='${index + 1}'/>
             <jsp:include page="bodyChemicalAssociationSummaryView.jsp">
@@ -56,7 +56,7 @@
 </table>
 <table class="summaryViewNoTop" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
-    <tr ng-if="compositionfile != ''">
+    <tr ng-if="!compositionfileEmpty">
         <td>
             <!-- <c:set scope='request' var='index' value='${index + 1}'/>
             <jsp:include page="bodyCompositionFileSummaryView.jsp">
@@ -69,6 +69,7 @@
         </td>
     </tr>
 </table>
+</div>
 
 <script src="../scripts/controllers/printComposition.js"></script>
 <script src="../bower_components/angular-route/angular-route.js"></script>
