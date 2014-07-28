@@ -43,7 +43,6 @@ var app = angular.module('angularApp')
       else if ($scope.userActions==3) {
         $scope.loginShow = 0;
         $location.path("/register").replace();
-        $scope.apply();        
       }
       else {
         $scope.loginShow = 0;
