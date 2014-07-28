@@ -15,11 +15,16 @@ public class PublicationUtil {
         if (session == null) 
         	return null;
 		
+        
 		Map<String, List<String>> typeMap = new HashMap<String, List<String>>();
 		
 		SortedSet<String> types = (SortedSet<String>) session.getAttribute("publicationCategories");
 		if (types != null) 
 			typeMap.put("publicationCategories", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("publicationStatuses");
+		if (types != null) 
+			typeMap.put("publicationStatuses", new ArrayList<String>(types));
 		
 		types = (SortedSet<String>) session.getAttribute("publicationResearchAreas");
 		if (types != null) 
