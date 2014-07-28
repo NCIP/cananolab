@@ -81,7 +81,7 @@ app.config(function ($routeProvider, $httpProvider) {
 
       .when('/searchPublication', {
         templateUrl: 'views/publication/view/publicationSearch.html',
-        controller: 'PublicationCtrl'
+        controller: 'PublicationSearchCtrl'
       })   
       .when('/publicationResults', {
         templateUrl: 'views/publication/view/publicationResults.html',

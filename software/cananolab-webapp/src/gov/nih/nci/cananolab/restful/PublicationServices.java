@@ -162,8 +162,9 @@ private Logger logger = Logger.getLogger(SampleServices.class);
 			SearchPublicationBO searchPublicationBO = 
 					(SearchPublicationBO) applicationContext.getBean("searchPublicationBO");
 			Map<String, List<String>> dropdownMap = searchPublicationBO.setup(httpRequest);
+			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
-			return Response.ok(dropdownMap).build();
+			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
 			return Response.ok("Error while setting up drop down lists").build();
 		}
