@@ -5,10 +5,10 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 public class SearchPublicationForm {
 
 	SampleBean sampleBean;
-	String[] researchArea;
-	String[] nanomaterialEntityTypes;
-	String[] functionalizingEntityTypes;		
-	String[] functionTypes;
+	String[] researchArea = new String[0];
+	String[] nanomaterialEntityTypes = new String[0];
+	String[] functionalizingEntityTypes = new String[0];		
+	String[] functionTypes = new String[0];
 	String title = "";
 	String category = "";
 	String authorsStr = "";
