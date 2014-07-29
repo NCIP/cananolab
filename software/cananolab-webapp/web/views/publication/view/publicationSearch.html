@@ -1,5 +1,5 @@
 <div class="spacer">
-  <div ng-class="{formFocus:loader}">{{data}}
+  <div ng-class="{formFocus:loader}">{{searchPublicationForm}}
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
             <th align="left" scope="col">Publication Search</th>
@@ -20,13 +20,7 @@
                 <label for="publicationCategory">Publication Type</label>
             </td>
             <td colspan="2">
-                <select name="category" onchange="javascript:updateSearchFormBasedOnCategory();" id="publicationCategory"><option value="" />
-                        <option value="book chapter">book chapter</option>
-<option value="editorial">editorial</option>
-<option value="peer review article">peer review article</option>
-<option value="proceeding">proceeding</option>
-<option value="report">report</option>
-<option value="review">review</option></select>
+                <select ng-disabled="loader" ng-model="searchPublicationForm.category" name="category" ng-change="displayPubMed()"><option ng-repeat="category in data.publicationCategories" value="{{category}}">{{category}}</option>
             </td>
         </tr>
         <tr>
@@ -34,29 +28,15 @@
                 <label for="researchArea">Research Category</label>
             </td>
             <td colspan="2">
-                
-                    <input type="checkbox" name="researchArea" value="animal" id="researchArea">animal
-                                        
-                    <input type="checkbox" name="researchArea" value="cell line" id="researchArea">cell line
-                                        
-                    <input type="checkbox" name="researchArea" value="characterization" id="researchArea">characterization
-                                        
-                    <input type="checkbox" name="researchArea" value="clinical trials" id="researchArea">clinical trials
-                                        
-                    <input type="checkbox" name="researchArea" value="in vitro" id="researchArea">in vitro
-                                        
-                    <input type="checkbox" name="researchArea" value="in vivo" id="researchArea">in vivo
-                                        
-                    <input type="checkbox" name="researchArea" value="synthesis" id="researchArea">synthesis
-                                        
-            </td>
+                    <input ng-repeat-start="(key,val) in researchArea track by $index" ng-disabled="loader" ng-model="researchArea[key]" type="checkbox" id="researchArea"><span style="padding-left:1px;padding-right:5px;" ng-repeat-end>{{key}}</span>
+                    </td>
         </tr>
-        <tr id="pubMedRow">
+        <tr id="pubMedRow" ng-hide="pubMed">
             <td class="cellLabel">
                 <label for="pubMedId">PubMed ID</label>
             </td>
             <td colspan="2">
-                <input type="text" name="pubMedId" size="30" value="" id="pubMedId">
+                <input type="text" ng-disabled="loader" name="pubMedId" size="30" value="" id="pubMedId" ng-model="searchPublicationForm.pubMedId">
                 <em>exact match</em>
             </td>
         </tr>
@@ -65,7 +45,7 @@
                 <label for="digitalObjectId">Digital Object ID</label>
             </td>
             <td colspan="2">
-                <input type="text" name="digitalObjectId" size="30" value="" id="digitalObjectId">
+                <input type="text" ng-disabled="loader" name="digitalObjectId" size="30" value="" id="digitalObjectId" ng-model="searchPublicationForm.digitalObjectId">
                 <em>exact match</em>
             </td>
         </tr>
@@ -77,11 +57,17 @@
                 <table class="invisibleTable" summary="layout">
                     <tr>
                         <td><label for="titleOperand" style="display:none">Title Operand</label>
-                            <select name="titleOperand" id="titleOperand"><option value="contains">contains</option>
-<option value="equals">equals</option></select>
+                            <select name="titleOperand" ng-init="searchPublicationForm.titleOperand='contains'" ng-model="searchPublicationForm.titleOperand" id="titleOperand" ng-disabled="loader">                   <option value="contains">
+                                contains
+                            </option>
+
+                            <option value="equals">
+                                equals
+                            </option>
+                        </select>
                         </td>
                         <td align="left">
-                            <input type="text" name="title" size="80" value="" id="title">
+                            <input type="text" name="title" size="80" value="" id="title" ng-model="searchPublicationForm.title" ng-disabled="loader">
                         </td>
                     </tr>
                 </table>
@@ -92,7 +78,7 @@
                 <label for="authorsStr">Authors</label>
             </td>
             <td colspan="2">
-                <textarea name="authorsStr" cols="77" rows="3" id="authorsStr"></textarea>
+                <textarea name="authorsStr" ng-disabled="loader" ng-model="searchPublicationForm.authorStr" cols="77" rows="3" id="authorsStr"></textarea>
                 <br />
                 <em>enter one author per line</em>
             </td>
@@ -102,7 +88,7 @@
                 <label for="keywordsStr">Keywords</label>
             </td>
             <td colspan="2">
-                <textarea name="keywordsStr" cols="77" rows="3" id="keywordsStr"></textarea>
+                <textarea name="keywordsStr" ng-disabled="loader" ng-model="searchPublicationForm.keywordsStr" cols="77" rows="3" id="keywordsStr"></textarea>
                 <br />
                 <em>enter one keyword per line</em>
             </td>
@@ -116,9 +102,16 @@
             </td>
             <td valign="top"  align="left" colspan="5">
                 <label for="nameOperand" style="display:none">name operand</label>
-                <select name="nameOperand" id="nameOperand"><option value="contains">contains</option>
-<option value="equals">equals</option></select>&nbsp;&nbsp;&nbsp;
-                <input type="text" name="sampleName" size="80" value="" id="sampleName">
+                <select name="nameOperand" id="nameOperand" ng-init="searchPublicationForm.nameOperand='contains'" ng-disabled="loader" ng-model="searchPublicationForm.nameOperand">                            
+                    <option value="contains">
+                                contains
+                            </option>
+
+                            <option value="equals">
+                                equals
+                            </option>
+                        </select>&nbsp;&nbsp;&nbsp;
+                <input type="text" name="sampleName" ng-disabled="loader" ng-model="searchPublicationForm.sampleName" size="80" value="" id="sampleName">
             </td>
         </tr>
         <tr>
@@ -128,24 +121,7 @@
                 Nanomaterial Entity</label>
             </td>
             <td>
-                <select name="nanomaterialEntityTypes" multiple="multiple" size="4" id="nanomaterialEntityTypes"><option value="biopolymer">biopolymer</option>
-<option value="carbon">carbon</option>
-<option value="carbon black">carbon black</option>
-<option value="carbon nanotube">carbon nanotube</option>
-<option value="dendrimer">dendrimer</option>
-<option value="emulsion">emulsion</option>
-<option value="fullerene">fullerene</option>
-<option value="liposome">liposome</option>
-<option value="metal oxide">metal oxide</option>
-<option value="metal particle">metal particle</option>
-<option value="metalloid">metalloid</option>
-<option value="nanohorn">nanohorn</option>
-<option value="nanolipogel">nanolipogel</option>
-<option value="nanorod">nanorod</option>
-<option value="nanoshell">nanoshell</option>
-<option value="polymer">polymer</option>
-<option value="quantum dot">quantum dot</option>
-<option value="silica">silica</option></select>
+                <select name="nanomaterialEntityTypes" ng-disabled="loader" ng-model="searchPublicationForm.nanomaterialEntityTypes" multiple="multiple" size="4" id="nanomaterialEntityTypes"><option ng-repeat="option in data.nanomaterialEntityTypes" value="{{option}}">{{option}}</option>
             </td>
             <td class="cellLabel">
                 <label for="functionalizingEntityTypes">Composition
@@ -153,25 +129,15 @@
                 Functionalizing Entity</label>
             </td>
             <td>
-                <select name="functionalizingEntityTypes" multiple="multiple" size="3" id="functionalizingEntityTypes"><option value="Magnetic Particle">Magnetic Particle</option>
-<option value="Monomer">Monomer</option>
-<option value="Polymer">Polymer</option>
-<option value="Quantum Dot">Quantum Dot</option>
-<option value="antibody">antibody</option>
-<option value="biopolymer">biopolymer</option>
-<option value="radioisotope">radioisotope</option>
-<option value="small molecule">small molecule</option></select>
+                <select name="functionalizingEntityTypes" ng-disabled="loader" ng-model="searchPublicationForm.functionalizingEntityTypes" multiple="multiple" size="3" id="functionalizingEntityTypes"><option ng-repeat="option in data.functionalizingEntityTypes" value="{{option}}">{{option}}</option>
+
+
             </td>
             <td class="cellLabel">
                 <label for="functionTypes">Function</label>
             </td>
             <td>
-                <select name="functionTypes" multiple="multiple" size="3" id="functionTypes"><option value="endosomolysis">endosomolysis</option>
-<option value="imaging function">imaging function</option>
-<option value="other">other</option>
-<option value="targeting function">targeting function</option>
-<option value="therapeutic function">therapeutic function</option>
-<option value="transfection">transfection</option></select>
+                <select name="functionTypes" ng-disabled="loader" ng-model="searchPublicationForm.functionTypes" multiple="multiple" size="3" id="functionTypes"><option ng-repeat="option in data.functionTypes" value="{{option}}">{{option}}</option>
             </td>
         </tr>
     </table>
@@ -194,179 +160,18 @@
     </tr>
     <tr>
         <td align="right">
-            <input type="reset" value="Reset"
-                onclick="this.form.reset();" />
-            &nbsp;
-            
-                
-                    <input type="button" value="Search" onclick="searchPublication();">
-                
-                
+            <input ng-disabled="loader" type="reset" value="Reset" ng-click="resetForm()"> &nbsp; <input ng-disabled="loader" type="submit" value=
+            "Search" ng-click="doSearch()"> <input ng-disabled="loader" name="dispatch" type="hidden" value="search">
+            <input ng-disabled="loader" name="page" type="hidden" value="1">
             
         </td>
     </tr>
 </table>
-</form>    
-
-<!--     <table align="center" class="submissionView" summary="layout" width="100%">
-        <tr>
-            <td class="cellLabel" width="110"><label for=
-            "keywords">Keywords</label></td>
-
-            <td>
-            <textarea ng-disabled="loader" cols="60" id="keywords" name="text" ng-model="searchSampleForm.text" rows="3">
-</textarea><br>
-            <em>searching characterization keywords, publication keywords and
-            text in characterization descriptions</em><br>
-            <em>enter one keyword per line</em></td>
-        </tr>
-    </table><br>
-
-    <table align="center" class="submissionView" summary="layout" width="100%">
-        <tr>
-            <td>
-                <table class="invisibleTable" summary="layout">
-                    <tr>
-                        <td class="cellLabel" width="100"><label for=
-                        "sampleName">Sample Name</label></td>
-
-                        <td><label for="nameOperand" style="display:none">name
-                        operand</label> <select ng-disabled="loader" ng-init="searchSampleForm.nameOperand='contains'" id="nameOperand" ng-model="searchSampleForm.nameOperand" name=
-                        "nameOperand">
-                            <option value="contains">
-                                contains
-                            </option>
-
-                            <option value="equals">
-                                equals
-                            </option>
-                        </select></td>
-
-                        <td><input ng-disabled="loader" id="sampleName" name="sampleName" ng-model="searchSampleForm.sampleName" size="60"
-                        type="text" value=""></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr class="rowSpacer"><td>&nbsp;</td></tr>
-        <tr>
-            <td>
-                <table class="invisibleTable" summary="layout">
-                    <tr>
-                        <td class="cellLabel" width="100"><label for=
-                        "samplePOC">Sample Point of Contact</label></td>
-
-                        <td><label for="pocOperand" style="display:none">POC
-                        Operand</label> <select ng-disabled="loader" id="pocOperand" name=
-                        "pocOperand" ng-init="searchSampleForm.pocOperand='contains'" ng-model="searchSampleForm.pocOperand">
-                            <option value="contains">
-                                contains
-                            </option>
-
-                            <option value="equals">
-                                equals
-                            </option>
-                        </select></td>
-
-                        <td><input ng-disabled="loader" id="samplePOC" name="samplePointOfContact"
-                        size="60" type="text" value="" ng-model="searchSampleForm.samplePointOfContact"><br>
-                        <em>searching organization name or person
-                        name</em></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr class="rowSpacer"><td>&nbsp;</td></tr>
-
-        <tr>
-            <td>
-                <table class="invisibleTable" summary="layout">
-                    <tr>
-                        <td class="cellLabel" width="100"><label for=
-                        "nanomaterialEntityTypes">Nanomaterial
-                        Entity</label></td>
-
-                        <td><select ng-disabled="loader" id="nanomaterialEntityTypes" multiple=
-                        "multiple" name="nanomaterialEntityTypes" size="4" ng-model="searchSampleForm.nanomaterialEntityTypes">
-                            <option ng-repeat="option in nanomaterialEntityTypesList" value="{{option}}">
-                                {{option}}
-                            </option>
-                        </select></td>
-
-                        <td class="cellLabel"><label for=
-                        "functionalizingEntityTypes">Functionalizing
-                        Entity</label></td>
-
-                        <td><select ng-disabled="loader" id="functionalizingEntityTypes" multiple=
-                        "multiple" name="functionalizingEntityTypes" size="3" ng-model="searchSampleForm.functionalizingEntityTypes">
-                            <option ng-repeat="option in functionalizingEntityTypesList" value="{{option}}">
-                                {{option}}
-                            </option>
-                        </select></td>
-
-                        <td class="cellLabel"><label for=
-                        "functionTypes">Function</label></td>
-
-                        <td><select ng-disabled="loader" id="functionTypes" multiple="multiple"
-                        name="functionTypes" size="3" ng-model="searchSampleForm.functionTypes">
-                            <option ng-repeat="option in functionTypesList" value="{{option}}">
-                                {{option}}
-                            </option>
-                        </select></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr class="rowSpacer"><td>&nbsp;</td></tr>
-
-        <tr>
-            <td>
-                <table class="invisibleTable">
-                    <tr>
-                        <td class="cellLabel" width="100"><label for=
-                        "charType">Characterization Type</label> <label for=
-                        "characterizationType" style="display:none">hidden char
-                        type</label> <input ng-disabled="loader" id="characterizationType" name=
-                        "characterizationType" type="hidden" value=""></td>
-
-                        <td>
-                            <select ng-disabled="loader" id="charType" ng-model="searchSampleForm.characterizationType" name="characterizationType" ng-change="setCharacterizationOptionsByCharType()">
-                            <option ng-repeat="option in characterizationTypesList" value="{{option}}">
-                                {{option}}
-                            </option>
-                        </select></td>
-
-                        <td class="cellLabel"><label for=
-                        "charName">Characterization</label></td>
-
-                        <td colspan="3"><select ng-disabled="loader" id="charName" multiple=
-                        "multiple" name="characterizations" size="4" ng-model="searchSampleForm.characterizations">
-                        <option ng-repeat="option in characterizationsList" value="{{option}}">
-                            {{option}}
-                        </option>
-                    </select></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table><br /><br />
-  </div>
-    <table class="invisibleTable" summary="layout" width="100%">
-        <tr>
-            <td align="center"><span class="formMessage"><em>Searching without
-            any parameters returns all samples.</em></span></td>
-        </tr>
-
-        <tr>
-            <td align="right"><input ng-disabled="loader" type="reset" value="Reset" ng-click="resetForm()"> &nbsp; <input ng-disabled="loader" type="submit" value=
-            "Search" ng-click="doSearch()"> <input ng-disabled="loader" name="dispatch" type="hidden" value="search">
-            <input ng-disabled="loader" name="page" type="hidden" value="1"></td>
-        </tr>
-    </table><div ng-if="message">{{message}}</div>
+<div ng-if="message">{{message}}</div>
   <div id="loader" ng-show="loader">
     <div id="loaderText">
       Loading
     </div>
-    <div id="loaderGraphic"></div> -->
+    <div id="loaderGraphic"></div>
   </div>
 </div> 
