@@ -29,6 +29,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationExporter;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
@@ -273,16 +274,18 @@ public class PublicationBO extends BaseAnnotationBO{
 //		return forward;
 	}
 
-	public void setupUpdate(PublicationForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public PublicationBean setupUpdate(String publicationId,
+			HttpServletRequest request)
 			throws Exception {
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		super.checkOpenAccessForm(request);
-		String publicationId = super.validateId(request, "publicationId");		
+		List<String> messages = new ArrayList<String>();
+//		super.checkOpenAccessForm(request);
+		publicationId = super.validateId(request, "publicationId");		
 		PublicationService publicationService = this
 				.setServicesInSession(request);
 		PublicationBean pubBean = publicationService.findPublicationById(
 				publicationId, true);
+		PublicationForm form = new PublicationForm();
 		form.setPublicationBean(pubBean);		
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		request.setAttribute("onloadJavascript",
@@ -304,10 +307,16 @@ public class PublicationBO extends BaseAnnotationBO{
 			form.setOtherSamples(new String[0]); 
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
+			 messages.add(PropertyUtil.getProperty("sample", "message.submitPublication"));
+	//		 return messages;
 	//		return mapping.findForward("sampleSubmitPublication");
 		} else {
 	//		return mapping.findForward("publicationSubmitPublication");
+			messages.add(PropertyUtil.getProperty("publication", "message.submitPublication"));
+	//		return messages;
+	//		return pubBean;
 		}
+		return pubBean;
 	}
 
 	/**
@@ -556,7 +565,7 @@ public class PublicationBO extends BaseAnnotationBO{
 	}
 
 	public PublicationBean addAuthor(PublicationForm form,
-			HttpServletRequest request, HttpServletResponse response)
+			HttpServletRequest request)
 			throws Exception {
 		if (!validateToken(request)) {
 //			return mapping.findForward("publicationMessage");
@@ -773,7 +782,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		if (form.getSampleId()!=null) {
 			request.setAttribute("sampleId", form.getSampleId());
 		}
-		setupUpdate(form, request, response);
+	//	setupUpdate(form, request, response);
 	//	return setupUpdate(form, request, response);
 	}
 
