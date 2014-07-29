@@ -9,7 +9,7 @@ import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContact;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
@@ -256,7 +256,7 @@ public class SampleServices {
 	@POST
 	@Path("/savePOC")
 	@Produces ("application/json")
-	public Response savePOC(@Context HttpServletRequest httpRequest, SimplePointOfContact simplePOCBean) {
+	public Response savePOC(@Context HttpServletRequest httpRequest, SimplePointOfContactBean simplePOCBean) {
 		logger.info("In savePOC");
 		try {
 			SampleBO sampleBO = 
