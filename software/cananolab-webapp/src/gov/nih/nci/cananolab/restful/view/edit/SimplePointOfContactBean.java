@@ -4,18 +4,22 @@ public class SimplePointOfContactBean {
 	
 	long id;
 	boolean isPrimaryContact;
-	String contactPerson;
-	String OrganizationName;
-	String Role;
+	String contactPerson = "";
+	
+	SimpleOrganizationBean organization;
+	
+	String role = "";
 	
 	SimpleAddressBean address;
 	
-	String firstName;
-	String lastName;
-	String middleInitial;
+	String firstName = "";
+	String lastName = "";
+	String middleInitial = "";
 	
-	String phoneNumber;
-	String email;
+	String phoneNumber = "";
+	String email = "";
+	
+	long sampleId;
 	
 	public boolean isPrimaryContact() {
 		return isPrimaryContact;
@@ -29,17 +33,18 @@ public class SimplePointOfContactBean {
 	public void setContactPerson(String contactPerson) {
 		this.contactPerson = contactPerson;
 	}
-	public String getOrganizationName() {
-		return OrganizationName;
+	
+	public SimpleOrganizationBean getOrganization() {
+		return organization;
 	}
-	public void setOrganizationName(String organizationName) {
-		OrganizationName = organizationName;
+	public void setOrganization(SimpleOrganizationBean organization) {
+		this.organization = organization;
 	}
 	public String getRole() {
-		return Role;
+		return role;
 	}
 	public void setRole(String role) {
-		Role = role;
+		this.role = role;
 	}
 	public SimpleAddressBean getAddress() {
 		return address;
@@ -83,10 +88,15 @@ public class SimplePointOfContactBean {
 	public void setId(long id) {
 		this.id = id;
 	}
+	public long getSampleId() {
+		return sampleId;
+	}
+	public void setSampleId(long sampleId) {
+		this.sampleId = sampleId;
+	}
 	
 	
 	//available org name objects?
-	
-	
+
 
 }

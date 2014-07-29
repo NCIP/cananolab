@@ -50,6 +50,7 @@ public class SampleEditPublicationBean {
 			return;
 
 		try {
+			//
 			types = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 					"publicationCategories", "publication", "category",
 					"otherCategory", true);

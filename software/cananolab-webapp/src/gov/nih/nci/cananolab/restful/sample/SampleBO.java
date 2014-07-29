@@ -14,6 +14,7 @@ package gov.nih.nci.cananolab.restful.sample;
  * @author pansu
  */
 
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
@@ -26,10 +27,12 @@ import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleAddressBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleOrganizationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -396,46 +399,30 @@ public class SampleBO extends BaseAnnotationBO {
 	 * For Rest call: 1. when add POC and save are clicked
 	 * 				  2. when edit POC and save are clicked
 	 */
-	public void savePointOfContact(String sampleId, SimplePointOfContactBean pocBean, HttpServletRequest request) throws Exception {
-		if (!validateToken(request)) {
-		//	return mapping.findForward("sampleMessage");
-			
-		}
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		
-		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");//(SampleBean) form.getSampleBean();
+	public SampleEditGeneralBean savePointOfContact(SimplePointOfContactBean simplePOC, HttpServletRequest request) 
+			throws Exception {
 
-		PointOfContactBean thePOC = new PointOfContactBean(); //sample.getThePOC();		
+		List<String> errors = validatePointOfContactInput(simplePOC);
+		if (errors.size() > 0) {
+			SampleEditGeneralBean errorBean = new SampleEditGeneralBean();
+			errorBean.setErrors(errors);
+			return errorBean;
+		}
 		
-		long pocId = pocBean.getId();
-		String orgName = pocBean.getOrganizationName();
-		String fName = pocBean.getFirstName();
-		String lName = pocBean.getLastName();
-		String mInit = pocBean.getMiddleInitial();
-//		SimpleAddressBean addrBean = pocBean.getAddress();
-//		if (addrBean != null) {
-//			addrBean.getCity();
-//			addrBean.getCountry();
-//			addrBean.getLine1();
-//			addrBean.getLine2();
-//			addrBean.getStateProvince();
-//			addrBean.getZip();
-//		}
-	
-		String phone = pocBean.getPhoneNumber();
-		String email = pocBean.getEmail();
-		String role = pocBean.getRole();
-		
-		//TODO: validate input
-		
-		//transfer data to thePOC
-		
-		thePOC.setupDomain(user.getLoginName());
-		
-		
-		
-		
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");//(SampleBean) form.getSampleBean();
+		if (sample == null) {
+			
+			//////////debug
+			String sampleId = "24063238"; //ncl-49
+			sample = summaryView(sampleId, request);
+			request.getSession().setAttribute("theSample", sample);
+			////////// debug
+			
+			//for real
+			//throw new Exception("Sample object is not valid");
+		}
+		PointOfContactBean thePOC = getPointOfContactBeanFromInput(simplePOC, user.getLoginName());
 		
 		Long oldPOCId = thePOC.getDomain().getId();
 		// set up one sampleService
@@ -452,14 +439,12 @@ public class SampleBO extends BaseAnnotationBO {
 					.updatePOCAssociatedWithCharacterizations(sample
 							.getDomain().getName(), oldPOCId, thePOC
 							.getDomain().getId());
-			// remove oldOrg from sample visibility
-			// ((SampleServiceLocalImpl) service)
-			// .updateSampleVisibilityWithPOCChange(sample, oldPOCId
-			// .toString());
 		}
 		// save sample
 		saveSample(request, sample);
 	//	ActionForward forward = null;
+		
+		
 		String updateSample = (String) request.getSession().getAttribute(
 				"updateSample");
 		if (updateSample == null) {
@@ -477,6 +462,8 @@ public class SampleBO extends BaseAnnotationBO {
 		// return forward;
 		
 		//TODO: call summaryEdit()
+		return summaryEdit(sample.getDomain().getId()
+					.toString(), request);
 	}
 
 	public void removePointOfContact(SampleForm form, HttpServletRequest request,
@@ -900,4 +887,87 @@ public class SampleBO extends BaseAnnotationBO {
 	}
 	
 	
+	protected List<String> validatePointOfContactInput(SimplePointOfContactBean simplePOC) {
+		
+		/*
+		 * Only org name is required
+		 * */
+		List<String> errors = new ArrayList<String>();
+		
+		if (simplePOC == null) {
+			errors.add("Input point of contact object invalid");
+			return errors;
+		}
+		
+		SimpleOrganizationBean simpleOrg = simplePOC.getOrganization();
+		if (simpleOrg != null) {
+			String orgName = simpleOrg.getName();
+			if (orgName == null || !InputValidationUtil.isTextFieldWhiteList(orgName))
+				errors.add(PropertyUtil.getProperty("sample", "organization.name.invalid"));
+		} else
+			errors.add("Organization Name is a required field");
+		
+		SimpleAddressBean addrBean = simplePOC.getAddress();
+		if (addrBean != null) {
+			if (!InputValidationUtil.isTextFieldWhiteList(addrBean.getLine1()))
+				errors.add(PropertyUtil.getProperty("sample", "organization.address1.invalid"));
+			if (!InputValidationUtil.isTextFieldWhiteList(addrBean.getLine2()))
+				errors.add(PropertyUtil.getProperty("sample", "organization.address2.invalid"));
+			
+			if (!InputValidationUtil.isRelaxedAlphabetic(addrBean.getCity()))
+				errors.add(PropertyUtil.getProperty("sample", "organization.city.invalid"));
+			
+			if (!InputValidationUtil.isRelaxedAlphabetic(addrBean.getStateProvince()))
+				errors.add(PropertyUtil.getProperty("sample", "organization.state.invalid"));
+			
+			if (!InputValidationUtil.isRelaxedAlphabetic(addrBean.getCountry()))
+				errors.add(PropertyUtil.getProperty("sample", "organization.country.invalid"));
+			
+			if (addrBean.getZip().length() > 0 && !InputValidationUtil.isZipValid(addrBean.getZip()))
+				errors.add(PropertyUtil.getProperty("sample", "postalCode.invalid"));
+		}
+		
+		return errors;
+	}
+	
+	protected PointOfContactBean getPointOfContactBeanFromInput(SimplePointOfContactBean simplePOC, String createdBy) {
+		//TODO: only id can be null. Other fields need to be set "" if no value
+		
+		PointOfContactBean pocBean = new PointOfContactBean();
+		pocBean.setupDomain(createdBy);
+		
+		Organization org = new Organization();
+		SimpleOrganizationBean simpleOrg = simplePOC.getOrganization();
+		
+		org.setName(simpleOrg.getName());
+		if (simpleOrg.getId() > 0)
+			org.setId(simpleOrg.getId());
+		
+		SimpleAddressBean addrBean = simplePOC.getAddress();
+		if (addrBean == null) {
+			addrBean = new SimpleAddressBean();
+		}
+			org.setCity(addrBean.getCity());
+			org.setCountry(addrBean.getCountry());
+			org.setPostalCode(addrBean.getZip());
+			org.setStreetAddress1(addrBean.getLine1());
+			org.setStreetAddress2(addrBean.getLine2());
+			org.setState(addrBean.getStateProvince());
+		
+		pocBean.getDomain().setOrganization(org);
+		pocBean.getDomain().setRole(simplePOC.getRole());
+		
+		if (simplePOC.getId() > 0)
+			pocBean.getDomain().setId(simplePOC.getId());
+		pocBean.setupDomain(createdBy);
+		
+		pocBean.getDomain().setFirstName(simplePOC.getFirstName());
+		pocBean.getDomain().setLastName(simplePOC.getLastName());
+		pocBean.getDomain().setMiddleInitial(simplePOC.getMiddleInitial());
+		
+		pocBean.getDomain().setPhone(simplePOC.getPhoneNumber());
+		pocBean.getDomain().setEmail(simplePOC.getEmail());
+		
+		return pocBean;
+	}
 }

@@ -412,7 +412,11 @@ public class SampleEditGeneralBean {
 		poc.setPrimaryContact(true);
 		poc.setFirstName(samplePOC.getFirstName());
 		poc.setLastName(samplePOC.getLastName());
-		poc.setOrganizationName(samplePOC.getOrganization().getName());
+		
+		SimpleOrganizationBean simpleOrg = new SimpleOrganizationBean();
+		simpleOrg.setName(samplePOC.getOrganization().getName());
+		simpleOrg.setId(samplePOC.getOrganization().getId());
+		poc.setOrganization(simpleOrg);
 		poc.setRole(samplePOC.getRole());
 		poc.setId(samplePOC.getId());
 	}

@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
 import java.io.FileInputStream;
@@ -254,22 +255,27 @@ public class SampleServices {
 	
 	@POST
 	@Path("/savePOC")
-	//@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces ("application/json")
-	public Response savePOC(@Context HttpServletRequest httpRequest, 
-			@DefaultValue("") @FormParam("sampleId")String parentSampleId,  SimplePointOfContactBean searchForm) {
-		
+	public Response savePOC(@Context HttpServletRequest httpRequest, SimplePointOfContactBean simplePOCBean) {
+		logger.info("In savePOC");
 		try {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");
 			
-			//sampleBO.savePointOfContact(form, request, response)
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity("User session invalidate. Session may have been expired").build();
 			
-			return null;
+			SampleEditGeneralBean editBean = sampleBO.savePointOfContact(simplePOCBean, httpRequest);
+			List<String> errors = editBean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(editBean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while searching for samples: " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while saving Point of Contact: " + e.getMessage()).build();
 		}
 	}
 }
