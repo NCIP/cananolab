@@ -3,11 +3,13 @@ package gov.nih.nci.cananolab.restful;
 import java.util.List;
 import java.util.Map;
 
+import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
+import gov.nih.nci.cananolab.restful.publication.PublicationManager;
 import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
@@ -191,6 +193,26 @@ private Logger logger = Logger.getLogger(SampleServices.class);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while searching for publication " + e.getMessage()).build();
+		}
+	}
+	
+	@POST
+	@Path("/addAuthor")
+	@Produces ("application/json")
+	public Response addAuthor(@Context HttpServletRequest httpRequest, Author form ) {
+	
+		try {
+			PublicationManager pubManager = 
+					 (PublicationManager) applicationContext.getBean("publicationManager");
+			
+						
+			PublicationBean pBean = pubManager.addAuthor(form, httpRequest);
+			
+			return Response.ok(pBean).build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while adding author for publication " + e.getMessage()).build();
 		}
 	}
 }
