@@ -65,6 +65,11 @@
 	<bean id="searchPublicationBO"
 		class="gov.nih.nci.cananolab.restful.publication.SearchPublicationBO">
 	</bean>
+	
+	<bean id="publicationManager"
+		class="gov.nih.nci.cananolab.restful.publication.PublicationManager">
+	</bean>
+	
 
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
