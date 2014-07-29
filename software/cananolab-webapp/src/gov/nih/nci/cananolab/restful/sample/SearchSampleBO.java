@@ -108,8 +108,8 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		request.getSession().setAttribute("resultSize", new Integer(sampleBeans.size()));
 		
 		//return mapping.findForward("success");
-		
-		List<SimpleSearchSampleBean> simpleBeans = transfertoSimpleSampleBeans(sampleBeansPerPage);
+		//UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		List<SimpleSearchSampleBean> simpleBeans = transfertoSimpleSampleBeans(sampleBeansPerPage, (UserBean)session.getAttribute("user"));
 		
 		return simpleBeans;
 	}
@@ -117,13 +117,14 @@ public class SearchSampleBO extends AbstractDispatchBO {
 	/**
 	 * 
 	 */
-	protected List<SimpleSearchSampleBean> transfertoSimpleSampleBeans(List<SampleBean> sampleBeans) {
+	protected List<SimpleSearchSampleBean> transfertoSimpleSampleBeans(List<SampleBean> sampleBeans,
+			UserBean user) {
 		List<SimpleSearchSampleBean> simpleBeans = new ArrayList<SimpleSearchSampleBean>();
 		
 		for (SampleBean bean : sampleBeans) {
 			
 			SimpleSearchSampleBean simpleBean = new SimpleSearchSampleBean();
-			simpleBean.transferSampleBeanForBasicResultView(bean);
+			simpleBean.transferSampleBeanForBasicResultView(bean, user);
 			simpleBeans.add(simpleBean);
 		}
 		

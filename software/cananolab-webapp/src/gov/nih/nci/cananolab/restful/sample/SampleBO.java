@@ -394,10 +394,16 @@ public class SampleBO extends BaseAnnotationBO {
 	private void setupLookups(HttpServletRequest request) throws Exception {
 		InitSampleSetup.getInstance().setPOCDropdowns(request);
 	}
-
-	/*
+	
+	/**
+	 * Save a new or existing POC with updates.
 	 * For Rest call: 1. when add POC and save are clicked
 	 * 				  2. when edit POC and save are clicked
+	 * 
+	 * @param simplePOC
+	 * @param request
+	 * @return
+	 * @throws Exception
 	 */
 	public SampleEditGeneralBean savePointOfContact(SimplePointOfContactBean simplePOC, HttpServletRequest request) 
 			throws Exception {
@@ -410,7 +416,7 @@ public class SampleBO extends BaseAnnotationBO {
 		}
 		
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");//(SampleBean) form.getSampleBean();
+		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");
 		if (sample == null) {
 			
 			//////////debug
@@ -441,9 +447,7 @@ public class SampleBO extends BaseAnnotationBO {
 							.getDomain().getId());
 		}
 		// save sample
-		saveSample(request, sample);
-	//	ActionForward forward = null;
-		
+		saveSample(request, sample);		
 		
 		String updateSample = (String) request.getSession().getAttribute(
 				"updateSample");
