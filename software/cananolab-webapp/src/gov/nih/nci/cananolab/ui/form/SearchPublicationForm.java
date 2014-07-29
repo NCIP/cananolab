@@ -9,15 +9,15 @@ public class SearchPublicationForm {
 	String[] nanomaterialEntityTypes;
 	String[] functionalizingEntityTypes;		
 	String[] functionTypes;
-	String title;
-	String category;
-	String authorsStr;
-	String pubMedId;
-	String digitalObjectId;
-	String keywordsStr;
-	String sampleName;
-	String titleOperand;
-	String nameOperand;
+	String title = "";
+	String category = "";
+	String authorsStr = "";
+	String pubMedId = "";
+	String digitalObjectId = "";
+	String keywordsStr = "";
+	String sampleName = "";
+	String titleOperand = "";
+	String nameOperand = "";
 	int page;
 	public SampleBean getSampleBean() {
 		return sampleBean;
