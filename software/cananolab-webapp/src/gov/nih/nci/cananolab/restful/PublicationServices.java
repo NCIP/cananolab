@@ -186,7 +186,7 @@ private Logger logger = Logger.getLogger(SampleServices.class);
 			if (result instanceof String) {
 				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
 			} else
-				return Response.ok(results).build();
+			return Response.ok(results).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());

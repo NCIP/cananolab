@@ -38,24 +38,26 @@ var app = angular.module('angularApp')
       // $scope.loader = true;
       for (var key in $scope.researchArea) {
         if ($scope.researchArea[key]) {
-        $scope.searchPublicationForm.researchArea.push(key)          
+          $scope.searchPublicationForm.researchArea.push(key)          
         }
 
       }
-      // $http({method: 'POST', url: '/caNanoLab/rest/sample/searchSample',data: $scope.searchSampleForm}).
-      // success(function(data, status, headers, config) {
-      //   // $rootScope.sampleData = data;
-      //   $scope.sampleData.data = data;
-      //   $location.path("/sampleResults").replace();
+      $http({method: 'POST', url: 'http://localhost:8080/caNanoLab/rest/publication/searchPublication',data: $scope.searchPublicationForm}).
+      success(function(data, status, headers, config) {
+        alert("success");
+        // $rootScope.sampleData = data;
+        $scope.publicationData.data = data;
+        // $location.path("/sampleResults").replace();
 
-      // }).
-      // error(function(data, status, headers, config) {
-      //   // called asynchronously if an error occurs
-      //   // or server returns response with an error status.
-      //   // $rootScope.sampleData = data;
-      //   $scope.loader = false;
-      //   $scope.message = data;
-      // }); 
+      }).
+      error(function(data, status, headers, config) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+        // $rootScope.sampleData = data;
+        alert("test");
+        $scope.loader = false;
+        $scope.message = data;
+      }); 
     };
 
     $scope.resetForm = function() {
