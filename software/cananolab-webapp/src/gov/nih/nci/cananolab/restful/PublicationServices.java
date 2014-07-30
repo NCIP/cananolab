@@ -18,6 +18,7 @@ import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditPublicationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePublicationEditBean;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
@@ -221,24 +222,48 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		}
 	}
 	
-	@POST
-	@Path("/addAuthor")
-	@Produces ("application/json")
-	public Response addAuthor(@Context HttpServletRequest httpRequest, Author form ) {
+//	@POST
+//	@Path("/addAuthor")
+//	@Produces ("application/json")
+//	public Response addAuthor(@Context HttpServletRequest httpRequest, Author form ) {
+//	
+//		try {
+//			
+//			PublicationManager pubManager = 
+//					 (PublicationManager) applicationContext.getBean("publicationManager");
+//			
+//						
+//			PublicationBean pBean = pubManager.addAuthor(form, httpRequest);
+//			
+//			return Response.ok(pBean).build();
+//
+//		} catch (Exception e) {
+//			logger.error(e.getMessage());
+//			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while adding author for publication " + e.getMessage()).build();
+//		}
+//	}
 	
-		try {
+	@GET
+	@Path("/getSamples")
+	@Produces ("application/json")
+    public Response getSamples(@Context HttpServletRequest httpRequest,
+    		@DefaultValue("") @QueryParam("searchStr") String searchStr) {
+				
+		try { 
+			PublicationBO pubBO = 
+					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
-			PublicationManager pubManager = 
-					 (PublicationManager) applicationContext.getBean("publicationManager");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
 			
-						
-			PublicationBean pBean = pubManager.addAuthor(form, httpRequest);
-			
-			return Response.ok(pBean).build();
+			String[] sampleList = pubBO.getMatchedSampleNames(searchStr, httpRequest);
+			return Response.ok(sampleList).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
+			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
-			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while adding author for publication " + e.getMessage()).build();
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting all sample names for publication submission"+ e.getMessage()).build();
 		}
 	}
 }

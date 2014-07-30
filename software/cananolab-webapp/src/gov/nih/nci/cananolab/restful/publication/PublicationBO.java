@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful.publication;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -34,18 +36,22 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationExporter;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.restful.publication.InitPublicationSetup;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 public class PublicationBO extends BaseAnnotationBO{
-	public void create(PublicationForm form,
+	Logger logger = Logger.getLogger(PublicationBO.class);
+	
+		public void create(PublicationForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		if (!validateToken(request)) {
@@ -803,5 +809,31 @@ public class PublicationBO extends BaseAnnotationBO{
 		PublicationService service = this.setServicesInSession(request);
 		return downloadFile(service, fileId, request, response);
 	}
+	
+	public String[] getMatchedSampleNames(String searchStr, HttpServletRequest request) {
+		
+			UserBean user = (UserBean) request.getSession().getAttribute("user");
+			if (user == null) {
+				return null;
+			}
+			SecurityService securityService = (SecurityService) request
+					.getSession().getAttribute("securityService");
+			PublicationServiceLocalImpl service = new PublicationServiceLocalImpl(securityService);
+			try {
+				SampleServiceHelper sampleHelper = (SampleServiceHelper) (service
+						.getSampleHelper());
+				List<String> sampleNames = sampleHelper
+						.findSampleNamesBy(searchStr);
+				Collections.sort(sampleNames,
+						new Comparators.SortableNameComparator());
+				return sampleNames.toArray(new String[sampleNames.size()]);
+			} catch (Exception e) {
+				logger.error(
+						"Problem getting all sample names for publication submission \n",
+						e);
+				return new String[] { "" };
+			}
+		}
+
 }
 
