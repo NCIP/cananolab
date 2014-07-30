@@ -80,6 +80,87 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	public SampleServiceHelper(SecurityService securityService) {
 		super(securityService);
 	}
+	
+	public List<String> findSampleIdsByDOI(String doi) 
+	throws Exception {
+		
+		List<String> sampleIds = new ArrayList<String>();
+		
+		String sampleName = "NCL-49-1";
+		
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
+				.setProjection(
+						Projections.projectionList()
+								.add(Projections.property("id"))
+								.add(Projections.property("name"))
+								.add(Projections.property("createdDate")));
+		
+		crit.createAlias("primaryPointOfContact", "pointOfContact");
+		crit.createAlias("pointOfContact.organization", "organization");
+		
+//		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+//				Property.forName("id").eq(new Long(sampleId)));
+//		
+		if (!StringUtils.isEmpty(sampleName)) {
+			TextMatchMode nameMatchMode = new TextMatchMode(sampleName);
+			crit.add(Restrictions.ilike("name", nameMatchMode.getUpdatedText(),
+					nameMatchMode.getMatchMode()));
+		}
+		
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		
+		DetachedCriteria criteria = DetachedCriteria.forClass(Sample.class,"club")
+			    .createAlias("club.team","team")
+			    .add(Restrictions.eq("club.name", "Arsenal"))
+			    .add(Restrictions.eq("team.teamname", "Team A"));
+		
+		List results = appService.query(crit);
+		Set<Sample> samples = new HashSet<Sample>();
+		for (Object obj : results) {
+			
+			try {
+				/*
+				 * There is a bug when searching with keyword "tes", where the following line
+				 * whould trigger a ClassCastException. Reason unknow but suspected to be reaching
+				 * the last row of a dataset. 
+				 */
+				Object[] row = (Object[]) obj;
+
+				Long sampleId = (Long) row[0];
+
+				if (StringUtils.containsIgnoreCase(getAccessibleData(),
+						sampleId.toString())) {
+					Sample sample = new Sample();
+					sample.setId(sampleId);
+					sample.setName((String) row[1]);
+					sample.setCreatedDate((Date) row[2]);
+					samples.add(sample);
+				} else {
+					logger.debug("User doesn't have access to sample of ID: "
+							+ sampleId);
+				}
+
+			} catch (ClassCastException e) {
+				logger.error("Got ClassCastException: " + e.getMessage());
+				break;
+			}
+		}
+		
+		List<Sample> orderedSamples = new ArrayList<Sample>(samples);
+		// Collections.sort(orderedSamples,
+		// Collections.reverseOrder(new Comparators.SampleDateComparator()));
+
+		Collections
+				.sort(orderedSamples, new Comparators.SampleDateComparator());
+
+		for (Sample sample : orderedSamples) {
+			sampleIds.add(sample.getId().toString());
+		}
+		
+
+		return sampleIds;
+	}
 
 	public List<String> findSampleIdsBy(String sampleName,
 			String samplePointOfContact, String[] nanomaterialEntityClassNames,
@@ -385,6 +466,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 		return sampleIds;
 	}
+	
 
 	/**
 	 * Return all stored functionalizing entity class names. In case of

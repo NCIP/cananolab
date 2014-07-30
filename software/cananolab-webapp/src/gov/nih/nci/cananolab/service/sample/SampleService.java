@@ -102,4 +102,7 @@ public interface SampleService extends BaseService {
 
 	public List<String> findSampleIdsByOwner(String currentOwner)
 			throws SampleException;
+	
+	public List<String> findSampleIdsByDOI(String doi)
+			throws SampleException;
 }
