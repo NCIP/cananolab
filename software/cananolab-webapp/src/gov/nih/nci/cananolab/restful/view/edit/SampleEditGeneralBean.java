@@ -161,7 +161,8 @@ public class SampleEditGeneralBean {
 		this.errors = errors;
 	}
 	
-	public void transferSampleBeanData(HttpServletRequest request, CurationService curatorService, SampleBean sampleBean) 
+	public void transferSampleBeanData(HttpServletRequest request, 
+			CurationService curatorService, SampleBean sampleBean, String[] availableEntityNames) 
 	throws Exception {
 		
 		this.sampleName = sampleBean.getDomain().getName();
@@ -174,8 +175,7 @@ public class SampleEditGeneralBean {
 
 		transferAccessibilityData(sampleBean);
 		
-		transferDataAvailability(request, sampleBean);
-		
+		transferDataAvailability(request, sampleBean, availableEntityNames);
 		
 		setupLookups(request);
 		setupGroupNamesForNewAccess(request);
@@ -379,7 +379,8 @@ public class SampleEditGeneralBean {
 		}
 	}
 	
-	protected void transferDataAvailability(HttpServletRequest request, SampleBean sampleBean) {
+	//edit
+	protected void transferDataAvailability(HttpServletRequest request, SampleBean sampleBean, String[] availableEntityNames) {
 		if (!sampleBean.getHasDataAvailability()) 
 			return; 
 		
@@ -388,23 +389,24 @@ public class SampleEditGeneralBean {
 			return;
 		}
 		
-		this.dataAvailability = new SimpleDataAvailabilityBean();
-		dataAvailability.setCaNanoLabScore(sampleBean.getCaNanoLabScore());
-		dataAvailability.setMincharScore(sampleBean.getMincharScore());
-		
-		SortedSet<String> ca = (SortedSet<String>) request.getSession().getServletContext().getAttribute("chemicalAssocs");
-		dataAvailability.setChemicalAssocs(new ArrayList<String>(ca));
-		
-		dataAvailability.setCaNano2MINChar((Map<String, String>) request.getSession().getServletContext()
-				.getAttribute("caNano2MINChar"));
-		
-		
-		SortedSet<String> pc = (SortedSet<String>) request.getSession().getServletContext().getAttribute("physicoChars");
-		dataAvailability.setPhysicoChars(new ArrayList<String>(pc));
-		SortedSet<String> iv = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invitroChars");
-		dataAvailability.setInvitroChars(new ArrayList<String>(iv));
-		SortedSet<String> invivo = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invivoChars");
-		dataAvailability.setInvivoChars(new ArrayList<String>(invivo));
+		dataAvailability = new SimpleDataAvailabilityBean();
+		dataAvailability.transferSampleBeanForDataAvailability(sampleBean, request, availableEntityNames);
+//		dataAvailability.setCaNanoLabScore(sampleBean.getCaNanoLabScore());
+//		dataAvailability.setMincharScore(sampleBean.getMincharScore());
+//		
+//		SortedSet<String> ca = (SortedSet<String>) request.getSession().getServletContext().getAttribute("chemicalAssocs");
+//		dataAvailability.setChemicalAssocs(new ArrayList<String>(ca));
+//		
+//		dataAvailability.setCaNano2MINChar((Map<String, String>) request.getSession().getServletContext()
+//				.getAttribute("caNano2MINChar"));
+//		
+//		
+//		SortedSet<String> pc = (SortedSet<String>) request.getSession().getServletContext().getAttribute("physicoChars");
+//		dataAvailability.setPhysicoChars(new ArrayList<String>(pc));
+//		SortedSet<String> iv = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invitroChars");
+//		dataAvailability.setInvitroChars(new ArrayList<String>(iv));
+//		SortedSet<String> invivo = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invivoChars");
+//		dataAvailability.setInvivoChars(new ArrayList<String>(invivo));
 	}
 	
 	protected void transferPointOfContactData(SampleBean sampleBean) {

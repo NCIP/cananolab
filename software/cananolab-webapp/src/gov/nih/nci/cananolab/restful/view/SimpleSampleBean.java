@@ -36,6 +36,7 @@ public class SimpleSampleBean {
 
 	long pocBeanDomainId;
 
+	//The following are now in SimpleDataAvailabilityBean. Refactor this
 	String[] availableEntityNames;
 
 	String caNanoLabScore;

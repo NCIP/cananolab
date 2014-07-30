@@ -70,7 +70,7 @@ public class SampleBO extends BaseAnnotationBO {
 
 	private DataAvailabilityService dataAvailabilityService;
 	
-	String[] availableEntityNames;
+	//String[] availableEntityNames;
 
 	/**
 	 * Save or update POC data.
@@ -291,6 +291,7 @@ public class SampleBO extends BaseAnnotationBO {
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
 						.toString(), securityService);
 
+		String[] availableEntityNames = null;
 		if (selectedSampleDataAvailability != null
 				&& !selectedSampleDataAvailability.isEmpty()
 				&& selectedSampleDataAvailability.size() > 0) {
@@ -298,10 +299,16 @@ public class SampleBO extends BaseAnnotationBO {
 			sampleBean.setDataAvailability(selectedSampleDataAvailability);
 			calculateDataAvailabilityScore(sampleBean,
 					selectedSampleDataAvailability, request);
+			int idx = 0;
+			availableEntityNames = new String[selectedSampleDataAvailability.size()];
+			for (DataAvailabilityBean bean : selectedSampleDataAvailability) {
+				availableEntityNames[idx++] = bean.getAvailableEntityName()
+						.toLowerCase();
+			}
 		}
 
 		//form.setSampleBean(sampleBean);
-		sampleEdit.transferSampleBeanData(request, this.getCurationService(), sampleBean);
+		sampleEdit.transferSampleBeanData(request, this.getCurationService(), sampleBean, availableEntityNames);
 		
 		request.getSession().setAttribute("updateSample", "true");
 		
@@ -697,6 +704,14 @@ public class SampleBO extends BaseAnnotationBO {
 //		return mapping.findForward("summaryEdit");
 	}
 
+	/**
+	 * Support viewDataAvailability rest service
+	 * 
+	 * @param sampleId
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	public SimpleSampleBean dataAvailabilityView(String sampleId, HttpServletRequest request) throws Exception {
 
 		//Make sure service has been created
@@ -718,18 +733,19 @@ public class SampleBO extends BaseAnnotationBO {
 						.toString(), securityService);
 
 		//sampleBean.setDataAvailability(dataAvailability);
+		String[] availEntityNames = null;
 		if (!dataAvailability.isEmpty() && dataAvailability.size() > 0) {
 			sampleBean.setHasDataAvailability(true);
 			calculateDataAvailabilityScore(sampleBean, dataAvailability, request);
-			String[] availEntityNames = new String[dataAvailability.size()];
+			availEntityNames = new String[dataAvailability.size()];
 			int i = 0;
 			for (DataAvailabilityBean bean : dataAvailability) {
 				availEntityNames[i++] = bean.getAvailableEntityName()
 						.toLowerCase();
 			}
 			
-			setAvailableEntityNames(availEntityNames);
-			request.setAttribute("availableEntityNames", availableEntityNames);
+			//setAvailableEntityNames(availEntityNames);
+			//request.setAttribute("availableEntityNames", availableEntityNames);
 		}
 		request.setAttribute("sampleBean", sampleBean);
 		
@@ -740,15 +756,16 @@ public class SampleBO extends BaseAnnotationBO {
 	//		return mapping.findForward("dataAvailabilityEdit");
 		}
 		
-		SimpleSampleBean simpleBean = transfertoSimpleSampleBean(sampleBean, request);
+		SimpleSampleBean simpleBean = transferDataAvailabilityToSimpleSampleBean(sampleBean, request, availEntityNames);
 		return simpleBean;
 	}
 	
-	protected SimpleSampleBean transfertoSimpleSampleBean(SampleBean sampleBean, HttpServletRequest request) {
+	protected SimpleSampleBean transferDataAvailabilityToSimpleSampleBean(SampleBean sampleBean, 
+			HttpServletRequest request, String[] availEntityNames) {
 		SimpleSampleBean simpleBean = new SimpleSampleBean();
-		simpleBean.transferSampleBeanForDataAvailability(sampleBean, request);
 		
-		simpleBean.setAvailableEntityNames(this.availableEntityNames);
+		simpleBean.transferSampleBeanForDataAvailability(sampleBean, request);
+		simpleBean.setAvailableEntityNames(availEntityNames);
 		
 		return simpleBean;
 	}
@@ -904,15 +921,6 @@ public class SampleBO extends BaseAnnotationBO {
 			throws SecurityException {
 		return false;
 	}
-
-	public String[] getAvailableEntityNames() {
-		return availableEntityNames;
-	}
-
-	public void setAvailableEntityNames(String[] availableEntityNames) {
-		this.availableEntityNames = availableEntityNames;
-	}
-	
 	
 	protected List<String> validatePointOfContactInput(SimplePointOfContactBean simplePOC) {
 		
