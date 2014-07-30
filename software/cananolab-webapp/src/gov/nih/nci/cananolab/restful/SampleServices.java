@@ -305,4 +305,29 @@ public class SampleServices {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while saving Access: " + e.getMessage()).build();
 		}
 	}
+	
+	@GET
+	@Path("/searchById")
+	@Produces("application/json")
+	 public Response searchById(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("id") String id, @QueryParam("type") String type){
+		
+		SampleBO sampleBO = 
+				(SampleBO) applicationContext.getBean("sampleBO");
+
+		try {
+			List results = sampleBO.searchSampleById(httpRequest, id, type);
+			
+			Object obj = results.get(0);
+			return (obj instanceof String) ?
+					Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(results).build()
+						:
+						Response.ok(results).build();
+		} 
+
+		catch (Exception ioe) {
+			return Response.status(Response.Status.BAD_REQUEST).entity(ioe.getMessage()).build();
+		}
+	}	
 }
