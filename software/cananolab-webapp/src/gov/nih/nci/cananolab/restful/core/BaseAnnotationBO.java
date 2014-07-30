@@ -589,9 +589,11 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		return true;
 	}
 
-	protected Boolean validateAccess(HttpServletRequest request,
+	protected List<String> validateAccess(HttpServletRequest request,
 			AccessibilityBean theAccess) throws Exception {
 		Boolean accessValid = true;
+		
+		List<String> errors = new ArrayList<String>();
 //		ActionMessages msgs = new ActionMessages();
 		// per app scan, in case user submits parameters through URL instead of
 		// form
@@ -605,6 +607,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 					theAccess.getAccessBy());
 	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 	//		saveErrors(request, msgs);
+			errors.add("You've entered an invalid Access by field");
 			accessValid = false;
 		}
 		if (!theAccess.getRoleName().equalsIgnoreCase(
@@ -615,13 +618,15 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 					theAccess.getRoleName());
 	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 	//		saveErrors(request, msgs);
+			errors.add("You've entered an invalid role name");
 			accessValid = false;
 		}
 		if (!validateGroupAccess(request, theAccess)) {
-			ActionMessage msg = new ActionMessage("error.invalidGroup",
-					theAccess.getGroupName());
+			//ActionMessage msg = new ActionMessage("error.invalidGroup",
+			//		theAccess.getGroupName());
 	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 	//		saveErrors(request, msgs);
+			errors.add("You've entered an invalid group name. Or you don't have acess to the group.");
 			accessValid = false;
 		}
 		if (!validateUserAccess(request, theAccess)) {
@@ -629,10 +634,11 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 					theAccess.getUserBean().getLoginName());
 	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 	//		saveErrors(request, msgs);
+			errors.add("You've entered an invalid user name.");
 			accessValid = false;
 		}
 		request.getSession().setAttribute("accessValid", accessValid);
-		return accessValid;
+		return errors;
 	}
 
 	protected String validateId(HttpServletRequest request, String idParameter)

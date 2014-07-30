@@ -31,6 +31,7 @@ import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleAccessBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleAddressBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleOrganizationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
@@ -417,6 +418,9 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");
+		
+		PointOfContactBean thePOC = getPointOfContactBeanFromInput(simplePOC, user.getLoginName());
+		
 		if (sample == null) {
 			
 			//////////debug
@@ -428,7 +432,6 @@ public class SampleBO extends BaseAnnotationBO {
 			//for real
 			//throw new Exception("Sample object is not valid");
 		}
-		PointOfContactBean thePOC = getPointOfContactBeanFromInput(simplePOC, user.getLoginName());
 		
 		Long oldPOCId = thePOC.getDomain().getId();
 		// set up one sampleService
@@ -783,17 +786,36 @@ public class SampleBO extends BaseAnnotationBO {
 	 * mapping.findForward("summaryEdit"); }
 	 */
 
-	public void saveAccess(SampleForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SampleEditGeneralBean saveAccess(SimpleAccessBean simpleAccess, HttpServletRequest request)
 			throws Exception {
 		if (!validateToken(request)) {
 		//	return mapping.findForward("sampleMessage");
 		}
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sample = (SampleBean) form.getSampleBean();
+		//SampleBean sample = (SampleBean) form.getSampleBean();
+		
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");
+		if (sample == null) {
+			
+			//////////debug
+			String sampleId = "24063238"; //ncl-49
+			sample = summaryView(sampleId, request);
+			request.getSession().setAttribute("theSample", sample);
+			////////// debug
+			
+			//for real
+			//throw new Exception("Sample object is not valid");
+		}
+		
 		AccessibilityBean theAccess = sample.getTheAccess();
-		if (!super.validateAccess(request, theAccess)) {
-		//	return input(mapping, form, request, response);
+		populateAccessBeanWithInput(simpleAccess, theAccess, user.getLoginName());
+	
+		List<String> errors = validateAccess(request, theAccess);
+		if (errors.size() > 0) {
+			SampleEditGeneralBean errorBean = new SampleEditGeneralBean();
+			errorBean.setErrors(errors);
+			return errorBean;
 		}
 		SampleService service = this.setServiceInSession(request);
 		// if sample is public, the access is not public, retract public
@@ -826,7 +848,8 @@ public class SampleBO extends BaseAnnotationBO {
 					.toString());
 	//		forward = summaryEdit(mapping, form, request, response);
 		}
-	//	return forward;
+		return summaryEdit(sample.getDomain().getId()
+				.toString(), request);
 	}
 
 	public void deleteAccess(SampleForm form,
@@ -973,5 +996,29 @@ public class SampleBO extends BaseAnnotationBO {
 		pocBean.getDomain().setEmail(simplePOC.getEmail());
 		
 		return pocBean;
+	}
+	
+	protected void populateAccessBeanWithInput(SimpleAccessBean simpleAccess, AccessibilityBean theAccess, String loginName) {
+//		simpleAccess.getAccessBy();
+//		simpleAccess.getAccessRight();
+//		simpleAccess.getGroupName();
+//		simpleAccess.getLoginName();
+//		simpleAccess.getRoleDisplayName();
+//		simpleAccess.getSampleId();
+		
+		String accessBy = simpleAccess.getAccessBy();
+		theAccess.setAccessBy(accessBy);
+		if (accessBy.equals(AccessibilityBean.ACCESS_BY_GROUP))
+			theAccess.setGroupName(simpleAccess.getGroupName());
+		else if (accessBy.equals(AccessibilityBean.ACCESS_BY_USER)) {
+			String selectedLoginName = simpleAccess.getLoginName();
+			if (selectedLoginName != null && selectedLoginName.length() > 0) {
+				UserBean user = new UserBean();
+				user.setLoginName(selectedLoginName);
+				theAccess.setUserBean(user);
+			}
+		}
+		
+		theAccess.setRoleName(simpleAccess.getRoleName());
 	}
 }

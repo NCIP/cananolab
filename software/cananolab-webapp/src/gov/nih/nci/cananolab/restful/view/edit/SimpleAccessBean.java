@@ -2,14 +2,17 @@ package gov.nih.nci.cananolab.restful.view.edit;
 
 public class SimpleAccessBean {
 	
+	
+	
+	String groupName = "";
+	String roleName = "";
+	String roleDisplayName = "";
+	String loginName = "";
+	String accessBy = "";
+	
+	//String accessRight;
+	
 	long sampleId;
-	
-	String groupName;
-	String roleDisplayName;
-	String loginName;
-	String accessBy;
-	
-	String accessRight;
 
 	public long getSampleId() {
 		return sampleId;
@@ -51,13 +54,11 @@ public class SimpleAccessBean {
 		this.accessBy = accessBy;
 	}
 
-	public String getAccessRight() {
-		return accessRight;
+	public String getRoleName() {
+		return roleName;
 	}
 
-	public void setAccessRight(String accessRight) {
-		this.accessRight = accessRight;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
-	
-	
 }

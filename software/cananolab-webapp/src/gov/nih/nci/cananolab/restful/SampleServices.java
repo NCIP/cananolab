@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleAccessBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
@@ -276,6 +277,32 @@ public class SampleServices {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while saving Point of Contact: " + e.getMessage()).build();
+		}
+	}
+	
+	@POST
+	@Path("/saveAccess")
+	@Produces ("application/json")
+	public Response saveAccess(@Context HttpServletRequest httpRequest, SimpleAccessBean simpleAccess) {
+		logger.info("In savePOC");
+		try {
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity("User session invalidate. Session may have been expired").build();
+			
+			SampleEditGeneralBean editBean = sampleBO.saveAccess(simpleAccess, httpRequest);
+			List<String> errors = editBean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(editBean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while saving Access: " + e.getMessage()).build();
 		}
 	}
 }

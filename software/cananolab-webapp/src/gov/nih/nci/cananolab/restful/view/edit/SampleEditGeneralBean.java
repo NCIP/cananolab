@@ -38,14 +38,24 @@ public class SampleEditGeneralBean {
 	
 	SimpleDataAvailabilityBean dataAvailability;
 	
+	//These are lookups needed for dropdown lists
 	List<String> organizationNamesForUser;
 	List<String> contactRoles;
 	List<String> allGroupNames;
 	Map<String, String> filteredUsers;
+	Map<String, String> roleNames;
 	
 	boolean showReviewButton;
 
 	List<String> errors = new ArrayList<String>();
+
+	public Map<String, String> getRoleNames() {
+		return roleNames;
+	}
+
+	public void setRoleNames(Map<String, String> roleNames) {
+		this.roleNames = roleNames;
+	}
 
 	public String getSampleName() {
 		return sampleName;
@@ -166,11 +176,19 @@ public class SampleEditGeneralBean {
 		
 		transferDataAvailability(request, sampleBean);
 		
-		transferLookups(request);
-		transferGroupNamesForNewAccess(request);
-		transferFilteredUsersParamForNewAccess(request, sampleBean.getDomain().getCreatedBy());
+		
+		setupLookups(request);
+		setupGroupNamesForNewAccess(request);
+		setupFilteredUsersParamForNewAccess(request, sampleBean.getDomain().getCreatedBy());
 			
-		setReviewButton(request, curatorService, sampleBean);
+		setupReviewButton(request, curatorService, sampleBean);
+		setupRoleNameMap();
+	}
+	
+	protected void setupRoleNameMap() {
+		this.roleNames = new HashMap<String, String>();
+		roleNames.put(AccessibilityBean.CSM_READ_ROLE, AccessibilityBean.R_ROLE_DISPLAY_NAME);
+		roleNames.put(AccessibilityBean.CSM_CURD_ROLE, AccessibilityBean.CURD_ROLE_DISPLAY_NAME);
 	}
 	
 	/**
@@ -180,7 +198,7 @@ public class SampleEditGeneralBean {
 	 * @param sampleBean
 	 * @throws Exception
 	 */
-	protected void setReviewButton(HttpServletRequest request, CurationService curatorService, SampleBean sampleBean) 
+	protected void setupReviewButton(HttpServletRequest request, CurationService curatorService, SampleBean sampleBean) 
 	throws Exception {
 		boolean publicData = sampleBean.getPublicStatus();
 		if (!publicData) {
@@ -212,7 +230,7 @@ public class SampleEditGeneralBean {
 	 * @param request
 	 * @param dataOwner
 	 */
-	protected void transferFilteredUsersParamForNewAccess(HttpServletRequest request, String dataOwner) {
+	protected void setupFilteredUsersParamForNewAccess(HttpServletRequest request, String dataOwner) {
 		
 		try {
 			SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
@@ -254,7 +272,7 @@ public class SampleEditGeneralBean {
 		}
 	}
 	
-	protected void transferGroupNamesForNewAccess(HttpServletRequest request) {
+	protected void setupGroupNamesForNewAccess(HttpServletRequest request) {
 		try {
 			SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
 			this.allGroupNames = sampleService.findGroupNames("");
@@ -264,7 +282,7 @@ public class SampleEditGeneralBean {
 		}
 	}
 	
-	protected void transferFilteredUsersForNewAccess(HttpServletRequest request) {
+	protected void setupFilteredUsersForNewAccess(HttpServletRequest request) {
 		try {
 			SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
 			UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -308,7 +326,7 @@ public class SampleEditGeneralBean {
 	 * 
 	 * @param request
 	 */
-	protected void transferLookups(HttpServletRequest request) {
+	protected void setupLookups(HttpServletRequest request) {
 		try {
 			InitSampleSetup.getInstance().setPOCDropdowns(request);
 			SortedSet<String> organizationNames = (SortedSet<String>)request.getSession().getAttribute("allOrganizationNames");
