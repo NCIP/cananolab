@@ -695,9 +695,11 @@ public class PublicationBO extends BaseAnnotationBO{
 		PublicationBean publication = (PublicationBean) form.getPublicationBean();
 				
 		AccessibilityBean theAccess = publication.getTheAccess();
-//		if (!super.validateAccess(request, theAccess)) {
-//		//	return input(mapping, form, request, response);
-//		}
+		List<String> errors = super.validateAccess(request, theAccess);
+		if (errors.size() > 0) {
+			return; //TODO: saveAccess() should return an object that contains a list of errors;
+		}
+
 		PublicationService service = this.setServicesInSession(request);
 		// if publication is new, save publication first
 		if (publication.getDomainFile().getId() == null
