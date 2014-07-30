@@ -30,6 +30,7 @@ import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSamplePublicationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleAccessBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleAddressBean;
@@ -264,12 +265,7 @@ public class SampleBO extends BaseAnnotationBO {
 	 */
 	public SampleEditGeneralBean summaryEdit(String sampleId, HttpServletRequest request)
 			throws Exception {
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		
-		//this.checkOpenForms(form, request);
-		
-		//TODO: Check credential with user name ?
-		
+	
 		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
 
 		this.setServiceInSession(request);
@@ -277,7 +273,6 @@ public class SampleBO extends BaseAnnotationBO {
 		// "setupSample()" will retrieve and return the SampleBean.
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
-		
 		
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 		
@@ -327,6 +322,69 @@ public class SampleBO extends BaseAnnotationBO {
 		
 	
 		return sampleEdit;
+	}
+	
+	public List searchSampleById(HttpServletRequest request, String id, String type)
+	throws Exception {
+		this.setServiceInSession(request);
+
+		// "setupSample()" will retrieve and return the SampleBean.
+		SecurityService securityService = (SecurityService) request
+				.getSession().getAttribute("securityService");
+		
+		SampleService service = (SampleService) request.getSession()
+				.getAttribute("sampleService");
+
+		//List<String> sampleIds = service.findSampleIdsByDOI(id);
+		
+		//faking data for now
+		long sampleId = 20917507;
+		long year = 2000;
+		List<SimpleSamplePublicationBean> pubSamples = new ArrayList<SimpleSamplePublicationBean>();
+		for (int i = 0; i < 10; i++) {
+			SimpleSamplePublicationBean pubBean = new SimpleSamplePublicationBean();
+			pubBean.setSampleId(sampleId++);
+			List<String> vals = new ArrayList<String>();
+			vals.add("Prof A");
+			vals.add("Student B");
+			vals.add("others");
+			pubBean.setAuthors(vals);
+			
+			vals = new ArrayList<String>();
+			if (i % 2 == 0) {
+				vals.add("OtherNanomaterialEntity");
+				vals.add("Emulsion");
+				vals.add("Polymer");
+				vals.add("Polymer");
+				vals.add("Dendrimer");
+			} else {
+				vals.add("Dendrimer");
+			}
+			pubBean.setCompositions(vals);
+			
+			vals = new ArrayList<String>();
+			if (i % 2 == 0) {
+				vals.add("BloodContact");
+				vals.add("MolecularWeight");
+				vals.add("Cytotoxicity");
+				vals.add("Polymer");
+				vals.add("Solubility");
+			} else {
+				vals.add("Size");
+			}
+			
+			pubBean.setCharacterizations(vals);
+			
+			pubBean.setYear(year++);
+			pubBean.setReference("Don't know what this is yet");
+			pubBean.setJournal("International journal of cancer. Journal international du cancer");
+			pubBean.setTitle("Latest and greatest");
+			pubBean.setVolumn("120:340-430");
+			
+			pubSamples.add(pubBean);
+		}
+		
+		return pubSamples;
 	}
 
 	private void setAccesses(HttpServletRequest request, SampleBean sampleBean)
