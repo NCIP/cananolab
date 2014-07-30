@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.restful.view.SimplePublicationBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditPublicationBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePublicationEditBean;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
@@ -40,7 +41,7 @@ import org.springframework.context.ApplicationContext;
 @Path("/publication")
 public class PublicationServices {
 
-private Logger logger = Logger.getLogger(SampleServices.class);
+private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 	@Inject
 	ApplicationContext applicationContext;
@@ -196,12 +197,37 @@ private Logger logger = Logger.getLogger(SampleServices.class);
 		}
 	}
 	
+	
+	@GET
+	@Path("/edit")
+	@Produces ("application/json")
+	 public Response edit(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("publicationId") String publicationId){
+		
+		try { 
+			 
+		 PublicationBO publicationBO = 
+					(PublicationBO) applicationContext.getBean("publicationBO");
+
+				 PublicationBean pubBean = publicationBO.setupUpdate(publicationId, httpRequest);
+				 SimplePublicationEditBean view = new SimplePublicationEditBean();
+			view.transferPublicationBeanForEdit(pubBean);
+			
+			// return Response.ok(view).build();
+			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			
+		} catch (Exception e) {
+			return Response.ok("Error while viewing the publication results").build();
+		}
+	}
+	
 	@POST
 	@Path("/addAuthor")
 	@Produces ("application/json")
 	public Response addAuthor(@Context HttpServletRequest httpRequest, Author form ) {
 	
 		try {
+			
 			PublicationManager pubManager = 
 					 (PublicationManager) applicationContext.getBean("publicationManager");
 			

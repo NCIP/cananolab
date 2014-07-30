@@ -1,14 +1,15 @@
 'use strict';
 var app = angular.module('angularApp')
 
-  .controller('PublicationSearchCtrl', function (sampleService,navigationService,groupService,$rootScope,$scope,$http,$location) {
+  .controller('PublicationSearchCtrl', function (publicationService,navigationService,groupService,$rootScope,$scope,$http,$location) {
     $scope.searchPublicationForm = {};
     $rootScope.navTree=false;
+    $scope.publicationData = publicationService.publicationData;    
     $rootScope.tabs = navigationService.query();
     $rootScope.groups = groupService.get();   
     
     $scope.$on('$viewContentLoaded', function(){
-      $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/setup'}).
+      $http({method: 'GET', url: '/caNanoLab/rest/publication/setup'}).
       success(function(data, status, headers, config) {
         $scope.data = data;
         $scope.researchArea = {};
@@ -35,26 +36,25 @@ var app = angular.module('angularApp')
     };
 
     $scope.doSearch = function() {
-      // $scope.loader = true;
+      $scope.loader = true;
       for (var key in $scope.researchArea) {
         if ($scope.researchArea[key]) {
           $scope.searchPublicationForm.researchArea.push(key)          
         }
 
       }
-      $http({method: 'POST', url: 'http://localhost:8080/caNanoLab/rest/publication/searchPublication',data: $scope.searchPublicationForm}).
+
+      $http({method: 'POST', url: '/caNanoLab/rest/publication/searchPublication',data: $scope.searchPublicationForm}).
       success(function(data, status, headers, config) {
-        alert("success");
         // $rootScope.sampleData = data;
         $scope.publicationData.data = data;
-        // $location.path("/sampleResults").replace();
+        $location.path("/publicationResults").replace();
 
       }).
       error(function(data, status, headers, config) {
         // called asynchronously if an error occurs
         // or server returns response with an error status.
         // $rootScope.sampleData = data;
-        alert("test");
         $scope.loader = false;
         $scope.message = data;
       }); 

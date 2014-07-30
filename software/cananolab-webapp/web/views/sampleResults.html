@@ -16,7 +16,10 @@
 <table ng-table="tableParams" class="table sample">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
 		<td data-title="''" width="5%" class="columnOne">
-		 <a href="#/sample?sampleId={{row.sampleId}}">View</a>
+				<a href="#/editSample?sampleId={{row.sampleId}}">Edit</a>(test only)
+            <!-- Testing
+				<a href="#/sample?sampleId={{row.sampleId}}">View</a>
+			-->
 		</td>
 		<td data-title="'Sample Name'" sortable="'sampleName'" width="17%">
 		 {{row.sampleName}}
