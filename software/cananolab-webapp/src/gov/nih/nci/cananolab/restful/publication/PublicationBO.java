@@ -31,6 +31,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationExporter;
@@ -65,9 +66,9 @@ public class PublicationBO extends BaseAnnotationBO{
 				&& publicationBean.getDomainFile().getId() > 0) {
 			newPub = false;
 		}
-		if (!this.savePublication(request, form)) {
+		//if (!this.savePublication(request, form)) {
 		//	return input(mapping, form, request, response);
-		}
+		//}
 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = (String) form.getSampleId();
@@ -99,29 +100,29 @@ public class PublicationBO extends BaseAnnotationBO{
 		}
 	}
 
-	private Boolean savePublication(HttpServletRequest request,
+	public List<String> savePublication(HttpServletRequest request,
 			PublicationForm theForm) throws Exception {
+		
+		List<String> msgs = new ArrayList<String>();
+		
 		PublicationBean publicationBean = (PublicationBean) theForm.getPublicationBean();
+		msgs = validateInputForPublication(publicationBean);
 				
 		PublicationService service = this.setServicesInSession(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = (String) theForm.getSampleId();
-//		ActionMessages msgs = new ActionMessages();
 		// validate publication file
 		if (!validatePublicationFile(publicationBean)) {
-//			ActionMessage msg = new ActionMessage("publication.fileRequired");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//	saveErrors(request, msgs);
-			return false;
+			msgs.add(PropertyUtil.getProperty("publication", "publication.fileRequired"));
+		//	return false;
+			return msgs;
 		}
 		// validate associated sample names
 		if (StringUtils.isEmpty(sampleId)
 				&& !validateAssociatedSamples(request, publicationBean)) {
-//			ActionMessage msg = new ActionMessage(
-//					"error.submitPublication.invalidSample");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	//		saveErrors(request, msgs);
-			return false;
+			msgs.add(PropertyUtil.getProperty("publication", "error.submitPublication.invalidSample"));
+		//	return false;
+			return msgs;
 		}
 
 		/**
@@ -166,8 +167,51 @@ public class PublicationBO extends BaseAnnotationBO{
 							.getCategory()) + 1;
 			request.setAttribute("onloadJavascript", "showSummary('" + ind
 					+ "', " + allPublicationTypes.size() + ")");
+			msgs.add(PropertyUtil.getProperty("publication", "message.submitPublication"));
 		}
-		return true;
+		return msgs;
+	}
+
+	private List<String> validateInputForPublication(
+			PublicationBean publicationBean) {
+		List<String> errors = new ArrayList<String>();
+		
+		Publication publication = (Publication) publicationBean.getDomainFile();
+		String category = publication.getCategory();
+		if(category==null||InputValidationUtil.isTextFieldWhiteList(category)){
+			errors.add(PropertyUtil.getProperty("publication", "publication.category.invalid"));
+		}
+		String status = publication.getStatus();
+		if(status == null||InputValidationUtil.isTextFieldWhiteList(status)){
+			errors.add(PropertyUtil.getProperty("publication", "publication.status.invalid"));
+		}
+		String title = publication.getTitle();
+		if(title == null||InputValidationUtil.isTextFieldWhiteList(title)){
+			errors.add(PropertyUtil.getProperty("publication", "publication.title.invalid"));
+		}
+		String externalUrl = publication.getUri();
+		if(externalUrl == null||InputValidationUtil.isTextFieldWhiteList(externalUrl)){
+			errors.add(PropertyUtil.getProperty("publication", "file.uri.invalid"));
+		}
+		for(int i=0;i<publicationBean.getAuthors().size();i++){
+			String firstName = publicationBean.getAuthors().get(i).getFirstName();
+			if(firstName == null||InputValidationUtil.isRelaxedAlphabetic(firstName)){
+				errors.add(PropertyUtil.getProperty("publication", "publication.author.firstName.invalid"));
+			}
+			String lastName = publicationBean.getAuthors().get(i).getLastName();
+			if(lastName == null||InputValidationUtil.isRelaxedAlphabetic(lastName)){
+				errors.add(PropertyUtil.getProperty("publication", "publication.author.lastName.invalid"));
+			}
+			String initial = publicationBean.getAuthors().get(i).getInitial();
+			if(initial == null||InputValidationUtil.isRelaxedAlphabetic(initial)){
+				errors.add(PropertyUtil.getProperty("publication", "publication.author.initial.invalid"));
+			}
+		}
+		String digitalObjectId = publication.getDigitalObjectId();
+		if(digitalObjectId == null||InputValidationUtil.doi(digitalObjectId)){
+			errors.add(PropertyUtil.getProperty("publication", "publication.doi.invalid"));
+		}
+		return errors;
 	}
 
 	private boolean validateAssociatedSamples(HttpServletRequest request,

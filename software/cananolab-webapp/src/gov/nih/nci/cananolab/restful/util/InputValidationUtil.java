@@ -66,6 +66,10 @@ public class InputValidationUtil {
 		return (input == null) ? false : input.matches(reg);
 	}
 	
+	public static boolean doi(String input) {
+		String reg = "^[a-zA-Z0-9\\/\\-\\_\\s\\(\\)\\:\\.]*$";
+		return (input == null) ? false : input.matches(reg);
+	}
 	/*
 
 

@@ -266,4 +266,31 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting all sample names for publication submission"+ e.getMessage()).build();
 		}
 	}
+	
+	@POST
+	@Path("/submitPublication")
+	@Produces ("application/json")
+	public Response submitPublication(@Context HttpServletRequest httpRequest, PublicationForm theForm) {
+	
+		try {
+			
+			PublicationBO pubBO = 
+					 (PublicationBO) applicationContext.getBean("publicationBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			List<String> msgs = pubBO.savePublication(httpRequest, theForm);
+			 
+			
+			return Response.ok(msgs).build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while submitting the publication " + e.getMessage()).build();
+		}
+	}
+	
 }
