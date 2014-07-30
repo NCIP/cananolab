@@ -36,7 +36,7 @@ var app = angular.module('angularApp')
     };
 
     $scope.doSearch = function() {
-      // $scope.loader = true;
+      $scope.loader = true;
       for (var key in $scope.researchArea) {
         if ($scope.researchArea[key]) {
           $scope.searchPublicationForm.researchArea.push(key)          
@@ -48,14 +48,13 @@ var app = angular.module('angularApp')
       success(function(data, status, headers, config) {
         // $rootScope.sampleData = data;
         $scope.publicationData.data = data;
-        // $location.path("/sampleResults").replace();
+        $location.path("/publicationResults").replace();
 
       }).
       error(function(data, status, headers, config) {
         // called asynchronously if an error occurs
         // or server returns response with an error status.
         // $rootScope.sampleData = data;
-        alert("test");
         $scope.loader = false;
         $scope.message = data;
       }); 

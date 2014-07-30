@@ -1,48 +1,35 @@
 'use strict';
 var app = angular.module('angularApp')
-  .controller('PublicationResultsCtrl', function (sampleService,navigationService,groupService,$scope,$rootScope,$filter,ngTableParams,$http,$location,$modal) {
+  .controller('PublicationResultsCtrl', function (publicationService,navigationService,groupService,$scope,$rootScope,$filter,ngTableParams,$http,$location,$modal) {
     $rootScope.tabs = navigationService.query();
     $rootScope.groups = groupService.get();
-    $scope.sampleData = sampleService.sampleData;
+    $scope.publicationData = publicationService.publicationData;
     $rootScope.navTree=false;
-
+    $scope.publicationData = {"data":[{"displayName":"NCL200702A CERAMIDE LIPOSOMES FOR MARK KESTER PSU. <a href=rest/publication/download?fileId=24620294 target='_self'>View</a>.","publicationType":"report","researchAreas":null,"sampleNames":["NCL-48-4","NCL-49-2","NCL-50-1","NCL-51-3"],"descriptionDetail":"The objective of the Penn State University-NCL collaboration is to characterize C6-ceramide liposomes as a drug delivery platform. ","status":"published","createdDate":1201188472000},{"displayName":"NCL200710A FUNCTIONALIZED FULLERENES FOR CSIXTY INC. <a href=rest/publication/download?fileId=24620293 target='_self'>View</a>.","publicationType":"report","researchAreas":null,"sampleNames":["NCL-16","NCL-17","NCL-19","NCL-42","NCL-45"],"descriptionDetail":"The objective of the C-Sixty, Inc. - NCL collaboration is to aid C-Sixty, Inc. in identifying the most promising candidate from a series of fullerene based antioxidants, and to investigate potential applications related to cancer therapy. The antioxidant candidates submitted for testing were AF1 (NCL16), AF3 (NCL17), C3 (NCL19), DF1 (NCL42), and DF1-mini (NCL45). ","status":"published","createdDate":1201188331000},{"displayName":"DENDRITIC NANOTECHNOLOGIES 122006. <a href=rest/publication/download?fileId=23178496 target='_self'>View</a>.","publicationType":"report","researchAreas":null,"sampleNames":["NCL-20-1","NCL-21-1","NCL-22-1","NCL-23-1","NCL-24-1","NCL-25-1","NCL-26-1"],"descriptionDetail":"Dendrimer-Based MRI Contrast Agents prepared for Dendritic Nanotechnologies, December, 2006","status":"published","createdDate":1166619993000}]} 
     $scope.goBack = function() {
-      $location.path("/searchSample").replace();      
+      $location.path("/searchPublication").replace();      
     };
 
-    $scope.openDataAvailability = function(sampleId) {
-
-          $http({method: 'GET', url: '/caNanoLab/rest/sample/viewDataAvailability',params: {"sampleId":sampleId}}).
-          success(function(data, status, headers, config) {
-            var modalInstance = $modal.open({
-              templateUrl: 'views/sampleDataAvailability.html',
-              controller: 'SampleDataAvailabilityCtrl',
+    $scope.openDataAvailability = function(description) {
+            var modalInstance = $modal.open({                          
+              templateUrl: 'views/publication/view/publicationDescription.html',
+              controller: 'PublicationDescriptionCtrl',
               size: 'sm',
               resolve: {
-                sampleId: function () {
-                  return sampleId;
-                },
-                sampleData: function() {
-                  return data;
+                description: function () {
+                  return description;
                 }
               }
-            });
-          }).
-          error(function(data, status, headers, config) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-            $scope.message = data;
-          });        
+            });       
     };
 
    
 
-    // var data = [{"sampleId":27131907,"sampleName":"UMC_HSTVAMC_NCL_NB-NChandaNNBM2010-02","pointOfContact":"UMC_RadiolD<br>Department of Radiology<br>University of Missouri-Columbia<br>Columbia MO 65212 USA","composition":["MetalParticle"],"functions":["ImagingFunction"],"characterizations":[],"dataAvailability":"N/A","createdDate":1275683278000},{"sampleId":27131906,"sampleName":"UMC_HSTVAMC_NCL_NB-NChandaNNBM2010-01","pointOfContact":"UMC_RadiolD<br>Department of Radiology<br>University of Missouri-Columbia<br>Columbia MO 65212 USA","composition":["MetalParticle"],"functions":[],"characterizations":["BloodContact","Size","Surface"],"dataAvailability":"caNanoLab: 23%; MINChar: 33%","createdDate":1275683278000},{"sampleId":12451840,"sampleName":"GATECH_UCSF-EDickersonCL2008-01","pointOfContact":"GATECH_UCSF<br>Georgia Institute of Technology<br>Atlanta GA 30332","composition":["OtherNanomaterialEntity"],"functions":["ImagingFunction","TherapeuticFunction"],"characterizations":["Size"],"dataAvailability":"caNanoLab: 23%; MINChar: 22%","createdDate":1240200000000},{"sampleId":11337795,"sampleName":"NCL-MGelderman-IJN2008-02","pointOfContact":"NCL<br>CBER, FDA, 1401 Rockville Pike<br>HFM 335<br>Rockville MD 20852-1448 USA","composition":["Fullerene"],"functions":[],"characterizations":["Size"],"dataAvailability":"caNanoLab: 16%; MINChar: 22%","createdDate":1238731200000},{"sampleId":11337794,"sampleName":"NCL-MGelderman-IJN2008-01","pointOfContact":"NCL<br>CBER, FDA, 1401 Rockville Pike<br>HFM 335<br>Rockville MD 20852-1448 USA","composition":["Fullerene"],"functions":[],"characterizations":["Size"],"dataAvailability":"caNanoLab: 16%; MINChar: 22%","createdDate":1238731200000},{"sampleId":24063238,"sampleName":"NCL-49","pointOfContact":"Mark Kester PSU","composition":["Liposome"],"functions":[],"characterizations":["BloodContact","Cytotoxicity","Size"],"dataAvailability":"caNanoLab: 23%; MINChar: 22%","createdDate":1181275200000},{"sampleId":24063237,"sampleName":"NCL-48","pointOfContact":"Mark Kester PSU","composition":["Liposome"],"functions":[],"characterizations":["Cytotoxicity","Size","Surface"],"dataAvailability":"caNanoLab: 23%; MINChar: 33%","createdDate":1181275200000},{"sampleId":24063236,"sampleName":"NCL-45","pointOfContact":"C-Sixty (CNI)","composition":["Fullerene"],"functions":[],"characterizations":["BloodContact","MolecularWeight","Purity","Size"],"dataAvailability":"caNanoLab: 26%; MINChar: 33%","createdDate":1179374400000},{"sampleId":24063235,"sampleName":"NCL-42","pointOfContact":"C-Sixty (CNI)","composition":["Fullerene"],"functions":[],"characterizations":["BloodContact","Cytotoxicity","ImmuneCellFunction","MolecularWeight","OxidativeStress","Purity","Size","Surface"],"dataAvailability":"caNanoLab: 40%; MINChar: 44%","createdDate":1179374400000},{"sampleId":24063234,"sampleName":"NCL-19","pointOfContact":"C-Sixty (CNI)","composition":["Fullerene"],"functions":[],"characterizations":["BloodContact","Cytotoxicity","OxidativeStress"],"dataAvailability":"caNanoLab: 23%; MINChar: 11%","createdDate":1179374400000},{"sampleId":24063233,"sampleName":"NCL-17","pointOfContact":"C-Sixty (CNI)","composition":["Fullerene"],"functions":[],"characterizations":["BloodContact","Cytotoxicity"],"dataAvailability":"caNanoLab: 20%; MINChar: 11%","createdDate":1179374400000},{"sampleId":24063232,"sampleName":"NCL-16","pointOfContact":"C-Sixty (CNI)","composition":["Fullerene"],"functions":[],"characterizations":["BloodContact","Cytotoxicity","OxidativeStress"],"dataAvailability":"caNanoLab: 23%; MINChar: 11%","createdDate":1179374400000},{"sampleId":20917514,"sampleName":"NCL-51-3","pointOfContact":"Mark Kester","composition":["Liposome"],"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 13%; MINChar: 11%","createdDate":1152504000000},{"sampleId":20917513,"sampleName":"NCL-50-1","pointOfContact":"Mark Kester","composition":["Liposome"],"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 13%; MINChar: 11%","createdDate":1152504000000},{"sampleId":20917512,"sampleName":"NCL-49-2","pointOfContact":"Mark Kester","composition":["Liposome"],"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 13%; MINChar: 11%","createdDate":1152504000000},{"sampleId":20917511,"sampleName":"NCL-48-4","pointOfContact":"Mark Kester","composition":["Liposome"],"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 13%; MINChar: 11%","createdDate":1152504000000},{"sampleId":20917510,"sampleName":"NCL-26-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":[],"characterizations":["Purity"],"dataAvailability":"caNanoLab: 16%; MINChar: 22%","createdDate":1152504000000},{"sampleId":20917509,"sampleName":"NCL-25-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":[],"characterizations":["Purity"],"dataAvailability":"caNanoLab: 16%; MINChar: 22%","createdDate":1152504000000},{"sampleId":20917508,"sampleName":"NCL-24-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":["ImagingFunction"],"characterizations":["BloodContact","Cytotoxicity","ImmuneCellFunction"],"dataAvailability":"caNanoLab: 30%; MINChar: 11%","createdDate":1152504000000},{"sampleId":20917507,"sampleName":"NCL-23-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":["ImagingFunction"],"characterizations":["BloodContact","Cytotoxicity","ImmuneCellFunction","MolecularWeight","PhysicalState","Purity","Size","Solubility"],"dataAvailability":"caNanoLab: 50%; MINChar: 33%","createdDate":1152504000000},{"sampleId":20917506,"sampleName":"NCL-22-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":[],"characterizations":["BloodContact","Cytotoxicity","ImmuneCellFunction","MolecularWeight","PhysicalState","Purity","Size","Solubility"],"dataAvailability":"caNanoLab: 40%; MINChar: 33%","createdDate":1152504000000},{"sampleId":20917505,"sampleName":"NCL-21-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":[],"characterizations":["MolecularWeight","Purity"],"dataAvailability":"caNanoLab: 20%; MINChar: 22%","createdDate":1152504000000},{"sampleId":20917504,"sampleName":"NCL-20-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":[],"characterizations":["MolecularWeight","Purity","Size"],"dataAvailability":"caNanoLab: 23%; MINChar: 33%","createdDate":1152504000000}];
-    var data = $scope.sampleData.data;
+    var data = $scope.publicationData.data;
 
     if (data==null) {
-      $scope.sampleData.data = [];
-      $location.path("/searchSample").replace();
+      $scope.publicationData.data = [];
+      $location.path("/searchPublication").replace();
     }  
 
     $scope.tableParams = new ngTableParams(

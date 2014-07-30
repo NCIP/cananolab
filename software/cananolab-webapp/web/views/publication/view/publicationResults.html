@@ -2,12 +2,12 @@
     <table border="0" class="contentTitle" summary="layout" width="100%">
       <tr>
        <th scope="col" align="left">
-         Sample Search Results
+         Publication Search Results
        </th>
         <td align="right" width="30%">
         <button class="btn back btn-xs" ng-click="goBack()">Back</button>            
           <a class="helpText" href=
-          "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
+          "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SearchingPublications')">Help</a>   <a class=
           "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
         </td>
       </tr>
@@ -15,28 +15,27 @@
 <br />
 <table ng-table="tableParams" class="table sample">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
-		<td data-title="''" width="5%" class="columnOne">
-		 <a href="#/sample?sampleId={{row.sampleId}}">View</a>
+		<td data-title="'Bibliography Info'" sortable="'displayName'" width="25%" ng-bind-html="row.displayName">{{row.displayName}}
 		</td>
-		<td data-title="'Sample Name'" sortable="'sampleName'" width="17%">
-		 {{row.sampleName}}
+		<td data-title="'Publication Type'" sortable="'publicationType'" width="10%">
+			{{row.publicationType}}
 		</td>
-		<td data-title="'Primary Point of Contact'" sortable="'pointOfContact'" ng-bind-html="row.pointOfContact" width="20%">
-
+		<td data-title="'Research Category'" sortable="'researchAreas'" width="13%">
+			{{row.researchAreas}}
 		</td>                     
-		<td data-title="'Composition'" sortable="'composition'" width="17%">
-		 <div ng-repeat="item in row.composition track by $index">{{item}}</div>
+		<td data-title="'Associated Sample Names'" sortable="'sampleNames'" width="13%">
+		 <div ng-repeat="item in row.sampleNames track by $index">{{item}}</div>
 		</td>            
-		<td data-title="'Functions'" sortable="'functions'" width="15%">
-		 <div ng-repeat="item in row.functions track by $index">{{item}}</div>
+		<td data-title="'Description'" width="15%">
+		 <a href="" ng-click="openDataAvailability(row.descriptionDetail)">View</a>
 		</td>            
-		<td data-title="'Characterizations'" sortable="'characterizations'" width="14%">
-		 <div ng-repeat="item in row.characterizations track by $index">{{item}}</div>
+		<td data-title="'Publication Status'" sortable="'status'" width="13%">
+		 	{{row.status}}
 		</td>            
-		<td data-title="'Data Availability'" sortable="'dataAvailability'" width="20%">
+<!-- 		<td data-title="'Data Availability'" sortable="'dataAvailability'" width="20%">
 		 <a href="" ng-click="openDataAvailability(row.sampleId)">{{row.dataAvailability}}</a>
-		</td>            
-		<td data-title="'Created Date'" sortable="'createdDate'" width="5%">
+		</td>    -->         
+		<td data-title="'Created Date'" sortable="'createdDate'" width="13%">
 		 {{row.createdDate | date:'shortDate'}}
 		</td>            
 	</tr>
