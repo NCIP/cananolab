@@ -44,6 +44,9 @@
 		<property name="dataAvailabilityService">
 			<ref bean="dataAvailabilityServiceDAO" />
 		</property>
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
 	</bean>
 	
 	<bean id="publicationBO"
