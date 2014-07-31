@@ -1,9 +1,11 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +24,7 @@ public class SimplePublicationEditBean {
 	String volume;
 	String startPage;
 	String endPage;
-	Map<String, String> authors;
-	String authorId;
+	List<Author> authors;
 	String firstName;
 	String lastName;
 	String initial;
@@ -45,6 +46,16 @@ public class SimplePublicationEditBean {
 	Boolean userDeletable;
 	
 	
+	public List<Author> getAuthors() {
+		return authors;
+	}
+
+
+	public void setAuthors(List<Author> authors) {
+		this.authors = authors;
+	}
+
+
 	public Boolean getUserDeletable() {
 		return userDeletable;
 	}
@@ -173,27 +184,6 @@ public class SimplePublicationEditBean {
 	public void setEndPage(String endPage) {
 		this.endPage = endPage;
 	}
-
-
-	public Map<String, String> getAuthors() {
-		return authors;
-	}
-
-
-	public void setAuthors(Map<String, String> authors) {
-		this.authors = authors;
-	}
-
-
-	public String getAuthorId() {
-		return authorId;
-	}
-
-
-	public void setAuthorId(String authorId) {
-		this.authorId = authorId;
-	}
-
 
     public String getKeywordsStr() {
 		return keywordsStr;
@@ -337,7 +327,7 @@ public class SimplePublicationEditBean {
 
 	public void transferPublicationBeanForEdit(PublicationBean pubBean) {
 		// TODO Auto-generated method stub
-		authors = new HashMap<String, String>();
+		authors = new ArrayList<Author>();
 		Publication pub = (Publication) pubBean.getDomainFile();
 		setCategory(pub.getCategory());
 		setStatus(pub.getStatus());
@@ -350,9 +340,13 @@ public class SimplePublicationEditBean {
 		setStartPage(pub.getStartPage());
 		setEndPage(pub.getEndPage());
 		for(int i=0;i<pubBean.getAuthors().size();i++){
-		authors.put("firstName", pubBean.getAuthors().get(i).getFirstName());
-		authors.put("lastName", pubBean.getAuthors().get(i).getLastName());
-		authors.put("initial", pubBean.getAuthors().get(i).getInitial());
+			
+			Author author = new Author();
+		author.setFirstName(pubBean.getAuthors().get(i).getFirstName());
+		author.setLastName(pubBean.getAuthors().get(i).getLastName());
+		author.setInitial(pubBean.getAuthors().get(i).getInitial());
+		author.setId(pubBean.getAuthors().get(i).getId());
+		authors.add(author);
 		}
 		
 		setKeywordsStr(pubBean.getKeywordsStr());
