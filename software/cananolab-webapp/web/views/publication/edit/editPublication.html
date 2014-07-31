@@ -1,0 +1,426 @@
+<form ng-submit="validateSavingTheData('newAuthor', 'Authors');"  novalidate>
+<table width="100%" align="center" class="submissionView" summary="layout">
+<tr>
+    <td class="cellLabel" width="100">
+        <label for="category">Publication Type *</label>
+    </td>
+    <td>
+        <table class="invisibleTable" summary="layout">
+            <tr>
+                <td>
+                    <div id="categoryPrompt">
+<!--                        <select ng-disabled="loader" id="category" ng-model="publicationForm.category" ng-change="callPrompt('Publication Type', 'category', 'categoryPrompt');
+														clearPublication();updateSubmitFormBasedOnCategory();enableAutoFields();" required>  -->
+                            <select ng-disabled="loader" id="category" ng-model="publicationForm.category"
+                                    onchange="callPrompt('Publication Type', 'category', 'categoryPrompt');" required>
+                            <option ng-repeat="option in publicationCategories" value="{{option}}">
+                                {{option}}
+                            </option>
+                            <option value="other">
+                                [other]
+                            </option>
+                        </select>
+                        <span ng-show="publicationForm.category.$invalid && submitted" class="help-block">Select a valid Type</span>
+                    </div>
+                </td>
+                <td class="cellLabel">
+                    <label for="status">Publication Status*</label>
+                </td>
+                <td colspan="3">
+                    <div id="statusPrompt">
+                        <select ng-disabled="loader" id="status" ng-model="publicationForm.status"
+                                onchange="callPrompt('Publication status', 'status', 'statusPrompt');" required>
+                            <option ng-repeat="option in publicationStatuses" value="{{option}}">
+                                {{option}}
+                            </option>
+                            <option value="other">
+                                [other]
+                            </option>
+                        </select>
+                        <span ng-show="publicationForm.category.$invalid && submitted" class="help-block">Select a valid Status</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<tr id="pubMedRow" ng-show="publicationForm.category != 'report' && publicationForm.category != 'book chapter' && publicationForm.category != null">
+    <td class="cellLabel">
+        <label for="publicationForm.pubMedId">PubMed ID</label>
+    </td>
+    <td>
+        <a
+                ng-href="http://www.ncbi.nlm.nih.gov/pubmed/{{publicationForm.pubMedId}}"
+                target="_pubmed"> Click to look up PubMed Identifier</a>
+        <br>
+        <input type="text" ng-model="publicationForm.pubMedId" size="50" value="" ng-change="fillPubMedInfo()" id="publicationForm.pubMedId">
+        <br>
+        <i> clicking outside of the text field after entering a valid
+            PubMed ID enables auto-population of PubMed related fields</i>
+    </td>
+</tr>
+<tr id="doiRow" ng-show="publicationForm.category != 'report' && publicationForm.category != 'book chapter' && publicationForm.category != null">
+    <td class="cellLabel">
+        <label for="publicationForm.digitalObjectId">Digital Object ID</label>
+    </td>
+    <td>
+        <input type="text" ng-model="publicationForm.digitalObjectId" size="30" value="" ng-change="updateWithExistingDOI()" id="publicationForm.digitalObjectId">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="publicationForm.title">Title*</label>
+    </td>
+    <td>
+        <input type="text" ng-model="publicationForm.title" size="120" value="" id="publicationForm.title" required>
+        <span ng-show="publicationForm.title.$invalid && submitted" class="help-block">Enter a valid Title</span>
+    </td>
+</tr>
+<tr id="journalRow" ng-show="publicationForm.category != 'report' && publicationForm.category != 'book chapter' && publicationForm.category != null">
+    <td class="cellLabel">
+        <label for="publicationForm.journalName">Journal&nbsp;</label>
+    </td>
+    <td>
+        <input type="text" ng-model="publicationForm.journalName" size="120" value="" id="publicationForm.journalName">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="publicationForm.year">Year of Publication</label>
+    </td>
+    <td>
+        <input type="text" ng-model="publicationForm.year" size="5" value="" ng-keydown="filterInteger(event);" id="publicationForm.year">
+    </td>
+</tr>
+<tr id="volumePageRow" ng-show="publicationForm.category != 'report' && publicationForm.category != 'book chapter' && publicationForm.category != null">
+    <td class="cellLabel">
+        <label for="publicationForm.volume">Volume</label>
+    </td>
+    <td>
+        <table class="invisibleTable" summary="layout">
+            <tr>
+                <td>
+                    <input type="text" ng-model="publicationForm.volume" size="8" value="" id="publicationForm.volume">
+                    &nbsp;
+                </td>
+                <td class="cellLabel">
+                    <label for="publicationForm.startPage">Start Page</label>
+                </td>
+                <td>
+                    <input type="text" ng-model="publicationForm.startPage" size="8" value="" id="publicationForm.startPage">
+                    &nbsp;
+                </td>
+                <td class="cellLabel">
+                    <label for="publicationForm.endPage"><strong id="epageTitle" style="">End Page&nbsp; </strong></label>
+                </td>
+                <td>
+                    <input type="text" ng-model="publicationForm.endPage" size="8" value="" id="publicationForm.endPage">
+                    &nbsp;
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        Authors
+    </td>
+    <td>
+        <div id="authorSection" style="position: relative;">
+            <!-- <a style="display: block" id="addAuthor"
+               ng-href="clearAuthor();openSubmissionForm('Author');">Add</a> -->
+            <button type="button" class="btn btn-primary" ng-click="addNewAuthor=true" id="addAuthor">Add</button>
+            <br>
+            <table id="authorTable" class="summaryViewNoGrid" width="85%" ng-show="showAuthorTable">
+                <tbody id="authorRows">
+                <tr id="patternHeader">
+                    <td class="cellLabel" scope="col">
+                        First Name
+                    </td>
+                    <td class="cellLabel" scope="col">
+                        Last Name
+                    </td>
+                    <td class="cellLabel" scope="col">
+                        Initials
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr id="pattern" ng-repeat="author in publicationForm.authors">
+                    <td>
+                        <span id="firstNameValue">{{author.firstName}}</span>
+                    </td>
+                    <td>
+                        <span id="lastNameValue">{{author.lastName}}</span>
+                    </td>
+                    <td>
+                        <span id="initialsValue">{{author.initial}}</span>
+                    </td>
+                    <td>
+                        <input class="noBorderButton" id="edit" type="button"
+                               value="Edit" style="display: block"
+                               ng-click="editAuthor({{author.id}});" />
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table id="newAuthor" class="promptbox" summary="layout" ng-show="addNewAuthor">
+                <tbody>
+                <tr>
+                    <input type="hidden" ng-model="publicationForm.theAuthor.id" value="" id="id">
+
+                    <td class="cellLabel">
+                        <label for="firstName">First Name</label>
+                    </td>
+                    <td>
+                        <input type="text" ng-model="publicationForm.theAuthor.firstName" value="" id="firstName">
+                    </td>
+                    <td class="cellLabel">
+                        <label for="lastName">Last Name</label>
+                    </td>
+                    <td>
+                        <input type="text" ng-model="publicationForm.theAuthor.lastName" value="" id="lastName">
+                    </td>
+                    <td class="cellLabel">
+                        <label for="initial">Initials</label>
+                    </td>
+                    <td>
+                        <input type="text" ng-model="publicationForm.theAuthor.initial" value="" id="initial">
+                    </td>
+                </tr>
+                <tr>
+                    <td ng-show="publicationForm.theAuthor.id != null || $scope.publicationForm.theAuthor.id != ''">
+                        <input class="promptButton"
+                               id="deleteAuthor" type="button" value="Remove"
+                               ng-click="deleteAuthor()" />
+                    </td>
+                    <td>
+                        <div align="right">
+                            <input class="promptButton" type="button" value="Save"
+                                   ng-click="addAuthor();" />
+                            <input class="promptButton" type="button" value="Cancel"
+                                   ng-click="addNewAuthor=false" />
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="publicationForm.keywordsStr">Keywords</label>
+        <br>
+        <i>(one keyword per line)</i>
+    </td>
+    <td>
+        <textarea ng-model="publicationForm.keywordsStr" cols="80" rows="3" id="publicationForm.keywordsStr"></textarea>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="publicationForm.description">Description</label>
+    </td>
+    <td>
+        <textarea ng-model="publicationForm.description" cols="120" rows="8" id="publicationForm.description"></textarea>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="publicationForm.researchArea">Research Category</label>
+    </td>
+    <td>
+        <select ng-disabled="loader" id="publicationForm.researchArea" ng-model="publicationForm.researchArea" size="7">
+            <option ng-repeat="option in publicationResearchAreas" value="{{option}}">
+                {{option}}
+            </option>
+        </select>
+        &nbsp;
+    </td>
+</tr>
+</table>
+<div id="fileSection" style="display: block">
+    <br>
+<!--
+    <c:set var="theFile" value="${publicationForm.map.publication}" />
+    <c:set var="fileBeanProperty" value="publication"/>
+    <c:set var="fileJavascript" value="updateWithExistingNonPubMedDOIPublication('${publicationForm.map.publication.domainFile.uri}')" />
+    <c:set var="textJavascript" value="updateWithExistingNonPubMedDOIPublication('${publicationForm.map.publication.domainFile.uri}')" />
+    <c:set var="actionName" value="publication"/>
+    <c:set var="fileId" value="${publicationForm.map.publication.domainFile.id}"/>
+-->
+    <table width="100%" align="center" class="submissionView" summary="layout">
+        <tr>
+            <td class="cellLabel" width="100">File
+            </td>
+            <td> <!-- <%@ include file="../bodySubmitFile.jsp"%> -->
+                <table class="invisibleTable" summary="layout">
+                    <tbody>
+                    <tr>
+                        <td class="cellLabel" width="40%">
+                            <input type="radio" ng-model="publicationForm.uriExternal" value="false" ng-checked="true" id="external0">
+                            <label for="external0">Upload</label>
+                        </td>
+                        <td class="cellLabel">
+                            <input type="radio" ng-model="publicationForm.uriExternal" value="true" id="external1">
+                            <label for="external1">Enter File URL</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span id="load" style="display: block;" ng-show="publicationForm.uriExternal=='false'">
+        						<input type="file" ng-model="publicationForm.uploadedFile" size="60" value="" ng-change="updateWithExistingNonPubMedDOIPublication('');" id="uploadedFile">
+				            </span>
+                            <label for="uploadedFile">&nbsp;&nbsp;</label>
+                            <span id="uploadedUri" style="display: block;" ng-show="publicationForm.uriExternal=='false'">
+			                    <a href="publication.do?dispatch=download&amp;fileId="></a>
+                            </span>
+			                <span id="link" ng-show="publicationForm.uriExternal=='true'">
+                                <input type="text" ng-model="publicationForm.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
+					        </span>
+                            <label for="externalUrl">&nbsp;</label>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+<br>
+<div ng-if="publicationForm.map.sampleId != ''">
+    <a ng-model="sampleNameField" class="anchorLink"></a>
+    <table width="100%" align="center" class="submissionView" summary="layout">
+        <tr>
+            <td class="cellLabel" width="100">
+                <label for="publicationForm.associatedSampleNames">Sample Name</label>
+            </td>
+            <td>
+                <table class="invisibleTable" summary="layout">
+                    <tr>
+                        <td>
+                            <br>
+                            <textarea ng-model="publicationForm.sampleNamesStr" cols="60" rows="5" id="publicationForm.associatedSampleNames"></textarea>
+                            <em>one name per line</em>
+                        </td>
+                        <td width="5">
+                            <a href ng-click="showSearchSampleTable=true;searchMatchedSamples();"><img
+                                    ng-src="images/icon_browse.jpg" align="middle"
+                                    alt="search existing samples" border="0" /></a>
+                        </td>
+                        <td>
+                            <table class="invisibleTable" summary="layout" ng-show="showSearchSampleTable">
+                                <tr>
+                                    <td>
+                                        <img ng-src="images/ajax-loader.gif" border="0" class="counts"
+                                             id="loaderImg" style="display: none" alt="load existing samples">
+                                        <select ng-disabled="loader" id="publicationForm.matchedSampleSelect" ng-model="publicationForm.matchedSampleSelect" size="5" multiple="multiple">
+                                            <option ng-repeat="option in sampleResults" value="{{option}}">
+                                                {{option}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td><label for="publicationForm.matchedSampleSelect">
+                                        <a href ng-click="updateAssociatedSamples()"
+                                           id="selectMatchedSampleButton">select</a></label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+<div ng-if="publicationForm.map.sampleId == ''">
+    <!--
+    <jsp:include
+            page="/sample/bodyAnnotationCopy.jsp?annotation=publication" />  -->
+</div>
+<br>
+<table width="100%" align="center" class="submissionView" summary="layout" id="accessBlock">
+<!--
+    <c:set var="groupAccesses"
+           value="${publicationForm.map.publication.groupAccesses}" />
+    <c:set var="userAccesses"
+           value="${publicationForm.map.publication.userAccesses}" />
+    <c:set var="accessParent" value="publication" />
+    <c:set var="dataType" value="Publication" />
+    <c:set var="parentFormName" value="publicationForm" />
+    <c:set var="parentAction" value="publication" />
+    <c:set var="parentPage" value="2" />
+    <c:set var="protectedData"
+           value="${publicationForm.map.publication.domainFile.id}" />
+    <c:set var="isPublic"
+           value="${publicationForm.map.publication.publicStatus}" />
+    <c:set var="isOwner"
+           value="${publicationForm.map.publication.userIsOwner}" />
+    <c:set var="ownerName"
+           value="${publicationForm.map.publication.domainFile.createdBy}" />
+    <c:set var="newData" value="true" />
+    <c:if test="${updatePublication}">
+        <c:set var="newData" value="false" />
+    </c:if>  -->
+    <!-- <%@include file="../bodyManageAccessibility.jsp"%> -->
+    <ng-include src="'/caNanoLab/views/manageAccessibility.html'"></ng-include>
+</table>
+<br>
+<!--
+<c:set var="updateId" value="${param.publicationId}" />
+<c:set var="hiddenDispatch" value="create" />
+<c:set var="hiddenPage" value="1" />
+<c:set var="resetSampleIdStr" value="" />
+<c:if test="${!empty publicationForm.map.sampleId}">
+    <c:set var="resetSampleIdStr"
+           value="&sampleId=${publicationForm.map.sampleId}" />
+</c:if>
+<c:set var="resetOnclick"
+       value="javascript: location.href = 'publication.do?dispatch=setupNew&page=0${resetSampleIdStr}'" />
+<c:if test="${!empty param.publicationId }">
+    <c:set var="resetOnclick"
+           value="javascript: location.href = 'publication.do?dispatch=setupUpdate&page=0&publicationId=${param.publicationId}${resetSampleIdStr}'" />
+</c:if>
+<c:set var="deleteOnclick"
+       value="deleteData('publication', 'publicationForm', 'publication', 'delete')" />
+<c:set var="deleteButtonName" value="Delete" />
+
+<c:if test="${!empty param.sampleId}">
+    <c:set var="deleteButtonName" value="Remove from Sample" />
+    <c:set var="deleteOnclick"
+           value="deleteData('sample publication association', 'publicationForm', 'publication', 'removeFromSample')" />
+    <html:hidden property="sampleId" value="${param.sampleId}" />
+</c:if>
+<c:if test="${review && !empty param.sampleId}">
+    <c:set var="submitForReviewOnclick"
+           value="submitReview('publicationForm', 'publication', '${publicationForm.map.publication.domainFile.id}', '${publicationForm.map.publication.domainFile.title}', 'publication')" />
+</c:if>
+<c:if test="${review && empty param.sampleId}">
+    <c:set var="submitForReviewOnclick"
+           value="submitReview('publicationForm', 'publication', '${publicationForm.map.publication.domainFile.id}', '${publicationForm.map.publication.domainFile.title}', 'publication', 'publicationMessage')" />
+</c:if>
+<c:set var="validate" value="false" />
+<c:if
+        test="${!user.curator && publicationForm.map.publication.publicStatus}">
+    <c:set var="validate" value="true" />
+</c:if>
+<c:set var="showDelete" value="false" />
+<c:if
+        test="${publicationForm.map.publication.userDeletable && !empty param.publicationId}">
+    <c:set var="showDelete" value="true" />
+</c:if> -->
+<table width="100%" class="invisibleTable" summary="layout">
+    <tbody><tr>
+        <td align="left" width="600">
+        </td>
+        <td align="right" width="300">
+            <button type="button" class="btn btn-primary" ng-click="resetForm()">Reset</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</form>
