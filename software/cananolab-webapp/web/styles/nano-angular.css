@@ -1,0 +1,23 @@
+.keywords li {
+    width: 200px;
+    padding:1px 20px;
+
+}
+.keywords li:hover {
+    background:lightcoral;
+    cursor: pointer;
+    cursor:hand;
+    font-weight:bolder;
+}
+.keywords li:hover::before {
+  /* content: "\e014"; */
+    content: "x ";
+}
+
+div.editSampleButtonBar {
+    width:900px;
+    padding:25px;
+}
+div.nanoPageContainer {
+    width:900px;
+}
