@@ -165,11 +165,13 @@ var app = angular.module('angularApp')
         $scope.doSubmit = function() {
             $scope.loader = true;
 
-            $http({method: 'POST', url: '/caNanoLab/rest/sample/searchSample',data: $scope.searchSampleForm}).
+            $http({method: 'POST', url: 'http://localhost:8080/caNanoLab/rest/publication/submitPublication',data: $scope.publicationForm}).
                 success(function(data, status, headers, config) {
                     // $rootScope.sampleData = data;
-                    $scope.sampleData.data = data;
-                    $location.path("/sampleResults").replace();
+                    //$scope.sampleData.data = data;
+                    //$location.path("/sampleResults").replace();
+                	
+                	alert(data);
 
                 }).
                 error(function(data, status, headers, config) {
