@@ -86,7 +86,15 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/publicationResults', {
         templateUrl: 'views/publication/view/publicationResults.html',
         controller: 'PublicationResultsCtrl'
-      })                                    
+      })   
+      .when('/submitPublication', {
+            templateUrl: 'views/publication/edit//editPublication.html',
+            controller: 'EditPublicationCtrl'
+      })
+      .when('/editPublication', {
+            templateUrl: 'views/publication/edit/editPublication.html',
+            controller: 'EditPublicationCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
