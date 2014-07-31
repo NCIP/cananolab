@@ -1538,6 +1538,15 @@ table.table {
         vertical-align:top;
     }
 
+    table.table.publication td {
+        padding:5px;
+    }   
+
+    table.table.publication th {
+        padding:5px;
+        text-align:left;
+    }        
+
     table.table td.columnOne{
         border-left:1px solid #ccc;
         vertical-align:top;

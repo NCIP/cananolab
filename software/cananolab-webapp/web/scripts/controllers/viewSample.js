@@ -31,6 +31,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;      
      $http({method: 'GET', url: '/caNanoLab/rest/sample/view?sampleId=' + $scope.sampleId.data}).
      success(function(data, status, headers, config) {
+      alert("uere")
       $scope.sampleData = data;
       $scope.loader=false;
       
