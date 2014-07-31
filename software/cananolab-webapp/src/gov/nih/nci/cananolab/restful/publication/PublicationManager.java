@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
+import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -16,16 +17,16 @@ import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
-import org.springframework.web.client.HttpServerErrorException;
 
 //Copied from DWRPublicationManager
 
@@ -286,5 +287,45 @@ public class PublicationManager {
 			logger.error("Error obtaining counts of public publications from local site.");
 		}
 		return counts.toString() + " Publications";
+	}
+	
+	public SimplePublicationWithSamplesBean searchSampleById(HttpServletRequest request, String id, String type)
+			throws Exception {
+		
+		// New a pubBean each time, so we know if parsing is success or not.
+		PublicationBean newPubBean = new PublicationBean();
+		
+		if (type.equals("PubMed")) {
+			getExistingPubMedPublication(id, request);
+		} 
+
+
+		//List<String> sampleIds = service.findSampleIdsByDOI(id);
+
+		//faking data for now
+		long sampleId = 20917507;
+		long year = 2000;
+
+
+		SimplePublicationWithSamplesBean pubBean = new SimplePublicationWithSamplesBean();
+		pubBean.setId("10.1002/ijc.22581");
+		pubBean.setType("DOI");
+
+		pubBean.setAuthors("John Doe, Mary Smith and al.");
+		Map<String, String> vals = new HashMap<String, String>();
+
+		for (int i = 0; i < 10; i++) {
+			String sId = String.valueOf(sampleId);
+			vals.put(sId, "SampleName_" + sId);
+			sampleId++;
+		}
+		pubBean.setSamples(vals);
+
+		pubBean.setYear(year);
+		pubBean.setJournal("International journal of cancer. Journal international du cancer");
+		pubBean.setTitle("Latest and greatest");
+		pubBean.setVolumn("120:340-430");
+
+		return pubBean;
 	}
 }

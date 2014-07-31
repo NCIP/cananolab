@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditPublicationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePublicationEditBean;
@@ -295,6 +296,29 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	}
 	
 	@GET
+	@Path("/searchById")
+	@Produces("application/json")
+	 public Response searchById(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("id") String id, @QueryParam("type") String type){
+		
+		PublicationManager pubManager = 
+				(PublicationManager) applicationContext.getBean("publicationManager");
+
+		try {
+			SimplePublicationWithSamplesBean result = pubManager.searchSampleById(httpRequest, id, type);
+			
+			return (result.getErrors().size() > 0) ?
+					Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(result.getErrors()).build()
+						:
+						Response.ok(result).build();
+		} 
+
+		catch (Exception ioe) {
+			return Response.status(Response.Status.BAD_REQUEST).entity(ioe.getMessage()).build();
+		}
+	}	
+
 	@Path("/getPubmedPublication")
 	@Produces ("application/json")
     public Response getPubmedPublication(@Context HttpServletRequest httpRequest,
