@@ -665,5 +665,66 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 			return pub1.getCreatedDate().compareTo(pub2.getCreatedDate());
 		}
 	}
+	
+	/**
+	 * Find samples based on publication id. Currently, it only returns sample with sampleId, sampleName and
+	 * createdDate field values
+	 * 
+	 * @param pubId
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Sample> findSamplesByPublicationId(long pubId) 
+			throws Exception {
+
+		List<String> sampleIds = new ArrayList<String>();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
+				.setProjection(
+						Projections.projectionList()
+						.add(Projections.property("id"))
+						.add(Projections.property("name"))
+						.add(Projections.property("createdDate")));
+
+		crit.createAlias("publicationCollection", "publication");
+		crit.add(Restrictions.eq("publication.id", pubId));
+
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		List results = appService.query(crit);
+		Set<Sample> samples = new HashSet<Sample>();
+		for (Object obj : results) {
+
+			try {
+				Object[] row = (Object[]) obj;
+
+				Long sampleId = (Long) row[0];
+
+				if (StringUtils.containsIgnoreCase(getAccessibleData(),
+						sampleId.toString())) {
+					Sample sample = new Sample();
+					sample.setId(sampleId);
+					sample.setName((String) row[1]);
+					sample.setCreatedDate((Date) row[2]);
+					samples.add(sample);
+				} else {
+					logger.debug("User doesn't have access to sample of ID: "
+							+ sampleId);
+				}
+
+			} catch (ClassCastException e) {
+				logger.error("Got ClassCastException: " + e.getMessage());
+				break;
+			}
+		}
+
+		List<Sample> orderedSamples = new ArrayList<Sample>(samples);
+
+		Collections
+		.sort(orderedSamples, new Comparators.SampleDateComparator());
+
+		return orderedSamples;
+	}
 
 }
