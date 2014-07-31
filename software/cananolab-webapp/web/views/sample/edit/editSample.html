@@ -1,3 +1,4 @@
+<div class="nanoPageContainer">
 <div class="spacer">
 <!-- Menu Bar -->
     <table border="0" class="contentTitle" summary="layout" width="100%">
@@ -7,15 +8,18 @@
             </th>
             <td align="right" width="30%">
                 <button class="btn back btn-xs" ng-click="goBack()">Back</button>
-                <a class="helpText" href=
-                        "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
-                                                                                                                                                                                                                   "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>
+                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
             </td>
         </tr>
     </table>
+</div>
 
 <!-- Message Area -->
-    <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>
+<div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>
+<br>
+<div class="message">{{message}}</div>
+<br>
 <!--
 <h2>sampleId{{sampleData.sampleId}}</h2>
 <h2>sampleData.pointOfContacts[0].contactPerson {{sampleData.pointOfContacts[0].contactPerson}}</h2>
@@ -30,7 +34,8 @@
     <br>
 
 <!-- Application  -->
-    <table width="100%" align="center" class="submissionView" summary="layout">
+<div ng-show="editSampleForm">
+    <table  width="100%" align="center" class="submissionView" summary="layout">
 		<tbody>
             <!-- Sample Name -->
             <tr>
@@ -51,6 +56,7 @@
                 </td>
                 <td>
                     <a href="#" onclick="javascript:confirmAddNew(['Access'], 'PointOfContact', 'Point Of Contact', 'clearPointOfContact()');" id="addPointOfContact" style="display: block;"><img align="top" src="images/btn_add.gif" border="0" alt="add point of contact"></a>
+                    <button ng-click="openAccessToSampleModal" class="btn btn-xs">Add</button>
                 </td>
             </tr>
 		    <!-- Point of Contact Data -->
@@ -89,295 +95,232 @@
                     </table>
 				</td>
 			</tr> <!-- End of Point of Contact -->
-		
 
-		<tr>
-			<td class="cellLabel">
-				<label for="keyword">Keywords</label>
-				<i>(one keyword per line)</i>
-			</td>
-			<td>
-				<textarea name="sampleBean.keywordsStr" cols="80" rows="6" id="keyword" style="margin: 2px; width: 697px; height: 182px;">GOLD
-GUM ARABIC
-IN VIVO
-THERAPEUTIC EFFICACY
-TUMOR</textarea>
-			</td>
-		</tr>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		   
-		
-		
+            <!-- Keywords -->
+            <tr>
+                <td class="cellLabel">
+                    <label for="keywords">Keywords</label>
+                </td>
+                <td>
+                    <ul id="keywords" class="list-group keywords" >
+                        <li class="list-group-item" ng-repeat="keyword in sampleData.keywords track by $index" ng-click="removeKeyword(keyword)" title="Remove keyword">
+                           <!-- <span class="glyphicon glyphicon-tag"></span> --> {{keyword}}
+                        </li>
+                    </ul>
+                    <input type="text" ng-model="newKeyword">
+                    <button type="button" class="btn btn-primary btn-xs" ng-click="addKeyword()">Add</button>
+<!--
+                    <textarea id="keywords"  cols="80">{{keywords}}
+                    </textarea>
+-->
+                </td>
+            </tr>
+        <tr>
+            <td class="cellLabel" width="15%" id="addAccessLabel">
+                Access to the Sample
+            </td>
+            <td>
 
+                <button ng-click="openAccessToSampleModal()" style="display: block;"><img align="top" src="images/btn_add.gif" border="0" alt="add accessibility"></button>
 
-
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
 
 
-<script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<script type="text/javascript" src="/caNanoLab/dwr/engine.js"></script>
-<script type="text/javascript" src="/caNanoLab/dwr/util.js"></script>
-<script type="text/javascript" src="javascript/AccessibilityManager.js"></script>
-<script type="text/javascript" src="/caNanoLab/dwr/interface/AccessibilityManager.js"></script>
+                    <table class="editTableWithGrid" width="95%" align="center">
+                        <tbody><tr>
+                            <th width="40%" scope="col">
+                                Group Name
+                            </th>
+                            <th width="55%" scope="col">
+                                Access
+                            </th>
+                            <th></th>
+                        </tr>
+
+                            <tr valign="top">
+                                <td>
+                                    Curator
+                                </td>
+                                <td>
+                                    read update delete
+                                </td>
+                                <td><div align="right">
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr valign="top">
+                                <td>
+                                    Public
+                                </td>
+                                <td>
+                                    read
+                                </td>
+                                <td><div align="right">
+                                            <a href="javascript:setTheAccess('sampleForm', 'group', 'Public', 'Sample', '27131907');">Edit</a>&nbsp;
+                                    </div>
+                                </td>
+                            </tr>
+
+                    </tbody></table>
+                    <br>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
 
 
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
 
 
-	<tr>
-		<td class="cellLabel" width="15%" id="addAccessLabel">
-			Access to the Sample
-		</td>
-		<td>
-			
-			<a href="#" onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'sampleForm\', \'Sample\')');" id="addAccess" style="display: block;"><img align="top" src="images/btn_add.gif" border="0" alt="add accessibility"></a>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			
-			
-				<table class="editTableWithGrid" width="95%" align="center">
-					<tbody><tr>
-						<th width="40%" scope="col">
-							Group Name
-						</th>
-						<th width="55%" scope="col">
-							Access
-						</th>
-						<th></th>
-					</tr>
-					
-						<tr valign="top">
-							<td>
-								Curator
-							</td>
-							<td>
-								read update delete
-							</td>
-							<td><div align="right">
-								
-									
-									
-									
-								
-								</div>
-							</td>
-						</tr>
-					
-						<tr valign="top">
-							<td>
-								Public
-							</td>
-							<td>
-								read
-							</td>
-							<td><div align="right">
-								
-									
-									
-										<a href="javascript:setTheAccess('sampleForm', 'group', 'Public', 'Sample', '27131907');">Edit</a>&nbsp;
-							    
-								
-								</div>
-							</td>
-						</tr>
-					
-				</tbody></table>
-				<br>
-			
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			
-			
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			
-			
-			<div style="display: none;" id="newAccess">
-				<table class="subSubmissionView" width="85%" align="center" summary="layout">
-					<tbody><tr>
-						<th colspan="4">
-							Access Information
-						</th>
-					</tr>
-					<tr>
-						<td class="cellLabel" width="25%">
-							Access by *
-						</td>
-						<td colspan="3">
-							<input type="radio" name="sampleBean.theAccess.accessBy" value="group" checked="checked" onclick="displayAccessNameLabel();" id="byGroup">
-							<label for="byGroup">Collaboration Group</label>
-							<input type="radio" name="sampleBean.theAccess.accessBy" value="user" onclick="displayAccessNameLabel();" id="byUser">
-							<label for="byUser">User&nbsp;&nbsp;</label>
-							
-								<input type="radio" name="sampleBean.theAccess.accessBy" value="public" onclick="displayAccessNameLabel();" id="byPublic">
-							<label for="byPublic">Public</label>
-							
-						</td>
-					</tr>
-					<tr>
-						
-						<td class="cellLabel" id="accessNameLabel">Collaboration Group Name *</td>
-						<td><label for="groupName" style="display:none">Group Name</label>
-							<input type="text" name="sampleBean.theAccess.groupName" value="" id="groupName">
-							<label for="userName" style="display:none">Login Name</label>
-							<input type="text" name="sampleBean.theAccess.userBean.loginName" value="" id="userName" style="display: none;">
-						</td>
-						<td>
-							<a href="#userNameField" id="browseIcon" onclick="javascript:showMatchedGroupOrUserDropdown('lijowskim:COPY')"><img src="images/icon_browse.jpg" align="middle" alt="search existing collaboration groups" border="0"></a>
-						</td>
-						<td width="50%">
-							<table class="invisibleTable">
-								<tbody><tr>
-									<td>
-										<img src="images/ajax-loader.gif" border="0" class="counts" id="loaderImg" style="display: none" alt="collaboration groups or user login names">										
-									</td>
-									<td>
-									    <label for="matchedUserNameSelect" style="display:none" id="userNameSelectLabel">Select a user</label>
-										<select name="sampleBean.theAccess.userBean.loginName" size="10" onclick="updateUserLoginName()" id="matchedUserNameSelect" style="display: none"></select>										
-										<label for="matchedGroupNameSelect" style="display:none">Select a group</label>
-										<select name="sampleBean.theAccess.groupName" size="10" onclick="updateGroupName()" id="matchedGroupNameSelect" style="display: none"></select>
-									</td>
-									<td>
-										<a id="cancelBrowse" style="display: none" href="javascript:cancelBrowseSelect();">Cancel</a>
-									</td>
-								</tr>
-							</tbody></table>
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel" width="10%">
-							Access to the <label for="roleName">Sample *</label>
-						</td>
-						<td colspan="2">
-							<select name="sampleBean.theAccess.roleName" id="roleName"><option></option>
-								<option value="R">read</option>
-<option value="CURD">read update delete</option></select>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td><input id="deleteAccess" type="button" value="Remove" onclick="javascript:deleteTheAccess('sampleForm', 'sample', 4);" style="display: none;">
-						</td>
-						<td align="right" colspan="3">
-							<div align="right">
-								<input type="hidden" name="sampleBean.theAccess.roleName" value="" id="hiddenRoleName">
-								<input type="hidden" name="sampleBean.theAccess.groupName" value="" id="hiddenGroupName">
-								<input type="button" value="Save" onclick="javascript:addAccess('sampleForm', 'sample', 4, true);">
-								<input type="button" value="Cancel" onclick="javascript:clearAccess('sampleForm', 'Sample');closeSubmissionForm('Access');">
-							</div>
-						</td>
-					</tr>
-				</tbody></table>
-			</div>
-		</td>
-	</tr>
+                <div style="display: none;" id="newAccess">
+                    <table class="subSubmissionView" width="85%" align="center" summary="layout">
+                        <tbody><tr>
+                            <th colspan="4">
+                                Access Information
+                            </th>
+                        </tr>
+                        <tr>
+                            <td class="cellLabel" width="25%">
+                                Access by *
+                            </td>
+                            <td colspan="3">
+                                <input type="radio" name="sampleBean.theAccess.accessBy" value="group" checked="checked" onclick="displayAccessNameLabel();" id="byGroup">
+                                <label for="byGroup">Collaboration Group</label>
+                                <input type="radio" name="sampleBean.theAccess.accessBy" value="user" onclick="displayAccessNameLabel();" id="byUser">
+                                <label for="byUser">User&nbsp;&nbsp;</label>
 
-		
-		<tr>
-			
-				
-					<td class="cellLabel">
-					Data Availability Metrics
-					</td>
-				
-				<td>
-					
-						<input type="image" value="Generate" src="images/btn_generate.gif" alt="generate data availability matrix" onclick="javascript:generateDataAvailability('sample', 'generateDataAvailability');">
-					
-				</td>
-			</tr>
-			
-			<tr>
-			<td colspan="2" align="center">
-				
-				<div style="display:none" id="dataAvailability"></div>
-			</td>
-		</tr>
-		
-	</tbody></table>
-	<br>
-	
-		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	   
-	
-	
+                                    <input type="radio" name="sampleBean.theAccess.accessBy" value="public" onclick="displayAccessNameLabel();" id="byPublic">
+                                <label for="byPublic">Public</label>
+
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td class="cellLabel" id="accessNameLabel">Collaboration Group Name *</td>
+                            <td><label for="groupName" style="display:none">Group Name</label>
+                                <input type="text" name="sampleBean.theAccess.groupName" value="" id="groupName">
+                                <label for="userName" style="display:none">Login Name</label>
+                                <input type="text" name="sampleBean.theAccess.userBean.loginName" value="" id="userName" style="display: none;">
+                            </td>
+                            <td>
+                                <a href="#userNameField" id="browseIcon" onclick="javascript:showMatchedGroupOrUserDropdown('lijowskim:COPY')"><img src="images/icon_browse.jpg" align="middle" alt="search existing collaboration groups" border="0"></a>
+                            </td>
+                            <td width="50%">
+                                <table class="invisibleTable">
+                                    <tbody><tr>
+                                        <td>
+                                            <img src="images/ajax-loader.gif" border="0" class="counts" id="loaderImg" style="display: none" alt="collaboration groups or user login names">
+                                        </td>
+                                        <td>
+                                            <label for="matchedUserNameSelect" style="display:none" id="userNameSelectLabel">Select a user</label>
+                                            <select name="sampleBean.theAccess.userBean.loginName" size="10" onclick="updateUserLoginName()" id="matchedUserNameSelect" style="display: none"></select>
+                                            <label for="matchedGroupNameSelect" style="display:none">Select a group</label>
+                                            <select name="sampleBean.theAccess.groupName" size="10" onclick="updateGroupName()" id="matchedGroupNameSelect" style="display: none"></select>
+                                        </td>
+                                        <td>
+                                            <a id="cancelBrowse" style="display: none" href="javascript:cancelBrowseSelect();">Cancel</a>
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cellLabel" width="10%">
+                                Access to the <label for="roleName">Sample *</label>
+                            </td>
+                            <td colspan="2">
+                                <select name="sampleBean.theAccess.roleName" id="roleName"><option></option>
+                                    <option value="R">read</option>
+    <option value="CURD">read update delete</option></select>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input id="deleteAccess" type="button" value="Remove" onclick="javascript:deleteTheAccess('sampleForm', 'sample', 4);" style="display: none;">
+                            </td>
+                            <td align="right" colspan="3">
+                                <div align="right">
+                                    <input type="hidden" name="sampleBean.theAccess.roleName" value="" id="hiddenRoleName">
+                                    <input type="hidden" name="sampleBean.theAccess.groupName" value="" id="hiddenGroupName">
+                                    <input type="button" value="Save" onclick="javascript:addAccess('sampleForm', 'sample', 4, true);">
+                                    <input type="button" value="Cancel" onclick="javascript:clearAccess('sampleForm', 'Sample');closeSubmissionForm('Access');">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </div>
+            </td>
+        </tr>
 
 
+            <tr>
 
 
+                        <td class="cellLabel">
+                        Data Availability Metrics
+                        </td>
 
+                    <td>
 
+                            <input type="image" value="Generate" src="images/btn_generate.gif" alt="generate data availability matrix" onclick="javascript:generateDataAvailability('sample', 'generateDataAvailability');">
 
-<table width="100%" class="invisibleTable" summary="layout">
-	<tbody><tr>
-		<td align="left" width="600">
-			
-				<input type="button" value="Delete" onclick="deleteData('sample', 'sampleForm', 'sample', 'delete')" id="deleteButton" disabled="">
-			
-			
-				<input type="button" value="Copy" onclick="gotoPage('sample.do?dispatch=setupClone&amp;page=0&amp;cloningSample=UMC_HSTVAMC_NCL_NB-NChandaNNBM2010-02')" id="copyButton" disabled="">
-			
-		</td>
-		<td align="right" width="300">
-			
-			
-				
-			
-			<input type="reset" value="Reset" onclick="this.form.reset();" id="resetButton">
-			&nbsp;
-			
-			
-				
-				
-					
-						
-						
-							<input type="submit" value="Update" id="submitButton" disabled="">
-						
-					
-					<input type="hidden" name="dispatch" value="create">
-					<input type="hidden" name="page" value="2">
-				
-			
-		</td>
-	</tr>
-</tbody></table>
+                    </td>
+                </tr>
 
-</form>
+                <tr>
+                <td colspan="2" align="center">
+
+                    <div style="display:none" id="dataAvailability"></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="editSampleButtonBar">
+        <div class="btn-group pull-left">
+            <button ng-click="reset()" class='btn btn-danger' ng-disabled='dataChanged < 2'>Delete</button>
+            <button ng-click="update()" class='btn btn-default' ng-disabled='dataChanged < 2'>Copy</button>
+        </div>
+        <div class="btn-group pull-right">
+            <button ng-click="reset()" class='btn btn-default' ng-disabled='dataChanged < 2'>Reset</button>
+            <button ng-click="update()" class='btn btn-primary' ng-disabled='dataChanged < 2'><span class="glyphicon glyphicon-save">Update</span></button>
+        </div>
+    </div>
+
+    <br>
+    <!--
+    <table width="100%" class="invisibleTable" summary="layout">
+        <tbody>
+            <tr class="btn-group">
+                <td align="left" width="600">
+                    <div class="btn-group pull-left">
+                        <button ng-click="reset()" class='btn btn-danger' ng-disabled='dataChanged < 2'>Delete</button>
+                        <button ng-click="update()" class='btn btn-default' ng-disabled='dataChanged < 2'>Copy</button>
+                    </div>
+                </td>
+                <td align="right" width="300">
+                    <div class="btn-group pull-right">
+                        <button ng-click="reset()" class='btn btn-default' ng-disabled='dataChanged < 2'>Reset</button>
+                        <button ng-click="update()" class='btn btn-primary' ng-disabled='dataChanged < 2'><span class="glyphicon glyphicon-save">Update</span></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    -->
 </div>
-</table>
+
 <div id="loader" class="sample offset" ng-show="loader">
     <div id="loaderText">
         Loading
     </div>
     <div id="loaderGraphic"></div>
 </div>
- </div>
+</div>
