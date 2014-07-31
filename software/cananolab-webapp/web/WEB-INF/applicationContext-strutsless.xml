@@ -65,7 +65,7 @@
 		class="gov.nih.nci.cananolab.restful.core.CustomPlugInBO">
 	</bean>
 	
-	<bean id="searchPublicationBO"
+	<bean id="searchPublicationBO"							
 		class="gov.nih.nci.cananolab.restful.publication.SearchPublicationBO">
 	</bean>
 	
@@ -73,7 +73,10 @@
 		class="gov.nih.nci.cananolab.restful.publication.PublicationManager">
 	</bean>
 	
-
+    <bean id="accessibilityManager"
+		class="gov.nih.nci.cananolab.restful.core.AccessibilityManager">
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 
