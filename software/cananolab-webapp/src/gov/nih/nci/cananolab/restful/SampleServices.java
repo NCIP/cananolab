@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
+import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleAccessBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
@@ -306,28 +307,27 @@ public class SampleServices {
 		}
 	}
 	
-	@GET
-	@Path("/searchById")
-	@Produces("application/json")
-	 public Response searchById(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("id") String id, @QueryParam("type") String type){
-		
-		SampleBO sampleBO = 
-				(SampleBO) applicationContext.getBean("sampleBO");
-
-		try {
-			List results = sampleBO.searchSampleById(httpRequest, id, type);
-			
-			Object obj = results.get(0);
-			return (obj instanceof String) ?
-					Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-						.entity(results).build()
-						:
-						Response.ok(results).build();
-		} 
-
-		catch (Exception ioe) {
-			return Response.status(Response.Status.BAD_REQUEST).entity(ioe.getMessage()).build();
-		}
-	}	
+//	@GET
+//	@Path("/searchById")
+//	@Produces("application/json")
+//	 public Response searchById(@Context HttpServletRequest httpRequest, 
+//	    		@DefaultValue("") @QueryParam("id") String id, @QueryParam("type") String type){
+//		
+//		SampleBO sampleBO = 
+//				(SampleBO) applicationContext.getBean("sampleBO");
+//
+//		try {
+//			SimplePublicationWithSamplesBean result = sampleBO.searchSampleById(httpRequest, id, type);
+//			
+//			return (result.getErrors().size() > 0) ?
+//					Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+//						.entity(result.getErrors()).build()
+//						:
+//						Response.ok(result).build();
+//		} 
+//
+//		catch (Exception ioe) {
+//			return Response.status(Response.Status.BAD_REQUEST).entity(ioe.getMessage()).build();
+//		}
+//	}	
 }
