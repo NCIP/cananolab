@@ -293,11 +293,11 @@ public class PublicationManager {
 			throws Exception {
 		
 		// New a pubBean each time, so we know if parsing is success or not.
-//		PublicationBean newPubBean = new PublicationBean();
-//		
-//		if (type.equals("PubMed")) {
-//			this.getExistingPubMedPublication(id);
-//		}
+		PublicationBean newPubBean = new PublicationBean();
+		
+		if (type.equals("PubMed")) {
+			getExistingPubMedPublication(id, request);
+		} 
 
 
 		//List<String> sampleIds = service.findSampleIdsByDOI(id);
