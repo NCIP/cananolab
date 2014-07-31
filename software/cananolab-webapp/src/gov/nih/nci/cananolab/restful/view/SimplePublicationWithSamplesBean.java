@@ -1,10 +1,19 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.particle.Sample;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 public class SimplePublicationWithSamplesBean {
+	private static Logger logger = Logger.getLogger(SimplePublicationWithSamplesBean.class);
 
 	String id;
 	String type;
@@ -82,5 +91,42 @@ public class SimplePublicationWithSamplesBean {
 		this.errors = errors;
 	}
 	
+	public void transferDataFromPublication(Publication pubBean) {
+		
+		if (pubBean == null) {
+			logger.error("Input publication object is null!!");
+			return;
+		}
+		this.setId(String.valueOf(pubBean.getId()));
+		
+		this.setTitle(pubBean.getTitle());
+		this.setYear(pubBean.getYear().longValue());
+		this.setJournal(pubBean.getJournalName());
+		this.setVolumn(pubBean.getVolume() + ":" + pubBean.getStartPage() + "-" + pubBean.getEndPage());
+		
+		Collection<Author> authors = pubBean.getAuthorCollection();
+		if (authors != null) {
+			StringBuilder sb = new StringBuilder();
+			for (Author author : authors) {
+				if (sb.length() > 0) 
+					sb.append("; ");
+				
+				sb.append(author.getLastName()).append(", ").append(author.getFirstName()).append(" ").append(author.getInitial());
+			}
+			
+			this.setAuthors(sb.toString());
+		}
+	}
 	
+	public void transferSampleDataFromSampleList(List<Sample> sampleBeans) {
+		if (sampleBeans == null) {
+			logger.info("There is no associated samples for publication");
+			return;
+		}
+		
+		this.samples = new HashMap<String, String>();
+		for (Sample sample : sampleBeans) {
+			samples.put(String.valueOf(sample.getId()), sample.getName());
+		}
+	}
 }

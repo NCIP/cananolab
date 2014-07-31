@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -289,43 +290,89 @@ public class PublicationManager {
 		return counts.toString() + " Publications";
 	}
 	
-	public SimplePublicationWithSamplesBean searchSampleById(HttpServletRequest request, String id, String type)
+	public SimplePublicationWithSamplesBean searchPublicationById(HttpServletRequest request, String id, String type)
 			throws Exception {
 		
-		// New a pubBean each time, so we know if parsing is success or not.
-		PublicationBean newPubBean = new PublicationBean();
+		String key;
+		Object val;
 		
 		if (type.equals("PubMed")) {
-			getExistingPubMedPublication(id, request);
-		} 
-
-
-		//List<String> sampleIds = service.findSampleIdsByDOI(id);
-
-		//faking data for now
-		long sampleId = 20917507;
-		long year = 2000;
-
-
-		SimplePublicationWithSamplesBean pubBean = new SimplePublicationWithSamplesBean();
-		pubBean.setId("10.1002/ijc.22581");
-		pubBean.setType("DOI");
-
-		pubBean.setAuthors("John Doe, Mary Smith and al.");
-		Map<String, String> vals = new HashMap<String, String>();
-
-		for (int i = 0; i < 10; i++) {
-			String sId = String.valueOf(sampleId);
-			vals.put(sId, "SampleName_" + sId);
-			sampleId++;
+			key = "pubMedId";
+			val = new Long(id);
+		} else if (type.equals("DOI")) {
+			key = "digitalObjectId";
+			val = id;
+		} else
+			throw new Exception("type parameter is not valid");
+		
+		Publication publication = null;
+		List<Sample> samples = null;
+		try {
+			SecurityService securityService = (SecurityService) request
+					.getSession().getAttribute("securityService");
+			PublicationServiceLocalImpl service = new PublicationServiceLocalImpl(securityService);
+			publication = service.getHelper()
+					.findPublicationByKey(key, val);
+		
+			if (publication == null) 
+				throw new Exception("No publication found with id \"" + id + "\" of type \"" + type + "\"");
+			
+			long pubId = publication.getId();
+			samples = service.getHelper().findSamplesByPublicationId(pubId);
+			
+		} catch (NoAccessException ne) {
+			logger.info("User can't access the publication with DOI/PubMed Id: " + id);
+			throw ne;
+		} catch (Exception e) {
+			logger.info("Error in retrieving publication with with DOI/PubMed Id: " + id);
+			throw e;
 		}
-		pubBean.setSamples(vals);
+		
+		
+		SimplePublicationWithSamplesBean simplePubBean = new SimplePublicationWithSamplesBean();
+		simplePubBean.transferDataFromPublication(publication);
+		simplePubBean.transferSampleDataFromSampleList(samples);
+		simplePubBean.setType(type);
+		
+		return simplePubBean;
+	}
+	
+	public Publication getPubMedPublication(String pubmedID, HttpServletRequest request) {
+		String publicationId = null;
+		try {
+			SecurityService securityService = (SecurityService) request
+					.getSession().getAttribute("securityService");
+			PublicationServiceLocalImpl service = new PublicationServiceLocalImpl(securityService);
+			Publication publication = service.getHelper()
+					.findPublicationByKey("pubMedId", new Long(pubmedID));
+			return publication;
+		} catch (NoAccessException ne) {
+			logger.info("User can't access the publication with Pub Med ID "
+					+ pubmedID);
+			publicationId="no access";
+		} catch (Exception e) {
+			logger.info("Error in retrieving publication with Pub Med ID "
+					+ pubmedID);
+		}
+		return null;
+	}
 
-		pubBean.setYear(year);
-		pubBean.setJournal("International journal of cancer. Journal international du cancer");
-		pubBean.setTitle("Latest and greatest");
-		pubBean.setVolumn("120:340-430");
-
-		return pubBean;
+	public Publication getDOIPublication(String doi) {
+		String publicationId = null;
+		try {
+			Publication publication = getService().getHelper()
+					.findPublicationByKey("digitalObjectId", doi);
+			
+			return publication;
+//			if (publication != null) {
+//				publicationId = publication.getId().toString();
+//			}
+		} catch (NoAccessException ne) {
+			logger.info("User can't access the publication with DOI " + doi);
+			publicationId="no access";
+		} catch (Exception e) {
+			logger.info("Error in retrieving publication with DOI " + doi);
+		}
+		return null;
 	}
 }

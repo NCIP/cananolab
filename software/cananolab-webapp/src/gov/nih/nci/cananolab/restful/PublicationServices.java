@@ -305,7 +305,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				(PublicationManager) applicationContext.getBean("publicationManager");
 
 		try {
-			SimplePublicationWithSamplesBean result = pubManager.searchSampleById(httpRequest, id, type);
+			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
 			
 			return (result.getErrors().size() > 0) ?
 					Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -315,10 +315,11 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		} 
 
 		catch (Exception ioe) {
-			return Response.status(Response.Status.BAD_REQUEST).entity(ioe.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ioe.getMessage()).build();
 		}
 	}	
 
+	@GET
 	@Path("/getPubmedPublication")
 	@Produces ("application/json")
     public Response getPubmedPublication(@Context HttpServletRequest httpRequest,
@@ -334,7 +335,10 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 						.entity("Session expired").build();
 			
 			String value = pubManager.getExistingPubMedPublication(pubmedId, httpRequest);
-			return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return (value == null) ?
+					Response.status(Response.Status.NOT_FOUND).entity("No pub found").build()
+					:
+					Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
