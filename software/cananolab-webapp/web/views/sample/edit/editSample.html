@@ -55,8 +55,7 @@
                     Point of Contact *
                 </td>
                 <td>
-                    <a href="#" onclick="javascript:confirmAddNew(['Access'], 'PointOfContact', 'Point Of Contact', 'clearPointOfContact()');" id="addPointOfContact" style="display: block;"><img align="top" src="images/btn_add.gif" border="0" alt="add point of contact"></a>
-                    <button ng-click="openAccessToSampleModal" class="btn btn-xs">Add</button>
+                    <span ng-click="openPointOfContactModal" class="label label-primary labelAsBtn">Add</span>
                 </td>
             </tr>
 		    <!-- Point of Contact Data -->
@@ -87,7 +86,8 @@
                                 <td>{{poc.role}}</td>
                                 <td>
                                     <div align="right">
-                                        <a href="#" id="poc{{poc.id}}">Edit</a>&nbsp;
+                                        <span ng-click="openPointOfContact(poc)" class="label label-primary labelAsBtn">Edit</span>
+
                                     </div>
                                 </td>
                             </tr>
@@ -120,15 +120,11 @@
                 Access to the Sample
             </td>
             <td>
-
-                <button ng-click="openAccessToSampleModal()" style="display: block;"><img align="top" src="images/btn_add.gif" border="0" alt="add accessibility"></button>
-
+                <span ng-click="openAccessToSampleModal" class="label label-primary labelAsBtn">Add</span>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-
-
                     <table class="editTableWithGrid" width="95%" align="center">
                         <tbody><tr>
                             <th width="40%" scope="col">
@@ -159,8 +155,9 @@
                                 <td>
                                     read
                                 </td>
-                                <td><div align="right">
-                                            <a href="javascript:setTheAccess('sampleForm', 'group', 'Public', 'Sample', '27131907');">Edit</a>&nbsp;
+                                <td>
+                                    <div align="right">
+                                        <span ng-click="openAccessToSampleModal" class="label label-primary labelAsBtn">Edit</span>
                                     </div>
                                 </td>
                             </tr>
@@ -269,9 +266,7 @@
                         </td>
 
                     <td>
-
-                            <input type="image" value="Generate" src="images/btn_generate.gif" alt="generate data availability matrix" onclick="javascript:generateDataAvailability('sample', 'generateDataAvailability');">
-
+                        <span ng-click="openGenerateModal" class="label label-primary labelAsBtn">Generate</span>
                     </td>
                 </tr>
 

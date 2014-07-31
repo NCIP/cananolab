@@ -15,9 +15,14 @@
 }
 
 div.editSampleButtonBar {
-    width:900px;
     padding:25px;
 }
 div.nanoPageContainer {
     width:900px;
+}
+span.labelAsBtn:hover {
+    background-color: #3276b1;
+    border-color: #285e8e;
+    color: #ffffff;
+    cursor:pointer;
 }
