@@ -11,7 +11,9 @@ import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.core.DWRAccessibilityManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -116,7 +118,7 @@ public class AccessibilityManager {
 		return access;
 	}
 
-	public List<String> getMatchedUsers(String dataOwner, String searchStr, HttpServletRequest request)
+	public List<Map<String, String>> getMatchedUsers(String dataOwner, String searchStr, HttpServletRequest request)
 			throws Exception {
 		try {
 
@@ -151,10 +153,12 @@ public class AccessibilityManager {
 			}
 
 			//return updatedUsers.toArray(new UserBean[updatedUsers.size()]);
-			List<String> usersList = new ArrayList<String>();
+			Map<String, String> userMap = new HashMap<String, String>();
+			List<Map<String, String>> usersList = new ArrayList<Map<String,String>>();
 			for(UserBean bean : updatedUsers){
-				usersList.add(bean.getLastName() + ", " + bean.getFirstName());
+				userMap.put(bean.getLoginName(), bean.getLastName() + " " + bean.getFirstName());
 			}
+			usersList.add(userMap);
 			return usersList;
 		} catch (Exception e) {
 			logger.error("Problem getting matched user login names", e);

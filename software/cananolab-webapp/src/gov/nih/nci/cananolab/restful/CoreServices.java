@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
 import gov.nih.nci.cananolab.restful.core.AccessibilityManager;
@@ -88,7 +89,7 @@ public class CoreServices {
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the publication Id"+ e.getMessage()).build();
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the Collaboration"+ e.getMessage()).build();
 		}
 	}
 
@@ -107,12 +108,12 @@ public class CoreServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			List<String> value = accManager.getMatchedUsers(dataOwner, searchStr, httpRequest);
+			List<Map<String, String>> value = accManager.getMatchedUsers(dataOwner, searchStr, httpRequest);
 			return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the publication Id"+ e.getMessage()).build();
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the users"+ e.getMessage()).build();
 		}
 	}
 }
