@@ -307,19 +307,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public List<String> findSampleIdsByDOI(String doi) 
-	throws SampleException {
-		try {
-			List<String> sampleIds = helper.findSampleIdsByDOI(doi);
-			return sampleIds;
-		} catch (Exception e) {
-			String err = "Problem finding samples with the given search parameters.";
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
-		
-	}
-	
 	public SampleBean findSampleById(String sampleId, Boolean loadAccessInfo)
 			throws SampleException, NoAccessException {
 		SampleBean sampleBean = null;
