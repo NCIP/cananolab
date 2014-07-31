@@ -5,6 +5,7 @@ import java.util.Map;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -274,7 +275,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	public Response submitPublication(@Context HttpServletRequest httpRequest, PublicationForm theForm) {
 	
 		try {
-			
+			System.out.println("Inside submit publication");
 			PublicationBO pubBO = 
 					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
@@ -317,5 +318,57 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.status(Response.Status.BAD_REQUEST).entity(ioe.getMessage()).build();
 		}
 	}	
+
+	@Path("/getPubmedPublication")
+	@Produces ("application/json")
+    public Response getPubmedPublication(@Context HttpServletRequest httpRequest,
+    		@DefaultValue("") @QueryParam("pubmedId") String pubmedId) {
+				
+		try { 
+			PublicationManager pubManager = 
+					 (PublicationManager) applicationContext.getBean("publicationManager");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			String value = pubManager.getExistingPubMedPublication(pubmedId, httpRequest);
+			return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+			// return Response.ok(dropdownMap).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the publication Id"+ e.getMessage()).build();
+		}
+	}
+	@GET
+	@Path("/retrievePubMedInfo")
+	@Produces ("application/json")
+    public Response retrievePubMedInfo(@Context HttpServletRequest httpRequest,
+    		@DefaultValue("") @QueryParam("pubmedId") String pubmedId) {
+				
+		try { 
+			PublicationManager pubManager = 
+					 (PublicationManager) applicationContext.getBean("publicationManager");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			PublicationForm form = new PublicationForm();
+			PublicationBean pubBean = new PublicationBean();
+			Publication domainFile = new Publication();
+			pubBean.setDomainFile(domainFile);
+			form.setPublicationBean(pubBean);
+			
+			PublicationBean pBean = pubManager.retrievePubMedInfo(pubmedId, form, httpRequest);
+			return Response.ok(pBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+			// return Response.ok(dropdownMap).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem retrieving the pubmed information"+ e.getMessage()).build();
+		}
+	}
 	
 }

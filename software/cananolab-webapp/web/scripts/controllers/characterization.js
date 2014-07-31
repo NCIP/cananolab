@@ -20,6 +20,10 @@ app.controller('CharacterizationCtrl', function (sampleService,utilsService,navi
       $location.search('sampleId', null);
     };  
 
+    if ($routeParams.sampleId) {
+      $scope.sampleId.data = $routeParams.sampleId;
+    };    
+
     $scope.select = function(tab) {
         var size = 0, key;
         for (key in $scope.data) {

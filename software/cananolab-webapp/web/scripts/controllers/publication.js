@@ -10,6 +10,11 @@ var app = angular.module('angularApp')
     $rootScope.navDetail = 3;
     $scope.publicationCategories=[];
 
+
+    if ($routeParams.sampleId) {
+      $scope.sampleId.data = $routeParams.sampleId;
+    };
+
     $scope.goBack = function() {
       $location.path("/sampleResults").replace(); 
       $location.search('sampleId', null);      };

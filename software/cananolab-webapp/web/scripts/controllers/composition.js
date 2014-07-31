@@ -11,6 +11,10 @@ var app = angular.module('angularApp')
     $rootScope.navDetail = 1;
     $scope.sampleData = sampleService.sampleData;
 
+    if ($routeParams.sampleId) {
+      $scope.sampleId.data = $routeParams.sampleId;
+    };
+
      $scope.goBack = function() {
       $location.path("/sampleResults").replace();
       $location.search('sampleId', null);      };

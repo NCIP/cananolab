@@ -54,12 +54,15 @@ public class PublicationManager {
 		return pbean;
 	}
 
-	public PublicationBean searchPubMedById(String pubmedID) {
+	public PublicationBean searchPubMedById(String pubmedID, HttpServletRequest request) {
 		// New a pubBean each time, so we know if parsing is success or not.
 		PublicationBean newPubBean = new PublicationBean();
+		SecurityService securityService = (SecurityService) request
+				.getSession().getAttribute("securityService");
+		PublicationServiceLocalImpl service = new PublicationServiceLocalImpl(securityService);
 		if (!StringUtils.isEmpty(pubmedID) && !pubmedID.equals("0")) {
 			try {
-				newPubBean = getService().getPublicationFromPubMedXML(pubmedID);
+				newPubBean = service.getPublicationFromPubMedXML(pubmedID);
 			} catch (Exception ex) {
 				logger.warn("Invalid PubMed ID: " + pubmedID);
 			}
@@ -67,32 +70,29 @@ public class PublicationManager {
 		return newPubBean;
 	}
 
-	public PublicationBean retrievePubMedInfo(String pubmedID) {
-		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+	public PublicationBean retrievePubMedInfo(String pubmedID, PublicationForm form, HttpServletRequest request) {
+//		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (user == null) {
 			return null;
 		}
-		PublicationForm form = (PublicationForm) wctx.getSession()
-				.getAttribute("publicationForm");
-	//	DynaValidatorForm form = (DynaValidatorForm) wctx.getSession()
-	//			.getAttribute("publicationForm");
-		if (form == null) {
-			return null;
-		}
+				
 		PublicationBean publicationBean = form.getPublicationBean();
 			
 		// New a pubBean each time, so we know if parsing is success or not.
-		PublicationBean newPubBean = searchPubMedById(pubmedID);
+		PublicationBean newPubBean = searchPubMedById(pubmedID, request);
 		// Copy PubMed data into form bean
 		publicationBean.copyPubMedFieldsFromPubMedXML(newPubBean);
 		return publicationBean;
 	}
 
-	public String getExistingPubMedPublication(String pubmedID) {
+	public String getExistingPubMedPublication(String pubmedID, HttpServletRequest request) {
 		String publicationId = null;
 		try {
-			Publication publication = getService().getHelper()
+			SecurityService securityService = (SecurityService) request
+					.getSession().getAttribute("securityService");
+			PublicationServiceLocalImpl service = new PublicationServiceLocalImpl(securityService);
+			Publication publication = service.getHelper()
 					.findPublicationByKey("pubMedId", new Long(pubmedID));
 			if (publication != null) {
 				publicationId = publication.getId().toString();

@@ -17,7 +17,7 @@ var app = angular.module('angularApp')
 
     if ($routeParams.sampleId) {
       $scope.sampleId.data = $routeParams.sampleId;
-    }
+    };
 
     $scope.returnUserReadableBoolean = function(val) {
       if (val=='true') {
@@ -25,7 +25,6 @@ var app = angular.module('angularApp')
       }
       return "No";
     }
-
 
 
     $scope.$on('$viewContentLoaded', function(){
