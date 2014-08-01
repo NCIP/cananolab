@@ -115,14 +115,14 @@ public class PublicationBO extends BaseAnnotationBO{
 		if (!validatePublicationFile(publicationBean)) {
 			msgs.add(PropertyUtil.getProperty("publication", "publication.fileRequired"));
 		//	return false;
-			return msgs;
+		//	return msgs;
 		}
 		// validate associated sample names
 		if (StringUtils.isEmpty(sampleId)
 				&& !validateAssociatedSamples(request, publicationBean)) {
 			msgs.add(PropertyUtil.getProperty("publication", "error.submitPublication.invalidSample"));
 		//	return false;
-			return msgs;
+		//	return msgs;
 		}
 
 		/**
@@ -744,8 +744,8 @@ public class PublicationBO extends BaseAnnotationBO{
 		return publicationService;
 	}
 
-	public void saveAccess(PublicationForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public List<String> saveAccess(PublicationForm form,
+			HttpServletRequest request)
 			throws Exception {
 		if (!validateToken(request)) {
 	//		return mapping.findForward("publicationMessage");
@@ -756,7 +756,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		AccessibilityBean theAccess = publication.getTheAccess();
 		List<String> errors = super.validateAccess(request, theAccess);
 		if (errors.size() > 0) {
-			return; //TODO: saveAccess() should return an object that contains a list of errors;
+			return errors; //TODO: saveAccess() should return an object that contains a list of errors;
 		}
 
 		PublicationService service = this.setServicesInSession(request);
@@ -764,7 +764,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		if (publication.getDomainFile().getId() == null
 				|| publication.getDomainFile().getId() != null
 				&& publication.getDomainFile().getId() == 0) {
-			this.savePublication(request, form);
+			errors = this.savePublication(request, form);
 		}
 		// if publication is public, the access is not public, retract
 		// public
@@ -795,6 +795,7 @@ public class PublicationBO extends BaseAnnotationBO{
 			request.setAttribute("sampleId", form.getSampleId());
 		}
 //		return setupUpdate(mapping, form, request, response);
+		return errors;
 	}
 
 	protected void setAccesses(HttpServletRequest request,

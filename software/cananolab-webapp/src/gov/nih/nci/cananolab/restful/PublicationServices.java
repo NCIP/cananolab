@@ -375,4 +375,30 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		}
 	}
 	
+	@POST
+	@Path("/saveAccess")
+	@Produces ("application/json")
+	public Response saveAccess(@Context HttpServletRequest httpRequest, PublicationForm form) {
+	
+		try {
+			PublicationBO pubBO = 
+					 (PublicationBO) applicationContext.getBean("publicationBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			List<String> msgs = pubBO.saveAccess(form, httpRequest);
+			 
+			
+			return Response.ok(msgs).build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while saving the access to publication " + e.getMessage()).build();
+		}
+	}
+	
+	
 }
