@@ -37,7 +37,7 @@ public class TabGenerationBO {
 				
 				tabWithLink = new String[2];
 				tabWithLink[0] = "PUBLICATIONS";
-				tabWithLink[1] =  urlBase + "managePublication.do";;
+				tabWithLink[1] =  urlBase + "#/managePublications";;
 				tabs.add(tabWithLink);
 				
 			}
@@ -76,7 +76,7 @@ public class TabGenerationBO {
 
 			tabWithLink = new String[2];
 			tabWithLink[0] = "PUBLICATIONS";
-			tabWithLink[1] =  urlBase + "managePublication.do";;
+			tabWithLink[1] =  urlBase + "#/managePublications";;
 			tabs.add(tabWithLink);
 			
 			if (userBean.isAdmin()) {
