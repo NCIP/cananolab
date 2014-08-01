@@ -118,12 +118,15 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");
 
-			SampleBean sampleBean = sampleBO.summaryView(sampleId,httpRequest);
-			SimpleSampleBean view = new SimpleSampleBean();
-			view.transferSampleBeanForSummaryView(sampleBean);
+			SimpleSampleBean sampleBean = sampleBO.summaryView(sampleId,httpRequest);
 			
-			//return Response.ok(view).build();
-			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return (sampleBean.getErrors().size() == 0) ?
+					Response.ok(sampleBean).header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build()
+					:
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
 			
 		} catch (Exception e) {
 			//return Response.ok("Error while viewing the search results").build();
@@ -247,7 +250,10 @@ public class SampleServices {
 
 		try {
 			SampleEditGeneralBean sampleBean = sampleBO.summaryEdit(sampleId,httpRequest);
-			return Response.ok(sampleBean).build();
+			return (sampleBean.getErrors().size() == 0) ?
+					Response.ok(sampleBean).build()
+					:
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
 		} 
 
 		catch (Exception ioe) {

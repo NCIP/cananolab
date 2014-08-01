@@ -12,6 +12,12 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Class to hold publication data and it's associated samples' basic info (sampleId and sampleName currently)
+ * 
+ * @author yangs8
+ *
+ */
 public class SimplePublicationWithSamplesBean {
 	private static Logger logger = Logger.getLogger(SimplePublicationWithSamplesBean.class);
 
