@@ -13,7 +13,7 @@
       </tr>
     </table>
 <br />{{data}}
-<table class="table publication" width="100%">
+<table class="table publication" width="100%" cellpadding="0" cellspacing="0">
 	<tr>
 		<th>Publication REF</th>
 		<th>Authors</th>
@@ -26,13 +26,32 @@
 	</tr>
 	<tr>
 		<td class="columnOne">Publication REF</td>
-		<td>Authors</td>
-		<td>Title</td>
-		<td>Sample Composition</td>
-		<td>Sample Characterization</td>
-		<td>Journal</td>
-		<td>Year</td>
-		<td>Vol(lss)Pg</td>
+		<td>
+			<div>{{data.authors}}</div>
+		</td>
+		<td>
+			<div>{{data.title}}</div>
+		</td>
+		<td>Samples curated in caNanoLab:
+			<div ng-repeat="(key,val) in data.samples">
+				<a href="#/composition?sampleId={{key}}">{{val}}</a>
+			</div>
+		</td>
+		<td>Samples curated in caNanoLab:
+			<div ng-repeat="(key,val) in data.samples">
+				<a href="#/characterization?sampleId={{key}}">{{val}}</a>
+			</div>
+		</td>
+		<td>{{data.journal}}</td>
+		<td>{{data.year}}</td>
+		<td>{{data.volumn}}</td>
+	</tr>
+	<tr>
+		<td colspan="8" class="columnOne abstract heading">Abstract</td>
+	</tr>
+	<tr>
+		<td colspan="8" class="columnOne abstract body">{{data.abstract}}</td>
+	</tr>	
 </table> 
 
 </div>

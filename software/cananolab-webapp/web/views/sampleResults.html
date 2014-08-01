@@ -13,7 +13,7 @@
       </tr>
     </table>
 <br />
-<table ng-table="tableParams" class="table sample">
+<table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
 		<td data-title="''" width="5%" class="columnOne">
 				<a href="#/editSample?sampleId={{row.sampleId}}">Edit</a>(test only)

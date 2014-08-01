@@ -22,7 +22,7 @@ app.controller('CharacterizationCtrl', function (sampleService,utilsService,navi
 
     if ($routeParams.sampleId) {
       $scope.sampleId.data = $routeParams.sampleId;
-    };    
+    };
 
     $scope.select = function(tab) {
         var size = 0, key;
@@ -47,7 +47,7 @@ app.controller('CharacterizationCtrl', function (sampleService,utilsService,navi
     
     $scope.loader = true;
     $http({method: 'GET', url: '/caNanoLab/rest/sample/characterizationView?sampleId='+$scope.sampleId.data}).
-    // $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/sample/characterizationView?sampleId=20917507'}).
+    // $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/sample/characterizationView?sampleId='+$scope.sampleId.data}).
     success(function(data, status, headers, config) {
       $scope.data = data;
 	 $scope.loader = false;      

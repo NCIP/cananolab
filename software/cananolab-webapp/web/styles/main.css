@@ -1535,7 +1535,7 @@ table.table {
 
     table.table td {
         border-right:1px solid #ccc;
-        vertical-align:top;
+        vertical-align:top;        padding:5px;
     }
 
     table.table.publication td {
@@ -1543,7 +1543,7 @@ table.table {
     }   
 
     table.table.publication th {
-        padding:5px;
+        padding:5px;        
         text-align:left;
     }        
 
@@ -1552,7 +1552,16 @@ table.table {
         vertical-align:top;
     }
 
-    table.table th {
+    table.table td.columnOne.abstract.heading{
+        border-top:1px solid #ccc;
+        background-color:#eee;
+        font-weight:700;
+    }    
+
+    table.table td.columnOne.abstract.body{
+    }        
+
+    table.table th {border-right:1px solid #ccc;padding:2px;
         background-color:#0089BB;
         color:#fff;
     }
