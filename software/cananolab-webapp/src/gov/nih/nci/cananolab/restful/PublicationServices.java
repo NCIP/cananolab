@@ -269,7 +269,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		}
 	}
 	
-	@GET
+	@POST
 	@Path("/submitPublication")
 	@Produces ("application/json")
 	public Response submitPublication(@Context HttpServletRequest httpRequest, PublicationForm form) {
