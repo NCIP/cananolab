@@ -9,6 +9,7 @@ var app = angular.module('angularApp')
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleId = sampleService.sampleId;
     $scope.scratchPad = sampleService.scratchPad;
+    $scope.master = {};
 
     var editSampleData = {"editSampleData":{"dirty": false}};
     $scope.scratchPad = editSampleData;
@@ -89,6 +90,7 @@ var app = angular.module('angularApp')
         });
     }
 
+// * Page Change Events *
 //Add keyword
     $scope.addKeyword=function(){
         if( Object.prototype.toString.call( $scope.sampleData.keywords ) === '[object Array]' ) {
@@ -102,20 +104,49 @@ var app = angular.module('angularApp')
             $scope.scratchPad.editSampleData.dirty = true;
         }
     };
-//Remove keyword
     $scope.removeKeyword = function(item) {
-      var index = $scope.sampleData.keywords.indexOf(item)
-      $scope.sampleData.keywords.splice(index, 1);
+        var index = $scope.sampleData.keywords.indexOf(item)
+        $scope.sampleData.keywords.splice(index, 1);
+        $scope.scratchPad.editSampleData.dirty = true;
     }
+
+    $scope.changedSampleName = function() {
+        $scope.scratchPad.editSampleData.dirty = true;
+    };
+
+// * editSample Button Bar
     $scope.delete = function() {
 
     };
     $scope.copy = function() {
-
+        //Submit a copy of $root.master with the samplName changed
+        $modal.open({
+            templateUrl: 'views/sample/edit/modal/copySample.html',
+            backdrop: true,
+            windowClass: 'modal',
+            controller: function ($scope, $modalInstance, sampleName) {
+                $scope.copyOfSampleData = angular.copy($scope.master);
+                $scope.copyOfSampleData.sampleName = sampleName;
+                $scope.submit = function () {
+                    console.log('Submiting user info.');
+                    console.log(user);
+                    $modalInstance.dismiss('cancel');
+                }
+                $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                };
+            },
+            resolve: {
+                copyOfSampleData: function () {
+                    return $scope.copyOfSampleData;
+                }
+            }
+        });
     };
     $scope.reset = function() {
-        $location.path("/editSample").replace();
-        $location.search('sampleId', $scope.sampleId);
+         $scope.sampleData = angular.copy($scope.master);
+        //$location.path("/editSample").replace();
+        //$location.search('sampleId', $scope.sampleId);
     };
     $scope.update = function() {
 
@@ -175,5 +206,23 @@ var app = angular.module('angularApp')
         });
     };
 
-
+	$scope.submitData = function(isValid) {
+		$scope.submitted = true;
+		if (isValid) {
+			//$http({method: 'POST', url: '/caNanoLab/rest/security/register', data: {"title":$scope.title,"firstName":$scope.firstName,"lastName":$scope.lastName,"email":$scope.email,"phone":$scope.phone,"organization":$scope.organization,"fax":$scope.fax,"comment":$scope.comment,"registerToUserList":$scope.registerToUserList}, headers: {'Content-Type':'application/json'}}).
+	    	  $http({method: 'GET', url: '/caNanoLab/rest/security/register', params: {"title":$scope.title,"firstName":$scope.firstName,"lastName":$scope.lastName,"email":$scope.email,"phone":$scope.phone,"organization":$scope.organization,"fax":$scope.fax,"comment":$scope.comment,"registerToUserList":$scope.registerToUserList}}).
+			    success(function(data, status, headers, config) {
+			      // this callback will be called asynchronously
+			      // when the response is available
+			    	$scope.message="Your registration request has been sent to the administrator for assignment of your User ID and Password. You should receive this information via e-mail within one business day from time of submission.";
+			    }).
+			    error(function(data, status, headers, config) {
+			      // called asynchronously if an error occurs
+			      // or server returns response with an error status.
+			    	$scope.message=data;
+	    	});
+		};
+	};
+    $scope.master = angular.copy($scope.sampleData);
+    $scope.reset();
 });

@@ -35,282 +35,279 @@
 
 <!-- Application  -->
 <div ng-show="editSampleForm">
-    <table  width="100%" align="center" class="submissionView" summary="layout">
-		<tbody>
-            <!-- Sample Name -->
-            <tr>
-                <td class="cellLabel" width="20%">
-                    <label for="sampleName">Sample Name *</label>
-                </td>
-                <td>
-                    <input type="text"  size="80" value='{{sampleData.sampleName}}' id="sampleName">
-                        <label for="sampleId" style="display:none">Sample ID</label>
-                        <input type="hidden"  value={{sampleData.sampleId}} id="sampleId">
+    <form name="sampleForm" ng-submit="submitData(sampleForm.$valid)" novalidate="" id="sampleForm">
 
-                </td>
-            </tr>
-            <!-- Point of Contact -->
+        <table  width="100%" align="center" class="submissionView" summary="layout">
+            <tbody>
+                <!-- Sample Name -->
+                <tr>
+                    <td class="cellLabel" width="20%">
+                        <label for="sampleName">Sample Name *</label>
+                    </td>
+                    <td>
+                        <input id="sampleName" ng-model="sampleData.sampleName" ng-change="changedSampleName()" type="text"  size="80" required pattern=".{3,}" title="3 characters minimum" >
+                        <span ng-show="registerForm.firstName.$invalid && submitted" class="help-block">Enter a valid Sample Name.</span>
+                    </td>
+                </tr>
+                <!-- Point of Contact -->
+                <tr>
+                    <td class="cellLabel">
+                        Point of Contact *
+                    </td>
+                    <td>
+                        <span ng-click="openPointOfContactModal" class="btn btn-primary btn-xxs">Add</span>
+                    </td>
+                </tr>
+                <!-- Point of Contact Data -->
+                <tr>
+                    <td colspan="2">
+                        <table class="editTableWithGrid" width="95%" align="center">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        Primary Contact?
+                                    </th>
+                                    <th>
+                                        Contact Person
+                                    </th>
+                                    <th>
+                                        Organization
+                                    </th>
+                                    <th>
+                                        Role
+                                    </th>
+                                    <th></th>
+                                </tr>
+
+                                <tr ng-repeat="poc in sampleData.pointOfContacts">
+                                    <td>{{returnUserReadableBoolean(poc.primaryContact)}}</td>
+                                    <td ng-bind-html="poc.contactPerson"></td>
+                                    <td ng-bind-html="poc.organizationName"></td>
+                                    <td>{{poc.role}}</td>
+                                    <td>
+                                        <div align="right">
+                                            <button ng-click="openPointOfContact(poc)" class="btn btn-primary btn-xxs">Edit</button>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr> <!-- End of Point of Contact -->
+
+                <!-- Keywords -->
+                <tr>
+                    <td class="cellLabel">
+                        <label for="keywords">Keywords</label>
+                    </td>
+                    <td>
+                        <ul id="keywords" class="list-group keywords" >
+                            <li class="list-group-item" ng-repeat="keyword in sampleData.keywords track by $index" ng-click="removeKeyword(keyword)"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}" title="Remove keyword">
+                               <!-- <span class="glyphicon glyphicon-tag"></span> --> {{keyword}}
+                            </li>
+                        </ul>
+                        <input id="newKeyword" type="text" ng-model="newKeyword">
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="addKeyword()">Add</button>
+                   </td>
+                </tr>
             <tr>
-                <td class="cellLabel">
-                    Point of Contact *
+                <td class="cellLabel" width="15%" id="addAccessLabel">
+                    Access to the Sample
                 </td>
                 <td>
-                    <span ng-click="openPointOfContactModal" class="btn btn-primary btn-xxs">Add</span>
+                    <button ng-click="openAccessToSampleModal" class="btn btn-primary btn-xxs">Add</button>
                 </td>
             </tr>
-		    <!-- Point of Contact Data -->
-			<tr>
-				<td colspan="2">
-                    <table class="editTableWithGrid" width="95%" align="center">
-                        <tbody>
-                            <tr>
-                                <th>
-                                    Primary Contact?
+            <tr>
+                <td colspan="2">
+                        <table class="editTableWithGrid" width="95%" align="center">
+                            <tbody><tr>
+                                <th width="40%" scope="col">
+                                    Group Name
                                 </th>
-                                <th>
-                                    Contact Person
-                                </th>
-                                <th>
-                                    Organization
-                                </th>
-                                <th>
-                                    Role
+                                <th width="55%" scope="col">
+                                    Access
                                 </th>
                                 <th></th>
                             </tr>
 
-                            <tr ng-repeat="poc in sampleData.pointOfContacts">
-                                <td>{{returnUserReadableBoolean(poc.primaryContact)}}</td>
-                                <td ng-bind-html="poc.contactPerson"></td>
-                                <td ng-bind-html="poc.organizationName"></td>
-                                <td>{{poc.role}}</td>
-                                <td>
-                                    <div align="right">
-                                        <button ng-click="openPointOfContact(poc)" class="btn btn-primary btn-xxs">Edit</button>
+                                <tr valign="top">
+                                    <td>
+                                        Curator
+                                    </td>
+                                    <td>
+                                        read update delete
+                                    </td>
+                                    <td><div align="right">
+                                        </div>
+                                    </td>
+                                </tr>
 
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-				</td>
-			</tr> <!-- End of Point of Contact -->
+                                <tr valign="top">
+                                    <td>
+                                        Public
+                                    </td>
+                                    <td>
+                                        read
+                                    </td>
+                                    <td>
+                                        <div align="right">
+                                            <button ng-click="openAccessToSampleModal" class="btn btn-primary btn-xxs">Edit</button>
+                                        </div>
+                                    </td>
+                                </tr>
 
-            <!-- Keywords -->
-            <tr>
-                <td class="cellLabel">
-                    <label for="keywords">Keywords</label>
-                </td>
-                <td>
-                    <ul id="keywords" class="list-group keywords" >
-                        <li class="list-group-item" ng-repeat="keyword in sampleData.keywords track by $index" ng-click="removeKeyword(keyword)"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}" title="Remove keyword">
-                           <!-- <span class="glyphicon glyphicon-tag"></span> --> {{keyword}}
-                        </li>
-                    </ul>
-                    <input id="newKeyword" type="text" ng-model="newKeyword">
-                    <button type="button" class="btn btn-primary btn-xs" ng-click="addKeyword()">Add</button>
-<!--
-                    <textarea id="keywords"  cols="80">{{keywords}}
-                    </textarea>
--->
+                        </tbody></table>
+                        <br>
+
                 </td>
             </tr>
-        <tr>
-            <td class="cellLabel" width="15%" id="addAccessLabel">
-                Access to the Sample
-            </td>
-            <td>
-                <button ng-click="openAccessToSampleModal" class="btn btn-primary btn-xxs">Add</button>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                    <table class="editTableWithGrid" width="95%" align="center">
-                        <tbody><tr>
-                            <th width="40%" scope="col">
-                                Group Name
-                            </th>
-                            <th width="55%" scope="col">
-                                Access
-                            </th>
-                            <th></th>
-                        </tr>
-
-                            <tr valign="top">
-                                <td>
-                                    Curator
-                                </td>
-                                <td>
-                                    read update delete
-                                </td>
-                                <td><div align="right">
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr valign="top">
-                                <td>
-                                    Public
-                                </td>
-                                <td>
-                                    read
-                                </td>
-                                <td>
-                                    <div align="right">
-                                        <button ng-click="openAccessToSampleModal" class="btn btn-primary btn-xxs">Edit</button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                    </tbody></table>
-                    <br>
-
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-
-
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-
-
-                <div style="display: none;" id="newAccess">
-                    <table class="subSubmissionView" width="85%" align="center" summary="layout">
-                        <tbody><tr>
-                            <th colspan="4">
-                                Access Information
-                            </th>
-                        </tr>
-                        <tr>
-                            <td class="cellLabel" width="25%">
-                                Access by *
-                            </td>
-                            <td colspan="3">
-                                <input type="radio" name="sampleBean.theAccess.accessBy" value="group" checked="checked" onclick="displayAccessNameLabel();" id="byGroup">
-                                <label for="byGroup">Collaboration Group</label>
-                                <input type="radio" name="sampleBean.theAccess.accessBy" value="user" onclick="displayAccessNameLabel();" id="byUser">
-                                <label for="byUser">User&nbsp;&nbsp;</label>
-
-                                    <input type="radio" name="sampleBean.theAccess.accessBy" value="public" onclick="displayAccessNameLabel();" id="byPublic">
-                                <label for="byPublic">Public</label>
-
-                            </td>
-                        </tr>
-                        <tr>
-
-                            <td class="cellLabel" id="accessNameLabel">Collaboration Group Name *</td>
-                            <td><label for="groupName" style="display:none">Group Name</label>
-                                <input type="text" name="sampleBean.theAccess.groupName" value="" id="groupName">
-                                <label for="userName" style="display:none">Login Name</label>
-                                <input type="text" name="sampleBean.theAccess.userBean.loginName" value="" id="userName" style="display: none;">
-                            </td>
-                            <td>
-                                <a href="#userNameField" id="browseIcon" onclick="javascript:showMatchedGroupOrUserDropdown('lijowskim:COPY')"><img src="images/icon_browse.jpg" align="middle" alt="search existing collaboration groups" border="0"></a>
-                            </td>
-                            <td width="50%">
-                                <table class="invisibleTable">
-                                    <tbody><tr>
-                                        <td>
-                                            <img src="images/ajax-loader.gif" border="0" class="counts" id="loaderImg" style="display: none" alt="collaboration groups or user login names">
-                                        </td>
-                                        <td>
-                                            <label for="matchedUserNameSelect" style="display:none" id="userNameSelectLabel">Select a user</label>
-                                            <select name="sampleBean.theAccess.userBean.loginName" size="10" onclick="updateUserLoginName()" id="matchedUserNameSelect" style="display: none"></select>
-                                            <label for="matchedGroupNameSelect" style="display:none">Select a group</label>
-                                            <select name="sampleBean.theAccess.groupName" size="10" onclick="updateGroupName()" id="matchedGroupNameSelect" style="display: none"></select>
-                                        </td>
-                                        <td>
-                                            <a id="cancelBrowse" style="display: none" href="javascript:cancelBrowseSelect();">Cancel</a>
-                                        </td>
-                                    </tr>
-                                </tbody></table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="cellLabel" width="10%">
-                                Access to the <label for="roleName">Sample *</label>
-                            </td>
-                            <td colspan="2">
-                                <select name="sampleBean.theAccess.roleName" id="roleName"><option></option>
-                                    <option value="R">read</option>
-    <option value="CURD">read update delete</option></select>
-                            </td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input id="deleteAccess" type="button" value="Remove" onclick="javascript:deleteTheAccess('sampleForm', 'sample', 4);" style="display: none;">
-                            </td>
-                            <td align="right" colspan="3">
-                                <div align="right">
-                                    <input type="hidden" name="sampleBean.theAccess.roleName" value="" id="hiddenRoleName">
-                                    <input type="hidden" name="sampleBean.theAccess.groupName" value="" id="hiddenGroupName">
-                                    <input type="button" value="Save" onclick="javascript:addAccess('sampleForm', 'sample', 4, true);">
-                                    <input type="button" value="Cancel" onclick="javascript:clearAccess('sampleForm', 'Sample');closeSubmissionForm('Access');">
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody></table>
-                </div>
-            </td>
-        </tr>
-
-
             <tr>
+                <td colspan="2">
 
 
-                        <td class="cellLabel">
-                        Data Availability Metrics
-                        </td>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
 
-                    <td>
-                        <button ng-click="openGenerateModal" class="btn btn-primary btn-xxs">Generate</button>
-                    </td>
-                </tr>
+
+                    <div style="display: none;" id="newAccess">
+                        <table class="subSubmissionView" width="85%" align="center" summary="layout">
+                            <tbody><tr>
+                                <th colspan="4">
+                                    Access Information
+                                </th>
+                            </tr>
+                            <tr>
+                                <td class="cellLabel" width="25%">
+                                    Access by *
+                                </td>
+                                <td colspan="3">
+                                    <input type="radio" name="sampleBean.theAccess.accessBy" value="group" checked="checked" onclick="displayAccessNameLabel();" id="byGroup">
+                                    <label for="byGroup">Collaboration Group</label>
+                                    <input type="radio" name="sampleBean.theAccess.accessBy" value="user" onclick="displayAccessNameLabel();" id="byUser">
+                                    <label for="byUser">User&nbsp;&nbsp;</label>
+
+                                        <input type="radio" name="sampleBean.theAccess.accessBy" value="public" onclick="displayAccessNameLabel();" id="byPublic">
+                                    <label for="byPublic">Public</label>
+
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td class="cellLabel" id="accessNameLabel">Collaboration Group Name *</td>
+                                <td><label for="groupName" style="display:none">Group Name</label>
+                                    <input type="text" name="sampleBean.theAccess.groupName" value="" id="groupName">
+                                    <label for="userName" style="display:none">Login Name</label>
+                                    <input type="text" name="sampleBean.theAccess.userBean.loginName" value="" id="userName" style="display: none;">
+                                </td>
+                                <td>
+                                    <a href="#userNameField" id="browseIcon" onclick="javascript:showMatchedGroupOrUserDropdown('lijowskim:COPY')"><img src="images/icon_browse.jpg" align="middle" alt="search existing collaboration groups" border="0"></a>
+                                </td>
+                                <td width="50%">
+                                    <table class="invisibleTable">
+                                        <tbody><tr>
+                                            <td>
+                                                <img src="images/ajax-loader.gif" border="0" class="counts" id="loaderImg" style="display: none" alt="collaboration groups or user login names">
+                                            </td>
+                                            <td>
+                                                <label for="matchedUserNameSelect" style="display:none" id="userNameSelectLabel">Select a user</label>
+                                                <select name="sampleBean.theAccess.userBean.loginName" size="10" onclick="updateUserLoginName()" id="matchedUserNameSelect" style="display: none"></select>
+                                                <label for="matchedGroupNameSelect" style="display:none">Select a group</label>
+                                                <select name="sampleBean.theAccess.groupName" size="10" onclick="updateGroupName()" id="matchedGroupNameSelect" style="display: none"></select>
+                                            </td>
+                                            <td>
+                                                <a id="cancelBrowse" style="display: none" href="javascript:cancelBrowseSelect();">Cancel</a>
+                                            </td>
+                                        </tr>
+                                    </tbody></table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="cellLabel" width="10%">
+                                    Access to the <label for="roleName">Sample *</label>
+                                </td>
+                                <td colspan="2">
+                                    <select name="sampleBean.theAccess.roleName" id="roleName"><option></option>
+                                        <option value="R">read</option>
+        <option value="CURD">read update delete</option></select>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><input id="deleteAccess" type="button" value="Remove" onclick="javascript:deleteTheAccess('sampleForm', 'sample', 4);" style="display: none;">
+                                </td>
+                                <td align="right" colspan="3">
+                                    <div align="right">
+                                        <input type="hidden" name="sampleBean.theAccess.roleName" value="" id="hiddenRoleName">
+                                        <input type="hidden" name="sampleBean.theAccess.groupName" value="" id="hiddenGroupName">
+                                        <input type="button" value="Save" onclick="javascript:addAccess('sampleForm', 'sample', 4, true);">
+                                        <input type="button" value="Cancel" onclick="javascript:clearAccess('sampleForm', 'Sample');closeSubmissionForm('Access');">
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                </td>
+            </tr>
+
 
                 <tr>
-                <td colspan="2" align="center">
 
-                    <div style="display:none" id="dataAvailability"></div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 
-    <div class="editSampleButtonBar">
-        <div class="btn-group pull-left">
-            <button ng-click="reset()" class='btn btn-danger'  ng-disabled="!scratchPad.editSampleData.dirty">Delete</button>
-            <button ng-click="update()" class='btn btn-default' ng-disabled="!scratchPad.editSampleData.dirty">Copy</button>
+                            <td class="cellLabel">
+                            Data Availability Metrics
+                            </td>
+
+                        <td>
+                            <button ng-click="openGenerateModal" class="btn btn-primary btn-xxs">Generate</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                    <td colspan="2" align="center">
+
+                        <div style="display:none" id="dataAvailability"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="editSampleButtonBar">
+            <div class="btn-group pull-left">
+                <button ng-click="reset()" class='btn btn-danger'>Delete</button>
+                <button ng-click="update()" class='btn btn-default'>Copy</button>
+            </div>
+            <div class="btn-group pull-right">
+                <button ng-click="reset()" class='btn btn-default' ng-disabled="!scratchPad.editSampleData.dirty">Reset</button>
+                <button ng-click="update()" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty">Update</button>
+            </div>
         </div>
-        <div class="btn-group pull-right">
-            <button ng-click="reset()" class='btn btn-default' ng-disabled="!scratchPad.editSampleData.dirty">Reset</button>
-            <button ng-click="update()" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty">Update</button>
-        </div>
-    </div>
 
-    <br>
-    <!--
-    <table width="100%" class="invisibleTable" summary="layout">
-        <tbody>
-            <tr class="btn-group">
-                <td align="left" width="600">
-                    <div class="btn-group pull-left">
-                        <button ng-click="reset()" class='btn btn-danger' ng-disabled='dataChanged < 2'>Delete</button>
-                        <button ng-click="update()" class='btn btn-default' ng-disabled='dataChanged < 2'>Copy</button>
-                    </div>
-                </td>
-                <td align="right" width="300">
-                    <div class="btn-group pull-right">
-                        <button ng-click="reset()" class='btn btn-default' ng-disabled='dataChanged < 2'>Reset</button>
-                        <button ng-click="update()" class='btn btn-primary' ng-disabled='dataChanged < 2'><span class="glyphicon glyphicon-save">Update</span></button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    -->
+        <br>
+        <!--
+        <table width="100%" class="invisibleTable" summary="layout">
+            <tbody>
+                <tr class="btn-group">
+                    <td align="left" width="600">
+                        <div class="btn-group pull-left">
+                            <button ng-click="reset()" class='btn btn-danger' ng-disabled='dataChanged < 2'>Delete</button>
+                            <button ng-click="update()" class='btn btn-default' ng-disabled='dataChanged < 2'>Copy</button>
+                        </div>
+                    </td>
+                    <td align="right" width="300">
+                        <div class="btn-group pull-right">
+                            <button ng-click="reset()" class='btn btn-default' ng-disabled='dataChanged < 2'>Reset</button>
+                            <button ng-click="update()" class='btn btn-primary' ng-disabled='dataChanged < 2'><span class="glyphicon glyphicon-save">Update</span></button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        -->
+    </form>
 </div>
 
 <div id="loader" class="sample offset" ng-show="loader">
