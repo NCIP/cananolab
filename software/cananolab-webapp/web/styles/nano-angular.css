@@ -6,11 +6,10 @@
 .keywords li:hover {
     background:lightcoral;
     cursor: pointer;
-    cursor:hand;
     font-weight:bolder;
 }
 .keywords li:hover::before {
-  /* content: "\e014"; */
+  /* content: "\e014";   Would like to use the glyphicon for remove */
     content: "x ";
 }
 
@@ -25,4 +24,28 @@ span.labelAsBtn:hover {
     border-color: #285e8e;
     color: #ffffff;
     cursor:pointer;
+}
+
+.btn-xxs {
+  padding:.2em .6em .3em;
+  font-size: 75%;
+  line-height: 1;
+  border-radius: .25em;
+  vertical-align: baseline;
+}
+
+#newKeyword {
+    width: 238px;
+    margin-bottom: 15px;
+}
+
+/* Animate */
+.animate-enter {
+    -webkit-transition: 1s linear all; /* Chrome */
+    transition: 1s linear all;
+    opacity: 0;
+}
+
+.animate-enter.animate-enter-active {
+    opacity: 1;
 }

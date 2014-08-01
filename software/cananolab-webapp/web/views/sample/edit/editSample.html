@@ -55,7 +55,7 @@
                     Point of Contact *
                 </td>
                 <td>
-                    <span ng-click="openPointOfContactModal" class="label label-primary labelAsBtn">Add</span>
+                    <span ng-click="openPointOfContactModal" class="btn btn-primary btn-xxs">Add</span>
                 </td>
             </tr>
 		    <!-- Point of Contact Data -->
@@ -86,7 +86,7 @@
                                 <td>{{poc.role}}</td>
                                 <td>
                                     <div align="right">
-                                        <span ng-click="openPointOfContact(poc)" class="label label-primary labelAsBtn">Edit</span>
+                                        <button ng-click="openPointOfContact(poc)" class="btn btn-primary btn-xxs">Edit</button>
 
                                     </div>
                                 </td>
@@ -103,11 +103,11 @@
                 </td>
                 <td>
                     <ul id="keywords" class="list-group keywords" >
-                        <li class="list-group-item" ng-repeat="keyword in sampleData.keywords track by $index" ng-click="removeKeyword(keyword)" title="Remove keyword">
+                        <li class="list-group-item" ng-repeat="keyword in sampleData.keywords track by $index" ng-click="removeKeyword(keyword)"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}" title="Remove keyword">
                            <!-- <span class="glyphicon glyphicon-tag"></span> --> {{keyword}}
                         </li>
                     </ul>
-                    <input type="text" ng-model="newKeyword">
+                    <input id="newKeyword" type="text" ng-model="newKeyword">
                     <button type="button" class="btn btn-primary btn-xs" ng-click="addKeyword()">Add</button>
 <!--
                     <textarea id="keywords"  cols="80">{{keywords}}
@@ -120,7 +120,7 @@
                 Access to the Sample
             </td>
             <td>
-                <span ng-click="openAccessToSampleModal" class="label label-primary labelAsBtn">Add</span>
+                <button ng-click="openAccessToSampleModal" class="btn btn-primary btn-xxs">Add</button>
             </td>
         </tr>
         <tr>
@@ -157,7 +157,7 @@
                                 </td>
                                 <td>
                                     <div align="right">
-                                        <span ng-click="openAccessToSampleModal" class="label label-primary labelAsBtn">Edit</span>
+                                        <button ng-click="openAccessToSampleModal" class="btn btn-primary btn-xxs">Edit</button>
                                     </div>
                                 </td>
                             </tr>
@@ -266,7 +266,7 @@
                         </td>
 
                     <td>
-                        <span ng-click="openGenerateModal" class="label label-primary labelAsBtn">Generate</span>
+                        <button ng-click="openGenerateModal" class="btn btn-primary btn-xxs">Generate</button>
                     </td>
                 </tr>
 
@@ -278,14 +278,15 @@
             </tr>
         </tbody>
     </table>
+
     <div class="editSampleButtonBar">
         <div class="btn-group pull-left">
-            <button ng-click="reset()" class='btn btn-danger' ng-disabled='dataChanged < 2'>Delete</button>
-            <button ng-click="update()" class='btn btn-default' ng-disabled='dataChanged < 2'>Copy</button>
+            <button ng-click="reset()" class='btn btn-danger'  ng-disabled="!scratchPad.editSampleData.dirty">Delete</button>
+            <button ng-click="update()" class='btn btn-default' ng-disabled="!scratchPad.editSampleData.dirty">Copy</button>
         </div>
         <div class="btn-group pull-right">
-            <button ng-click="reset()" class='btn btn-default' ng-disabled='dataChanged < 2'>Reset</button>
-            <button ng-click="update()" class='btn btn-primary' ng-disabled='dataChanged < 2'><span class="glyphicon glyphicon-save">Update</span></button>
+            <button ng-click="reset()" class='btn btn-default' ng-disabled="!scratchPad.editSampleData.dirty">Reset</button>
+            <button ng-click="update()" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty">Update</button>
         </div>
     </div>
 

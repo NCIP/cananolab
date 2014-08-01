@@ -8,8 +8,10 @@ var app = angular.module('angularApp')
     $rootScope.groups = groupService.get();
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleId = sampleService.sampleId;
-    $scope.dataChanaged = 0;
-    $scope.newKeyword = "";
+    $scope.scratchPad = sampleService.scratchPad;
+
+    var editSampleData = {"editSampleData":{"dirty": false}};
+    $scope.scratchPad = editSampleData;
 
     $scope.editSampleForm = false;
     $scope.loader = true;
@@ -87,58 +89,6 @@ var app = angular.module('angularApp')
         });
     }
 
-/*
-  	$.each( keyword, function( key, $scope.sampleData.keywords ) {
-        $scope.scratchPad.keywords.push(keyword+"\n");
-    }
-    for(var keyword; t<temp.length; i++) {
-        values[key].push(parseFloat(temp[i]));
-    }
-*/
-    //Format keywords for textarea add watch if data changes
-    $scope.getKeywords = function() {
-        if( Object.prototype.toString.call( $scope.sampleData.keywords ) === '[object Array]' ) {
-              $scope.keywords = $scope.sampleData.keywords.join("\n");
-        } else {
-              $scope.keywords = "";
-
-        }
-    };
-    $scope.$watch(
-        'sampleData',
-        function() {
-            console.log("dataChanged = "+$scope.dataChanged);
-            $scope.getKeywords();
-            $scope.dataChanged++;
-        },
-        true
-    );
-
-    $scope.getKeywords();
-
-//Modal for Add keyword
-    $scope.openAccessToSampleModal = function(sampleId) {
-
-        var modalInstance = $modal.open({
-            templateUrl: '/views/sample/edit/modal/accessToSampleModal.html',
-            controller: 'keywordModalCtrl',
-            size: 'sm',
-            resolve: {
-            sampleId: function () {
-              return sampleId;
-            },
-            sampleData: function() {
-              return data;
-            }
-          }
-        });
-    };
-/*
-    $scope.updateSampleName = function() {
-        $scope.sampleData.sampleName = what?;
-
-    };
-*/
 //Add keyword
     $scope.addKeyword=function(){
         if( Object.prototype.toString.call( $scope.sampleData.keywords ) === '[object Array]' ) {
@@ -149,6 +99,7 @@ var app = angular.module('angularApp')
         if($scope.newKeyword.length > 1) {
             $scope.sampleData.keywords.push($scope.newKeyword.toUpperCase());
             $scope.newKeyword = "";
+            $scope.scratchPad.editSampleData.dirty = true;
         }
     };
 //Remove keyword
@@ -164,10 +115,65 @@ var app = angular.module('angularApp')
     };
     $scope.reset = function() {
         $location.path("/editSample").replace();
-        $location.search('sampleId', $scope.sampleData.sampleId);
+        $location.search('sampleId', $scope.sampleId);
     };
     $scope.update = function() {
 
     };
+
+// Modal for Access To Sample (1)
+    $scope.openPointOfContactModal = function(sampleId) {
+        alert("You did it.  You click on a button.");
+        var modalInstance = $modal.open({
+            templateUrl: '/views/sample/edit/modal/accessToSampleModal.html',
+            controller: 'keywordModalCtrl',
+            size: 'sm',
+            resolve: {
+            sampleId: function () {
+              return sampleId;
+            },
+            sampleData: function() {
+              return data;
+            }
+          }
+        });
+    };
+
+// Modal for Access To Sample (2)
+    $scope.openAccessToSampleModal = function(sampleId) {
+        alert("You did it.  You click on a button.");
+        var modalInstance = $modal.open({
+            templateUrl: '/views/sample/edit/modal/accessToSampleModal.html',
+            controller: 'keywordModalCtrl',
+            size: 'sm',
+            resolve: {
+            sampleId: function () {
+              return sampleId;
+            },
+            sampleData: function() {
+              return data;
+            }
+          }
+        });
+    };
+
+// Modal for Data Availability (3)
+    $scope.openDataAvailabilityModal = function(sampleId) {
+        alert("You did it.  You click on a button.");
+        var modalInstance = $modal.open({
+            templateUrl: '/views/sample/edit/modal/accessToSampleModal.html',
+            controller: 'keywordModalCtrl',
+            size: 'sm',
+            resolve: {
+            sampleId: function () {
+              return sampleId;
+            },
+            sampleData: function() {
+              return data;
+            }
+          }
+        });
+    };
+
 
 });
