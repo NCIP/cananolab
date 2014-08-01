@@ -29,8 +29,17 @@ public class SimplePublicationWithSamplesBean {
 	String title;
 	String journal;
 	
+	String description;
+	
 	Map<String, String> samples;
 	
+	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Map<String, String> getSamples() {
 		return samples;
 	}
@@ -109,6 +118,7 @@ public class SimplePublicationWithSamplesBean {
 		this.setYear(pubBean.getYear().longValue());
 		this.setJournal(pubBean.getJournalName());
 		this.setVolumn(pubBean.getVolume() + ":" + pubBean.getStartPage() + "-" + pubBean.getEndPage());
+		this.setDescription(pubBean.getDescription());
 		
 		Collection<Author> authors = pubBean.getAuthorCollection();
 		if (authors != null) {
