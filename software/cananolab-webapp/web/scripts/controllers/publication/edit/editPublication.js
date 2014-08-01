@@ -165,7 +165,7 @@ var app = angular.module('angularApp')
 
         $scope.doSubmit = function() {
             $scope.loader = true;
-
+            
             $http({method: 'POST', url: 'http://localhost:8080/caNanoLab/rest/publication/submitPublication',data: $scope.publicationForm}).
                 success(function(data, status, headers, config) {
                     // $rootScope.sampleData = data;
@@ -181,6 +181,7 @@ var app = angular.module('angularApp')
                     // $rootScope.sampleData = data;
                     $scope.loader = false;
                     $scope.message = data;
+                    alert(data);
                 });
         };
 
