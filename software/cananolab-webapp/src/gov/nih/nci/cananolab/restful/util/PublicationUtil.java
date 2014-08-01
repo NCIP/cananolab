@@ -1,11 +1,14 @@
 package gov.nih.nci.cananolab.restful.util;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 public class PublicationUtil {
@@ -14,7 +17,6 @@ public class PublicationUtil {
 			HttpSession session) {
         if (session == null) 
         	return null;
-		
         
 		Map<String, List<String>> typeMap = new HashMap<String, List<String>>();
 		
@@ -41,6 +43,12 @@ public class PublicationUtil {
 		types = (SortedSet<String>) session.getAttribute("functionalizingEntityTypes");
 		if (types != null) 
 			typeMap.put("functionalizingEntityTypes", new ArrayList<String>(types));
+		
+		List<String> csmRoles = new ArrayList<String>();
+		csmRoles.add(AccessibilityBean.R_ROLE_DISPLAY_NAME);
+		csmRoles.add(AccessibilityBean.CURD_ROLE_DISPLAY_NAME);
+		if (types != null) 
+			typeMap.put("csmRoleNames", csmRoles);
 		
 		return typeMap;
 	}
