@@ -11,7 +11,7 @@ package gov.nih.nci.cananolab.restful.security;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.restful.RestfulConstants;
-import gov.nih.nci.cananolab.restful.util.SecurityHelper;
+import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.Constants;
@@ -69,4 +69,27 @@ public class LoginBO  {
 		return RestfulConstants.SUCCESS;
 		
 	}
+	
+	public String updatePassword(String loginId, String password, String newPassword) {
+
+		UserBean user = new UserBean(loginId, password);
+		try {
+			SecurityService service = new SecurityService(
+					AccessibilityBean.CSM_APP_NAME, user);
+			if (user != null) {
+				service.updatePassword(newPassword);				
+//				ActionMessage message = new ActionMessage("message.password");
+//				messages.add("message", message);
+//				saveMessages(request, messages);
+			}
+			return RestfulConstants.SUCCESS;
+		} catch (Exception e) {
+//			ActionMessage msg = new ActionMessage("erros.login.failed");
+//			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+//			saveErrors(request, messages);
+			logger.error("Password change failed. " + e.getMessage());
+			return e.getMessage();
+		}
+	}
+
 }

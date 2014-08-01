@@ -50,11 +50,6 @@ public class RegisterUserBO  {
 		if("checked".equalsIgnoreCase(registerToUserList)){
 			mailService.sendUsersListRegistration( email, firstName + " " + lastName);
 		}
-//		ActionMessages messages = new ActionMessages();
-//		ActionMessage message = new ActionMessage("message.register");
-//		messages.add("message", message);
-//		saveMessages(request, messages);
-		//return RestfulConstants.SUCCESS;
 		
 		return null;
 	}
