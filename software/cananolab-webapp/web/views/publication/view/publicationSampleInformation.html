@@ -5,14 +5,14 @@
          Publication Information (What should be the title)
        </th>
         <td align="right" width="30%">
-        <button class="btn back btn-xs" ng-click="goBack()">Back where does this go</button>            
+        <button class="btn back btn-xs" ng-click="goBack()">Back THIS GOES TO FORM</button>            
           <a class="helpText" href=
           "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help where does this go</a>   <a class=
           "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
         </td>
       </tr>
     </table>
-<br />{{data}}
+<br />
 <table class="table publication" width="100%" cellpadding="0" cellspacing="0">
 	<tr>
 		<th>Publication REF</th>
@@ -53,5 +53,10 @@
 		<td colspan="8" class="columnOne abstract body">{{data.abstract}}</td>
 	</tr>	
 </table> 
-
+  <div id="loader" class="sample offset" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>
 </div>
