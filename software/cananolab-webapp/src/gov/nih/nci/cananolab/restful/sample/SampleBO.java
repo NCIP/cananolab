@@ -30,7 +30,6 @@ import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
-import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleAccessBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleAddressBean;
@@ -55,24 +54,16 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
-//import org.apache.struts.action.ActionForm;
-//import org.apache.struts.action.ActionForward;
-//import org.apache.struts.action.ActionMapping;
-//import org.apache.struts.action.ActionMessage;
-//import org.apache.struts.action.ActionMessages;
-//import org.apache.struts.validator.DynaValidatorForm;
-
 public class SampleBO extends BaseAnnotationBO {
-	// logger
+	
 	private static Logger logger = Logger.getLogger(SampleBO.class);
 
 	private DataAvailabilityService dataAvailabilityService;
 	
-	//String[] availableEntityNames;
-
 	/**
 	 * Save or update POC data.
 	 * 
@@ -147,25 +138,25 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public SampleBean summaryView(String sampleId,
+	public SimpleSampleBean summaryView(String sampleId,
 			HttpServletRequest request)
 			throws Exception {
 		
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
 		this.setServiceInSession(request);
 		SampleForm form = new SampleForm();
 		form.setSampleId(sampleId);
 		
+		SimpleSampleBean simpleBean = new SimpleSampleBean();
+		
 		// "setupSample()" will retrieve and return the SampleBean.
 		SampleBean sampleBean = setupSample(form, request);
-		if (hasNullPOC(request, sampleBean)) {
-		//	return mapping.findForward("sampleMessage");
-			return null;
+		if (hasNullPOC(request, sampleBean, simpleBean.getErrors())) {
+			return simpleBean;
 		}
-		form.setSampleBean(sampleBean);
-	//	return mapping.findForward("summaryView");
+		form.setSampleBean(sampleBean);		
 		
-		return sampleBean;
+		simpleBean.transferSampleBeanForSummaryView(sampleBean);
+		return simpleBean;
 	}
 
 	public String input(SampleForm form,
@@ -216,23 +207,9 @@ public class SampleBO extends BaseAnnotationBO {
 		form.setSampleBean(sampleBean);
 		return sampleBean;
 	}
-	
-	private Boolean hasNullPOC(HttpServletRequest request, SampleBean sampleBean)
-			throws Exception {
-		if (sampleBean.getPrimaryPOCBean().getDomain() == null) {
-			SampleService service = setServiceInSession(request);
-			service.deleteSample(sampleBean.getDomain().getName());
-	
-			if (sampleBean.getPrimaryPOCBean().getDomain() == null) {
-				//errors.add(PropertyUtil.getProperty("sample", "message.sample.null.POC.delete"));
-			}
-			return true;
-		}
-		return false;
-	}
 
 	/**
-	 * Overloaded 
+	 * 
 	 * @param request
 	 * @param sampleBean
 	 * @param errors
@@ -241,15 +218,20 @@ public class SampleBO extends BaseAnnotationBO {
 	 */
 	private Boolean hasNullPOC(HttpServletRequest request, SampleBean sampleBean, List<String> errors)
 			throws Exception {
+		
+		//What's the buss logic here?
+		
 		if (sampleBean.getPrimaryPOCBean().getDomain() == null) {
 			SampleService service = setServiceInSession(request);
 			service.deleteSample(sampleBean.getDomain().getName());
 	
 			if (sampleBean.getPrimaryPOCBean().getDomain() == null) {
 				errors.add(PropertyUtil.getProperty("sample", "message.sample.null.POC.delete"));
-			}
+			} else
+				errors.add("Sample invalid");
 			return true;
 		}
+		
 		return false;
 	}
 
@@ -267,7 +249,13 @@ public class SampleBO extends BaseAnnotationBO {
 			throws Exception {
 	
 		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
-
+		
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (user == null) {
+			sampleEdit.getErrors().add("User session invalidate. Session may have been expired");
+			return sampleEdit;
+		}
+	
 		this.setServiceInSession(request);
 
 		// "setupSample()" will retrieve and return the SampleBean.
@@ -428,13 +416,13 @@ public class SampleBO extends BaseAnnotationBO {
 		if (sample == null) {
 			
 			//////////debug
-			String sampleId = "24063238"; //ncl-49
-			sample = summaryView(sampleId, request);
-			request.getSession().setAttribute("theSample", sample);
+//			String sampleId = "24063238"; //ncl-49
+//			sample = summaryView(sampleId, request);
+//			request.getSession().setAttribute("theSample", sample);
 			////////// debug
 			
 			//for real
-			//throw new Exception("Sample object is not valid");
+			throw new Exception("Sample object is not valid");
 		}
 		
 		Long oldPOCId = thePOC.getDomain().getId();
@@ -813,13 +801,13 @@ public class SampleBO extends BaseAnnotationBO {
 		if (sample == null) {
 			
 			//////////debug
-			String sampleId = "24063238"; //ncl-49
-			sample = summaryView(sampleId, request);
-			request.getSession().setAttribute("theSample", sample);
+//			String sampleId = "24063238"; //ncl-49
+//			sample = summaryView(sampleId, request);
+//			request.getSession().setAttribute("theSample", sample);
 			////////// debug
 			
 			//for real
-			//throw new Exception("Sample object is not valid");
+			throw new Exception("Sample object is not valid");
 		}
 		
 		AccessibilityBean theAccess = sample.getTheAccess();

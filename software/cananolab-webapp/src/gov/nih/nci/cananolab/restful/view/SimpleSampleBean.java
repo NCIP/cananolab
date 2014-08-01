@@ -4,7 +4,9 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
@@ -49,7 +51,16 @@ public class SimpleSampleBean {
 
 	Map<String, String> caNano2MINChar;
 
+	List<String> errors = new ArrayList<String>();
 	
+	public List<String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
+	}
+
 	public String[] getInvivoChars() {
 		return invivoChars;
 	}

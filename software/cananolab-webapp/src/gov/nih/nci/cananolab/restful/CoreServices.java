@@ -108,7 +108,7 @@ public class CoreServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			List<Map<String, String>> value = accManager.getMatchedUsers(dataOwner, searchStr, httpRequest);
+			Map<String, String> value = accManager.getMatchedUsers(dataOwner, searchStr, httpRequest);
 			return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();
