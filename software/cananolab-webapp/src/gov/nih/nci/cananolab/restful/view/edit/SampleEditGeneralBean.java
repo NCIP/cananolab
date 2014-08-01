@@ -6,11 +6,8 @@ import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
-import gov.nih.nci.cananolab.restful.sample.SampleBO;
-import gov.nih.nci.cananolab.restful.util.SampleUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
@@ -439,5 +436,17 @@ public class SampleEditGeneralBean {
 		poc.setOrganization(simpleOrg);
 		poc.setRole(samplePOC.getRole());
 		poc.setId(samplePOC.getId());
+		
+		SimpleAddressBean simpleAddress = new SimpleAddressBean();
+		
+		simpleAddress.setLine1(samplePOC.getOrganization().getStreetAddress1());
+		simpleAddress.setLine2(samplePOC.getOrganization().getStreetAddress2());
+		simpleAddress.setCity(samplePOC.getOrganization().getCity());
+		simpleAddress.setStateProvince(samplePOC.getOrganization().getState());
+		simpleAddress.setCountry(samplePOC.getOrganization().getCountry());
+		simpleAddress.setZip(samplePOC.getOrganization().getPostalCode());
+		
+		poc.setAddress(simpleAddress);
+		
 	}
 }
