@@ -118,7 +118,7 @@ public class AccessibilityManager {
 		return access;
 	}
 
-	public List<Map<String, String>> getMatchedUsers(String dataOwner, String searchStr, HttpServletRequest request)
+	public Map<String, String> getMatchedUsers(String dataOwner, String searchStr, HttpServletRequest request)
 			throws Exception {
 		try {
 
@@ -154,12 +154,10 @@ public class AccessibilityManager {
 
 			//return updatedUsers.toArray(new UserBean[updatedUsers.size()]);
 			Map<String, String> userMap = new HashMap<String, String>();
-			List<Map<String, String>> usersList = new ArrayList<Map<String,String>>();
 			for(UserBean bean : updatedUsers){
 				userMap.put(bean.getLoginName(), bean.getLastName() + " " + bean.getFirstName());
 			}
-			usersList.add(userMap);
-			return usersList;
+			return userMap;
 		} catch (Exception e) {
 			logger.error("Problem getting matched user login names", e);
 			return null;
