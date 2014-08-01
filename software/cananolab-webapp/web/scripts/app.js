@@ -90,7 +90,11 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/publicationSampleInformation', {
         templateUrl: 'views/publication/view/publicationSampleInformation.html',
         controller: 'PublicationSampleInformationCtrl'
-      })        
+      })   
+      .when('/publicationSampleSearch', {
+        templateUrl: 'views/publication/view/publicationSampleSearch.html',
+        controller: 'PublicationSampleSearchCtrl'
+      })              
       .when('/submitPublication', {
             templateUrl: 'views/publication/edit/editPublication.html',
             controller: 'EditPublicationCtrl'
