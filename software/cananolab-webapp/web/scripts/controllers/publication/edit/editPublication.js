@@ -3,6 +3,7 @@ var app = angular.module('angularApp')
 
     .controller('EditPublicationCtrl', function ($rootScope,$scope,$http,$location,$timeout,$routeParams) {
         $scope.publicationForm = {};
+        $scope.accessForm = {};
         //$scope.sampleData = sampleService.sampleData;
         $rootScope.navTree=false;
         //$rootScope.tabs = navigationService.query();
@@ -52,7 +53,7 @@ var app = angular.module('angularApp')
              */
 
             $scope.$on('$viewContentLoaded', function(){
-                $scope.publicationForm = {"sampleTitle":null,"title":"Multifunctional polymeric nano-systems for RNA interference therapy","category":"peer review article","status":"published","pubMedId":null,"digitalObjectId":null,"journalName":"Biological Drug Products: Development and Strategies","year":null,"volume":null,"startPage":null,"endPage":null,"authors":[{"lastName":"Iyer","initial":"AK","firstName":"P",id:"1000"}],"authorId":null,"keywordsStr":"NCL-23","description":null,"researchAreas":null,"uri":null,"uriExternal":false,"fileId":42533664,"sampleId":null,"associatedSampleNames":"","groupAccesses":[{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"},{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"Public","roleName":"R","roleDisplayName":"read","accessBy":"group"}],"userAccesses":[],"protectedData":null,"isPublic":true,"isOwner":false,"ownerName":null,"createdBy":"canano_curator","userDeletable":false};
+                $scope.publicationForm = {"sampleTitle":null,"title":"Multifunctional polymeric nano-systems for RNA interference therapy","category":"peer review article","status":"published","pubMedId":null,"digitalObjectId":null,"journalName":"Biological Drug Products: Development and Strategies","year":null,"volume":null,"startPage":null,"endPage":null,"authors":[{"lastName":"Iyer","initial":"AK","firstName":"P",id:"1000"}],"authorId":null,"keywordsStr":"NCL-23","description":null,"researchAreas":null,"uri":null,"uriExternal":false,"fileId":42533664,"sampleId":null,"associatedSampleNames":"","groupAccesses":[{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":true,"domain":null,"groupNames":[],"displayName":""},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"},{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"Public","roleName":"R","roleDisplayName":"read","accessBy":"group"}],"userAccesses":[],"protectedData":null,"isPublic":true,"isOwner":false,"ownerName":null,"createdBy":"canano_curator","userDeletable":false};
 
                 $scope.groupAccesses = $scope.publicationForm.groupAccesses;
                 $scope.userAccesses = $scope.publicationForm.userAccesses;
@@ -193,6 +194,71 @@ var app = angular.module('angularApp')
             var samplesPerLine = selectedSamples.join("\n");
             $scope.publicationForm.sampleNamesStr = samplesPerLine;
         };
+
+        $scope.fillPubMedInfo = function() {
+/**             $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/retrievePubMedInfo?pubmedId=12345'}).
+             success(function(data, status, headers, config) {
+                 $scope.pubInfo = data;
+             }).
+             error(function(data, status, headers, config) {
+                 $scope.message = data;
+             }); **/
+
+            $scope.pubInfo = {"userAccesses":[],"groupAccesses":[],"theAccess":{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":"asdasdasdsadasdsadasd","phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"allAccesses":[],"publicStatus":false,"user":null,"userUpdatable":false,"userDeletable":false,"userIsOwner":false,"domainFile":{"createdBy":null,"createdDate":null,"description":null,"id":null,"name":null,"title":"A new granulation method for compressed tablets [proceedings].","type":null,"uri":null,"uriExternal":null,"findingCollection":null,"datumCollection":null,"keywordCollection":[{"id":null,"name":"Tablets","fileCollection":null},{"id":null,"name":"Phenylbutazone/administration & dosage","fileCollection":null},{"id":null,"name":"Hardness","fileCollection":null},{"id":null,"name":"Chemistry, Pharmaceutical/methods","fileCollection":null}],"category":null,"digitalObjectId":"","endPage":null,"journalName":"The Journal of pharmacy and pharmacology","pubMedId":12345,"researchArea":null,"startPage":"67P","status":null,"volume":"28 Suppl","year":1976,"authorCollection":null},"image":false,"keywordsStr":"Chemistry, Pharmaceutical/methods\r\nHardness\r\nPhenylbutazone/administration & dosage\r\nTablets","externalUrl":null,"uploadedFile":null,"newFileData":null,"createdDateStr":"","sampleNames":[],"researchAreas":null,"authors":[{"createdBy":null,"createdDate":null,"firstName":"M","id":null,"initial":"MH","lastName":"Rubinstein","publicationCollection":null}],"theAuthor":{"createdBy":null,"createdDate":null,"firstName":null,"id":null,"initial":null,"lastName":null,"publicationCollection":null},"sampleNamesStr":null,"fromSamplePage":false,"displayName":"Rubinstein, MH. A new granulation method for compressed tablets [proceedings]. The Journal of pharmacy and pharmacology. 1976; 28 Suppl. <a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12345>PMID: 12345</a>.","pubMedDisplayName":"<a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12345>PMID: 12345</a>","description":"","keywordsDisplayName":"Chemistry, Pharmaceutical/methods<br>Hardness<br>Phenylbutazone/administration &amp; dosage<br>Tablets","urlTarget":"_self"};
+
+            $scope.publicationForm.title = $scope.pubInfo.domainFile.title;
+            $scope.publicationForm.description = $scope.pubInfo.description;
+            $scope.publicationForm.digitalObjectId = $scope.pubInfo.domainFile.digitalObjectId;
+            $scope.publicationForm.journalName = $scope.pubInfo.domainFile.journalName
+            $scope.publicationForm.startPage = $scope.pubInfo.domainFile.startPage
+            $scope.publicationForm.endPage = $scope.pubInfo.domainFile.endPage
+            $scope.publicationForm.volume = $scope.pubInfo.domainFile.volume
+            $scope.publicationForm.year = $scope.pubInfo.domainFile.year
+            $scope.publicationForm.authors = $scope.pubInfo.authors;
+            $scope.publicationForm.keywordsStr = $scope.pubInfo.keywordsStr;
+
+            if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
+                $scope.showAuthorTable = true;
+            }
+
+        };
+
+        $scope.getCollabGroups = function() {
+        /*    $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/core/getCollaborationGroup?searchStr='}).
+                success(function(data, status, headers, config) {
+                    $scope.collabGroups = data;
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    $scope.message = data;
+                });  */
+
+            $scope.collabGroups = ["curator group", "NCI", "NCIP"];
+            $scope.showAccessSelection=true;
+
+        };
+
+        $scope.getAccessUsers = function() {
+            /*    $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/core/getUsers?searchStr=&dataOwner='}).
+             success(function(data, status, headers, config) {
+             $scope.collabGroups = data;
+             }).
+             error(function(data, status, headers, config) {
+             // called asynchronously if an error occurs
+             // or server returns response with an error status.
+             $scope.message = data;
+             });  */
+
+            $scope.accessUsers = {"lethai":"Le Thai","Omelchen":"Omelchenko Marina","burnskd":"Burns Kevin","canano_guest":"Guest Guest","grodzinp":"Grodzinski Piotr","swand":"Swan Don","skoczens":"Skoczen Sarah","sternstephan":"Stern Stephan","zolnik":"Zolnik Banu","hunseckerk":"Hunsecker Kelly","lipkeyfg":"Lipkey Foster","marina":"Dobrovolskaia Marina","pottert":"Potter Tim","uckunf":"Uckun Fatih","michal":"Lijowski Michal","mcneils":"Mcneil Scott","neunb":"Neun Barry","cristr":"Crist Rachael","zhengji":"Zheng Jiwen","frittsmj":"Fritts Martin","SchaeferH":"Schaefer Henry","benhamm":"Benham Mick","masoods":"Masood Sana","mclelandc":"McLeland Chris","torresdh":"Torres David","KlemmJ":"Klemm Juli","patria":"Patri Anil","hughesbr":"Hughes Brian","clogstonj":"Clogston Jeff","hinkalgw":"Hinkal George","MorrisS2":"Morris Stephanie","sharon":"Gaheen Sharon"};
+            $scope.showAccessSelection=true;
+
+        };
+
+        $scope.hideAccessSection = function() {
+            $scope.addAccess=false;
+            $scope.showAddAccessButton=true;
+        }
 
     });
 

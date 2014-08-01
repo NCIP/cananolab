@@ -37,7 +37,7 @@
                     </td>
                     <td>
                         <!-- <div align="right" ng-if="access.groupName == 'Curator' || access.groupName == 'Public' && !$parent.user.curator" > -->
-                        <div align="right" ng-if="$parent.user.curator" >
+                        <div align="right" ng-if="access.userBean.curator" >
                                 <a
                                         href="javascript:setTheAccess('${parentFormName}', 'group', '${access.groupName}', '${dataType}', '${protectedData}');">Edit</a>&nbsp;
                         </div>
@@ -106,22 +106,27 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="cellLabel" id="accessNameLabel" ng-if="$parent.showCollaborationGroup">
+                    <td class="cellLabel" id="collabNameLabel" ng-if="$parent.showCollaborationGroup">
                         Collaboration Group Name *
                     </td>
-                    <td class="cellLabel" id="accessNameLabel" ng-if="$parent.showAccessuser">
+                    <td class="cellLabel" id="userNameLabel" ng-if="$parent.showAccessuser">
                         User Login Name *
                     </td>
                     <td><label for="groupName" style="display:none">Group Name</label>
-                        <input type="text" name="{{$parent.dataType}}.theAccess.groupName" value="" id="groupName" ng-if="$parent.showCollaborationGroup">
+                        <input type="text" ng-model="accessForm.theAccess.groupName" value="" id="groupName" ng-if="$parent.showCollaborationGroup">
                         <label for="userName" style="display:none">Login Name</label>
-                        <input type="text" name="{{$parent.dataType}}.theAccess.userBean.loginName" value="" id="userName" ng-if="$parent.showAccessuser">
+                        <input type="text" ng-model="accessForm.theAccess.loginName" value="" id="userName" ng-if="$parent.showAccessuser">
                     </td>
                     <td>
-                        <a href id="browseIcon"
-                           onclick="javascript:showMatchedGroupOrUserDropdown('${ownerName}')"><img
+                        <a href id="browseIcon1" ng-if="$parent.showCollaborationGroup"
+                           ng-click="getCollabGroups();$parent.showAccessSelection=true;"><img
                                 src="images/icon_browse.jpg" align="middle"
                                 alt="search existing collaboration groups" border="0" /></a>
+
+                        <a href id="browseIcon2" ng-if="$parent.showAccessuser"
+                           ng-click="getAccessUsers();$parent.showAccessSelection=true;"><img
+                                src="images/icon_browse.jpg" align="middle"
+                                alt="search existing users" border="0" /></a>
                     </td>
                     <td width="50%">
                         <table class="invisibleTable">
@@ -132,15 +137,15 @@
                                 </td>
                                 <td>
                                     <label for="matchedUserNameSelect" style="display:none" id="userNameSelectLabel">Select a user</label>
-                                    <select ng-disabled="loader" ng-model="$parent.{{parent.dataType}}.theAccess.userBean.loginName" id="matchedUserNameSelect" size="10" ng-click="updateUserLoginName()" ng-if="$parent.showAccessuser && $parent.showAccessSelection">
-                                        <option ng-repeat="user in $parent.users" value="{{user.loginName}}">
-                                            {{user.name}}
+                                    <select ng-disabled="loader" ng-model="accessForm.theAccess.userBean.loginName" id="matchedUserNameSelect"  ng-click="$parent.accessForm.theAccess.loginName = $parent.accessForm.theAccess.userBean.loginName;" ng-if="$parent.showAccessuser && $parent.showAccessSelection">
+                                        <option ng-repeat="(loginId, name) in $parent.accessUsers" value="{{loginId}}">
+                                            {{name}}
                                         </option>
                                     </select>
                                     <label for="matchedGroupNameSelect" style="display:none">Select a group</label>
-                                    <select ng-disabled="loader" ng-model="$parent.{{parent.dataType}}.theAccess.userBean.groupName" id="matchedGroupNameSelect" size="10" ng-click="updateGroupName()" ng-if="$parent.showCollaborationGroup && $parent.showAccessSelection">>
-                                        <option ng-repeat="group in $parent.groups" value="{{group.name}}">
-                                            {{group.name}}
+                                    <select ng-disabled="loader" ng-model="accessForm.theAccess.userBean.groupName" id="matchedGroupNameSelect" ng-click="$parent.accessForm.theAccess.groupName = $parent.accessForm.theAccess.userBean.groupName;" ng-if="$parent.showCollaborationGroup && $parent.showAccessSelection">
+                                        <option ng-repeat="group in $parent.collabGroups" value="{{group}}">
+                                            {{group}}
                                         </option>
                                     </select>
                                 </td>
@@ -154,10 +159,10 @@
                 </tr>
                 <tr>
                     <td class="cellLabel" width="10%">
-                        Access to the {{$parent.dataType}} * 
+                        Access to the {{$parent.dataType}} *
                     </td>
                     <td colspan="2">
-                        <select ng-disabled="loader" ng-model="theAccess.roleName" id="roleName">
+                        <select ng-disabled="loader" ng-model="accessForm.theAccess.roleName" id="roleName">
                             <option ng-repeat="userBean in $parent.groupAccesses" value="{{userBean.roleName}}">
                                 {{userBean.roleDisplayName}}
                             </option>
@@ -179,7 +184,7 @@
                                          styleId="hiddenGroupName" />  -->
                             <input type="button" value="Save"
                                    onclick="javascript:addAccess('${parentFormName}', '${parentAction}', '${parentPage}', '${isPublic}');" />
-                            <input type="button" value="Cancel" ng-click="$parent.addAccess=false; $parent.showAddAccessButton=true;">
+                            <input type="button" value="Cancel" ng-click="hideAccessSection();">
                         </div>
                     </td>
                 </tr>
