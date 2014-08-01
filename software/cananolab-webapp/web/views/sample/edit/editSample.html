@@ -82,7 +82,12 @@
                                 <tr ng-repeat="poc in sampleData.pointOfContacts">
                                     <td>{{returnUserReadableBoolean(poc.primaryContact)}}</td>
                                     <td ng-bind-html="poc.contactPerson"></td>
-                                    <td ng-bind-html="poc.organizationName"></td>
+                                    <td>
+                                        {{poc.organization.name}}<br>
+                                        {{poc.address.line1}}<br>
+                                        {{poc.address.line1}}<br>
+                                        {{poc.address.city}} {{poc.address.stateProvince}} {{poc.address.zip}} {{poc.address.country}}<br>
+                                    </td>
                                     <td>{{poc.role}}</td>
                                     <td>
                                         <div align="right">
