@@ -14,9 +14,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.DefaultValue;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -80,22 +78,6 @@ public class SecurityServices {
 		return (errors == null || errors.size() == 0) ? Response.ok("success").build() : 
 			Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
     }
-	
-	@POST
-	@Path("/register2")
-	@Produces ("application/json")
-    public Response register2(@Context HttpServletRequest httpRequest,
-    		@DefaultValue("") @FormParam("id") String id,
-    		@DefaultValue("") @FormParam("summary") String summary, 
-    		@DefaultValue("") @FormParam("description") String description)  {
-        
-		logger.info("In register2 service");
-		
-	
-		
-		return Response.ok("Got register2").build();
-    }
-	
 	
 	@GET
 	@Path("/logout")
