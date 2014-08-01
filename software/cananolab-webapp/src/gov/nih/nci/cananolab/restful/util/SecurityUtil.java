@@ -11,13 +11,13 @@ public class SecurityUtil {
 	
 	private Logger logger = Logger.getLogger(SecurityUtil.class);
 	
-	public static String MSG_SESSION_INVALID = "User session invalidate. Session may have been expired";
+	public static String MSG_SESSION_INVALID = "User session invalid. Session may have been expired";
 	
 	public static boolean isUserLoggedIn(HttpServletRequest request) {
 		if (request == null)
 			return false;
 		
-		HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession();
 		if (session == null)
 			return false;
 		
