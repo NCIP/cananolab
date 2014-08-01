@@ -13,12 +13,12 @@ import javax.servlet.http.HttpSession;
 
 public class PublicationUtil {
 
-	public static Map<String, List<String>> reformatLocalSearchDropdownsInSession(
+	public static Map<String, Object> reformatLocalSearchDropdownsInSession(
 			HttpSession session) {
         if (session == null) 
         	return null;
         
-		Map<String, List<String>> typeMap = new HashMap<String, List<String>>();
+		Map<String, Object> typeMap = new HashMap<String, Object>();
 		
 		SortedSet<String> types = (SortedSet<String>) session.getAttribute("publicationCategories");
 		if (types != null) 
@@ -44,9 +44,10 @@ public class PublicationUtil {
 		if (types != null) 
 			typeMap.put("functionalizingEntityTypes", new ArrayList<String>(types));
 		
-		List<String> csmRoles = new ArrayList<String>();
-		csmRoles.add(AccessibilityBean.R_ROLE_DISPLAY_NAME);
-		csmRoles.add(AccessibilityBean.CURD_ROLE_DISPLAY_NAME);
+		Map<String, String> csmRoles = new HashMap<String, String>();
+				
+		csmRoles.put(AccessibilityBean.CSM_READ_ROLE, AccessibilityBean.R_ROLE_DISPLAY_NAME);
+		csmRoles.put(AccessibilityBean.CSM_CURD_ROLE, AccessibilityBean.CURD_ROLE_DISPLAY_NAME);
 		if (types != null) 
 			typeMap.put("csmRoleNames", csmRoles);
 		

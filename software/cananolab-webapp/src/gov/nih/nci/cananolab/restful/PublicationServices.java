@@ -167,7 +167,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		try { 
 			SearchPublicationBO searchPublicationBO = 
 					(SearchPublicationBO) applicationContext.getBean("searchPublicationBO");
-			Map<String, List<String>> dropdownMap = searchPublicationBO.setup(httpRequest);
+			Map<String, Object> dropdownMap = searchPublicationBO.setup(httpRequest);
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();
@@ -269,10 +269,10 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		}
 	}
 	
-	@POST
+	@GET
 	@Path("/submitPublication")
 	@Produces ("application/json")
-	public Response submitPublication(@Context HttpServletRequest httpRequest, PublicationForm theForm) {
+	public Response submitPublication(@Context HttpServletRequest httpRequest, PublicationForm form) {
 	
 		try {
 			System.out.println("Inside submit publication");
@@ -284,7 +284,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			List<String> msgs = pubBO.savePublication(httpRequest, theForm);
+			List<String> msgs = pubBO.savePublication(httpRequest, form);
 			 
 			
 			return Response.ok(msgs).build();

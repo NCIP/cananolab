@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.PublicationUtil;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -277,11 +279,10 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 		return publications;
 	}
 
-	public Map<String, List<String>> setup(HttpServletRequest request)
+	public Map<String, Object> setup(HttpServletRequest request)
 			throws Exception {
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		InitSampleSetup.getInstance().setLocalSearchDropdowns(request);
-
 		InitPublicationSetup.getInstance().setDefaultResearchAreas(request);
 		HttpSession session = request.getSession();
 		session.removeAttribute("publicationSearchResults");
