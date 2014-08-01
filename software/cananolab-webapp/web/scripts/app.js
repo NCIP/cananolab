@@ -83,6 +83,10 @@ app.config(function ($routeProvider, $httpProvider) {
         templateUrl: 'views/publication/view/publicationSearch.html',
         controller: 'PublicationSearchCtrl'
       })   
+      .when('/searchPublicationBySampleId', {
+        templateUrl: 'views/publication/view/publicationSampleSearch.html',
+        controller: 'PublicationSampleSearchCtrl'
+      })      
       .when('/publicationResults', {
         templateUrl: 'views/publication/view/publicationResults.html',
         controller: 'PublicationResultsCtrl'
@@ -90,11 +94,7 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/publicationSampleInformation', {
         templateUrl: 'views/publication/view/publicationSampleInformation.html',
         controller: 'PublicationSampleInformationCtrl'
-      })   
-      .when('/publicationSampleSearch', {
-        templateUrl: 'views/publication/view/publicationSampleSearch.html',
-        controller: 'PublicationSampleSearchCtrl'
-      })              
+      })                  
       .when('/submitPublication', {
             templateUrl: 'views/publication/edit/editPublication.html',
             controller: 'EditPublicationCtrl'

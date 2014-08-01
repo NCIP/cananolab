@@ -1,0 +1,64 @@
+<div class="spacer">
+  <div ng-class="{formFocus:loader}">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+        <tr>
+            <th align="left" scope="col">Publication Search By Sample</th>
+
+            <td align="right" width="30%">
+                <a class="helpText" href=
+                "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SearchingPublications')">
+                Help</a> &nbsp; <a class="helpText" href=
+                "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">
+                Glossary</a> &nbsp;
+            </td>
+        </tr>
+    </table><br>
+    <div ng-repeat="item in dirtyForm">
+        <div style="font-weight:700;color:#A90101;">{{item}}</div><br />
+    </div>
+<table width="100%" align="center" class="submissionView" summary="layout">
+        <tr>
+            <td class="cellLabel" width="15%">
+                <label for="sampleid">Sample ID</label>
+            </td>
+            <td colspan="2">
+                <input type="text" ng-disabled="loader" name="id" size="30" value="" id="id" ng-model="id">
+            </td>
+        </tr>
+        <tr>
+            <td class="cellLabel">
+                <label for="type">Type</label>
+            </td>
+            <td colspan="2">
+                <select name="type" ng-init="type='PubMed'" ng-model="type" id="titleOperand" ng-disabled="loader">
+                   <option value="PubMed">
+                        PubMed
+                    </option>
+
+                    <option value="DOI">
+                        DOI
+                    </option>
+                </select>
+            </td>
+        </tr>
+</table>
+<table width="100%" class="invisibleTable" summary="layout">
+    <tr>
+        <td align="right">
+            <input ng-disabled="loader" type="reset" value="Reset" ng-click="resetForm()"> &nbsp; <input ng-disabled="loader" type="submit" value=
+            "Search" ng-click="doSearch()"> <input ng-disabled="loader" name="dispatch" type="hidden" value="search">
+            <input ng-disabled="loader" name="page" type="hidden" value="1">
+            
+        </td>
+    </tr>
+</table>
+<div ng-if="message">{{message}}</div>
+  <div id="loader" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>
+</div>
+
+</div> 
