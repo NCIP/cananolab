@@ -14,7 +14,10 @@ var app = angular.module('angularApp')
         $scope.showSearchSampleTable = false;
 
         // Access variables
-        $scope.publicationForm.authors = [];
+        $scope.publicationForm.publicationBean = {};
+        $scope.publicationForm.publicationBean.domainFile = {};
+        $scope.publicationForm.publicationBean.theAuthor = {};
+        $scope.publicationForm.publicationBean.authors = [];
         $scope.dataType = 'Publication';
         $scope.parentFormName = 'PublicationForm';
         $scope.curator = false;
@@ -27,29 +30,29 @@ var app = angular.module('angularApp')
         $scope.showAccessSelection = false;
 
         //$scope.$on('$viewContentLoaded', function(){
-            $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/setup'}).
-                success(function(data, status, headers, config) {
-                    $scope.publicationCategories = data.publicationCategories;
-                    $scope.publicationStatuses = data.publicationStatuses;
-                    $scope.publicationResearchAreas = data.publicationResearchAreas;
-                }).
-                error(function(data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                    $scope.message = data;
-                });
+        $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/setup'}).
+            success(function(data, status, headers, config) {
+                $scope.publicationCategories = data.publicationCategories;
+                $scope.publicationStatuses = data.publicationStatuses;
+                $scope.publicationResearchAreas = data.publicationResearchAreas;
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                $scope.message = data;
+            });
         //});
 
         var publicationId = $routeParams.publicationId;
 
         if( publicationId != null ) {
             /* $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/edit?publicationId=' + publicationId}).
-                success(function(data, status, headers, config) {
-                    $scope.publicationForm = data;
-                }).
-                error(function(data, status, headers, config) {
-                    $scope.message = data;
-                });
+             success(function(data, status, headers, config) {
+             $scope.publicationForm = data;
+             }).
+             error(function(data, status, headers, config) {
+             $scope.message = data;
+             });
              */
 
             $scope.$on('$viewContentLoaded', function(){
@@ -58,7 +61,7 @@ var app = angular.module('angularApp')
                 $scope.groupAccesses = $scope.publicationForm.groupAccesses;
                 $scope.userAccesses = $scope.publicationForm.userAccesses;
 
-                if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
+                if($scope.publicationForm.publicationBean.authors != null && $scope.publicationForm.publicationBean.authors.length > 0 ) {
                     $scope.showAuthorTable = true;
                 }
 
@@ -73,37 +76,37 @@ var app = angular.module('angularApp')
                 initial : null
             };
             var newAuthor = false
-            author.id = $scope.publicationForm.theAuthor.id;
+            author.id = $scope.publicationForm.publicationBean.theAuthor.id;
             if (author.id == null || author.id.length == 0) {
-                author.id = -1000 - $scope.publicationForm.authors.length;
+                author.id = -1000 - $scope.publicationForm.publicationBean.authors.length;
                 newAuthor = true;
             }
-            author.firstName = $scope.publicationForm.theAuthor.firstName;
-            author.lastName = $scope.publicationForm.theAuthor.lastName;
-            author.initial = $scope.publicationForm.theAuthor.initial;
+            author.firstName = $scope.publicationForm.publicationBean.theAuthor.firstName;
+            author.lastName = $scope.publicationForm.publicationBean.theAuthor.lastName;
+            author.initial = $scope.publicationForm.publicationBean.theAuthor.initial;
             if (author.firstName.length > 0 && author.lastName.length > 0 && author.initial.length > 0) {
                 if (newAuthor) {
-                    $scope.publicationForm.authors.push(author);
+                    $scope.publicationForm.publicationBean.authors.push(author);
                 }
                 else {
                     var k;
-                    for (k = 0; k < $scope.publicationForm.authors.length; ++k)
+                    for (k = 0; k < $scope.publicationForm.publicationBean.authors.length; ++k)
                     {
-                        var authorL = $scope.publicationForm.authors[k];
+                        var authorL = $scope.publicationForm.publicationBean.authors[k];
                         if (author.id == authorL.id ) {
-                            $scope.publicationForm.authors[k].firstName = author.firstName;
-                            $scope.publicationForm.authors[k].lastName = author.lastName;
-                            $scope.publicationForm.authors[k].initial = author.initial;
+                            $scope.publicationForm.publicationBean.authors[k].firstName = author.firstName;
+                            $scope.publicationForm.publicationBean.authors[k].lastName = author.lastName;
+                            $scope.publicationForm.publicationBean.authors[k].initial = author.initial;
                         }
                     }
                 }
                 $scope.addNewAuthor=false;
                 $scope.showAuthorTable = true;
 
-                $scope.publicationForm.theAuthor.firstName = '';
-                $scope.publicationForm.theAuthor.lastName = '';
-                $scope.publicationForm.theAuthor.initial = '';
-                $scope.publicationForm.theAuthor.id = '';
+                $scope.publicationForm.publicationBean.theAuthor.firstName = '';
+                $scope.publicationForm.publicationBean.theAuthor.lastName = '';
+                $scope.publicationForm.publicationBean.theAuthor.initial = '';
+                $scope.publicationForm.publicationBean.theAuthor.id = '';
             } else {
                 alert("Please fill in values");
             }
@@ -112,52 +115,53 @@ var app = angular.module('angularApp')
 
         $scope.editAuthor = function(id) {
             var k;
-            for (k = 0; k < $scope.publicationForm.authors.length; ++k)
+            for (k = 0; k < $scope.publicationForm.publicationBean.authors.length; ++k)
             {
-                var author = $scope.publicationForm.authors[k];
+                var author = $scope.publicationForm.publicationBean.authors[k];
+                alert(author.id);
                 if (id == author.id ) {
-                    $scope.publicationForm.theAuthor.firstName = author.firstName;
-                    $scope.publicationForm.theAuthor.lastName = author.lastName;
-                    $scope.publicationForm.theAuthor.initial = author.initial;
-                    $scope.publicationForm.theAuthor.id = author.id;
+                    $scope.publicationForm.publicationBean.theAuthor.firstName = author.firstName;
+                    $scope.publicationForm.publicationBean.theAuthor.lastName = author.lastName;
+                    $scope.publicationForm.publicationBean.theAuthor.initial = author.initial;
+                    $scope.publicationForm.publicationBean.theAuthor.id = author.id;
                     $scope.addNewAuthor=true;
+                    alert('inside');
                 }
             }
         }
 
         $scope.deleteAuthor = function() {
             var k;
-            for (k = 0; k < $scope.publicationForm.authors.length; ++k)
+            for (k = 0; k < $scope.publicationForm.publicationBean.authors.length; ++k)
             {
-                var author = $scope.publicationForm.authors[k];
-                alert($scope.publicationForm.theAuthor.id);
-                if ($scope.publicationForm.theAuthor.id == author.id ) {
-                    $scope.publicationForm.authors.splice(k,1);
+                var author = $scope.publicationForm.publicationBean.authors[k];
+                if ($scope.publicationForm.publicationBean.theAuthor.id == author.id ) {
+                    $scope.publicationForm.publicationBean.authors.splice(k,1);
                 }
             }
             $scope.addNewAuthor=false;
-            if( $scope.publicationForm.authors.length > 0 ) {
+            if( $scope.publicationForm.publicationBean.authors.length > 0 ) {
                 $scope.showAuthorTable = true;
             }
             else {
                 $scope.showAuthorTable = false;
             }
 
-            $scope.publicationForm.theAuthor.firstName = '';
-            $scope.publicationForm.theAuthor.lastName = '';
-            $scope.publicationForm.theAuthor.initial = '';
-            $scope.publicationForm.theAuthor.id = '';
+            $scope.publicationForm.publicationBean.theAuthor.firstName = '';
+            $scope.publicationForm.publicationBean.theAuthor.lastName = '';
+            $scope.publicationForm.publicationBean.theAuthor.initial = '';
+            $scope.publicationForm.publicationBean.theAuthor.id = '';
         }
 
         $scope.searchMatchedSamples = function() {
-/*            $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/getSamples?searchStr=ncl'}).
-                success(function(data, status, headers, config) {
-                    $scope.sampleResults = data;
-                }).
-                error(function(data, status, headers, config) {
-                    $scope.message = data;
-                });
-*/
+            /*            $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/getSamples?searchStr=ncl'}).
+             success(function(data, status, headers, config) {
+             $scope.sampleResults = data;
+             }).
+             error(function(data, status, headers, config) {
+             $scope.message = data;
+             });
+             */
             $scope.sampleResults = ["GATECH_UCSF-EDickersonCL2008-01","NCL-16","NCL-17","NCL-19","NCL-20-1","NCL-21-1","NCL-22-1","NCL-23-1","NCL-24-1","NCL-25-1","NCL-26-1","NCL-42","NCL-45","NCL-48","NCL-48-4","NCL-49","NCL-49-2","NCL-50-1","NCL-51-3","NCL-MGelderman-IJN2008-01","NCL-MGelderman-IJN2008-02","UMC_HSTVAMC_NCL_NB-NChandaNNBM2010-01","UMC_HSTVAMC_NCL_NB-NChandaNNBM2010-02"];
 
         };
@@ -165,14 +169,14 @@ var app = angular.module('angularApp')
 
         $scope.doSubmit = function() {
             $scope.loader = true;
-            
+
             $http({method: 'POST', url: 'http://localhost:8080/caNanoLab/rest/publication/submitPublication',data: $scope.publicationForm}).
                 success(function(data, status, headers, config) {
                     // $rootScope.sampleData = data;
                     //$scope.sampleData.data = data;
                     //$location.path("/sampleResults").replace();
-                	
-                	alert(data);
+
+                    alert(data);
 
                 }).
                 error(function(data, status, headers, config) {
@@ -197,7 +201,7 @@ var app = angular.module('angularApp')
         };
 
         $scope.fillPubMedInfo = function() {
-/**             $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/retrievePubMedInfo?pubmedId=12345'}).
+            /**             $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/retrievePubMedInfo?pubmedId=12345'}).
              success(function(data, status, headers, config) {
                  $scope.pubInfo = data;
              }).
@@ -215,25 +219,25 @@ var app = angular.module('angularApp')
             $scope.publicationForm.endPage = $scope.pubInfo.domainFile.endPage
             $scope.publicationForm.volume = $scope.pubInfo.domainFile.volume
             $scope.publicationForm.year = $scope.pubInfo.domainFile.year
-            $scope.publicationForm.authors = $scope.pubInfo.authors;
+            $scope.publicationForm.publicationBean.authors = $scope.pubInfo.authors;
             $scope.publicationForm.keywordsStr = $scope.pubInfo.keywordsStr;
 
-            if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
+            if($scope.publicationForm.publicationBean.authors != null && $scope.publicationForm.publicationBean.authors.length > 0 ) {
                 $scope.showAuthorTable = true;
             }
 
         };
 
         $scope.getCollabGroups = function() {
-        /*    $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/core/getCollaborationGroup?searchStr='}).
-                success(function(data, status, headers, config) {
-                    $scope.collabGroups = data;
-                }).
-                error(function(data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                    $scope.message = data;
-                });  */
+            /*    $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/core/getCollaborationGroup?searchStr='}).
+             success(function(data, status, headers, config) {
+             $scope.collabGroups = data;
+             }).
+             error(function(data, status, headers, config) {
+             // called asynchronously if an error occurs
+             // or server returns response with an error status.
+             $scope.message = data;
+             });  */
 
             $scope.collabGroups = ["curator group", "NCI", "NCIP"];
             $scope.showAccessSelection=true;
