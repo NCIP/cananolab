@@ -14,6 +14,7 @@ package gov.nih.nci.cananolab.restful.sample;
  * @author pansu
  */
 
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
@@ -44,6 +45,7 @@ import gov.nih.nci.cananolab.ui.form.SampleForm;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +67,9 @@ public class SampleBO extends BaseAnnotationBO {
 	private DataAvailabilityService dataAvailabilityService;
 	
 	/**
-	 * Save or update POC data.
+	 * This is actually an update. Given the current implementation, when it gets here, a saveAccess or savePOC has been called and
+	 * the sample's id has been generated. (In the new sample submission form, if you only enter a sample name, the "Submit" button
+	 * is grayed out.
 	 * 
 	 * @param mapping
 	 * @param form
@@ -74,39 +78,64 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public void create(SampleForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SampleEditGeneralBean create(SampleEditGeneralBean simpleEditBean,
+			HttpServletRequest request)
 			throws Exception {
-		if (!validateToken(request)) {
-		//	return mapping.findForward("sampleMessage");
-		}
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = (SampleBean) form.getSampleBean();
+		
+		String sampleId = String.valueOf(simpleEditBean.getSampleId());
 		Boolean newSample = true;
-		if (sampleBean.getDomain().getId() != null) {
+		if (sampleId == null || sampleId.length() == 0) {
 			newSample = false;
 		}
+		
+		SampleBean sampleBean = (SampleBean) this.findMatchSampleInSession(request, sampleId);
+		
+		if (sampleBean == null) {
+			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to update the sample.");
+		}
+		
+		////////////// transfer keyword and sample name from simple Edit bean
+		sampleBean.getDomain().setName(simpleEditBean.getSampleName());
+		
+		//When saving keywords, current implementation is to replace the whole set
+		//ref. SampleServiceLocalImpl.saveSample()
+		List<String> keywords = simpleEditBean.getKeywords();
+		if (keywords != null) {
+			Collection<Keyword> keywordColl = new HashSet<Keyword>();
+			for (String keyword : keywords) {
+				Keyword kw = new Keyword();
+				kw.setName(keyword);
+				keywordColl.add(kw);
+			}
+			
+			sampleBean.getDomain().setKeywordCollection(keywordColl);
+		}
+		
+		//////////////////////////////////
+		
 		setServiceInSession(request);
 		saveSample(request, sampleBean);
+		
 		// retract from public if updating an existing public record and not
 		// curator
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		if (!newSample && !user.isCurator() && sampleBean.getPublicStatus()) {
-			retractFromPublic(form, request, sampleBean.getDomain().getId()
+			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
 					.toString(), sampleBean.getDomain().getName(), "sample");
-	//		ActionMessages messages = new ActionMessages();
-	//		ActionMessage msg = null;
-	//		msg = new ActionMessage("message.updateSample.retractFromPublic");
-	//		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//	saveMessages(request, messages);
+			
+				SampleEditGeneralBean simpleBean = new SampleEditGeneralBean();
+				simpleBean.getErrors().add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
+				return simpleBean;
 		}
 		request.getSession().setAttribute("updateSample", "true");
-		request.setAttribute("theSample", sampleBean);
-		request.setAttribute("sampleId", sampleBean.getDomain().getId()
-				.toString());
-	//	resetToken(request);
-	//	return summaryEdit(mapping, form, request, response);
+//		request.setAttribute("theSample", sampleBean);
+//		request.setAttribute("sampleId", sampleBean.getDomain().getId()
+//				.toString());
+	
+		return summaryEdit(String.valueOf(sampleBean.getDomain().getId()), request);
 	}
+	
+	
 
 	private void saveSample(HttpServletRequest request, SampleBean sampleBean)
 			throws Exception {
@@ -238,10 +267,12 @@ public class SampleBO extends BaseAnnotationBO {
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
 	 * 
-	 * @param mapping
-	 * @param form
+	 * After a savePOC, saveAccess or updateDataAvailability operation, this method will 
+	 * be called again to retrieve the updated sample data
+	 * 
+	 * 
+	 * @param sampleId
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -264,9 +295,7 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 		
-		//TODO: what does this do?
 		if (hasNullPOC(request, sampleBean, sampleEdit.getErrors())) {
-		//	return mapping.findForward("sampleMessage");
 			return sampleEdit;
 		}
 		
@@ -290,7 +319,6 @@ public class SampleBO extends BaseAnnotationBO {
 			}
 		}
 
-		//form.setSampleBean(sampleBean);
 		sampleEdit.transferSampleBeanData(request, this.getCurationService(), sampleBean, availableEntityNames);
 		
 		request.getSession().setAttribute("updateSample", "true");
@@ -298,17 +326,6 @@ public class SampleBO extends BaseAnnotationBO {
 		//need to save sampleBean in session for other edit feature.
 		//new in rest implement
 		request.getSession().setAttribute("theSample", sampleBean);
-		
-		//Moved to sampleEdit.transferSampleBeanData
-		//setupLookups(request);
-
-		//Moved to sampleEdit.transferSampleBeanData
-		//setUpSubmitForReviewButton(request, sampleBean.getDomain().getId()
-		//		.toString(), sampleBean.getPublicStatus());
-		
-		
-		
-	
 		return sampleEdit;
 	}
 	
@@ -413,14 +430,7 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		PointOfContactBean thePOC = getPointOfContactBeanFromInput(simplePOC, user.getLoginName());
 		
-		if (sample == null) {
-			
-			//////////debug
-//			String sampleId = "24063238"; //ncl-49
-//			sample = summaryView(sampleId, request);
-//			request.getSession().setAttribute("theSample", sample);
-			////////// debug
-			
+		if (sample == null) {			
 			//for real
 			throw new Exception("Sample object is not valid");
 		}
@@ -460,7 +470,6 @@ public class SampleBO extends BaseAnnotationBO {
 		InitSampleSetup.getInstance().persistPOCDropdowns(request, sample);
 		// return forward;
 		
-		//TODO: call summaryEdit()
 		return summaryEdit(sample.getDomain().getId()
 					.toString(), request);
 	}
@@ -497,51 +506,44 @@ public class SampleBO extends BaseAnnotationBO {
 	//	return forward;
 	}
 
-	public void clone(SampleForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SampleEditGeneralBean clone(SampleEditGeneralBean simpleEditBean,
+			HttpServletRequest request)
 			throws Exception {
-		if (!validateToken(request)) {
-		//	return mapping.findForward("sampleMessage");
-		}
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-	//	ActionMessages messages = new ActionMessages();
-		SampleBean sampleBean = (SampleBean) form.getSampleBean();
+		
+		String sampleId = String.valueOf(simpleEditBean.getSampleId());
+		String cloningSampleName = simpleEditBean.getCloningSampleName();
+		SampleBean sampleBean = (SampleBean) this.findMatchSampleInSession(request, sampleId);
+		sampleBean.setCloningSampleName(cloningSampleName);
+		
 		SampleBean clonedSampleBean = null;
 		SampleService service = this.setServiceInSession(request);
+		
 		try {
 			clonedSampleBean = service.cloneSample(
 					sampleBean.getCloningSampleName(), sampleBean.getDomain()
 							.getName().trim());
 		} catch (NotExistException e) {
-		//	ActionMessage err = new ActionMessage(
-		//			"error.cloneSample.noOriginalSample",
-		//			sampleBean.getCloningSampleName());
-		//	messages.add(ActionMessages.GLOBAL_MESSAGE, err);
-		//	saveErrors(request, messages);
-		//	return mapping.findForward("cloneInput");
+			String error =  PropertyUtil.getPropertyReplacingToken("sample", "error.cloneSample.noOriginalSample", 
+					"0", sampleBean.getCloningSampleName());
+			return wrapErrorInEditBean(error);
 		} catch (DuplicateEntriesException e) {
-//			ActionMessage err = new ActionMessage(
-//					"error.cloneSample.duplicateSample",
-//					sampleBean.getCloningSampleName(), sampleBean.getDomain()
-//							.getName());
-		//	messages.add(ActionMessages.GLOBAL_MESSAGE, err);
-		//	saveErrors(request, messages);
-		//	return mapping.findForward("cloneInput");
+			String error =  PropertyUtil.getProperty("sample", "error.cloneSample.duplicateSample");
+			return wrapErrorInEditBean(error);
 		} catch (SampleException e) {
-		//	ActionMessage err = new ActionMessage("error.cloneSample");
-		//	messages.add(ActionMessages.GLOBAL_MESSAGE, err);
-		//	saveErrors(request, messages);
-		//	return mapping.findForward("cloneInput");
+			String error =  PropertyUtil.getProperty("sample", "error.cloneSample");
+			return wrapErrorInEditBean(error);
 		}
 
-	//	ActionMessage msg = new ActionMessage("message.cloneSample",
-	//			sampleBean.getCloningSampleName(), sampleBean.getDomain()
-	//					.getName());
-	//	saveMessages(request, messages);
+	
 		request.setAttribute("sampleId", clonedSampleBean.getDomain().getId()
 				.toString());
-	//	resetToken(request);
-	//	return summaryEdit(mapping, form, request, response);
+		
+		//After cloning, all we need is a success message to return to web page
+		
+		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
+		//sampleEdit.transferSampleBeanData(request, this.getCurationService(), sampleBean, availableEntityNames);
+		
+		return sampleEdit;
 	}
 
 	public void delete(SampleForm form,
@@ -637,7 +639,8 @@ public class SampleBO extends BaseAnnotationBO {
 	}
 
 	/**
-	 * update data availability for the sample
+	 * update data availability for the sample. This is to support the "Regenerate" button
+	 * on Sample Edit page.
 	 * 
 	 * @param mapping
 	 * @param form
@@ -646,13 +649,17 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public void updateDataAvailability(SampleForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		if (!validateToken(request)) {
-		//	return mapping.findForward("sampleMessage");
+	public SampleEditGeneralBean updateDataAvailability(String sampleId, HttpServletRequest request) 
+			throws Exception {
+		
+		SampleBean sampleBean = findMatchSampleInSession(request, sampleId);
+		if (sampleBean == null) {
+			SampleEditGeneralBean simpleBean = new SampleEditGeneralBean();
+			simpleBean.getErrors().add("No valid sample in session matching given sample id. Unable to update data availabilty.");
+			return simpleBean;
 		}
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = (SampleBean) form.getSampleBean();
+		
+	
 		SecurityService securityService = super
 				.getSecurityServiceFromSession(request);
 		Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
@@ -660,7 +667,7 @@ public class SampleBO extends BaseAnnotationBO {
 		sampleBean.setDataAvailability(dataAvailability);
 		// recalculate the score
 		calculateDataAvailabilityScore(sampleBean, dataAvailability, request);
-//		return mapping.findForward("summaryEdit");
+		return this.summaryEdit(sampleId, request);
 	}
 
 	/**
@@ -1013,5 +1020,32 @@ public class SampleBO extends BaseAnnotationBO {
 		}
 		
 		theAccess.setRoleName(simpleAccess.getRoleName());
+	}
+	
+	protected SampleBean findMatchSampleInSession(HttpServletRequest request, String sampleId) {
+		if (sampleId == null || sampleId.length() == 0) {
+			logger.error("Input sample id is null or empty");
+			return null;
+		}
+		
+		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute("theSample");
+		if (sampleBean == null) {
+			logger.error("No sample in session");
+			return null;
+		}
+		
+		if (Long.valueOf(sampleId).longValue() != sampleBean.getDomain().getId().longValue()) {
+			logger.error("The given sample id doesn't match the sample id in session");
+			return null;
+		}
+		
+		return sampleBean;
+			 
+	}
+	
+	protected SampleEditGeneralBean wrapErrorInEditBean(String error) {
+		SampleEditGeneralBean simpleBean = new SampleEditGeneralBean();
+		simpleBean.getErrors().add(error);
+		return simpleBean;
 	}
 }

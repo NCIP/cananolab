@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSumma
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
+import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
@@ -94,8 +95,10 @@ public class SampleServices {
 			
 			Object result = results.get(0);
 			if (result instanceof String) {
+				logger.info("Search sampel has error: " + results.get(0));
 				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
 			} else {
+				logger.info("Sample search successful");
 				return Response.ok(results).build();
 			}
 
@@ -270,10 +273,9 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");
 			
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-						.entity("User session invalidate. Session may have been expired").build();
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.savePointOfContact(simplePOCBean, httpRequest);
 			List<String> errors = editBean.getErrors();
@@ -313,27 +315,82 @@ public class SampleServices {
 		}
 	}
 	
-//	@GET
-//	@Path("/searchById")
-//	@Produces("application/json")
-//	 public Response searchById(@Context HttpServletRequest httpRequest, 
-//	    		@DefaultValue("") @QueryParam("id") String id, @QueryParam("type") String type){
-//		
-//		SampleBO sampleBO = 
-//				(SampleBO) applicationContext.getBean("sampleBO");
-//
-//		try {
-//			SimplePublicationWithSamplesBean result = sampleBO.searchSampleById(httpRequest, id, type);
-//			
-//			return (result.getErrors().size() > 0) ?
-//					Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-//						.entity(result.getErrors()).build()
-//						:
-//						Response.ok(result).build();
-//		} 
-//
-//		catch (Exception ioe) {
-//			return Response.status(Response.Status.BAD_REQUEST).entity(ioe.getMessage()).build();
-//		}
-//	}	
+	@GET
+	@Path("/regenerateDataAvailability")
+	@Produces("application/json")
+	 public Response regenerateDataAvailability(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+		
+		SampleBO sampleBO = 
+				(SampleBO) applicationContext.getBean("sampleBO");
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+
+		try {
+			SampleEditGeneralBean simpleBean = sampleBO.updateDataAvailability(sampleId, httpRequest);
+			return (simpleBean.getErrors().size() == 0) ?
+					Response.ok(simpleBean).build()
+					:
+					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(simpleBean.getErrors()).build();
+		} catch (Exception ioe) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ioe.getMessage()).build();
+		}
+	}	
+	
+	@POST
+	@Path("/updateSample")
+	@Produces ("application/json")
+	public Response updateSample(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleEdit) {
+		logger.debug("In updateSample");
+		try {
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity("User session invalidate. Session may have been expired").build();
+			
+			SampleEditGeneralBean editBean = sampleBO.create(simpleEdit, httpRequest);
+			List<String> errors = editBean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(editBean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while saving Access: " + e.getMessage()).build();
+		}
+	}
+	
+	@POST
+	@Path("/copySample")
+	@Produces ("application/json")
+	public Response copySample(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleEdit) {
+		logger.debug("In copySample");
+		try {
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			if (simpleEdit.getCloningSampleName() == null || simpleEdit.getCloningSampleName().length() == 0)
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity("No new sample name is set for cloning").build();
+			
+			SampleEditGeneralBean editBean = sampleBO.clone(simpleEdit, httpRequest);
+			List<String> errors = editBean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok("You've successfully cloned sample " + simpleEdit.getSampleName() + " to " + simpleEdit.getCloningSampleName()).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while copying sample: " + e.getMessage()).build();
+		}
+	}
 }
