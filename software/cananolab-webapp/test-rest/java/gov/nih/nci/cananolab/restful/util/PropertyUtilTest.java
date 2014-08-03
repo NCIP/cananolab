@@ -33,7 +33,13 @@ public class PropertyUtilTest {
 		String val = PropertyUtil.getProperty("sample", "sampleForm.sampleName");
 		assertNotNull(val);
 		assertTrue(val.startsWith("Sample"));
-		
 	}
 
+	@Test
+	public void testGetPropertyReplacingToken() {
+		String val = PropertyUtil.getPropertyReplacingToken("sample", "error.cloneSample.noOriginalSample", "0", "TheSampleName");
+		assertNotNull(val);
+		assertTrue(!val.contains("{0}"));
+		assertTrue(val.contains("TheSampleName"));
+	}
 }
