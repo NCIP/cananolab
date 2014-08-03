@@ -1,14 +1,18 @@
 package gov.nih.nci.cananolab.restful;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import gov.nih.nci.cananolab.restful.SampleServices;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,6 +42,7 @@ public class SampleServicesTest {
 				.get(String.class);
 
 		assertNotNull(jsonString);
+		assertTrue(jsonString.contains("physico-chemical characterization"));
 	}
 
 	@Test
@@ -54,28 +59,7 @@ public class SampleServicesTest {
 		assertTrue(jsonString.contains("imaging"));
 	}
 
-	//@Test
-	public void testSearchSample() {
-		
-		SearchSampleForm form = new SearchSampleForm();
-		form.setSampleName("ncl-23");
-		
-		Response jsonString = client.target(urlbase)
-				.register(SampleServices.class)
-				.path("sample/searchSample")
-				.queryParam("searchForm", form)
-				.request("application/json")
-				.header("some-header", "true").post(Entity.entity(SearchSampleForm.class, "application/json"));
-				//.get(String.class);
-
-		assertNotNull(jsonString);
-		
-		int len = jsonString.getLength();
-		System.out.println(jsonString);
-		
-		//jsonString.get
-		//assertTrue(jsonString.contains("imaging"));
-	}
+	
 
 	@Test
 	public void testViewDataAvailability() {
@@ -117,6 +101,34 @@ public class SampleServicesTest {
 				.get(String.class);
 
 		assertNotNull(jsonString);
+	}
+	
+	@Test
+	public void testSearchSample() {
+
+		//http://stackoverflow.com/questions/23601842/jersey-messagebodywriter-not-found-for-media-type-application-json-type-class
+		
+		SearchSampleForm form = new SearchSampleForm();
+		form.setSampleName("ncl-23-1");
+		
+		final Client aClient = ClientBuilder.newBuilder()
+		        .register(ObjectMapperProvider.class)
+		        .register(JacksonFeature.class)
+		        .build();
+		
+		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		webTarget.register(SampleServices.class);
+		
+		WebTarget searchSampleWebTarget = webTarget.path("sample").path("searchSample");
+
+		Response postResponse =
+				searchSampleWebTarget.request("application/json")
+		         .post(Entity.json(form));
+		
+		assertNotNull(postResponse);
+		System.out.println("Status: " + postResponse.getStatus());
+		assertTrue(postResponse.getStatus() == 200);
+		
 	}
 	
 	
