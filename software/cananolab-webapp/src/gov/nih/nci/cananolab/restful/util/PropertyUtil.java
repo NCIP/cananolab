@@ -48,6 +48,13 @@ public class PropertyUtil {
 		return props.getProperty(key);
 	}
 	
+	public static String getPropertyReplacingToken(String type, String key, String tokenIndex, String replacement) {
+		String propertyVal = getProperty(type, key);
+		String token = "{" + tokenIndex + "}";
+		
+		return propertyVal.replace(token, replacement);
+	}
+	
 	protected static Properties getPropertiesByType(String type) {
 		type = type.toLowerCase();
 		if (type.equals("sample"))
