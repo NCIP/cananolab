@@ -1,29 +1,23 @@
 package gov.nih.nci.cananolab.restful;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
 import gov.nih.nci.cananolab.restful.core.AccessibilityManager;
 import gov.nih.nci.cananolab.restful.core.CustomPlugInBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.core.TabGenerationBO;
-import gov.nih.nci.cananolab.restful.publication.PublicationManager;
-import gov.nih.nci.cananolab.restful.util.InitSetupUtil;
 import gov.nih.nci.cananolab.service.security.UserBean;
+
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
@@ -48,7 +42,7 @@ public class CoreServices {
 		try {
 			customPlugInBO.init(context);
 		} catch(Exception e) {
-			return Response.ok(e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
 		}
 		
 		InitSetup.getInstance().setPublicCountInContext(context);
@@ -87,9 +81,9 @@ public class CoreServices {
 			String[] value = accManager.getMatchedGroupNames(searchStr, httpRequest);
 			return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
-			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the Collaboration"+ e.getMessage()).build();
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity("Problem getting the Collaboration"+ e.getMessage()).build();
 		}
 	}
 
@@ -111,7 +105,6 @@ public class CoreServices {
 			Map<String, String> value = accManager.getMatchedUsers(dataOwner, searchStr, httpRequest);
 			return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
-			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the users"+ e.getMessage()).build();
 		}
