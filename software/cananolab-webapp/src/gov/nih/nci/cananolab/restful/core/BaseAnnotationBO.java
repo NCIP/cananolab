@@ -535,18 +535,18 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		curationService.submitDataForReview(reviewStatus, securityService);
 	}
 
-	protected void retractFromPublic(SampleForm theForm,
+	protected void retractFromPublic(String sampleId,
 			HttpServletRequest request, String dataId, String dataName,
 			String dataType) throws Exception {
 		updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request,
 				dataId, dataName, dataType);
-		removePublicAccess(theForm, request);
+		removePublicAccess(sampleId, request);
 	}
 
 	// to be overwritten by child class if necessary
-	protected void removePublicAccess(SampleForm theForm,
+	protected void removePublicAccess(String sampleId,
 			HttpServletRequest request) throws Exception {
-		SampleBean sample = this.setupSample(theForm, request);
+		SampleBean sample = this.setupSampleById(sampleId, request);
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
 		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
