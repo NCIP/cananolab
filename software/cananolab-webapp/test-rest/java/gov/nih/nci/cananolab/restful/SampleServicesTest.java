@@ -2,8 +2,10 @@ package gov.nih.nci.cananolab.restful;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.cananolab.restful.SampleServices;
+import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
+
+import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -109,6 +111,7 @@ public class SampleServicesTest {
 		//http://stackoverflow.com/questions/23601842/jersey-messagebodywriter-not-found-for-media-type-application-json-type-class
 		
 		SearchSampleForm form = new SearchSampleForm();
+		//Because "contains" operand is not set, exact name is needed;
 		form.setSampleName("ncl-23-1");
 		
 		final Client aClient = ClientBuilder.newBuilder()
@@ -120,6 +123,71 @@ public class SampleServicesTest {
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("searchSample");
+
+		Response postResponse =
+				searchSampleWebTarget.request("application/json")
+		         .post(Entity.json(form));
+		
+		assertNotNull(postResponse);
+		System.out.println("Status: " + postResponse.getStatus());
+		assertTrue(postResponse.getStatus() == 200);
+		
+		postResponse.bufferEntity();
+		String json = (String) postResponse.readEntity(String.class);
+				
+		assertNotNull(json);
+		assertTrue(json.contains("NCL-23-1"));
+		
+		//should check other things
+	}
+	
+	@Test
+	public void testupdateSample() {
+
+		//http://stackoverflow.com/questions/23601842/jersey-messagebodywriter-not-found-for-media-type-application-json-type-class
+		
+		SearchSampleForm form = new SearchSampleForm();
+		form.setSampleName("ncl-23-1");
+		
+		final Client aClient = ClientBuilder.newBuilder()
+		        .register(ObjectMapperProvider.class)
+		        .register(JacksonFeature.class)
+		        .build();
+		
+		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		webTarget.register(SampleServices.class);
+		
+		WebTarget searchSampleWebTarget = webTarget.path("sample").path("searchSample");
+
+		Response postResponse =
+				searchSampleWebTarget.request("application/json")
+		         .post(Entity.json(form));
+		
+		assertNotNull(postResponse);
+		System.out.println("Status: " + postResponse.getStatus());
+		assertTrue(postResponse.getStatus() == 200);
+		
+		
+		
+	}
+	
+	@Test
+	public void testCopySample() {
+
+		//http://stackoverflow.com/questions/23601842/jersey-messagebodywriter-not-found-for-media-type-application-json-type-class
+		
+		SearchSampleForm form = new SearchSampleForm();
+		form.setSampleName("ncl-23-1");
+		
+		final Client aClient = ClientBuilder.newBuilder()
+		        .register(ObjectMapperProvider.class)
+		        .register(JacksonFeature.class)
+		        .build();
+		
+		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		webTarget.register(SampleServices.class);
+		
+		WebTarget searchSampleWebTarget = webTarget.path("sample").path("copySample");
 
 		Response postResponse =
 				searchSampleWebTarget.request("application/json")
