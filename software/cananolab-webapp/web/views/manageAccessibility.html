@@ -163,8 +163,8 @@
                     </td>
                     <td colspan="2">
                         <select ng-disabled="loader" ng-model="accessForm.theAccess.roleName" id="roleName">
-                            <option ng-repeat="userBean in $parent.groupAccesses" value="{{userBean.roleName}}">
-                                {{userBean.roleDisplayName}}
+                            <option ng-repeat="(key, role) in $parent.csmRoleNames" value="{{key}}">
+                                {{role}}
                             </option>
                         </select>
 

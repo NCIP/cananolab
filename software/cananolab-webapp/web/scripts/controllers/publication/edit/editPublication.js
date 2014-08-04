@@ -35,6 +35,7 @@ var app = angular.module('angularApp')
                 $scope.publicationCategories = data.publicationCategories;
                 $scope.publicationStatuses = data.publicationStatuses;
                 $scope.publicationResearchAreas = data.publicationResearchAreas;
+                $scope.csmRoleNames = data.csmRoleNames;
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs

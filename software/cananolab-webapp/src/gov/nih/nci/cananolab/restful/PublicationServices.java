@@ -287,10 +287,11 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			List<String> msgs = pubBO.savePublication(httpRequest, form);
 			 
 			
-			return Response.ok(msgs).build();
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while submitting the publication " + e.getMessage()).build();
 		}
 	}
