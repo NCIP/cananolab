@@ -20,6 +20,7 @@ import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditPublicationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePublicationEditBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
@@ -272,9 +273,10 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	@POST
 	@Path("/submitPublication")
 	@Produces ("application/json")
-	public Response submitPublication(@Context HttpServletRequest httpRequest, PublicationForm form) {
+	public Response submitPublication(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form) {
 	
 		try {
+			
 			System.out.println("Inside submit publication");
 			PublicationBO pubBO = 
 					 (PublicationBO) applicationContext.getBean("publicationBO");
@@ -379,7 +381,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	@POST
 	@Path("/saveAccess")
 	@Produces ("application/json")
-	public Response saveAccess(@Context HttpServletRequest httpRequest, PublicationForm form) {
+	public Response saveAccess(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean bean) {
 	
 		try {
 			PublicationBO pubBO = 
@@ -390,7 +392,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			List<String> msgs = pubBO.saveAccess(form, httpRequest);
+			List<String> msgs = pubBO.saveAccess(bean, httpRequest);
 			 
 			
 			return Response.ok(msgs).build();

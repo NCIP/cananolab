@@ -33,6 +33,7 @@ import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationExporter;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
@@ -101,28 +102,31 @@ public class PublicationBO extends BaseAnnotationBO{
 	}
 
 	public List<String> savePublication(HttpServletRequest request,
-			PublicationForm theForm) throws Exception {
+			SimpleSubmitPublicationBean simplePubBean) throws Exception {
 		
 		List<String> msgs = new ArrayList<String>();
 		
-		PublicationBean publicationBean = (PublicationBean) theForm.getPublicationBean();
+		PublicationBean publicationBean = transferSimpleSubmitPublicationBean(simplePubBean);//(PublicationBean) theForm.getPublicationBean();
 		msgs = validateInputForPublication(publicationBean);
+		if(msgs.size()>0)
+			return msgs;
+		
 				
 		PublicationService service = this.setServicesInSession(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String sampleId = (String) theForm.getSampleId();
+		String sampleId = (String) simplePubBean.getSampleId();
 		// validate publication file
 		if (!validatePublicationFile(publicationBean)) {
 			msgs.add(PropertyUtil.getProperty("publication", "publication.fileRequired"));
 		//	return false;
-		//	return msgs;
+			return msgs;
 		}
 		// validate associated sample names
 		if (StringUtils.isEmpty(sampleId)
 				&& !validateAssociatedSamples(request, publicationBean)) {
 			msgs.add(PropertyUtil.getProperty("publication", "error.submitPublication.invalidSample"));
 		//	return false;
-		//	return msgs;
+			return msgs;
 		}
 
 		/**
@@ -138,7 +142,7 @@ public class PublicationBO extends BaseAnnotationBO{
 			 * If user chosen other samples, need to add this pub to those
 			 * samples.
 			 */
-			String[] otherSamples = (String[]) theForm.getOtherSamples();
+			String[] otherSamples = (String[]) publicationBean.getSampleNames();
 					if (otherSamples.length > 0) {
 				sampleNames.addAll(Arrays.asList(otherSamples));
 			}
@@ -170,6 +174,37 @@ public class PublicationBO extends BaseAnnotationBO{
 			msgs.add(PropertyUtil.getProperty("publication", "message.submitPublication"));
 		}
 		return msgs;
+	}
+
+	private PublicationBean transferSimpleSubmitPublicationBean(
+			SimpleSubmitPublicationBean bean) {
+		// TODO Auto-generated method stub
+		PublicationBean pubBean =  new PublicationBean();
+		Publication pub = (Publication) pubBean.getDomainFile();
+		pub.setCategory(bean.getCategory());
+		pub.setCreatedBy(bean.getCreatedBy());
+		pub.setStatus(bean.getStatus());
+		pub.setTitle(bean.getTitle());
+		pub.setId(bean.getFileId());
+		pub.setDescription(bean.getDescription());
+		pub.setStartPage(bean.getStartPage());
+		pub.setEndPage(bean.getEndPage());
+		pub.setYear(bean.getYear());
+		pub.setDigitalObjectId(bean.getDigitalObjectId());
+		pub.setPubMedId(bean.getPubMedId());
+		pub.setJournalName(bean.getJournalName());
+		pub.setVolume(bean.getVolume());
+		pub.setUri(bean.getUri());
+		pub.setUriExternal(bean.getUriExternal());
+		pub.setResearchArea(bean.getResearchAreas());
+		pubBean.setAuthors(bean.getAuthors());
+		pubBean.setSampleNames(bean.getSampleNamesStr());
+		pubBean.setGroupAccesses(bean.getGroupAccesses());
+		pubBean.setUserAccesses(bean.getUserAccesses());
+		pubBean.setDomainFile(pub);
+		pubBean.setUserDeletable(bean.getUserDeletable());
+		pubBean.setKeywordsStr(bean.getKeywordsStr());
+		return pubBean;
 	}
 
 	private List<String> validateInputForPublication(
@@ -744,14 +779,14 @@ public class PublicationBO extends BaseAnnotationBO{
 		return publicationService;
 	}
 
-	public List<String> saveAccess(PublicationForm form,
+	public List<String> saveAccess(SimpleSubmitPublicationBean simplePubBean,
 			HttpServletRequest request)
 			throws Exception {
 		if (!validateToken(request)) {
 	//		return mapping.findForward("publicationMessage");
 		}
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		PublicationBean publication = (PublicationBean) form.getPublicationBean();
+		PublicationBean publication = (PublicationBean) transferSimpleSubmitPublicationBean(simplePubBean);//(PublicationBean) theForm.getPublicationBean();
 				
 		AccessibilityBean theAccess = publication.getTheAccess();
 		List<String> errors = super.validateAccess(request, theAccess);
@@ -764,7 +799,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		if (publication.getDomainFile().getId() == null
 				|| publication.getDomainFile().getId() != null
 				&& publication.getDomainFile().getId() == 0) {
-			errors = this.savePublication(request, form);
+			errors = this.savePublication(request, simplePubBean);
 		}
 		// if publication is public, the access is not public, retract
 		// public
@@ -791,8 +826,10 @@ public class PublicationBO extends BaseAnnotationBO{
 				.getId().toString());
 		
 		//check if sampleId exists in the form
-		if (form.getSampleId()!=null) {
-			request.setAttribute("sampleId", form.getSampleId());
+		String sampleId = (String) simplePubBean.getSampleId();
+
+		if (sampleId!=null) {
+			request.setAttribute("sampleId", sampleId);
 		}
 //		return setupUpdate(mapping, form, request, response);
 		return errors;
