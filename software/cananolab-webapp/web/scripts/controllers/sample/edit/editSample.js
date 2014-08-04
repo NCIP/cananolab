@@ -164,10 +164,8 @@ var app = angular.module('angularApp')
     };
 
 // Modal for Access To Sample (1)
-    $scope.openPointOfContactModal = function(poc) {
+    $scope.openPointOfContactModal = function(sampleData) {
         alert("You did it.  You click on a button.");
-        console.log('POC Data');
-        console.dir(poc);
         var modalInstance = $modal.open({
             templateUrl: 'views/sample/edit/modal/accessToSampleModal.html',
             controller: 'AccessToSampleModalCtrl',
