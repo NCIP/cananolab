@@ -4,7 +4,6 @@ var app = angular.module('angularApp')
 
 	$scope.sampleId = sampleId;
 	$scope.sampleData = sampleData;
-	$scope.availabilityData = sampleData;
 
 	$scope.ok = function () {
 		$modalInstance.close();
