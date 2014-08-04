@@ -14,7 +14,7 @@
     </table>
 <br /><div ng-init="p=tableParams.$params;
 				length=publicationData.data.length;
-				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
+				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}} <h1>GET ACTUAL results not test data</h1>
 	</div><br />
 <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
