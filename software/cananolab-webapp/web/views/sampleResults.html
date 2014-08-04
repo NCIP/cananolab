@@ -12,7 +12,11 @@
         </td>
       </tr>
     </table>
-<br />
+<br /><div ng-init="p=tableParams.$params;
+				length=sampleData.data.length;
+				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
+	</div><br />
+
 <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
 		<td data-title="''" width="5%" class="columnOne">
