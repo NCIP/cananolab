@@ -19,8 +19,14 @@ public class SimplePointOfContactBean {
 	String phoneNumber = "";
 	String email = "";
 	
-	long sampleId;
+	boolean dirty = false;
 	
+	public boolean isDirty() {
+		return dirty;
+	}
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
+	}
 	public boolean isPrimaryContact() {
 		return isPrimaryContact;
 	}
@@ -88,15 +94,5 @@ public class SimplePointOfContactBean {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public long getSampleId() {
-		return sampleId;
-	}
-	public void setSampleId(long sampleId) {
-		this.sampleId = sampleId;
-	}
-	
-	
-	//available org name objects?
-
 
 }

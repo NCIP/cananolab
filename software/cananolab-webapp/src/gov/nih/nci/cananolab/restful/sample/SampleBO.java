@@ -88,14 +88,18 @@ public class SampleBO extends BaseAnnotationBO {
 			newSample = false;
 		}
 		
+		System.out.println("New sample? " + newSample);
+		
 		SampleBean sampleBean = (SampleBean) this.findMatchSampleInSession(request, sampleId);
 		
 		if (sampleBean == null) {
+			System.out.println("No Sample in session");
 			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to update the sample.");
 		}
 		
 		////////////// transfer keyword and sample name from simple Edit bean
 		sampleBean.getDomain().setName(simpleEditBean.getSampleName());
+		System.out.println("1");
 		
 		//When saving keywords, current implementation is to replace the whole set
 		//ref. SampleServiceLocalImpl.saveSample()
@@ -110,12 +114,12 @@ public class SampleBO extends BaseAnnotationBO {
 			
 			sampleBean.getDomain().setKeywordCollection(keywordColl);
 		}
-		
+		System.out.println("2");
 		//////////////////////////////////
 		
 		setServiceInSession(request);
 		saveSample(request, sampleBean);
-		
+		System.out.println("3");
 		// retract from public if updating an existing public record and not
 		// curator
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
@@ -123,14 +127,16 @@ public class SampleBO extends BaseAnnotationBO {
 			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
 					.toString(), sampleBean.getDomain().getName(), "sample");
 			
-				SampleEditGeneralBean simpleBean = new SampleEditGeneralBean();
-				simpleBean.getErrors().add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
-				return simpleBean;
+			return wrapErrorInEditBean(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
+			
 		}
+		System.out.println("4");
 		request.getSession().setAttribute("updateSample", "true");
 //		request.setAttribute("theSample", sampleBean);
 //		request.setAttribute("sampleId", sampleBean.getDomain().getId()
 //				.toString());
+		
+		System.out.println("5");
 	
 		return summaryEdit(String.valueOf(sampleBean.getDomain().getId()), request);
 	}
@@ -406,16 +412,51 @@ public class SampleBO extends BaseAnnotationBO {
 	}
 	
 	/**
+	 * Get the POC list from simpleSampleBean, find the dirty one to do an add/update.
+	 * 
+	 * @param simpleSampleBean
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	public SampleEditGeneralBean savePointOfContactList(SampleEditGeneralBean simpleSampleBean, 
+			HttpServletRequest request) 
+			throws Exception {
+		
+		List<SimplePointOfContactBean> pocList = simpleSampleBean.getPointOfContacts();
+		if (pocList == null || pocList.size() == 0) 
+			return this.wrapErrorInEditBean("POC list is empty. Unable to update POC");
+		
+		SimplePointOfContactBean thePOC = findDirtyPOC(pocList);
+		if (thePOC == null)
+			return this.wrapErrorInEditBean("Unable to find the dirty POC to update");
+		
+		return savePointOfContact(simpleSampleBean, thePOC, request);
+	}
+	
+	protected SimplePointOfContactBean findDirtyPOC(List<SimplePointOfContactBean> pocList) {
+		for (SimplePointOfContactBean poc : pocList) {
+			if (poc.isDirty())
+				return poc;
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Save a new or existing POC with updates.
-	 * For Rest call: 1. when add POC and save are clicked
-	 * 				  2. when edit POC and save are clicked
+	 * 
+	 * For Rest call: 1. Update Sample: when add POC and save are clicked
+	 * 				  2. Update Sample: when edit POC and save are clicked
+	 * 				  3. Submit Sample: when add POC and save are clicked. In this case, sample only has a name.
 	 * 
 	 * @param simplePOC
 	 * @param request
 	 * @return
 	 * @throws Exception
 	 */
-	public SampleEditGeneralBean savePointOfContact(SimplePointOfContactBean simplePOC, HttpServletRequest request) 
+	public SampleEditGeneralBean savePointOfContact(SampleEditGeneralBean simpleSampleBean, 
+			SimplePointOfContactBean simplePOC, HttpServletRequest request) 
 			throws Exception {
 
 		List<String> errors = validatePointOfContactInput(simplePOC);
@@ -427,12 +468,21 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");
+		long sampleId = simpleSampleBean.getSampleId();
+		String newSampleName = simpleSampleBean.getSampleName();
 		
 		PointOfContactBean thePOC = getPointOfContactBeanFromInput(simplePOC, user.getLoginName());
 		
-		if (sample == null) {			
-			//for real
-			throw new Exception("Sample object is not valid");
+		if (sample == null) { 
+			if (newSampleName == null || newSampleName.length() == 0) 
+				return this.wrapErrorInEditBean("Sample object in session is not valid for sample update operation");
+			else { //add poc in submit new sample workflow
+				sample = new SampleBean();
+				sample.getDomain().setName(newSampleName);
+			}
+		} else {
+			if (sample.getDomain().getId() != sampleId) 
+				return this.wrapErrorInEditBean("Curren sample id doesn't match sample id in session");
 		}
 		
 		Long oldPOCId = thePOC.getDomain().getId();
@@ -441,6 +491,7 @@ public class SampleBO extends BaseAnnotationBO {
 		// have to save POC separately because the same organizations can not be
 		// saved in the same session
 		service.savePointOfContact(thePOC);
+		
 		sample.addPointOfContact(thePOC, oldPOCId);
 
 		// if the oldPOCId is different from the one after POC save

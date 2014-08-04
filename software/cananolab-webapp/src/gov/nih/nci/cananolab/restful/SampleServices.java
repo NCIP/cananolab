@@ -247,6 +247,15 @@ public class SampleServices {
 	@Produces("application/json")
 	 public Response edit(@Context HttpServletRequest httpRequest, 
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+		logger.info("In edit Sample");
+		
+		logger.info("Edit sessionid: " + httpRequest.getSession().getId());
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest)) {
+			logger.info("User not logged in");
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		}
 		
 		SampleBO sampleBO = 
 				(SampleBO) applicationContext.getBean("sampleBO");
@@ -267,7 +276,7 @@ public class SampleServices {
 	@POST
 	@Path("/savePOC")
 	@Produces ("application/json")
-	public Response savePOC(@Context HttpServletRequest httpRequest, SimplePointOfContactBean simplePOCBean) {
+	public Response savePOC(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleSampleBean) {
 		logger.info("In savePOC");
 		try {
 			SampleBO sampleBO = 
@@ -277,7 +286,7 @@ public class SampleServices {
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			SampleEditGeneralBean editBean = sampleBO.savePointOfContact(simplePOCBean, httpRequest);
+			SampleEditGeneralBean editBean = sampleBO.savePointOfContactList(simpleSampleBean, httpRequest);
 			List<String> errors = editBean.getErrors();
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(editBean).build() :
@@ -298,10 +307,9 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");
 			
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-						.entity("User session invalidate. Session may have been expired").build();
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.saveAccess(simpleAccess, httpRequest);
 			List<String> errors = editBean.getErrors();
@@ -343,15 +351,14 @@ public class SampleServices {
 	@Path("/updateSample")
 	@Produces ("application/json")
 	public Response updateSample(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleEdit) {
-		logger.debug("In updateSample");
+		logger.info("In updateSample");
 		try {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");
 			
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-						.entity("User session invalidate. Session may have been expired").build();
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.create(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();

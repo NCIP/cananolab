@@ -31,7 +31,7 @@ public class SampleEditGeneralBean {
 	boolean userIsCurator;
 	
 	List<SimplePointOfContactBean> pointOfContacts;
-	List<String> keywords;
+	List<String> keywords = new ArrayList<String>();
 	Map<String, List<SimpleAccessBean>> accessToSample;
 	
 	SimpleDataAvailabilityBean dataAvailability;

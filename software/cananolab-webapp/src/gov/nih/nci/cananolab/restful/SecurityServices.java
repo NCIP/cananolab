@@ -50,7 +50,7 @@ public class SecurityServices {
 		LoginBO loginBo = (LoginBO) applicationContext.getBean("loginBO");
 		
 		String result = loginBo.login(username, password, httpRequest);
-		
+		logger.info("login sessionid: " + httpRequest.getSession().getId());
 		if (!result.equals(RestfulConstants.SUCCESS)) 
 			return Response.status(Response.Status.NOT_FOUND).entity("Login ID or password is invalid").build();
 		return Response.ok(httpRequest.getSession().getId()).build();
