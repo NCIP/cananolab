@@ -11,7 +11,7 @@
                     <div id="categoryPrompt">
                         <!--                        <select ng-disabled="loader" id="category" ng-model="publicationForm.category" ng-change="callPrompt('Publication Type', 'category', 'categoryPrompt');
                                                                                 clearPublication();updateSubmitFormBasedOnCategory();enableAutoFields();" required>  -->
-                        <select ng-disabled="loader" id="category" ng-model="publicationForm.publicationBean.domainFile.category"
+                        <select ng-disabled="loader" id="category" ng-model="publicationForm.category"
                                 onchange="callPrompt('Publication Type', 'category', 'categoryPrompt');" required>
                             <option ng-repeat="option in publicationCategories" value="{{option}}">
                                 {{option}}
@@ -20,7 +20,7 @@
                                 [other]
                             </option>
                         </select>
-                        <span ng-show="publicationForm.publicationBean.domainFile.category.$invalid && submitted" class="help-block">Select a valid Type</span>
+                        <span ng-show="publicationForm.category.$invalid && submitted" class="help-block">Select a valid Type</span>
                     </div>
                 </td>
                 <td class="cellLabel">
@@ -28,7 +28,7 @@
                 </td>
                 <td colspan="3">
                     <div id="statusPrompt">
-                        <select ng-disabled="loader" id="status" ng-model="publicationForm.publicationBean.domainFile.status"
+                        <select ng-disabled="loader" id="status" ng-model="publicationForm.status"
                                 onchange="callPrompt('Publication status', 'status', 'statusPrompt');" required>
                             <option ng-repeat="option in publicationStatuses" value="{{option}}">
                                 {{option}}
@@ -37,14 +37,14 @@
                                 [other]
                             </option>
                         </select>
-                        <span ng-show="publicationForm.publicationBean.domainFile.category.$invalid && submitted" class="help-block">Select a valid Status</span>
+                        <span ng-show="publicationForm.category.$invalid && submitted" class="help-block">Select a valid Status</span>
                     </div>
                 </td>
             </tr>
         </table>
     </td>
 </tr>
-<tr id="pubMedRow" ng-show="publicationForm.publicationBean.domainFile.category != 'report' && publicationForm.publicationBean.domainFile.category != 'book chapter' && publicationForm.publicationBean.domainFile.category != null">
+<tr id="pubMedRow" ng-show="publicationForm.category != 'report' && publicationForm.category != 'book chapter' && publicationForm.category != null">
     <td class="cellLabel">
         <label for="publicationForm.pubMedId">PubMed ID</label>
     </td>
@@ -53,18 +53,18 @@
                 ng-href="http://www.ncbi.nlm.nih.gov/pubmed/{{publicationForm.pubMedId}}"
                 target="_pubmed"> Click to look up PubMed Identifier</a>
         <br>
-        <input type="text" ng-model="publicationForm.publicationBean.domainFile.pubMedId" size="50" value="" ng-model-onblur ng-change="fillPubMedInfo()" id="publicationForm.pubMedId">
+        <input type="text" ng-model="publicationForm.pubMedId" size="50" value="" ng-model-onblur ng-change="fillPubMedInfo()" id="publicationForm.pubMedId">
         <br>
         <i> clicking outside of the text field after entering a valid
             PubMed ID enables auto-population of PubMed related fields</i>
     </td>
 </tr>
-<tr id="doiRow" ng-show="publicationForm.publicationBean.domainFile.category != 'report' && publicationForm.publicationBean.domainFile.category != 'book chapter' && publicationForm.publicationBean.domainFile.category != null">
+<tr id="doiRow" ng-show="publicationForm.category != 'report' && publicationForm.category != 'book chapter' && publicationForm.category != null">
     <td class="cellLabel">
-        <label for="publicationForm.publicationBean.digitalObjectId">Digital Object ID</label>
+        <label for="publicationForm.digitalObjectId">Digital Object ID</label>
     </td>
     <td>
-        <input type="text" ng-model="publicationForm.publicationBean.domainFile.digitalObjectId" size="30" value="" ng-change="updateWithExistingDOI()" id="publicationForm.publicationBean.digitalObjectId">
+        <input type="text" ng-model="publicationForm.digitalObjectId" size="30" value="" ng-change="updateWithExistingDOI()" id="publicationForm.digitalObjectId">
         &nbsp;
     </td>
 </tr>
@@ -73,16 +73,16 @@
         <label for="publicationForm.title">Title*</label>
     </td>
     <td>
-        <input type="text" ng-model="publicationForm.publicationBean.domainFile.title" size="120" value="" id="publicationForm.title" required>
-        <span ng-show="publicationForm.publicationBean.domainFile.title.$invalid && submitted" class="help-block">Enter a valid Title</span>
+        <input type="text" ng-model="publicationForm.title" size="120" value="" id="publicationForm.title" required>
+        <span ng-show="publicationForm.title.$invalid && submitted" class="help-block">Enter a valid Title</span>
     </td>
 </tr>
-<tr id="journalRow" ng-show="publicationForm.publicationBean.domainFile.category != 'report' && publicationForm.publicationBean.domainFile.category != 'book chapter' && publicationForm.publicationBean.domainFile.category != null">
+<tr id="journalRow" ng-show="publicationForm.category != 'report' && publicationForm.category != 'book chapter' && publicationForm.category != null">
     <td class="cellLabel">
         <label for="publicationForm.journalName">Journal&nbsp;</label>
     </td>
     <td>
-        <input type="text" ng-model="publicationForm.publicationBean.domainFile.journalName" size="120" value="" id="publicationForm.journalName">
+        <input type="text" ng-model="publicationForm.journalName" size="120" value="" id="publicationForm.journalName">
         &nbsp;
     </td>
 </tr>
@@ -91,10 +91,10 @@
         <label for="publicationForm.year">Year of Publication</label>
     </td>
     <td>
-        <input type="text" ng-model="publicationForm.publicationBean.domainFile.year" size="5" value="" ng-keydown="filterInteger(event);" id="publicationForm.year">
+        <input type="text" ng-model="publicationForm.year" size="5" value="" ng-keydown="filterInteger(event);" id="publicationForm.year">
     </td>
 </tr>
-<tr id="volumePageRow" ng-show="publicationForm.publicationBean.domainFile.category != 'report' && publicationForm.publicationBean.domainFile.category != 'book chapter' && publicationForm.publicationBean.domainFile.category != null">
+<tr id="volumePageRow" ng-show="publicationForm.category != 'report' && publicationForm.category != 'book chapter' && publicationForm.category != null">
     <td class="cellLabel">
         <label for="publicationForm.volume">Volume</label>
     </td>
@@ -102,21 +102,21 @@
         <table class="invisibleTable" summary="layout">
             <tr>
                 <td>
-                    <input type="text" ng-model="publicationForm.publicationBean.domainFile.volume" size="8" value="" id="publicationForm.volume">
+                    <input type="text" ng-model="publicationForm.volume" size="8" value="" id="publicationForm.volume">
                     &nbsp;
                 </td>
                 <td class="cellLabel">
                     <label for="publicationForm.startPage">Start Page</label>
                 </td>
                 <td>
-                    <input type="text" ng-model="publicationForm.publicationBean.domainFile.startPage" size="8" value="" id="publicationForm.startPage">
+                    <input type="text" ng-model="publicationForm.startPage" size="8" value="" id="publicationForm.startPage">
                     &nbsp;
                 </td>
                 <td class="cellLabel">
                     <label for="publicationForm.endPage"><strong id="epageTitle" style="">End Page&nbsp; </strong></label>
                 </td>
                 <td>
-                    <input type="text" ng-model="publicationForm.publicationBean.domainFile.endPage" size="8" value="" id="publicationForm.endPage">
+                    <input type="text" ng-model="publicationForm.endPage" size="8" value="" id="publicationForm.endPage">
                     &nbsp;
                 </td>
             </tr>
@@ -148,7 +148,7 @@
                     <td>
                     </td>
                 </tr>
-                <tr id="pattern" ng-repeat="author in publicationForm.publicationBean.authors">
+                <tr id="pattern" ng-repeat="author in publicationForm.authors">
                     <td>
                         <span id="firstNameValue">{{author.firstName}}</span>
                     </td>
@@ -169,29 +169,29 @@
             <table id="newAuthor" class="promptbox" summary="layout" ng-show="addNewAuthor">
                 <tbody>
                 <tr>
-                    <input type="hidden" ng-model="publicationForm.publicationBean.theAuthor.id" value="" id="id">
+                    <input type="hidden" ng-model="theAuthor.id" value="" id="id">
 
                     <td class="cellLabel">
                         <label for="firstName">First Name</label>
                     </td>
                     <td>
-                        <input type="text" ng-model="publicationForm.publicationBean.theAuthor.firstName" value="" id="firstName">
+                        <input type="text" ng-model="theAuthor.firstName" value="" id="firstName">
                     </td>
                     <td class="cellLabel">
                         <label for="lastName">Last Name</label>
                     </td>
                     <td>
-                        <input type="text" ng-model="publicationForm.publicationBean.theAuthor.lastName" value="" id="lastName">
+                        <input type="text" ng-model="theAuthor.lastName" value="" id="lastName">
                     </td>
                     <td class="cellLabel">
                         <label for="initial">Initials</label>
                     </td>
                     <td>
-                        <input type="text" ng-model="publicationForm.publicationBean.theAuthor.initial" value="" id="initial">
+                        <input type="text" ng-model="theAuthor.initial" value="" id="initial">
                     </td>
                 </tr>
                 <tr>
-                    <td ng-show="publicationForm.publicationBean.theAuthor.id != null || $scope.publicationForm.publicationBean.theAuthor.id != ''">
+                    <td ng-show="theAuthor.id != null || $scope.theAuthor.id != ''">
                         <input class="promptButton"
                                id="deleteAuthor" type="button" value="Remove"
                                ng-click="deleteAuthor()" />
@@ -217,7 +217,7 @@
         <i>(one keyword per line)</i>
     </td>
     <td>
-        <textarea ng-model="publicationForm.publicationBean.keywordsStr" cols="80" rows="3" id="publicationForm.keywordsStr"></textarea>
+        <textarea ng-model="publicationForm.keywordsStr" cols="80" rows="3" id="publicationForm.keywordsStr"></textarea>
     </td>
 </tr>
 <tr>
@@ -225,7 +225,7 @@
         <label for="publicationForm.description">Description</label>
     </td>
     <td>
-        <textarea ng-model="publicationForm.publicationBean.description" cols="120" rows="8" id="publicationForm.description"></textarea>
+        <textarea ng-model="publicationForm.description" cols="120" rows="8" id="publicationForm.description"></textarea>
     </td>
 </tr>
 <tr>
@@ -233,7 +233,7 @@
         <label for="publicationForm.researchArea">Research Category</label>
     </td>
     <td>
-        <select ng-disabled="loader" id="publicationForm.researchArea" ng-model="publicationForm.publicationBean.domainFile.researchArea" size="7">
+        <select ng-disabled="loader" id="publicationForm.researchArea" ng-model="publicationForm.researchAreas" size="7">
             <option ng-repeat="option in publicationResearchAreas" value="{{option}}">
                 {{option}}
             </option>
@@ -261,25 +261,25 @@
                     <tbody>
                     <tr>
                         <td class="cellLabel" width="40%">
-                            <input type="radio" ng-model="publicationForm.publicationBean.domainFile.uriExternal" value="false" ng-checked="true" id="external0">
+                            <input type="radio" ng-model="publicationForm.uriExternal" value="false" ng-checked="true" id="external0">
                             <label for="external0">Upload</label>
                         </td>
                         <td class="cellLabel">
-                            <input type="radio" ng-model="publicationForm.publicationBean.domainFile.uriExternal" value="true" id="external1">
+                            <input type="radio" ng-model="publicationForm.uriExternal" value="true" id="external1">
                             <label for="external1">Enter File URL</label>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <span id="load" style="display: block;" ng-show="publicationForm.publicationBean.domainFile.uriExternal=='false'">
-        						<input type="file" ng-model="publicationForm.publicationBean.uploadedFile" size="60" value="" ng-change="updateWithExistingNonPubMedDOIPublication('');" id="uploadedFile">
+                            <span id="load" style="display: block;" ng-show="publicationForm.uriExternal=='false'">
+        						<input type="file" ng-model="publicationForm.uploadedFile" size="60" value="" ng-change="updateWithExistingNonPubMedDOIPublication('');" id="uploadedFile">
 				            </span>
                             <label for="uploadedFile">&nbsp;&nbsp;</label>
-                            <span id="uploadedUri" style="display: block;" ng-show="publicationForm.publicationBean.domainFile.uriExternal=='false'">
+                            <span id="uploadedUri" style="display: block;" ng-show="publicationForm.uriExternal=='false'">
 			                    <a href="publication.do?dispatch=download&amp;fileId="></a>
                             </span>
-			                <span id="link" ng-show="publicationForm.publicationBean.domainFile.uriExternal=='true'">
-                                <input type="text" ng-model="publicationForm.publicationBean.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
+			                <span id="link" ng-show="publicationForm.uriExternal=='true'">
+                                <input type="text" ng-model="publicationForm.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
 					        </span>
                             <label for="externalUrl">&nbsp;</label>
                         </td>
@@ -303,7 +303,7 @@
                     <tr>
                         <td>
                             <br>
-                            <textarea ng-model="publicationForm.publicationBean.sampleNamesStr" cols="60" rows="5" id="publicationForm.associatedSampleNames"></textarea>
+                            <textarea ng-model="publicationForm.sampleNamesStr" cols="60" rows="5" id="publicationForm.associatedSampleNames"></textarea>
                             <em>one name per line</em>
                         </td>
                         <td width="5">

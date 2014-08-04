@@ -60,6 +60,22 @@ app.factory("utilsService", function(){
 				if(obj.hasOwnProperty(key))
 			 		return false;
 				return true;			
+		},
+
+		resultCount: function(params,length,pageLength) {
+			// returns result count and displaying items x of y on results pages //
+			if (params.page==1) {
+				var html = length + ' items found, displaying ';
+				html += 1 +'-'+ pageLength;
+				return html;
+			}
+			else {
+				var html = length + ' items found, displaying ';
+				html += params.count*(params.page-1)+1;
+				html +=' - ';
+				html += ((params.page-1)*params.count+1)+pageLength-1;
+				return html;
+			}
 		}
 
 	}

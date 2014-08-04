@@ -213,37 +213,37 @@ public class PublicationBO extends BaseAnnotationBO{
 		
 		Publication publication = (Publication) publicationBean.getDomainFile();
 		String category = publication.getCategory();
-		if(category==null||InputValidationUtil.isTextFieldWhiteList(category)){
+		if(!InputValidationUtil.isTextFieldWhiteList(category)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.category.invalid"));
 		}
 		String status = publication.getStatus();
-		if(status == null||InputValidationUtil.isTextFieldWhiteList(status)){
+		if(!InputValidationUtil.isTextFieldWhiteList(status)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.status.invalid"));
 		}
 		String title = publication.getTitle();
-		if(title == null||InputValidationUtil.isTextFieldWhiteList(title)){
+		if(!InputValidationUtil.isTextFieldWhiteList(title)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.title.invalid"));
 		}
 		String externalUrl = publication.getUri();
-		if(externalUrl == null||InputValidationUtil.isTextFieldWhiteList(externalUrl)){
+		if(!InputValidationUtil.isTextFieldWhiteList(externalUrl)){
 			errors.add(PropertyUtil.getProperty("publication", "file.uri.invalid"));
 		}
 		for(int i=0;i<publicationBean.getAuthors().size();i++){
 			String firstName = publicationBean.getAuthors().get(i).getFirstName();
-			if(firstName == null||InputValidationUtil.isRelaxedAlphabetic(firstName)){
+			if(!InputValidationUtil.isRelaxedAlphabetic(firstName)){
 				errors.add(PropertyUtil.getProperty("publication", "publication.author.firstName.invalid"));
 			}
 			String lastName = publicationBean.getAuthors().get(i).getLastName();
-			if(lastName == null||InputValidationUtil.isRelaxedAlphabetic(lastName)){
+			if(!InputValidationUtil.isRelaxedAlphabetic(lastName)){
 				errors.add(PropertyUtil.getProperty("publication", "publication.author.lastName.invalid"));
 			}
 			String initial = publicationBean.getAuthors().get(i).getInitial();
-			if(initial == null||InputValidationUtil.isRelaxedAlphabetic(initial)){
+			if(!InputValidationUtil.isRelaxedAlphabetic(initial)){
 				errors.add(PropertyUtil.getProperty("publication", "publication.author.initial.invalid"));
 			}
 		}
 		String digitalObjectId = publication.getDigitalObjectId();
-		if(digitalObjectId == null||InputValidationUtil.doi(digitalObjectId)){
+		if(!InputValidationUtil.doi(digitalObjectId)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.doi.invalid"));
 		}
 		return errors;
@@ -674,7 +674,7 @@ public class PublicationBO extends BaseAnnotationBO{
 			return true;
 		} else if (!publication.getUriExternal()
 				&& !StringUtils
-						.isEmpty(pubBean.getUploadedFile().getFileName())) {
+					.isEmpty(pubBean.getUploadedFile().getFileName())) {
 			return true;
 		} else if (!StringUtils.isEmpty(publication.getUri())) {
 			return true;

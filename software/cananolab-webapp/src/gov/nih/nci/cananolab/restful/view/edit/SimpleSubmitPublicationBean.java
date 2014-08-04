@@ -27,18 +27,18 @@ public class SimpleSubmitPublicationBean {
 	String description = "";
 	String researchAreas;
 	String uri = "";
-	Boolean uriExternal;
+	Boolean uriExternal = false;
 	Long fileId;
 	String sampleId = "";
 	String[] sampleNamesStr;
-	List<AccessibilityBean> groupAccesses;
-	List<AccessibilityBean> userAccesses;
+	List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
+	List<AccessibilityBean> userAccesses =  new ArrayList<AccessibilityBean>();
 	String protectedData = "";
-	Boolean isPublic;
-	Boolean isOwner;
+	Boolean isPublic = false;
+	Boolean isOwner = false;
 	String ownerName = "";
 	String createdBy = "";
-	Boolean userDeletable;
+	Boolean userDeletable = false;
 	
 	public String getSampleTitle() {
 		return sampleTitle;
