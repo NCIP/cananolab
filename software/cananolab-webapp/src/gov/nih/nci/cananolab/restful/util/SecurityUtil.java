@@ -22,7 +22,7 @@ public class SecurityUtil {
 			return false;
 		
 		UserBean user = (UserBean) session.getAttribute("user");
-		if (user == null)
+		if (user == null || user.getUserId() == null || user.getUserId().length() == 0 )
 			return false;
 		
 		return true;
