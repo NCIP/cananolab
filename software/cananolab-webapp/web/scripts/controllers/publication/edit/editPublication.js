@@ -12,12 +12,10 @@ var app = angular.module('angularApp')
         $scope.addNewAuthor = false;
         $scope.showAuthorTable = false;
         $scope.showSearchSampleTable = false;
+        $scope.theAuthor = {};
+        $scope.publicationForm.authors = [];
 
         // Access variables
-        $scope.publicationForm.publicationBean = {};
-        $scope.publicationForm.publicationBean.domainFile = {};
-        $scope.publicationForm.publicationBean.theAuthor = {};
-        $scope.publicationForm.publicationBean.authors = [];
         $scope.dataType = 'Publication';
         $scope.parentFormName = 'PublicationForm';
         $scope.curator = false;
@@ -31,7 +29,7 @@ var app = angular.module('angularApp')
         $scope.accessForm.theAccess = {};
         $scope.accessForm.theAccess.groupName = '';
         $scope.accessForm.theAccess.loginName = '';
-        
+
 
         //$scope.$on('$viewContentLoaded', function(){
         $http({method: 'GET', url: '/caNanoLab/rest/publication/setup'}).
@@ -51,14 +49,14 @@ var app = angular.module('angularApp')
         var publicationId = $routeParams.publicationId;
 
         if( publicationId != null ) {
-             $http({method: 'GET', url: '/caNanoLab/rest/publication/edit?publicationId=' + publicationId}).
-             success(function(data, status, headers, config) {
-             $scope.publicationForm = data;
-             }).
-             error(function(data, status, headers, config) {
-             $scope.message = data;
-             });
-             
+            $http({method: 'GET', url: '/caNanoLab/rest/publication/edit?publicationId=' + publicationId}).
+                success(function(data, status, headers, config) {
+                    $scope.publicationForm = data;
+                }).
+                error(function(data, status, headers, config) {
+                    $scope.message = data;
+                });
+
 
             $scope.$on('$viewContentLoaded', function(){
                 //$scope.publicationForm = {"sampleTitle":null,"title":"Multifunctional polymeric nano-systems for RNA interference therapy","category":"peer review article","status":"published","pubMedId":null,"digitalObjectId":null,"journalName":"Biological Drug Products: Development and Strategies","year":null,"volume":null,"startPage":null,"endPage":null,"authors":[{"lastName":"Iyer","initial":"AK","firstName":"P",id:"1000"}],"authorId":null,"keywordsStr":"NCL-23","description":null,"researchAreas":null,"uri":null,"uriExternal":false,"fileId":42533664,"sampleId":null,"associatedSampleNames":"","groupAccesses":[{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":true,"domain":null,"groupNames":[],"displayName":""},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"},{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"Public","roleName":"R","roleDisplayName":"read","accessBy":"group"}],"userAccesses":[],"protectedData":null,"isPublic":true,"isOwner":false,"ownerName":null,"createdBy":"canano_curator","userDeletable":false};
@@ -66,7 +64,7 @@ var app = angular.module('angularApp')
                 $scope.groupAccesses = $scope.publicationForm.groupAccesses;
                 $scope.userAccesses = $scope.publicationForm.userAccesses;
 
-                if($scope.publicationForm.publicationBean.authors != null && $scope.publicationForm.publicationBean.authors.length > 0 ) {
+                if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
                     $scope.showAuthorTable = true;
                 }
 
@@ -81,37 +79,37 @@ var app = angular.module('angularApp')
                 initial : null
             };
             var newAuthor = false
-            author.id = $scope.publicationForm.publicationBean.theAuthor.id;
+            author.id = $scope.theAuthor.id;
             if (author.id == null || author.id.length == 0) {
-                author.id = -1000 - $scope.publicationForm.publicationBean.authors.length;
+                author.id = -1000 - $scope.publicationForm.authors.length;
                 newAuthor = true;
             }
-            author.firstName = $scope.publicationForm.publicationBean.theAuthor.firstName;
-            author.lastName = $scope.publicationForm.publicationBean.theAuthor.lastName;
-            author.initial = $scope.publicationForm.publicationBean.theAuthor.initial;
+            author.firstName = $scope.theAuthor.firstName;
+            author.lastName = $scope.theAuthor.lastName;
+            author.initial = $scope.theAuthor.initial;
             if (author.firstName.length > 0 && author.lastName.length > 0 && author.initial.length > 0) {
                 if (newAuthor) {
-                    $scope.publicationForm.publicationBean.authors.push(author);
+                    $scope.publicationForm.authors.push(author);
                 }
                 else {
                     var k;
-                    for (k = 0; k < $scope.publicationForm.publicationBean.authors.length; ++k)
+                    for (k = 0; k < $scope.publicationForm.authors.length; ++k)
                     {
-                        var authorL = $scope.publicationForm.publicationBean.authors[k];
+                        var authorL = $scope.publicationForm.authors[k];
                         if (author.id == authorL.id ) {
-                            $scope.publicationForm.publicationBean.authors[k].firstName = author.firstName;
-                            $scope.publicationForm.publicationBean.authors[k].lastName = author.lastName;
-                            $scope.publicationForm.publicationBean.authors[k].initial = author.initial;
+                            $scope.publicationForm.authors[k].firstName = author.firstName;
+                            $scope.publicationForm.authors[k].lastName = author.lastName;
+                            $scope.publicationForm.authors[k].initial = author.initial;
                         }
                     }
                 }
                 $scope.addNewAuthor=false;
                 $scope.showAuthorTable = true;
 
-                $scope.publicationForm.publicationBean.theAuthor.firstName = '';
-                $scope.publicationForm.publicationBean.theAuthor.lastName = '';
-                $scope.publicationForm.publicationBean.theAuthor.initial = '';
-                $scope.publicationForm.publicationBean.theAuthor.id = '';
+                $scope.theAuthor.firstName = '';
+                $scope.theAuthor.lastName = '';
+                $scope.theAuthor.initial = '';
+                $scope.theAuthor.id = '';
             } else {
                 alert("Please fill in values");
             }
@@ -120,14 +118,14 @@ var app = angular.module('angularApp')
 
         $scope.editAuthor = function(id) {
             var k;
-            for (k = 0; k < $scope.publicationForm.publicationBean.authors.length; ++k)
+            for (k = 0; k < $scope.publicationForm.authors.length; ++k)
             {
-                var author = $scope.publicationForm.publicationBean.authors[k];
+                var author = $scope.publicationForm.authors[k];
                 if (id == author.id ) {
-                    $scope.publicationForm.publicationBean.theAuthor.firstName = author.firstName;
-                    $scope.publicationForm.publicationBean.theAuthor.lastName = author.lastName;
-                    $scope.publicationForm.publicationBean.theAuthor.initial = author.initial;
-                    $scope.publicationForm.publicationBean.theAuthor.id = author.id;
+                    $scope.theAuthor.firstName = author.firstName;
+                    $scope.theAuthor.lastName = author.lastName;
+                    $scope.theAuthor.initial = author.initial;
+                    $scope.theAuthor.id = author.id;
                     $scope.addNewAuthor=true;
                 }
             }
@@ -135,36 +133,36 @@ var app = angular.module('angularApp')
 
         $scope.deleteAuthor = function() {
             var k;
-            for (k = 0; k < $scope.publicationForm.publicationBean.authors.length; ++k)
+            for (k = 0; k < $scope.publicationForm.authors.length; ++k)
             {
-                var author = $scope.publicationForm.publicationBean.authors[k];
-                if ($scope.publicationForm.publicationBean.theAuthor.id == author.id ) {
-                    $scope.publicationForm.publicationBean.authors.splice(k,1);
+                var author = $scope.publicationForm.authors[k];
+                if ($scope.theAuthor.id == author.id ) {
+                    $scope.publicationForm.authors.splice(k,1);
                 }
             }
             $scope.addNewAuthor=false;
-            if( $scope.publicationForm.publicationBean.authors.length > 0 ) {
+            if( $scope.publicationForm.authors.length > 0 ) {
                 $scope.showAuthorTable = true;
             }
             else {
                 $scope.showAuthorTable = false;
             }
 
-            $scope.publicationForm.publicationBean.theAuthor.firstName = '';
-            $scope.publicationForm.publicationBean.theAuthor.lastName = '';
-            $scope.publicationForm.publicationBean.theAuthor.initial = '';
-            $scope.publicationForm.publicationBean.theAuthor.id = '';
+            $scope.theAuthor.firstName = '';
+            $scope.theAuthor.lastName = '';
+            $scope.theAuthor.initial = '';
+            $scope.theAuthor.id = '';
         }
 
         $scope.searchMatchedSamples = function() {
-             $http({method: 'GET', url: '/caNanoLab/rest/publication/getSamples?searchStr=ncl'}).
-             success(function(data, status, headers, config) {
-             $scope.sampleResults = data;
-             }).
-             error(function(data, status, headers, config) {
-             $scope.message = data;
-             });
-             
+            $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/getSamples?searchStr=ncl'}).
+                success(function(data, status, headers, config) {
+                    $scope.sampleResults = data;
+                }).
+                error(function(data, status, headers, config) {
+                    $scope.message = data;
+                }); 
+
             //$scope.sampleResults = ["GATECH_UCSF-EDickersonCL2008-01","NCL-16","NCL-17","NCL-19","NCL-20-1","NCL-21-1","NCL-22-1","NCL-23-1","NCL-24-1","NCL-25-1","NCL-26-1","NCL-42","NCL-45","NCL-48","NCL-48-4","NCL-49","NCL-49-2","NCL-50-1","NCL-51-3","NCL-MGelderman-IJN2008-01","NCL-MGelderman-IJN2008-02","UMC_HSTVAMC_NCL_NB-NChandaNNBM2010-01","UMC_HSTVAMC_NCL_NB-NChandaNNBM2010-02"];
 
         };
@@ -200,51 +198,56 @@ var app = angular.module('angularApp')
         $scope.updateAssociatedSamples = function() {
             var selectedSamples = $scope.publicationForm.matchedSampleSelect;
             var samplesPerLine = selectedSamples.join("\n");
-            $scope.publicationForm.publicationBean.sampleNamesStr = samplesPerLine;
+            $scope.publicationForm.sampleNamesStr = samplesPerLine;
         };
 
         $scope.fillPubMedInfo = function() {
-            $http({method: 'GET', url: '/caNanoLab/rest/publication/retrievePubMedInfo?pubmedId=' + $scope.publicationForm.publicationBean.domainFile.pubMedId}).
-             success(function(data, status, headers, config) {
-                 $scope.pubInfo = data;
-                 
-                 $scope.publicationForm.publicationBean.domainFile.title = $scope.pubInfo.domainFile.title;
-                 $scope.publicationForm.publicationBean.description = $scope.pubInfo.description;
-                 $scope.publicationForm.publicationBean.domainFile.digitalObjectId = $scope.pubInfo.domainFile.digitalObjectId;
-                 $scope.publicationForm.publicationBean.domainFile.journalName = $scope.pubInfo.domainFile.journalName
-                 $scope.publicationForm.publicationBean.domainFile.startPage = $scope.pubInfo.domainFile.startPage
-                 $scope.publicationForm.publicationBean.domainFile.endPage = $scope.pubInfo.domainFile.endPage
-                 $scope.publicationForm.publicationBean.domainFile.volume = $scope.pubInfo.domainFile.volume
-                 $scope.publicationForm.publicationBean.domainFile.year = $scope.pubInfo.domainFile.year
-                 $scope.publicationForm.publicationBean.authors = $scope.pubInfo.authors;
-                 $scope.publicationForm.publicationBean.keywordsStr = $scope.pubInfo.keywordsStr;
+            $http({method: 'GET', url: '/caNanoLab/rest/publication/retrievePubMedInfo?pubmedId=' + $scope.publicationForm.pubMedId}).
+                success(function(data, status, headers, config) {
+                    $scope.pubInfo = data;
 
-                 if($scope.publicationForm.publicationBean.authors != null && $scope.publicationForm.publicationBean.authors.length > 0 ) {
-                     $scope.showAuthorTable = true;
-                 }
-             }).
-             error(function(data, status, headers, config) {
-                 $scope.message = data;
-             });
+                    $scope.publicationForm.title = $scope.pubInfo.domainFile.title;
+                    $scope.publicationForm.description = $scope.pubInfo.description;
+                    $scope.publicationForm.digitalObjectId = $scope.pubInfo.domainFile.digitalObjectId;
+                    $scope.publicationForm.journalName = $scope.pubInfo.domainFile.journalName
+                    $scope.publicationForm.startPage = $scope.pubInfo.domainFile.startPage
+                    $scope.publicationForm.endPage = $scope.pubInfo.domainFile.endPage
+                    $scope.publicationForm.volume = $scope.pubInfo.domainFile.volume
+                    $scope.publicationForm.year = $scope.pubInfo.domainFile.year
+                    $scope.publicationForm.authors = $scope.pubInfo.authors;
+                    $scope.publicationForm.keywordsStr = $scope.pubInfo.keywordsStr;
+
+                    if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
+                        $scope.showAuthorTable = true;
+                    }
+
+                }).
+                error(function(data, status, headers, config) {
+                    $scope.message = data;
+                });
+
 
             //$scope.pubInfo = {"userAccesses":[],"groupAccesses":[],"theAccess":{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":"asdasdasdsadasdsadasd","phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"allAccesses":[],"publicStatus":false,"user":null,"userUpdatable":false,"userDeletable":false,"userIsOwner":false,"domainFile":{"createdBy":null,"createdDate":null,"description":null,"id":null,"name":null,"title":"A new granulation method for compressed tablets [proceedings].","type":null,"uri":null,"uriExternal":null,"findingCollection":null,"datumCollection":null,"keywordCollection":[{"id":null,"name":"Tablets","fileCollection":null},{"id":null,"name":"Phenylbutazone/administration & dosage","fileCollection":null},{"id":null,"name":"Hardness","fileCollection":null},{"id":null,"name":"Chemistry, Pharmaceutical/methods","fileCollection":null}],"category":null,"digitalObjectId":"","endPage":null,"journalName":"The Journal of pharmacy and pharmacology","pubMedId":12345,"researchArea":null,"startPage":"67P","status":null,"volume":"28 Suppl","year":1976,"authorCollection":null},"image":false,"keywordsStr":"Chemistry, Pharmaceutical/methods\r\nHardness\r\nPhenylbutazone/administration & dosage\r\nTablets","externalUrl":null,"uploadedFile":null,"newFileData":null,"createdDateStr":"","sampleNames":[],"researchAreas":null,"authors":[{"createdBy":null,"createdDate":null,"firstName":"M","id":null,"initial":"MH","lastName":"Rubinstein","publicationCollection":null}],"theAuthor":{"createdBy":null,"createdDate":null,"firstName":null,"id":null,"initial":null,"lastName":null,"publicationCollection":null},"sampleNamesStr":null,"fromSamplePage":false,"displayName":"Rubinstein, MH. A new granulation method for compressed tablets [proceedings]. The Journal of pharmacy and pharmacology. 1976; 28 Suppl. <a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12345>PMID: 12345</a>.","pubMedDisplayName":"<a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12345>PMID: 12345</a>","description":"","keywordsDisplayName":"Chemistry, Pharmaceutical/methods<br>Hardness<br>Phenylbutazone/administration &amp; dosage<br>Tablets","urlTarget":"_self"};
-            //$scope.pubInfo = {"userAccesses":[],"groupAccesses":[],"theAccess":{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"allAccesses":[],"publicStatus":false,"user":null,"userUpdatable":false,"userDeletable":false,"userIsOwner":false,"domainFile":{"createdBy":null,"createdDate":null,"description":null,"id":null,"name":null,"title":"Formulation studies on slow-release phosphate tablets for high-dosage administration in renal transplant patients [proceedings].","type":null,"uri":null,"uriExternal":null,"findingCollection":null,"datumCollection":null,"keywordCollection":[{"id":null,"name":"Tablets","fileCollection":null},{"id":null,"name":"Phosphates/administration & dosage","fileCollection":null},{"id":null,"name":"Delayed-Action Preparations","fileCollection":null},{"id":null,"name":"Chemistry, Pharmaceutical","fileCollection":null}],"category":null,"digitalObjectId":"","endPage":null,"journalName":"The Journal of pharmacy and pharmacology","pubMedId":12346,"researchArea":null,"startPage":"68P","status":null,"volume":"28 Suppl","year":1976,"authorCollection":null},"image":false,"keywordsStr":"Chemistry, Pharmaceutical\r\nDelayed-Action Preparations\r\nPhosphates/administration & dosage\r\nTablets","externalUrl":null,"uploadedFile":null,"newFileData":null,"createdDateStr":"","sampleNames":[],"researchAreas":null,"authors":[{"createdBy":null,"createdDate":null,"firstName":"R","id":null,"initial":"R","lastName":"Woodroffe","publicationCollection":null}],"theAuthor":{"createdBy":null,"createdDate":null,"firstName":null,"id":null,"initial":null,"lastName":null,"publicationCollection":null},"sampleNamesStr":null,"fromSamplePage":false,"displayName":"Woodroffe, R. Formulation studies on slow-release phosphate tablets for high-dosage administration in renal transplant patients [proceedings]. The Journal of pharmacy and pharmacology. 1976; 28 Suppl. <a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12346>PMID: 12346</a>.","pubMedDisplayName":"<a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12346>PMID: 12346</a>","description":"","keywordsDisplayName":"Chemistry, Pharmaceutical<br>Delayed-Action Preparations<br>Phosphates/administration &amp; dosage<br>Tablets","urlTarget":"_self"};
+            //$scope.pubInfo = {"userAccesses":[],"groupAccesses":[],"theAccess":{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":"asdffdsfdsfds","phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"allAccesses":[],"publicStatus":false,"user":null,"userUpdatable":false,"userDeletable":false,"userIsOwner":false,"domainFile":{"createdBy":null,"createdDate":null,"description":null,"id":null,"name":null,"title":"Formulation studies on slow-release phosphate tablets for high-dosage administration in renal transplant patients [proceedings].","type":null,"uri":null,"uriExternal":null,"findingCollection":null,"datumCollection":null,"keywordCollection":[{"id":null,"name":"Tablets","fileCollection":null},{"id":null,"name":"Phosphates/administration & dosage","fileCollection":null},{"id":null,"name":"Delayed-Action Preparations","fileCollection":null},{"id":null,"name":"Chemistry, Pharmaceutical","fileCollection":null}],"category":null,"digitalObjectId":"","endPage":null,"journalName":"The Journal of pharmacy and pharmacology","pubMedId":12346,"researchArea":null,"startPage":"68P","status":null,"volume":"28 Suppl","year":1976,"authorCollection":null},"image":false,"keywordsStr":"Chemistry, Pharmaceutical\r\nDelayed-Action Preparations\r\nPhosphates/administration & dosage\r\nTablets","externalUrl":null,"uploadedFile":null,"newFileData":null,"createdDateStr":"","sampleNames":[],"researchAreas":null,"authors":[{"createdBy":null,"createdDate":null,"firstName":"R","id":null,"initial":"R","lastName":"Woodroffe","publicationCollection":null}],"theAuthor":{"createdBy":null,"createdDate":null,"firstName":null,"id":null,"initial":null,"lastName":null,"publicationCollection":null},"sampleNamesStr":null,"fromSamplePage":false,"displayName":"Woodroffe, R. Formulation studies on slow-release phosphate tablets for high-dosage administration in renal transplant patients [proceedings]. The Journal of pharmacy and pharmacology. 1976; 28 Suppl. <a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12346>PMID: 12346</a>.","pubMedDisplayName":"<a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12346>PMID: 12346</a>","description":"","keywordsDisplayName":"Chemistry, Pharmaceutical<br>Delayed-Action Preparations<br>Phosphates/administration &amp; dosage<br>Tablets","urlTarget":"_self"};
+
+
+
         };
 
         $scope.getCollabGroups = function() {
-        	if ($scope.accessForm.theAccess.groupName === undefined || $scope.accessForm.theAccess.groupName === null) {
-        		$scope.accessForm.theAccess.groupName = '';
-        	}
-        	
+            if ($scope.accessForm.theAccess.groupName === undefined || $scope.accessForm.theAccess.groupName === null) {
+                $scope.accessForm.theAccess.groupName = '';
+            }
+
             $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.groupName}).
-             success(function(data, status, headers, config) {
-             $scope.collabGroups = data;
-             }).
-             error(function(data, status, headers, config) {
-             // called asynchronously if an error occurs
-             // or server returns response with an error status.
-             $scope.message = data;
-             }); 
+                success(function(data, status, headers, config) {
+                    $scope.collabGroups = data;
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    $scope.message = data;
+                });
 
             //$scope.collabGroups = ["curator group", "NCI", "NCIP"];
             $scope.showAccessSelection=true;
@@ -252,19 +255,19 @@ var app = angular.module('angularApp')
         };
 
         $scope.getAccessUsers = function() {
-        	if ($scope.accessForm.theAccess.loginName === undefined || $scope.accessForm.theAccess.loginName === null) {
-        		$scope.accessForm.theAccess.loginName = '';
-        	}
-        	
+            if ($scope.accessForm.theAccess.loginName === undefined || $scope.accessForm.theAccess.loginName === null) {
+                $scope.accessForm.theAccess.loginName = '';
+            }
+
             $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.loginName}).
-             success(function(data, status, headers, config) {
-             $scope.accessUsers = data;
-             }).
-             error(function(data, status, headers, config) {
-             // called asynchronously if an error occurs
-             // or server returns response with an error status.
-             $scope.message = data;
-             });
+                success(function(data, status, headers, config) {
+                    $scope.accessUsers = data;
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    $scope.message = data;
+                });
 
             //$scope.accessUsers = {"lethai":"Le Thai","Omelchen":"Omelchenko Marina","burnskd":"Burns Kevin","canano_guest":"Guest Guest","grodzinp":"Grodzinski Piotr","swand":"Swan Don","skoczens":"Skoczen Sarah","sternstephan":"Stern Stephan","zolnik":"Zolnik Banu","hunseckerk":"Hunsecker Kelly","lipkeyfg":"Lipkey Foster","marina":"Dobrovolskaia Marina","pottert":"Potter Tim","uckunf":"Uckun Fatih","michal":"Lijowski Michal","mcneils":"Mcneil Scott","neunb":"Neun Barry","cristr":"Crist Rachael","zhengji":"Zheng Jiwen","frittsmj":"Fritts Martin","SchaeferH":"Schaefer Henry","benhamm":"Benham Mick","masoods":"Masood Sana","mclelandc":"McLeland Chris","torresdh":"Torres David","KlemmJ":"Klemm Juli","patria":"Patri Anil","hughesbr":"Hughes Brian","clogstonj":"Clogston Jeff","hinkalgw":"Hinkal George","MorrisS2":"Morris Stephanie","sharon":"Gaheen Sharon"};
             $scope.showAccessSelection=true;
