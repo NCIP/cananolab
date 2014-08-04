@@ -47,6 +47,7 @@
                     <td>
                         <input id="sampleName" ng-model="sampleData.sampleName" ng-change="changedSampleName()" type="text"  size="80" required pattern=".{3,}" title="3 characters minimum" >
                         <span ng-show="registerForm.firstName.$invalid && submitted" class="help-block">Enter a valid Sample Name.</span>
+                        <span ng-hide="true">{{$root.sampleId}}</span>
                     </td>
                 </tr>
                 <!-- Point of Contact -->
@@ -55,7 +56,7 @@
                         Point of Contact *
                     </td>
                     <td>
-                        <span ng-click="openPointOfContactModal" class="btn btn-primary btn-xxs">Add</span>
+                        <span ng-click="openPointOfContactModal()" class="btn btn-primary btn-xxs">Add</span>
                     </td>
                 </tr>
                 <!-- Point of Contact Data -->
@@ -81,18 +82,22 @@
 
                                 <tr ng-repeat="poc in sampleData.pointOfContacts">
                                     <td>{{returnUserReadableBoolean(poc.primaryContact)}}</td>
-                                    <td ng-bind-html="poc.contactPerson"></td>
                                     <td>
-                                        {{poc.organization.name}}<br>
-                                        {{poc.address.line1}}<br>
-                                        {{poc.address.line1}}<br>
-                                        {{poc.address.city}} {{poc.address.stateProvince}} {{poc.address.zip}} {{poc.address.country}}<br>
+                                        {{poc.contactPerson}}
+                                        <span ng-show='poc.contactPerson==""'>{{poc.firstName}} {{poc.lastName}}</span>
                                     </td>
-                                    <td>{{poc.role}}</td>
+                                    <td>
+                                        <div ng-bind-html="poc.organization.name"></div>
+                                        <div ng-bind-html="poc.address.line1"></div>
+                                        <div ng-bind-html="poc.address.line2"></div>
+                                        {{poc.address.city}}<span ng-show="poc.address.city">,</span> {{poc.address.stateProvince}} {{poc.address.zip}} {{poc.address.country}}
+                                    </td>
+                                    <td>
+                                        {{poc.role}}
+                                    </td>
                                     <td>
                                         <div align="right">
-                                            <button ng-click="openPointOfContact(poc)" class="btn btn-primary btn-xxs">Edit</button>
-
+                                            <button ng-click="openPointOfContactModal(sampleData)" class="btn btn-primary btn-xxs">Edit</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -107,11 +112,21 @@
                         <label for="keywords">Keywords</label>
                     </td>
                     <td>
+                        <!-- Old way
                         <ul id="keywords" class="list-group keywords" >
                             <li class="list-group-item" ng-repeat="keyword in sampleData.keywords track by $index" ng-click="removeKeyword(keyword)"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}" title="Remove keyword">
-                               <!-- <span class="glyphicon glyphicon-tag"></span> --> {{keyword}}
+                               {{keyword}}
                             </li>
                         </ul>
+                        -->
+                        <div class="keywords-container">
+                            <ul id="keywords" class="keywords">
+                                <li ng-repeat="keyword in sampleData.keywords track by $index" ng-click="removeKeyword(keyword)"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}" title="Remove keyword">
+                                    <span>{{keyword}}</span>
+                                </li>
+                            </ul>
+                        </div>
+
                         <input id="newKeyword" type="text" ng-model="newKeyword">
                         <button type="button" class="btn btn-primary btn-xs" ng-click="addKeyword()">Add</button>
                    </td>
@@ -121,7 +136,7 @@
                     Access to the Sample
                 </td>
                 <td>
-                    <button ng-click="openAccessToSampleModal" class="btn btn-primary btn-xxs">Add</button>
+                    <button ng-click="openAccessToSampleModal()" class="btn btn-primary btn-xxs">Add</button>
                 </td>
             </tr>
             <tr>
@@ -158,7 +173,7 @@
                                     </td>
                                     <td>
                                         <div align="right">
-                                            <button ng-click="openAccessToSampleModal" class="btn btn-primary btn-xxs">Edit</button>
+                                            <button ng-click="openAccessToSampleModal()" class="btn btn-primary btn-xxs">Edit</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -267,7 +282,8 @@
                             </td>
 
                         <td>
-                            <button ng-click="openGenerateModal" class="btn btn-primary btn-xxs">Generate</button>
+                            <button ng-click="openDataAvailability(sampleId.data)" class="btn btn-primary btn-xxs">Generate</button>
+
                         </td>
                     </tr>
 

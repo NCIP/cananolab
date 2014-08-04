@@ -12,14 +12,17 @@
         </td>
       </tr>
     </table>
-<br />
+<br /><div ng-init="p=tableParams.$params;
+				length=sampleData.data.length;
+				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
+	</div><br />
+
 <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
 		<td data-title="''" width="5%" class="columnOne">
-				<a href="#/editSample?sampleId={{row.sampleId}}">Edit</a>(test only)
-            <!-- Testing
-				<a href="#/sample?sampleId={{row.sampleId}}">View</a>
-			-->
+			<a ng-if="row.editable" href="#/editSample?sampleId={{row.sampleId}}">Edit</a>
+			<a ng-if="!row.editable"href="#/sample?sampleId={{row.sampleId}}">View</a>
+
 		</td>
 		<td data-title="'Sample Name'" sortable="'sampleName'" width="17%">
 		 {{row.sampleName}}
