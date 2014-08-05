@@ -4,6 +4,8 @@ import java.util.Date;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.restful.util.SecurityUtil;
+import gov.nih.nci.cananolab.service.security.UserBean;
 
 public class SimpleSearchPublicationBean {
 	
@@ -15,7 +17,18 @@ public class SimpleSearchPublicationBean {
 	String status;
 	Date createdDate;
 	
+	boolean editable = false;
 	
+	public boolean isEditable() {
+		return editable;
+	}
+
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
+
 	public String getDisplayName() {
 		return displayName;
 	}
@@ -86,7 +99,7 @@ public class SimpleSearchPublicationBean {
 	}
 
 
-	public void transferSampleBeanForBasicResultView(PublicationBean bean) {
+	public void transferSampleBeanForBasicResultView(PublicationBean bean, UserBean user) {
 		try{
 		if (bean == null) return;
 		
@@ -99,6 +112,7 @@ public class SimpleSearchPublicationBean {
 	    setStatus(pub.getStatus());
 		setCreatedDate(pub.getCreatedDate());
 		
+		editable = SecurityUtil.isEntityEditableForUser(bean.getAllAccesses(), user);
 	   }catch(Exception e){
 			System.out.println("error while setting up simple bean  "+e);
 			e.printStackTrace();

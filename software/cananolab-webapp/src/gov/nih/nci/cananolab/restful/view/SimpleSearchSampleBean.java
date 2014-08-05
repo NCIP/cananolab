@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
+import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
@@ -144,37 +145,8 @@ public class SimpleSearchSampleBean {
 		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain()
 				.getCreatedDate());
 
-		editable = isSampleEditableForUser(sampleBean.getUserAccesses(), user);
+		editable = SecurityUtil.isEntityEditableForUser(sampleBean.getUserAccesses(), user);
 	}
 	
-	/**
-	 * To determine if the user has edit right to the sample
-	 * 
-	 * @param userAccesses
-	 * @param user
-	 * @return
-	 */
-	protected boolean isSampleEditableForUser(List<AccessibilityBean> userAccesses, UserBean user) {
-		if (user == null || userAccesses == null) 
-			return false;
-		
-		if (user.isCurator())
-			return true;
-		
-		String loginName = user.getLoginName();
-		if (loginName == null || loginName.length() == 0)
-			return false;
-		
-		for (AccessibilityBean access : userAccesses) {
-			UserBean aUser = access.getUserBean();
-			if (aUser == null) continue;
-			
-			if (aUser.getLoginName().equals(loginName)) 
-				return true;
-		}
-		
-		return false;
-		
-	}
 
 }
