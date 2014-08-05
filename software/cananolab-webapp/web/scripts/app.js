@@ -39,7 +39,7 @@ app.config(function ($routeProvider, $httpProvider) {
         controller: 'SampleSearchCtrl'
       })   
       .when('/sampleResults', {
-        templateUrl: 'views/sampleResults.html',
+        templateUrl: 'views/sample/view/sampleResults.html',
         controller: 'SampleResultsCtrl'
       })                  
       .when('/about', {
