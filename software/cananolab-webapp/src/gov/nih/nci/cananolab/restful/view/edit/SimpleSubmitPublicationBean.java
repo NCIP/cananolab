@@ -40,9 +40,15 @@ public class SimpleSubmitPublicationBean {
 	String createdBy = "";
 	Boolean userDeletable = false;
 	private AccessibilityBean theAccess = new AccessibilityBean();
-
+	String externalUrl = "";
 	
 	
+	public String getExternalUrl() {
+		return externalUrl;
+	}
+	public void setExternalUrl(String externalUrl) {
+		this.externalUrl = externalUrl;
+	}
 	public AccessibilityBean getTheAccess() {
 		return theAccess;
 	}
