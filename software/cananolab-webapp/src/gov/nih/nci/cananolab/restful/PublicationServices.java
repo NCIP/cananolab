@@ -224,27 +224,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.ok("Error while viewing the publication results").build();
 		}
 	}
-	
-//	@POST
-//	@Path("/addAuthor")
-//	@Produces ("application/json")
-//	public Response addAuthor(@Context HttpServletRequest httpRequest, Author form ) {
-//	
-//		try {
-//			
-//			PublicationManager pubManager = 
-//					 (PublicationManager) applicationContext.getBean("publicationManager");
-//			
-//						
-//			PublicationBean pBean = pubManager.addAuthor(form, httpRequest);
-//			
-//			return Response.ok(pBean).build();
-//
-//		} catch (Exception e) {
-//			logger.error(e.getMessage());
-//			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while adding author for publication " + e.getMessage()).build();
-//		}
-//	}
+
 	
 	@GET
 	@Path("/getSamples")
