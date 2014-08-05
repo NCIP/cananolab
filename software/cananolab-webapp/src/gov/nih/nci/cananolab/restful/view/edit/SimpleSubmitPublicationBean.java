@@ -39,7 +39,16 @@ public class SimpleSubmitPublicationBean {
 	String ownerName = "";
 	String createdBy = "";
 	Boolean userDeletable = false;
+	private AccessibilityBean theAccess = new AccessibilityBean();
+
 	
+	
+	public AccessibilityBean getTheAccess() {
+		return theAccess;
+	}
+	public void setTheAccess(AccessibilityBean theAccess) {
+		this.theAccess = theAccess;
+	}
 	public String getSampleTitle() {
 		return sampleTitle;
 	}

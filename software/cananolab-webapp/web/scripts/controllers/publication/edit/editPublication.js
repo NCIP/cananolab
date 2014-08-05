@@ -3,7 +3,6 @@ var app = angular.module('angularApp')
 
     .controller('EditPublicationCtrl', function ($rootScope,$scope,$http,$location,$timeout,$routeParams) {
         $scope.publicationForm = {};
-        $scope.accessForm = {};
         //$scope.sampleData = sampleService.sampleData;
         $rootScope.navTree=false;
         //$rootScope.tabs = navigationService.query();
@@ -16,8 +15,12 @@ var app = angular.module('angularApp')
         $scope.publicationForm.authors = [];
 
         // Access variables
+        $scope.publicationForm.theAccess = {};
+        $scope.accessForm = {};
         $scope.dataType = 'Publication';
-        $scope.parentFormName = 'PublicationForm';
+        $scope.parentFormName = 'publicationForm';
+        $scope.accessForm.theAcccess = {};
+        $scope.accessForm.theAcccess.userBean = {};
         $scope.curator = false;
         $scope.groupAccesses = [];
         $scope.userAccesses = [];
@@ -28,7 +31,11 @@ var app = angular.module('angularApp')
         $scope.showAccessSelection = false;
         $scope.accessForm.theAccess = {};
         $scope.accessForm.theAccess.groupName = '';
-        $scope.accessForm.theAccess.loginName = '';
+        $scope.accessForm.theAccess.userBean = {};
+        $scope.accessForm.theAccess.userBean.loginName = '';
+        $scope.access = {};
+        $scope.access.groupName = '';
+        $scope.access.loginName = '';
 
 
         //$scope.$on('$viewContentLoaded', function(){
@@ -255,11 +262,11 @@ var app = angular.module('angularApp')
         };
 
         $scope.getAccessUsers = function() {
-            if ($scope.accessForm.theAccess.loginName === undefined || $scope.accessForm.theAccess.loginName === null) {
-                $scope.accessForm.theAccess.loginName = '';
+            if ($scope.accessForm.theAccess.userBean.loginName === undefined || $scope.accessForm.theAccess.userBean.loginName === null) {
+                $scope.accessForm.theAccess.userBean.loginName = '';
             }
 
-            $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.loginName}).
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.userBean.loginName}).
                 success(function(data, status, headers, config) {
                     $scope.accessUsers = data;
                 }).
@@ -278,6 +285,29 @@ var app = angular.module('angularApp')
             $scope.addAccess=false;
             $scope.showAddAccessButton=true;
         }
+        
+        $scope.saveAccessSection = function() {
+            $scope.loader = true;
+            $scope.publicationForm.theAccess = $scope.accessForm.theAccess;
+
+            $http({method: 'POST', url: '/caNanoLab/rest/publication/saveAccess',data: $scope.publicationForm}).
+                success(function(data, status, headers, config) {
+                    // $rootScope.sampleData = data;
+                    //$scope.sampleData.data = data;
+                    //$location.path("/sampleResults").replace();
+
+                    alert(data);
+
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    // $rootScope.sampleData = data;
+                    $scope.loader = false;
+                    $scope.message = data;
+                    alert(data);
+                });
+        };        
 
     });
 
