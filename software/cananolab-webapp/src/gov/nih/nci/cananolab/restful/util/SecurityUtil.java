@@ -1,5 +1,8 @@
 package gov.nih.nci.cananolab.restful.util;
 
+import java.util.List;
+
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,4 +30,33 @@ public class SecurityUtil {
 		
 		return true;
 	}
+	
+	/**
+	 * Evaluate whether user has edit right to the entity (sample, pulication, etc)
+	 * @param userAccesses
+	 * @param user
+	 * @return
+	 */
+	public static boolean isEntityEditableForUser(List<AccessibilityBean> userAccesses, UserBean user) {
+		if (user == null || userAccesses == null) 
+			return false;
+		
+		if (user.isCurator())
+			return true;
+		
+		String loginName = user.getLoginName();
+		if (loginName == null || loginName.length() == 0)
+			return false;
+		
+		for (AccessibilityBean access : userAccesses) {
+			UserBean aUser = access.getUserBean();
+			if (aUser == null) continue;
+			
+			if (aUser.getLoginName().equals(loginName)) 
+				return true;
+		}
+		
+		return false;
+		
+	} 
 }
