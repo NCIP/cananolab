@@ -41,8 +41,15 @@ public class SimpleSubmitPublicationBean {
 	Boolean userDeletable = false;
 	private AccessibilityBean theAccess = new AccessibilityBean();
 	String externalUrl = "";
+	String[] sampleNames;
 	
 	
+	public String[] getSampleNames() {
+		return sampleNames;
+	}
+	public void setSampleNames(String[] sampleNames) {
+		this.sampleNames = sampleNames;
+	}
 	public String getExternalUrl() {
 		return externalUrl;
 	}
