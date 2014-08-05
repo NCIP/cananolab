@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('angularApp')
 
-    .controller('EditPublicationCtrl', function ($rootScope,$scope,$http,$location,$timeout,$routeParams) {
+    .controller('EditPublicationCtrl', function (groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams) {
         $scope.publicationForm = {};
         //$scope.sampleData = sampleService.sampleData;
         $rootScope.navTree=false;
@@ -37,6 +37,11 @@ var app = angular.module('angularApp')
         $scope.access = {};
         $scope.access.groupName = '';
         $scope.access.loginName = '';
+        $scope.publicationForm.isPublic = false;
+        $scope.accessForm.theAccess.accessBy = 'group';        
+        $rootScope.groups = groupService.get();
+//        alert($rootScope.groups);
+//        $scope.curator = $rootScope.groups.indexOf("Curator") != -1;
 
 
         //$scope.$on('$viewContentLoaded', function(){
@@ -290,6 +295,10 @@ var app = angular.module('angularApp')
         $scope.saveAccessSection = function() {
             $scope.loader = true;
             $scope.publicationForm.theAccess = $scope.accessForm.theAccess;
+            
+            if( $scope.accessForm.theAccess.accessBy == 'public') {
+                $scope.publicationForm.isPublic = true;
+            }
 
             $http({method: 'POST', url: '/caNanoLab/rest/publication/saveAccess',data: $scope.publicationForm}).
                 success(function(data, status, headers, config) {
@@ -308,7 +317,29 @@ var app = angular.module('angularApp')
                     $scope.message = data;
                     alert(data);
                 });
-        };        
+        }; 
+        
+        $scope.uploadFile = function(element){
+            //var file = $scope.localForm.uploadedFile;
+            var file = element.files[0];
+            console.log('file is ' + JSON.stringify(file));
+            var uploadUrl = "/fileUpload";
+            $scope.uploadFileToUrl(file, uploadUrl);
+        };
+
+        $scope.uploadFileToUrl = function(file, uploadUrl){
+            var fd = new FormData();
+            fd.append('file', file);
+            $http.post(uploadUrl, fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+                .success(function(){
+                })
+                .error(function(){
+                });
+        };
+        
 
     });
 
