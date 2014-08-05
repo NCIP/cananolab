@@ -154,6 +154,8 @@ public class PublicationBO extends BaseAnnotationBO{
 
 		publicationBean.setupDomain(Constants.FOLDER_PUBLICATION,
 				user.getLoginName());
+		
+		
 		service.savePublication(publicationBean);
 
 

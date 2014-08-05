@@ -86,17 +86,17 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 				.setAttribute("resultSize",
 						new Integer(publicationBeans.size()));
 	//	return mapping.findForward("success");
-		List<SimpleSearchPublicationBean> simplePubBeans = transfertoSimplePubBeans(pubBeansPerPage);
+		List<SimpleSearchPublicationBean> simplePubBeans = transfertoSimplePubBeans(pubBeansPerPage, user);
 		return simplePubBeans;
 	}
 
 	protected List<SimpleSearchPublicationBean> transfertoSimplePubBeans(
-			List<PublicationBean> pubBeansPerPage) {
+			List<PublicationBean> pubBeansPerPage, UserBean user) {
      List<SimpleSearchPublicationBean> simpleBeans = new ArrayList<SimpleSearchPublicationBean>();
 		
 		for (PublicationBean bean : pubBeansPerPage) {
 			SimpleSearchPublicationBean simpleBean = new SimpleSearchPublicationBean();
-			simpleBean.transferSampleBeanForBasicResultView(bean);
+			simpleBean.transferSampleBeanForBasicResultView(bean, user);
 			simpleBeans.add(simpleBean);
 		}
 		
