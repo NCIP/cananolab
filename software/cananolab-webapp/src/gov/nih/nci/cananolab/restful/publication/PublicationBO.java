@@ -156,6 +156,7 @@ public class PublicationBO extends BaseAnnotationBO{
 				user.getLoginName());
 		service.savePublication(publicationBean);
 
+
 		InitPublicationSetup.getInstance().persistPublicationDropdowns(request,
 				publicationBean);
 
@@ -171,7 +172,8 @@ public class PublicationBO extends BaseAnnotationBO{
 							.getCategory()) + 1;
 			request.setAttribute("onloadJavascript", "showSummary('" + ind
 					+ "', " + allPublicationTypes.size() + ")");
-			msgs.add(PropertyUtil.getProperty("publication", "message.submitPublication"));
+			msgs.add(PropertyUtil.getProperty("publication", "message.submitPublication"+publicationBean.getDomainFile().getTitle()));
+
 		}
 		return msgs;
 	}
@@ -199,6 +201,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		pub.setResearchArea(bean.getResearchAreas());
 		pubBean.setAuthors(bean.getAuthors());
 		pubBean.setSampleNamesStr(bean.getSampleNamesStr());
+		pubBean.setSampleNames(bean.getSampleNames());
 		pubBean.setGroupAccesses(bean.getGroupAccesses());
 		pubBean.setUserAccesses(bean.getUserAccesses());
 		pubBean.setDomainFile(pub);
