@@ -35,9 +35,16 @@ public class SecurityUtilTest {
 		loggedin = SecurityUtil.isUserLoggedIn(request);
 		assertFalse(loggedin);
 		
-		when(session.getAttribute("user")).thenReturn(new UserBean());
+		UserBean user = new UserBean();
+		when(session.getAttribute("user")).thenReturn(user);
+		loggedin = SecurityUtil.isUserLoggedIn(request);
+		assertFalse(loggedin);
+		
+		user.setUserId("someid");
+		when(session.getAttribute("user")).thenReturn(user);
 		loggedin = SecurityUtil.isUserLoggedIn(request);
 		assertTrue(loggedin);
+		
 	}
 
 }
