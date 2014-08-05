@@ -75,7 +75,7 @@ app.config(function ($routeProvider, $httpProvider) {
        controller: 'CharacterizationCtrl'
       }) 
       .when('/publication', {
-       templateUrl: 'views/publication.html',
+       templateUrl: 'views/sample/view/publication.html',
        controller: 'PublicationCtrl'
       })   
       .when('/managePublications', {
