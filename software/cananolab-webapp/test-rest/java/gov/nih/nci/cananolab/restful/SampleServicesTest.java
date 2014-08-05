@@ -2,11 +2,20 @@ package gov.nih.nci.cananolab.restful;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
+import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.List;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -27,10 +36,11 @@ public class SampleServicesTest {
 
 	@Before
 	public void setUp() throws Exception {
-		client = ClientBuilder.newClient(new ClientConfig()
-		//.register(MyClientResponseFilter.class)
-		//.register(new AnotherClientFilter())
-				);
+	
+		client = ClientBuilder.newBuilder()
+		        .register(ObjectMapperProvider.class)
+		        .register(JacksonFeature.class)
+		        .build();
 	}
 
 	@Test
@@ -114,12 +124,7 @@ public class SampleServicesTest {
 		//Because "contains" operand is not set, exact name is needed;
 		form.setSampleName("ncl-23-1");
 		
-		final Client aClient = ClientBuilder.newBuilder()
-		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
-		        .build();
-		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("searchSample");
@@ -142,61 +147,54 @@ public class SampleServicesTest {
 	}
 	
 	@Test
-	public void testupdateSample() {
-
-		//http://stackoverflow.com/questions/23601842/jersey-messagebodywriter-not-found-for-media-type-application-json-type-class
-		
-		SearchSampleForm form = new SearchSampleForm();
-		form.setSampleName("ncl-23-1");
-		
-		final Client aClient = ClientBuilder.newBuilder()
-		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
-		        .build();
-		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+	public void testUpdateSample() {
+		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
-		WebTarget searchSampleWebTarget = webTarget.path("sample").path("searchSample");
-
+		WebTarget searchSampleWebTarget = webTarget.path("sample").path("updateSample");
+			
+		SampleEditGeneralBean editBean = new SampleEditGeneralBean();
+		editBean.setSampleId(44695553);
+		editBean.setSampleName("SY-New Sample");
+		editBean.getKeywords().add("NewKeywork-" + System.currentTimeMillis());
+		
 		Response postResponse =
 				searchSampleWebTarget.request("application/json")
-		         .post(Entity.json(form));
+		         .post(Entity.json(editBean));
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
-		assertTrue(postResponse.getStatus() == 200);
+		assertTrue(postResponse.getStatus() == 500);
 		
-		
-		
+		postResponse.bufferEntity();
+		String json = (String) postResponse.readEntity(String.class);
+		assertTrue(json.contains("User session"));
 	}
 	
 	@Test
 	public void testCopySample() {
 
-		//http://stackoverflow.com/questions/23601842/jersey-messagebodywriter-not-found-for-media-type-application-json-type-class
-		
-		SearchSampleForm form = new SearchSampleForm();
-		form.setSampleName("ncl-23-1");
-		
-		final Client aClient = ClientBuilder.newBuilder()
-		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
-		        .build();
-		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("copySample");
-
+			
+		SampleEditGeneralBean editBean = new SampleEditGeneralBean();
+		editBean.setSampleId(44695553);
+		editBean.setSampleName("SY-New Sample");
+		editBean.getKeywords().add("NewKeywork-" + System.currentTimeMillis());
+		
 		Response postResponse =
 				searchSampleWebTarget.request("application/json")
-		         .post(Entity.json(form));
+		         .post(Entity.json(editBean));
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
-		assertTrue(postResponse.getStatus() == 200);
+		assertTrue(postResponse.getStatus() == 500);
 		
+		postResponse.bufferEntity();
+		String json = (String) postResponse.readEntity(String.class);
+		assertTrue(json.contains("User session"));
 	}
 	
 	
