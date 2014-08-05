@@ -21,7 +21,7 @@ public class TabGenerationBO {
 		String urlBase = getUrlBase(httpRequest.getRequestURL().toString());
 		
 		SimpleTabsBean tabsBean = new SimpleTabsBean();
-		tabsBean.setUserLoggedIn(userBean == null);
+		tabsBean.setUserLoggedIn(userBean != null);
 		
 		if (userBean == null) { //not logged in
 			String[] tabWithLink = new String[2];
