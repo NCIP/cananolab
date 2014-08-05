@@ -71,7 +71,7 @@ app.config(function ($routeProvider, $httpProvider) {
        controller: 'CompositionCtrl'
       }) 
       .when('/characterization', {
-       templateUrl: 'views/characterization.html',
+       templateUrl: 'views/sample/view/characterization.html',
        controller: 'CharacterizationCtrl'
       }) 
       .when('/publication', {
