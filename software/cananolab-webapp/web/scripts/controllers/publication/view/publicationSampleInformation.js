@@ -8,7 +8,7 @@ var app = angular.module('angularApp')
     $scope.id = $routeParams.id;
     $scope.type = $routeParams.type;
     $scope.goBack = function() {
-        $location.path("/searchPublicationBySampleId").search({}).replace();
+        $location.path("/searchSamplesByPublicationId").search({}).replace();
     };
 
 

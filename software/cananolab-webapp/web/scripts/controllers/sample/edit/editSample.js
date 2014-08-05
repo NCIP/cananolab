@@ -162,44 +162,38 @@ var app = angular.module('angularApp')
     $scope.update = function() {
 
     };
-
 // Modal for Access To Sample (1)
-    $scope.openPointOfContactModal = function(sampleData) {
-        alert("You did it.  You click on a button.");
-        var modalInstance = $modal.open({
-            templateUrl: 'views/sample/edit/modal/accessToSampleModal.html',
-            controller: 'AccessToSampleModalCtrl',
-            size: 'sm',
-            resolve: {
-          }
-        });
+    $scope.openPointOfContactModal = function(sampleId, poc) {
+        console.log('openPointOfContactModal');
+        console.dir(sampleId);
+        console.log('poc');
+        console.dir(poc);
+            var modalInstance = $modal.open({
+              templateUrl: 'views/sample/edit/modal/pointOfContactModal.html',
+              controller: 'AccessToSampleModalCtrl',
+              size: 'lg',
+              resolve: {
+                sampleId: function () {
+                  return sampleId.data;
+                },
+                sampleData: function() {
+                  return $scope.sampleData.data;
+                },
+                poc: function() {
+                  return poc.data;
+                }
+              }
+            });
     };
 
 // Modal for Access To Sample (2)
-    $scope.openAccessToSampleModal = function(sampleId) {
-        alert("You did it.  You click on a button.");
-        var modalInstance = $modal.open({
-            templateUrl: 'views/sample/edit/modal/accessToSampleModal.html',
-            controller: 'keywordModalCtrl',
-            size: 'sm',
-            resolve: {
-            sampleId: function () {
-              return sampleId;
-            },
-            sampleData: function() {
-              return data;
-            }
-          }
-        });
-    };
-
 // Modal for Data Availability (3)
     $scope.openDataAvailability = function(sampleId) {
 
           $http({method: 'GET', url: '/caNanoLab/rest/sample/viewDataAvailability',params: {"sampleId":sampleId}}).
           success(function(data, status, headers, config) {
             var modalInstance = $modal.open({
-              templateUrl: 'views/sampleDataAvailability.html',
+              templateUrl: 'views/sample/view/sampleDataAvailability.html',
               controller: 'SampleDataAvailabilityCtrl',
               size: 'sm',
               resolve: {
@@ -219,23 +213,6 @@ var app = angular.module('angularApp')
           });
     };
 
-	$scope.submitData = function(isValid) {
-		$scope.submitted = true;
-		if (isValid) {
-			//$http({method: 'POST', url: '/caNanoLab/rest/security/register', data: {"title":$scope.title,"firstName":$scope.firstName,"lastName":$scope.lastName,"email":$scope.email,"phone":$scope.phone,"organization":$scope.organization,"fax":$scope.fax,"comment":$scope.comment,"registerToUserList":$scope.registerToUserList}, headers: {'Content-Type':'application/json'}}).
-	    	  $http({method: 'GET', url: '/caNanoLab/rest/security/register', params: {"title":$scope.title,"firstName":$scope.firstName,"lastName":$scope.lastName,"email":$scope.email,"phone":$scope.phone,"organization":$scope.organization,"fax":$scope.fax,"comment":$scope.comment,"registerToUserList":$scope.registerToUserList}}).
-			    success(function(data, status, headers, config) {
-			      // this callback will be called asynchronously
-			      // when the response is available
-			    	$scope.message="Your registration request has been sent to the administrator for assignment of your User ID and Password. You should receive this information via e-mail within one business day from time of submission.";
-			    }).
-			    error(function(data, status, headers, config) {
-			      // called asynchronously if an error occurs
-			      // or server returns response with an error status.
-			    	$scope.message=data;
-	    	});
-		};
-	};
     $scope.master = angular.copy($scope.sampleData);
-    $scope.reset();
+//    $scope.reset();
 });

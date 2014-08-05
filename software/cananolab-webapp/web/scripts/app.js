@@ -59,7 +59,7 @@ app.config(function ($routeProvider, $httpProvider) {
        controller: 'ManageSampleCtrl'
       }) 
       .when('/sample', {
-       templateUrl: 'views/viewSample.html',
+       templateUrl: 'views/sample/view/viewSample.html',
        controller: 'IndSampleCtrl'
       })       
       .when('/editSample', {
@@ -67,15 +67,15 @@ app.config(function ($routeProvider, $httpProvider) {
        controller: 'editSampleCtrl'
       })       
       .when('/composition', {
-       templateUrl: 'views/composition.html',
+       templateUrl: 'views/sample/view/composition.html',
        controller: 'CompositionCtrl'
       }) 
       .when('/characterization', {
-       templateUrl: 'views/characterization.html',
+       templateUrl: 'views/sample/view/characterization.html',
        controller: 'CharacterizationCtrl'
       }) 
       .when('/publication', {
-       templateUrl: 'views/publication.html',
+       templateUrl: 'views/sample/view/publication.html',
        controller: 'PublicationCtrl'
       })   
       .when('/managePublications', {

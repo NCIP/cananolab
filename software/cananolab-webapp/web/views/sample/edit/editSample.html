@@ -8,7 +8,7 @@
             </th>
             <td align="right" width="30%">
                 <button class="btn back btn-xs" ng-click="goBack()">Back</button>
-                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>
+                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample')">Help</a>
                 <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
             </td>
         </tr>
@@ -35,7 +35,7 @@
 
 <!-- Application  -->
 <div ng-show="editSampleForm">
-    <form name="sampleForm" ng-submit="submitData(sampleForm.$valid)" novalidate="" id="sampleForm">
+    <form name="sampleForm" id="sampleForm">
 
         <table  width="100%" align="center" class="submissionView" summary="layout">
             <tbody>
@@ -46,7 +46,6 @@
                     </td>
                     <td>
                         <input id="sampleName" ng-model="sampleData.sampleName" ng-change="changedSampleName()" type="text"  size="80" required pattern=".{3,}" title="3 characters minimum" >
-                        <span ng-show="registerForm.firstName.$invalid && submitted" class="help-block">Enter a valid Sample Name.</span>
                         <span ng-hide="true">{{$root.sampleId}}</span>
                     </td>
                 </tr>
@@ -56,7 +55,8 @@
                         Point of Contact *
                     </td>
                     <td>
-                        <span ng-click="openPointOfContactModal()" class="btn btn-primary btn-xxs">Add</span>
+                            <button ng-click="openPointOfContactModal(sampleId.data, {})" class="btn btn-primary btn-xxs">Add New poc</button>
+
                     </td>
                 </tr>
                 <!-- Point of Contact Data -->
@@ -97,7 +97,7 @@
                                     </td>
                                     <td>
                                         <div align="right">
-                                            <button ng-click="openPointOfContactModal(sampleData)" class="btn btn-primary btn-xxs">Edit</button>
+                                            <button ng-click="openPointOfContactModal(sampleId.data, poc)" class="btn btn-primary btn-xxs">Edit</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -121,7 +121,7 @@
                         -->
                         <div class="keywords-container">
                             <ul id="keywords" class="keywords">
-                                <li ng-repeat="keyword in sampleData.keywords track by $index" ng-click="removeKeyword(keyword)"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}" title="Remove keyword">
+                                <li ng-repeat="keyword in sampleData.keywords track by $index" ng-click="removeKeyword(keyword)"  title="Remove keyword">
                                     <span>{{keyword}}</span>
                                 </li>
                             </ul>
@@ -136,13 +136,14 @@
                     Access to the Sample
                 </td>
                 <td>
-                    <button ng-click="openAccessToSampleModal()" class="btn btn-primary btn-xxs">Add</button>
+                    <button ng-click="openDataAvailability()" class="btn btn-primary btn-xxs">Add</button>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                        <table class="editTableWithGrid" width="95%" align="center">
-                            <tbody><tr>
+                    <table class="editTableWithGrid" width="95%" align="center">
+                        <tbody>
+                            <tr>
                                 <th width="40%" scope="col">
                                     Group Name
                                 </th>
@@ -152,35 +153,24 @@
                                 <th></th>
                             </tr>
 
-                                <tr valign="top">
-                                    <td>
-                                        Curator
-                                    </td>
-                                    <td>
-                                        read update delete
-                                    </td>
-                                    <td><div align="right">
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr valign="top">
-                                    <td>
-                                        Public
-                                    </td>
-                                    <td>
-                                        read
-                                    </td>
-                                    <td>
-                                        <div align="right">
+                            <tr valign="top" ng-repeat="ats in sampleData.accessToSample.groupAccesses">
+                                <td>
+                                    <span>{{ats.groupName}}</span>
+                                </td>
+                                <td>
+                                    <span>{{ats.roleDisplayName}}</span>
+                                </td>
+                                <td>
+                                    <div align="right">
+                                        <span ng-hide='ats.roleDisplayName=="read update delete"'>
                                             <button ng-click="openAccessToSampleModal()" class="btn btn-primary btn-xxs">Edit</button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                        </tbody></table>
-                        <br>
-
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
                 </td>
             </tr>
             <tr>
