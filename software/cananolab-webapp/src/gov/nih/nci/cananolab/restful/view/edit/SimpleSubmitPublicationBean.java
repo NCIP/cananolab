@@ -30,7 +30,7 @@ public class SimpleSubmitPublicationBean {
 	Boolean uriExternal = false;
 	Long fileId;
 	String sampleId = "";
-	String[] sampleNamesStr;
+	String sampleNamesStr;
 	List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
 	List<AccessibilityBean> userAccesses =  new ArrayList<AccessibilityBean>();
 	String protectedData = "";
@@ -188,10 +188,10 @@ public class SimpleSubmitPublicationBean {
 		this.sampleId = sampleId;
 	}
 	
-	public String[] getSampleNamesStr() {
+	public String getSampleNamesStr() {
 		return sampleNamesStr;
 	}
-	public void setSampleNamesStr(String[] sampleNamesStr) {
+	public void setSampleNamesStr(String sampleNamesStr) {
 		this.sampleNamesStr = sampleNamesStr;
 	}
 

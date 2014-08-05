@@ -198,7 +198,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		pub.setUriExternal(bean.getUriExternal());
 		pub.setResearchArea(bean.getResearchAreas());
 		pubBean.setAuthors(bean.getAuthors());
-		pubBean.setSampleNames(bean.getSampleNamesStr());
+		pubBean.setSampleNamesStr(bean.getSampleNamesStr());
 		pubBean.setGroupAccesses(bean.getGroupAccesses());
 		pubBean.setUserAccesses(bean.getUserAccesses());
 		pubBean.setDomainFile(pub);
@@ -673,7 +673,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		} else if (publication.getUriExternal()
 				&& !StringUtils.isEmpty(pubBean.getExternalUrl())) {
 			return true;
-		} else if (!publication.getUriExternal()
+		} else if (publication.getUriExternal()
 				&& !StringUtils
 					.isEmpty(pubBean.getUploadedFile().getFileName())) {
 			return true;
