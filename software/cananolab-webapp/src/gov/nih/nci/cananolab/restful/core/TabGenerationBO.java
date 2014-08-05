@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.core;
 
+import gov.nih.nci.cananolab.restful.view.SimpleTabsBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
@@ -10,13 +11,17 @@ import javax.servlet.http.HttpSession;
 
 public class TabGenerationBO {
 
-	public List<String[]> getTabs(HttpServletRequest httpRequest, String homePage) {
+	public SimpleTabsBean getTabs(HttpServletRequest httpRequest, String homePage) {
+		
 		List<String[]> tabs = new ArrayList<String[]>();
 		HttpSession session = httpRequest.getSession(false);
 		UserBean userBean = (session == null)? null : (UserBean)session.getAttribute("user");	
 		homePage = homePage.trim().toLowerCase();
 		
-		String urlBase = getUrlBase(httpRequest.getRequestURL().toString());		
+		String urlBase = getUrlBase(httpRequest.getRequestURL().toString());
+		
+		SimpleTabsBean tabsBean = new SimpleTabsBean();
+		tabsBean.setUserLoggedIn(userBean == null);
 		
 		if (userBean == null) { //not logged in
 			String[] tabWithLink = new String[2];
@@ -112,8 +117,10 @@ public class TabGenerationBO {
 			tabWithLink[1] =  urlBase + "index.html#/logout";;
 			tabs.add(tabWithLink);
 		}
+		
+		tabsBean.setTabs(tabs);
 
-		return tabs;
+		return tabsBean;
 		
 	}
 	
