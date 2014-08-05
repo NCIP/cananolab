@@ -5,7 +5,8 @@ app.factory("sampleService", function(){
 	return {
 		sampleData: {data: null },
 		sampleId: {data: null },
-        scratchPad: {data: null }
+        scratchPad: {data: null },
+        poc: {data: null}
 	}
 
 });
