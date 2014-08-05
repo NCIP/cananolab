@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.restful.core.AccessibilityManager;
 import gov.nih.nci.cananolab.restful.core.CustomPlugInBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.core.TabGenerationBO;
+import gov.nih.nci.cananolab.restful.view.SimpleTabsBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.List;
@@ -58,7 +59,7 @@ public class CoreServices {
 		System.out.println("In getTabs");
 		
 		TabGenerationBO tabGen = (TabGenerationBO)applicationContext.getBean("tabGenerationBO");
-		List<String[]> tabs = tabGen.getTabs(httpRequest, homePage);
+		SimpleTabsBean tabs = tabGen.getTabs(httpRequest, homePage);
 		
 		return Response.ok(tabs).build();
 	}
