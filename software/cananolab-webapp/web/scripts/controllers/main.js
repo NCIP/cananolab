@@ -6,7 +6,7 @@ var app = angular.module('angularApp')
     $scope.loginShow = 0;
     $scope.authErrors = 0;
     $rootScope.navTree=false;
-    $rootScope.tabs = navigationService.query({'homePage':'true'});
+    $rootScope.tabs = navigationService.get({'homePage':'true'});
     $rootScope.groups = groupService.get();
     $scope.$on('$viewContentLoaded', function(){
       $http({method: 'GET', url: '/caNanoLab/rest/core/initSetup' }).

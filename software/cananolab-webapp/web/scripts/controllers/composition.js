@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('angularApp')
   .controller('CompositionCtrl', function (utilsService,sampleService,navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$routeParams) {
-    $rootScope.tabs = navigationService.query();
+    $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.get();
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleId = sampleService.sampleId;

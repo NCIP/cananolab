@@ -5,7 +5,7 @@ var app = angular.module('angularApp')
     $scope.searchSampleForm = {};
     $scope.sampleData = sampleService.sampleData;
     $rootScope.navTree=false;
-    $rootScope.tabs = navigationService.query();
+    $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.get();   
     
     $scope.$on('$viewContentLoaded', function(){

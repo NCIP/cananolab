@@ -7,7 +7,7 @@ var app = angular.module('angularApp')
     $scope.authErrors = 0;
 
     $rootScope.navTree=false;
-    $rootScope.tabs = navigationService.query();
+    $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.get();   
 
   	$scope.loginDo = function() {

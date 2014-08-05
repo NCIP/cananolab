@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('angularApp')
   .controller('PublicationSampleInformationCtrl', function (navigationService, groupService, $rootScope,$scope,$http,$filter,$location,$routeParams) {
-    $rootScope.tabs = navigationService.query();
+    $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.get();   
     $rootScope.navTree = false;
 

@@ -4,7 +4,7 @@
 var app = angular.module('angularApp')
 
 app.controller('CharacterizationCtrl', function (sampleService,utilsService,navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$routeParams) {
-    $rootScope.tabs = navigationService.query();
+    $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.get();   
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleId = sampleService.sampleId;
