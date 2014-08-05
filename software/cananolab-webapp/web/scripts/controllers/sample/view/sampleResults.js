@@ -15,7 +15,7 @@ var app = angular.module('angularApp')
           $http({method: 'GET', url: '/caNanoLab/rest/sample/viewDataAvailability',params: {"sampleId":sampleId}}).
           success(function(data, status, headers, config) {
             var modalInstance = $modal.open({
-              templateUrl: 'views/sampleDataAvailability.html',
+              templateUrl: 'views/sample/view/sampleDataAvailability.html',
               controller: 'SampleDataAvailabilityCtrl',
               size: 'sm',
               resolve: {
