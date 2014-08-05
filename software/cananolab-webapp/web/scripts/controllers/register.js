@@ -9,7 +9,7 @@
  */
 angular.module('angularApp')
   .controller('RegisterCtrl', function (navigationService,groupService, $rootScope, $scope, $http) {
-	$rootScope.tabs = navigationService.query();
+    $rootScope.tabs = navigationService.get();
 	$rootScope.groups = groupService.get();
 	$rootScope.navTree=false;
 

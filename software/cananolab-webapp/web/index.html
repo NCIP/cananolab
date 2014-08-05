@@ -206,8 +206,8 @@
                                              <!-- anchor to skip main menu -->
                                              <a href="#content"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
                                           </td>
-                                             
-                                          <th ng-repeat-start="t in tabs" scope="row" ng-class="{mainMenuItem: t[0]!='HOME', 'mainMenuItem home':t[0]=='HOME'}">
+               
+                                          <th ng-repeat-start="t in tabs.tabs" scope="row" ng-class="{mainMenuItem: t[0]!='HOME', 'mainMenuItem home':t[0]=='HOME'}">
                                              <a ng-class="{mainMenuLink: t[0]!='HOME', 'mainMenuLink home':t[0]=='HOME'}" href="{{t[1]}}">{{t[0]}}
                                              </a>
                                           </th>

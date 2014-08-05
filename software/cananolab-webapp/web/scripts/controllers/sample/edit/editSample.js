@@ -4,7 +4,7 @@ var app = angular.module('angularApp')
 .controller('editSampleCtrl', function (sampleService,navigationService,groupService,$scope,$rootScope,$filter,ngTableParams,$http,$location,$modal,$routeParams) {
 
 //var app = angular.module('angularApp').app.controller('editSampleCtrl', function (sampleService,utilsService,navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$routeParams) {
-    $rootScope.tabs = navigationService.query();
+    $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.get();
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleId = sampleService.sampleId;

@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('angularApp')
   .controller('SampleResultsCtrl', function (sampleService,navigationService,groupService,utilsService,$scope,$rootScope,$filter,ngTableParams,$http,$location,$modal) {
-    $rootScope.tabs = navigationService.query();
+    $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.get();
     $scope.sampleData = sampleService.sampleData;
     $rootScope.navTree=false;
