@@ -105,6 +105,7 @@ public class PublicationBO extends BaseAnnotationBO{
 			SimpleSubmitPublicationBean simplePubBean) throws Exception {
 		
 		List<String> msgs = new ArrayList<String>();
+		HttpSession session = request.getSession();
 		
 		PublicationBean publicationBean = transferSimpleSubmitPublicationBean(simplePubBean);//(PublicationBean) theForm.getPublicationBean();
 		msgs = validateInputForPublication(publicationBean);
@@ -154,10 +155,11 @@ public class PublicationBO extends BaseAnnotationBO{
 
 		publicationBean.setupDomain(Constants.FOLDER_PUBLICATION,
 				user.getLoginName());
-		
-		
 		service.savePublication(publicationBean);
 
+		session.setAttribute("publicationBean", publicationBean);
+						request.setAttribute("publicationId", publicationBean.getDomainFile()
+				.getId().toString());
 
 		InitPublicationSetup.getInstance().persistPublicationDropdowns(request,
 				publicationBean);
@@ -810,25 +812,26 @@ public class PublicationBO extends BaseAnnotationBO{
 		// if publication is public, the access is not public, retract
 		// public
 		// privilege would be handled in the service method
+		PublicationBean pub =  (PublicationBean) request.getSession().getAttribute("publicationBean");
 		service.assignAccessibility(theAccess,
-				(Publication) publication.getDomainFile());
+				(Publication) pub.getDomainFile());
 		// update status to retracted if the access is not public and
 		// publication is public
 		if (theAccess.getGroupName().equals(AccessibilityBean.CSM_PUBLIC_GROUP)
-				&& publication.getPublicStatus()) {
+				&& pub.getPublicStatus()) {
 			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS,
-					request, publication.getDomainFile().getId().toString(),
-					publication.getDomainFile().getTitle(), "publication");
+					request, pub.getDomainFile().getId().toString(),
+					pub.getDomainFile().getTitle(), "publication");
 		}
 		// if access is public, pending review status, update review
 		// status to public
 		if (theAccess.getGroupName().equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
-			this.switchPendingReviewToPublic(request, publication
+			this.switchPendingReviewToPublic(request, pub
 					.getDomainFile().getId().toString());
 		}
 
-		this.setAccesses(request, publication);
-		request.setAttribute("publicationId", publication.getDomainFile()
+		this.setAccesses(request, pub);
+		request.setAttribute("publicationId", pub.getDomainFile()
 				.getId().toString());
 		
 		//check if sampleId exists in the form
