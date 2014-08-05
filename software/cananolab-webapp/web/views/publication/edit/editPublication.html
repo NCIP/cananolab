@@ -317,13 +317,13 @@
                                     <td>
                                         <img ng-src="images/ajax-loader.gif" border="0" class="counts"
                                              id="loaderImg" style="display: none" alt="load existing samples">
-                                        <select ng-disabled="loader" id="publicationForm.matchedSampleSelect" ng-model="publicationForm.matchedSampleSelect" size="5" multiple="multiple">
+                                        <select ng-disabled="loader" id="matchedSampleSelect" ng-model="localForm.matchedSampleSelect" size="5" multiple="multiple">
                                             <option ng-repeat="option in sampleResults" value="{{option}}">
                                                 {{option}}
                                             </option>
                                         </select>
                                     </td>
-                                    <td><label for="publicationForm.matchedSampleSelect">
+                                    <td><label for="matchedSampleSelect">
                                         <a href ng-click="updateAssociatedSamples()"
                                            id="selectMatchedSampleButton">select</a></label>
                                     </td>

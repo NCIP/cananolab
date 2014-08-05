@@ -13,6 +13,7 @@ var app = angular.module('angularApp')
         $scope.showSearchSampleTable = false;
         $scope.theAuthor = {};
         $scope.publicationForm.authors = [];
+        $scope.localForm = {};
 
         // Access variables
         $scope.publicationForm.theAccess = {};
@@ -203,7 +204,7 @@ var app = angular.module('angularApp')
         };
 
         $scope.updateAssociatedSamples = function() {
-            var selectedSamples = $scope.publicationForm.matchedSampleSelect;
+            var selectedSamples = $scope.localForm.matchedSampleSelect;
             var samplesPerLine = selectedSamples.join("\n");
             $scope.publicationForm.sampleNamesStr = samplesPerLine;
         };
