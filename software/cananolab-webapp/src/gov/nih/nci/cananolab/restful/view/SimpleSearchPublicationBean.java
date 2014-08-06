@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.service.security.UserBean;
 
 public class SimpleSearchPublicationBean {
 	
+	long id;
 	String displayName;
 	String publicationType;
 	String[] researchAreas;
@@ -19,6 +20,14 @@ public class SimpleSearchPublicationBean {
 	
 	boolean editable = false;
 	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public boolean isEditable() {
 		return editable;
 	}
@@ -101,23 +110,24 @@ public class SimpleSearchPublicationBean {
 
 	public void transferSampleBeanForBasicResultView(PublicationBean bean, UserBean user) {
 		try{
-		if (bean == null) return;
-		
-		setDisplayName(bean.getDisplayName());
-		Publication pub = (Publication) bean.getDomainFile();
-		setPublicationType(pub.getCategory());
-		setResearchAreas(bean.getResearchAreas());
-		setSampleNames(bean.getSampleNames());
-		setDescriptionDetail(pub.getDescription());
-	    setStatus(pub.getStatus());
-		setCreatedDate(pub.getCreatedDate());
-		
-		editable = SecurityUtil.isEntityEditableForUser(bean.getAllAccesses(), user);
-	   }catch(Exception e){
+			if (bean == null) return;
+
+			setDisplayName(bean.getDisplayName());
+			Publication pub = (Publication) bean.getDomainFile();
+			setPublicationType(pub.getCategory());
+			setResearchAreas(bean.getResearchAreas());
+			setSampleNames(bean.getSampleNames());
+			setDescriptionDetail(pub.getDescription());
+			setStatus(pub.getStatus());
+			setCreatedDate(pub.getCreatedDate());
+
+			editable = SecurityUtil.isEntityEditableForUser(bean.getAllAccesses(), user);
+			id = bean.getDomainFile().getId();
+		}catch(Exception e){
 			System.out.println("error while setting up simple bean  "+e);
 			e.printStackTrace();
 		}
-	
+
 	}
 
 }

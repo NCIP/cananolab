@@ -2,7 +2,7 @@
     <h3 class="modal-title pull-left">Point Of Contact Information</h3>
     <div class="pull-right">
         <a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
-        <a href="" ng-click="ok()" class="help">Hide</a>
+        <a href="" ng-click="cancel()" class="help">Hide</a>
     </div>
     <div style="clear:both"></div>
     <h4 ng-if="poc.primaryContact" class="modal-title">Primary</h4>
@@ -287,7 +287,6 @@
 
 <div style="clear:both;"></div>
 <div class="modal-footer">
-    <button ng-click="ok()" class="btn btn-warning btn-modal">Cancel</button>
-    <div class="button-spacer pull-right"></div>
-    <button ng-click="save()" class='btn btn-primary btn-modal'>Save</button>
+    <button ng-click="cancel()" class="btn btn-warning btn-modal">Cancel</button>
+    <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="!poc.organization.name||!poc.role">Save</button>
 </div>

@@ -332,7 +332,7 @@ public class SampleEditGeneralBean {
 	 * 
 	 * @param request
 	 */
-	protected void setupLookups(HttpServletRequest request) {
+	public void setupLookups(HttpServletRequest request) {
 		try {
 			InitSampleSetup.getInstance().setPOCDropdowns(request);
 			SortedSet<String> organizationNames = (SortedSet<String>)request.getSession().getAttribute("allOrganizationNames");
@@ -360,7 +360,6 @@ public class SampleEditGeneralBean {
 			for (AccessibilityBean accBean : groupAccess) {
 				String groupName = accBean.getGroupName();
 				SimpleAccessBean aBean = new SimpleAccessBean();
-				aBean.setSampleId(sampleBean.getDomain().getId());
 				aBean.setGroupName(groupName);
 				aBean.setRoleDisplayName(accBean.getRoleDisplayName());
 				groupList.add(aBean);
@@ -374,7 +373,6 @@ public class SampleEditGeneralBean {
 			List<SimpleAccessBean> userList = new ArrayList<SimpleAccessBean>();
 			for (AccessibilityBean accBean : userAccess) {
 				SimpleAccessBean aBean = new SimpleAccessBean();
-				aBean.setSampleId(sampleBean.getDomain().getId());
 				aBean.setLoginName(accBean.getUserBean().getLoginName());
 				aBean.setRoleDisplayName(accBean.getRoleDisplayName());
 				
@@ -421,6 +419,7 @@ public class SampleEditGeneralBean {
 		if (samplePOC != null && samplePOC.getId() > 0) {
 			SimplePointOfContactBean poc = new SimplePointOfContactBean();
 			transferPointOfContactData(samplePOC, poc);
+			poc.setPrimaryContact(true);
 			pointOfContacts.add(poc);
 		}
 		
@@ -435,7 +434,7 @@ public class SampleEditGeneralBean {
 	}
 	
 	protected void transferPointOfContactData(PointOfContact samplePOC, SimplePointOfContactBean poc) {
-		poc.setPrimaryContact(true);
+		
 		poc.setFirstName(samplePOC.getFirstName());
 		poc.setLastName(samplePOC.getLastName());
 		

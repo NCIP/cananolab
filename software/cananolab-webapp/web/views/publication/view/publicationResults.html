@@ -19,7 +19,7 @@
 <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
 		<td data-title="''" width="5%" class="columnOne">
-			<a ng-if="row.editable" href="#/editPublication?publicationId={{row.publicationId}}">Edit</a>
+			<a ng-if="row.editable" href="#/editPublication?publicationId={{row.id}}">Edit</a>
 		</td>
 		<td data-title="'Bibliography Info'" sortable="'displayName'" width="25%" ng-bind-html="row.displayName">{{row.displayName}}
 		</td>

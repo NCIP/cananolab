@@ -106,7 +106,6 @@ public class PublicationBO extends BaseAnnotationBO{
 		
 		List<String> msgs = new ArrayList<String>();
 		HttpSession session = request.getSession();
-		String[] samples = splitSamples(simplePubBean);
 		PublicationBean publicationBean = transferSimpleSubmitPublicationBean(simplePubBean);//(PublicationBean) theForm.getPublicationBean();
 		msgs = validateInputForPublication(publicationBean);
 		if(msgs.size()>0)
@@ -125,7 +124,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		// validate associated sample names
 	
 		if (StringUtils.isEmpty(sampleId)
-				&& !validateAssociatedSamples(request, samples)) {
+				&& !validateAssociatedSamples(request, publicationBean)) {
 			msgs.add(PropertyUtil.getProperty("publication", "error.submitPublication.invalidSample"));
 		//	return false;
 			return msgs;
@@ -185,15 +184,6 @@ public class PublicationBO extends BaseAnnotationBO{
 		return msgs;
 	}
 
-	private String[] splitSamples(SimpleSubmitPublicationBean simplePubBean) {
-		String text= simplePubBean.getSampleNamesStr();
-		if (text == null) {
-			return null;
-		}
-		String[] words = text.trim().split("\n");
-		return words;
-	}
-
 	private PublicationBean transferSimpleSubmitPublicationBean(
 			SimpleSubmitPublicationBean bean) {
 		// TODO Auto-generated method stub
@@ -217,7 +207,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		pub.setResearchArea(bean.getResearchAreas());
 		pubBean.setAuthors(bean.getAuthors());
 		pubBean.setSampleNamesStr(bean.getSampleNamesStr());
-		pubBean.setSampleNames(bean.getSampleNames());
+	//	pubBean.setSampleNames(bean.getSampleNames());
 		pubBean.setGroupAccesses(bean.getGroupAccesses());
 		pubBean.setUserAccesses(bean.getUserAccesses());
 		pubBean.setDomainFile(pub);
@@ -279,11 +269,11 @@ public class PublicationBO extends BaseAnnotationBO{
 	}
 
 	private boolean validateAssociatedSamples(HttpServletRequest request,
-			String[] samples) throws Exception {
+			PublicationBean publicationBean) throws Exception {
 		// sample service has already been created
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
-		for (String sampleName : samples) {
+		for (String sampleName : publicationBean.getSampleNames()) {
 			if (!StringUtils.isEmpty(sampleName)) {
 				SampleBean sampleBean = service.findSampleByName(sampleName);
 				if (sampleBean == null) {
@@ -854,7 +844,8 @@ public class PublicationBO extends BaseAnnotationBO{
 		this.setAccesses(request, pub);
 		request.setAttribute("publicationId", pub.getDomainFile()
 				.getId().toString());
-		
+		errors.add(pub.getDomainFile()
+				.getId().toString());
 		//check if sampleId exists in the form
 		String sampleId = (String) simplePubBean.getSampleId();
 

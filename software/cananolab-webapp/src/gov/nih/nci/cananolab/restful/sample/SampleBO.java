@@ -71,6 +71,8 @@ public class SampleBO extends BaseAnnotationBO {
 	 * the sample's id has been generated. (In the new sample submission form, if you only enter a sample name, the "Submit" button
 	 * is grayed out.
 	 * 
+	 * Revisit if the above workflow changes.
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -78,8 +80,7 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public SampleEditGeneralBean create(SampleEditGeneralBean simpleEditBean,
-			HttpServletRequest request)
+	public SampleEditGeneralBean create(SampleEditGeneralBean simpleEditBean, HttpServletRequest request)
 			throws Exception {
 		
 		String sampleId = String.valueOf(simpleEditBean.getSampleId());
@@ -194,29 +195,6 @@ public class SampleBO extends BaseAnnotationBO {
 		return simpleBean;
 	}
 
-	public String input(SampleForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		checkOpenForms(form, request);
-		String browserDispatch = getBrowserDispatch(request);
-		// from cloning form
-		if (browserDispatch.equals("clone")) {
-	//		return mapping.findForward("cloneInput");
-			return null;
-		} else {
-			String updateSample = (String) request.getSession().getAttribute(
-					"updateSample");
-			if (updateSample == null) {				
-	//			return mapping.findForward("createInput");
-				return null;
-			} else {
-	//			return mapping.findForward("summaryEdit");
-				return null;
-			}
-		}
-	}
-
 	private void checkOpenForms(SampleForm theForm,
 			HttpServletRequest request) throws Exception {
 		String dispatch = request.getParameter("dispatch");
@@ -286,12 +264,6 @@ public class SampleBO extends BaseAnnotationBO {
 			throws Exception {
 	
 		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
-		
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user == null) {
-			sampleEdit.getErrors().add("User session invalidate. Session may have been expired");
-			return sampleEdit;
-		}
 	
 		this.setServiceInSession(request);
 
@@ -362,16 +334,15 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public void setupNew(SampleForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SampleEditGeneralBean setupNew( HttpServletRequest request)
 			throws Exception {
-		request.getSession().removeAttribute("sampleForm");
-		request.getSession().removeAttribute("updateSample");
-		setupLookups(request);
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		checkOpenForms(form, request);
-	//	saveToken(request);
-	//	return mapping.findForward("createInput");
+		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
+		
+		this.setServiceInSession(request);
+
+		sampleEdit.setupLookups(request);
+	
+		return sampleEdit;
 	}
 
 	/**
@@ -435,12 +406,30 @@ public class SampleBO extends BaseAnnotationBO {
 	}
 	
 	protected SimplePointOfContactBean findDirtyPOC(List<SimplePointOfContactBean> pocList) {
+		if (pocList == null)
+			return null;
+		
 		for (SimplePointOfContactBean poc : pocList) {
 			if (poc.isDirty())
 				return poc;
 		}
 		
 		return null;
+	}
+	
+	protected void removeMatchingPOC(SampleBean sample, SimplePointOfContactBean simplePOC) {
+		List<PointOfContactBean> otherPOCs = sample.getOtherPOCBeans();
+		if (otherPOCs != null) {
+			for (PointOfContactBean poc : otherPOCs) {
+				if (poc.getDomain().getId() == simplePOC.getId()) {
+					logger.debug("Removing poc " + poc.getDisplayName() + " from sample " + sample.getDomain().getName());
+					sample.removePointOfContact(poc);
+					logger.debug("POC removed");
+					break;
+				}
+			}
+		}
+	
 	}
 	
 	/**
@@ -505,106 +494,110 @@ public class SampleBO extends BaseAnnotationBO {
 		// save sample
 		saveSample(request, sample);		
 		
-		String updateSample = (String) request.getSession().getAttribute(
-				"updateSample");
-		if (updateSample == null) {
-		//	forward = mapping.findForward("createInput");
-			setupLookups(request);
-			this.setAccesses(request, sample);
-		} else {
-			request.setAttribute("sampleId", sample.getDomain().getId()
-					.toString());
-		//	forward = summaryEdit(mapping, form, request, response);
-		}
+		if (newSampleName != null && newSampleName.length() > 0)
+			this.setAccesses(request, sample); //this will assign default curator access to this sample.
 		
 		//TODO: check on this
 		InitSampleSetup.getInstance().persistPOCDropdowns(request, sample);
 		// return forward;
 		
-		return summaryEdit(sample.getDomain().getId()
-					.toString(), request);
+		return summaryEdit(sample.getDomain().getId().toString(), request);
 	}
 
-	public void removePointOfContact(SampleForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		if (!validateToken(request)) {
-		//	return mapping.findForward("sampleMessage");
+	/**
+	 * Delete a non-primary POC from a sample
+	 * 
+	 * @param simpleEditBean
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	public SampleEditGeneralBean deletePointOfContact(SampleEditGeneralBean simpleEditBean, HttpServletRequest request) 
+			throws Exception {
+		
+		long sampleId = simpleEditBean.getSampleId();
+		
+		SampleBean sample = (SampleBean) this.findMatchSampleInSession(request, String.valueOf(sampleId));
+		if (sample == null) {
+			System.out.println("No Sample in session");
+			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to update delete POC to the sample.");
 		}
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sample = (SampleBean) form.getSampleBean();
-		PointOfContactBean thePOC = sample.getThePOC();
-//		ActionMessages msgs = new ActionMessages();
-		if (thePOC.getPrimaryStatus()) {
-		//	ActionMessage msg = new ActionMessage("message.deletePrimaryPOC");
-		//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//	saveMessages(request, msgs);
-		}
-		sample.removePointOfContact(thePOC);
-		// save sample
+		
+		SimplePointOfContactBean simplePOC = findDirtyPOC(simpleEditBean.getPointOfContacts());
+		if (simplePOC == null) 
+			return wrapErrorInEditBean("Unable to find a dirty POC. Failed to delete POC to the sample.");
+		else if (simplePOC.isPrimaryContact())
+			return wrapErrorInEditBean(PropertyUtil.getProperty("sample", "message.deletePrimaryPOC"));
+		
+		removeMatchingPOC(sample, simplePOC);
+
 		setServiceInSession(request);
 		saveSample(request, sample);
-	//	ActionForward forward = null;
-		String updateSample = (String) request.getSession().getAttribute(
-				"updateSample");
-		if (updateSample == null) {
-	//		forward = mapping.findForward("createInput");
-			setupLookups(request);
-		} else {
-			request.setAttribute("sampleId", sample.getDomain().getId()
-					.toString());
-	//		forward = summaryEdit(mapping, form, request, response);
-		}
-	//	return forward;
+	
+//		String updateSample = (String) request.getSession().getAttribute(
+//				"updateSample");
+//		if (updateSample == null) {
+//	//		forward = mapping.findForward("createInput");
+//			setupLookups(request);
+//		} else {
+//			request.setAttribute("sampleId", sample.getDomain().getId()
+//					.toString());
+//	//		forward = summaryEdit(mapping, form, request, response);
+//		}
+		return summaryEdit(String.valueOf(sample.getDomain().getId()), request);
 	}
 
+	/**
+	 * Make a copy of an existing sample based on sample name.
+	 * 
+	 * @param simpleEditBean
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	public SampleEditGeneralBean clone(SampleEditGeneralBean simpleEditBean,
 			HttpServletRequest request)
 			throws Exception {
 		
-		String sampleId = String.valueOf(simpleEditBean.getSampleId());
-		String cloningSampleName = simpleEditBean.getCloningSampleName();
-		SampleBean sampleBean = (SampleBean) this.findMatchSampleInSession(request, sampleId);
-		sampleBean.setCloningSampleName(cloningSampleName);
+		String newNameForClone = simpleEditBean.getCloningSampleName();
+		String orgSampleName = simpleEditBean.getSampleName();
+		String error = validateSampleName(newNameForClone);
+		if (error.length() > 0) 
+			return this.wrapErrorInEditBean(error);
 		
 		SampleBean clonedSampleBean = null;
 		SampleService service = this.setServiceInSession(request);
 		
 		try {
-			clonedSampleBean = service.cloneSample(
-					sampleBean.getCloningSampleName(), sampleBean.getDomain()
-							.getName().trim());
+			clonedSampleBean = service.cloneSample(orgSampleName, newNameForClone);
 		} catch (NotExistException e) {
-			String error =  PropertyUtil.getPropertyReplacingToken("sample", "error.cloneSample.noOriginalSample", 
-					"0", sampleBean.getCloningSampleName());
+			error =  PropertyUtil.getPropertyReplacingToken("sample", "error.cloneSample.noOriginalSample", 
+					"0", orgSampleName);
 			return wrapErrorInEditBean(error);
 		} catch (DuplicateEntriesException e) {
-			String error =  PropertyUtil.getProperty("sample", "error.cloneSample.duplicateSample");
+			error =  PropertyUtil.getProperty("sample", "error.cloneSample.duplicateSample");
 			return wrapErrorInEditBean(error);
 		} catch (SampleException e) {
-			String error =  PropertyUtil.getProperty("sample", "error.cloneSample");
+			error =  PropertyUtil.getProperty("sample", "error.cloneSample");
 			return wrapErrorInEditBean(error);
 		}
 
 	
+		//what's this for?
 		request.setAttribute("sampleId", clonedSampleBean.getDomain().getId()
 				.toString());
 		
-		//After cloning, all we need is a success message to return to web page
-		
-		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
-		//sampleEdit.transferSampleBeanData(request, this.getCurationService(), sampleBean, availableEntityNames);
-		
-		return sampleEdit;
+		return summaryEdit(String.valueOf(clonedSampleBean.getDomain().getId()), request);
 	}
 
-	public void delete(SampleForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public String delete(String sampleId, HttpServletRequest request)
 			throws Exception {
-		if (!validateToken(request)) {
-		//	return mapping.findForward("sampleMessage");
-		}
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = (SampleBean) form.getSampleBean();
+		
+		SampleBean sampleBean = findMatchSampleInSession(request, sampleId);
+		if (sampleBean == null)
+			return "Error: unable to find a valid sample in session with id . Sample deletion failed";
+		
+		String sampleName = sampleBean.getDomain().getName();
 		SampleService service = this.setServiceInSession(request);
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
@@ -622,16 +615,10 @@ public class SampleBO extends BaseAnnotationBO {
 					.getDomain().getId().toString(), securityService);
 		}
 		service.deleteSample(sampleBean.getDomain().getName());
+		
+		String msg = PropertyUtil.getPropertyReplacingToken("sample", "message.deleteSample", "0", sampleName);
 
-	//	ActionMessages msgs = new ActionMessages();
-	//	ActionMessage msg = new ActionMessage("message.deleteSample",
-	//			sampleBean.getDomain().getName());
-	//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	//	saveMessages(request, msgs);
-		sampleBean = new SampleBean();
-	//	ActionForward forward = mapping.findForward("sampleMessage");
-	//	resetToken(request);
-	//	return forward;
+		return msg;
 	}
 
 	public DataAvailabilityService getDataAvailabilityService() {
@@ -731,20 +718,24 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public void deleteDataAvailability(SampleForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		if (!validateToken(request)) {
-		//	return mapping.findForward("sampleMessage");
+	public SampleEditGeneralBean deleteDataAvailability(SampleEditGeneralBean simpleEditBean, HttpServletRequest request) 
+			throws Exception {
+		
+		long sampleId = simpleEditBean.getSampleId();
+		
+		SampleBean sampleBean = (SampleBean) this.findMatchSampleInSession(request, String.valueOf(sampleId));
+		if (sampleBean == null) {
+			System.out.println("No Sample in session");
+			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to delete Data Availability to sample.");
 		}
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = (SampleBean) form.getSampleBean();
+		
 		SecurityService securityService = super
 				.getSecurityServiceFromSession(request);
 		dataAvailabilityService.deleteDataAvailability(sampleBean.getDomain()
 				.getId().toString(), securityService);
 		sampleBean.setHasDataAvailability(false);
 		sampleBean.setDataAvailability(new HashSet<DataAvailabilityBean>());
-//		return mapping.findForward("summaryEdit");
+		return summaryEdit(String.valueOf(sampleBean.getDomain().getId()), request);
 	}
 
 	/**
@@ -826,33 +817,9 @@ public class SampleBO extends BaseAnnotationBO {
 				attributes);   
 	}
 
-	/*
-	 * public ActionForward manageDataAvailability(ActionMapping mapping,
-	 * ActionForm form, HttpServletRequest request, HttpServletResponse
-	 * response) throws Exception {
-	 * 
-	 * DynaValidatorForm theForm = (DynaValidatorForm) form; SampleBean
-	 * sampleBean = setupSample(theForm, request); SecurityService
-	 * securityService = (SecurityService) request
-	 * .getSession().getAttribute("securityService");
-	 * 
-	 * List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
-	 * .findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
-	 * .toString(), securityService);
-	 * 
-	 * sampleBean.setDataAvailability(dataAvailability); if
-	 * (!dataAvailability.isEmpty() && dataAvailability.size() > 0) {
-	 * sampleBean.setHasDataAvailability(true); } return
-	 * mapping.findForward("summaryEdit"); }
-	 */
-
+	
 	public SampleEditGeneralBean saveAccess(SimpleAccessBean simpleAccess, HttpServletRequest request)
 			throws Exception {
-		if (!validateToken(request)) {
-		//	return mapping.findForward("sampleMessage");
-		}
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		//SampleBean sample = (SampleBean) form.getSampleBean();
 		
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");
@@ -896,47 +863,44 @@ public class SampleBO extends BaseAnnotationBO {
 					.getId().toString());
 		}
 
-	//	ActionForward forward = null;
-		String updateSample = (String) request.getSession().getAttribute(
-				"updateSample");
-		if (updateSample == null) {
-	//		forward = mapping.findForward("createInput");
-			setupLookups(request);
-			this.setAccesses(request, sample);
-		} else {
-			request.setAttribute("sampleId", sample.getDomain().getId()
-					.toString());
-	//		forward = summaryEdit(mapping, form, request, response);
-		}
 		return summaryEdit(sample.getDomain().getId()
 				.toString(), request);
 	}
 
-	public void deleteAccess(SampleForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SampleEditGeneralBean deleteAccess(SampleEditGeneralBean simpleEditBean, HttpServletRequest request)
 			throws Exception {
-		if (!validateToken(request)) {
-		//	return mapping.findForward("sampleMessage");
+		
+		//This is NOT done
+		
+		long sampleId = simpleEditBean.getSampleId();
+		
+		SampleBean sample = (SampleBean) this.findMatchSampleInSession(request, String.valueOf(sampleId));
+		if (sample == null) {
+			System.out.println("No Sample in session");
+			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to update delete accecc to the sample.");
 		}
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sample = (SampleBean) form.getSampleBean();
+		
+		//SimpleAccessBean simpleAccess = simpleEditBean.getAccessToSample();
+			
 		AccessibilityBean theAccess = sample.getTheAccess();
 		SampleService service = this.setServiceInSession(request);
 		service.removeAccessibility(theAccess, sample.getDomain());
 
+		//Don't know what are the following lines for. To delete...
+		
 //		ActionForward forward = null;
-		String updateSample = (String) request.getSession().getAttribute(
-				"updateSample");
-		if (updateSample == null) {
-	//		forward = mapping.findForward("createInput");
-			setupLookups(request);
-			this.setAccesses(request, sample);
-		} else {
-			request.setAttribute("sampleId", sample.getDomain().getId()
-					.toString());
-	//		forward = summaryEdit(mapping, form, request, response);
-		}
-//		return forward;
+//		String updateSample = (String) request.getSession().getAttribute(
+//				"updateSample");
+//		if (updateSample == null) {
+//	//		forward = mapping.findForward("createInput");
+//			setupLookups(request);
+//			this.setAccesses(request, sample);
+//		} else {
+//			request.setAttribute("sampleId", sample.getDomain().getId()
+//					.toString());
+//	//		forward = summaryEdit(mapping, form, request, response);
+//		}
+		return summaryEdit(String.valueOf(sample.getDomain().getId()), request);
 	}
 
 	protected void removePublicAccess(SampleForm theForm,
@@ -1006,6 +970,13 @@ public class SampleBO extends BaseAnnotationBO {
 		}
 		
 		return errors;
+	}
+	
+	protected String validateSampleName(String sampleName) {
+		return (!InputValidationUtil.isTextFieldWhiteList(sampleName)) ?
+				 PropertyUtil.getProperty("sample", "cloningSample.name.invalid")
+				 : "";
+				
 	}
 	
 	protected PointOfContactBean getPointOfContactBeanFromInput(SimplePointOfContactBean simplePOC, String createdBy) {
@@ -1099,4 +1070,6 @@ public class SampleBO extends BaseAnnotationBO {
 		simpleBean.getErrors().add(error);
 		return simpleBean;
 	}
+	
+
 }
