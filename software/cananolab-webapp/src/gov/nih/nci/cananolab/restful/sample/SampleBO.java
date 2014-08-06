@@ -472,7 +472,9 @@ public class SampleBO extends BaseAnnotationBO {
 		long sampleId = simpleSampleBean.getSampleId();
 		String newSampleName = simpleSampleBean.getSampleName();
 		
-		PointOfContactBean thePOC = getPointOfContactBeanFromInput(simplePOC, user.getLoginName());
+		PointOfContactBean thePOC = sample.getThePOC();
+		getPointOfContactBeanFromInput(thePOC, simplePOC, user.getLoginName());
+		//PointOfContactBean thePOC = getPointOfContactBeanFromInput(thePOC1, simplePOC, user.getLoginName());
 		
 		if (sample == null) { 
 			if (newSampleName == null || newSampleName.length() == 0) 
@@ -483,7 +485,7 @@ public class SampleBO extends BaseAnnotationBO {
 			}
 		} else {
 			if (sample.getDomain().getId() != sampleId) 
-				return this.wrapErrorInEditBean("Curren sample id doesn't match sample id in session");
+				return this.wrapErrorInEditBean("Current sample id doesn't match sample id in session");
 		}
 		
 		Long oldPOCId = thePOC.getDomain().getId();
@@ -999,10 +1001,9 @@ public class SampleBO extends BaseAnnotationBO {
 				
 	}
 	
-	protected PointOfContactBean getPointOfContactBeanFromInput(SimplePointOfContactBean simplePOC, String createdBy) {
-		//TODO: only id can be null. Other fields need to be set "" if no value
+	protected PointOfContactBean getPointOfContactBeanFromInput(PointOfContactBean pocBean, SimplePointOfContactBean simplePOC, String createdBy) {
 		
-		PointOfContactBean pocBean = new PointOfContactBean();
+		
 		pocBean.setupDomain(createdBy);
 		
 		Organization org = new Organization();
@@ -1036,6 +1037,8 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		pocBean.getDomain().setPhone(simplePOC.getPhoneNumber());
 		pocBean.getDomain().setEmail(simplePOC.getEmail());
+		
+		pocBean.setPrimaryStatus(simplePOC.isPrimaryContact());
 		
 		return pocBean;
 	}
