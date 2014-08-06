@@ -299,7 +299,7 @@ public class SampleServices {
 	@POST
 	@Path("/saveAccess")
 	@Produces ("application/json")
-	public Response saveAccess(@Context HttpServletRequest httpRequest, SimpleAccessBean simpleAccess) {
+	public Response saveAccess(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleEdit) {
 		logger.info("In savePOC");
 		try {
 			SampleBO sampleBO = 
@@ -309,7 +309,7 @@ public class SampleServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			SampleEditGeneralBean editBean = sampleBO.saveAccess(simpleAccess, httpRequest);
+			SampleEditGeneralBean editBean = sampleBO.saveAccess(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(editBean).build() :

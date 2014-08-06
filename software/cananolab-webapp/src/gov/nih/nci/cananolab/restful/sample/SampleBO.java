@@ -8,12 +8,6 @@
 
 package gov.nih.nci.cananolab.restful.sample;
 
-/**
- * This class sets up the submit a new sample page and submits a new sample
- *
- * @author pansu
- */
-
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
@@ -47,6 +41,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,6 +55,12 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Class migrated from SampleAction, to support sample related rest services.
+ * 
+ * @author yangs8
+ *
+ */
 public class SampleBO extends BaseAnnotationBO {
 	
 	private static Logger logger = Logger.getLogger(SampleBO.class);
@@ -98,25 +99,8 @@ public class SampleBO extends BaseAnnotationBO {
 			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to update the sample.");
 		}
 		
-		////////////// transfer keyword and sample name from simple Edit bean
-		sampleBean.getDomain().setName(simpleEditBean.getSampleName());
-		System.out.println("1");
-		
-		//When saving keywords, current implementation is to replace the whole set
-		//ref. SampleServiceLocalImpl.saveSample()
-		List<String> keywords = simpleEditBean.getKeywords();
-		if (keywords != null) {
-			Collection<Keyword> keywordColl = new HashSet<Keyword>();
-			for (String keyword : keywords) {
-				Keyword kw = new Keyword();
-				kw.setName(keyword);
-				keywordColl.add(kw);
-			}
-			
-			sampleBean.getDomain().setKeywordCollection(keywordColl);
-		}
-		System.out.println("2");
-		//////////////////////////////////
+		// transfer keyword and sample name from simple Edit bean
+		simpleEditBean.populateDataForSavingSample(sampleBean);
 		
 		setServiceInSession(request);
 		saveSample(request, sampleBean);
@@ -405,6 +389,11 @@ public class SampleBO extends BaseAnnotationBO {
 		return savePointOfContact(simpleSampleBean, thePOC, request);
 	}
 	
+	/**
+	 * Find the "dirty" SimplePointOfContactBean from a list
+	 * @param pocList
+	 * @return
+	 */
 	protected SimplePointOfContactBean findDirtyPOC(List<SimplePointOfContactBean> pocList) {
 		if (pocList == null)
 			return null;
@@ -412,6 +401,27 @@ public class SampleBO extends BaseAnnotationBO {
 		for (SimplePointOfContactBean poc : pocList) {
 			if (poc.isDirty())
 				return poc;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Find the "dirty" SimpleAccessBean from a list
+	 * @param accessList
+	 * @return
+	 */
+	protected SimpleAccessBean findDirtyAccess(Map<String, List<SimpleAccessBean>> accessMap) {
+		if (accessMap == null)
+			return null;
+			
+		Iterator<String> ite = accessMap.keySet().iterator();
+		while (ite.hasNext()) {
+			List<SimpleAccessBean> accesses = accessMap.get(ite.next());
+			for (SimpleAccessBean access : accesses) {
+				if (access.isDirty()) 
+					return access;
+			}
 		}
 		
 		return null;
@@ -432,6 +442,8 @@ public class SampleBO extends BaseAnnotationBO {
 	
 	}
 	
+	
+	
 	/**
 	 * Save a new or existing POC with updates.
 	 * 
@@ -444,7 +456,7 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public SampleEditGeneralBean savePointOfContact(SampleEditGeneralBean simpleSampleBean, 
+	protected SampleEditGeneralBean savePointOfContact(SampleEditGeneralBean simpleSampleBean, 
 			SimplePointOfContactBean simplePOC, HttpServletRequest request) 
 			throws Exception {
 
@@ -817,12 +829,19 @@ public class SampleBO extends BaseAnnotationBO {
 				attributes);   
 	}
 
-	
-	public SampleEditGeneralBean saveAccess(SimpleAccessBean simpleAccess, HttpServletRequest request)
+	/**
+	 * Save access info for a sample
+	 * @param simpleAccess
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	public SampleEditGeneralBean saveAccess(SampleEditGeneralBean simpleEditBean, HttpServletRequest request)
 			throws Exception {
 		
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");
+		
 		if (sample == null) {
 			
 			//////////debug
@@ -834,6 +853,8 @@ public class SampleBO extends BaseAnnotationBO {
 			//for real
 			throw new Exception("Sample object is not valid");
 		}
+		
+		SimpleAccessBean simpleAccess = findDirtyAccess(simpleEditBean.getAccessToSample());
 		
 		AccessibilityBean theAccess = sample.getTheAccess();
 		populateAccessBeanWithInput(simpleAccess, theAccess, user.getLoginName());
@@ -870,9 +891,8 @@ public class SampleBO extends BaseAnnotationBO {
 	public SampleEditGeneralBean deleteAccess(SampleEditGeneralBean simpleEditBean, HttpServletRequest request)
 			throws Exception {
 		
-		//This is NOT done
-		
 		long sampleId = simpleEditBean.getSampleId();
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		
 		SampleBean sample = (SampleBean) this.findMatchSampleInSession(request, String.valueOf(sampleId));
 		if (sample == null) {
@@ -880,9 +900,9 @@ public class SampleBO extends BaseAnnotationBO {
 			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to update delete accecc to the sample.");
 		}
 		
-		//SimpleAccessBean simpleAccess = simpleEditBean.getAccessToSample();
-			
+		SimpleAccessBean simpleAccess = this.findDirtyAccess(simpleEditBean.getAccessToSample());
 		AccessibilityBean theAccess = sample.getTheAccess();
+		this.populateAccessBeanWithInput(simpleAccess, theAccess, user.getLoginName());
 		SampleService service = this.setServiceInSession(request);
 		service.removeAccessibility(theAccess, sample.getDomain());
 
@@ -996,12 +1016,12 @@ public class SampleBO extends BaseAnnotationBO {
 		if (addrBean == null) {
 			addrBean = new SimpleAddressBean();
 		}
-			org.setCity(addrBean.getCity());
-			org.setCountry(addrBean.getCountry());
-			org.setPostalCode(addrBean.getZip());
-			org.setStreetAddress1(addrBean.getLine1());
-			org.setStreetAddress2(addrBean.getLine2());
-			org.setState(addrBean.getStateProvince());
+		org.setCity(addrBean.getCity());
+		org.setCountry(addrBean.getCountry());
+		org.setPostalCode(addrBean.getZip());
+		org.setStreetAddress1(addrBean.getLine1());
+		org.setStreetAddress2(addrBean.getLine2());
+		org.setState(addrBean.getStateProvince());
 		
 		pocBean.getDomain().setOrganization(org);
 		pocBean.getDomain().setRole(simplePOC.getRole());

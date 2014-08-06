@@ -1,11 +1,15 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import javax.validation.constraints.Pattern;
+
 public class SimpleAddressBean {
 	
 	String line1 = "";
 	String line2 = "";
 	String city = "";
 	String stateProvince = "";
+	
+	@Pattern(regexp="^(\\d{5}(-\\d{4})?)|([a-zA-Z0-9\\s])$")
 	String zip = "";
 	String country = "";
 	

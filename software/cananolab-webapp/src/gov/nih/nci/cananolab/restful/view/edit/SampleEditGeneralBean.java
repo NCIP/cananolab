@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
@@ -12,7 +13,9 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -456,5 +459,31 @@ public class SampleEditGeneralBean {
 		
 		poc.setAddress(simpleAddress);
 		
+	}
+	
+	/**
+	 * Populate input data for saving a sample to a SampleBean. Currently, only sampleName
+	 * and keywords are needed
+	 * 
+	 * @param destSampleBean
+	 */
+	public void populateDataForSavingSample(SampleBean destSampleBean) {
+		if (destSampleBean == null)
+			return;
+	
+		
+		//When saving keywords, current implementation is to replace the whole set
+		//ref. SampleServiceLocalImpl.saveSample()
+		List<String> keywords = this.getKeywords();
+		if (keywords != null) {
+			Collection<Keyword> keywordColl = new HashSet<Keyword>();
+			for (String keyword : keywords) {
+				Keyword kw = new Keyword();
+				kw.setName(keyword);
+				keywordColl.add(kw);
+			}
+			
+			destSampleBean.getDomain().setKeywordCollection(keywordColl);
+		}
 	}
 }
