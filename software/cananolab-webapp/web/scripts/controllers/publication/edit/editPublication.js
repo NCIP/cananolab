@@ -40,7 +40,10 @@ var app = angular.module('angularApp')
         $scope.publicationForm.isPublic = false;
         $scope.accessForm.theAccess.accessBy = 'group';        
         $rootScope.groups = groupService.get();
-//        alert($rootScope.groups);
+        console.log($rootScope.groups);
+        for (var logUser in $rootScope.groups) break;
+        console.log(logUser);
+
 //        $scope.curator = $rootScope.groups.indexOf("Curator") != -1;
 
 
@@ -191,6 +194,8 @@ var app = angular.module('angularApp')
                     //$location.path("/sampleResults").replace();
 
                     alert(data);
+                    
+                    $location.search('message','Publication successfully saved with title "' + $scope.publicationForm.title + '"').path('/message').replace();
 
                 }).
                 error(function(data, status, headers, config) {
@@ -201,6 +206,7 @@ var app = angular.module('angularApp')
                     $scope.message = data;
                     alert(data);
                 });
+            
         };
 
         $scope.resetForm = function() {
@@ -295,6 +301,8 @@ var app = angular.module('angularApp')
         $scope.saveAccessSection = function() {
             $scope.loader = true;
             $scope.publicationForm.theAccess = $scope.accessForm.theAccess;
+            $scope.addAccess=false;
+            $scope.showAddAccessButton=true;
             
             if( $scope.accessForm.theAccess.accessBy == 'public') {
                 $scope.publicationForm.isPublic = true;

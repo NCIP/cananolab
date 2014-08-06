@@ -107,6 +107,10 @@ app.config(function ($routeProvider, $httpProvider) {
             templateUrl: 'views/publication/edit/editPublication.html',
             controller: 'EditPublicationCtrl'
       })
+      .when('/message', {
+            templateUrl: 'views/message.html',
+            controller: 'MessageCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
