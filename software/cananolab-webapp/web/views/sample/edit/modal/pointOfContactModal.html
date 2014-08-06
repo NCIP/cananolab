@@ -1,17 +1,17 @@
-<div class="modal-header" ng-init="data=sampleId">
+<div class="modal-header">
     <h3 class="modal-title pull-left">Point Of Contact Information</h3>
     <div class="pull-right">
         <a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
         <a href="" ng-click="ok()" class="help">Hide</a>
     </div>
     <div style="clear:both"></div>
-    <h4 class="modal-title">Primary</h4>
-    {{data}}
-    {{data.sampleId}}
+    <h4 ng-if="poc.primaryContact" class="modal-title">Primary</h4>
+    <h4 ng-if="!poc.primaryContact" class="modal-title">Secondary</h4>
+
     {{sampleId}}
 </div>
 
-<div class="modal-body" width='750px' ng-init="data=hello">
+<div class="modal-body" width='750px'>
 <div style="clear:both"></div>
 <div>
 <table class="subSubmissionView" width="85%" align="center" summary="layout">
@@ -22,13 +22,17 @@
                                                                 <tbody><tr>
                                                                                 <td class="cellLabel">
                                                                                                 <label for="domain.organization.name">Organization Name*</label>
-{{data.address.line1}}
-{{data.id}}
                                                                                 </td>
                                                                                 <td>
                                                                                                 <div id="orgNamePrompt">
-                                                                                                                <select name="sampleBean.thePOC.domain.organization.name" onchange="javascript:callPrompt('Organization Name', 'domain.organization.name', 'orgNamePrompt');updateOrganizationInfo();" id="domain.organization.name"><option value="">
-                                                                                                                                                </option><option value="AIST_HTRC">AIST_HTRC</option>
+<select ng-options="val for val in values" name="dim-{{dim}}" ng-model="selectedVal" ng-model="selectedVal">
+    <option value="">-- select a {{dim}} --</option>
+</select>
+<!--
+<select name="sampleBean.thePOC.domain.organization.name" onchange="javascript:callPrompt('Organization Name', 'domain.organization.name', 'orgNamePrompt');updateOrganizationInfo();" id="domain.organization.name">
+<option value="">
+</option>
+    <option value="AIST_HTRC">AIST_HTRC</option>
 <option value="BB_SH_DFCI_WCMC_BWH_MIT">BB_SH_DFCI_WCMC_BWH_MIT</option>
 <option value="BB_SH_KCI_DFCI_WCMC_BWH_MIT">BB_SH_KCI_DFCI_WCMC_BWH_MIT</option>
 <option value="BROWN_STANFORD">BROWN_STANFORD</option>
@@ -129,6 +133,7 @@
                                                                                                                                 <option value="other">
                                                                                                                                                 [other]
                                                                                                                                 </option></select>
+-->
                                                                                                 </div>
                                                                                 </td>
                                                                                 <td class="cellLabel" valign="top">
@@ -153,22 +158,22 @@
                 <tr>
                                 <td>
                                                 <table>
-                                                                <tbody><tr>
+                                                                <tbody>
+                                                                <tr>
                                                                                 <td class="cellLabel">
-                                                                                                <label for="domain.organization.streetAddress1">Address Line1</label>
+                                                                                                <label for="address-line1">Address Line1</label>
                                                                                 </td>
                                                                                 <td colspan="5">
-                                                                                                <input type="text" name="sampleBean.thePOC.domain.organization.streetAddress1" size="50" ng-model="poc.address.line1" id="domain.organization.streetAddress1">
-                                                                                                <input type="text" ng-model="poc.address.line2">
+                                                                                                <input type="text" ng-model="poc.address.line1" size="50" id="address-line1">
                                                                                                 &nbsp;
                                                                                 </td>
                                                                 </tr>
                                                                 <tr>
                                                                                 <td class="cellLabel">
-                                                                                                <label for="domain.organization.streetAddress2">Address Line2</label>
+                                                                                                <label for="address-line2">Address Line2</label>
                                                                                 </td>
                                                                                 <td colspan="5">
-                                                                                                <input type="text" name="sampleBean.thePOC.domain.organization.streetAddress2" size="50" value="" id="domain.organization.streetAddress2">
+                                                                                                <input type="text" ng-model="poc.address.line2" size="50" id="address-line2">
                                                                                                 &nbsp;
                                                                                 </td>
                                                                 </tr>
@@ -180,24 +185,24 @@
                                                 <table>
                                                                 <tbody><tr>
                                                                                 <td class="cellLabel">
-                                                                                                <label for="domain.organization.city">City</label>
+                                                                                                <label for="address-city">City</label>
                                                                                 </td>
                                                                                 <td>
-                                                                                                <input type="text" name="sampleBean.thePOC.domain.organization.city" size="20" value="" id="domain.organization.city">
+                                                                                                <input type="text" ng-model="poc.address.city" size="20" value="" id="address-city">
                                                                                                 &nbsp;
                                                                                 </td>
                                                                                 <td class="cellLabel">
-                                                                                                <label for="domain.organization.state">State/Province</label>
+                                                                                                <label for="address-stateProvince">State/Province</label>
                                                                                 </td>
                                                                                 <td>
-                                                                                                <input type="text" name="sampleBean.thePOC.domain.organization.state" size="5" value="" id="domain.organization.state">
+                                                                                                <input type="text" ng-model="poc.address.stateProvince" size="5" value="" id="address-stateProvince">
                                                                                                 &nbsp;
                                                                                 </td>
                                                                                 <td class="cellLabel">
-                                                                                                <label for="domain.organization.postalCode">Zip/Postal Code</label>
+                                                                                                <label for="address-zip">Zip/Postal Code</label>
                                                                                 </td>
                                                                                 <td>
-                                                                                                <input type="text" name="sampleBean.thePOC.domain.organization.postalCode" size="10" value="" id="domain.organization.postalCode">
+                                                                                                <input type="text" ng-model="poc.address.zip" size="10" value="" id="address-zip">
                                                                                 </td>
                                                                 </tr>
                                                 </tbody></table>
@@ -208,10 +213,10 @@
                                                 <table>
                                                                 <tbody><tr>
                                                                                 <td class="cellLabel">
-                                                                                                <label for="domain.organization.country">Country</label>
+                                                                                                <label for="address-country">Country</label>
                                                                                 </td>
                                                                                 <td>
-                                                                                                <input type="text" name="sampleBean.thePOC.domain.organization.country" size="30" value="" id="domain.organization.country">
+                                                                                                <input type="text" ng-model="poc.address.country" size="30" value="" id="address-country">
                                                                                 </td>
                                                                 </tr>
                                                 </tbody></table>
@@ -222,22 +227,22 @@
                                                 <table>
                                                                 <tbody><tr>
                                                                                 <td class="cellLabel" valign="top">
-                                                                                                <label for="domain.firstName">First Name</label>
+                                                                                                <label for="firstName">First Name</label>
                                                                                 </td>
                                                                                 <td valign="top">
-                                                                                                <input type="text" name="sampleBean.thePOC.domain.firstName" size="15" value="" id="domain.firstName">
+                                                                                                <input type="text" ng-model="poc.firstName" size="15" value="" id="firstName">
                                                                                 </td>
                                                                                 <td class="cellLabel" valign="top">
-                                                                                                <label for="domain.middleInitial">Middle Initial</label>
+                                                                                                <label for="middleInitial">Middle Initial</label>
                                                                                 </td>
                                                                                 <td valign="top">
-                                                                                                <input type="text" name="sampleBean.thePOC.domain.middleInitial" size="5" value="" id="domain.middleInitial">
+                                                                                                <input type="text" ng-model="poc.middleInitial" size="5" value="" id="middleInitial">
                                                                                 </td>
                                                                                 <td class="cellLabel" valign="top">
-                                                                                                <label for="domain.lastName">Last Name</label>
+                                                                                                <label for="lastName">Last Name</label>
                                                                                 </td>
                                                                                 <td valign="top">
-                                                                                                <input type="text" name="sampleBean.thePOC.domain.lastName" size="15" value="" onchange="updatePersonInfo()" id="domain.lastName">
+                                                                                                <input type="text" ng-model="poc.lastName" size="15" id="lastName">
                                                                                 </td>
                                                                 </tr>
                                                 </tbody></table>
@@ -248,16 +253,16 @@
                                                 <table>
                                                                 <tbody><tr>
                                                                                 <td class="cellLabel" valign="top">
-                                                                                                <label for="domain.phone">Phone Number</label>
+                                                                                                <label for="phoneNumber">Phone Number</label>
                                                                                 </td>
                                                                                 <td valign="top">
-                                                                                                <input type="text" name="sampleBean.thePOC.domain.phone" size="30" value="" id="domain.phone">
+                                                                                                <input type="text" ng-model="poc.phoneNumber" size="30" id="phoneNumber">
                                                                                 </td>
                                                                                 <td class="cellLabel" valign="top">
-                                                                                                <label for="domain.email">Email</label>
+                                                                                                <label for="email">Email</label>
                                                                                 </td>
                                                                                 <td valign="top" colspan="4">
-                                                                                                <input type="text" name="sampleBean.thePOC.domain.email" size="30" value="" id="domain.email">
+                                                                                                <input type="text" ng-model="poc.email" size="30" id="email">
                                                                                 </td>
                                                                 </tr>
                                                 </tbody></table>

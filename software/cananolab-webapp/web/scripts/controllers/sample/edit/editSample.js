@@ -210,17 +210,15 @@ alert('Made it here.');
         console.dir(sampleId);
         console.log('poc');
         console.dir(poc);
+        sampleService.sampleData = angular.copy($scope.sampleData);
         $scope.pocData = poc.data;
         var modalInstance = $modal.open({
           templateUrl: 'views/sample/edit/modal/pointOfContactModal.html',
-          controller: 'AccessToSampleModalCtrl',
+          controller: 'PointOfContactModalCtrl',
           windowClass: 'pointOfContact-modal-window',
           resolve: {
             sampleId: function () {
               return sampleId;
-            },
-            sampleData: function() {
-              return $scope.sampleData.data;
             },
             poc: function() {
               return poc;

@@ -1,19 +1,15 @@
-'use strict';
+/*'use strict';
 var app = angular.module('angularApp')
-	.controller('PointOfContactModalCtrl', function ($rootScope,$scope,$http,$filter,$routeParams,$modalInstance,sampleId,sampleData,poc) {
+	.controller('PointOfContactModalCtrl', function (sampleService,$rootScope,$scope,$http,$filter,$routeParams,$modalInstance,sampleId,sampleData,poc) {
 
     $scope.sampleId = sampleId;
-    $scope.sampleData = sampleData;
+    $scope.sampleData = sampleService.sampleData;
     $scope.pocData = poc;
 
-    $scope.items = items;
-    $scope.selected = {
-    item: $scope.items[0]
-    };
-
-    $scope.ok = function () {
-        $modalInstance.close($scope.selected.item);
-    };
+    //$scope.items = items;
+    //$scope.selected = {
+    //item: $scope.items[0]
+    //};
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
@@ -24,3 +20,24 @@ var app = angular.module('angularApp')
 	};
 
 });
+*/
+'use strict';
+var app = angular.module('angularApp')
+	.controller('PointOfContactModalCtrl', function ($scope,$http,$modalInstance,sampleId,poc,sampleService) {
+
+	$scope.sampleId = sampleId;
+	$scope.sampleData = sampleService.sampleData;
+    $scope.poc = poc;
+
+	$scope.ok = function () {
+		$modalInstance.close();
+	};
+	$scope.save = function () {
+
+		$modalInstance.close();
+	};
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+
+ });
