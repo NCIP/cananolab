@@ -477,13 +477,19 @@ public class SampleEditGeneralBean {
 		List<String> keywords = this.getKeywords();
 		if (keywords != null) {
 			Collection<Keyword> keywordColl = new HashSet<Keyword>();
+			String kws = "";
 			for (String keyword : keywords) {
-				Keyword kw = new Keyword();
-				kw.setName(keyword);
-				keywordColl.add(kw);
+				kws += keyword;
+				kws += "\n";
+//				Keyword kw = new Keyword();
+//				kw.setName(keyword);
+//				keywordColl.add(kw);
 			}
 			
-			destSampleBean.getDomain().setKeywordCollection(keywordColl);
+			destSampleBean.setKeywordsStr(kws);
+			
 		}
+		
+		destSampleBean.getDomain().setName(this.sampleName);
 	}
 }
