@@ -5,7 +5,7 @@ var app = angular.module('angularApp')
 
 //var app = angular.module('angularApp').app.controller('editSampleCtrl', function (sampleService,utilsService,navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$routeParams) {
     $rootScope.tabs = navigationService.get();
-    $rootScope.groups = groupService.getGroups.data.get();
+    $rootScope.groups = groupService.get();
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleId = sampleService.sampleId;
     $scope.pocData = sampleService.pocData;
@@ -41,10 +41,10 @@ var app = angular.module('angularApp')
     }
 
     //Print out the scope for this page
-    console.log("scope");
-    console.dir($scope);
-    console.log("rootScope");
-    console.dir($rootScope);
+    //console.log("scope");
+    //console.dir($scope);
+    //console.log("rootScope");
+    //console.dir($rootScope);
 
     $scope.returnUserReadableBoolean = function(val) {
         if (val== true) {
@@ -207,10 +207,10 @@ alert('Made it here.');
 
 // Modal for Access To Sample (1)
     $scope.openPointOfContactModal = function(sampleId, poc) {
-        console.log('openPointOfContactModal');
-        console.dir(sampleId);
-        console.log('poc');
-        console.dir(poc);
+        //console.log('openPointOfContactModal');
+        //console.dir(sampleId);
+        //console.log('poc');
+        //console.dir(poc);
         sampleService.sampleData = angular.copy($scope.sampleData);
         sampleService.pocData = angular.copy(poc);
 
@@ -229,22 +229,38 @@ alert('Made it here.');
           }
         });
         var savePoc = function(poc) {
-                console.info("newPoc");
+                $scope.message = "";
                 $scope.loader = true;
                 //$scope.newPoc = sampleService.pocData.data;
 
                 console.log("poc");
                 console.dir(poc);
                 console.log("newPoc");
-                console.dir($scope.newPoc);
+                //console.dir($scope.newPoc);
                 //Set dirty flag
+                //poc.dirty = true;
                 sampleService.pocData.dirty = true;
                 //Update sampleData with newPoc
                 if(parseInt(sampleService.pocData.id) > 0){
                     //Update
-                    console.info("Updating to PointOfContact");
-                    $scope.sampleData.pointOfContacts.push(sampleService.pocData);
+                    console.info("Updating PointOfContact");
+                    //$scope.sampleData.pointOfContacts.push(sampleService.pocData);
+                    //Find the id and replace it.
+                    //
+                    //sampleService.pocData = poc;
+                    //Update Screen
                     poc = sampleService.pocData;
+                    console.log("sampleService.pocData.id");
+                    console.log(sampleService.pocData.id);
+                    console.log("sampleService.pocData");
+                    console.dir(sampleService.pocData);
+
+                    console.log("$scope.sampleData.pointOfContacts");
+                    console.dir($scope.sampleData.pointOfContacts);
+                    var index = sampleService.sampleData.pointOfContacts.map(function(x) {return x.id; }).indexOf(sampleService.pocData.id);
+                    console.log(index);
+                    
+                    $scope.sampleData.pointOfContacts[index] = poc;
                 } else {
                     //Append to PointOfContact
                     console.info("Appending to PointOfContact");
@@ -253,23 +269,22 @@ alert('Made it here.');
                 if(location.hostname == "") {
                 } else {
                     console.info("Rest call here.");
-                $http({method: 'POST', url: '/caNanoLab/rest/sample/savePOC',data: $scope.sampleData}).
-                success(function(data, status, headers, config) {
-                    alert(data);
-                    $location.search('message','Publication successfully saved with title "' + $scope.publicationForm.title + '"').path('/message').replace();
+                    $http({method: 'POST', url: '/caNanoLab/rest/sample/savePOC',data: $scope.sampleData}).
+                    success(function(data, status, headers, config) {
+                        //alert(data);
+                        $scope.sampleData.pointOfContacts = data.pointOfContacts;
+                        $scope.master = angular.copy($scope.sampleData);
+                        $scope.message = "Point of Contact has been saved";
 
-                }).
-                error(function(data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                    // $rootScope.sampleData = data;
-                    $scope.loader = false;
-                    $scope.message = data;
-                    alert(data);
-                });
-
-
-
+                    }).
+                    error(function(data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        // $rootScope.sampleData = data;
+                        $scope.loader = false;
+                        $scope.message = data;
+                        alert(data);
+                    });
                 }
                 $scope.loader = false;
         };
@@ -315,7 +330,7 @@ alert('Made it here.');
             alert("Save hit");
             console.info('User hit save.');
         }, function () {
-            /*Do not save - replace any cahanges to POC*/
+            /*Do not save - replace any changes to POC*/
             alert("Cancel hit");
             console.info('Modal dismissed at: ' + new Date());
         });
