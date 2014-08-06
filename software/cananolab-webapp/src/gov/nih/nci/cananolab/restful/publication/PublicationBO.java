@@ -815,9 +815,9 @@ public class PublicationBO extends BaseAnnotationBO{
 		if (errors.size() > 0) {
 			SimplePublicationEditBean bean =  new SimplePublicationEditBean();
 			bean.setErrors(errors);
-			return bean;//TODO: saveAccess() should return an object that contains a list of errors;
-		}
-
+			return bean;
+			}//TODO: saveAccess() should return an object that contains a list of errors;
+	
 		PublicationService service = this.setServicesInSession(request);
 		// if publication is new, save publication first
 		if (publication.getDomainFile().getId() == null
@@ -825,8 +825,13 @@ public class PublicationBO extends BaseAnnotationBO{
 				&& publication.getDomainFile().getId() == 0) {
 			errors = this.savePublication(request, simplePubBean);
 			SimplePublicationEditBean bean =  new SimplePublicationEditBean();
+			if(errors.get(0)=="success"){
+			bean.setErrors(errors);
+			}else{
 			bean.setErrors(errors);
 			return bean;
+			}
+			
 		}
 		// if publication is public, the access is not public, retract
 		// public
