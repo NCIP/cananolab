@@ -215,7 +215,7 @@ var app = angular.module('angularApp')
 
         $scope.updateAssociatedSamples = function() {
             var selectedSamples = $scope.localForm.matchedSampleSelect;
-            var samplesPerLine = selectedSamples.join("\n");
+            var samplesPerLine = selectedSamples.join("\r\n");
             $scope.publicationForm.sampleNamesStr = samplesPerLine;
         };
 
