@@ -164,6 +164,25 @@ var app = angular.module('angularApp')
         //$location.search('sampleId', $scope.sampleId);
     };
     $scope.update = function() {
+        console.info("Rest call here.  /caNanoLab/rest/sample/updateSample");
+        $http({method: 'POST', url: '/caNanoLab/rest/sample/updateSample',data: $scope.sampleData}).
+        success(function(data, status, headers, config) {
+            //alert(data);
+            $scope.sampleData.pointOfContacts = data.pointOfContacts;
+            $scope.master = angular.copy($scope.sampleData);
+            $scope.message = "Sample has been saved";
+            $scope.scratchPad.editSampleData.dirty = false;
+
+        }).
+        error(function(data, status, headers, config) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            // $rootScope.sampleData = data;
+            $scope.loader = false;
+            $scope.message = data;
+            alert(data);
+        });
+
 
     };
 /*
@@ -179,7 +198,7 @@ var app = angular.module('angularApp')
             $modalInstance.dismiss('cancel');
           };
     };
-*/
+
 var ModalDemoCtrl = function ($scope, $modal) {
 alert('Made it here.');
   $scope.items = ['item1', 'item2', 'item3'];
@@ -203,7 +222,7 @@ alert('Made it here.');
     });
   };
 };
-
+*/
 
 // Modal for Access To Sample (1)
     $scope.openPointOfContactModal = function(sampleId, poc) {
@@ -268,7 +287,7 @@ alert('Made it here.');
                 };
                 if(location.hostname == "") {
                 } else {
-                    console.info("Rest call here.");
+                    console.info("Rest call here.  /caNanoLab/rest/sample/savePOC");
                     $http({method: 'POST', url: '/caNanoLab/rest/sample/savePOC',data: $scope.sampleData}).
                     success(function(data, status, headers, config) {
                         //alert(data);
