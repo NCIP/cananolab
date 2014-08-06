@@ -45,7 +45,7 @@
                         <label for="sampleName">Sample Name *</label>
                     </td>
                     <td>
-                        <input id="sampleName" ng-model="sampleData.sampleName" ng-change="changedSampleName()" type="text"  size="80" required pattern=".{3,}" title="3 characters minimum" >
+                        <input id="sampleName" ng-model="sampleData.sampleName" ng-change="changedSampleName()" type="text"  size="80">
                         <span ng-hide="true">{{$root.sampleId}}</span>
                     </td>
                 </tr>
@@ -56,8 +56,6 @@
                     </td>
                     <td>
                             <button ng-click="openPointOfContactModal(sampleId.data, {})" class="btn btn-primary btn-xxs">Add</button>
-                            <button ng-click="pocModal.open()" class="btn btn-primary btn-xxs">NEW POC</button>
-
                     </td>
                 </tr>
                 <!-- Point of Contact Data -->
@@ -164,7 +162,6 @@
                                 <td>
                                     <div align="right">
                                         <span ng-hide='ats.roleDisplayName=="read update delete"'>
-                                            <button ng-click="openAccessToSampleModal()" class="btn btn-primary btn-xxs">Edit</button>
                                         </span>
                                     </div>
                                 </td>
@@ -291,8 +288,8 @@
                                 </tr>
                                 <tr><td>{{sampleData.dataAvailability.caNanoLabScore}}</td>
                                     <td>{{sampleData.dataAvailability.mincharScore}}</td>
-                                    <td><a href="#" onclick="javascript:manageDataAvailability('12451840', 'sample', 'dataAvailabilityView');">
-                                        Edit</a>
+                                    <td>
+                                            <button ng-click="openDataAvailability()" class="btn btn-primary btn-xxs">Edit</button>
                                     </td>
                                 </tr>
                             </tbody></table>

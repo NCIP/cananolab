@@ -7,8 +7,6 @@
     <div style="clear:both"></div>
     <h4 ng-if="poc.primaryContact" class="modal-title">Primary</h4>
     <h4 ng-if="!poc.primaryContact" class="modal-title">Secondary</h4>
-
-    {{sampleId}}
 </div>
 
 <div class="modal-body" width='750px'>
@@ -21,13 +19,24 @@
                                                 <table>
                                                                 <tbody><tr>
                                                                                 <td class="cellLabel">
-                                                                                                <label for="domain.organization.name">Organization Name*</label>
+                                                                                                <label for="organization-name">Organization Name*</label>
                                                                                 </td>
                                                                                 <td>
-                                                                                                <div id="orgNamePrompt">
-<select ng-options="val for val in values" name="dim-{{dim}}" ng-model="selectedVal" ng-model="selectedVal">
-    <option value="">-- select a {{dim}} --</option>
-</select>
+                                                                                                <div id="organization-name">
+        <select data-ng-model="poc.organization.name"
+                data-ng-options="orginization for orginization in organizations">
+        </select>
+<!--
+   <select ng-model="poc.organization.name" ng-required="">
+        <option value=""></option>
+        <option ng-repeat="org in sampleData.organizationNamesForUser" value="{{org}}">
+            {{org}}
+        </option>
+        <option value="[other]">
+            [other]
+        </option>
+    </select>
+-->
 <!--
 <select name="sampleBean.thePOC.domain.organization.name" onchange="javascript:callPrompt('Organization Name', 'domain.organization.name', 'orgNamePrompt');updateOrganizationInfo();" id="domain.organization.name">
 <option value="">
@@ -137,18 +146,22 @@
                                                                                                 </div>
                                                                                 </td>
                                                                                 <td class="cellLabel" valign="top">
-                                                                                                <label for="domain.role">Role</label>
+                                                                                                <label for="role">Role</label>
                                                                                 </td>
                                                                                 <td valign="top" colspan="4">
-                                                                                                <div id="rolePrompt">
-                                                                                                                <select name="sampleBean.thePOC.domain.role" onchange="javascript:callPrompt('Contact Role', 'domain.role', 'rolePrompt');" id="domain.role"><option>
-                                                                                                                                                </option><option value="Chris Contact Role">Chris Contact Role</option>
+                                                                                                <div id="role">
+        <select data-ng-model="poc.role"
+                data-ng-options="role for role in roles">
+        </select>
+
+<!--
+<select name="sampleBean.thePOC.domain.role" onchange="javascript:callPrompt('Contact Role', 'domain.role', 'rolePrompt');" id="domain.role">
+<option></option>
+<option value="Chris Contact Role">Chris Contact Role</option>
 <option value="investigator">investigator</option>
 <option value="manufacturer">manufacturer</option>
-
-                                                                                                                                <option value="other">
-                                                                                                                                                [other]
-                                                                                                                                </option></select>
+<option value="other">[other]</option></select>
+-->
                                                                                                 </div>
                                                                                 </td>
                                                                 </tr>
@@ -274,7 +287,7 @@
 
 <div style="clear:both;"></div>
 <div class="modal-footer">
-    <button ng-click="ok()" class="btn btn-warning btn-modal">Close</button>
+    <button ng-click="ok()" class="btn btn-warning btn-modal">Cancel</button>
     <div class="button-spacer pull-right"></div>
     <button ng-click="save()" class='btn btn-primary btn-modal'>Save</button>
 </div>

@@ -11,6 +11,7 @@ var app = angular.module('angularApp')
     $scope.pocData = sampleService.poc;
     $scope.scratchPad = sampleService.scratchPad;
     $scope.master = {};
+    $scope.newKeyword = "";
 
     var editSampleData = {"editSampleData":{"dirty": false}};
     $scope.scratchPad = editSampleData;
@@ -228,6 +229,28 @@ alert('Made it here.');
     };
 
 // Modal for Access To Sample (2)
+// Modal for Access To Sample (1)
+    $scope.openAccessToSampleModal = function(sampleId, ats) {
+        console.log('openAccessToSampleModal');
+        console.dir(sampleId);
+        console.log('ats');
+        console.dir(ats);
+        sampleService.sampleData = angular.copy($scope.sampleData);
+        $scope.pocData = poc.data;
+        var modalInstance = $modal.open({
+          templateUrl: 'views/sample/edit/modal/pointOfContactModal.html',
+          controller: 'PointOfContactModalCtrl',
+          windowClass: 'pointOfContact-modal-window',
+          resolve: {
+            sampleId: function () {
+              return sampleId;
+            },
+            poc: function() {
+              return poc;
+            }
+          }
+        });
+    };
 // Modal for Data Availability (3)
     $scope.openDataAvailability = function(sampleId) {
 
@@ -255,5 +278,5 @@ alert('Made it here.');
     };
 
     $scope.master = angular.copy($scope.sampleData);
-//    $scope.reset();
+    $scope.reset();
 });
