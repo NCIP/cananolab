@@ -171,7 +171,7 @@ var app = angular.module('angularApp')
         }
 
         $scope.searchMatchedSamples = function() {
-            $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/getSamples?searchStr=ncl'}).
+            $http({method: 'GET', url: '/caNanoLab/rest/publication/getSamples?searchStr=ncl'}).
                 success(function(data, status, headers, config) {
                     $scope.sampleResults = data;
                 }).
@@ -189,13 +189,13 @@ var app = angular.module('angularApp')
 
             $http({method: 'POST', url: '/caNanoLab/rest/publication/submitPublication',data: $scope.publicationForm}).
                 success(function(data, status, headers, config) {
-                    // $rootScope.sampleData = data;
-                    //$scope.sampleData.data = data;
-                    //$location.path("/sampleResults").replace();
-
-                    alert(data);
-                    
-                    $location.search('message','Publication successfully saved with title "' + $scope.publicationForm.title + '"').path('/message').replace();
+                	if (data == "success") {
+                		$location.search('message','Publication successfully saved with title "' + $scope.publicationForm.title + '"').path('/message').replace();
+                	}
+                	else {
+                		$scope.loader = false;
+                		$scope.messages = data;
+                	}
 
                 }).
                 error(function(data, status, headers, config) {
@@ -203,8 +203,7 @@ var app = angular.module('angularApp')
                     // or server returns response with an error status.
                     // $rootScope.sampleData = data;
                     $scope.loader = false;
-                    $scope.message = data;
-                    alert(data);
+                    $scope.messages = data;
                 });
             
         };

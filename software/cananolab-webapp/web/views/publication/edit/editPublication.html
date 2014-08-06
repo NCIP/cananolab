@@ -1,5 +1,12 @@
 <form ng-submit="validateSavingTheData('newAuthor', 'Authors');"  novalidate>
 <table width="100%" align="center" class="submissionView" summary="layout">
+<span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
+    <ul>
+        <li ng-repeat="message in messages">
+            {{message}}
+        </li>
+    </ul>
+</span>
 <tr>
     <td class="cellLabel" width="100">
         <label for="category">Publication Type *</label>
@@ -169,9 +176,8 @@
             <table id="newAuthor" class="promptbox" summary="layout" ng-show="addNewAuthor">
                 <tbody>
                 <tr>
-                    <input type="hidden" ng-model="theAuthor.id" value="" id="id">
-
                     <td class="cellLabel">
+                    	<input type="hidden" ng-model="theAuthor.id" value="" id="id">
                         <label for="firstName">First Name</label>
                     </td>
                     <td>
