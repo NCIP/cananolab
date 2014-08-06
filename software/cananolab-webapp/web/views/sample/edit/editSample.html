@@ -120,8 +120,9 @@
                         -->
                         <div class="keywords-container">
                             <ul id="keywords" class="keywords">
-                                <li ng-repeat="keyword in sampleData.keywords track by $index" ng-click="removeKeyword(keyword)"  title="Remove keyword">
+                                <li ng-repeat="keyword in sampleData.keywords track by $index">
                                     <span>{{keyword}}</span>
+                                    <a  ng-click="removeKeyword(keyword)"  title="Remove keyword" href="#" onclick="return false;" class="select2-search-choice-close" tabindex="-1"></a>
                                 </li>
                             </ul>
                         </div>
