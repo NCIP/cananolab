@@ -53,6 +53,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.validator.EmailValidator;
 import org.apache.log4j.Logger;
 
 /**
@@ -990,6 +991,15 @@ public class SampleBO extends BaseAnnotationBO {
 			if (addrBean.getZip().length() > 0 && !InputValidationUtil.isZipValid(addrBean.getZip()))
 				errors.add(PropertyUtil.getProperty("sample", "postalCode.invalid"));
 		}
+		
+		String phone = simplePOC.getPhoneNumber();
+		if ( phone.length() > 0 && !InputValidationUtil.isPhoneValid(phone))
+			errors.add(PropertyUtil.getProperty("sample", "phone.invalid"));
+			
+		String email = simplePOC.getEmail();
+		EmailValidator emailValidator = EmailValidator.getInstance();
+		if (email != null && email.length() > 0 && !emailValidator.isValid(email))
+			errors.add("Email is invalid");
 		
 		return errors;
 	}
