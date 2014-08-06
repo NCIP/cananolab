@@ -55,7 +55,8 @@
                         Point of Contact *
                     </td>
                     <td>
-                            <button ng-click="openPointOfContactModal(sampleId.data, {})" class="btn btn-primary btn-xxs">Add New poc</button>
+                            <button ng-click="openPointOfContactModal(sampleId.data, {})" class="btn btn-primary btn-xxs">Add</button>
+                            <button ng-click="pocModal.open()" class="btn btn-primary btn-xxs">NEW POC</button>
 
                     </td>
                 </tr>
@@ -276,12 +277,27 @@
 
                         </td>
                     </tr>
-
                     <tr>
-                    <td colspan="2" align="center">
-
-                        <div style="display:none" id="dataAvailability"></div>
-                    </td>
+                        <td colspan="2">
+                            <table class="editTableWithGrid" width="95%" align="center">
+                                <tbody><tr>
+                                    <th scope="row">
+                                        caNanoLab Availability Score
+                                    </th>
+                                    <th scope="row">
+                                        MINChar Availability Score
+                                    </th>
+                                    <th scope="row"></th>
+                                </tr>
+                                <tr><td>{{sampleData.dataAvailability.caNanoLabScore}}</td>
+                                    <td>{{sampleData.dataAvailability.mincharScore}}</td>
+                                    <td><a href="#" onclick="javascript:manageDataAvailability('12451840', 'sample', 'dataAvailabilityView');">
+                                        Edit</a>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                    </tr>
                 </tr>
             </tbody>
         </table>
@@ -320,7 +336,6 @@
         -->
     </form>
 </div>
-
 <div id="loader" class="sample offset" ng-show="loader">
     <div id="loaderText">
         Loading
