@@ -810,7 +810,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		AccessibilityBean theAccess = publication.getTheAccess();
 		List<String> errors = super.validateAccess(request, theAccess);
 		if (errors.size() > 0) {
-		//	return errors; //TODO: saveAccess() should return an object that contains a list of errors;
+			return errors; //TODO: saveAccess() should return an object that contains a list of errors;
 		}
 
 		PublicationService service = this.setServicesInSession(request);
