@@ -5,7 +5,7 @@ angular.module('angularApp',[
         $scope.sampleId = utilsService.getParameterFromURL('sampleId');
         $scope.sampleName = utilsService.getParameterFromURL('sampleName');
     	$scope.loader = true;
-        $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/summaryPrint?sampleId=' + $scope.sampleId}).
+        $http({method: 'GET', url: '/caNanoLab/rest/publication/summaryPrint?sampleId=' + $scope.sampleId}).
             success(function(data, status, headers, config) {
                 $scope.data = data;
                 $scope.publicationCategories = data.publicationCategories;
