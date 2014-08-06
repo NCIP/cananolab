@@ -247,13 +247,11 @@ public class SampleServices {
 	@Produces("application/json")
 	 public Response edit(@Context HttpServletRequest httpRequest, 
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
-		logger.info("In edit Sample");
-		
-		logger.info("Edit sessionid: " + httpRequest.getSession().getId());
+		logger.debug("In edit Sample");
 		
 		if (! SecurityUtil.isUserLoggedIn(httpRequest)) {
 			logger.info("User not logged in");
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+			return Response.status(Response.Status.UNAUTHORIZED)
 					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 		}
 		
@@ -283,7 +281,7 @@ public class SampleServices {
 					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.savePointOfContactList(simpleSampleBean, httpRequest);
@@ -308,7 +306,7 @@ public class SampleServices {
 					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.saveAccess(simpleAccess, httpRequest);
@@ -333,7 +331,7 @@ public class SampleServices {
 				(SampleBO) applicationContext.getBean("sampleBO");
 		
 		if (! SecurityUtil.isUserLoggedIn(httpRequest))
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+			return Response.status(Response.Status.UNAUTHORIZED)
 					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 
 		try {
@@ -357,7 +355,7 @@ public class SampleServices {
 					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.create(simpleEdit, httpRequest);
@@ -382,7 +380,7 @@ public class SampleServices {
 					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			if (simpleEdit.getCloningSampleName() == null || simpleEdit.getCloningSampleName().length() == 0)
@@ -400,4 +398,113 @@ public class SampleServices {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while copying sample: " + e.getMessage()).build();
 		}
 	}
+	
+	@GET
+	@Path("/deleteSample")
+	@Produces("application/json")
+	 public Response deleteSample(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+		logger.debug("In deleteSample");
+		try {
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			String msg = sampleBO.delete(sampleId, httpRequest);
+			
+			return (msg == null || msg.startsWith("Error")) ?
+					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build()
+					:
+					Response.ok(msg).build();
+						
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while deleting sample: " + e.getMessage()).build();
+		}
+	}
+	
+	
+	@POST
+	@Path("/deletePOC")
+	@Produces("application/json")
+	 public Response deletePOC(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleSampleBean){
+		logger.debug("In deleteSample");
+		try {
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			SampleEditGeneralBean editBean = sampleBO.deletePointOfContact(simpleSampleBean, httpRequest);
+			List<String> errors = editBean.getErrors();
+			
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(editBean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while deleting POC from sample: " + e.getMessage()).build();
+		}
+	}
+	
+	@POST
+	@Path("/deleteDataAvailability")
+	@Produces("application/json")
+	 public Response deleteDataAvailability(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleSampleBean){
+		logger.debug("In deleteSample");
+		try {
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			SampleEditGeneralBean editBean = sampleBO.deletePointOfContact(simpleSampleBean, httpRequest);
+			List<String> errors = editBean.getErrors();
+			
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(editBean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while deleting data availability from sample: " + e.getMessage()).build();
+		}
+	}
+	
+	@GET
+	@Path("/create")
+	@Produces("application/json")
+	 public Response createSample(@Context HttpServletRequest httpRequest){
+		logger.debug("In edit Sample");
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest)) {
+			logger.info("User not logged in");
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		}
+		
+		SampleBO sampleBO = 
+				(SampleBO) applicationContext.getBean("sampleBO");
+
+		try {
+			SampleEditGeneralBean sampleBean = sampleBO.setupNew(httpRequest);
+			return (sampleBean.getErrors().size() == 0) ?
+					Response.ok(sampleBean).build()
+					:
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
+		} 
+
+		catch (Exception ioe) {
+			return Response.status(Response.Status.BAD_REQUEST).entity(ioe.getMessage()).build();
+		}
+	}	
 }
