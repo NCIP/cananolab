@@ -6,7 +6,7 @@ var app = angular.module('angularApp')
     $rootScope.navTree=false;
     $scope.publicationData = publicationService.publicationData;    
     $rootScope.tabs = navigationService.get();
-    $rootScope.groups = groupService.get();   
+    $rootScope.groups = groupService.getGroups.data.get();   
     
     $scope.$on('$viewContentLoaded', function(){
       $http({method: 'GET', url: '/caNanoLab/rest/publication/setup'}).

@@ -2,7 +2,7 @@
 var app = angular.module('angularApp')
   .controller('CompositionCtrl', function (utilsService,sampleService,navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$routeParams) {
     $rootScope.tabs = navigationService.get();
-    $rootScope.groups = groupService.get();
+    $rootScope.groups = groupService.getGroups.data.get();
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleId = sampleService.sampleId;
 

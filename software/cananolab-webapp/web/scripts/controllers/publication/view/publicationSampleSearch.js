@@ -4,7 +4,7 @@ var app = angular.module('angularApp')
   .controller('PublicationSampleSearchCtrl', function (publicationService,navigationService,groupService,$rootScope,$scope,$http,$location) {
     $rootScope.navTree=false;
     $rootScope.tabs = navigationService.get();
-    $rootScope.groups = groupService.get(); 
+    $rootScope.groups = groupService.getGroups.data.get(); 
 
     $scope.doSearch = function() {
       $scope.dirtyForm = [];
