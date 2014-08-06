@@ -798,7 +798,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		return publicationService;
 	}
 
-	public List<String> saveAccess(SimpleSubmitPublicationBean simplePubBean,
+	public PublicationBean saveAccess(SimpleSubmitPublicationBean simplePubBean,
 			HttpServletRequest request)
 			throws Exception {
 		if (!validateToken(request)) {
@@ -810,7 +810,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		AccessibilityBean theAccess = publication.getTheAccess();
 		List<String> errors = super.validateAccess(request, theAccess);
 		if (errors.size() > 0) {
-			return errors; //TODO: saveAccess() should return an object that contains a list of errors;
+		//	return errors; //TODO: saveAccess() should return an object that contains a list of errors;
 		}
 
 		PublicationService service = this.setServicesInSession(request);
@@ -841,8 +841,8 @@ public class PublicationBO extends BaseAnnotationBO{
 					.getDomainFile().getId().toString());
 		}
 
-		this.setAccesses(request, pub);
-		request.setAttribute("publicationId", pub.getDomainFile()
+		PublicationBean pBean = this.setAccesses(request, pub);
+		request.setAttribute("publicationId", pBean.getDomainFile()
 				.getId().toString());
 		errors.add(pub.getDomainFile()
 				.getId().toString());
@@ -853,10 +853,10 @@ public class PublicationBO extends BaseAnnotationBO{
 			request.setAttribute("sampleId", sampleId);
 		}
 //		return setupUpdate(mapping, form, request, response);
-		return errors;
+		return setupUpdate(pBean.getDomainFile().getId().toString(), request);
 	}
 
-	protected void setAccesses(HttpServletRequest request,
+	protected PublicationBean setAccesses(HttpServletRequest request,
 			PublicationBean publicationBean) throws Exception {
 		PublicationService service = (PublicationService) request.getSession()
 				.getAttribute("publicationService");
@@ -870,6 +870,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		publicationBean.setGroupAccesses(groupAccesses);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		publicationBean.setUser(user);
+		return publicationBean;
 	}
 
 	public void deleteAccess(PublicationForm form,

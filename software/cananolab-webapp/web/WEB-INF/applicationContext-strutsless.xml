@@ -51,6 +51,9 @@
 	
 	<bean id="publicationBO"
 		class="gov.nih.nci.cananolab.restful.publication.PublicationBO">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
 	</bean>
 	
 	<bean id="compositionBO"

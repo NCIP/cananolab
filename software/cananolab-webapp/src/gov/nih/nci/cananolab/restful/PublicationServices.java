@@ -372,10 +372,12 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			List<String> msgs = pubBO.saveAccess(bean, httpRequest);
+			PublicationBean pubBean = pubBO.saveAccess(bean, httpRequest);
+			 SimplePublicationEditBean view = new SimplePublicationEditBean();
+				view.transferPublicationBeanForEdit(pubBean);
 			 
 			
-			return Response.ok(msgs).build();
+			return Response.ok(view).build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
