@@ -16,6 +16,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -164,7 +165,7 @@ public class SampleServicesTest {
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
-		assertTrue(postResponse.getStatus() == 500);
+		assertTrue(postResponse.getStatus() == 401);
 		
 		postResponse.bufferEntity();
 		String json = (String) postResponse.readEntity(String.class);
@@ -190,12 +191,84 @@ public class SampleServicesTest {
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
-		assertTrue(postResponse.getStatus() == 500);
+		assertTrue(postResponse.getStatus() == 401);
 		
 		postResponse.bufferEntity();
 		String json = (String) postResponse.readEntity(String.class);
 		assertTrue(json.contains("User session"));
 	}
 	
+	@Test
+	public void testDeleteSample() {
+		
+		try {
+
+			String jsonString = client.target(urlbase)
+					.register(SampleServices.class)
+					.path("sample/deleteSample")
+					.queryParam("sampleId", "20917507") //ncl-23
+					.request("application/json")
+					.header("some-header", "true")
+					.get(String.class);
+
+			assertNotNull(jsonString);
+			assertTrue(jsonString.contains("expired"));
+
+		} catch (Exception e) {
+			assertTrue(e instanceof NotAuthorizedException);
+		}
+
+	}
 	
+	@Test
+	public void testDeletePOC() {
+
+		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		webTarget.register(SampleServices.class);
+		
+		WebTarget searchSampleWebTarget = webTarget.path("sample").path("deletePOC");
+			
+		SampleEditGeneralBean editBean = new SampleEditGeneralBean();
+		editBean.setSampleId(44695553);
+		editBean.setSampleName("SY-New Sample");
+		editBean.getKeywords().add("NewKeywork-" + System.currentTimeMillis());
+		
+		Response postResponse =
+				searchSampleWebTarget.request("application/json")
+		         .post(Entity.json(editBean));
+		
+		assertNotNull(postResponse);
+		System.out.println("Status: " + postResponse.getStatus());
+		assertTrue(postResponse.getStatus() == 401);
+		
+		postResponse.bufferEntity();
+		String json = (String) postResponse.readEntity(String.class);
+		assertTrue(json.contains("User session"));
+	}
+	
+	@Test
+	public void testDeleteDataAvailability() {
+
+		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		webTarget.register(SampleServices.class);
+		
+		WebTarget searchSampleWebTarget = webTarget.path("sample").path("deleteDataAvailability");
+			
+		SampleEditGeneralBean editBean = new SampleEditGeneralBean();
+		editBean.setSampleId(44695553);
+		editBean.setSampleName("SY-New Sample");
+		editBean.getKeywords().add("NewKeywork-" + System.currentTimeMillis());
+		
+		Response postResponse =
+				searchSampleWebTarget.request("application/json")
+		         .post(Entity.json(editBean));
+		
+		assertNotNull(postResponse);
+		System.out.println("Status: " + postResponse.getStatus());
+		assertTrue(postResponse.getStatus() == 401);
+		
+		postResponse.bufferEntity();
+		String json = (String) postResponse.readEntity(String.class);
+		assertTrue(json.contains("User session"));
+	}
 }
