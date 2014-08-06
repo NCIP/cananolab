@@ -6,7 +6,7 @@ var app = angular.module('angularApp')
         //$scope.sampleData = sampleService.sampleData;
         $rootScope.navTree=false;
         //$rootScope.tabs = navigationService.query();
-        //$rootScope.groups = groupService.getGroups.data.get();
+        //$rootScope.groups = groupService.get();
 
         $scope.addNewAuthor = false;
         $scope.showAuthorTable = false;
@@ -14,6 +14,7 @@ var app = angular.module('angularApp')
         $scope.theAuthor = {};
         $scope.publicationForm.authors = [];
         $scope.localForm = {};
+        $scope.publicationId = '';
 
         // Access variables
         $scope.publicationForm.theAccess = {};
@@ -39,10 +40,10 @@ var app = angular.module('angularApp')
         $scope.access.loginName = '';
         $scope.publicationForm.isPublic = false;
         $scope.accessForm.theAccess.accessBy = 'group';        
-        $rootScope.groups = groupService.getGroups.data.get();
+        /* $rootScope.groups = groupService.get();
         console.log($rootScope.groups);
         for (var logUser in $rootScope.groups) break;
-        console.log(logUser);
+        console.log(logUser);  */
 
 //        $scope.curator = $rootScope.groups.indexOf("Curator") != -1;
 
@@ -62,12 +63,13 @@ var app = angular.module('angularApp')
             });
         //});
 
-        var publicationId = $routeParams.publicationId;
+        $scope.publicationId = $routeParams.publicationId;
 
-        if( publicationId != null ) {
-            $http({method: 'GET', url: '/caNanoLab/rest/publication/edit?publicationId=' + publicationId}).
+        if( $scope.publicationId != null ) {
+            $http({method: 'GET', url: '/caNanoLab/rest/publication/edit?publicationId=' + $scope.publicationId}).
                 success(function(data, status, headers, config) {
                     $scope.publicationForm = data;
+                    $scope.loader = true;
                 }).
                 error(function(data, status, headers, config) {
                     $scope.message = data;
@@ -312,18 +314,25 @@ var app = angular.module('angularApp')
                     // $rootScope.sampleData = data;
                     //$scope.sampleData.data = data;
                     //$location.path("/sampleResults").replace();
-
-                    alert(data);
-
+                	
+                	$scope.publicationForm = data;
+                	
+                	$scope.groupAccesses = $scope.publicationForm.groupAccesses;
+                    $scope.userAccesses = $scope.publicationForm.userAccesses;
+                    
+                    //console.log($scope.groupAccesses);
+                    //console.log($scope.userAccesses);
+                    
+                    $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     // $rootScope.sampleData = data;
                     $scope.loader = false;
-                    $scope.message = data;
-                    alert(data);
+                    $scope.messages = data;
                 });
+            
         }; 
         
         $scope.uploadFile = function(element){
