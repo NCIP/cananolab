@@ -2,7 +2,7 @@
 var app = angular.module('angularApp')
   .controller('SampleResultsCtrl', function (sampleService,navigationService,groupService,utilsService,$scope,$rootScope,$filter,ngTableParams,$http,$location,$modal) {
     $rootScope.tabs = navigationService.get();
-    $rootScope.groups = groupService.get();
+    $rootScope.groups = groupService.getGroups.data.get();
     $scope.sampleData = sampleService.sampleData;
     $rootScope.navTree=false;
     $scope.utilsService = utilsService;

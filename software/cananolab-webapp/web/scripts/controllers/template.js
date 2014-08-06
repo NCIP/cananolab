@@ -17,5 +17,5 @@ var app = angular.module('angularApp')
 	// else {
 	//     $scope.tabs = navigationService.query();			
 	// }
-    $scope.groups = groupService.get();    
+    $scope.groups = groupService.getGroups.data.get();    
   });

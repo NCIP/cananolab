@@ -5,6 +5,6 @@ var app = angular.module('angularApp')
     $scope.auth_cookie="";
     $rootScope.navTree=false;
     $rootScope.tabs = navigationService.get();
-    $rootScope.groups = groupService.get();     
+    $rootScope.groups = groupService.getGroups.data.get();     
 
   });

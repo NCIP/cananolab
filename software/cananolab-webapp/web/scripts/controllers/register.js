@@ -10,7 +10,7 @@
 angular.module('angularApp')
   .controller('RegisterCtrl', function (navigationService,groupService, $rootScope, $scope, $http) {
     $rootScope.tabs = navigationService.get();
-	$rootScope.groups = groupService.get();
+	$rootScope.groups = groupService.getGroups.data.get();
 	$rootScope.navTree=false;
 
 	$scope.submitData = function(isValid) {

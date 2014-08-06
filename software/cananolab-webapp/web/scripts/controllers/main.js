@@ -8,7 +8,7 @@ var app = angular.module('angularApp')
     $rootScope.navTree=false;
     $scope.homepage = true;
     $rootScope.tabs = navigationService.get({'homePage':'true'});
-    $rootScope.groups = groupService.get();
+    $rootScope.groups = groupService.getGroups.data.get();
     $scope.$on('$viewContentLoaded', function(){
       $http({method: 'GET', url: '/caNanoLab/rest/core/initSetup' }).
         success(function(data, status, headers, config) {

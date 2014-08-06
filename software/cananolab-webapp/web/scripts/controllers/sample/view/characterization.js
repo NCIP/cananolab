@@ -5,7 +5,7 @@ var app = angular.module('angularApp')
 
 app.controller('CharacterizationCtrl', function (sampleService,utilsService,navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$routeParams) {
     $rootScope.tabs = navigationService.get();
-    $rootScope.groups = groupService.get();   
+    $rootScope.groups = groupService.getGroups.data.get();   
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleId = sampleService.sampleId;
 	// $scope.dummyTableData= [{"name":"colTitles","value":["% chemotaxis<br>(mean)","sample concentration<br>(observed,mg/mL)"]},{"name":"colValues","value":["1.63","1"]},{"name":"colValues","value":["1.87",".25"]}] ;
@@ -60,7 +60,7 @@ app.controller('CharacterizationCtrl', function (sampleService,utilsService,navi
     });
 
     $scope.print = function() {
-    	window.open('views/printCharacterization.html?sampleId='+$scope.sampleId.data)
+    	window.open('views/sample/view/printCharacterization.html?sampleId='+$scope.sampleId.data+'&sampleName='+$scope.sampleData.data[0].sampleName)
     }
     $scope.popImage = function(imgSrc, imgId) {
     	utilsService.popImage(imgSrc, imgId);

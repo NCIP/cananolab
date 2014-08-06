@@ -6,7 +6,7 @@ var app = angular.module('angularApp')
         //$scope.sampleData = sampleService.sampleData;
         $rootScope.navTree=false;
         //$rootScope.tabs = navigationService.query();
-        //$rootScope.groups = groupService.get();
+        //$rootScope.groups = groupService.getGroups.data.get();
 
         $scope.addNewAuthor = false;
         $scope.showAuthorTable = false;
@@ -39,7 +39,7 @@ var app = angular.module('angularApp')
         $scope.access.loginName = '';
         $scope.publicationForm.isPublic = false;
         $scope.accessForm.theAccess.accessBy = 'group';        
-        $rootScope.groups = groupService.get();
+        $rootScope.groups = groupService.getGroups.data.get();
         console.log($rootScope.groups);
         for (var logUser in $rootScope.groups) break;
         console.log(logUser);
