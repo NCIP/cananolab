@@ -378,7 +378,7 @@ public class PublicationBO extends BaseAnnotationBO{
 //		return forward;
 	}
 
-	public PublicationBean setupUpdate(String publicationId,
+	public Object setupUpdate(String publicationId,
 			HttpServletRequest request)
 			throws Exception {
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -798,7 +798,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		return publicationService;
 	}
 
-	public PublicationBean saveAccess(SimpleSubmitPublicationBean simplePubBean,
+	public Object saveAccess(SimpleSubmitPublicationBean simplePubBean,
 			HttpServletRequest request)
 			throws Exception {
 		if (!validateToken(request)) {
@@ -819,6 +819,7 @@ public class PublicationBO extends BaseAnnotationBO{
 				|| publication.getDomainFile().getId() != null
 				&& publication.getDomainFile().getId() == 0) {
 			errors = this.savePublication(request, simplePubBean);
+			return errors;
 		}
 		// if publication is public, the access is not public, retract
 		// public

@@ -213,13 +213,21 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		 PublicationBO publicationBO = 
 					(PublicationBO) applicationContext.getBean("publicationBO");
 
-				 PublicationBean pubBean = publicationBO.setupUpdate(publicationId, httpRequest);
-				 SimplePublicationEditBean view = new SimplePublicationEditBean();
-			view.transferPublicationBeanForEdit(pubBean);
+				 
+			SimplePublicationEditBean view = new SimplePublicationEditBean();
+			Object obj = publicationBO.setupUpdate(publicationId, httpRequest);
 			
-			// return Response.ok(view).build();
-			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-			
+			if(obj instanceof PublicationBean){
+				PublicationBean pubBean = (PublicationBean) obj;
+			 
+				view.transferPublicationBeanForEdit(pubBean);
+				return Response.ok(view).build();
+
+			}
+			else{
+				return Response.ok(obj).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			}
+		
 		} catch (Exception e) {
 			return Response.ok("Error while viewing the publication results").build();
 		}
@@ -372,13 +380,21 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			PublicationBean pubBean = pubBO.saveAccess(bean, httpRequest);
-			 SimplePublicationEditBean view = new SimplePublicationEditBean();
-				view.transferPublicationBeanForEdit(pubBean);
-			 
+			SimplePublicationEditBean view = new SimplePublicationEditBean();
+			Object obj = pubBO.saveAccess(bean, httpRequest);
 			
-			return Response.ok(view).build();
+			if(obj instanceof PublicationBean){
+				PublicationBean pubBean = (PublicationBean) obj;
+			 
+				view.transferPublicationBeanForEdit(pubBean);
+				return Response.ok(view).build();
 
+			}
+			else{
+				return Response.ok(obj).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			}
+			
+			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while saving the access to publication " + e.getMessage()).build();
