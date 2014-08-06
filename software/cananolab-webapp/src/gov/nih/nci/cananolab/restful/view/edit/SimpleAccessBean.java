@@ -2,24 +2,20 @@ package gov.nih.nci.cananolab.restful.view.edit;
 
 public class SimpleAccessBean {
 	
-	
-	
 	String groupName = "";
 	String roleName = "";
 	String roleDisplayName = "";
 	String loginName = "";
 	String accessBy = "";
 	
-	//String accessRight;
-	
-	long sampleId;
+	boolean dirty = false;
 
-	public long getSampleId() {
-		return sampleId;
+	public boolean isDirty() {
+		return dirty;
 	}
 
-	public void setSampleId(long sampleId) {
-		this.sampleId = sampleId;
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
 	}
 
 	public String getGroupName() {
