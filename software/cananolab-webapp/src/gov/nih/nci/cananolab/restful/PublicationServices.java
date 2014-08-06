@@ -214,19 +214,12 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 					(PublicationBO) applicationContext.getBean("publicationBO");
 
 				 
-			SimplePublicationEditBean view = new SimplePublicationEditBean();
-			Object obj = publicationBO.setupUpdate(publicationId, httpRequest);
+			SimplePublicationEditBean view = publicationBO.setupUpdate(publicationId, httpRequest);
 			
-			if(obj instanceof PublicationBean){
-				PublicationBean pubBean = (PublicationBean) obj;
-			 
-				view.transferPublicationBeanForEdit(pubBean);
-				return Response.ok(view).build();
-
-			}
-			else{
-				return Response.ok(obj).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-			}
+			List<String> errors = view.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(view).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 		
 		} catch (Exception e) {
 			return Response.ok("Error while viewing the publication results").build();
@@ -380,19 +373,14 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			SimplePublicationEditBean view = new SimplePublicationEditBean();
-			Object obj = pubBO.saveAccess(bean, httpRequest);
+		
+			SimplePublicationEditBean view = pubBO.saveAccess(bean, httpRequest);
 			
-			if(obj instanceof PublicationBean){
-				PublicationBean pubBean = (PublicationBean) obj;
-			 
-				view.transferPublicationBeanForEdit(pubBean);
-				return Response.ok(view).build();
+			List<String> errors = view.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(view).build() :
+						Response.status(Response.Status.PRECONDITION_FAILED).entity(errors).build();
 
-			}
-			else{
-				return Response.ok(obj).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-			}
 			
 			
 		} catch (Exception e) {

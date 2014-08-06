@@ -44,8 +44,19 @@ public class SimplePublicationEditBean {
 	String ownerName;
 	String createdBy;
 	Boolean userDeletable;
+	List<String> errors;
 	
 	
+	public List<String> getErrors() {
+		return errors;
+	}
+
+
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
+	}
+
+
 	public List<Author> getAuthors() {
 		return authors;
 	}

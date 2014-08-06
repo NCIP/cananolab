@@ -33,6 +33,7 @@ import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePublicationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationExporter;
@@ -378,7 +379,7 @@ public class PublicationBO extends BaseAnnotationBO{
 //		return forward;
 	}
 
-	public Object setupUpdate(String publicationId,
+	public SimplePublicationEditBean setupUpdate(String publicationId,
 			HttpServletRequest request)
 			throws Exception {
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -420,7 +421,9 @@ public class PublicationBO extends BaseAnnotationBO{
 	//		return messages;
 	//		return pubBean;
 		}
-		return pubBean;
+		SimplePublicationEditBean bean = new SimplePublicationEditBean();
+		bean.transferPublicationBeanForEdit(pubBean);
+		return bean;
 	}
 
 	/**
@@ -798,7 +801,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		return publicationService;
 	}
 
-	public Object saveAccess(SimpleSubmitPublicationBean simplePubBean,
+	public SimplePublicationEditBean saveAccess(SimpleSubmitPublicationBean simplePubBean,
 			HttpServletRequest request)
 			throws Exception {
 		if (!validateToken(request)) {
@@ -810,7 +813,9 @@ public class PublicationBO extends BaseAnnotationBO{
 		AccessibilityBean theAccess = publication.getTheAccess();
 		List<String> errors = super.validateAccess(request, theAccess);
 		if (errors.size() > 0) {
-			return errors; //TODO: saveAccess() should return an object that contains a list of errors;
+			SimplePublicationEditBean bean =  new SimplePublicationEditBean();
+			bean.setErrors(errors);
+			return bean;//TODO: saveAccess() should return an object that contains a list of errors;
 		}
 
 		PublicationService service = this.setServicesInSession(request);
@@ -819,7 +824,9 @@ public class PublicationBO extends BaseAnnotationBO{
 				|| publication.getDomainFile().getId() != null
 				&& publication.getDomainFile().getId() == 0) {
 			errors = this.savePublication(request, simplePubBean);
-			return errors;
+			SimplePublicationEditBean bean =  new SimplePublicationEditBean();
+			bean.setErrors(errors);
+			return bean;
 		}
 		// if publication is public, the access is not public, retract
 		// public
