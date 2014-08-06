@@ -35,7 +35,7 @@ public class SimplePublicationEditBean {
 	Boolean uriExternal;
 	Long fileId;
 	String sampleId;
-	String associatedSampleNames;
+	String sampleNamesStr;
 	List<AccessibilityBean> groupAccesses;
 	List<AccessibilityBean> userAccesses;
 	String protectedData;
@@ -245,13 +245,13 @@ public class SimplePublicationEditBean {
 	}
 
 
-	public String getAssociatedSampleNames() {
-		return associatedSampleNames;
+	public String getSampleNamesStr() {
+		return sampleNamesStr;
 	}
 
 
-	public void setAssociatedSampleNames(String associatedSampleNames) {
-		this.associatedSampleNames = associatedSampleNames;
+	public void setSampleNamesStr(String sampleNamesStr) {
+		this.sampleNamesStr = sampleNamesStr;
 	}
 
 
@@ -355,7 +355,7 @@ public class SimplePublicationEditBean {
 		setUri(pub.getUri());
 		setFileId(pub.getId());
 		setUriExternal(pub.getUriExternal());
-		setAssociatedSampleNames(pubBean.getSampleNamesStr());
+		setSampleNamesStr(pubBean.getSampleNamesStr());
 		setGroupAccesses(pubBean.getGroupAccesses());
 		setUserAccesses(pubBean.getUserAccesses());
 		setIsPublic(pubBean.getPublicStatus());
