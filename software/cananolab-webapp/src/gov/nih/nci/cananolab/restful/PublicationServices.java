@@ -379,7 +379,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(view).build() :
-						Response.status(Response.Status.PRECONDITION_FAILED).entity(errors).build();
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 			
 			
