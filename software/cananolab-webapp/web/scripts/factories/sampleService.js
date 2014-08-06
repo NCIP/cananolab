@@ -6,7 +6,8 @@ app.factory("sampleService", function(){
 		sampleData: {data: null },
 		sampleId: {data: null },
         scratchPad: {data: null },
-        poc: {data: null}
+        pocData: {data: null},
+        simpleDialog: function() {}
 	}
 
 });

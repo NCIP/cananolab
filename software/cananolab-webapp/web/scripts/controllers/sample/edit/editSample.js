@@ -8,7 +8,7 @@ var app = angular.module('angularApp')
     $rootScope.groups = groupService.get();
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleId = sampleService.sampleId;
-    $scope.pocData = sampleService.poc;
+    $scope.pocData = sampleService.pocData;
     $scope.scratchPad = sampleService.scratchPad;
     $scope.master = {};
     $scope.newKeyword = "";
@@ -145,6 +145,7 @@ var app = angular.module('angularApp')
                     console.log('Submiting user info.');
                     console.log(user);
                     $modalInstance.dismiss('cancel');
+
                 }
                 $scope.cancel = function () {
                     $modalInstance.dismiss('cancel');
@@ -195,7 +196,6 @@ alert('Made it here.');
         }
       }
     });
-
     modalInstance.result.then(function (selectedItem) {
       $scope.selected = selectedItem;
     }, function () {
@@ -212,6 +212,8 @@ alert('Made it here.');
         console.log('poc');
         console.dir(poc);
         sampleService.sampleData = angular.copy($scope.sampleData);
+        sampleService.pocData = angular.copy(poc);
+
         $scope.pocData = poc.data;
         var modalInstance = $modal.open({
           templateUrl: 'views/sample/edit/modal/pointOfContactModal.html',
@@ -221,11 +223,67 @@ alert('Made it here.');
             sampleId: function () {
               return sampleId;
             },
-            poc: function() {
+            originalPoc: function () {
               return poc;
             }
           }
         });
+        var savePoc = function(poc) {
+                console.info("newPoc");
+                $scope.loader = true;
+                //$scope.newPoc = sampleService.pocData.data;
+
+                console.log("poc");
+                console.dir(poc);
+                console.log("newPoc");
+                console.dir($scope.newPoc);
+                //Set dirty flag
+                sampleService.pocData.dirty = true;
+                //Update sampleData with newPoc
+                if(parseInt(sampleService.pocData.id) > 0){
+                    //Update
+                    console.info("Updating to PointOfContact");
+                    $scope.sampleData.pointOfContacts.push(sampleService.pocData);
+                    poc = sampleService.pocData;
+                } else {
+                    //Append to PointOfContact
+                    console.info("Appending to PointOfContact");
+                    $scope.sampleData.pointOfContacts.push(sampleService.pocData);
+                };
+                if(location.hostname == "") {
+                } else {
+                    console.info("Rest call here.");
+                $http({method: 'POST', url: '/caNanoLab/rest/sample/savePOC',data: $scope.sampleData}).
+                success(function(data, status, headers, config) {
+                    alert(data);
+                    $location.search('message','Publication successfully saved with title "' + $scope.publicationForm.title + '"').path('/message').replace();
+
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    // $rootScope.sampleData = data;
+                    $scope.loader = false;
+                    $scope.message = data;
+                    alert(data);
+                });
+
+
+
+                }
+                $scope.loader = false;
+        };
+        modalInstance.result.then(function (poc) {
+            // Save POC
+            //alert("Save hit");
+            savePoc(poc);
+            console.info('User hit save.');
+        }, function () {
+            //Do not save - replace any changes to POC
+            //alert("Cancel hit");
+            console.info('Modal dismissed at: ' + new Date());
+        });
+
     };
 
 // Modal for Access To Sample (2)
@@ -235,6 +293,7 @@ alert('Made it here.');
         console.dir(sampleId);
         console.log('ats');
         console.dir(ats);
+
         sampleService.sampleData = angular.copy($scope.sampleData);
         $scope.pocData = poc.data;
         var modalInstance = $modal.open({
@@ -250,7 +309,17 @@ alert('Made it here.');
             }
           }
         });
-    };
+        modalInstance.result.then(function (poc) {
+            $scope.newPoc = poc;
+            /*Save POC*/
+            alert("Save hit");
+            console.info('User hit save.');
+        }, function () {
+            /*Do not save - replace any cahanges to POC*/
+            alert("Cancel hit");
+            console.info('Modal dismissed at: ' + new Date());
+        });
+     };
 // Modal for Data Availability (3)
     $scope.openDataAvailability = function(sampleId) {
 
