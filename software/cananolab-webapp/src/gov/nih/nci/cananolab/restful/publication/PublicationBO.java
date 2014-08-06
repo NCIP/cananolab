@@ -207,7 +207,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		pub.setResearchArea(bean.getResearchAreas());
 		pubBean.setAuthors(bean.getAuthors());
 		pubBean.setSampleNamesStr(bean.getSampleNamesStr());
-		pubBean.setSampleNames(bean.getSampleNames());
+	//	pubBean.setSampleNames(bean.getSampleNames());
 		pubBean.setGroupAccesses(bean.getGroupAccesses());
 		pubBean.setUserAccesses(bean.getUserAccesses());
 		pubBean.setDomainFile(pub);
@@ -844,7 +844,8 @@ public class PublicationBO extends BaseAnnotationBO{
 		this.setAccesses(request, pub);
 		request.setAttribute("publicationId", pub.getDomainFile()
 				.getId().toString());
-		
+		errors.add(pub.getDomainFile()
+				.getId().toString());
 		//check if sampleId exists in the form
 		String sampleId = (String) simplePubBean.getSampleId();
 
