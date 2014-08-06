@@ -603,8 +603,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 						AccessibilityBean.ACCESS_BY_PUBLIC)
 				&& !theAccess.getAccessBy().equalsIgnoreCase(
 						AccessibilityBean.ACCESS_BY_USER)) {
-			ActionMessage msg = new ActionMessage("error.invalidAccessBy",
-					theAccess.getAccessBy());
+	//		ActionMessage msg = new ActionMessage("error.invalidAccessBy",
+	//				theAccess.getAccessBy());
 	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 	//		saveErrors(request, msgs);
 			errors.add("You've entered an invalid Access by field");
@@ -614,8 +614,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 				AccessibilityBean.CSM_CURD_ROLE)
 				&& !theAccess.getRoleName().equalsIgnoreCase(
 						AccessibilityBean.CSM_READ_ROLE)) {
-			ActionMessage msg = new ActionMessage("error.invalidRoleName",
-					theAccess.getRoleName());
+	//		ActionMessage msg = new ActionMessage("error.invalidRoleName",
+	//				theAccess.getRoleName());
 	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 	//		saveErrors(request, msgs);
 			errors.add("You've entered an invalid role name");
@@ -630,8 +630,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 			accessValid = false;
 		}
 		if (!validateUserAccess(request, theAccess)) {
-			ActionMessage msg = new ActionMessage("error.invalidUser",
-					theAccess.getUserBean().getLoginName());
+	//		ActionMessage msg = new ActionMessage("error.invalidUser",
+	//				theAccess.getUserBean().getLoginName());
 	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 	//		saveErrors(request, msgs);
 			errors.add("You've entered an invalid user name.");
