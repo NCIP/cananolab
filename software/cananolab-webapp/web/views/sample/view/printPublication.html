@@ -3,10 +3,10 @@
 
 <head>
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />        
-      <link rel="stylesheet" href="../styles/bootstrap.css">
-      <link rel="stylesheet" href="../styles/main.css">
-      <link rel="stylesheet" href="../css/summaryView.css">
-      <script src="../bower_components/angular/angular.js"></script>
+      <link rel="stylesheet" href="../../../styles/bootstrap.css">
+      <link rel="stylesheet" href="../../../styles/main.css">
+      <link rel="stylesheet" href="../../../css/summaryView.css">
+      <script src="../../../bower_components/angular/angular.js"></script>
       
 </head>  
 
@@ -16,12 +16,18 @@
     <tbody>
     <tr>
         <th scope="col" align="left">
-            Sample {{SampleName}} Publication
+            Sample {{sampleName}} Publication
         </th>
     </tr>
     </tbody>
 </table>
-<br />
+<br />{{data}}
+  <div id="loader" class="sample offset" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>
 <table class="summaryViewNoTop" width="100%" summary="layout" ng-repeat="type in publicationCategories">
     <tr>
         <td>
@@ -106,19 +112,13 @@
         </td>
     </tr>
 </table>
-<script src="../scripts/controllers/printPublication.js"></script>
-<script src="../bower_components/angular-route/angular-route.js"></script>
-<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
-<script src="../scripts/factories/utils.js"></script>
+<script src="../../../scripts/controllers/sample/view/printPublication.js"></script>
+<script src="../../../bower_components/angular-route/angular-route.js"></script>
+<script src="../../../bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="../../../scripts/factories/utils.js"></script>
 
 </div>
 
-  <div id="loader" class="sample offset" ng-show="loader">
-    <div id="loaderText">
-      Loading
-    </div>
-    <div id="loaderGraphic"></div>
-  </div>
 </div>
 </body>
 </html>
