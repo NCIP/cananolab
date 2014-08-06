@@ -48,6 +48,25 @@
     background: red;
 }
 
+.modal {
+    display: block;
+}
+.modal-body:before,
+.modal-body:after {
+    display: table;
+    content: " ";
+}
+.modal-header:before,
+.modal-header:after {
+    display: table;
+    content: " ";
+}
+.pointOfContact-modal-window .modal-dialog {
+    width:650px;
+}
+.pointOfContact-modal-window .summaryViewWithGrid td {
+    border-width:0px;
+}
 
 /*
 .keywords li {
@@ -100,10 +119,6 @@ div.nanoPageContainer {
     list-style: none outside none;
 }
 
-
-element.style {
-    width: 100%;
-}
 .select2-container, .select2-drop, .select2-search, .select2-search input {
     box-sizing: border-box;
 }
@@ -131,6 +146,12 @@ element.style {
 .select2-container-multi .select2-choices li {
     float: left;
     list-style: none outside none;
+}
+
+.btn-modal {
+    margin-left:5px;
+    margin-right:5px;
+    float:right;
 }
 /**** NEW IDEA ****/
 

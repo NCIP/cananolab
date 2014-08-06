@@ -1,49 +1,29 @@
-<div class="modal-body">
-<div>
-	<a href="" ng-click="ok()" class="help">Hide</a>
-	<a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
+<div class="modal-header" ng-init="data=sampleId">
+    <h3 class="modal-title pull-left">Point Of Contact Information</h3>
+    <div class="pull-right">
+        <a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
+        <a href="" ng-click="ok()" class="help">Hide</a>
+    </div>
+    <div style="clear:both"></div>
+    <h4 class="modal-title">Primary</h4>
+    {{data}}
+    {{data.sampleId}}
+    {{sampleId}}
 </div>
-<hr>
-<h1>{{poc.id}}</h1>
-{{sampleData.sampleName}}
-<h2>sampleId{{sampleData.sampleId}}</h2>
-<h2>sampleData.pointOfContacts[0].contactPerson {{sampleData.pointOfContacts[0].contactPerson}}</h2>
-<h2>sampleData.pointOfContacts[1].contactPerson {{sampleData.pointOfContacts[1].contactPerson}}</h2>
-<h2>sampleData.pointOfContacts[0].organizationName {{sampleData.pointOfContacts[0].organizationName}}</h2>
 
-<hr>
-<table class="summaryViewWithGrid" width="100%" align="left" ng-init="data=poc">
-    <td colspan="2">
-
-
-
-
-
-                                                                <div style="display:block" id="newPointOfContact">
-                                                                                <a name="submitPointOfContact" class="anchorLink">
-
-
-
-
-
-<script type="text/javascript" src="javascript/POCManager.js"></script>
-<script type="text/javascript" src="/caNanoLab/dwr/interface/POCManager.js"></script>
-<script type="text/javascript" src="/caNanoLab/dwr/engine.js"></script>
-<script type="text/javascript" src="/caNanoLab/dwr/util.js"></script>
-
+<div class="modal-body" width='750px' ng-init="data=hello">
+<div style="clear:both"></div>
+<div>
 <table class="subSubmissionView" width="85%" align="center" summary="layout">
-                <tbody><tr>
-                                <th>
-                                                <span id="primaryTitle" style="display: none">Primary</span><span id="secondaryTitle" style="display: none">Secondary</span> Point of
-                                                Contact Information
-                                </th>
-                </tr>
+                <tbody>
                 <tr>
                                 <td>
                                                 <table>
                                                                 <tbody><tr>
                                                                                 <td class="cellLabel">
                                                                                                 <label for="domain.organization.name">Organization Name*</label>
+{{data.address.line1}}
+{{data.id}}
                                                                                 </td>
                                                                                 <td>
                                                                                                 <div id="orgNamePrompt">
@@ -283,31 +263,13 @@
                                                 </tbody></table>
                                 </td>
                 </tr>
-                <tr>
-                                <td>
-                                                <table width="100%">
-                                                                <tbody><tr>
-                                                                                <td>
-
-                                                                                </td>
-                                                                                <td>
-                                                                                                <div align="right">
-                                                                                                                <input type="button" value="Save" onclick="addPointOfContact('sample')">
-                                                                                                                <input type="button" value="Cancel" onclick="clearPointOfContact();closeSubmissionForm('PointOfContact');">
-                                                                                                                <input type="hidden" name="sampleBean.thePOC.domain.id" value="" id="domain.id">
-                                                                                                                <input type="hidden" name="sampleBean.thePOC.primaryStatus" value="true" id="primaryStatus">
-                                                                                                </div>
-                                                                                </td>
-                                                                </tr>
-                                                </tbody></table>
-                                </td>
-                </tr>
-</tbody></table></a>
+</tbody></table>
                                                                 </div>
-                                                </td>
-
-</table>
 </div>
+
+<div style="clear:both;"></div>
 <div class="modal-footer">
-  <button class="btn btn-primary" ng-click="ok()">Close</button>
+    <button ng-click="ok()" class="btn btn-warning btn-modal">Close</button>
+    <div class="button-spacer pull-right"></div>
+    <button ng-click="save()" class='btn btn-primary btn-modal'>Save</button>
 </div>
