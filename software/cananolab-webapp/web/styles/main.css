@@ -1528,6 +1528,35 @@ margin:10px;
 padding:5px !important;
 }
 
+
+#banner2 {
+    position:absolute;
+    left:650px;
+    top:190px;
+    background-color:#fff;
+    border:1px solid;
+    border-radius:10px;
+    width:170px;
+}
+
+#banner2 div {
+    padding:10px;
+}
+
+#banner1 {
+    position:absolute;
+    left:450px;
+    top:190px;
+    background-color:#fff;
+    border:1px solid;
+    border-radius:10px;
+    width:200px;
+}
+
+#banner1 div {
+    padding:10px;
+}
+
 table.table {
     border-bottom:1px solid #ccc;
 }

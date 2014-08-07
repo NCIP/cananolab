@@ -5,7 +5,15 @@
 <table summary="layout" cellpadding="0" cellspacing="0" border="0">
 <tr>
   <td valign="top" class="mainContentHomePage">
-    <img src="images/bannerhome.jpg" border="0" width="600px" alt="caNanoLab banner image" />
+    <table cellspacing="0" cellpadding="0">
+      <tr>
+        <td><img src="images/bannerhome1.jpg" border="0"  alt="caNanoLab banner image" /></td>
+        <td><img ng-mouseover="displayCredit('banner1',1)" ng-mouseleave="displayCredit('banner1',0)" src="images/bannerhome2.jpg" style="border-left:2px solid #fff;" alt="caNanoLab banner image" /></td>
+        <td><img ng-mouseover="displayCredit('banner2',1)" ng-mouseleave="displayCredit('banner2',0)" src="images/bannerhome3.jpg" style="border-left:2px solid #fff;" alt="caNanoLab banner image" /></td>
+      </tr>
+    </table>        
+    <div id="banner1" ng-show="banner1"><div>Credit: R. J. Wilson, Ph.D.; C. M. Earhart, Ph.D.; and S. X. Wang, Ph.D.</div></div>
+    <div id="banner2" ng-show="banner2"><div>Credit: Brenda Melendez and Rita Serda, Ph.D.</div></div>
     <div class="welcomeTitle">
       Welcome to caNanoLab
     </div><br />

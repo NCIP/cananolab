@@ -71,9 +71,15 @@ var app = angular.module('angularApp')
           // called asynchronously if an error occurs
           // or server returns response with an error status.
           $scope.authErrors=data;
-    });
+        });
       }      
-    }   
+    };
+
+    $scope.displayCredit = function(banner,state) {
+      if (state)
+        { $scope[banner] = true; }
+      else { $scope[banner] = false;}
+    }    
 
 
   });
