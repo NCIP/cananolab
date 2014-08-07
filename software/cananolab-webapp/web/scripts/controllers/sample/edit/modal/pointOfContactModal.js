@@ -8,26 +8,24 @@ var app = angular.module('angularApp')
     $scope.other = {'organization':'','role':''};
     $scope.organizations = $scope.sampleData.organizationNamesForUser;$scope.organizations.push('[other]');
     $scope.roles = $scope.sampleData.contactRoles;$scope.roles.push('[other]');
-
     /* Initialize master for poc */
     $scope.master = angular.copy($scope.poc);
 
     // Fired when organization or role are changed, used when user selects other //
     $scope.organizationDropdownChanged = function() {
-        if ($scope.poc.organization.name=='[other]'|| $scope.poc.role=='[other]') {
-            //check if organization or role are other. if so set other text to show //
-            $scope.otherRow = true;
-            if ($scope.poc.organization.name=='[other]') { $scope.organizationOther = true; }
-            else { $scope.organizationOther = false; }
-            
-            if ($scope.poc.role=='[other]') { $scope.roleOther = true; }
-            else { $scope.roleOther = false; };            
-        }
-        else { $scope.other = false; }
+    if ($scope.poc.organization.name=='[other]'|| $scope.poc.role=='[other]') {
+        //check if organization or role are other. if so set other text to show //
+        $scope.otherRow = true;
+        if ($scope.poc.organization.name=='[other]') { $scope.organizationOther = true; }
+        else { $scope.organizationOther = false; }
+
+        if ($scope.poc.role=='[other]') { $scope.roleOther = true; }
+        else { $scope.roleOther = false; };            
+    }
+    else { $scope.other = false; }
     };
 
-
-
+    // save the point of contact //
 	$scope.save = function () {
         // check if organization and role are other. if so set name to other instead of dropdown values //
         if ($scope.other.organization) { 
@@ -36,9 +34,10 @@ var app = angular.module('angularApp')
         if ($scope.other.role) {
             $scope.poc.role = $scope.other.role;
         } 
-		$modalInstance.close();
+        $modalInstance.close();
 	};
 
+    // cancel save //
     $scope.cancel = function () {
         $scope.poc = angular.copy($scope.master);  /* Neither is this.  Capture events in editSample and then do what needs to be done to the model. */
         $modalInstance.dismiss('cancel');
