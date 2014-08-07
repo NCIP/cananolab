@@ -25,7 +25,7 @@ public class SimpleSubmitPublicationBean {
 	String initial = "";
 	String keywordsStr = "";
 	String description = "";
-	String researchAreas;
+	String[] researchAreas;
 	String uri = "";
 	Boolean uriExternal = false;
 	Long fileId;
@@ -164,10 +164,10 @@ public class SimpleSubmitPublicationBean {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getResearchAreas() {
+	public String[] getResearchAreas() {
 		return researchAreas;
 	}
-	public void setResearchAreas(String researchAreas) {
+	public void setResearchAreas(String[] researchAreas) {
 		this.researchAreas = researchAreas;
 	}
 	public String getUri() {
