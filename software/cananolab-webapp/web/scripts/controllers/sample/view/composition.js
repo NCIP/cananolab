@@ -64,7 +64,7 @@ var app = angular.module('angularApp')
             });
 	
     $scope.print = function() {
-    	window.open('views/printComposition.html?sampleId='+$scope.sampleId.data)
+    	window.open('views/sample/view/printComposition.html?sampleId='+$scope.sampleId.data)
     }
     $scope.popImage = function(imgSrc, imgId) {
     	utilsService.popImage(imgSrc, imgId);
