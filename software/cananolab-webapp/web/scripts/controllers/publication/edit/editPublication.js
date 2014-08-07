@@ -66,30 +66,37 @@ var app = angular.module('angularApp')
 
         $scope.sampleId = $routeParams.sampleId;
         
+        $scope.loadPublicationData = function() {
+	        if( $scope.publicationId != null ) {
+	            $http({method: 'GET', url: '/caNanoLab/rest/publication/edit?publicationId=' + $scope.publicationId}).
+	                success(function(data, status, headers, config) {
+	                    $scope.publicationForm = data;
+	                    $scope.loader = false;
+	                }).
+	                error(function(data, status, headers, config) {
+	                    $scope.message = data;
+	                    $scope.loader = false;
+	                });
+	
+	
+	            $scope.$on('$viewContentLoaded', function(){
+	                //$scope.publicationForm = {"sampleTitle":null,"title":"Multifunctional polymeric nano-systems for RNA interference therapy","category":"peer review article","status":"published","pubMedId":null,"digitalObjectId":null,"journalName":"Biological Drug Products: Development and Strategies","year":null,"volume":null,"startPage":null,"endPage":null,"authors":[{"lastName":"Iyer","initial":"AK","firstName":"P",id:"1000"}],"authorId":null,"keywordsStr":"NCL-23","description":null,"researchAreas":null,"uri":null,"uriExternal":false,"fileId":42533664,"sampleId":null,"associatedSampleNames":"","groupAccesses":[{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":true,"domain":null,"groupNames":[],"displayName":""},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"},{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"Public","roleName":"R","roleDisplayName":"read","accessBy":"group"}],"userAccesses":[],"protectedData":null,"isPublic":true,"isOwner":false,"ownerName":null,"createdBy":"canano_curator","userDeletable":false};
+	
+	                $scope.groupAccesses = $scope.publicationForm.groupAccesses;
+	                $scope.userAccesses = $scope.publicationForm.userAccesses;
+	
+	                if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
+	                    $scope.showAuthorTable = true;
+	                }
+	
+	            });
+	        }
+        }
+        
         $scope.publicationId = $routeParams.publicationId;
-
+        
         if( $scope.publicationId != null ) {
-            $http({method: 'GET', url: '/caNanoLab/rest/publication/edit?publicationId=' + $scope.publicationId}).
-                success(function(data, status, headers, config) {
-                    $scope.publicationForm = data;
-                    $scope.loader = true;
-                }).
-                error(function(data, status, headers, config) {
-                    $scope.message = data;
-                });
-
-
-            $scope.$on('$viewContentLoaded', function(){
-                //$scope.publicationForm = {"sampleTitle":null,"title":"Multifunctional polymeric nano-systems for RNA interference therapy","category":"peer review article","status":"published","pubMedId":null,"digitalObjectId":null,"journalName":"Biological Drug Products: Development and Strategies","year":null,"volume":null,"startPage":null,"endPage":null,"authors":[{"lastName":"Iyer","initial":"AK","firstName":"P",id:"1000"}],"authorId":null,"keywordsStr":"NCL-23","description":null,"researchAreas":null,"uri":null,"uriExternal":false,"fileId":42533664,"sampleId":null,"associatedSampleNames":"","groupAccesses":[{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":true,"domain":null,"groupNames":[],"displayName":""},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"},{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"Public","roleName":"R","roleDisplayName":"read","accessBy":"group"}],"userAccesses":[],"protectedData":null,"isPublic":true,"isOwner":false,"ownerName":null,"createdBy":"canano_curator","userDeletable":false};
-
-                $scope.groupAccesses = $scope.publicationForm.groupAccesses;
-                $scope.userAccesses = $scope.publicationForm.userAccesses;
-
-                if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
-                    $scope.showAuthorTable = true;
-                }
-
-            });
+        	$scope.loadPublicationData();
         }
 
         $scope.addAuthor = function() {
@@ -225,37 +232,58 @@ var app = angular.module('angularApp')
         };
 
         $scope.fillPubMedInfo = function() {
-            $http({method: 'GET', url: '/caNanoLab/rest/publication/retrievePubMedInfo?pubmedId=' + $scope.publicationForm.pubMedId}).
-                success(function(data, status, headers, config) {
-                    $scope.pubInfo = data;
-
-                    $scope.publicationForm.title = $scope.pubInfo.domainFile.title;
-                    $scope.publicationForm.description = $scope.pubInfo.description;
-                    $scope.publicationForm.digitalObjectId = $scope.pubInfo.domainFile.digitalObjectId;
-                    $scope.publicationForm.journalName = $scope.pubInfo.domainFile.journalName
-                    $scope.publicationForm.startPage = $scope.pubInfo.domainFile.startPage
-                    $scope.publicationForm.endPage = $scope.pubInfo.domainFile.endPage
-                    $scope.publicationForm.volume = $scope.pubInfo.domainFile.volume
-                    $scope.publicationForm.year = $scope.pubInfo.domainFile.year
-                    $scope.publicationForm.authors = $scope.pubInfo.authors;
-                    $scope.publicationForm.keywordsStr = $scope.pubInfo.keywordsStr;
-
-                    if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
-                        $scope.showAuthorTable = true;
-                    }
-
-                }).
-                error(function(data, status, headers, config) {
-                    $scope.message = data;
-                });
-
-
-            //$scope.pubInfo = {"userAccesses":[],"groupAccesses":[],"theAccess":{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":"asdasdasdsadasdsadasd","phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"allAccesses":[],"publicStatus":false,"user":null,"userUpdatable":false,"userDeletable":false,"userIsOwner":false,"domainFile":{"createdBy":null,"createdDate":null,"description":null,"id":null,"name":null,"title":"A new granulation method for compressed tablets [proceedings].","type":null,"uri":null,"uriExternal":null,"findingCollection":null,"datumCollection":null,"keywordCollection":[{"id":null,"name":"Tablets","fileCollection":null},{"id":null,"name":"Phenylbutazone/administration & dosage","fileCollection":null},{"id":null,"name":"Hardness","fileCollection":null},{"id":null,"name":"Chemistry, Pharmaceutical/methods","fileCollection":null}],"category":null,"digitalObjectId":"","endPage":null,"journalName":"The Journal of pharmacy and pharmacology","pubMedId":12345,"researchArea":null,"startPage":"67P","status":null,"volume":"28 Suppl","year":1976,"authorCollection":null},"image":false,"keywordsStr":"Chemistry, Pharmaceutical/methods\r\nHardness\r\nPhenylbutazone/administration & dosage\r\nTablets","externalUrl":null,"uploadedFile":null,"newFileData":null,"createdDateStr":"","sampleNames":[],"researchAreas":null,"authors":[{"createdBy":null,"createdDate":null,"firstName":"M","id":null,"initial":"MH","lastName":"Rubinstein","publicationCollection":null}],"theAuthor":{"createdBy":null,"createdDate":null,"firstName":null,"id":null,"initial":null,"lastName":null,"publicationCollection":null},"sampleNamesStr":null,"fromSamplePage":false,"displayName":"Rubinstein, MH. A new granulation method for compressed tablets [proceedings]. The Journal of pharmacy and pharmacology. 1976; 28 Suppl. <a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12345>PMID: 12345</a>.","pubMedDisplayName":"<a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12345>PMID: 12345</a>","description":"","keywordsDisplayName":"Chemistry, Pharmaceutical/methods<br>Hardness<br>Phenylbutazone/administration &amp; dosage<br>Tablets","urlTarget":"_self"};
-            //$scope.pubInfo = {"userAccesses":[],"groupAccesses":[],"theAccess":{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":"asdffdsfdsfds","phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"allAccesses":[],"publicStatus":false,"user":null,"userUpdatable":false,"userDeletable":false,"userIsOwner":false,"domainFile":{"createdBy":null,"createdDate":null,"description":null,"id":null,"name":null,"title":"Formulation studies on slow-release phosphate tablets for high-dosage administration in renal transplant patients [proceedings].","type":null,"uri":null,"uriExternal":null,"findingCollection":null,"datumCollection":null,"keywordCollection":[{"id":null,"name":"Tablets","fileCollection":null},{"id":null,"name":"Phosphates/administration & dosage","fileCollection":null},{"id":null,"name":"Delayed-Action Preparations","fileCollection":null},{"id":null,"name":"Chemistry, Pharmaceutical","fileCollection":null}],"category":null,"digitalObjectId":"","endPage":null,"journalName":"The Journal of pharmacy and pharmacology","pubMedId":12346,"researchArea":null,"startPage":"68P","status":null,"volume":"28 Suppl","year":1976,"authorCollection":null},"image":false,"keywordsStr":"Chemistry, Pharmaceutical\r\nDelayed-Action Preparations\r\nPhosphates/administration & dosage\r\nTablets","externalUrl":null,"uploadedFile":null,"newFileData":null,"createdDateStr":"","sampleNames":[],"researchAreas":null,"authors":[{"createdBy":null,"createdDate":null,"firstName":"R","id":null,"initial":"R","lastName":"Woodroffe","publicationCollection":null}],"theAuthor":{"createdBy":null,"createdDate":null,"firstName":null,"id":null,"initial":null,"lastName":null,"publicationCollection":null},"sampleNamesStr":null,"fromSamplePage":false,"displayName":"Woodroffe, R. Formulation studies on slow-release phosphate tablets for high-dosage administration in renal transplant patients [proceedings]. The Journal of pharmacy and pharmacology. 1976; 28 Suppl. <a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12346>PMID: 12346</a>.","pubMedDisplayName":"<a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12346>PMID: 12346</a>","description":"","keywordsDisplayName":"Chemistry, Pharmaceutical<br>Delayed-Action Preparations<br>Phosphates/administration &amp; dosage<br>Tablets","urlTarget":"_self"};
-
-
-
+        	var retrievePubMed = false;
+        	
+        	 $http({method: 'GET', url: '/caNanoLab/rest/publication/getPubmedPublication?pubmedId=' + $scope.publicationForm.pubMedId}).
+             success(function(data, status, headers, config) {
+            	 $scope.publicationId = data;
+                 
+                 if ( data == 'No pub found') {
+                	 $scope.retrievePubMedData();
+                 }
+                 else {
+                     if (confirm("A database record with the same PubMed ID already exists.  Load saved information?")) {
+                    	 $scope.loadPublicationData();
+                     } else {
+                    	 $scope.retrievePubMedData();
+                     }
+                	 
+                 }
+             }).
+             error(function(data, status, headers, config) {
+                 $scope.message = data;
+             });
         };
+        
+        $scope.retrievePubMedData = function() {
+        	$http({method: 'GET', url: '/caNanoLab/rest/publication/retrievePubMedInfo?pubmedId=' + $scope.publicationForm.pubMedId}).
+            success(function(data, status, headers, config) {
+                $scope.pubInfo = data;
+
+                $scope.publicationForm.title = $scope.pubInfo.domainFile.title;
+                $scope.publicationForm.description = $scope.pubInfo.description;
+                $scope.publicationForm.digitalObjectId = $scope.pubInfo.domainFile.digitalObjectId;
+                $scope.publicationForm.journalName = $scope.pubInfo.domainFile.journalName
+                $scope.publicationForm.startPage = $scope.pubInfo.domainFile.startPage
+                $scope.publicationForm.endPage = $scope.pubInfo.domainFile.endPage
+                $scope.publicationForm.volume = $scope.pubInfo.domainFile.volume
+                $scope.publicationForm.year = $scope.pubInfo.domainFile.year
+                $scope.publicationForm.authors = $scope.pubInfo.authors;
+                $scope.publicationForm.keywordsStr = $scope.pubInfo.keywordsStr;
+
+                if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
+                    $scope.showAuthorTable = true;
+                }
+
+            }).
+            error(function(data, status, headers, config) {
+                $scope.message = data;
+            });
+
+
+	        //$scope.pubInfo = {"userAccesses":[],"groupAccesses":[],"theAccess":{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":"asdasdasdsadasdsadasd","phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"allAccesses":[],"publicStatus":false,"user":null,"userUpdatable":false,"userDeletable":false,"userIsOwner":false,"domainFile":{"createdBy":null,"createdDate":null,"description":null,"id":null,"name":null,"title":"A new granulation method for compressed tablets [proceedings].","type":null,"uri":null,"uriExternal":null,"findingCollection":null,"datumCollection":null,"keywordCollection":[{"id":null,"name":"Tablets","fileCollection":null},{"id":null,"name":"Phenylbutazone/administration & dosage","fileCollection":null},{"id":null,"name":"Hardness","fileCollection":null},{"id":null,"name":"Chemistry, Pharmaceutical/methods","fileCollection":null}],"category":null,"digitalObjectId":"","endPage":null,"journalName":"The Journal of pharmacy and pharmacology","pubMedId":12345,"researchArea":null,"startPage":"67P","status":null,"volume":"28 Suppl","year":1976,"authorCollection":null},"image":false,"keywordsStr":"Chemistry, Pharmaceutical/methods\r\nHardness\r\nPhenylbutazone/administration & dosage\r\nTablets","externalUrl":null,"uploadedFile":null,"newFileData":null,"createdDateStr":"","sampleNames":[],"researchAreas":null,"authors":[{"createdBy":null,"createdDate":null,"firstName":"M","id":null,"initial":"MH","lastName":"Rubinstein","publicationCollection":null}],"theAuthor":{"createdBy":null,"createdDate":null,"firstName":null,"id":null,"initial":null,"lastName":null,"publicationCollection":null},"sampleNamesStr":null,"fromSamplePage":false,"displayName":"Rubinstein, MH. A new granulation method for compressed tablets [proceedings]. The Journal of pharmacy and pharmacology. 1976; 28 Suppl. <a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12345>PMID: 12345</a>.","pubMedDisplayName":"<a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12345>PMID: 12345</a>","description":"","keywordsDisplayName":"Chemistry, Pharmaceutical/methods<br>Hardness<br>Phenylbutazone/administration &amp; dosage<br>Tablets","urlTarget":"_self"};
+	        //$scope.pubInfo = {"userAccesses":[],"groupAccesses":[],"theAccess":{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":"asdffdsfdsfds","phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"allAccesses":[],"publicStatus":false,"user":null,"userUpdatable":false,"userDeletable":false,"userIsOwner":false,"domainFile":{"createdBy":null,"createdDate":null,"description":null,"id":null,"name":null,"title":"Formulation studies on slow-release phosphate tablets for high-dosage administration in renal transplant patients [proceedings].","type":null,"uri":null,"uriExternal":null,"findingCollection":null,"datumCollection":null,"keywordCollection":[{"id":null,"name":"Tablets","fileCollection":null},{"id":null,"name":"Phosphates/administration & dosage","fileCollection":null},{"id":null,"name":"Delayed-Action Preparations","fileCollection":null},{"id":null,"name":"Chemistry, Pharmaceutical","fileCollection":null}],"category":null,"digitalObjectId":"","endPage":null,"journalName":"The Journal of pharmacy and pharmacology","pubMedId":12346,"researchArea":null,"startPage":"68P","status":null,"volume":"28 Suppl","year":1976,"authorCollection":null},"image":false,"keywordsStr":"Chemistry, Pharmaceutical\r\nDelayed-Action Preparations\r\nPhosphates/administration & dosage\r\nTablets","externalUrl":null,"uploadedFile":null,"newFileData":null,"createdDateStr":"","sampleNames":[],"researchAreas":null,"authors":[{"createdBy":null,"createdDate":null,"firstName":"R","id":null,"initial":"R","lastName":"Woodroffe","publicationCollection":null}],"theAuthor":{"createdBy":null,"createdDate":null,"firstName":null,"id":null,"initial":null,"lastName":null,"publicationCollection":null},"sampleNamesStr":null,"fromSamplePage":false,"displayName":"Woodroffe, R. Formulation studies on slow-release phosphate tablets for high-dosage administration in renal transplant patients [proceedings]. The Journal of pharmacy and pharmacology. 1976; 28 Suppl. <a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12346>PMID: 12346</a>.","pubMedDisplayName":"<a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12346>PMID: 12346</a>","description":"","keywordsDisplayName":"Chemistry, Pharmaceutical<br>Delayed-Action Preparations<br>Phosphates/administration &amp; dosage<br>Tablets","urlTarget":"_self"};
+        }
 
         $scope.getCollabGroups = function() {
             if ($scope.accessForm.theAccess.groupName === undefined || $scope.accessForm.theAccess.groupName === null) {

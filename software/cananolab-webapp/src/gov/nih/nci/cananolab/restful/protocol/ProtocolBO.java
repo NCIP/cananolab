@@ -1,28 +1,21 @@
-/*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
- *
- *  Distributed under the OSI-approved BSD 3-Clause License.
- *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
- */
-
-package gov.nih.nci.cananolab.ui.protocol;
+package gov.nih.nci.cananolab.restful.protocol;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.exception.NotExistException;
-import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
+import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.form.ProtocolForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -36,23 +29,17 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-/**
- * Create or update protocol file and protocol
- * 
- * @author pansu
- * 
- */
-public class ProtocolAction extends BaseAnnotationAction {
-
-	public ActionForward create(ActionMapping mapping, ActionForm form,
+public class ProtocolBO extends BaseAnnotationBO{
+	public List<String> create(ProtocolForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		List<String> msgs = new ArrayList<String>();
 		if (!validateToken(request)) {
-			return mapping.findForward("protocolMessage");
+			//return mapping.findForward("protocolMessage");
 		}
-		ActionForward forward = null;
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ProtocolBean protocolBean = (ProtocolBean) theForm.get("protocol");
+		//ActionForward forward = null;
+		//DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ProtocolBean protocolBean = (ProtocolBean) form.getProtocol();
 		Boolean newProtocol = true;
 		if (protocolBean.getDomain().getId() != null
 				&& protocolBean.getDomain().getId() > 0) {
@@ -63,23 +50,23 @@ public class ProtocolAction extends BaseAnnotationAction {
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newProtocol && !user.isCurator() && protocolBean.getPublicStatus()) {
-			retractFromPublic(theForm, request, protocolBean.getDomain()
-					.getId().toString(), protocolBean.getDomain().getName(),
-					"protocol");
-			ActionMessages messages = new ActionMessages();
-			ActionMessage msg = null;
-			msg = new ActionMessage("message.updateProtocol.retractFromPublic");
-			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, messages);
+		//	retractFromPublic(form, request, protocolBean.getDomain()
+		//			.getId().toString(), protocolBean.getDomain().getName(),
+		//			"protocol");
+		//	ActionMessages messages = new ActionMessages();
+		//	ActionMessage msg = null;
+		//	msg = new ActionMessage("message.updateProtocol.retractFromPublic");
+		//	messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		//	saveMessages(request, messages);
 		} else {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage("message.submitProtocol");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
+		//	ActionMessages msgs = new ActionMessages();
+		//	ActionMessage msg = new ActionMessage("message.submitProtocol");
+		//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		//	saveMessages(request, msgs);
 		}
-		resetToken(request);
-		forward = mapping.findForward("success");
-		return forward;
+	//	resetToken(request);
+	//	forward = mapping.findForward("success");
+		return msgs;
 	}
 
 	private void saveProtocol(HttpServletRequest request,
@@ -99,7 +86,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		super.checkOpenAccessForm(theForm, request);
+	//	super.checkOpenAccessForm(theForm, request);
 		ProtocolBean protocolBean = ((ProtocolBean) theForm.get("protocol"));
 		escapeXmlForFileUri(protocolBean.getFileBean());
 		this.setServiceInSession(request);
@@ -152,13 +139,13 @@ public class ProtocolAction extends BaseAnnotationAction {
 			throws Exception {
 		request.getSession().removeAttribute("protocolForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		super.checkOpenAccessForm(theForm, request);
+	//	super.checkOpenAccessForm(theForm, request);
 		setServiceInSession(request);
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		request.getSession().removeAttribute("protocolNamesByType");
 		request.getSession().removeAttribute("protocolVersionsByTypeName");
 		request.getSession().removeAttribute("updateProtocol");
-		saveToken(request);
+	//	saveToken(request);
 		return mapping.findForward("inputPage");
 	}
 
@@ -167,7 +154,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		super.checkOpenAccessForm(theForm, request);
+	//	super.checkOpenAccessForm(theForm, request);
 		String protocolId = super.validateId(request, "protocolId");
 		ProtocolService service = this.setServiceInSession(request);
 		ProtocolBean protocolBean = service.findProtocolById(protocolId);
@@ -179,7 +166,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("updateProtocol", "true");
 		setUpSubmitForReviewButton(request, protocolBean.getDomain().getId()
 				.toString(), protocolBean.getPublicStatus());
-		saveToken(request);
+	//	saveToken(request);
 		return mapping.findForward("inputPage");
 	}
 
@@ -226,8 +213,8 @@ public class ProtocolAction extends BaseAnnotationAction {
 		ActionMessage msg = new ActionMessage("message.deleteProtocol",
 				protocolBean.getDisplayName());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		resetToken(request);
+	//	saveMessages(request, msgs);
+	//	resetToken(request);
 		return mapping.findForward("success");
 	}
 
@@ -250,9 +237,9 @@ public class ProtocolAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocol = (ProtocolBean) theForm.get("protocol");
 		AccessibilityBean theAccess = protocol.getTheAccess();
-		if (!super.validateAccess(request, theAccess)) {
-			return input(mapping, form, request, response);
-		}
+		//if (!super.validateAccess(request, theAccess)) {
+		//	return input(mapping, form, request, response);
+		//}
 		ProtocolService service = this.setServiceInSession(request);
 		// if protocol is new, save protocol first
 		if (protocol.getDomain().getId() == 0) {
@@ -285,7 +272,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		this.setAccesses(request, protocol);
 		request.setAttribute("protocolId", protocol.getDomain().getId()
 				.toString());
-		resetToken(request);
+	//	resetToken(request);
 		return setupUpdate(mapping, form, request, response);
 	}
 
@@ -314,10 +301,10 @@ public class ProtocolAction extends BaseAnnotationAction {
 				protocol.getDomain());
 	}
 
-	public ActionForward download(ActionMapping mapping, ActionForm form,
+	public void download(ProtocolForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ProtocolService service = this.setServiceInSession(request);
-		return downloadFile(service, mapping, form, request, response);
+	//	return downloadFile(service, mapping, form, request, response);
 	}
 }

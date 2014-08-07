@@ -6,7 +6,7 @@
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
  */
 
-package gov.nih.nci.cananolab.ui.protocol;
+package gov.nih.nci.cananolab.restful.protocol;
 
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;

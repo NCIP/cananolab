@@ -1,77 +1,77 @@
 
 <div class="assay" ng-repeat="assay in characterization">
- <!-- property -->
- <div class="table" ng-repeat="property in assay" ng-if="property.value.length>0" ng-switch on="property.name">
-     <!-- property name -->
-       <div class="left">
-             <b>{{property.name}}</b>
-       </div> 
-       <div class="right">
-		<!-- property value -->
-		<span ng-switch-default>
-			{{property.value}}
-		</span>	
-		<span ng-switch-when="Experiment Configurations">
-			<!--  Experiment Configuration Table -->
-			<table cellspacing="0" cellpadding="0" border="0" class="propertyTable">
-				<tr>
-					<th width="33%" align="left"><b>Technique</b></th>
-					<th width="33%" align="left"><b>Instruments</b></th>
-					<th width="33%" align="left"><b>Description</b></th>
-				</tr>
-				<tr>
-					<td style="width:33%;padding-right:4px;vertical-align:top" ng-repeat="x in property.value">
-						<span ng-repeat="(key,val) in x">
-							{{val[0]}}
-						</span>
-					</td>
-				</tr>						
-			</table>
-			<!--  Experiment Configuration Table -->					
-		</span>
+	<!-- property -->
+	<div class="table" ng-repeat="property in assay" ng-if="property.value.length>0" ng-switch on="property.name">
+		<!-- property name -->
+		<div class="left">
+			<b>{{property.name}}</b>
+		</div> 
+		<div class="right">
+			<!-- property value -->
+			<span ng-switch-default>
+				{{property.value}}
+			</span>	
+			<span ng-switch-when="Experiment Configurations">
+				<!--  Experiment Configuration Table -->
+				<table cellspacing="0" cellpadding="0" border="0" class="propertyTable">
+					<tr>
+						<th width="33%" align="left"><b>Technique</b></th>
+						<th width="33%" align="left"><b>Instruments</b></th>
+						<th width="33%" align="left"><b>Description</b></th>
+					</tr>
+					<tr>
+						<td style="width:33%;padding-right:4px;vertical-align:top" ng-repeat="x in property.value">
+							<span ng-repeat="(key,val) in x">
+								{{val[0]}}
+							</span>
+						</td>
+					</tr>						
+				</table>
+				<!--  Experiment Configuration Table -->					
+			</span>
 			
-		<span ng-switch-when="Characterization Results">
-			<!--  Characterization Configuration Table -->
-			<table cellspacing="0" cellpadding="0" border="0" class="propertyTable" ng-if="property.value.length">
-				<tr ng-repeat-start="val in property.value" ng-if="val['Data and Conditions']">
-					<td colspan="2" valign="top"><b>Data and Conditions</b><br />
-						<table class="dataConditions" cellspacing="0" cellpadding="0">
-							<tr ng-repeat="row in val['Data and Conditions']">
-								<th ng-if="row.name=='colTitles'" ng-repeat="col in row.value track by $index" ng-bind-html="col"></th>
-								<td ng-if="row.name=='colValues'" ng-repeat="col in row.value track by $index" ng-bind-html="col"></td>		
-							</tr>	
-						</table>
-					</td>
-				</tr>
-				<tr ng-repeat-end>
-					<td valign="top" class="left">
-						<b>Files</b>
-						<div ng-repeat="file in val.Files">
-							<div ng-if="file.imageTitle">
-								<a href="" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}','{{file.fileId}}')"><img src="/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}" border="0" width="150" alt="uploaded image" /></a>
-							</div>
-							<div ng-if="file.uri">
-								<a href="/caNanoLab/rest/sample/download?fileId={{file.fileId}}">{{file.uri}}</a>&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new">Disclaimer</a>]
-							</div>
-							<div ng-if="file.title">
-								<a href="/caNanoLab/rest/sample/download?fileId={{file.fileId}}">{{file.title}}</a>
-							</div>
+			<span ng-switch-when="Characterization Results">
+				<!--  Characterization Configuration Table -->
+				<table cellspacing="0" cellpadding="0" border="0" class="propertyTable" ng-if="property.value.length">
+					<tr ng-repeat-start="val in property.value" ng-if="val['Data and Conditions']">
+						<td colspan="2" valign="top"><b>Data and Conditions</b><br />
+							<table class="dataConditions" cellspacing="0" cellpadding="0">
+								<tr ng-repeat="row in val['Data and Conditions']">
+									<th ng-if="row.name=='colTitles'" ng-repeat="col in row.value track by $index" ng-bind-html="col"></th>
+									<td ng-if="row.name=='colValues'" ng-repeat="col in row.value track by $index" ng-bind-html="col"></td>		
+								</tr>	
+							</table>
+						</td>
+					</tr>
+					<tr ng-repeat-end>
+						<td valign="top" class="left">
+							<b>Files</b>
+							<div ng-repeat="file in val.Files">
+								<div ng-if="file.imageTitle">
+									<a href="" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}','{{file.fileId}}')"><img src="/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}" border="0" width="150" alt="uploaded image" /></a>
+								</div>
+								<div ng-if="file.uri">
+									<a href="/caNanoLab/rest/sample/download?fileId={{file.fileId}}">{{file.uri}}</a>&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new">Disclaimer</a>]
+								</div>
+								<div ng-if="file.title">
+									<a href="/caNanoLab/rest/sample/download?fileId={{file.fileId}}">{{file.title}}</a>
+								</div>
 <!-- 			
-							<a href="" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}','{{file.fileId}}')"><img src="/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}" border="0" width="150" alt="uploaded image" /></a> -->
-						</div>
-					</td>
-					<td valign="top">
-						<div ng-repeat="file in val.Files">
-							{{file.description}}
-						</div>
-					</td>					
-				</tr>				
-			</table>
-		</span>	
-		<!-- property value -->										
-       </div>     
-     <!-- property name -->
- </div>		   
- <!-- property -->	 
+	<a href="" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}','{{file.fileId}}')"><img src="/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}" border="0" width="150" alt="uploaded image" /></a> -->
+</div>
+</td>
+<td valign="top">
+	<div ng-repeat="file in val.Files">
+		{{file.description}}
+	</div>
+</td>					
+</tr>				
+</table>
+</span>	
+<!-- property value -->										
+</div>     
+<!-- property name -->
+</div>		   
+<!-- property -->	 
 </div>
 <!-- assay -->
