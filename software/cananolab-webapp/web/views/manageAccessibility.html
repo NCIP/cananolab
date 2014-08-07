@@ -39,7 +39,7 @@
                         <!-- <div align="right" ng-if="access.groupName == 'Curator' || access.groupName == 'Public' && !$parent.user.curator" > -->
                         <div align="right" ng-if="access.userBean.curator" >
                                 <a
-                                        href="javascript:setTheAccess('${parentFormName}', 'group', '${access.groupName}', '${dataType}', '${protectedData}');">Edit</a>&nbsp;
+                                        href ng-click="$parent.addAccess=true;$parent.accessForm.theAccess.accessBy='group';accessForm.theAccess.groupName=access.groupName;">Edit</a>&nbsp;
                         </div>
                     </td>
                 </tr>
@@ -69,8 +69,7 @@
                         </td>
                         <td>
                             <div align="right" ng-if="access.userBean.loginName != user.loginName">
-                                    <a
-                                            href="javascript:setTheAccess('${parentFormName}', 'user', '${access.userBean.loginName}', '${dataType}', '${protectedData}');">Edit</a>&nbsp;
+                                    <a href ng-click="$parent.addAccess=true;$parent.accessForm.theAccess.accessBy='user';$parent.accessForm.theAccess.userBean.loginName=access.userBean.loginName;">Edit</a>&nbsp;
                                 </c:otherwise>
                             </div>
                         </td>
@@ -101,8 +100,8 @@
                         <label for="byGroup">Collaboration Group</label>
                         <input type="radio" ng-model="accessForm.theAccess.accessBy" value="user" ng-click="$parent.showCollaborationGroup=false; $parent.showAccessuser=true;" id="byUser">
                         <label for="byUser">User&nbsp;&nbsp;</label>
-                        <input type="radio" ng-model="accessForm.theAccess.accessBy" value="public" ng-click="$parent.accessForm.theAccess.groupName = 'Public'; $parent.accessForm.theAccess.roleName = 'R'; $parent.showAccessuser=false;" id="byPublic" ng-if="$parent.curator">
-                        <label for="byPublic" ng-if="$parent.curator">Public</label>
+                        <input type="radio" ng-model="accessForm.theAccess.accessBy" value="public" ng-click="$parent.accessForm.theAccess.groupName = 'Public'; $parent.accessForm.theAccess.roleName = 'R'; $parent.showAccessuser=false;" id="byPublic" ng-if="$parent.curator.curator">
+                        <label for="byPublic" ng-if="$parent.curator.curator">Public</label>
                     </td>
                 </tr>
                 <tr>
@@ -137,13 +136,13 @@
                                 </td>
                                 <td>
                                     <label for="matchedUserNameSelect" style="display:none" id="userNameSelectLabel">Select a user</label>
-                                    <select ng-disabled="loader" ng-model="access.loginName" id="matchedUserNameSelect"  ng-click="$parent.accessForm.theAccess.userBean.loginName = $parent.access.loginName;" ng-if="$parent.showAccessuser && $parent.showAccessSelection">
+                                    <select ng-model="access.loginName" id="matchedUserNameSelect"  ng-click="$parent.accessForm.theAccess.userBean.loginName = $parent.access.loginName;" ng-if="$parent.showAccessuser && $parent.showAccessSelection">
                                         <option ng-repeat="(loginId, name) in $parent.accessUsers" value="{{loginId}}">
                                             {{name}}
                                         </option>
                                     </select>
                                     <label for="matchedGroupNameSelect" style="display:none">Select a group</label>
-                                    <select ng-disabled="loader" ng-model="access.groupName" id="matchedGroupNameSelect" ng-click="$parent.accessForm.theAccess.groupName = $parent.access.groupName;" ng-if="$parent.showCollaborationGroup && $parent.showAccessSelection">
+                                    <select ng-model="access.groupName" id="matchedGroupNameSelect" ng-click="$parent.accessForm.theAccess.groupName = $parent.access.groupName;" ng-if="$parent.showCollaborationGroup && $parent.showAccessSelection">
                                         <option ng-repeat="group in $parent.collabGroups" value="{{group}}">
                                             {{group}}
                                         </option>

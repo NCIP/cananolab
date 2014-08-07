@@ -15,6 +15,7 @@ var app = angular.module('angularApp')
         $scope.publicationForm.authors = [];
         $scope.localForm = {};
         $scope.publicationId = '';
+        $scope.sampleId = '';
 
         // Access variables
         $scope.publicationForm.theAccess = {};
@@ -23,7 +24,7 @@ var app = angular.module('angularApp')
         $scope.parentFormName = 'publicationForm';
         $scope.accessForm.theAcccess = {};
         $scope.accessForm.theAcccess.userBean = {};
-        $scope.curator = true;
+        $scope.curator = groupService.isCurator();
         $scope.groupAccesses = [];
         $scope.userAccesses = [];
         $scope.addAccess = false;
@@ -63,6 +64,8 @@ var app = angular.module('angularApp')
             });
         //});
 
+        $scope.sampleId = $routeParams.sampleId;
+        
         $scope.publicationId = $routeParams.publicationId;
 
         if( $scope.publicationId != null ) {
