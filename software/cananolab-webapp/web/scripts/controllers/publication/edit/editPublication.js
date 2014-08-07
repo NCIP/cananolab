@@ -66,21 +66,16 @@ var app = angular.module('angularApp')
 
         $scope.sampleId = $routeParams.sampleId;
         
-        $scope.publicationId = $routeParams.publicationId;
-        
-        if( $scope.publicationId != null ) {
-        	loadPublicationData();
-        }
-
         $scope.loadPublicationData = function() {
 	        if( $scope.publicationId != null ) {
 	            $http({method: 'GET', url: '/caNanoLab/rest/publication/edit?publicationId=' + $scope.publicationId}).
 	                success(function(data, status, headers, config) {
 	                    $scope.publicationForm = data;
-	                    $scope.loader = true;
+	                    $scope.loader = false;
 	                }).
 	                error(function(data, status, headers, config) {
 	                    $scope.message = data;
+	                    $scope.loader = false;
 	                });
 	
 	
@@ -96,6 +91,12 @@ var app = angular.module('angularApp')
 	
 	            });
 	        }
+        }
+        
+        $scope.publicationId = $routeParams.publicationId;
+        
+        if( $scope.publicationId != null ) {
+        	$scope.loadPublicationData();
         }
 
         $scope.addAuthor = function() {
@@ -238,7 +239,7 @@ var app = angular.module('angularApp')
             	 $scope.publicationId = data;
                  
                  if ( data == 'No pub found') {
-                	 retrievePubMedData();
+                	 $scope.retrievePubMedData();
                  }
                  else {
                      if (confirm("A database record with the same PubMed ID already exists.  Load saved information?")) {
