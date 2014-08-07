@@ -23,4 +23,10 @@ public class InputValidationUtilTest {
 		boolean is = InputValidationUtil.isAlphabetic("daasl4");
 		assertFalse(is);
 	}
-}
+	
+	@Test
+	public void testIsDOI() {
+		boolean is = InputValidationUtil.doi(null);
+		assertFalse(is);
+	}
+ }
