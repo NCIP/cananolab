@@ -574,7 +574,7 @@ public class SampleBO extends BaseAnnotationBO {
 			HttpServletRequest request)
 			throws Exception {
 		
-		String newNameForClone = simpleEditBean.getCloningSampleName();
+		String newNameForClone = simpleEditBean.getNewSampleName();
 		String orgSampleName = simpleEditBean.getSampleName();
 		String error = validateSampleName(newNameForClone);
 		if (error.length() > 0) 
