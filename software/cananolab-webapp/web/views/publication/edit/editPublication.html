@@ -424,10 +424,17 @@
         <td align="left" width="600">
         </td>
         <td align="right" width="300">
-            <input ng-disabled="loader" type="reset" value="Reset" ng-click="resetForm()">
-            <input ng-disabled="loader" type="submit" value="Submit" ng-click="doSubmit()">
+            <input type="reset" value="Reset" ng-click="resetForm()">
+            <input type="submit" value="Submit" ng-click="doSubmit()" ng-if="publicationId == null">
+            <input type="submit" value="Update" ng-click="doSubmit()" ng-if="publicationId != null">
         </td>
     </tr>
     </tbody>
 </table>
+<div id="loader" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+</div>
 </form>
