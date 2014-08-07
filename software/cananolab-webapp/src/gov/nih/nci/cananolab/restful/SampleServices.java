@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSumma
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
@@ -58,8 +59,8 @@ public class SampleServices {
 
 			return Response.ok(dropdownTypeLists).build();
 		} catch (Exception e) {
-			//return Response.ok("Error while setting up drop down lists").build();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while setting up drop down lists").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists")).build();
 		}
 	}
 	
@@ -78,7 +79,8 @@ public class SampleServices {
 			List<String> characterizations = searchSampleBO.getCharacterizationByType(httpRequest, type);
 			return Response.ok(characterizations).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while getting characterization by type").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while getting characterization by type")).build();
 		}
 	}
 	
@@ -104,7 +106,8 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while searching for samples: " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while searching for samples: " + e.getMessage())).build();
 		}
 	}
 	
@@ -133,7 +136,8 @@ public class SampleServices {
 			
 		} catch (Exception e) {
 			//return Response.ok("Error while viewing the search results").build();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while viewing the search results").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while viewing the search results")).build();
 		}
 	}
 	
@@ -158,7 +162,8 @@ public class SampleServices {
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while getting data availability data").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while getting data availability data")).build();
 		}
 	}
 	
@@ -181,7 +186,8 @@ public class SampleServices {
 			
 		} catch (Exception e) {
 			//return Response.ok(e.getMessage()).build();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 		
 	}
@@ -201,7 +207,8 @@ public class SampleServices {
 			return Response.ok(new FileInputStream(file)).build();
 			
 		} catch (Exception ioe) {
-			return Response.ok(ioe.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
 	}
 	
@@ -219,7 +226,8 @@ public class SampleServices {
 		} 
 		
 		catch (Exception ioe) {
-			return Response.ok(ioe.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
 	}
 	
@@ -238,7 +246,8 @@ public class SampleServices {
 		} 
 		
 		catch (Exception ioe) {
-			return Response.ok(ioe.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
 	}
 	
@@ -267,7 +276,8 @@ public class SampleServices {
 		} 
 
 		catch (Exception ioe) {
-			return Response.status(Response.Status.BAD_REQUEST).entity(ioe.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
 	}	
 	
@@ -292,7 +302,8 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while saving Point of Contact: " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while saving Point of Contact: " + e.getMessage())).build();
 		}
 	}
 	
@@ -317,7 +328,8 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while saving Access: " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while saving Access: " + e.getMessage())).build();
 		}
 	}
 	
@@ -341,7 +353,8 @@ public class SampleServices {
 					:
 					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(simpleBean.getErrors()).build();
 		} catch (Exception ioe) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ioe.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
 	}	
 	
@@ -366,7 +379,8 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while saving Access: " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while saving Access: " + e.getMessage())).build();
 		}
 	}
 	
@@ -395,7 +409,8 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while copying sample: " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while copying sample: " + e.getMessage())).build();
 		}
 	}
 	
@@ -423,7 +438,8 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while deleting sample: " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while deleting sample: " + e.getMessage())).build();
 		}
 	}
 	
@@ -450,7 +466,8 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while deleting POC from sample: " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while deleting POC from sample: " + e.getMessage())).build();
 		}
 	}
 	
@@ -476,14 +493,15 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while deleting data availability from sample: " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while deleting data availability from sample: " + e.getMessage())).build();
 		}
 	}
 	
 	@GET
-	@Path("/create")
+	@Path("/submissionSetup")
 	@Produces("application/json")
-	 public Response createSample(@Context HttpServletRequest httpRequest){
+	 public Response submissionSetup(@Context HttpServletRequest httpRequest){
 		logger.debug("In edit Sample");
 		
 		if (! SecurityUtil.isUserLoggedIn(httpRequest)) {
@@ -504,7 +522,9 @@ public class SampleServices {
 		} 
 
 		catch (Exception ioe) {
-			return Response.status(Response.Status.BAD_REQUEST).entity(ioe.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while setting up to submit sample." + ioe.getMessage())).build();
+		
 		}
 	}	
 }

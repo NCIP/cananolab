@@ -205,7 +205,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		pub.setVolume(bean.getVolume());
 		pub.setUri(bean.getUri());
 		pub.setUriExternal(bean.getUriExternal());
-		pub.setResearchArea(bean.getResearchAreas());
+		pubBean.setResearchAreas(bean.getResearchAreas());
 		pubBean.setAuthors(bean.getAuthors());
 		pubBean.setSampleNamesStr(bean.getSampleNamesStr());
 	//	pubBean.setSampleNames(bean.getSampleNames());

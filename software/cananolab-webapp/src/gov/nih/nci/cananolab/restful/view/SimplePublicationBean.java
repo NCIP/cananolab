@@ -21,7 +21,21 @@ public class SimplePublicationBean {
 	private String keywordsDisplayName;
 	private String keywordsStr;
 	private String status;
+	private Boolean userUpdatable;
+	private Long publicationId;
 		
+	public Boolean getUserUpdatable() {
+		return userUpdatable;
+	}
+	public void setUserUpdatable(Boolean userUpdatable) {
+		this.userUpdatable = userUpdatable;
+	}
+	public Long getPublicationId() {
+		return publicationId;
+	}
+	public void setPublicationId(Long publicationId) {
+		this.publicationId = publicationId;
+	}
 	public String getDisplayName() {
 		return displayName;
 	}

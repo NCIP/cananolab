@@ -68,6 +68,8 @@ public class SimplePublicationSummaryViewBean {
 					publicationBean.setKeywordsStr(pBean.getKeywordsStr());
 					Publication pub = (Publication) pBean.getDomainFile();
 					publicationBean.setStatus(pub.getStatus());
+					publicationBean.setUserUpdatable(pBean.getUserUpdatable());
+					publicationBean.setPublicationId(pub.getId());
 					
 					pubList.add(publicationBean);
 			}
