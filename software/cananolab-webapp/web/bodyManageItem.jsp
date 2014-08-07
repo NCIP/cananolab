@@ -29,7 +29,7 @@ L--%>
 			<c:if test="${item eq 'Sample'}">
 				<tr>
 					<td class="sidebarContent"><a
-						href="sample.do?dispatch=setupClone&page=0">Copy an Existing
+						href="/caNanoLab/#/cloneSample">Copy an Existing
 							Sample</a> <br> Select to copy information from an existing
 						sample to a new sample.</td>
 				</tr>

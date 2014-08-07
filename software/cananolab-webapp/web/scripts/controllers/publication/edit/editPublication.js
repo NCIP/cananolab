@@ -183,7 +183,7 @@ var app = angular.module('angularApp')
         }
 
         $scope.searchMatchedSamples = function() {
-            $http({method: 'GET', url: '/caNanoLab/rest/publication/getSamples?searchStr=ncl'}).
+            $http({method: 'GET', url: '/caNanoLab/rest/publication/getSamples?searchStr='}).
                 success(function(data, status, headers, config) {
                     $scope.sampleResults = data;
                 }).

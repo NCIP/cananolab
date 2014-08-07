@@ -111,6 +111,10 @@ app.config(function ($routeProvider, $httpProvider) {
             templateUrl: 'views/message.html',
             controller: 'MessageCtrl'
       })
+      .when('/cloneSample', {
+            templateUrl: 'views/sample/edit/cloneSample.html',
+            controller: 'CloneSampleCtrl'
+      })      
       .otherwise({
         redirectTo: '/'
       });
