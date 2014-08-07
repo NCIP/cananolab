@@ -101,6 +101,7 @@ div.nanoPageContainer {
 }
 .select2-search-choice-close:hover {
   background-position: right -11px;
+  cursor:pointer;
 }
 .btn-modal {
     margin-left:5px;

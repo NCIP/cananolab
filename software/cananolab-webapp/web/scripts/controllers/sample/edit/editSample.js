@@ -291,6 +291,10 @@ alert('Made it here.');
                     $http({method: 'POST', url: '/caNanoLab/rest/sample/savePOC',data: $scope.sampleData}).
                     success(function(data, status, headers, config) {
                         //alert(data);
+                        //TODO: This next line needs to be $scope.sampleData = data;
+                        // The server is messing up keywords by changing array of strings to string with returns.
+                        // So I left this alone until after the demo.
+                        //
                         $scope.sampleData.pointOfContacts = data.pointOfContacts;
                         $scope.master = angular.copy($scope.sampleData);
                         $scope.message = "Point of Contact has been saved";
