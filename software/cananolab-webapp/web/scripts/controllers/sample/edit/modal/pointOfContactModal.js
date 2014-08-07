@@ -8,7 +8,7 @@ var app = angular.module('angularApp')
     $scope.other = {'organization':'','role':''};
     $scope.organizations = $scope.sampleData.organizationNamesForUser;$scope.organizations.push('[other]');
     $scope.roles = $scope.sampleData.contactRoles;$scope.roles.push('[other]');
-        
+
     /* Initialize master for poc */
     $scope.master = angular.copy($scope.poc);
 
@@ -32,11 +32,9 @@ var app = angular.module('angularApp')
         // check if organization and role are other. if so set name to other instead of dropdown values //
         if ($scope.other.organization) { 
             $scope.poc.organization.name = $scope.other.organization;
-            $scope.sampleData.organizationNamesForUser.push($scope.other.organization);
         }
         if ($scope.other.role) {
             $scope.poc.role = $scope.other.role;
-            $scope.sampleData.contactRoles.push($scope.other.role);            
         } 
 		$modalInstance.close();
 	};
