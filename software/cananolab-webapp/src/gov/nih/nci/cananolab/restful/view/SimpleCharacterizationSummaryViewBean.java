@@ -30,7 +30,8 @@ public class SimpleCharacterizationSummaryViewBean {
 	List<SimpleCharacterizationsByTypeBean> charByTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>();
 		
 	
-	public List<SimpleCharacterizationsByTypeBean> transferData(CharacterizationSummaryViewBean viewBean) {
+	public List<SimpleCharacterizationsByTypeBean> transferData(CharacterizationSummaryViewBean viewBean) 
+	throws Exception {
 		
 		logger.info("============ SimpleCharacterizationSummaryViewBean.transferData ==================");
 		if (viewBean == null) return null;
@@ -38,6 +39,9 @@ public class SimpleCharacterizationSummaryViewBean {
 		Map<String, SortedSet<CharacterizationBean>> name2CharBeans = viewBean.getCharName2Characterizations();
 		Set<String> charTypes = viewBean.getCharacterizationTypes();
 		Map<String, SortedSet<String>> charNames = viewBean.getType2CharacterizationNames();
+		
+		if (charTypes == null || charTypes.size() == 0) 
+			throw new Exception("No characterization for this sample");
 		
 		for (String type : charTypes) {
 			logger.info("Processing type: " + type);

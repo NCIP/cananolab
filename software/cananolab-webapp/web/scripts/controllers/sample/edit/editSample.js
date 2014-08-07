@@ -88,7 +88,7 @@ var app = angular.module('angularApp')
         /* REST: http://localhost:8080/caNanoLab/rest/sample/edit?sampleId=20917507 */
         //$http({method: 'GET', url: '/caNanoLab/rest/sample/edit?sampleId=20917507'+$scope.sampleId.data}).
     	//alert("What is the sampleId?");
-        $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/sample/edit?sampleId='+$scope.sampleId.data}).
+        $http({method: 'GET', url: '/caNanoLab/rest/sample/edit?sampleId='+$scope.sampleId.data}).
             success(function(data, status, headers, config, statusText) {
                 $scope.sampleData = data;
                 $scope.loader = false;
