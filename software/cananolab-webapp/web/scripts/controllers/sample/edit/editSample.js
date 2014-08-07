@@ -185,44 +185,6 @@ var app = angular.module('angularApp')
 
 
     };
-/*
-    var ModalInstanceCtrl = function($scope, $modalInstance, $modal, item) {
-
-         $scope.item = item;
-
-          $scope.ok = function () {
-            $modalInstance.close();
-          };
-
-          $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-          };
-    };
-
-var ModalDemoCtrl = function ($scope, $modal) {
-alert('Made it here.');
-  $scope.items = ['item1', 'item2', 'item3'];
-  var size = "sm";
-  $scope.open = function (size) {
-
-    var modalInstance = $modal.open({
-      templateUrl: 'views/sample/view/pointOfContact.html',
-      controller: ModalInstanceCtrl,
-      size: size,
-      resolve: {
-        items: function () {
-          return $scope.items;
-        }
-      }
-    });
-    modalInstance.result.then(function (selectedItem) {
-      $scope.selected = selectedItem;
-    }, function () {
-      console.info('Modal dismissed at: ' + new Date());
-    });
-  };
-};
-*/
 
 // Modal for Access To Sample (1)
     $scope.openPointOfContactModal = function(sampleId, poc) {
@@ -291,6 +253,10 @@ alert('Made it here.');
                     $http({method: 'POST', url: '/caNanoLab/rest/sample/savePOC',data: $scope.sampleData}).
                     success(function(data, status, headers, config) {
                         //alert(data);
+                        //TODO: This next line needs to be $scope.sampleData = data;
+                        // The server is messing up keywords by changing array of strings to string with returns.
+                        // So I left this alone until after the demo.
+                        //
                         $scope.sampleData.pointOfContacts = data.pointOfContacts;
                         $scope.master = angular.copy($scope.sampleData);
                         $scope.message = "Point of Contact has been saved";

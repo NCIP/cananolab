@@ -290,7 +290,7 @@
                                 <tr><td>{{sampleData.dataAvailability.caNanoLabScore}}</td>
                                     <td>{{sampleData.dataAvailability.mincharScore}}</td>
                                     <td>
-                                            <button ng-click="openDataAvailability()" class="btn btn-primary btn-xxs">Edit</button>
+                                            <button ng-click="openDataAvailability(sampleId.data)" class="btn btn-primary btn-xxs">Edit</button>
                                     </td>
                                 </tr>
                             </tbody></table>
@@ -312,26 +312,6 @@
         </div>
 
         <br>
-        <!--
-        <table width="100%" class="invisibleTable" summary="layout">
-            <tbody>
-                <tr class="btn-group">
-                    <td align="left" width="600">
-                        <div class="btn-group pull-left">
-                            <button ng-click="reset()" class='btn btn-danger' ng-disabled='dataChanged < 2'>Delete</button>
-                            <button ng-click="update()" class='btn btn-default' ng-disabled='dataChanged < 2'>Copy</button>
-                        </div>
-                    </td>
-                    <td align="right" width="300">
-                        <div class="btn-group pull-right">
-                            <button ng-click="reset()" class='btn btn-default' ng-disabled='dataChanged < 2'>Reset</button>
-                            <button ng-click="update()" class='btn btn-primary' ng-disabled='dataChanged < 2'><span class="glyphicon glyphicon-save">Update</span></button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        -->
     </form>
 </div>
 <div id="loader" class="sample offset" ng-show="loader">
