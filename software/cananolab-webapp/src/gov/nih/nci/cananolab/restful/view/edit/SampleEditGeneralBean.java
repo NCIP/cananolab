@@ -29,7 +29,7 @@ public class SampleEditGeneralBean {
 	private static Logger logger = Logger.getLogger(SampleEditGeneralBean.class);
 	
 	String sampleName;
-	String cloningSampleName;
+	String newSampleName;
 	long sampleId;
 	boolean userIsCurator;
 	
@@ -50,12 +50,12 @@ public class SampleEditGeneralBean {
 
 	List<String> errors = new ArrayList<String>();
 
-	public String getCloningSampleName() {
-		return cloningSampleName;
+	public String getNewSampleName() {
+		return newSampleName;
 	}
 
-	public void setCloningSampleName(String cloningSampleName) {
-		this.cloningSampleName = cloningSampleName;
+	public void setNewSampleName(String newSampleName) {
+		this.newSampleName = newSampleName;
 	}
 
 	public Map<String, String> getRoleNames() {

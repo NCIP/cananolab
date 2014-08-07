@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
-//import javax.validation.constraints.Pattern;
+import gov.nih.nci.cananolab.restful.validator.CustomPattern;
 
 public class SimpleAddressBean {
 	
@@ -9,7 +9,7 @@ public class SimpleAddressBean {
 	String city = "";
 	String stateProvince = "";
 	
-	//@Pattern(regexp="^(\\d{5}(-\\d{4})?)|([a-zA-Z0-9\\s])$")
+	@CustomPattern(regexp="^(\\d{5}(-\\d{4})?)|([a-zA-Z0-9\\s])$")
 	String zip = "";
 	String country = "";
 	
