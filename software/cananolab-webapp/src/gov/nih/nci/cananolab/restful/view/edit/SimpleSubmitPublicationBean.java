@@ -1,17 +1,22 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.validator.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class SimpleSubmitPublicationBean {
 
 	String sampleTitle = "";
 	String title = "";
-	String category = "";
-	String status = "";
+    String category = "";
+  	String status = "";
 	Long pubMedId;
 	String digitalObjectId = "";
 	String journalName = "";
@@ -42,8 +47,14 @@ public class SimpleSubmitPublicationBean {
 	private AccessibilityBean theAccess = new AccessibilityBean();
 	String externalUrl = "";
 	String[] sampleNames;
-	
-	
+	List<String> errors;
+
+	public List<String> getErrors() {
+		return errors;
+	}
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
+	}
 	public String[] getSampleNames() {
 		return sampleNames;
 	}
@@ -251,5 +262,44 @@ public class SimpleSubmitPublicationBean {
 		this.userDeletable = userDeletable;
 	}
 	
-	
+
+	public void transferPublicationBeanForEdit(PublicationBean pubBean) {
+		// TODO Auto-generated method stub
+		authors = new ArrayList<Author>();
+		Publication pub = (Publication) pubBean.getDomainFile();
+		setCategory(pub.getCategory());
+		setStatus(pub.getStatus());
+		setPubMedId(pub.getPubMedId());
+		setDigitalObjectId(pub.getDigitalObjectId());
+		setTitle(pub.getTitle());
+		setJournalName(pub.getJournalName());
+		setYear(pub.getYear());
+		setVolume(pub.getVolume());
+		setStartPage(pub.getStartPage());
+		setEndPage(pub.getEndPage());
+		for(int i=0;i<pubBean.getAuthors().size();i++){
+			
+			Author author = new Author();
+		author.setFirstName(pubBean.getAuthors().get(i).getFirstName());
+		author.setLastName(pubBean.getAuthors().get(i).getLastName());
+		author.setInitial(pubBean.getAuthors().get(i).getInitial());
+		author.setId(pubBean.getAuthors().get(i).getId());
+		authors.add(author);
+		}
+		
+		setKeywordsStr(pubBean.getKeywordsStr());
+		setDescription(pub.getDescription());
+		setResearchAreas(pubBean.getResearchAreas());
+		setUri(pub.getUri());
+		setFileId(pub.getId());
+		setUriExternal(pub.getUriExternal());
+		setSampleNamesStr(pubBean.getSampleNamesStr());
+		setGroupAccesses(pubBean.getGroupAccesses());
+		setUserAccesses(pubBean.getUserAccesses());
+		setIsPublic(pubBean.getPublicStatus());
+		setIsOwner(pubBean.getUserIsOwner());
+		setCreatedBy(pub.getCreatedBy());
+		setUserDeletable(pubBean.getUserDeletable());
+		
+	}
 }

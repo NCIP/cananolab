@@ -20,7 +20,6 @@ import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditPublicationBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimplePublicationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
@@ -220,7 +219,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 					(PublicationBO) applicationContext.getBean("publicationBO");
 
 				 
-			SimplePublicationEditBean view = publicationBO.setupUpdate(publicationId, httpRequest);
+		 SimpleSubmitPublicationBean view = publicationBO.setupUpdate(publicationId, httpRequest);
 			
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?
@@ -381,7 +380,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 						.entity("Session expired").build();
 			
 		
-			SimplePublicationEditBean view = pubBO.saveAccess(bean, httpRequest);
+			SimpleSubmitPublicationBean view = pubBO.saveAccess(bean, httpRequest);
 			
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?

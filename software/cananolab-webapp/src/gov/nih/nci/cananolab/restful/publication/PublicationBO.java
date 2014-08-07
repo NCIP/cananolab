@@ -33,7 +33,6 @@ import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
-import gov.nih.nci.cananolab.restful.view.edit.SimplePublicationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationExporter;
@@ -208,7 +207,6 @@ public class PublicationBO extends BaseAnnotationBO{
 		pubBean.setResearchAreas(bean.getResearchAreas());
 		pubBean.setAuthors(bean.getAuthors());
 		pubBean.setSampleNamesStr(bean.getSampleNamesStr());
-	//	pubBean.setSampleNames(bean.getSampleNames());
 		pubBean.setGroupAccesses(bean.getGroupAccesses());
 		pubBean.setUserAccesses(bean.getUserAccesses());
 		pubBean.setDomainFile(pub);
@@ -262,10 +260,10 @@ public class PublicationBO extends BaseAnnotationBO{
 				errors.add(PropertyUtil.getProperty("publication", "publication.author.initial.invalid"));
 			}
 		}
-		String digitalObjectId = publication.getDigitalObjectId();
-		if(!InputValidationUtil.doi(digitalObjectId)){
-			errors.add(PropertyUtil.getProperty("publication", "publication.doi.invalid"));
-		}
+//		String digitalObjectId = publication.getDigitalObjectId();
+//		if(!InputValidationUtil.doi(digitalObjectId)){
+//			errors.add(PropertyUtil.getProperty("publication", "publication.doi.invalid"));
+//		}
 		return errors;
 	}
 
@@ -379,7 +377,7 @@ public class PublicationBO extends BaseAnnotationBO{
 //		return forward;
 	}
 
-	public SimplePublicationEditBean setupUpdate(String publicationId,
+	public SimpleSubmitPublicationBean setupUpdate(String publicationId,
 			HttpServletRequest request)
 			throws Exception {
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -421,7 +419,7 @@ public class PublicationBO extends BaseAnnotationBO{
 	//		return messages;
 	//		return pubBean;
 		}
-		SimplePublicationEditBean bean = new SimplePublicationEditBean();
+		SimpleSubmitPublicationBean bean = new SimpleSubmitPublicationBean();
 		bean.transferPublicationBeanForEdit(pubBean);
 		return bean;
 	}
@@ -801,7 +799,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		return publicationService;
 	}
 
-	public SimplePublicationEditBean saveAccess(SimpleSubmitPublicationBean simplePubBean,
+	public SimpleSubmitPublicationBean saveAccess(SimpleSubmitPublicationBean simplePubBean,
 			HttpServletRequest request)
 			throws Exception {
 		if (!validateToken(request)) {
@@ -813,7 +811,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		AccessibilityBean theAccess = publication.getTheAccess();
 		List<String> errors = super.validateAccess(request, theAccess);
 		if (errors.size() > 0) {
-			SimplePublicationEditBean bean =  new SimplePublicationEditBean();
+			SimpleSubmitPublicationBean bean =  new SimpleSubmitPublicationBean();
 			bean.setErrors(errors);
 			return bean;
 			}//TODO: saveAccess() should return an object that contains a list of errors;
@@ -824,7 +822,7 @@ public class PublicationBO extends BaseAnnotationBO{
 				|| publication.getDomainFile().getId() != null
 				&& publication.getDomainFile().getId() == 0) {
 			errors = this.savePublication(request, simplePubBean);
-			SimplePublicationEditBean bean =  new SimplePublicationEditBean();
+			SimpleSubmitPublicationBean bean =  new SimpleSubmitPublicationBean();
 			if(errors.get(0)=="success"){
 			bean.setErrors(errors);
 			}else{
