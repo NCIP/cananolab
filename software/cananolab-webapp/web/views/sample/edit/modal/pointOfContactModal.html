@@ -8,7 +8,7 @@
     <h4 ng-if="poc.primaryContact" class="modal-title">Primary</h4>
     <h4 ng-if="!poc.primaryContact" class="modal-title">Secondary</h4>
 </div>
-
+<div>{{sampleData2}}</div>
 <div class="modal-body" width='750px'>
     <div style="clear:both"></div>
     <div>
@@ -25,7 +25,7 @@
                                     <div id="organization-name">
                                         <select data-ng-model="poc.organization.name"
                                         data-ng-options="orginization for orginization in organizations" ng-change="organizationDropdownChanged()">
-                                    </select>
+                                        </select>
                                 </div>
                             </td>
                             <td class="cellLabel" valign="top">
@@ -34,16 +34,15 @@
                             <td valign="top" colspan="4">
                                 <div id="role">
                                     <select data-ng-model="poc.role" ng-change="organizationDropdownChanged()" data-ng-options="role for role in roles">
-                                </select>
+                                    </select>
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                    <tr ng-show="other">
+                    <tr ng-show="otherRow">
                         <td><label ng-show="organizationOther" for="organization-name">Organization Name Other*</label></td>
-                        <td><textarea ng-show="organizationOther" name="organization2" rows="5" cols="35"></textarea></td>
+                        <td><input type="text" ng-show="organizationOther" ng-model="other.organization" name="organization2"></td>
                         <td><label ng-show="roleOther" for="organization-name">Role Other*</label></td>
-                        <td><textarea ng-show="roleOther" name="role2" rows="5" cols="35"></textarea></td>
+                        <td><input type="text" ng-show="roleOther" ng-model="other.role" name="role2"></td>
                     </tr>
                 </tbody></table>
             </td>
@@ -168,5 +167,5 @@
 <div style="clear:both;"></div>
 <div class="modal-footer">
     <button ng-click="cancel()" class="btn btn-warning btn-modal">Cancel</button>
-    <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="!poc.organization.name||!poc.role">Save</button>
+    <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="!poc.organization.name">Save</button>
 </div>

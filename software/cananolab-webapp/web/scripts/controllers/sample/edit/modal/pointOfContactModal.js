@@ -1,54 +1,46 @@
 'use strict';
 var app = angular.module('angularApp')
-	.controller('PointOfContactModalCtrl', function ($scope,$http,$modalInstance,sampleId, originalPoc, sampleService) {
+	.controller('PointOfContactModalCtrl', function ($scope,$http,$modalInstance,sampleId, originalPoc, sampleData,sampleService) {
 
 	$scope.sampleId = sampleId;
-	$scope.sampleData = sampleService.sampleData;
+    $scope.sampleData = sampleData;
     $scope.poc = sampleService.pocData;
-/* Initialize master for poc */
+    $scope.other = {'organization':'','role':''};
+    $scope.organizations = $scope.sampleData.organizationNamesForUser;$scope.organizations.push('[other]');
+    $scope.roles = $scope.sampleData.contactRoles;$scope.roles.push('[other]');
+        
+    /* Initialize master for poc */
     $scope.master = angular.copy($scope.poc);
 
-    $scope.createDropDownList = function(list){
-        var newList = [];
-        newList = list;
-        // Add [other] to bottom of newList
-        newList.push("[other]");
-        return newList;
-    };
-    $scope.findPocIndex = function(){
-    // Return integer index of sampleData for poc
-    };
-
-    // Fired when organization or role are chnaged, used when user selects other //
+    // Fired when organization or role are changed, used when user selects other //
     $scope.organizationDropdownChanged = function() {
         if ($scope.poc.organization.name=='[other]'|| $scope.poc.role=='[other]') {
-            $scope.other = true;
-            if ($scope.poc.organization.name=='[other]') {
-                $scope.organizationOther = true;
-            }
-            else {
-                $scope.organizationOther = false;
-            }
-            if ($scope.poc.role=='[other]') {
-                $scope.roleOther = true;
-            }
-            else {
-                $scope.roleOther = false;
-            }            
+            //check if organization or role are other. if so set other text to show //
+            $scope.otherRow = true;
+            if ($scope.poc.organization.name=='[other]') { $scope.organizationOther = true; }
+            else { $scope.organizationOther = false; }
+            
+            if ($scope.poc.role=='[other]') { $scope.roleOther = true; }
+            else { $scope.roleOther = false; };            
         }
-        else {
-            $scope.other = false;
-        }
+        else { $scope.other = false; }
     };
 
-/* Initialize selects with createDropDownList()*/
-    $scope.organizations = $scope.createDropDownList($scope.sampleData.organizationNamesForUser);
-    $scope.roles = $scope.createDropDownList($scope.sampleData.contactRoles);
 
-/* Exit Codes */
+
 	$scope.save = function () {
-		$modalInstance.close(originalPoc);
+        // check if organization and role are other. if so set name to other instead of dropdown values //
+        if ($scope.other.organization) { 
+            $scope.poc.organization.name = $scope.other.organization;
+            $scope.sampleData.organizationNamesForUser.push($scope.other.organization);
+        }
+        if ($scope.other.role) {
+            $scope.poc.role = $scope.other.role;
+            $scope.sampleData.contactRoles.push($scope.other.role);            
+        } 
+		$modalInstance.close();
 	};
+
     $scope.cancel = function () {
         $scope.poc = angular.copy($scope.master);  /* Neither is this.  Capture events in editSample and then do what needs to be done to the model. */
         $modalInstance.dismiss('cancel');
