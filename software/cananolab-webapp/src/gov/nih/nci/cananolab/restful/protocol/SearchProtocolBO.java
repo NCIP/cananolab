@@ -1,21 +1,15 @@
-/*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
- *
- *  Distributed under the OSI-approved BSD 3-Clause License.
- *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
- */
-
-package gov.nih.nci.cananolab.ui.protocol;
+package gov.nih.nci.cananolab.restful.protocol;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
+import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.util.ProtocolUtil;
+import gov.nih.nci.cananolab.restful.util.PublicationUtil;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -34,15 +28,9 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-/**
- * Search protocol file and protocol
- * 
- * @author pansu
- * 
- */
-public class SearchProtocolAction extends BaseAnnotationAction {
-	public ActionForward search(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+public class SearchProtocolBO extends BaseAnnotationBO {
+	public List search(SearchProtocolForm form,
+			HttpServletRequest request)
 			throws Exception {
 		HttpSession session = request.getSession();
 		// get the page number from request
@@ -58,12 +46,12 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			if (protocolBeans != null && !protocolBeans.isEmpty()) {
 				session.setAttribute("protocolSearchResults", protocolBeans);
 			} else {
-				ActionMessages msgs = new ActionMessages();
-				ActionMessage msg = new ActionMessage(
-						"message.searchProtocol.noresult");
-				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				saveMessages(request, msgs);
-				return mapping.getInputForward();
+			//	ActionMessages msgs = new ActionMessages();
+			//	ActionMessage msg = new ActionMessage(
+			//			"message.searchProtocol.noresult");
+			//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			//	saveMessages(request, msgs);
+			//	return protocolBeans;
 			}
 		}
 		// display 25 protocols at a time
@@ -84,7 +72,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("resultSize",
 				new Integer(protocolBeans.size()));
 
-		return mapping.findForward("success");
+		return protocolBeansPerPage;
 	}
 
 	private List<ProtocolBean> getProtocolsPerPage(
@@ -102,34 +90,34 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		return protocolsPerPage;
 	}
 
-	private List<ProtocolBean> queryProtocols(ActionForm form,
+	private List<ProtocolBean> queryProtocols(SearchProtocolForm form,
 			HttpServletRequest request) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String fileTitle = (String) theForm.get("fileTitle");
+	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String fileTitle = form.getFileTitle();
 		// strip wildcards if entered by user
 		fileTitle = StringUtils.stripWildcards(fileTitle);
-		String titleOperand = (String) theForm.get("titleOperand");
+		String titleOperand = form.getTitleOperand();
 		if (titleOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(fileTitle)) {
 			fileTitle = "*" + fileTitle + "*";
 		}
-		String protocolType = (String) theForm.get("protocolType");
-		String protocolName = (String) theForm.get("protocolName");
+		String protocolType = form.getProtocolType();
+		String protocolName = form.getProtocolName();
 		// strip wildcards if entered by user
 		protocolName = StringUtils.stripWildcards(protocolName);
 
-		String nameOperand = (String) theForm.get("nameOperand");
+		String nameOperand = form.getNameOperand();
 		if (nameOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(protocolName)) {
 			protocolName = "*" + protocolName + "*";
 		}
-		String protocolAbbreviation = (String) theForm
-				.get("protocolAbbreviation");
+		String protocolAbbreviation = form
+				.getProtocolAbbreviation();
 		// strip wildcards if entered by user
 		protocolAbbreviation = StringUtils.stripWildcards(protocolAbbreviation);
 
-		String abbreviationOperand = (String) theForm
-				.get("abbreviationOperand");
+		String abbreviationOperand = form
+				.getAbbreviationOperand();
 		if (abbreviationOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(protocolAbbreviation)) {
 			protocolAbbreviation = "*" + protocolAbbreviation + "*";
@@ -166,11 +154,11 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		}
 	}
 
-	public ActionForward setup(ActionMapping mapping, ActionForm form,
+	public Map<String, Object> setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitProtocolSetup.getInstance().setLocalSearchDropdowns(request);
-		return mapping.getInputForward();
+		return ProtocolUtil.reformatLocalSearchDropdownsInSession(request.getSession());
 	}
 
 	private ProtocolService setServiceInSession(HttpServletRequest request)
