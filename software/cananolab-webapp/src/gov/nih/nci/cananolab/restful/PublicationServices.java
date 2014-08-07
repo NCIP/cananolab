@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.restful.publication.PublicationManager;
 import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
@@ -68,7 +69,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
-			return Response.ok("Error while viewing the publication results").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for publication " + e.getMessage())).build();
 		}
 	}
 
@@ -88,7 +89,8 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.ok(result).build();
 			
 		} catch (Exception e) {
-			return Response.ok("Error while downloading the file").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while downloading the file" + e.getMessage())).build();
+
 		}
 	}
 	
@@ -111,7 +113,8 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.ok(view).build();
 			
 		} catch (Exception e) {
-			return Response.ok("Error while printing the file").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while printing the file" + e.getMessage())).build();
+
 		}
 	}
 	
@@ -131,7 +134,8 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.ok("").build();
 			
 		} catch (Exception e) {
-			return Response.ok("Error while exporting the file").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while exporting the file" + e.getMessage())).build();
+
 		}
 	}
 	@GET
@@ -156,7 +160,8 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
-			return Response.ok("Error while viewing the publication results").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the publication results" + e.getMessage())).build();
+
 		}
 	}
 	
@@ -173,7 +178,8 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
-			return Response.ok("Error while setting up drop down lists").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
+
 		}
 	}
 
@@ -197,7 +203,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while searching for publication " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while searching for publication " + e.getMessage())).build();
 		}
 	}
 	
@@ -222,7 +228,8 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 		
 		} catch (Exception e) {
-			return Response.ok("Error while viewing the publication results").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for publication " + e.getMessage())).build();
+
 		}
 	}
 
@@ -247,7 +254,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting all sample names for publication submission"+ e.getMessage()).build();
+			return Response.status(Response.Status.NOT_FOUND).entity(CommonUtil.wrapErrorMessageInList("Problem getting all sample names for publication submission"+ e.getMessage())).build();
 		}
 	}
 	
@@ -275,7 +282,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while submitting the publication " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the publication " + e.getMessage())).build();
 		}
 	}
 	
@@ -326,7 +333,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the publication Id"+ e.getMessage()).build();
+			return Response.status(Response.Status.NOT_FOUND).entity(CommonUtil.wrapErrorMessageInList("Problem getting the publication Id"+ e.getMessage())).build();
 		}
 	}
 	@GET
@@ -355,7 +362,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.NOT_FOUND).entity("Problem retrieving the pubmed information"+ e.getMessage()).build();
+			return Response.status(Response.Status.NOT_FOUND).entity(CommonUtil.wrapErrorMessageInList("Problem retrieving the pubmed information"+ e.getMessage())).build();
 		}
 	}
 	
@@ -385,7 +392,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while saving the access to publication " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the access to publication " + e.getMessage())).build();
 		}
 	}
 	
