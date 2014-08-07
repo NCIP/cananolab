@@ -18,6 +18,29 @@ var app = angular.module('angularApp')
     $scope.findPocIndex = function(){
     // Return integer index of sampleData for poc
     };
+
+    // Fired when organization or role are chnaged, used when user selects other //
+    $scope.organizationDropdownChanged = function() {
+        if ($scope.poc.organization.name=='[other]'|| $scope.poc.role=='[other]') {
+            $scope.other = true;
+            if ($scope.poc.organization.name=='[other]') {
+                $scope.organizationOther = true;
+            }
+            else {
+                $scope.organizationOther = false;
+            }
+            if ($scope.poc.role=='[other]') {
+                $scope.roleOther = true;
+            }
+            else {
+                $scope.roleOther = false;
+            }            
+        }
+        else {
+            $scope.other = false;
+        }
+    };
+
 /* Initialize selects with createDropDownList()*/
     $scope.organizations = $scope.createDropDownList($scope.sampleData.organizationNamesForUser);
     $scope.roles = $scope.createDropDownList($scope.sampleData.contactRoles);

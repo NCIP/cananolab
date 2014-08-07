@@ -10,279 +10,159 @@
 </div>
 
 <div class="modal-body" width='750px'>
-<div style="clear:both"></div>
-<div>
-<table class="subSubmissionView" width="85%" align="center" summary="layout">
-                <tbody>
+    <div style="clear:both"></div>
+    <div>
+        <table class="subSubmissionView" width="85%" align="center" summary="layout">
+            <tbody>
                 <tr>
-                                <td>
-                                                <table>
-                                                                <tbody><tr>
-                                                                                <td class="cellLabel">
-                                                                                                <label for="organization-name">Organization Name*</label>
-                                                                                </td>
-                                                                                <td>
-                                                                                                <div id="organization-name">
-        <select data-ng-model="poc.organization.name"
-                data-ng-options="orginization for orginization in organizations">
-        </select>
-<!--
-   <select ng-model="poc.organization.name" ng-required="">
-        <option value=""></option>
-        <option ng-repeat="org in sampleData.organizationNamesForUser" value="{{org}}">
-            {{org}}
-        </option>
-        <option value="[other]">
-            [other]
-        </option>
-    </select>
--->
-<!--
-<select name="sampleBean.thePOC.domain.organization.name" onchange="javascript:callPrompt('Organization Name', 'domain.organization.name', 'orgNamePrompt');updateOrganizationInfo();" id="domain.organization.name">
-<option value="">
-</option>
-    <option value="AIST_HTRC">AIST_HTRC</option>
-<option value="BB_SH_DFCI_WCMC_BWH_MIT">BB_SH_DFCI_WCMC_BWH_MIT</option>
-<option value="BB_SH_KCI_DFCI_WCMC_BWH_MIT">BB_SH_KCI_DFCI_WCMC_BWH_MIT</option>
-<option value="BROWN_STANFORD">BROWN_STANFORD</option>
-<option value="BWH_AnesthesiologyD">BWH_AnesthesiologyD</option>
-<option value="C-Sixty (CNI)">C-Sixty (CNI)</option>
-<option value="CAS_VT_VCU">CAS_VT_VCU</option>
-<option value="CLM_UHA_CDS_INSERM">CLM_UHA_CDS_INSERM</option>
-<option value="CP_UCLA_CalTech">CP_UCLA_CalTech</option>
-<option value="CWRU">CWRU</option>
-<option value="Childrens Hospital Los Angeles">Childrens Hospital Los Angeles</option>
-<option value="Chris">Chris</option>
-<option value="DC">DC</option>
-<option value="DNT">DNT</option>
-<option value="DWU_SNU_SU_US">DWU_SNU_SU_US</option>
-<option value="GATECH">GATECH</option>
-<option value="GATECH_EMORY">GATECH_EMORY</option>
-<option value="GATECH_UCSF">GATECH_UCSF</option>
-<option value="GIST_LifeScienceD">GIST_LifeScienceD</option>
-<option value="HarvardU_PhysD">HarvardU_PhysD</option>
-<option value="Harvard_MIT_DHST">Harvard_MIT_DHST</option>
-<option value="JHU_KSU">JHU_KSU</option>
-<option value="JSTA_FHU_NEC_MU_AIST_JAPAN">JSTA_FHU_NEC_MU_AIST_JAPAN</option>
-<option value="JSTA_JFCR_NEC_FHU_TUSM_NIAIST">JSTA_JFCR_NEC_FHU_TUSM_NIAIST</option>
-<option value="JST_AIST_FHU_TU_NEC_MU_JAPAN">JST_AIST_FHU_TU_NEC_MU_JAPAN</option>
-<option value="Joe Barchi">Joe Barchi</option>
-<option value="KI">KI</option>
-<option value="KU_JSTC_JAPAN">KU_JSTC_JAPAN</option>
-<option value="LMRT">LMRT</option>
-<option value="MIT_ChemD">MIT_ChemD</option>
-<option value="MIT_ChemEngineeringD">MIT_ChemEngineeringD</option>
-<option value="MIT_LMRT">MIT_LMRT</option>
-<option value="MIT_MGH">MIT_MGH</option>
-<option value="MIT_MGH_GIST">MIT_MGH_GIST</option>
-<option value="MIT_UC_BBIC_HST_CU">MIT_UC_BBIC_HST_CU</option>
-<option value="MSKCC_CU_UA">MSKCC_CU_UA</option>
-<option value="Mansoor Amiji">Mansoor Amiji</option>
-<option value="Mark Kester">Mark Kester</option>
-<option value="Mark Kester PSU">Mark Kester PSU</option>
-<option value="NCL">NCL</option>
-<option value="NEU">NEU</option>
-<option value="NEU_DPS">NEU_DPS</option>
-<option value="NEU_MGH_UP_FCCC">NEU_MGH_UP_FCCC</option>
-<option value="NEU_MIT_MGH">NEU_MIT_MGH</option>
-<option value="NIEHS">NIEHS</option>
-<option value="NIOSH">NIOSH</option>
-<option value="NRCWE">NRCWE</option>
-<option value="NWU">NWU</option>
-<option value="NWU_ChemD_IIN">NWU_ChemD_IIN</option>
-<option value="Nanotechnology Characterization Laboratory">Nanotechnology Characterization Laboratory</option>
-<option value="Nanotechnology_Characterization_Laboratory">Nanotechnology_Characterization_Laboratory</option>
-<option value="New One">New One</option>
-<option value="PNNL_CBBG">PNNL_CBBG</option>
-<option value="PURDUE">PURDUE</option>
-<option value="PURDUEU_BN">PURDUEU_BN</option>
-<option value="RIT_KI_SU">RIT_KI_SU</option>
-<option value="SNL_UNM">SNL_UNM</option>
-<option value="SNU_CHINA">SNU_CHINA</option>
-<option value="STANFORD">STANFORD</option>
-<option value="STANFORD_ChemD">STANFORD_ChemD</option>
-<option value="STANFORD_MIPS">STANFORD_MIPS</option>
-<option value="STANFORD_OM">STANFORD_OM</option>
-<option value="SUNYB_ILPB">SUNYB_ILPB</option>
-<option value="SY Org">SY Org</option>
-<option value="SY company">SY company</option>
-<option value="Sharon">Sharon</option>
-<option value="TAM_UT">TAM_UT</option>
-<option value="TTU">TTU</option>
-<option value="UAM_CSIC_IMDEA">UAM_CSIC_IMDEA</option>
-<option value="UCSD_ChemBiochemD">UCSD_ChemBiochemD</option>
-<option value="UCSD_MIT_MGH">UCSD_MIT_MGH</option>
-<option value="UC_HU_UEN_GERMANY">UC_HU_UEN_GERMANY</option>
-<option value="UI">UI</option>
-<option value="UKY">UKY</option>
-<option value="UL_NL">UL_NL</option>
-<option value="UM">UM</option>
-<option value="UM-C">UM-C</option>
-<option value="UMC_DVP">UMC_DVP</option>
-<option value="UMC_RadiolD">UMC_RadiolD</option>
-<option value="UN">UN</option>
-<option value="UNC">UNC</option>
-<option value="UNC_ChemD">UNC_ChemD</option>
-<option value="UTHSCH_UMG_MDACC_RU_UTA">UTHSCH_UMG_MDACC_RU_UTA</option>
-<option value="UT_UMG_MDACC_RU_UTA">UT_UMG_MDACC_RU_UTA</option>
-<option value="UToronto">UToronto</option>
-<option value="VCU_VT_EHC">VCU_VT_EHC</option>
-<option value="WSU">WSU</option>
-<option value="WSU_DPS">WSU_DPS</option>
-<option value="WUSTL">WUSTL</option>
-<option value="WUSTL_DIM">WUSTL_DIM</option>
-<option value="WU_SU_CHINA">WU_SU_CHINA</option>
-<option value="YALE">YALE</option>
-<option value="my org">my org</option>
-<option value="natcompany">natcompany</option>
-<option value="other">other</option>
-<option value="shanyang">shanyang</option>
-<option value="shanyangcomp">shanyangcomp</option>
-
-                                                                                                                                <option value="other">
-                                                                                                                                                [other]
-                                                                                                                                </option></select>
--->
-                                                                                                </div>
-                                                                                </td>
-                                                                                <td class="cellLabel" valign="top">
-                                                                                                <label for="role">Role</label>
-                                                                                </td>
-                                                                                <td valign="top" colspan="4">
-                                                                                                <div id="role">
-        <select data-ng-model="poc.role"
-                data-ng-options="role for role in roles">
-        </select>
-
-<!--
-<select name="sampleBean.thePOC.domain.role" onchange="javascript:callPrompt('Contact Role', 'domain.role', 'rolePrompt');" id="domain.role">
-<option></option>
-<option value="Chris Contact Role">Chris Contact Role</option>
-<option value="investigator">investigator</option>
-<option value="manufacturer">manufacturer</option>
-<option value="other">[other]</option></select>
--->
-                                                                                                </div>
-                                                                                </td>
-                                                                </tr>
-                                                </tbody></table>
+                    <td>
+                        <table>
+                            <tbody><tr>
+                                <td class="cellLabel">
+                                    <label for="organization-name">Organization Name*</label>
                                 </td>
-                </tr>
-                <tr>
                                 <td>
-                                                <table>
-                                                                <tbody>
-                                                                <tr>
-                                                                                <td class="cellLabel">
-                                                                                                <label for="address-line1">Address Line1</label>
-                                                                                </td>
-                                                                                <td colspan="5">
-                                                                                                <input type="text" ng-model="poc.address.line1" size="50" id="address-line1">
-                                                                                                &nbsp;
-                                                                                </td>
-                                                                </tr>
-                                                                <tr>
-                                                                                <td class="cellLabel">
-                                                                                                <label for="address-line2">Address Line2</label>
-                                                                                </td>
-                                                                                <td colspan="5">
-                                                                                                <input type="text" ng-model="poc.address.line2" size="50" id="address-line2">
-                                                                                                &nbsp;
-                                                                                </td>
-                                                                </tr>
-                                                </tbody></table>
-                                </td>
-                </tr>
-                <tr>
-                                <td>
-                                                <table>
-                                                                <tbody><tr>
-                                                                                <td class="cellLabel">
-                                                                                                <label for="address-city">City</label>
-                                                                                </td>
-                                                                                <td>
-                                                                                                <input type="text" ng-model="poc.address.city" size="20" value="" id="address-city">
-                                                                                                &nbsp;
-                                                                                </td>
-                                                                                <td class="cellLabel">
-                                                                                                <label for="address-stateProvince">State/Province</label>
-                                                                                </td>
-                                                                                <td>
-                                                                                                <input type="text" ng-model="poc.address.stateProvince" size="5" value="" id="address-stateProvince">
-                                                                                                &nbsp;
-                                                                                </td>
-                                                                                <td class="cellLabel">
-                                                                                                <label for="address-zip">Zip/Postal Code</label>
-                                                                                </td>
-                                                                                <td>
-                                                                                                <input type="text" ng-model="poc.address.zip" size="10" value="" id="address-zip">
-                                                                                </td>
-                                                                </tr>
-                                                </tbody></table>
-                                </td>
-                </tr>
-                <tr>
-                                <td>
-                                                <table>
-                                                                <tbody><tr>
-                                                                                <td class="cellLabel">
-                                                                                                <label for="address-country">Country</label>
-                                                                                </td>
-                                                                                <td>
-                                                                                                <input type="text" ng-model="poc.address.country" size="30" value="" id="address-country">
-                                                                                </td>
-                                                                </tr>
-                                                </tbody></table>
-                                </td>
-                </tr>
-                <tr>
-                                <td>
-                                                <table>
-                                                                <tbody><tr>
-                                                                                <td class="cellLabel" valign="top">
-                                                                                                <label for="firstName">First Name</label>
-                                                                                </td>
-                                                                                <td valign="top">
-                                                                                                <input type="text" ng-model="poc.firstName" size="15" value="" id="firstName">
-                                                                                </td>
-                                                                                <td class="cellLabel" valign="top">
-                                                                                                <label for="middleInitial">Middle Initial</label>
-                                                                                </td>
-                                                                                <td valign="top">
-                                                                                                <input type="text" ng-model="poc.middleInitial" size="5" value="" id="middleInitial">
-                                                                                </td>
-                                                                                <td class="cellLabel" valign="top">
-                                                                                                <label for="lastName">Last Name</label>
-                                                                                </td>
-                                                                                <td valign="top">
-                                                                                                <input type="text" ng-model="poc.lastName" size="15" id="lastName">
-                                                                                </td>
-                                                                </tr>
-                                                </tbody></table>
-                                </td>
-                </tr>
-                <tr>
-                                <td>
-                                                <table>
-                                                                <tbody><tr>
-                                                                                <td class="cellLabel" valign="top">
-                                                                                                <label for="phoneNumber">Phone Number</label>
-                                                                                </td>
-                                                                                <td valign="top">
-                                                                                                <input type="text" ng-model="poc.phoneNumber" size="30" id="phoneNumber">
-                                                                                </td>
-                                                                                <td class="cellLabel" valign="top">
-                                                                                                <label for="email">Email</label>
-                                                                                </td>
-                                                                                <td valign="top" colspan="4">
-                                                                                                <input type="text" ng-model="poc.email" size="30" id="email">
-                                                                                </td>
-                                                                </tr>
-                                                </tbody></table>
-                                </td>
-                </tr>
-</tbody></table>
-                                                                </div>
+                                    <div id="organization-name">
+                                        <select data-ng-model="poc.organization.name"
+                                        data-ng-options="orginization for orginization in organizations" ng-change="organizationDropdownChanged()">
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="cellLabel" valign="top">
+                                <label for="role">Role</label>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <div id="role">
+                                    <select data-ng-model="poc.role" ng-change="organizationDropdownChanged()" data-ng-options="role for role in roles">
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                    <tr ng-show="other">
+                        <td><label ng-show="organizationOther" for="organization-name">Organization Name Other*</label></td>
+                        <td><textarea ng-show="organizationOther" name="organization2" rows="5" cols="35"></textarea></td>
+                        <td><label ng-show="roleOther" for="organization-name">Role Other*</label></td>
+                        <td><textarea ng-show="roleOther" name="role2" rows="5" cols="35"></textarea></td>
+                    </tr>
+                </tbody></table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="cellLabel">
+                                <label for="address-line1">Address Line1</label>
+                            </td>
+                            <td colspan="5">
+                                <input type="text" ng-model="poc.address.line1" size="50" id="address-line1">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cellLabel">
+                                <label for="address-line2">Address Line2</label>
+                            </td>
+                            <td colspan="5">
+                                <input type="text" ng-model="poc.address.line2" size="50" id="address-line2">
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody><tr>
+                            <td class="cellLabel">
+                                <label for="address-city">City</label>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="poc.address.city" size="20" value="" id="address-city">
+                                &nbsp;
+                            </td>
+                            <td class="cellLabel">
+                                <label for="address-stateProvince">State/Province</label>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="poc.address.stateProvince" size="5" value="" id="address-stateProvince">
+                                &nbsp;
+                            </td>
+                            <td class="cellLabel">
+                                <label for="address-zip">Zip/Postal Code</label>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="poc.address.zip" size="10" value="" id="address-zip">
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody><tr>
+                            <td class="cellLabel">
+                                <label for="address-country">Country</label>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="poc.address.country" size="30" value="" id="address-country">
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody><tr>
+                            <td class="cellLabel" valign="top">
+                                <label for="firstName">First Name</label>
+                            </td>
+                            <td valign="top">
+                                <input type="text" ng-model="poc.firstName" size="15" value="" id="firstName">
+                            </td>
+                            <td class="cellLabel" valign="top">
+                                <label for="middleInitial">Middle Initial</label>
+                            </td>
+                            <td valign="top">
+                                <input type="text" ng-model="poc.middleInitial" size="5" value="" id="middleInitial">
+                            </td>
+                            <td class="cellLabel" valign="top">
+                                <label for="lastName">Last Name</label>
+                            </td>
+                            <td valign="top">
+                                <input type="text" ng-model="poc.lastName" size="15" id="lastName">
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody><tr>
+                            <td class="cellLabel" valign="top">
+                                <label for="phoneNumber">Phone Number</label>
+                            </td>
+                            <td valign="top">
+                                <input type="text" ng-model="poc.phoneNumber" size="30" id="phoneNumber">
+                            </td>
+                            <td class="cellLabel" valign="top">
+                                <label for="email">Email</label>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <input type="text" ng-model="poc.email" size="30" id="email">
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+        </tbody></table>
+    </div>
 </div>
 
 <div style="clear:both;"></div>
