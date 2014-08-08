@@ -15,7 +15,7 @@ import javax.validation.constraints.Pattern;
 @Retention(RUNTIME)
 @Constraint(validatedBy = CustomPatternValidator.class)
 @Documented
-public @interface CustomPattern {
+public @interface PatternMatchIfNotNullNotEmpty {
 
     String message() default "{javax.validation.constraints.Pattern.message}";
     
@@ -25,6 +25,9 @@ public @interface CustomPattern {
 
     Class<? extends Payload>[] payload() default {};
     
-    String regexp();
-
+    String regexp() default "";
+    
+    String regexpName();
+    String messageSource() default "";
+    String messageKey() default "";
 }

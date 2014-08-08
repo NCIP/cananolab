@@ -37,6 +37,10 @@ public class SampleEditGeneralBean {
 	List<String> keywords = new ArrayList<String>();
 	Map<String, List<SimpleAccessBean>> accessToSample;
 	
+	List<AccessibilityBean> groupAccesses;// = new ArrayList<AccessibilityBean>();
+	List<AccessibilityBean> userAccesses; // =  new ArrayList<AccessibilityBean>();
+	AccessibilityBean theAccess = new AccessibilityBean();
+	
 	SimpleDataAvailabilityBean dataAvailability;
 	
 	//These are lookups needed for dropdown lists
@@ -49,6 +53,32 @@ public class SampleEditGeneralBean {
 	boolean showReviewButton;
 
 	List<String> errors = new ArrayList<String>();
+	
+	
+
+	public List<AccessibilityBean> getGroupAccesses() {
+		return groupAccesses;
+	}
+
+	public void setGroupAccesses(List<AccessibilityBean> groupAccesses) {
+		this.groupAccesses = groupAccesses;
+	}
+
+	public List<AccessibilityBean> getUserAccesses() {
+		return userAccesses;
+	}
+
+	public void setUserAccesses(List<AccessibilityBean> userAccesses) {
+		this.userAccesses = userAccesses;
+	}
+
+	public AccessibilityBean getTheAccess() {
+		return theAccess;
+	}
+
+	public void setTheAccess(AccessibilityBean theAccess) {
+		this.theAccess = theAccess;
+	}
 
 	public String getNewSampleName() {
 		return newSampleName;
@@ -180,6 +210,7 @@ public class SampleEditGeneralBean {
 		
 		transferPointOfContactData(sampleBean);
 		
+		SortedSet<String> keyws = sampleBean.getKeywordSet();
 		this.keywords = new ArrayList<String>(sampleBean.getKeywordSet());
 
 		transferAccessibilityData(sampleBean);
@@ -358,6 +389,9 @@ public class SampleEditGeneralBean {
 		 accessToSample = new HashMap<String, List<SimpleAccessBean>>();
 		
 		List<AccessibilityBean> groupAccess = sampleBean.getGroupAccesses();
+		
+		this.groupAccesses = groupAccess;
+		
 		if (groupAccess != null) {
 			List<SimpleAccessBean> groupList = new ArrayList<SimpleAccessBean>();
 			for (AccessibilityBean accBean : groupAccess) {
@@ -372,6 +406,7 @@ public class SampleEditGeneralBean {
 		}
 		
 		List<AccessibilityBean> userAccess = sampleBean.getUserAccesses();
+		this.userAccesses = userAccess;
 		if (userAccess != null) {
 			List<SimpleAccessBean> userList = new ArrayList<SimpleAccessBean>();
 			for (AccessibilityBean accBean : userAccess) {
@@ -481,13 +516,13 @@ public class SampleEditGeneralBean {
 			for (String keyword : keywords) {
 				kws += keyword;
 				kws += "\n";
-//				Keyword kw = new Keyword();
-//				kw.setName(keyword);
-//				keywordColl.add(kw);
+				Keyword kw = new Keyword();
+				kw.setName(keyword);
+				keywordColl.add(kw);
 			}
 			
 			destSampleBean.setKeywordsStr(kws);
-			
+			destSampleBean.getDomain().setKeywordCollection(keywordColl);
 		}
 		
 		destSampleBean.getDomain().setName(this.sampleName);

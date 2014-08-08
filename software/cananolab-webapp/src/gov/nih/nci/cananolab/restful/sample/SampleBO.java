@@ -864,8 +864,8 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		SimpleAccessBean simpleAccess = findDirtyAccess(simpleEditBean.getAccessToSample());
 		
-		AccessibilityBean theAccess = sample.getTheAccess();
-		populateAccessBeanWithInput(simpleAccess, theAccess, user.getLoginName());
+		AccessibilityBean theAccess = simpleEditBean.getTheAccess(); //sample.getTheAccess();
+		//populateAccessBeanWithInput(simpleAccess, theAccess, user.getLoginName());
 	
 		List<String> errors = validateAccess(request, theAccess);
 		if (errors.size() > 0) {

@@ -17,6 +17,10 @@
 */
 package gov.nih.nci.cananolab.restful.validator;
 
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.PatternSyntaxException;
 
@@ -25,21 +29,36 @@ import javax.validation.ConstraintValidatorContext;
 import javax.validation.constraints.Pattern;
 
 /**
- * @author Hardy Ferentschik
+ * This is based on hibernate's PatternValidator. 
+ * <br><br>
+ * What's changed: 1. empty string is accepted as valid <br>
+ * 					2. regexpName is accepted to resolve a valid regexp from a saved hashmap
+ * 
+ * 
+ * @author YangS8
  */
-public class CustomPatternValidator implements ConstraintValidator<CustomPattern, String> {
+public class CustomPatternValidator implements ConstraintValidator<PatternMatchIfNotNullNotEmpty, String> {
+	
+	private Map<String, String> regexpMap = new HashMap<String, String>();
 
 	private java.util.regex.Pattern pattern;
+	
+	private String messageSource;
+	private String messageKey;
 
-	public void initialize(CustomPattern parameters) {
+	public void initialize(PatternMatchIfNotNullNotEmpty parameters) {
 		Pattern.Flag flags[] = parameters.flags();
 		int intFlag = 0;
 		for ( Pattern.Flag flag : flags ) {
 			intFlag = intFlag | flag.getValue();
 		}
+		
+		String regexp = resolveRegexp(parameters);	
+		messageSource = parameters.messageSource();
+		messageKey = parameters.messageKey();
 
 		try {
-			pattern = java.util.regex.Pattern.compile( parameters.regexp(), intFlag );
+			pattern = java.util.regex.Pattern.compile(regexp, intFlag );
 		}
 		catch ( PatternSyntaxException e ) {
 			throw new IllegalArgumentException( "Invalid regular expression.", e );
@@ -50,7 +69,64 @@ public class CustomPatternValidator implements ConstraintValidator<CustomPattern
 		if ( value == null || value.length() == 0) {
 			return true;
 		}
+		
 		Matcher m = pattern.matcher( value );
-		return m.matches();
+		boolean matched = m.matches();
+		if (!matched) {
+			setCustomizeMessageIfNeeded(constraintValidatorContext);
+		}
+		return matched;
+	}
+	
+	protected void populateRegexpNameValues() {
+		this.regexpMap.put("zip", "^(\\d{5}(-\\d{4})?)|([a-zA-Z0-9\\s])$");
+		this.regexpMap.put("alphabetic", "^[a-zA-Z\\s]*$");
+		
+		this.regexpMap.put("relaxedAlphabetic", "^[a-zA-Z\\s\\-\\.\\']*$");
+		this.regexpMap.put("numeric", "^[0-9]*$");
+		this.regexpMap.put("number", "^[-+]?[0-9]*\\.?[0-9]+$");
+		this.regexpMap.put("alphanumeric", "^[a-zA-Z0-9\\s]*$");
+		this.regexpMap.put("relaxedAlphanumeric", "^[a-zA-Z0-9\\s\\-\\.\\(\\)]*$");
+		this.regexpMap.put("loginName", "^[a-zA-Z0-9\\s\\_]*$");
+		this.regexpMap.put("phone", "^\\+?[0-9()\\-\\s]*((ext\\.|extension)\\s[0-9]+)?$");
+		this.regexpMap.put("textFieldWhiteList", "^(?!.*(<script|<%00script|\\%3C\\%73\\%63\\%72\\%69\\%70\\%74|<script|<script|<%00script|\\%uff1cscript\\%uff1e|\\%BC\\%F3\\%E3\\%F2\\%E9\\%F0\\%F4|\\+ADw\\-SCRIPT\\+AD4|\\u003Cscript|javascript\\:|\\%6A\\%61\\%76\\%61\\%73\\%63%\\%72\\%69\\%70\\%74\\%3A|javascript:|javascript:|<iframe|<frame|etc/passwd|/bin/id|\\.ini|;vol\\||id\\||AVAK\\$\\(RETURN_CODE\\)OS|sys\\.dba_user|\\+select\\+|\\+and\\+|WFXSSProbe|WF_XSRF|alert\\(|TEXT/VBSCRIPT|=\"|\\.\\./|\\.\\.\\|\\'|\\\"|background\\:|\\'\\+|\\\"\\+|%\\d+)).*$");
+		
+		this.regexpMap.put("relaxedTextFieldWhiteList0", "^[a-zA-Z0-9\\-\\_\\s\\(\\)\\:\\.\\,\\/\\?\\*]*$");
+		this.regexpMap.put("doi", "^[a-zA-Z0-9\\/\\-\\_\\s\\(\\)\\:\\.]*$");
+	}
+	
+	/**
+	 * Resolve the valid regexp from regexpName then regexp parameters
+	 * 
+	 * @param parameters
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	protected String resolveRegexp(PatternMatchIfNotNullNotEmpty parameters) 
+			throws IllegalArgumentException {
+		
+		if (regexpMap.size() == 0)
+			this.populateRegexpNameValues();
+		
+		String regexp = regexpMap.get(parameters.regexpName());
+		if (regexp == null || regexp.length() == 0)
+			regexp = parameters.regexp();
+		
+		if (regexp == null || regexp.length() == 0) 
+			throw new IllegalArgumentException( "Unable to resolve a valid regexp.");
+		
+		return regexp;
+	}
+	
+	protected void setCustomizeMessageIfNeeded(ConstraintValidatorContext constraintValidatorContext) 
+			throws IllegalArgumentException {
+		
+		if (messageSource != null && messageSource.length() != 0
+				&& messageKey != null && messageKey.length() != 0) {
+			String message = PropertyUtil.getProperty(messageSource, messageKey);
+			constraintValidatorContext.disableDefaultConstraintViolation();
+			constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
+		} 
+			
 	}
 }

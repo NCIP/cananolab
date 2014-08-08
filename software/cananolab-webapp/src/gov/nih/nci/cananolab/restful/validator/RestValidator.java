@@ -26,8 +26,10 @@ public class RestValidator {
 			for (ConstraintViolation<Object> violation : constraintViolations) {
 				errorString  += (errorString.length() < 1) ? violation.getPropertyPath() + " " + violation.getMessage() : " : " + violation.getPropertyPath() + " " + violation.getMessage();
 			
+				System.out.println(violation.getPropertyPath());
+				System.out.println(violation.getMessage());
 				if (errorString.length() > 0)  {
-					errors.add(violation.getPropertyPath() + " " + violation.getMessage());
+					errors.add(violation.getMessage());
 				}
 			}
 		} 
