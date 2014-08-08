@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful.publication;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
+import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
@@ -181,6 +183,10 @@ public class PublicationBO extends BaseAnnotationBO{
 		// TODO Auto-generated method stub
 		PublicationBean pubBean =  new PublicationBean();
 		Publication pub = (Publication) pubBean.getDomainFile();
+		Collection<Author> authorCollection = new ArrayList<Author>();
+		for(int i=0;i<bean.getAuthors().size();i++){
+			authorCollection.add(bean.getAuthors().get(i));
+		}
 		pub.setCategory(bean.getCategory());
 		pub.setCreatedBy(bean.getCreatedBy());
 		pub.setStatus(bean.getStatus());
@@ -196,6 +202,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		pub.setVolume(bean.getVolume());
 		pub.setUri(bean.getUri());
 		pub.setUriExternal(bean.getUriExternal());
+		pub.setAuthorCollection(authorCollection);
 		pubBean.setResearchAreas(bean.getResearchAreas());
 		pubBean.setAuthors(bean.getAuthors());
 		pubBean.setSampleNamesStr(bean.getSampleNamesStr());
