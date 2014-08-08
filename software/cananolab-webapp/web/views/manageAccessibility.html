@@ -1,5 +1,4 @@
 <!-- <c:if test="${isOwner || newData eq 'true'}"> -->
-
 <tr>
     <td class="cellLabel" width="15%" id="addAccessLabel">
         Access to the {{$parent.dataType}}
@@ -69,7 +68,7 @@
                         </td>
                         <td>
                             <div align="right" ng-if="access.userBean.loginName != user.loginName">
-                                    <a href ng-click="$parent.addAccess=true;$parent.accessForm.theAccess.accessBy='user';$parent.accessForm.theAccess.userBean.loginName=access.userBean.loginName;">Edit</a>&nbsp;
+                                    <a href ng-click="editUserAccessSection('{{access.userBean.loginName}}','{{access.roleDisplayName}}');">Edit</a>&nbsp;
                                 </c:otherwise>
                             </div>
                         </td>
@@ -172,8 +171,8 @@
                 </tr>
                 <tr>
                     <td><input id="deleteAccess" type="button" value="Remove"
-                               onclick="javascript:deleteTheAccess('${parentFormName}', '${parentAction}', '${parentPage}');"
-                               style="display: none;">
+                               ng-click="removeAccessSection()"
+                               ng-if="accessExists == true">
                     </td>
                     <td align="right" colspan="3">
                         <div align="right">

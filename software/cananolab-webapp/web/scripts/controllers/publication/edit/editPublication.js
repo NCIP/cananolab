@@ -1,12 +1,11 @@
 'use strict';
 var app = angular.module('angularApp')
 
-    .controller('EditPublicationCtrl', function (groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams) {
+    .controller('EditPublicationCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams) {
         $scope.publicationForm = {};
-        //$scope.sampleData = sampleService.sampleData;
         $rootScope.navTree=false;
         //$rootScope.tabs = navigationService.query();
-        //$rootScope.groups = groupService.get();
+        //$rootScope.groups = groupService.getGroups.data.get();
 
         $scope.addNewAuthor = false;
         $scope.showAuthorTable = false;
@@ -41,12 +40,7 @@ var app = angular.module('angularApp')
         $scope.access.loginName = '';
         $scope.publicationForm.isPublic = false;
         $scope.accessForm.theAccess.accessBy = 'group';        
-        /* $rootScope.groups = groupService.get();
-        console.log($rootScope.groups);
-        for (var logUser in $rootScope.groups) break;
-        console.log(logUser);  */
-
-//        $scope.curator = $rootScope.groups.indexOf("Curator") != -1;
+        $scope.accessExists = false;
 
 
         //$scope.$on('$viewContentLoaded', function(){
@@ -75,6 +69,10 @@ var app = angular.module('angularApp')
 	                    
 		                $scope.groupAccesses = $scope.publicationForm.groupAccesses;
 		                $scope.userAccesses = $scope.publicationForm.userAccesses;
+		                
+		                if( $scope.userAccesses != null && $scope.userAccesses.length > 0 ) {
+		                	$scope.accessExists = true;
+		                }
 		                
 		                if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
 		                    $scope.showAuthorTable = true;
@@ -228,6 +226,13 @@ var app = angular.module('angularApp')
 
         $scope.fillPubMedInfo = function() {
         	var retrievePubMed = false;
+        	/*
+        	var anum = /^\d+$/;
+        	if (!anum.test(pubMedId)) {
+        		alert("PubMed ID must be a number");
+        		return false;
+        	}
+        	*/
         	
         	 $http({method: 'GET', url: '/caNanoLab/rest/publication/getPubmedPublication?pubmedId=' + $scope.publicationForm.pubMedId}).
              success(function(data, status, headers, config) {
@@ -279,7 +284,7 @@ var app = angular.module('angularApp')
 	        //$scope.pubInfo = {"userAccesses":[],"groupAccesses":[],"theAccess":{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":"asdasdasdsadasdsadasd","phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"allAccesses":[],"publicStatus":false,"user":null,"userUpdatable":false,"userDeletable":false,"userIsOwner":false,"domainFile":{"createdBy":null,"createdDate":null,"description":null,"id":null,"name":null,"title":"A new granulation method for compressed tablets [proceedings].","type":null,"uri":null,"uriExternal":null,"findingCollection":null,"datumCollection":null,"keywordCollection":[{"id":null,"name":"Tablets","fileCollection":null},{"id":null,"name":"Phenylbutazone/administration & dosage","fileCollection":null},{"id":null,"name":"Hardness","fileCollection":null},{"id":null,"name":"Chemistry, Pharmaceutical/methods","fileCollection":null}],"category":null,"digitalObjectId":"","endPage":null,"journalName":"The Journal of pharmacy and pharmacology","pubMedId":12345,"researchArea":null,"startPage":"67P","status":null,"volume":"28 Suppl","year":1976,"authorCollection":null},"image":false,"keywordsStr":"Chemistry, Pharmaceutical/methods\r\nHardness\r\nPhenylbutazone/administration & dosage\r\nTablets","externalUrl":null,"uploadedFile":null,"newFileData":null,"createdDateStr":"","sampleNames":[],"researchAreas":null,"authors":[{"createdBy":null,"createdDate":null,"firstName":"M","id":null,"initial":"MH","lastName":"Rubinstein","publicationCollection":null}],"theAuthor":{"createdBy":null,"createdDate":null,"firstName":null,"id":null,"initial":null,"lastName":null,"publicationCollection":null},"sampleNamesStr":null,"fromSamplePage":false,"displayName":"Rubinstein, MH. A new granulation method for compressed tablets [proceedings]. The Journal of pharmacy and pharmacology. 1976; 28 Suppl. <a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12345>PMID: 12345</a>.","pubMedDisplayName":"<a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12345>PMID: 12345</a>","description":"","keywordsDisplayName":"Chemistry, Pharmaceutical/methods<br>Hardness<br>Phenylbutazone/administration &amp; dosage<br>Tablets","urlTarget":"_self"};
 	        //$scope.pubInfo = {"userAccesses":[],"groupAccesses":[],"theAccess":{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":"asdffdsfdsfds","phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"allAccesses":[],"publicStatus":false,"user":null,"userUpdatable":false,"userDeletable":false,"userIsOwner":false,"domainFile":{"createdBy":null,"createdDate":null,"description":null,"id":null,"name":null,"title":"Formulation studies on slow-release phosphate tablets for high-dosage administration in renal transplant patients [proceedings].","type":null,"uri":null,"uriExternal":null,"findingCollection":null,"datumCollection":null,"keywordCollection":[{"id":null,"name":"Tablets","fileCollection":null},{"id":null,"name":"Phosphates/administration & dosage","fileCollection":null},{"id":null,"name":"Delayed-Action Preparations","fileCollection":null},{"id":null,"name":"Chemistry, Pharmaceutical","fileCollection":null}],"category":null,"digitalObjectId":"","endPage":null,"journalName":"The Journal of pharmacy and pharmacology","pubMedId":12346,"researchArea":null,"startPage":"68P","status":null,"volume":"28 Suppl","year":1976,"authorCollection":null},"image":false,"keywordsStr":"Chemistry, Pharmaceutical\r\nDelayed-Action Preparations\r\nPhosphates/administration & dosage\r\nTablets","externalUrl":null,"uploadedFile":null,"newFileData":null,"createdDateStr":"","sampleNames":[],"researchAreas":null,"authors":[{"createdBy":null,"createdDate":null,"firstName":"R","id":null,"initial":"R","lastName":"Woodroffe","publicationCollection":null}],"theAuthor":{"createdBy":null,"createdDate":null,"firstName":null,"id":null,"initial":null,"lastName":null,"publicationCollection":null},"sampleNamesStr":null,"fromSamplePage":false,"displayName":"Woodroffe, R. Formulation studies on slow-release phosphate tablets for high-dosage administration in renal transplant patients [proceedings]. The Journal of pharmacy and pharmacology. 1976; 28 Suppl. <a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12346>PMID: 12346</a>.","pubMedDisplayName":"<a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/12346>PMID: 12346</a>","description":"","keywordsDisplayName":"Chemistry, Pharmaceutical<br>Delayed-Action Preparations<br>Phosphates/administration &amp; dosage<br>Tablets","urlTarget":"_self"};
         }
-
+        
         $scope.getCollabGroups = function() {
             if ($scope.accessForm.theAccess.groupName === undefined || $scope.accessForm.theAccess.groupName === null) {
                 $scope.accessForm.theAccess.groupName = '';
@@ -350,6 +355,7 @@ var app = angular.module('angularApp')
                     //console.log($scope.userAccesses);
                     
                     $scope.loader = false;
+                    $scope.accessExists = true;
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
@@ -360,6 +366,56 @@ var app = angular.module('angularApp')
                 });
             
         }; 
+        
+        $scope.editUserAccessSection = function(loginName, userAccess) {
+            $scope.addAccess=true;
+            $scope.accessForm.theAccess.accessBy='user';
+            $scope.accessForm.theAccess.userBean.loginName=loginName;
+            $scope.showCollaborationGroup=false;
+            $scope.showAccessuser=true;
+
+            for(var key in $scope.csmRoleNames){
+                if(this[key] == userAccess){
+                    $scope.accessForm.theAccess.roleName = key;
+                }
+            }
+        }
+        
+        $scope.removeAccessSection = function() {
+            $scope.publicationForm.theAccess = $scope.accessForm.theAccess;
+            $scope.addAccess=false;
+            $scope.showAddAccessButton=true;
+            
+            if (confirm("Are you sure you want to delete?")) {
+                $scope.loader = true;
+            
+	            $http({method: 'POST', url: '/caNanoLab/rest/publication/deleteAccess',data: $scope.publicationForm}).
+	                success(function(data, status, headers, config) {
+	                    // $rootScope.sampleData = data;
+	                    //$scope.sampleData.data = data;
+	                    //$location.path("/sampleResults").replace();
+	                	
+	                	$scope.publicationForm = data;
+	                	
+	                	$scope.groupAccesses = $scope.publicationForm.groupAccesses;
+	                    $scope.userAccesses = $scope.publicationForm.userAccesses;
+	                    
+	                    if( $scope.userAccesses != null && $scope.userAccesses.length > 0 ) {
+		                	$scope.accessExists = true;
+		                }
+	                    
+	                    $scope.loader = false;
+	                }).
+	                error(function(data, status, headers, config) {
+	                    // called asynchronously if an error occurs
+	                    // or server returns response with an error status.
+	                    // $rootScope.sampleData = data;
+	                    $scope.loader = false;
+	                    $scope.messages = data;
+	                });
+            }
+            
+        };        
         
         $scope.uploadFile = function(element){
             //var file = $scope.localForm.uploadedFile;
