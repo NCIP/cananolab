@@ -72,24 +72,19 @@ var app = angular.module('angularApp')
 	                success(function(data, status, headers, config) {
 	                    $scope.publicationForm = data;
 	                    $scope.loader = false;
+	                    
+		                $scope.groupAccesses = $scope.publicationForm.groupAccesses;
+		                $scope.userAccesses = $scope.publicationForm.userAccesses;
+		                
+		                if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
+		                    $scope.showAuthorTable = true;
+		                }
+
 	                }).
 	                error(function(data, status, headers, config) {
 	                    $scope.message = data;
 	                    $scope.loader = false;
 	                });
-	
-	
-	            $scope.$on('$viewContentLoaded', function(){
-	                //$scope.publicationForm = {"sampleTitle":null,"title":"Multifunctional polymeric nano-systems for RNA interference therapy","category":"peer review article","status":"published","pubMedId":null,"digitalObjectId":null,"journalName":"Biological Drug Products: Development and Strategies","year":null,"volume":null,"startPage":null,"endPage":null,"authors":[{"lastName":"Iyer","initial":"AK","firstName":"P",id:"1000"}],"authorId":null,"keywordsStr":"NCL-23","description":null,"researchAreas":null,"uri":null,"uriExternal":false,"fileId":42533664,"sampleId":null,"associatedSampleNames":"","groupAccesses":[{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":true,"domain":null,"groupNames":[],"displayName":""},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"},{"userBean":{"userId":null,"loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[],"displayName":""},"groupName":"Public","roleName":"R","roleDisplayName":"read","accessBy":"group"}],"userAccesses":[],"protectedData":null,"isPublic":true,"isOwner":false,"ownerName":null,"createdBy":"canano_curator","userDeletable":false};
-	
-	                $scope.groupAccesses = $scope.publicationForm.groupAccesses;
-	                $scope.userAccesses = $scope.publicationForm.userAccesses;
-	
-	                if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
-	                    $scope.showAuthorTable = true;
-	                }
-	
-	            });
 	        }
         }
         
@@ -183,7 +178,7 @@ var app = angular.module('angularApp')
         }
 
         $scope.searchMatchedSamples = function() {
-            $http({method: 'GET', url: '/caNanoLab/rest/publication/getSamples?searchStr=ncl'}).
+            $http({method: 'GET', url: '/caNanoLab/rest/publication/getSamples?searchStr='}).
                 success(function(data, status, headers, config) {
                     $scope.sampleResults = data;
                 }).
