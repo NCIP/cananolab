@@ -527,4 +527,29 @@ public class SampleServices {
 		
 		}
 	}	
+	
+	@GET
+	@Path("/getSampleNames")
+	@Produces("application/json")
+	 public Response getSampleNames(@Context HttpServletRequest httpRequest){
+		logger.debug("In getSortedSampleNames");
+		try {
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			List<String> names = sampleBO.getMatchedSampleNames(httpRequest, "");
+			
+			return 	Response.ok(names).build();
+						
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while deleting sample: " + e.getMessage())).build();
+		}
+	}
 }
