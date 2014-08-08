@@ -542,7 +542,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 				dataId, dataName, dataType);
 		removePublicAccess(sampleId, request);
 	}
-
+	
 	// to be overwritten by child class if necessary
 	protected void removePublicAccess(String sampleId,
 			HttpServletRequest request) throws Exception {

@@ -53,60 +53,52 @@ import gov.nih.nci.cananolab.util.StringUtils;
 public class PublicationBO extends BaseAnnotationBO{
 	Logger logger = Logger.getLogger(PublicationBO.class);
 	
-		public void create(PublicationForm form,
-			HttpServletRequest request, HttpServletResponse response)
+		public List<String> create(SimpleSubmitPublicationBean simplePubBean,
+			HttpServletRequest request)
 			throws Exception {
-		if (!validateToken(request)) {
-			//return mapping.findForward("publicationMessage");
-		}
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		PublicationBean publicationBean = (PublicationBean) form.getPublicationBean();
+		List<String> msgs = new ArrayList<String>();
+		HttpSession session = request.getSession();
+		PublicationBean publicationBean = transferSimpleSubmitPublicationBean(simplePubBean);
 				
 		Boolean newPub = true;
 		if (publicationBean.getDomainFile().getId() != null
 				&& publicationBean.getDomainFile().getId() > 0) {
 			newPub = false;
 		}
-		//if (!this.savePublication(request, form)) {
-		//	return input(mapping, form, request, response);
-		//}
-
+		msgs = savePublication(request, publicationBean);
+		if(msgs.size()>0){
+			return msgs;
+		}
+	
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String sampleId = (String) form.getSampleId();
-	//	ActionMessages messages = new ActionMessages();
+		String sampleId = simplePubBean.getSampleId();
+		session.setAttribute("sampleId", sampleId);
 
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newPub && !user.isCurator() && publicationBean.getPublicStatus()) {
-		///	retractFromPublic(form, request, publicationBean.getDomainFile()
-		///			.getId().toString(),
-		//			((Publication) publicationBean.getDomainFile()).getTitle(),
-		//			"publication");
-		//	ActionMessage msg = null;
-		//	msg = new ActionMessage(
-		//			"message.updatePublication.retractFromPublic");
-		//	messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//	saveMessages(request, messages);
+			retractFromPublic(sampleId, request, publicationBean.getDomainFile()
+					.getId().toString(),
+					((Publication) publicationBean.getDomainFile()).getTitle(),
+					"publication");
+			msgs.add(PropertyUtil.getProperty("publication", "message.updatePublication.retractFromPublic"));
+			return msgs;
+		
 		} else {
-		//	ActionMessage msg = new ActionMessage("message.submitPublication",
-		//			publicationBean.getDomainFile().getTitle());
-		//	messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//	saveMessages(request, messages);
+			msgs.add("success");
 		}
-		//resetToken(request);
+		
 		if (!StringUtils.isEmpty(sampleId)) {
-		//	return summaryEdit(mapping, form, request, response);
-		} else {
-		//	return mapping.findForward("success");
-		}
+		//	return summaryEdit(sampleId, request);
+		} 
+		return msgs;
 	}
 
 	public List<String> savePublication(HttpServletRequest request,
-			SimpleSubmitPublicationBean simplePubBean) throws Exception {
+			PublicationBean publicationBean) throws Exception {
 		
 		List<String> msgs = new ArrayList<String>();
 		HttpSession session = request.getSession();
-		PublicationBean publicationBean = transferSimpleSubmitPublicationBean(simplePubBean);//(PublicationBean) theForm.getPublicationBean();
 		msgs = validateInputForPublication(publicationBean);
 		if(msgs.size()>0)
 			return msgs;
@@ -114,7 +106,7 @@ public class PublicationBO extends BaseAnnotationBO{
 				
 		PublicationService service = this.setServicesInSession(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String sampleId = (String) simplePubBean.getSampleId();
+		String sampleId = (String) request.getSession().getAttribute("sampleId");
 		// validate publication file
 		if (!validatePublicationFile(publicationBean)) {
 			msgs.add(PropertyUtil.getProperty("publication", "publication.fileRequired"));
@@ -156,7 +148,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		publicationBean.setupDomain(Constants.FOLDER_PUBLICATION,
 				user.getLoginName());
 		service.savePublication(publicationBean);
-		msgs.add("success");
+	//	msgs.add("success");
 
 
 		session.setAttribute("publicationBean", publicationBean);
@@ -323,28 +315,21 @@ public class PublicationBO extends BaseAnnotationBO{
 	 * @return
 	 * @throws Exception
 	 */
-	public void delete(PublicationForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public List<String> delete(SimpleSubmitPublicationBean simplePubBean,
+			HttpServletRequest request)
 			throws Exception {
-		if (!validateToken(request)) {
-//			return mapping.findForward("publicationMessage");
-		}
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		List<String> msgs = new ArrayList<String>();
 		PublicationService service = this.setServicesInSession(request);
-		PublicationBean publicationBean = (PublicationBean) form.getPublicationBean();
+		PublicationBean publicationBean = transferSimpleSubmitPublicationBean(simplePubBean);
 
 		// update data review status to "DELETED"
 		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
 				publicationBean.getDomainFile().getId().toString(),
 				publicationBean.getDomainFile().getTitle(), "publication");
 		service.deletePublication((Publication) publicationBean.getDomainFile());
-	//	ActionMessages msgs = new ActionMessages();
-	//	ActionMessage msg = new ActionMessage("message.deletePublication",
-	//			publicationBean.getDomainFile().getTitle());
-	//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	//	saveMessages(request, msgs);
-	//	resetToken(request);
-	//	return mapping.findForward("success");
+	
+		msgs.add("success");
+		return msgs;
 	}
 
 	public void setupNew(PublicationForm form,
@@ -486,12 +471,12 @@ public class PublicationBO extends BaseAnnotationBO{
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	public PublicationSummaryViewBean summaryEdit(PublicationForm form,
+	public PublicationSummaryViewBean summaryEdit(String sampleId,
 			HttpServletRequest request)
 			throws Exception {
 		// if session is expired or the url is clicked on directly
 		PublicationSummaryViewBean summaryEdit = null;
-		String sampleId = form.getSampleId();
+		//String sampleId = form.getSampleId();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		System.out.println("Making sure the user is not null"+ user);
 		if (user == null) {
@@ -499,7 +484,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		}
 		summaryEdit = this.prepareSummary(sampleId, request);
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		super.checkOpenAccessForm(form,request);
+	//	super.checkOpenAccessForm(form,request);
 	//	saveToken(request);
 	//	return mapping.findForward("summaryEdit");
 		return summaryEdit;
@@ -821,11 +806,9 @@ public class PublicationBO extends BaseAnnotationBO{
 		if (publication.getDomainFile().getId() == null
 				|| publication.getDomainFile().getId() != null
 				&& publication.getDomainFile().getId() == 0) {
-			errors = this.savePublication(request, simplePubBean);
+			errors = this.savePublication(request, publication);
 			SimpleSubmitPublicationBean bean =  new SimpleSubmitPublicationBean();
-			if(errors.get(0)=="success"){
-			bean.setErrors(errors);
-			}else{
+			if(errors.size()>0){
 			bean.setErrors(errors);
 			return bean;
 			}
@@ -835,6 +818,9 @@ public class PublicationBO extends BaseAnnotationBO{
 		// public
 		// privilege would be handled in the service method
 		PublicationBean pub =  (PublicationBean) request.getSession().getAttribute("publicationBean");
+		if(pub == null){
+			pub = publication;
+		}
 		service.assignAccessibility(theAccess,
 				(Publication) pub.getDomainFile());
 		// update status to retracted if the access is not public and
@@ -884,14 +870,14 @@ public class PublicationBO extends BaseAnnotationBO{
 		return publicationBean;
 	}
 
-	public void deleteAccess(PublicationForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SimpleSubmitPublicationBean deleteAccess(SimpleSubmitPublicationBean simplePubBean,
+			HttpServletRequest request)
 			throws Exception {
 		if (!validateToken(request)) {
 	//		return mapping.findForward("publicationMessage");
 		}
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		PublicationBean publication = (PublicationBean) form.getPublicationBean();
+		PublicationBean publication = transferSimpleSubmitPublicationBean(simplePubBean);
 				
 		AccessibilityBean theAccess = publication.getTheAccess();
 		PublicationService service = this.setServicesInSession(request);
@@ -902,11 +888,12 @@ public class PublicationBO extends BaseAnnotationBO{
 				.getId().toString());
 		
 		//check if sampleId exists in the form
-		if (form.getSampleId()!=null) {
-			request.setAttribute("sampleId", form.getSampleId());
+		if (simplePubBean.getSampleId()!=null) {
+			request.setAttribute("sampleId", simplePubBean.getSampleId());
 		}
 	//	setupUpdate(form, request, response);
-	//	return setupUpdate(form, request, response);
+		return setupUpdate(publication.getDomainFile()
+				.getId().toString(), request);
 	}
 
 	protected void removePublicAccess(PublicationForm theForm,
