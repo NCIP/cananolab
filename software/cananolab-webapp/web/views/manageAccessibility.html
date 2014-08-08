@@ -36,9 +36,9 @@
                     </td>
                     <td>
                         <!-- <div align="right" ng-if="access.groupName == 'Curator' || access.groupName == 'Public' && !$parent.user.curator" > -->
-                        <div align="right" ng-if="access.userBean.curator" >
+                        <div align="right" ng-if="access.groupName != 'Curator' &&  $parent.isCurator.curator" >
                                 <a
-                                        href ng-click="$parent.addAccess=true;$parent.accessForm.theAccess.accessBy='group';accessForm.theAccess.groupName=access.groupName;">Edit</a>&nbsp;
+                                        href ng-click="editGroupAccessSection('{{access.groupName}}','{{access.roleDisplayName}}');">Edit</a>&nbsp;
                         </div>
                     </td>
                 </tr>
@@ -99,8 +99,8 @@
                         <label for="byGroup">Collaboration Group</label>
                         <input type="radio" ng-model="accessForm.theAccess.accessBy" value="user" ng-click="$parent.showCollaborationGroup=false; $parent.showAccessuser=true;" id="byUser">
                         <label for="byUser">User&nbsp;&nbsp;</label>
-                        <input type="radio" ng-model="accessForm.theAccess.accessBy" value="public" ng-click="$parent.accessForm.theAccess.groupName = 'Public'; $parent.accessForm.theAccess.roleName = 'R'; $parent.showAccessuser=false;" id="byPublic" ng-if="$parent.curator.curator">
-                        <label for="byPublic" ng-if="$parent.curator.curator">Public</label>
+                        <input type="radio" ng-model="accessForm.theAccess.accessBy" value="public" ng-click="$parent.accessForm.theAccess.groupName = 'Public'; $parent.accessForm.theAccess.roleName = 'R'; $parent.showAccessuser=false;" id="byPublic" ng-if="$parent.isCurator.curator">
+                        <label for="byPublic" ng-if="$parent.isCurator.curator">Public</label>
                     </td>
                 </tr>
                 <tr>
@@ -160,12 +160,8 @@
                         Access to the {{$parent.dataType}} *
                     </td>
                     <td colspan="2">
-                        <select ng-disabled="accessForm.theAccess.accessBy == 'public'" ng-model="accessForm.theAccess.roleName" id="roleName">
-                            <option ng-repeat="(key, role) in $parent.csmRoleNames" value="{{key}}">
-                                {{role}}
-                            </option>
+                        <select ng-disabled="accessForm.theAccess.accessBy == 'public'" ng-model="accessForm.theAccess.roleName" id="roleName" ng-options="key as value for (key , value) in $parent.csmRoleNames" >
                         </select>
-
                     </td>
                     <td></td>
                 </tr>

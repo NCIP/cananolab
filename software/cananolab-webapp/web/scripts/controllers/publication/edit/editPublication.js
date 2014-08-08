@@ -23,7 +23,7 @@ var app = angular.module('angularApp')
         $scope.parentFormName = 'publicationForm';
         $scope.accessForm.theAcccess = {};
         $scope.accessForm.theAcccess.userBean = {};
-        $scope.curator = groupService.isCurator();
+        $scope.isCurator = groupService.isCurator();
         $scope.groupAccesses = [];
         $scope.userAccesses = [];
         $scope.addAccess = false;
@@ -375,11 +375,26 @@ var app = angular.module('angularApp')
             $scope.showAccessuser=true;
 
             for(var key in $scope.csmRoleNames){
-                if(this[key] == userAccess){
+                if($scope.csmRoleNames[key] == userAccess){
                     $scope.accessForm.theAccess.roleName = key;
                 }
             }
         }
+
+        $scope.editGroupAccessSection = function(groupName, groupAccess) {
+            $scope.addAccess=true;
+            $scope.accessForm.theAccess.accessBy='group';
+            $scope.accessForm.theAccess.groupName=groupName;
+            $scope.showCollaborationGroup=true;
+            $scope.showAccessuser=false;
+
+            for(var key in $scope.csmRoleNames){
+                if($scope.csmRoleNames[key] == groupAccess){
+                    $scope.accessForm.theAccess.roleName = key;
+                }
+            }
+        }
+
         
         $scope.removeAccessSection = function() {
             $scope.publicationForm.theAccess = $scope.accessForm.theAccess;
