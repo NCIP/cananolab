@@ -25,15 +25,22 @@ var app = angular.module('angularApp')
     else { $scope.other = false; }
     };
 
+    $scope.savePoc = function() {
+
+    };
+
     // save the point of contact //
 	$scope.save = function () {
         // check if organization and role are other. if so set name to other instead of dropdown values //
         if ($scope.other.organization) { 
             $scope.poc.organization.name = $scope.other.organization;
+            alert($scope.other.organization);
         }
         if ($scope.other.role) {
             $scope.poc.role = $scope.other.role;
         } 
+
+        alert("DO REST CALL HERE  in another function");
         $modalInstance.close();
 	};
 

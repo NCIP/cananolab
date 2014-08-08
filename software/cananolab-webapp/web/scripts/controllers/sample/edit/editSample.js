@@ -233,7 +233,7 @@ var app = angular.module('angularApp')
             // Save POC
             //alert("Save hit");
             savePoc(poc);
-            console.info('User hit save.');
+            console.info('User hits save.');
         }, function () {
             //Do not save - replace any changes to POC
             //alert("Cancel hit");
