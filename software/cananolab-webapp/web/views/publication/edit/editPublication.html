@@ -278,8 +278,8 @@
                     <tr>
                         <td colspan="2">
                             <span id="load" style="display: block;" ng-show="publicationForm.uriExternal=='false'">
-        						<!--  <input type="file" ng-model="publicationForm.uploadedFile" size="60" value="" ng-change="updateWithExistingNonPubMedDOIPublication('');" id="uploadedFile"> -->
-        						<input type="file" file-model="localForm.uploadedFile" ng-model="localForm.uploadedFile" size="60" value="" onchange="angular.element(this).scope().uploadFile(this);" id="uploadedFile">
+        						<input type="file" ng-model="publicationForm.uploadedFile" size="60" value="" ng-change="updateWithExistingNonPubMedDOIPublication('');" id="uploadedFile">
+        						<!-- <input type="file" file-model="localForm.uploadedFile" ng-model="localForm.uploadedFile" size="60" value="" onchange="angular.element(this).scope().uploadFile(this);" id="uploadedFile"> -->
 				            </span>
                             <label for="uploadedFile">&nbsp;&nbsp;</label>
                             <span id="uploadedUri" style="display: block;" ng-show="publicationForm.uriExternal=='false'">
