@@ -36,10 +36,13 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.SampleForm;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -55,6 +58,8 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.validator.EmailValidator;
 import org.apache.log4j.Logger;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
 
 /**
  * Class migrated from SampleAction, to support sample related rest services.
@@ -1104,5 +1109,23 @@ public class SampleBO extends BaseAnnotationBO {
 		return simpleBean;
 	}
 	
+	public List<String> getMatchedSampleNames(HttpServletRequest request, String searchStr) throws Exception {
+		
+		String[] nameArray = new String[] { "" };
+		try {
+			SampleService service = setServiceInSession(request);
 
+			List<String> names = ((SampleServiceLocalImpl) service)
+					.getHelper().findSampleNamesBy(searchStr);
+			Collections.sort(names, new Comparators.SortableNameComparator());
+
+			if (!names.isEmpty()) {
+				nameArray = names.toArray(new String[names.size()]);
+			}
+		} catch (Exception e) {
+			logger.error("Problem getting matched sample names", e);
+		}
+		List<String> names = new ArrayList(Arrays.asList(nameArray));
+		return names;
+	}
 }
