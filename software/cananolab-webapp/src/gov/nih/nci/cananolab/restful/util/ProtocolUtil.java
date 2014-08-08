@@ -18,29 +18,9 @@ public class ProtocolUtil {
         
 		Map<String, Object> typeMap = new HashMap<String, Object>();
 		
-		SortedSet<String> types = (SortedSet<String>) session.getAttribute("publicationCategories");
+		SortedSet<String> types = (SortedSet<String>) session.getAttribute("protocolTypes");
 		if (types != null) 
-			typeMap.put("publicationCategories", new ArrayList<String>(types));
-		
-		types = (SortedSet<String>) session.getAttribute("publicationStatuses");
-		if (types != null) 
-			typeMap.put("publicationStatuses", new ArrayList<String>(types));
-		
-		types = (SortedSet<String>) session.getAttribute("publicationResearchAreas");
-		if (types != null) 
-			typeMap.put("publicationResearchAreas", new ArrayList<String>(types));
-		
-		types = (SortedSet<String>) session.getAttribute("functionTypes");
-		if (types != null) 
-			typeMap.put("functionTypes", new ArrayList<String>(types));
-			
-		types = (SortedSet<String>) session.getAttribute("nanomaterialEntityTypes");
-		if (types != null) 
-			typeMap.put("nanomaterialEntityTypes", new ArrayList<String>(types));
-		
-		types = (SortedSet<String>) session.getAttribute("functionalizingEntityTypes");
-		if (types != null) 
-			typeMap.put("functionalizingEntityTypes", new ArrayList<String>(types));
+			typeMap.put("protocolTypes", new ArrayList<String>(types));
 		
 		Map<String, String> csmRoles = new HashMap<String, String>();
 				

@@ -154,8 +154,7 @@ public class SearchProtocolBO extends BaseAnnotationBO {
 		}
 	}
 
-	public Map<String, Object> setup(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public Map<String, Object> setup(HttpServletRequest request)
 			throws Exception {
 		InitProtocolSetup.getInstance().setLocalSearchDropdowns(request);
 		return ProtocolUtil.reformatLocalSearchDropdownsInSession(request.getSession());
