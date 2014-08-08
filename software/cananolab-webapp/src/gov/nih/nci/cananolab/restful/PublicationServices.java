@@ -151,7 +151,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		 PublicationForm form = new PublicationForm();
 		 form.setSampleId(sampleId);
 		 form.setDispatch(dispatch);
-		 PublicationSummaryViewBean pubBean = publicationBO.summaryEdit(form, httpRequest);
+		 PublicationSummaryViewBean pubBean = publicationBO.summaryEdit(sampleId, httpRequest);
 			SampleEditPublicationBean view = new SampleEditPublicationBean();
 			view.transferPublicationBeanForSummaryEdit(httpRequest, pubBean);
 			
@@ -273,7 +273,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			List<String> msgs = pubBO.savePublication(httpRequest, form);
+			List<String> msgs = pubBO.create(form, httpRequest);
 			 
 			
 			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -394,6 +394,62 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the access to publication " + e.getMessage())).build();
 		}
 	}
+	@POST
+	@Path("/deletePublication")
+	@Produces ("application/json")
+	public Response deletePublication(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form) {
 	
+		try {
+			
+			PublicationBO pubBO = 
+					 (PublicationBO) applicationContext.getBean("publicationBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			List<String> msgs = pubBO.delete(form, httpRequest);
+			 
+			
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the publication " + e.getMessage())).build();
+		}
+	}
+	
+	@POST
+	@Path("/deleteAccess")
+	@Produces ("application/json")
+	public Response deleteAccess(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form) {
+	
+		try {
+			
+			PublicationBO pubBO = 
+					 (PublicationBO) applicationContext.getBean("publicationBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			SimpleSubmitPublicationBean bean = pubBO.deleteAccess(form, httpRequest);
+			 
+			
+			List<String> errors = bean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(bean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the access " + e.getMessage())).build();
+		}
+	}
 	
 }
