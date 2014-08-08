@@ -404,7 +404,7 @@ public class SampleServices {
 			SampleEditGeneralBean editBean = sampleBO.clone(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok("You've successfully cloned sample " + simpleEdit.getSampleName() + " to " + simpleEdit.getNewSampleName()).build() :
+					Response.ok(editBean).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
