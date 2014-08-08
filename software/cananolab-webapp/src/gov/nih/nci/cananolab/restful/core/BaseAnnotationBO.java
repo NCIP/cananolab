@@ -535,12 +535,21 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		curationService.submitDataForReview(reviewStatus, securityService);
 	}
 
-	protected void retractFromPublic(String sampleId,
+	/**
+	 * 
+	 * @param entityId sample id, publication id, etc.
+	 * @param request
+	 * @param dataId
+	 * @param dataName
+	 * @param dataType
+	 * @throws Exception
+	 */
+	protected void retractFromPublic(String entityId,
 			HttpServletRequest request, String dataId, String dataName,
 			String dataType) throws Exception {
 		updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request,
 				dataId, dataName, dataType);
-		removePublicAccess(sampleId, request);
+		removePublicAccess(entityId, request);
 	}
 
 	// to be overwritten by child class if necessary
