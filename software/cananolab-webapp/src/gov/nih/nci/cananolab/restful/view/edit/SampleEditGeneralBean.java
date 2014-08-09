@@ -482,6 +482,8 @@ public class SampleEditGeneralBean {
 		poc.setOrganization(simpleOrg);
 		poc.setRole(samplePOC.getRole());
 		poc.setId(samplePOC.getId());
+		poc.setPhoneNumber(samplePOC.getPhone());
+		poc.setEmail(samplePOC.getEmail());
 		
 		SimpleAddressBean simpleAddress = new SimpleAddressBean();
 		
