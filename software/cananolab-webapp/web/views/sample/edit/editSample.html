@@ -81,7 +81,7 @@
                                     <th></th>
                                 </tr>
 
-                                <tr ng-repeat="poc in sampleData.pointOfContacts">
+                                <tr ng-repeat="poc in sampleData.pointOfContacts track by $index">
                                     <td>{{returnUserReadableBoolean(poc.primaryContact)}}</td>
                                     <td>
                                         {{poc.contactPerson}}
@@ -109,7 +109,7 @@
 
                 <!-- Keywords -->
                 <tr>
-                    <td class="cellLabel">
+                    <td class="cellLabel">{{sampleService.pocData.dirty}}
                         <label for="keywords">Keywords</label>
                     </td>
                     <td>

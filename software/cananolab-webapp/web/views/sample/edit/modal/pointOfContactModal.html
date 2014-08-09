@@ -1,5 +1,6 @@
 <div ng-class="{formFocus:loader}">
 <div class="modal-header">
+    {{sampleData}}
 
     <h3 class="modal-title pull-left">Point Of Contact Information</h3>
     <div class="pull-right">
@@ -164,18 +165,21 @@
         </tbody></table>
     </div>
 </div>
-
+<!-- {{other.organization}}
+{{sampleData.organizationNamesForUser}}
+{{poc.organization.name}}{{poc.id}} -->
 <div style="clear:both;"></div>
 <div class="modal-footer">
-    <button ng-click="cancel()" class="btn btn-warning btn-modal">Cancel</button>
-    <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="!poc.organization.name">Save</button>
+    <button ng-click="cancel()" class="btn btn-warning btn-modal" ng-disabled="loader">Cancel</button>
+    <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="!poc.organization.name || loader">Save</button>
 </div>
 
-  <div id="loader" ng-show="loader">
+
+
+</div>
+  <div id="loader" style="top:-300px;left:300px" ng-show="loader">
     <div id="loaderText">
-      Loading
+      Saving
     </div>
     <div id="loaderGraphic"></div>
   </div>
-
-</div>

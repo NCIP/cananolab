@@ -176,6 +176,9 @@ var app = angular.module('angularApp')
             },            
             originalPoc: function () {
               return poc;
+            },
+            master: function() {
+                return $scope.master;
             }
           }
         });
@@ -227,18 +230,19 @@ var app = angular.module('angularApp')
                         alert(data);
                     });
                 }
-                $scope.loader = false;
+                $scope.loader = false;        alert($scope.sampleData.organizationNamesForUser)
+
         };
-        modalInstance.result.then(function (poc) {
-            // Save POC
-            //alert("Save hit");
-            savePoc(poc);
-            console.info('User hits save.');
-        }, function () {
-            //Do not save - replace any changes to POC
-            //alert("Cancel hit");
-            console.info('Modal dismissed at: ' + new Date());
-        });
+        // modalInstance.result.then(function (poc) {
+        //     // Save POC
+        //     //alert("Save hit");
+        //     savePoc(poc);
+        //     console.info('User hits save.');
+        // }, function () {
+        //     //Do not save - replace any changes to POC
+        //     //alert("Cancel hit");
+        //     console.info('Modal dismissed at: ' + new Date());
+        // });
 
     };
 

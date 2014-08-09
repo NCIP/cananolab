@@ -5,9 +5,9 @@ app.factory("sampleService", function(){
 	return {
 		sampleData: {data: null },
 		sampleId: {data: null },
-        scratchPad: {data: null },
-        pocData: {data: null},
-        simpleDialog: function() {}
+		scratchPad: {data: null },
+		pocData: {data: null},
+		simpleDialog: function() {}
 	}
 
 });
