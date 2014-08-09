@@ -908,8 +908,9 @@ public class SampleBO extends BaseAnnotationBO {
 		}
 		
 		SimpleAccessBean simpleAccess = this.findDirtyAccess(simpleEditBean.getAccessToSample());
+		
 		AccessibilityBean theAccess = sample.getTheAccess();
-		this.populateAccessBeanWithInput(simpleAccess, theAccess, user.getLoginName());
+		//this.populateAccessBeanWithInput(simpleAccess, theAccess, user.getLoginName());
 		SampleService service = this.setServiceInSession(request);
 		service.removeAccessibility(theAccess, sample.getDomain());
 
