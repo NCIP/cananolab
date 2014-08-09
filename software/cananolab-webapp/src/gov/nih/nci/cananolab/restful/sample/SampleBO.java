@@ -97,8 +97,6 @@ public class SampleBO extends BaseAnnotationBO {
 			newSample = false;
 		}
 		
-		System.out.println("New sample? " + newSample);
-		
 		SampleBean sampleBean = (SampleBean) this.findMatchSampleInSession(request, sampleId);
 		
 		if (sampleBean == null) {

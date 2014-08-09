@@ -210,7 +210,16 @@ public class SampleEditGeneralBean {
 		
 		transferPointOfContactData(sampleBean);
 		
+		String ke = sampleBean.getKeywordsDisplayName();
+		System.out.println("Keyworddisplayname: " + ke);
+		
+		String v = sampleBean.getKeywordsStr();
+		System.out.println("KeywordsStr: " + v);
 		SortedSet<String> keyws = sampleBean.getKeywordSet();
+		System.out.println("There are " + keyws.size() + " keywords");
+		for (String k : keyws) 
+			System.out.println(k);
+		
 		this.keywords = new ArrayList<String>(sampleBean.getKeywordSet());
 
 		transferAccessibilityData(sampleBean);
@@ -514,17 +523,17 @@ public class SampleEditGeneralBean {
 		List<String> keywords = this.getKeywords();
 		if (keywords != null) {
 			Collection<Keyword> keywordColl = new HashSet<Keyword>();
-			String kws = "";
+			String keywordString = "";
 			for (String keyword : keywords) {
-				kws += keyword;
-				kws += "\n";
-				Keyword kw = new Keyword();
-				kw.setName(keyword);
-				keywordColl.add(kw);
+				keywordString += keyword;
+				keywordString += "\r\n";
+//				Keyword kwObj = new Keyword();
+//				kwObj.setName(keyword);
+//				keywordColl.add(kwObj);
 			}
 			
-			destSampleBean.setKeywordsStr(kws);
-			destSampleBean.getDomain().setKeywordCollection(keywordColl);
+			destSampleBean.setKeywordsStr(keywordString);
+			//destSampleBean.getDomain().setKeywordCollection(keywordColl);
 		}
 		
 		destSampleBean.getDomain().setName(this.sampleName);
