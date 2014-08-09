@@ -552,4 +552,31 @@ public class SampleServices {
 					.entity(CommonUtil.wrapErrorMessageInList("Error while deleting sample: " + e.getMessage())).build();
 		}
 	}
+	
+	@POST
+	@Path("/deleteAccess")
+	@Produces("application/json")
+	 public Response deleteAccess(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleSampleBean){
+		logger.debug("In deleteAccess");
+		try {
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			SampleEditGeneralBean editBean = sampleBO.deleteAccess(simpleSampleBean, httpRequest);
+			List<String> errors = editBean.getErrors();
+			
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(editBean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while deleting Access from sample: " + e.getMessage())).build();
+		}
+	}
 }
