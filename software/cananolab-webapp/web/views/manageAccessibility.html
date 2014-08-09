@@ -9,9 +9,7 @@
            onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'{{$parent.parentFormName}}\', \'{{$parent.dataType}}\')');"
            id="addAccess" style="display:block"><img
                 align="top" src="images/btn_add.gif" border="0" alt="add accessibility"/></a> -->
-        <a href ng-click="$parent.addAccess=true; $parent.showAddAccessButton=false;" id="addAccess" style="display:block">
-            <img align="top" src="images/btn_add.gif" border="0" alt="add accessibility"/>
-        </a>
+        <button ng-click="$parent.addAccess=true; $parent.showAddAccessButton=false;" id="addAccess" class="btn btn-primary btn-xxs">Add</button>
     </td>
 </tr>
 <tr>
@@ -37,8 +35,7 @@
                     <td>
                         <!-- <div align="right" ng-if="access.groupName == 'Curator' || access.groupName == 'Public' && !$parent.user.curator" > -->
                         <div align="right" ng-if="access.groupName != 'Curator' &&  $parent.isCurator.curator" >
-                                <a
-                                        href ng-click="editGroupAccessSection('{{access.groupName}}','{{access.roleDisplayName}}');">Edit</a>&nbsp;
+                                <button ng-click="editGroupAccessSection('{{access.groupName}}','{{access.roleDisplayName}}');" class="btn btn-primary btn-xxs">Edit</button>        
                         </div>
                     </td>
                 </tr>
@@ -68,7 +65,7 @@
                         </td>
                         <td>
                             <div align="right" ng-if="access.userBean.loginName != user.loginName">
-                                    <a href ng-click="editUserAccessSection('{{access.userBean.loginName}}','{{access.roleDisplayName}}');">Edit</a>&nbsp;
+                                    <button ng-click="editUserAccessSection('{{access.userBean.loginName}}','{{access.roleDisplayName}}');" class="btn btn-primary btn-xxs">Edit</button>
                                 </c:otherwise>
                             </div>
                         </td>
