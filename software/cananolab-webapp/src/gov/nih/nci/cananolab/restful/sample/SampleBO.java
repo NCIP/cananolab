@@ -24,6 +24,7 @@ import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.validator.RestValidator;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleAccessBean;
@@ -478,7 +479,7 @@ public class SampleBO extends BaseAnnotationBO {
 		long sampleId = simpleSampleBean.getSampleId();
 		String newSampleName = simpleSampleBean.getSampleName();
 		
-		PointOfContactBean thePOC = sample.getThePOC();
+		PointOfContactBean thePOC = new PointOfContactBean(); //sample.getThePOC();
 		getPointOfContactBeanFromInput(thePOC, simplePOC, user.getLoginName());
 		//PointOfContactBean thePOC = getPointOfContactBeanFromInput(thePOC1, simplePOC, user.getLoginName());
 		
@@ -968,6 +969,8 @@ public class SampleBO extends BaseAnnotationBO {
 			errors.add("Input point of contact object invalid");
 			return errors;
 		}
+		
+		//errors = RestValidator.validate(simplePOC);
 		
 		SimpleOrganizationBean simpleOrg = simplePOC.getOrganization();
 		if (simpleOrg != null) {
