@@ -1,0 +1,63 @@
+<div class="spacer">
+    <table class="contentTitle" width="100%" border="0" summary="layout">
+        <tr>
+            <th scope="col" align="left">
+                Manage Samples
+            </th>
+
+            <td align="right" width="30%">
+                <a class="helpText"href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SamplesOverview')">Help</a>
+                &nbsp;
+
+
+                <a class="helpText"href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+                &nbsp;
+
+            </td>
+
+        </tr>
+    </table>
+    <br>
+    <div class="welcomeContent">
+        This is the manage samples section which allows users to enter general
+        information about the sample, detailed information about the
+        composition of the sample, and information about the physico-chemical,
+        <i>in vitro</i>, and other characterizations performed on the sample. A
+        sample is a formulation of a base nanomaterial platform and any
+        additional components that contribute to the function(s) of the
+        nanomaterial. A sample can also be a control used in comparative
+        analysis. In this section, depending on your authorization level, you
+        may submit new sample information or search for an existing sample for
+        editing, copying, viewing, printing, or exporting.
+    </div>
+
+    <br>
+    <table summary="layout" cellpadding="0" cellspacing="0" border="0"
+           width="40%" height="100%" class="sidebarSection">
+        <tr>
+            <th class="sidebarTitle" scope="col" align="left">SAMPLE LINKS</th>
+        </tr>
+
+
+        <tr ng-if="tabs.userLoggedIn">
+            <td class="sidebarContent"><a href="sample.do?dispatch=setupNew&page=0"> Submit
+                a New Sample </a> <br> Select to submit a new
+                sample.</td>
+        </tr>
+
+        <tr ng-if="tabs.userLoggedIn">
+            <td class="sidebarContent"><a
+                    href="/caNanoLab/#/cloneSample">Copy an Existing
+                Sample</a> <br> Select to copy information from an existing
+                sample to a new sample.</td>
+        </tr>
+
+
+
+        <tr>
+            <td class="sidebarContent"><a href="/caNanoLab/#/searchSample">Search
+                Existing Samples </a> <br> Enter search
+                criteria to obtain information on samples of interest.</td>
+        </tr>
+    </table>
+</div>
