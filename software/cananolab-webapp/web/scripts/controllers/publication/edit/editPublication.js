@@ -400,6 +400,7 @@ var app = angular.module('angularApp')
             $scope.accessForm.theAccess.userBean.loginName=loginName;
             $scope.showCollaborationGroup=false;
             $scope.showAccessuser=true;
+            $scope.showAccessSelection=false;
 
             for(var key in $scope.csmRoleNames){
                 if($scope.csmRoleNames[key] == userAccess){
@@ -414,6 +415,7 @@ var app = angular.module('angularApp')
             $scope.accessForm.theAccess.groupName=groupName;
             $scope.showCollaborationGroup=true;
             $scope.showAccessuser=false;
+            $scope.showAccessSelection=false;
 
             for(var key in $scope.csmRoleNames){
                 if($scope.csmRoleNames[key] == groupAccess){

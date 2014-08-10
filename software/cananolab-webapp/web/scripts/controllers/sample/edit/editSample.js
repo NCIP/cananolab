@@ -10,6 +10,33 @@ var app = angular.module('angularApp')
     $scope.scratchPad = sampleService.scratchPad;
     $scope.master = {};
     $scope.newKeyword = "";
+    
+    // Access variables
+    $scope.csmRoleNames = {"R":"read","CURD":"read update delete"};
+    $scope.sampleData.theAccess = {};
+    $scope.accessForm = {};
+    $scope.dataType = 'Sample';
+    $scope.parentFormName = 'sampleForm';
+    $scope.accessForm.theAcccess = {};
+    $scope.accessForm.theAcccess.userBean = {};
+    $scope.isCurator = groupService.isCurator();
+    $scope.groupAccesses = [];
+    $scope.userAccesses = [];
+    $scope.addAccess = false;
+    $scope.showAddAccessButton = true;
+    $scope.showCollaborationGroup = true;
+    $scope.showAccessuser = false;
+    $scope.showAccessSelection = false;
+    $scope.accessForm.theAccess = {};
+    $scope.accessForm.theAccess.groupName = '';
+    $scope.accessForm.theAccess.userBean = {};
+    $scope.accessForm.theAccess.userBean.loginName = '';
+    $scope.access = {};
+    $scope.access.groupName = '';
+    $scope.access.loginName = '';
+    $scope.sampleData.isPublic = false;
+    $scope.accessForm.theAccess.accessBy = 'group';        
+    $scope.accessExists = false;    
 
     var editSampleData = {"editSampleData":{"dirty": false}};
     $scope.scratchPad = editSampleData;
@@ -66,6 +93,13 @@ var app = angular.module('angularApp')
                 $scope.sampleData = data;
                 $scope.loader = false;
                 $scope.editSampleForm = true;
+                
+                $scope.groupAccesses = $scope.sampleData.groupAccesses;
+                $scope.userAccesses = $scope.sampleData.userAccesses;
+                
+                if( $scope.userAccesses != null && $scope.userAccesses.length > 0 ) {
+                	$scope.accessExists = true;
+                }                
             }).
             error(function(data, status, headers, config, statusText) {
                 // called asynchronously if an error occurs
@@ -305,6 +339,159 @@ var app = angular.module('angularApp')
             $scope.message = data;
           });
     };
+    
+    
+    /** Start - Access functions **/
+    
+    $scope.getCollabGroups = function() {
+        if ($scope.accessForm.theAccess.groupName === undefined || $scope.accessForm.theAccess.groupName === null) {
+            $scope.accessForm.theAccess.groupName = '';
+        }
+
+        $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.groupName}).
+            success(function(data, status, headers, config) {
+                $scope.collabGroups = data;
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                $scope.message = data;
+            });
+
+        //$scope.collabGroups = ["curator group", "NCI", "NCIP"];
+        $scope.showAccessSelection=true;
+
+    };
+
+    $scope.getAccessUsers = function() {
+        if ($scope.accessForm.theAccess.userBean.loginName === undefined || $scope.accessForm.theAccess.userBean.loginName === null) {
+            $scope.accessForm.theAccess.userBean.loginName = '';
+        }
+
+        $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.userBean.loginName}).
+            success(function(data, status, headers, config) {
+                $scope.accessUsers = data;
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                $scope.message = data;
+            });
+
+        //$scope.accessUsers = {"lethai":"Le Thai","Omelchen":"Omelchenko Marina","burnskd":"Burns Kevin","canano_guest":"Guest Guest","grodzinp":"Grodzinski Piotr","swand":"Swan Don","skoczens":"Skoczen Sarah","sternstephan":"Stern Stephan","zolnik":"Zolnik Banu","hunseckerk":"Hunsecker Kelly","lipkeyfg":"Lipkey Foster","marina":"Dobrovolskaia Marina","pottert":"Potter Tim","uckunf":"Uckun Fatih","michal":"Lijowski Michal","mcneils":"Mcneil Scott","neunb":"Neun Barry","cristr":"Crist Rachael","zhengji":"Zheng Jiwen","frittsmj":"Fritts Martin","SchaeferH":"Schaefer Henry","benhamm":"Benham Mick","masoods":"Masood Sana","mclelandc":"McLeland Chris","torresdh":"Torres David","KlemmJ":"Klemm Juli","patria":"Patri Anil","hughesbr":"Hughes Brian","clogstonj":"Clogston Jeff","hinkalgw":"Hinkal George","MorrisS2":"Morris Stephanie","sharon":"Gaheen Sharon"};
+        $scope.showAccessSelection=true;
+
+    };
+
+    $scope.hideAccessSection = function() {
+        $scope.addAccess=false;
+        $scope.showAddAccessButton=true;
+    }
+    
+    $scope.saveAccessSection = function() {
+        $scope.loader = true;
+        $scope.sampleData.theAccess = $scope.accessForm.theAccess;
+        $scope.addAccess=false;
+        $scope.showAddAccessButton=true;
+        
+        if( $scope.accessForm.theAccess.accessBy == 'public') {
+            $scope.sampleData.isPublic = true;
+        }
+
+        $http({method: 'POST', url: '/caNanoLab/rest/sample/saveAccess',data: $scope.sampleData}).
+            success(function(data, status, headers, config) {
+                // $rootScope.sampleData = data;
+                //$scope.sampleData.data = data;
+                //$location.path("/sampleResults").replace();
+            	
+            	$scope.sampleData = data;
+            	
+            	$scope.groupAccesses = $scope.sampleData.groupAccesses;
+                $scope.userAccesses = $scope.sampleData.userAccesses;
+                
+                $scope.loader = false;
+                $scope.accessExists = true;
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                // $rootScope.sampleData = data;
+                $scope.loader = false;
+                $scope.messages = data;
+            });
+        
+    }; 
+    
+    $scope.editUserAccessSection = function(loginName, userAccess) {
+        $scope.addAccess=true;
+        $scope.accessForm.theAccess.accessBy='user';
+        $scope.accessForm.theAccess.userBean.loginName=loginName;
+        $scope.showCollaborationGroup=false;
+        $scope.showAccessuser=true;
+        $scope.showAccessSelection=false;
+
+        for(var key in $scope.csmRoleNames){
+            if($scope.csmRoleNames[key] == userAccess){
+                $scope.accessForm.theAccess.roleName = key;
+            }
+        }
+    }
+
+    $scope.editGroupAccessSection = function(groupName, groupAccess) {
+        $scope.addAccess=true;
+        $scope.accessForm.theAccess.accessBy='group';
+        $scope.accessForm.theAccess.groupName=groupName;
+        $scope.showCollaborationGroup=true;
+        $scope.showAccessuser=false;
+        $scope.showAccessSelection=false;
+
+        for(var key in $scope.csmRoleNames){
+            if($scope.csmRoleNames[key] == groupAccess){
+                $scope.accessForm.theAccess.roleName = key;
+            }
+        }
+    }
+
+    
+    $scope.removeAccessSection = function() {
+        $scope.sampleData.theAccess = $scope.accessForm.theAccess;
+        $scope.addAccess=false;
+        $scope.showAddAccessButton=true;
+        
+        console.log($scope.sampleData.theAccess);
+        
+        if (confirm("Are you sure you want to delete?")) {
+            $scope.loader = true;
+        
+            $http({method: 'POST', url: '/caNanoLab/rest/sample/deleteAccess',data: $scope.sampleData}).
+                success(function(data, status, headers, config) {
+                    // $rootScope.sampleData = data;
+                    //$scope.sampleData.data = data;
+                    //$location.path("/sampleResults").replace();
+                	
+                	$scope.sampleData = data;
+                	
+                	$scope.groupAccesses = $scope.sampleData.groupAccesses;
+                    $scope.userAccesses = $scope.sampleData.userAccesses;
+                    
+                    if( $scope.userAccesses != null && $scope.userAccesses.length > 0 ) {
+	                	$scope.accessExists = true;
+	                }
+                    
+                    $scope.loader = false;
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    // $rootScope.sampleData = data;
+                    $scope.loader = false;
+                    $scope.messages = data;
+                });
+        }
+        
+    };   
+    
+    /** End - Access Section **/    
 
     $scope.master = angular.copy($scope.sampleData);
     $scope.reset();

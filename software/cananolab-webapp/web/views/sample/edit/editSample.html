@@ -133,137 +133,14 @@
                         <button type="button" class="btn btn-primary btn-xs" ng-click="addKeyword()">Add</button>
                    </td>
                 </tr>
-            <tr>
-                <td class="cellLabel" width="15%" id="addAccessLabel">
-                    Access to the Sample
-                </td>
-                <td>
-                    <button ng-click="openDataAvailability()" class="btn btn-primary btn-xxs">Add</button>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <table class="editTableWithGrid" width="95%" align="center">
-                        <tbody>
-                            <tr>
-                                <th width="40%" scope="col">
-                                    Group Name
-                                </th>
-                                <th width="55%" scope="col">
-                                    Access
-                                </th>
-                                <th></th>
-                            </tr>
 
-                            <tr valign="top" ng-repeat="ats in sampleData.accessToSample.groupAccesses">
-                                <td>
-                                    <span>{{ats.groupName}}</span>
-                                </td>
-                                <td>
-                                    <span>{{ats.roleDisplayName}}</span>
-                                </td>
-                                <td>
-                                    <div align="right">
-                                        <span ng-hide='ats.roleDisplayName=="read update delete"'>
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <br>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-
-
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-
-
-                    <div style="display: none;" id="newAccess">
-                        <table class="subSubmissionView" width="85%" align="center" summary="layout">
-                            <tbody><tr>
-                                <th colspan="4">
-                                    Access Information
-                                </th>
-                            </tr>
-                            <tr>
-                                <td class="cellLabel" width="25%">
-                                    Access by *
-                                </td>
-                                <td colspan="3">
-                                    <input type="radio" name="sampleBean.theAccess.accessBy" value="group" checked="checked" onclick="displayAccessNameLabel();" id="byGroup">
-                                    <label for="byGroup">Collaboration Group</label>
-                                    <input type="radio" name="sampleBean.theAccess.accessBy" value="user" onclick="displayAccessNameLabel();" id="byUser">
-                                    <label for="byUser">User&nbsp;&nbsp;</label>
-
-                                        <input type="radio" name="sampleBean.theAccess.accessBy" value="public" onclick="displayAccessNameLabel();" id="byPublic">
-                                    <label for="byPublic">Public</label>
-
-                                </td>
-                            </tr>
-                            <tr>
-
-                                <td class="cellLabel" id="accessNameLabel">Collaboration Group Name *</td>
-                                <td><label for="groupName" style="display:none">Group Name</label>
-                                    <input type="text" name="sampleBean.theAccess.groupName" value="" id="groupName">
-                                    <label for="userName" style="display:none">Login Name</label>
-                                    <input type="text" name="sampleBean.theAccess.userBean.loginName" value="" id="userName" style="display: none;">
-                                </td>
-                                <td>
-                                    <a href="#userNameField" id="browseIcon" onclick="javascript:showMatchedGroupOrUserDropdown('lijowskim:COPY')"><img src="images/icon_browse.jpg" align="middle" alt="search existing collaboration groups" border="0"></a>
-                                </td>
-                                <td width="50%">
-                                    <table class="invisibleTable">
-                                        <tbody><tr>
-                                            <td>
-                                                <img src="images/ajax-loader.gif" border="0" class="counts" id="loaderImg" style="display: none" alt="collaboration groups or user login names">
-                                            </td>
-                                            <td>
-                                                <label for="matchedUserNameSelect" style="display:none" id="userNameSelectLabel">Select a user</label>
-                                                <select name="sampleBean.theAccess.userBean.loginName" size="10" onclick="updateUserLoginName()" id="matchedUserNameSelect" style="display: none"></select>
-                                                <label for="matchedGroupNameSelect" style="display:none">Select a group</label>
-                                                <select name="sampleBean.theAccess.groupName" size="10" onclick="updateGroupName()" id="matchedGroupNameSelect" style="display: none"></select>
-                                            </td>
-                                            <td>
-                                                <a id="cancelBrowse" style="display: none" href="javascript:cancelBrowseSelect();">Cancel</a>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cellLabel" width="10%">
-                                    Access to the <label for="roleName">Sample *</label>
-                                </td>
-                                <td colspan="2">
-                                    <select name="sampleBean.theAccess.roleName" id="roleName"><option></option>
-                                        <option value="R">read</option>
-        <option value="CURD">read update delete</option></select>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td><input id="deleteAccess" type="button" value="Remove" onclick="javascript:deleteTheAccess('sampleForm', 'sample', 4);" style="display: none;">
-                                </td>
-                                <td align="right" colspan="3">
-                                    <div align="right">
-                                        <input type="hidden" name="sampleBean.theAccess.roleName" value="" id="hiddenRoleName">
-                                        <input type="hidden" name="sampleBean.theAccess.groupName" value="" id="hiddenGroupName">
-                                        <input type="button" value="Save" onclick="javascript:addAccess('sampleForm', 'sample', 4, true);">
-                                        <input type="button" value="Cancel" onclick="javascript:clearAccess('sampleForm', 'Sample');closeSubmissionForm('Access');">
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody></table>
-                    </div>
-                </td>
-            </tr>
-
+				<tr>
+                    <td colspan="5">
+                        <table>
+                            <ng-include src="'/caNanoLab/views/manageAccessibility.html'"></ng-include>
+                        </table>
+                    </td>
+                </tr>
 
                 <tr>
 
