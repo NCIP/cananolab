@@ -62,6 +62,7 @@ var app = angular.module('angularApp')
         
         $scope.loadPublicationData = function() {
 	        if( $scope.publicationId != null ) {
+	        	$scope.loader = true;
 	            $http({method: 'GET', url: '/caNanoLab/rest/publication/edit?publicationId=' + $scope.publicationId}).
 	                success(function(data, status, headers, config) {
 	                    $scope.publicationForm = data;
@@ -191,6 +192,10 @@ var app = angular.module('angularApp')
 
         $scope.doSubmit = function() {
             $scope.loader = true;
+            
+            if ($scope.sampleId != null) {
+            	$scope.publicationForm.sampleId = $scope.sampleId;
+            }
 
             $http({method: 'POST', url: '/caNanoLab/rest/publication/submitPublication',data: $scope.publicationForm}).
                 success(function(data, status, headers, config) {

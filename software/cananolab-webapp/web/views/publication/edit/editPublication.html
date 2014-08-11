@@ -1,4 +1,61 @@
+<div class="spacer">
 <form ng-submit="validateSavingTheData('newAuthor', 'Authors');"  novalidate>
+<table class="contentTitle" width="100%" border="0" summary="layout" ng-if="sampleId==null && publicationId==null">
+    <tbody>
+    <tr>
+        <th scope="col" align="left">
+            Submit Publication
+        </th>
+
+        <td align="right" width="30%">
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SubmittingaPublication')">Help</a>
+            &nbsp;
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            &nbsp;
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="contentTitle" width="100%" border="0" summary="layout" ng-if="sampleId==null && publicationId!=null">
+    <tbody><tr>
+        <th scope="col" align="left">
+            Update Publication
+        </th>
+
+        <td align="right" width="30%">
+            <!-- <a class="helpText" href="javascript:gotoPage('publicationResults.do')">Back</a>
+            &nbsp; -->
+
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SubmittingaPublication')">Help</a>
+            &nbsp;
+
+
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            &nbsp;
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="contentTitle" width="100%" border="0" summary="layout" ng-if="sampleId!=null && publicationId!=null">
+    <tbody><tr>
+        <th scope="col" align="left">
+            Update Publication for Sample {{sampleId}}
+        </th>
+
+        <td align="right" width="30%">
+            <!-- <a class="helpText" href="javascript:gotoPage('publicationResults.do')">Back</a>
+            &nbsp;  -->
+
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SubmittingaPublication')">Help</a>
+            &nbsp;
+
+
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            &nbsp;
+        </td>
+    </tr>
+    </tbody>
+</table>
 <span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
     <ul>
         <li ng-repeat="message in messages">
@@ -439,3 +496,4 @@
     <div id="loaderGraphic"></div>
 </div>
 </form>
+</div>
