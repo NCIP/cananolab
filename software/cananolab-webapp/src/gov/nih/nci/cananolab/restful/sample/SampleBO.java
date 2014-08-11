@@ -495,7 +495,7 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		PointOfContactBean thePOC = resolveThePOCFromInput(sample, simplePOC, user.getLoginName());
 		
-		getPointOfContactBeanFromInput(thePOC, simplePOC, user.getLoginName());
+		//getPointOfContactBeanFromInput(thePOC, simplePOC, user.getLoginName());
 		//PointOfContactBean thePOC = getPointOfContactBeanFromInput(thePOC1, simplePOC, user.getLoginName());
 		
 		
