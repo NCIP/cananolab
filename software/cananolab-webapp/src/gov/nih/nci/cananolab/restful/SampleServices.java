@@ -284,7 +284,7 @@ public class SampleServices {
 	@POST
 	@Path("/savePOC")
 	@Produces ("application/json")
-	public Response savePOC(@Context HttpServletRequest httpRequest, SimplePointOfContactBean simplePOCBean) {
+	public Response savePOC(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleEditBean) {
 		logger.info("In savePOC");
 		try {
 			SampleBO sampleBO = 
@@ -294,7 +294,7 @@ public class SampleServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			SampleEditGeneralBean editBean = sampleBO.savePointOfContact(simplePOCBean, httpRequest);
+			SampleEditGeneralBean editBean = sampleBO.savePointOfContactList(simpleEditBean, httpRequest);
 			List<String> errors = editBean.getErrors();
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(editBean).build() :
@@ -447,7 +447,7 @@ public class SampleServices {
 	@POST
 	@Path("/deletePOC")
 	@Produces("application/json")
-	 public Response deletePOC(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleSampleBean){
+	 public Response deletePOC(@Context HttpServletRequest httpRequest, SimplePointOfContactBean simplePOCBean){
 		logger.debug("In deleteSample");
 		try {
 			SampleBO sampleBO = 
@@ -457,7 +457,7 @@ public class SampleServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			SampleEditGeneralBean editBean = sampleBO.deletePointOfContact(simpleSampleBean, httpRequest);
+			SampleEditGeneralBean editBean = sampleBO.deletePointOfContact(simplePOCBean, httpRequest);
 			List<String> errors = editBean.getErrors();
 			
 			return (errors == null || errors.size() == 0) ?
@@ -484,7 +484,7 @@ public class SampleServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			SampleEditGeneralBean editBean = sampleBO.deletePointOfContact(simpleSampleBean, httpRequest);
+			SampleEditGeneralBean editBean = sampleBO.deleteAccess(simpleSampleBean, httpRequest);
 			List<String> errors = editBean.getErrors();
 			
 			return (errors == null || errors.size() == 0) ?
