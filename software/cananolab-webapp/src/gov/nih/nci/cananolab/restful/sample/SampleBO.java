@@ -850,22 +850,12 @@ public class SampleBO extends BaseAnnotationBO {
 		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");
 		
 		if (sample == null) {
-			
-			//////////debug
-//			String sampleId = "24063238"; //ncl-49
-//			sample = summaryView(sampleId, request);
-//			request.getSession().setAttribute("theSample", sample);
-			////////// debug
-			
-			//for real
-			throw new Exception("Sample object is not valid");
+			throw new Exception("Sample object is not valid in session for saving /updating access");
 		}
 		
-		SimpleAccessBean simpleAccess = findDirtyAccess(simpleEditBean.getAccessToSample());
+		//SimpleAccessBean simpleAccess = findDirtyAccess(simpleEditBean.getAccessToSample());
 		
-		AccessibilityBean theAccess = simpleEditBean.getTheAccess(); //sample.getTheAccess();
-		//populateAccessBeanWithInput(simpleAccess, theAccess, user.getLoginName());
-	
+		AccessibilityBean theAccess = simpleEditBean.getTheAccess();
 		List<String> errors = validateAccess(request, theAccess);
 		if (errors.size() > 0) {
 			SampleEditGeneralBean errorBean = new SampleEditGeneralBean();
@@ -907,9 +897,10 @@ public class SampleBO extends BaseAnnotationBO {
 			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to update delete accecc to the sample.");
 		}
 		
-		SimpleAccessBean simpleAccess = this.findDirtyAccess(simpleEditBean.getAccessToSample());
+		//SimpleAccessBean simpleAccess = this.findDirtyAccess(simpleEditBean.getAccessToSample());
 		
 		AccessibilityBean theAccess = simpleEditBean.getTheAccess();
+		sample.setTheAccess(theAccess);
 		//this.populateAccessBeanWithInput(simpleAccess, theAccess, user.getLoginName());
 		SampleService service = this.setServiceInSession(request);
 		service.removeAccessibility(theAccess, sample.getDomain());
