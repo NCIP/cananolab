@@ -299,15 +299,12 @@ public class PublicationBO extends BaseAnnotationBO{
 	 * @return
 	 * @throws Exception
 	 */
-	public void removeFromSample(PublicationForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		if (!validateToken(request)) {
-//			return mapping.findForward("publicationMessage");
-		}
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+	public SimplePublicationSummaryViewBean removeFromSample(SimpleSubmitPublicationBean simplePubBean, 
+			HttpServletRequest request) throws Exception {
+		
 		PublicationService service = this.setServicesInSession(request);
-		PublicationBean publicationBean = (PublicationBean) form.getPublicationBean();
-		String sampleId = form.getSampleId();
+		PublicationBean publicationBean = transferSimpleSubmitPublicationBean(simplePubBean);//(PublicationBean) form.getPublicationBean();
+		String sampleId = simplePubBean.getSampleId().toString();  //form.getSampleId();
 		SampleBean sampleBean = this.setupSampleById(sampleId, request);
 		service.removePublicationFromSample(sampleBean.getDomain().getName(),
 				(Publication) publicationBean.getDomainFile());
@@ -316,7 +313,7 @@ public class PublicationBO extends BaseAnnotationBO{
 	//			publicationBean.getDomainFile().getTitle());
 	//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 	//	saveMessages(request, msgs);
-	//	return summaryEdit(mapping, form, request, response);
+		return summaryEdit(sampleId, request);
 	}
 
 	/**
@@ -376,10 +373,10 @@ public class PublicationBO extends BaseAnnotationBO{
 //		return forward;
 	}
 
-	public SimpleSubmitPublicationBean setupUpdate(String publicationId,
+	public SimpleSubmitPublicationBean setupUpdate(String publicationId, 
 			HttpServletRequest request)
 			throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		HttpSession session = request.getSession();
 		List<String> messages = new ArrayList<String>();
 //		super.checkOpenAccessForm(request);
 		publicationId = super.validateId(request, "publicationId");		
@@ -400,7 +397,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		//detect whether request is related to sample
 		String sampleId = request.getParameter("sampleId");
 		if (sampleId==null) {
-			sampleId=(String)request.getAttribute("sampleId");
+			sampleId=(String)request.getSession().getAttribute("sampleId");
 		}
 		//saveToken(request);
 		if (!StringUtils.isEmpty(sampleId)) {

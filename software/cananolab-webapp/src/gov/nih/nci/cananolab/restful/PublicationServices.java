@@ -459,5 +459,36 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the access " + e.getMessage())).build();
 		}
 	}
+	
+	@POST
+	@Path("/removeFromSample")
+	@Produces ("application/json")
+	public Response removeFromSample(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form) {
+	
+		try {
+			
+			PublicationBO pubBO = 
+					 (PublicationBO) applicationContext.getBean("publicationBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			SimplePublicationSummaryViewBean bean = pubBO.removeFromSample(form, httpRequest);
+			 
+			
+			List<String> errors = bean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(bean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the access " + e.getMessage())).build();
+		}
+	}
 }
 	

@@ -37,7 +37,7 @@ public class TabGenerationBO {
 				
 				tabWithLink = new String[2];
 				tabWithLink[0] = "SAMPLES";
-				tabWithLink[1] =  urlBase + "manageSample.do";
+				tabWithLink[1] =  urlBase + "#/manageSamples";
 				tabs.add(tabWithLink);
 				
 				tabWithLink = new String[2];
@@ -76,7 +76,7 @@ public class TabGenerationBO {
 
 			tabWithLink = new String[2];
 			tabWithLink[0] = "SAMPLES";
-			tabWithLink[1] =  urlBase + "manageSample.do";;
+			tabWithLink[1] =  urlBase + "#/manageSamples";;
 			tabs.add(tabWithLink);
 
 			tabWithLink = new String[2];

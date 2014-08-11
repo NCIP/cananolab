@@ -36,12 +36,4 @@ public class RestValidator {
 
 		return errors;
 	}
-	
-//	public Message exist(MongoTemplate mongoTemplate, MatchModelInterface matchObject, Class<?> classType) {
-//		Message existMessage = 	(mongoTemplate.findById(matchObject.getId(), classType) != null) ? 
-//								(new MessageBuilder()).status("F").message("Object with id="+matchObject.getId()+" already exist").build() : 
-//								(new MessageBuilder()).status("S").build();
-//				
-//		return existMessage;
-//	}
 }
