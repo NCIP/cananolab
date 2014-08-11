@@ -379,20 +379,20 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-//	public SampleEditGeneralBean savePointOfContactList(SampleEditGeneralBean simpleSampleBean, 
-//			HttpServletRequest request) 
-//			throws Exception {
-//		
-//		List<SimplePointOfContactBean> pocList = simpleSampleBean.getPointOfContacts();
-//		if (pocList == null || pocList.size() == 0) 
-//			return this.wrapErrorInEditBean("POC list is empty. Unable to update POC");
-//		
-//		SimplePointOfContactBean thePOC = findDirtyPOC(pocList);
-//		if (thePOC == null)
-//			return this.wrapErrorInEditBean("Unable to find the dirty POC to update");
-//		
-//		return savePointOfContact(simpleSampleBean, thePOC, request);
-//	}
+	public SampleEditGeneralBean savePointOfContactList(SampleEditGeneralBean simpleSampleBean, 
+			HttpServletRequest request) 
+			throws Exception {
+		
+		List<SimplePointOfContactBean> pocList = simpleSampleBean.getPointOfContacts();
+		if (pocList == null || pocList.size() == 0) 
+			return this.wrapErrorInEditBean("POC list is empty. Unable to update POC");
+		
+		SimplePointOfContactBean thePOC = findDirtyPOC(pocList);
+		if (thePOC == null)
+			return this.wrapErrorInEditBean("Unable to find the dirty POC to update");
+		
+		return savePointOfContact(simpleSampleBean, thePOC, request);
+	}
 	
 	/**
 	 * Find the "dirty" SimplePointOfContactBean from a list
@@ -456,12 +456,15 @@ public class SampleBO extends BaseAnnotationBO {
 	 * 				  2. Update Sample: when edit POC and save are clicked
 	 * 				  3. Submit Sample: when add POC and save are clicked. In this case, sample only has a name.
 	 * 
+	 * Updating an existing POC with a new organization name is the equivalent of creating new and deleting old
+	 * 
 	 * @param simplePOC
 	 * @param request
 	 * @return
 	 * @throws Exception
 	 */
-	public SampleEditGeneralBean savePointOfContact(SimplePointOfContactBean simplePOC, HttpServletRequest request) 
+	public SampleEditGeneralBean savePointOfContact(SampleEditGeneralBean simpleSampleBean,
+			SimplePointOfContactBean simplePOC, HttpServletRequest request) 
 			throws Exception {
 
 		List<String> errors = validatePointOfContactInput(simplePOC);
@@ -474,9 +477,8 @@ public class SampleBO extends BaseAnnotationBO {
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");
 		
-		
-		long sampleId = simplePOC.getSampleId();
-		String newSampleName = simplePOC.getNewSampleName();
+		long sampleId = simpleSampleBean.getSampleId();
+		String newSampleName = simpleSampleBean.getNewSampleName();
 		
 		if (sample == null) { 
 			if (newSampleName == null || newSampleName.length() == 0) 
@@ -544,10 +546,10 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public SampleEditGeneralBean deletePointOfContact(SampleEditGeneralBean simpleEditBean, HttpServletRequest request) 
+	public SampleEditGeneralBean deletePointOfContact(SimplePointOfContactBean simplePOC, HttpServletRequest request) 
 			throws Exception {
 		
-		long sampleId = simpleEditBean.getSampleId();
+		long sampleId = simplePOC.getSampleId();
 		
 		SampleBean sample = (SampleBean) this.findMatchSampleInSession(request, String.valueOf(sampleId));
 		if (sample == null) {
@@ -555,10 +557,7 @@ public class SampleBO extends BaseAnnotationBO {
 			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to update delete POC to the sample.");
 		}
 		
-		SimplePointOfContactBean simplePOC = findDirtyPOC(simpleEditBean.getPointOfContacts());
-		if (simplePOC == null) 
-			return wrapErrorInEditBean("Unable to find a dirty POC. Failed to delete POC to the sample.");
-		else if (simplePOC.isPrimaryContact())
+		if (simplePOC.isPrimaryContact())
 			return wrapErrorInEditBean(PropertyUtil.getProperty("sample", "message.deletePrimaryPOC"));
 		
 		removeMatchingPOC(sample, simplePOC);
