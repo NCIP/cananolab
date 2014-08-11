@@ -53,6 +53,9 @@
                                 </tr>
                                 <tr  ng-repeat="pubBean in category2Publications[type]" ng-init="pubObj = pubBean.domainFile">
                                     <td>
+	                                    	<div class="editButton" ng-if="pubBean.userUpdatable == true">
+												<a href="#/editPublication?sampleId={{sampleId.data}}&amp;publicationId={{pubBean.publicationId}}">Edit</a>
+											</div>
                                             <table class="summaryViewNoGrid" width="99%" align="center" ng-style="{'background-color':'#F5F5f5'}">
 
                                                 <tr>
