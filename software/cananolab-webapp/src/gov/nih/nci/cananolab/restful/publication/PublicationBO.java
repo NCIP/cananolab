@@ -183,7 +183,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		// TODO Auto-generated method stub
 		PublicationBean pubBean =  new PublicationBean();
 		Publication pub = (Publication) pubBean.getDomainFile();
-		Collection<Author> authorCollection = new ArrayList<Author>();
+		HashSet<Author> authorCollection = new HashSet<Author>();
 		for(int i=0;i<bean.getAuthors().size();i++){
 			authorCollection.add(bean.getAuthors().get(i));
 		}
