@@ -198,7 +198,18 @@
 		</td>
 	</tr>	
 </table>
+	<div style="margin-top:100px;margin-left:38px;width:300px" ng-show="deleteBlock" class="message">
+	    	<br /><br />Are you sure you wish to delete the data availability metric?<br /><br />
+	    	<div>
+	    	<button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(1,1)" class="btn btn-danger btn-sm">Yes</button>
+	    	<button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn btn-warning btn-modal">No</button>
+		</div>
+	</div>
 </div>
+
+
 <div class="modal-footer">
-  <button class="btn btn-primary" ng-click="ok()">Close</button>
+  <button ng-if="edit" class="btn btn-warning btn-danger" ng-click="delete()">Delete</button>
+  <button ng-if="edit" class="btn btn-primary btn-modal" ng-click="ok()">Regenerate</button>
+  <button class="btn btn-warning btn-modal" ng-click="ok()">Close</button>
 </div>

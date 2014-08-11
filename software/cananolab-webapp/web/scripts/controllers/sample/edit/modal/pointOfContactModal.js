@@ -1,6 +1,6 @@
 'use strict';
 var app = angular.module('angularApp')
-	.controller('PointOfContactModalCtrl', function ($scope,$http,$modalInstance,sampleId, originalPoc, sampleData,master,sampleService) {
+	.controller('PointOfContactModalCtrl', function ($scope,$http,$modalInstance,sampleId, originalPoc, sampleData,master, message, sampleService) {
 
     // define variables //
     	$scope.sampleId = sampleId;
@@ -12,9 +12,7 @@ var app = angular.module('angularApp')
         $scope.message = "";
         $scope.loader = false;
         $scope.master = master;
-
-
-    /* Initialize master for poc */
+        /* Initialize master for poc */
     $scope.master = angular.copy($scope.poc);
 
     // Fired when organization or role are changed, used when user selects other //
@@ -40,17 +38,18 @@ var app = angular.module('angularApp')
             // called if yes button is pressed on delete block //
             if (val) {
                 $scope.poc.dirty = true;
-                alert($scope.poc);
                 $scope.loader = true;
                 $scope.loaderMessage = "Deleting";
+                $scope.message = 'Point of contact deleted';
                 $http({method: 'POST', url: '/caNanoLab/rest/sample/deletePOC',data: $scope.poc}).
                     success(function(data, status, headers, config) {
-                        $scope.sampleData = data;
-                        $modalInstance.close();
+                        $modalInstance.close(data);
                     }).
                     error(function(data, status, headers, config) {
                         $scope.loader = false;
                         $scope.message = data;
+                        $modalInstance.close($scope.sampleData);
+
                 });
             }
             // this is no button. close the block //
@@ -76,17 +75,19 @@ var app = angular.module('angularApp')
         
         $http({method: 'POST', url: '/caNanoLab/rest/sample/savePOC',data: $scope.sampleData}).
             success(function(data, status, headers, config) {
+                $scope.message = 'Point of contact saved.';
                 $scope.sampleData.pointOfContacts = data.pointOfContacts;
                 $scope.master = angular.copy($scope.sampleData);
                 $scope.loader = false;
-                $modalInstance.close();
+                $modalInstance.close(data);
 
             }).
             error(function(data, status, headers, config) {
                 $scope.loader = false;
             $scope.message = data;
+             $modalInstance.close(data);
+
             });
-            alert("Adding contact again on edit")
     };
 
     // save the point of contact //

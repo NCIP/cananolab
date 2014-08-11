@@ -24,6 +24,9 @@ var app = angular.module('angularApp')
                 },
                 sampleData: function() {
                   return data;
+                },
+                edit: function() {
+                  return 0;
                 }
               }
             });
