@@ -414,6 +414,7 @@ public class SampleAction extends BaseAnnotationAction {
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 		}
+		
 		sample.removePointOfContact(thePOC);
 		// save sample
 		setServiceInSession(request);

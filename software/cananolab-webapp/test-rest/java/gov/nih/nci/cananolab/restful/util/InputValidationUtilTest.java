@@ -29,4 +29,11 @@ public class InputValidationUtilTest {
 		boolean is = InputValidationUtil.doi(null);
 		assertFalse(is);
 	}
+	
+	@Test
+	public void testIsZipValid() {
+		String zip = "22222-22229";
+		boolean is = InputValidationUtil.isZipValid(zip);
+		assertTrue(is);
+	}
  }

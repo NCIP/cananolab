@@ -247,6 +247,31 @@ public class SampleServicesTest {
 	}
 	
 	@Test
+	public void testDeleteAccess() {
+
+		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		webTarget.register(SampleServices.class);
+		
+		WebTarget searchSampleWebTarget = webTarget.path("sample").path("deleteAccess");
+			
+		SampleEditGeneralBean editBean = new SampleEditGeneralBean();
+		editBean.setSampleId(44695553);
+		editBean.setSampleName("SY-New Sample");
+		editBean.getKeywords().add("NewKeywork-" + System.currentTimeMillis());
+		
+		Response postResponse =
+				searchSampleWebTarget.request("application/json")
+		         .post(Entity.json(editBean));
+		
+		assertNotNull(postResponse);
+		System.out.println("Status: " + postResponse.getStatus());
+		assertTrue(postResponse.getStatus() == 401);
+		
+		postResponse.bufferEntity();
+		String json = (String) postResponse.readEntity(String.class);
+		assertTrue(json.contains("User session"));
+	}
+	@Test
 	public void testDeleteDataAvailability() {
 
 		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
