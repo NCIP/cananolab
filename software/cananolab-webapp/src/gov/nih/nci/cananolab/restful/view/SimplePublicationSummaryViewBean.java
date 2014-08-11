@@ -23,12 +23,23 @@ import java.util.TreeMap;
 public class SimplePublicationSummaryViewBean {
 
 	Set<String> publicationCategories;
+	
+	List<String> errors = new ArrayList<String>();
 
 	SortedMap<String, List<SimplePublicationBean>> category2Publications = new TreeMap<String, List<SimplePublicationBean>>();
 
 	List<SimplePublicationBean> pubList;
 
 	SimplePublicationBean publicationBean;
+
+	
+	public List<String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
+	}
 
 	public Set<String> getPublicationCategories() {
 		return publicationCategories;

@@ -16,7 +16,6 @@
 <!-- <div style="font-size:10px">{{master}}</div><br /><br />
 
 <div style="font-size:10px">{{scratchPad}}</div> -->
-
 <!-- Message Area -->
 <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>
 <div class="message">{{message}}</div>
@@ -96,7 +95,7 @@
                                     </td>
                                     <td>
                                         <div align="right">
-                                            <button ng-if="poc.primaryContact" ng-click="deletePoc(sampleId.data, poc)" class="btn btn-primary btn-xxs">Delete</button>                                            
+                                           
                                             <button ng-click="openPointOfContactModal(sampleId.data, poc)" class="btn btn-primary btn-xxs">Edit</button>
                                             
 
@@ -151,11 +150,17 @@
                             </td>
 
                         <td>
-                            <button ng-click="openDataAvailability(sampleId.data)" class="btn btn-primary btn-xxs">Generate</button>
+                            <button ng-if="!sampleData.dataAvailability" ng-click="generateDataAvailability(sampleId.data)" class="btn btn-primary btn-xxs">Generate</button>
+                            <div id="loader" class="sample offset" style="left:100px;top:-15px;" ng-show="generateLoader">
+                                <div id="loaderText">
+                                    Generating Data Availability Metrics
+                                </div>
+                                <div id="loaderGraphic"></div>
+                            </div>
 
                         </td>
                     </tr>
-                    <tr>
+                    <tr ng-if="sampleData.dataAvailability">
                         <td colspan="2">
                             <table class="editTableWithGrid" width="95%" align="center">
                                 <tbody><tr>

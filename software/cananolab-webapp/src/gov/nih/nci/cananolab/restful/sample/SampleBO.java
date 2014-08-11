@@ -469,9 +469,7 @@ public class SampleBO extends BaseAnnotationBO {
 
 		List<String> errors = validatePointOfContactInput(simplePOC);
 		if (errors.size() > 0) {
-			SampleEditGeneralBean errorBean = new SampleEditGeneralBean();
-			errorBean.setErrors(errors);
-			return errorBean;
+			return wrapErrorsInEditBean(errors);
 		}
 		
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
@@ -495,7 +493,7 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		//PointOfContactBean thePOC = new PointOfContactBean(); //sample.getThePOC();
 		
-		PointOfContactBean thePOC = resolveThePOCFromInput(sample, simplePOC, user.getLoginName());
+		PointOfContactBean thePOC = resolveThePOCToSaveFromInput(sample, simplePOC, user.getLoginName());
 		
 		//getPointOfContactBeanFromInput(thePOC, simplePOC, user.getLoginName());
 		//PointOfContactBean thePOC = getPointOfContactBeanFromInput(thePOC1, simplePOC, user.getLoginName());
@@ -1021,21 +1019,31 @@ public class SampleBO extends BaseAnnotationBO {
 				
 	}
 	
-	protected PointOfContactBean resolveThePOCFromInput(SampleBean sample, SimplePointOfContactBean simplePOC, String createdBy) {
-		PointOfContactBean newPOC = new PointOfContactBean();
-		return getPointOfContactBeanFromInput(newPOC, simplePOC, createdBy);
-//		PointOfContactBean primary = sample.getPrimaryPOCBean();
-//		List<PointOfContactBean> others = sample.getOtherPOCBeans();
-//		
-//		if (primary == null) {
-//			PointOfContactBean newPOC = new PointOfContactBean();
-//			return getPointOfContactBeanFromInput(newPOC, simplePOC, createdBy);
-//		} else {
-//			if (primary.getDomain().getId().longValue() == simplePOC.getId()) 
-//				return getPointOfContactBeanFromInput(primary, simplePOC, createdBy);;
-//		}
-//			
-//		return null;
+	protected PointOfContactBean resolveThePOCToSaveFromInput(SampleBean sample, SimplePointOfContactBean simplePOC, String createdBy) {
+//		PointOfContactBean newPOC = new PointOfContactBean();
+//		return getPointOfContactBeanFromInput(newPOC, simplePOC, createdBy);
+		
+		PointOfContactBean primary = sample.getPrimaryPOCBean();
+		List<PointOfContactBean> others = sample.getOtherPOCBeans();
+		long pocId = simplePOC.getId();
+		
+		if (primary == null || pocId == 0) { //new sample for submission or adding new POC
+			PointOfContactBean newPOC = new PointOfContactBean();
+			return getPointOfContactBeanFromInput(newPOC, simplePOC, createdBy);
+		} 
+		
+		if (primary.getDomain().getId().longValue() == simplePOC.getId()) 
+			return getPointOfContactBeanFromInput(primary, simplePOC, createdBy);
+		
+		if (others != null) {
+			for (PointOfContactBean poc : others) {
+				if (pocId == poc.getDomain().getId().longValue()) {
+					return getPointOfContactBeanFromInput(poc, simplePOC, createdBy);
+				}
+			}
+		}
+		
+		return null;
 	}
 	
 	protected PointOfContactBean getPointOfContactBeanFromInput(PointOfContactBean pocBean, SimplePointOfContactBean simplePOC, String createdBy) {
@@ -1043,7 +1051,10 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		pocBean.setupDomain(createdBy);
 		
-		Organization org = new Organization();
+		Organization org = pocBean.getDomain().getOrganization();
+		if (org == null)
+			org = new Organization();
+		
 		SimpleOrganizationBean simpleOrg = simplePOC.getOrganization();
 		
 		org.setName(simpleOrg.getName());
@@ -1066,7 +1077,7 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		if (simplePOC.getId() > 0)
 			pocBean.getDomain().setId(simplePOC.getId());
-		pocBean.setupDomain(createdBy);
+		//pocBean.setupDomain(createdBy);
 		
 		pocBean.getDomain().setFirstName(simplePOC.getFirstName());
 		pocBean.getDomain().setLastName(simplePOC.getLastName());
@@ -1128,6 +1139,12 @@ public class SampleBO extends BaseAnnotationBO {
 	protected SampleEditGeneralBean wrapErrorInEditBean(String error) {
 		SampleEditGeneralBean simpleBean = new SampleEditGeneralBean();
 		simpleBean.getErrors().add(error);
+		return simpleBean;
+	}
+	
+	protected SampleEditGeneralBean wrapErrorsInEditBean(List<String> errors) {
+		SampleEditGeneralBean simpleBean = new SampleEditGeneralBean();
+		simpleBean.setErrors(errors);
 		return simpleBean;
 	}
 	
