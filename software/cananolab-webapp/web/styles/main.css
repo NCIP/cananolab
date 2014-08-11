@@ -725,7 +725,9 @@ div.logindiv {
 }
 
 .message {
-    padding-left: 50px
+    padding-left: 0px;
+    font-weight:700;
+    color:#A90101;
 }
 
 .gridtableHomePage {
@@ -1438,7 +1440,7 @@ table.summaryViewNoGrid {
 }
 
 .backButtonNote {
-    color:#CC0000;
+    color:#A90101;
     font-weight:700;
     padding:7px 0px 7px 0px;
     text-align:right;

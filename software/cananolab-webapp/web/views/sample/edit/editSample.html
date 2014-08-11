@@ -19,9 +19,7 @@
 
 <!-- Message Area -->
 <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>
-<br>
 <div class="message">{{message}}</div>
-<br>
 <!--
 <h2>sampleId{{sampleData.sampleId}}</h2>
 <h2>sampleData.pointOfContacts[0].contactPerson {{sampleData.pointOfContacts[0].contactPerson}}</h2>
@@ -98,7 +96,10 @@
                                     </td>
                                     <td>
                                         <div align="right">
+                                            <button ng-if="poc.primaryContact" ng-click="deletePoc(sampleId.data, poc)" class="btn btn-primary btn-xxs">Delete</button>                                            
                                             <button ng-click="openPointOfContactModal(sampleId.data, poc)" class="btn btn-primary btn-xxs">Edit</button>
+                                            
+
                                         </div>
                                     </td>
                                 </tr>
@@ -193,7 +194,6 @@
         <br>
     </form>
 
-    <div style="font-size:10px">{{sampleData}}</div><br /><br />
 
 </div>
 <div id="loader" class="sample offset" ng-show="loader">

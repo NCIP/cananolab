@@ -65,7 +65,7 @@ var app = angular.module('angularApp')
         $scope.loader = true;
         // check if organization and role are other. if so set name to other instead of dropdown values //
         if ($scope.other.organization && $scope.poc.organization.name=='[other]') { 
-            $scope.organizationOther = false;
+            // $scope.organizationOther = false;
             $scope.poc.organization.name = $scope.other.organization;
         }
         if ($scope.other.role && $scope.poc.role=='[other]') {

@@ -136,9 +136,29 @@ var app = angular.module('angularApp')
 
 
 // * editSample Button Bar
-    $scope.delete = function() {
+    $scope.deletePoc = function(id,poc) {
+        var modalHtml = '<div class="modal-header">Are you sure you wish to delete the primary point of contact?</div>';
+        modalHtml+= '<div class="modal-body"><button ng-disabled="loader" style="margin-right:50px !important;" ng-click="closeModal(1)" class="btn btn-primary btn-sm">Yes</button>';
+        modalHtml+= '<button ng-disabled="loader" ng-click="closeModal(0)" class="btn btn-primary  btn-sm">No</button></div>';
+        modalHtml+='<div id="loader" style="top:0px;left:30px;" ng-show="loader"><div id="loaderText">Deleting Primary Point of Contact</div><div id="loaderGraphic"></div></div>';
+
+        var modalInstance = $modal.open({
+            template:modalHtml,
+            size:"sm",
+            controller:"modalCtrl",
+            resolve: {
+                id: function() {
+                    return id;
+                }
+            }
+        });
+
+        modalInstance.result.then(function () {
+          $scope.message = "Point of Contact deleted";
+        });        
 
     };
+
     $scope.copy = function() {
         //Submit a copy of $root.master with the samplName changed
         $modal.open({
@@ -491,8 +511,22 @@ var app = angular.module('angularApp')
         
     };   
     
-    /** End - Access Section **/    
+    /** End - Access Section **/        
 
     $scope.master = angular.copy($scope.sampleData);
     $scope.reset();
+})
+
+.controller('modalCtrl', function ($scope, $modalInstance, id) {
+    $scope.closeModal = function(val) {
+        if (val) {
+            $scope.loader = true;
+            alert(id);
+            $modalInstance.close();            
+        }
+        else {
+            $modalInstance.dismiss();
+        }
+
+    }
 });
