@@ -379,20 +379,20 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public SampleEditGeneralBean savePointOfContactList(SampleEditGeneralBean simpleSampleBean, 
-			HttpServletRequest request) 
-			throws Exception {
-		
-		List<SimplePointOfContactBean> pocList = simpleSampleBean.getPointOfContacts();
-		if (pocList == null || pocList.size() == 0) 
-			return this.wrapErrorInEditBean("POC list is empty. Unable to update POC");
-		
-		SimplePointOfContactBean thePOC = findDirtyPOC(pocList);
-		if (thePOC == null)
-			return this.wrapErrorInEditBean("Unable to find the dirty POC to update");
-		
-		return savePointOfContact(simpleSampleBean, thePOC, request);
-	}
+//	public SampleEditGeneralBean savePointOfContactList(SampleEditGeneralBean simpleSampleBean, 
+//			HttpServletRequest request) 
+//			throws Exception {
+//		
+//		List<SimplePointOfContactBean> pocList = simpleSampleBean.getPointOfContacts();
+//		if (pocList == null || pocList.size() == 0) 
+//			return this.wrapErrorInEditBean("POC list is empty. Unable to update POC");
+//		
+//		SimplePointOfContactBean thePOC = findDirtyPOC(pocList);
+//		if (thePOC == null)
+//			return this.wrapErrorInEditBean("Unable to find the dirty POC to update");
+//		
+//		return savePointOfContact(simpleSampleBean, thePOC, request);
+//	}
 	
 	/**
 	 * Find the "dirty" SimplePointOfContactBean from a list
@@ -461,8 +461,7 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	protected SampleEditGeneralBean savePointOfContact(SampleEditGeneralBean simpleSampleBean, 
-			SimplePointOfContactBean simplePOC, HttpServletRequest request) 
+	public SampleEditGeneralBean savePointOfContact(SimplePointOfContactBean simplePOC, HttpServletRequest request) 
 			throws Exception {
 
 		List<String> errors = validatePointOfContactInput(simplePOC);
@@ -474,12 +473,10 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");
-		long sampleId = simpleSampleBean.getSampleId();
-		String newSampleName = simpleSampleBean.getSampleName();
 		
-		PointOfContactBean thePOC = new PointOfContactBean(); //sample.getThePOC();
-		getPointOfContactBeanFromInput(thePOC, simplePOC, user.getLoginName());
-		//PointOfContactBean thePOC = getPointOfContactBeanFromInput(thePOC1, simplePOC, user.getLoginName());
+		
+		long sampleId = simplePOC.getSampleId();
+		String newSampleName = simplePOC.getNewSampleName();
 		
 		if (sample == null) { 
 			if (newSampleName == null || newSampleName.length() == 0) 
@@ -493,7 +490,23 @@ public class SampleBO extends BaseAnnotationBO {
 				return this.wrapErrorInEditBean("Current sample id doesn't match sample id in session");
 		}
 		
+		
+		//PointOfContactBean thePOC = new PointOfContactBean(); //sample.getThePOC();
+		
+		PointOfContactBean thePOC = resolveThePOCFromInput(sample, simplePOC, user.getLoginName());
+		
+		getPointOfContactBeanFromInput(thePOC, simplePOC, user.getLoginName());
+		//PointOfContactBean thePOC = getPointOfContactBeanFromInput(thePOC1, simplePOC, user.getLoginName());
+		
+		
+		
+		
 		Long oldPOCId = thePOC.getDomain().getId();
+		
+		//Need to find the org POC if it's an update
+				//because new org name means a create-new POC with old data
+		//PointOfContactBean orgPOC = sample.getDomain().get
+		
 		// set up one sampleService
 		SampleService service = setServiceInSession(request);
 		// have to save POC separately because the same organizations can not be
@@ -1007,6 +1020,23 @@ public class SampleBO extends BaseAnnotationBO {
 				 PropertyUtil.getProperty("sample", "cloningSample.name.invalid")
 				 : "";
 				
+	}
+	
+	protected PointOfContactBean resolveThePOCFromInput(SampleBean sample, SimplePointOfContactBean simplePOC, String createdBy) {
+		PointOfContactBean newPOC = new PointOfContactBean();
+		return getPointOfContactBeanFromInput(newPOC, simplePOC, createdBy);
+//		PointOfContactBean primary = sample.getPrimaryPOCBean();
+//		List<PointOfContactBean> others = sample.getOtherPOCBeans();
+//		
+//		if (primary == null) {
+//			PointOfContactBean newPOC = new PointOfContactBean();
+//			return getPointOfContactBeanFromInput(newPOC, simplePOC, createdBy);
+//		} else {
+//			if (primary.getDomain().getId().longValue() == simplePOC.getId()) 
+//				return getPointOfContactBeanFromInput(primary, simplePOC, createdBy);;
+//		}
+//			
+//		return null;
 	}
 	
 	protected PointOfContactBean getPointOfContactBeanFromInput(PointOfContactBean pocBean, SimplePointOfContactBean simplePOC, String createdBy) {
