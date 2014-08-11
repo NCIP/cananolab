@@ -463,9 +463,10 @@ public class SampleEditGeneralBean {
 	protected void transferPointOfContactData(SampleBean sampleBean) {
 		pointOfContacts = new ArrayList<SimplePointOfContactBean>();
 		PointOfContact samplePOC = sampleBean.getPrimaryPOCBean().getDomain();
+		long sampleId = sampleBean.getDomain().getId().longValue();
 		if (samplePOC != null && samplePOC.getId() > 0) {
 			SimplePointOfContactBean poc = new SimplePointOfContactBean();
-			transferPointOfContactData(samplePOC, poc);
+			transferPointOfContactData(samplePOC, poc, sampleId);
 			poc.setPrimaryContact(true);
 			pointOfContacts.add(poc);
 		}
@@ -475,15 +476,17 @@ public class SampleEditGeneralBean {
 		
 		for (PointOfContactBean aPoc : others) {
 			SimplePointOfContactBean poc = new SimplePointOfContactBean();
-			transferPointOfContactData(aPoc.getDomain(), poc);
+			transferPointOfContactData(aPoc.getDomain(), poc, sampleId);
 			pointOfContacts.add(poc);
 		}
 	}
 	
-	protected void transferPointOfContactData(PointOfContact samplePOC, SimplePointOfContactBean poc) {
+	protected void transferPointOfContactData(PointOfContact samplePOC, SimplePointOfContactBean poc,
+			long sampleId) {
 		
 		poc.setFirstName(samplePOC.getFirstName());
 		poc.setLastName(samplePOC.getLastName());
+		poc.setSampleId(sampleId);
 		
 		SimpleOrganizationBean simpleOrg = new SimpleOrganizationBean();
 		simpleOrg.setName(samplePOC.getOrganization().getName());

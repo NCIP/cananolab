@@ -7,14 +7,19 @@ public class SimpleAddressBean {
 	@PatternMatchIfNotNullNotEmpty(regexpName="textFieldWhiteList", messageSource="sample", messageKey="organization.address1.invalid")
 	String line1 = "";
 	
-	
+	@PatternMatchIfNotNullNotEmpty(regexpName="textFieldWhiteList", messageSource="sample", messageKey="organization.address2.invalid")
 	String line2 = "";
+	
+	@PatternMatchIfNotNullNotEmpty(regexpName="relaxedAlphabetic", messageSource="sample", messageKey="organization.city.invalid")
 	String city = "";
+	
+	@PatternMatchIfNotNullNotEmpty(regexpName="relaxedAlphabetic", messageSource="sample", messageKey="organization.state.invalid")
 	String stateProvince = "";
 	
 	@PatternMatchIfNotNullNotEmpty(regexpName="zip", messageSource="sample", messageKey="postalCode.invalid")
-	//message="Postal Code format is invalid"
 	String zip = "";
+	
+	@PatternMatchIfNotNullNotEmpty(regexpName="relaxedAlphabetic", messageSource="sample", messageKey="organization.country.invalid")
 	String country = "";
 	
 	public String getLine1() {

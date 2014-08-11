@@ -43,6 +43,7 @@ public class InputValidationUtil {
 	
 	public static boolean isZipValid(String input) {
 		String reg = "^(\\d{5}(-\\d{4})?)|([a-zA-Z0-9\\s])$";
+		boolean match = input.matches(reg);
 		return (input == null) ? false : input.matches(reg);
 	}
 	

@@ -1,22 +1,42 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+//import org.hibernate.validator.Valid;
+
+import javax.validation.Valid;
+
+import gov.nih.nci.cananolab.restful.validator.PatternMatchIfNotNullNotEmpty;
+
 public class SimplePointOfContactBean {
 	
 	long id;
 	boolean isPrimaryContact;
 	String contactPerson = "";
 	
+	long sampleId;
+	String newSampleName;
+	
+	@Valid
 	SimpleOrganizationBean organization;
 	
+	@PatternMatchIfNotNullNotEmpty(regexpName="textFieldWhiteList", messageSource="sample", messageKey="role.name.invalid")
 	String role = "";
 	
+	@Valid
 	SimpleAddressBean address;
 	
+	@PatternMatchIfNotNullNotEmpty(regexpName="relaxedAlphabetic", messageSource="sample", messageKey="firstName.invalid")
 	String firstName = "";
+	
+	@PatternMatchIfNotNullNotEmpty(regexpName="relaxedAlphabetic", messageSource="sample", messageKey="lastName.invalid")
 	String lastName = "";
+	
+	@PatternMatchIfNotNullNotEmpty(regexpName="relaxedAlphabetic", messageSource="sample", messageKey="middleInitial.invalid")
 	String middleInitial = "";
 	
+	@PatternMatchIfNotNullNotEmpty(regexpName="phone", messageSource="sample", messageKey="phone.invalid")
 	String phoneNumber = "";
+	
+	//@PatternMatchIfNotNullNotEmpty(regexpName="phone", messageSource="sample", messageKey="phone.invalid")
 	String email = "";
 	
 	boolean dirty = false;
@@ -93,6 +113,18 @@ public class SimplePointOfContactBean {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	public long getSampleId() {
+		return sampleId;
+	}
+	public void setSampleId(long sampleId) {
+		this.sampleId = sampleId;
+	}
+	public String getNewSampleName() {
+		return newSampleName;
+	}
+	public void setNewSampleName(String newSampleName) {
+		this.newSampleName = newSampleName;
 	}
 
 }

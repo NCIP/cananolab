@@ -1,7 +1,12 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.restful.validator.PatternMatchIfNotNullNotEmpty;
+
 public class SimpleOrganizationBean {
+	
 	long id;
+	
+	@PatternMatchIfNotNullNotEmpty(regexpName="textFieldWhiteList", messageSource="sample", messageKey="organization.name.invalid")
 	String name = "";
 	
 	public long getId() {
