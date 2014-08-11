@@ -31,9 +31,38 @@ var app = angular.module('angularApp')
         else { $scope.otherRow = false; }
     };
 
+    // delete the point of contact //
+    // opens delete buttons if block is false, otherwise deletes or closes block //
+    $scope.delete = function(val,block) {
+        $scope.deleteBlock = true;
+        // checks if it is a yes or no button or main delete button that calls method //
+        if (block) {
+            // called if yes button is pressed on delete block //
+            if (val) {
+                $scope.poc.dirty = true;
+                alert($scope.poc);
+                $scope.loader = true;
+                $scope.loaderMessage = "Deleting";
+                $http({method: 'POST', url: '/caNanoLab/rest/sample/deletePOC',data: $scope.poc}).
+                    success(function(data, status, headers, config) {
+                        $scope.sampleData = data;
+                        $modalInstance.close();
+                    }).
+                    error(function(data, status, headers, config) {
+                        $scope.loader = false;
+                        $scope.message = data;
+                });
+            }
+            // this is no button. close the block //
+            else {
+                $scope.deleteBlock = false;
+            };
+        };
+    };
+
     $scope.savePoc = function() {
         $scope.loader = true;
-
+        $scope.loaderMessage = "Saving";
         $scope.message = "";
         sampleService.pocData.dirty = true;
         if(parseInt(sampleService.pocData.id) > 0) {

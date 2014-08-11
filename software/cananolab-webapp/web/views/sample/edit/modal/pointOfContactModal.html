@@ -8,7 +8,7 @@
     <div style="clear:both"></div>
     <h4 ng-if="poc.primaryContact" class="modal-title">Primary</h4>
     <h4 ng-if="!poc.primaryContact" class="modal-title">Secondary</h4>
-</div>
+</div>{{poc}}
 <div class="modal-body" width='750px'>
     <div style="clear:both"></div>
     <div>
@@ -162,13 +162,20 @@
             </tr>
         </tbody></table>
     </div>
+<div style="padding-top:20px;margin-left:38px;width:300px" ng-show="deleteBlock" class="message">
+    Are you sure you wish to delete this contact?<br /><br />
+    <div>
+    <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(1,1)" class="btn btn-danger btn-sm">Yes</button>
+    <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn btn-warning btn-modal">No</button>
 </div>
-<!-- {{other.organization}}
-{{sampleData.organizationNamesForUser}}
-{{poc.organization.name}}{{poc.id}} -->
+</div>
+
+</div>
+
 <div style="clear:both;"></div>
 <div class="modal-footer">
     <button ng-click="cancel()" class="btn btn-warning btn-modal" ng-disabled="loader">Cancel</button>
+    <button ng-if="!poc.primaryContact" ng-click="delete()" class="btn btn-warning btn-danger" ng-disabled="loader">Delete</button>    
     <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="!poc.organization.name || loader">Save</button>
 </div>
 
@@ -177,7 +184,7 @@
 </div>
   <div id="loader" style="top:-300px;left:300px" ng-show="loader">
     <div id="loaderText">
-      Saving
+      {{loaderMessage}}
     </div>
     <div id="loaderGraphic"></div>
   </div>
