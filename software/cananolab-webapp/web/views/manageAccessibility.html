@@ -9,7 +9,7 @@
            onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'{{$parent.parentFormName}}\', \'{{$parent.dataType}}\')');"
            id="addAccess" style="display:block"><img
                 align="top" src="images/btn_add.gif" border="0" alt="add accessibility"/></a> -->
-        <button ng-click="$parent.addAccess=true; $parent.showAddAccessButton=false;" id="addAccess" class="btn btn-primary btn-xxs">Add</button>
+        <button ng-click="$parent.addAccess=true; $parent.showAddAccessButton=false;$parent.showAccessSelection=false;$parent.accessForm.theAccess.userBean.loginName='';$parent.accessForm.theAccess.groupName='';$parent.access.loginName='';$parent.access.groupName='';$parent.accessForm.theAccess.roleName='';" id="addAccess" class="btn btn-primary btn-xxs">Add</button>
     </td>
 </tr>
 <tr>
@@ -35,7 +35,7 @@
                     <td>
                         <!-- <div align="right" ng-if="access.groupName == 'Curator' || access.groupName == 'Public' && !$parent.user.curator" > -->
                         <div align="right" ng-if="access.groupName != 'Curator' &&  $parent.isCurator.curator" >
-                                <button ng-click="editGroupAccessSection('{{access.groupName}}','{{access.roleDisplayName}}');" class="btn btn-primary btn-xxs">Edit</button>        
+                                <button ng-click="$parent.accessForm.theAccess.userBean.loginName='';$parent.accessForm.theAccess.groupName='';$parent.access.loginName='';$parent.access.groupName='';$parent.accessForm.theAccess.roleName='';editGroupAccessSection('{{access.groupName}}','{{access.roleDisplayName}}');" class="btn btn-primary btn-xxs">Edit</button>        
                         </div>
                     </td>
                 </tr>
@@ -65,7 +65,7 @@
                         </td>
                         <td>
                             <div align="right" ng-if="access.userBean.loginName != user.loginName">
-                                    <button ng-click="editUserAccessSection('{{access.userBean.loginName}}','{{access.roleDisplayName}}');" class="btn btn-primary btn-xxs">Edit</button>
+                                    <button ng-click="$parent.accessForm.theAccess.userBean.loginName='';$parent.accessForm.theAccess.groupName='';$parent.access.loginName='';$parent.access.groupName='';$parent.accessForm.theAccess.roleName='';editUserAccessSection('{{access.userBean.loginName}}','{{access.roleDisplayName}}');" class="btn btn-primary btn-xxs">Edit</button>
                                 </c:otherwise>
                             </div>
                         </td>
