@@ -32,7 +32,7 @@
   </tabset>
 </div>
 <div class="summaryBorder">
-<table  ng-hide="show{{$index}}" class="summaryViewNoTop" width="100%" summary="layout" ng-repeat="type in publicationCategories">
+<table  ng-hide="show{{$index}}" class="summaryViewNoTop" width="100%" summary="layout" ng-repeat="type in masterPublicationCategories">
     <tr>
         <td>
                 <table id="summarySection${{$index}}" class="summaryViewNoGrid"
@@ -41,6 +41,10 @@
                         <th align="left" scope="col">
                             <a name="{{type}}" class="anchorLink"><span
                                     class="summaryViewHeading">{{type}}</span> </a>
+                                &nbsp;&nbsp;
+                                <a href="/caNanoLab/#/submitPublication?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleData.data[0].sampleName}}" class="addlink"  ng-if="tabs.userLoggedIn">
+                                    <img align="middle" src="images/btn_add.gif" border="0" alt="add new {{type}}">
+                                </a>
                         </th>
                     </tr>
                     <tr>
@@ -51,7 +55,7 @@
                                     <th valign="top" align="left" height="6">
                                     </th>
                                 </tr>
-                                <tr  ng-repeat="pubBean in category2Publications[type]" ng-init="pubObj = pubBean.domainFile">
+                                <tr  ng-repeat="pubBean in category2Publications[type]" ng-init="pubObj = pubBean.domainFile" ng-if="category2Publications[type] != null">
                                     <td>
 	                                    	<div class="editButton" ng-if="pubBean.userUpdatable == true">
 												<a href="#/editPublication?sampleId={{sampleId.data}}&amp;publicationId={{pubBean.publicationId}}">Edit</a>
@@ -104,6 +108,10 @@
                                             </table>
                                             <br ng-if="$index < category2Publications.length"/>
                                     </td>
+                                </tr>
+                                <tr ng-if="category2Publications[type] == null">
+                                        <td>N/A
+                                        </td>
                                 </tr>
                                 <tr>
                                     <th valign="top" align="left" height="6">

@@ -9,7 +9,7 @@ var app = angular.module('angularApp')
     $rootScope.navTree = true;
     $rootScope.navDetail = 3;
     $scope.publicationCategories=[];
-
+    $scope.masterPublicationCategories = ["book chapter","editorial","peer review article","proceeding","report","review"];
 
     if ($routeParams.sampleId) {
       $scope.sampleId.data = $routeParams.sampleId;
@@ -51,6 +51,20 @@ var app = angular.module('angularApp')
                 $scope.publicationBean = data.publicationBean;
                 $scope.category2Publications = data.category2Publications;
                 $scope.loader = false;
+                
+                // Create a list of categories to display
+                if( $rootScope.tabs.userLoggedIn ) {
+        	        for (var i=0; i<$scope.publicationCategories.length; i++) {
+        	            var index = $scope.masterPublicationCategories.indexOf($scope.publicationCategories[i]);
+        	            if (index > -1) {
+        	                $scope.masterPublicationCategories.splice(index, 1);
+        	            }
+        	        }
+        	        $scope.masterPublicationCategories =  $scope.masterPublicationCategories.concat($scope.publicationCategories);
+                }
+                else {
+                	$scope.masterPublicationCategories = $scope.publicationCategories;
+                }
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs
@@ -60,7 +74,9 @@ var app = angular.module('angularApp')
 
             });
     //});
-    
+        
+
+        
         $scope.print = function() {
         	window.open('views/sample/view/printPublication.html?sampleId=' + $scope.sampleId.data+'&sampleName='+$scope.sampleData.data[0].sampleName);
         };

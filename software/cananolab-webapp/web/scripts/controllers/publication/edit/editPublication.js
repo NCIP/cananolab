@@ -59,6 +59,17 @@ var app = angular.module('angularApp')
         //});
 
         $scope.sampleId = $routeParams.sampleId;
+        $scope.sampleName = $routeParams.sampleName;
+        $scope.type = $routeParams.type;
+        
+        $scope.type = $routeParams.type;
+
+        $scope.$on('$viewContentLoaded', function() {
+            if ($scope.type != null) {
+                console.log($scope.type);
+                $scope.publicationForm.category = $scope.type;
+            }
+        });        
         
         $scope.loadPublicationData = function() {
 	        if( $scope.publicationId != null ) {

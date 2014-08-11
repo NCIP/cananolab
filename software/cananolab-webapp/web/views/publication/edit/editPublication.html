@@ -1,55 +1,28 @@
+<div class="nanoPageContainer">
 <div class="spacer">
 <form ng-submit="validateSavingTheData('newAuthor', 'Authors');"  novalidate>
-<table class="contentTitle" width="100%" border="0" summary="layout" ng-if="sampleId==null && publicationId==null">
+<table class="contentTitle" width="100%" border="0" summary="layout">
     <tbody>
     <tr>
-        <th scope="col" align="left">
+        <th scope="col" align="left" ng-if="sampleId==null && publicationId==null">
             Submit Publication
         </th>
-
-        <td align="right" width="30%">
-            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SubmittingaPublication')">Help</a>
-            &nbsp;
-            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
-            &nbsp;
-        </td>
-    </tr>
-    </tbody>
-</table>
-<table class="contentTitle" width="100%" border="0" summary="layout" ng-if="sampleId==null && publicationId!=null">
-    <tbody><tr>
-        <th scope="col" align="left">
+        
+        <th scope="col" align="left" ng-if="sampleId==null && publicationId!=null">
             Update Publication
         </th>
+        
+        <th scope="col" align="left" ng-if="sampleId!=null && publicationId!=null">
+            Update Publication for Sample {{sampleName}}
+        </th>    
+        
+        <th scope="col" align="left" ng-if="sampleId!=null && publicationId==null">
+            Submit Publication for {{sampleName}}
+        </th>    
 
         <td align="right" width="30%">
-            <!-- <a class="helpText" href="javascript:gotoPage('publicationResults.do')">Back</a>
-            &nbsp; -->
-
             <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SubmittingaPublication')">Help</a>
             &nbsp;
-
-
-            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
-            &nbsp;
-        </td>
-    </tr>
-    </tbody>
-</table>
-<table class="contentTitle" width="100%" border="0" summary="layout" ng-if="sampleId!=null && publicationId!=null">
-    <tbody><tr>
-        <th scope="col" align="left">
-            Update Publication for Sample {{sampleId}}
-        </th>
-
-        <td align="right" width="30%">
-            <!-- <a class="helpText" href="javascript:gotoPage('publicationResults.do')">Back</a>
-            &nbsp;  -->
-
-            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SubmittingaPublication')">Help</a>
-            &nbsp;
-
-
             <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
             &nbsp;
         </td>
@@ -77,7 +50,7 @@
                                                                                 clearPublication();updateSubmitFormBasedOnCategory();enableAutoFields();" required>  -->
                         <select ng-disabled="loader" id="category" ng-model="publicationForm.category"
                                 onchange="callPrompt('Publication Type', 'category', 'categoryPrompt');" required>
-                            <option ng-repeat="option in publicationCategories" value="{{option}}">
+                            <option ng-repeat="option in publicationCategories" value="{{option}}" ng-selected="{{option==publicationForm.category}}">
                                 {{option}}
                             </option>
                             <option value="other">
@@ -489,11 +462,12 @@
     </tr>
     </tbody>
 </table>
+</form>
 <div id="loader" ng-show="loader">
     <div id="loaderText">
       Loading
     </div>
     <div id="loaderGraphic"></div>
 </div>
-</form>
+</div>
 </div>
