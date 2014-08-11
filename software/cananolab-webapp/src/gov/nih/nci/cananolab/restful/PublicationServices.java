@@ -1,5 +1,8 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +29,11 @@ import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -36,10 +41,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.context.ApplicationContext;
 
 @Path("/publication")
@@ -141,7 +149,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	@Path("/summaryEdit")
 	@Produces ("application/json")
 	 public Response summaryEdit(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dispatch") String dispatch){
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
 
@@ -150,13 +158,10 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 
 		 PublicationForm form = new PublicationForm();
 		 form.setSampleId(sampleId);
-		 form.setDispatch(dispatch);
-		 PublicationSummaryViewBean pubBean = publicationBO.summaryEdit(sampleId, httpRequest);
-			SampleEditPublicationBean view = new SampleEditPublicationBean();
-			view.transferPublicationBeanForSummaryEdit(httpRequest, pubBean);
+		 SimplePublicationSummaryViewBean pubBean = publicationBO.summaryEdit(sampleId, httpRequest);
 			
 			// return Response.ok(view).build();
-			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(pubBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the publication results" + e.getMessage())).build();
@@ -273,11 +278,14 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			List<String> msgs = pubBO.create(form, httpRequest);
+			SimplePublicationSummaryViewBean bean = pubBO.create(form, httpRequest);
 			 
 			
-			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-
+			List<String> errors = bean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(bean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+					
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
@@ -451,5 +459,5 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the access " + e.getMessage())).build();
 		}
 	}
-	
 }
+	

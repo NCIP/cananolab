@@ -286,6 +286,11 @@ L-->
    <version>2.2.4</version>
 </dependency>
 
+<dependency>
+    <groupId>org.glassfish.jersey.media</groupId>
+    <artifactId>jersey-media-multipart</artifactId>
+    <version>2.6</version>
+</dependency>
 
 	</dependencies>
 	

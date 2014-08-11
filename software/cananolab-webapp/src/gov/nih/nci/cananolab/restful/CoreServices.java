@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.restful.core.AccessibilityManager;
 import gov.nih.nci.cananolab.restful.core.CustomPlugInBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
@@ -7,21 +8,30 @@ import gov.nih.nci.cananolab.restful.core.TabGenerationBO;
 import gov.nih.nci.cananolab.restful.view.SimpleTabsBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.context.ApplicationContext;
 
 @Path("/core")
