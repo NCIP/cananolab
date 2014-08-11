@@ -284,7 +284,7 @@ public class SampleServices {
 	@POST
 	@Path("/savePOC")
 	@Produces ("application/json")
-	public Response savePOC(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleSampleBean) {
+	public Response savePOC(@Context HttpServletRequest httpRequest, SimplePointOfContactBean simplePOCBean) {
 		logger.info("In savePOC");
 		try {
 			SampleBO sampleBO = 
@@ -294,7 +294,7 @@ public class SampleServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			SampleEditGeneralBean editBean = sampleBO.savePointOfContactList(simpleSampleBean, httpRequest);
+			SampleEditGeneralBean editBean = sampleBO.savePointOfContact(simplePOCBean, httpRequest);
 			List<String> errors = editBean.getErrors();
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(editBean).build() :
@@ -347,7 +347,7 @@ public class SampleServices {
 					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 
 		try {
-			SampleEditGeneralBean simpleBean = sampleBO.updateDataAvailability(sampleId, httpRequest);
+			SampleEditGeneralBean simpleBean = sampleBO.updateDataAvailability(sampleId.trim(), httpRequest);
 			return (simpleBean.getErrors().size() == 0) ?
 					Response.ok(simpleBean).build()
 					:
