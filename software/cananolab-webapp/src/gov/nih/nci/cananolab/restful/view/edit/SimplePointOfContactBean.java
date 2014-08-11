@@ -13,7 +13,6 @@ public class SimplePointOfContactBean {
 	String contactPerson = "";
 	
 	long sampleId;
-	String newSampleName;
 	
 	@Valid
 	SimpleOrganizationBean organization;
@@ -120,11 +119,4 @@ public class SimplePointOfContactBean {
 	public void setSampleId(long sampleId) {
 		this.sampleId = sampleId;
 	}
-	public String getNewSampleName() {
-		return newSampleName;
-	}
-	public void setNewSampleName(String newSampleName) {
-		this.newSampleName = newSampleName;
-	}
-
 }
