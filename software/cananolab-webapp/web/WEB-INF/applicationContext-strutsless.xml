@@ -80,6 +80,10 @@
 		class="gov.nih.nci.cananolab.restful.core.AccessibilityManager">
 	</bean>
 	
+	<bean id="searchProtocolBO"							
+		class="gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO">
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 

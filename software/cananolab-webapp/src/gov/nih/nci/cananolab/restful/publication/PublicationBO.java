@@ -35,6 +35,7 @@ import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationExporter;
@@ -55,13 +56,16 @@ import gov.nih.nci.cananolab.util.StringUtils;
 public class PublicationBO extends BaseAnnotationBO{
 	Logger logger = Logger.getLogger(PublicationBO.class);
 	
-		public List<String> create(SimpleSubmitPublicationBean simplePubBean,
+		public SimplePublicationSummaryViewBean create(SimpleSubmitPublicationBean simplePubBean,
 			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
+		SimplePublicationSummaryViewBean bean = new SimplePublicationSummaryViewBean();
 		HttpSession session = request.getSession();
 		PublicationBean publicationBean = transferSimpleSubmitPublicationBean(simplePubBean);
-				
+			
+		String sampleId = simplePubBean.getSampleId().toString();
+		session.setAttribute("sampleId", sampleId);
 		Boolean newPub = true;
 		if (publicationBean.getDomainFile().getId() != null
 				&& publicationBean.getDomainFile().getId() > 0) {
@@ -69,12 +73,12 @@ public class PublicationBO extends BaseAnnotationBO{
 		}
 		msgs = savePublication(request, publicationBean);
 		if(msgs.size()>0){
-			return msgs;
+			bean.setErrors(msgs);
+			return bean;
 		}
 	
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String sampleId = simplePubBean.getSampleId();
-		session.setAttribute("sampleId", sampleId);
+		
 
 		// retract from public if updating an existing public record and not
 		// curator
@@ -84,16 +88,19 @@ public class PublicationBO extends BaseAnnotationBO{
 					((Publication) publicationBean.getDomainFile()).getTitle(),
 					"publication");
 			msgs.add(PropertyUtil.getProperty("publication", "message.updatePublication.retractFromPublic"));
-			return msgs;
+			bean.setErrors(msgs);
+			return bean;
 		
 		} else {
 			msgs.add("success");
+			bean.setErrors(msgs);
+			
 		}
 		
 		if (!StringUtils.isEmpty(sampleId)) {
-		//	return summaryEdit(sampleId, request);
+			return summaryEdit(sampleId, request);
 		} 
-		return msgs;
+		return bean;
 	}
 
 	public List<String> savePublication(HttpServletRequest request,
@@ -172,7 +179,7 @@ public class PublicationBO extends BaseAnnotationBO{
 							.getCategory()) + 1;
 			request.setAttribute("onloadJavascript", "showSummary('" + ind
 					+ "', " + allPublicationTypes.size() + ")");
-			msgs.add(PropertyUtil.getProperty("publication", "message.submitPublication"+publicationBean.getDomainFile().getTitle()));
+			//msgs.add(PropertyUtil.getProperty("publication", "message.submitPublication"+publicationBean.getDomainFile().getTitle()));
 
 		}
 		return msgs;
@@ -241,10 +248,10 @@ public class PublicationBO extends BaseAnnotationBO{
 		if(!InputValidationUtil.isTextFieldWhiteList(title)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.title.invalid"));
 		}
-		String externalUrl = publication.getUri();
-		if(!InputValidationUtil.isTextFieldWhiteList(externalUrl)){
-			errors.add(PropertyUtil.getProperty("publication", "file.uri.invalid"));
-		}
+//		String externalUrl = publication.getUri();
+//		if(!InputValidationUtil.isTextFieldWhiteList(externalUrl)){
+//			errors.add(PropertyUtil.getProperty("publication", "file.uri.invalid"));
+//		}
 		for(int i=0;i<publicationBean.getAuthors().size();i++){
 			String firstName = publicationBean.getAuthors().get(i).getFirstName();
 			if(!InputValidationUtil.isRelaxedAlphabetic(firstName)){
@@ -478,14 +485,13 @@ public class PublicationBO extends BaseAnnotationBO{
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	public PublicationSummaryViewBean summaryEdit(String sampleId,
+	public SimplePublicationSummaryViewBean summaryEdit(String sampleId,
 			HttpServletRequest request)
 			throws Exception {
 		// if session is expired or the url is clicked on directly
 		PublicationSummaryViewBean summaryEdit = null;
 		//String sampleId = form.getSampleId();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		System.out.println("Making sure the user is not null"+ user);
 		if (user == null) {
 			summaryEdit = summaryView(sampleId, request);
 		}
@@ -494,7 +500,9 @@ public class PublicationBO extends BaseAnnotationBO{
 	//	super.checkOpenAccessForm(form,request);
 	//	saveToken(request);
 	//	return mapping.findForward("summaryEdit");
-		return summaryEdit;
+		SimplePublicationSummaryViewBean bean = new SimplePublicationSummaryViewBean();
+		bean.transferPublicationBeanForSummaryView(summaryEdit);
+		return bean;
 	}
 
 	/**
