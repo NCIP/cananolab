@@ -603,47 +603,33 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		Boolean accessValid = true;
 		
 		List<String> errors = new ArrayList<String>();
-//		ActionMessages msgs = new ActionMessages();
-		// per app scan, in case user submits parameters through URL instead of
-		// form
 		if (!theAccess.getAccessBy().equalsIgnoreCase(
 				AccessibilityBean.ACCESS_BY_GROUP)
 				&& !theAccess.getAccessBy().equalsIgnoreCase(
 						AccessibilityBean.ACCESS_BY_PUBLIC)
 				&& !theAccess.getAccessBy().equalsIgnoreCase(
 						AccessibilityBean.ACCESS_BY_USER)) {
-	//		ActionMessage msg = new ActionMessage("error.invalidAccessBy",
-	//				theAccess.getAccessBy());
-	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	//		saveErrors(request, msgs);
-			errors.add("You've entered an invalid Access by field");
+			String err = PropertyUtil.getPropertyReplacingToken("sample", "error.invalidAccessBy", "0", theAccess.getAccessBy());
+			errors.add(err);
 			accessValid = false;
 		}
 		if (!theAccess.getRoleName().equalsIgnoreCase(
 				AccessibilityBean.CSM_CURD_ROLE)
 				&& !theAccess.getRoleName().equalsIgnoreCase(
 						AccessibilityBean.CSM_READ_ROLE)) {
-	//		ActionMessage msg = new ActionMessage("error.invalidRoleName",
-	//				theAccess.getRoleName());
-	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	//		saveErrors(request, msgs);
-			errors.add("You've entered an invalid role name");
+			String err = PropertyUtil.getPropertyReplacingToken("sample", "error.invalidRoleName", "0", theAccess.getRoleName());
+			errors.add(err);
 			accessValid = false;
 		}
 		if (!validateGroupAccess(request, theAccess)) {
-			//ActionMessage msg = new ActionMessage("error.invalidGroup",
-			//		theAccess.getGroupName());
-	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	//		saveErrors(request, msgs);
 			errors.add("You've entered an invalid group name. Or you don't have acess to the group.");
+			String err = PropertyUtil.getPropertyReplacingToken("sample", "error.invalidGroup", "0", theAccess.getGroupName());
+			errors.add(err);
 			accessValid = false;
 		}
 		if (!validateUserAccess(request, theAccess)) {
-	//		ActionMessage msg = new ActionMessage("error.invalidUser",
-	//				theAccess.getUserBean().getLoginName());
-	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	//		saveErrors(request, msgs);
-			errors.add("You've entered an invalid user name.");
+			String err = PropertyUtil.getPropertyReplacingToken("sample", "error.invalidUser", "0", theAccess.getUserBean().getLoginName());
+			errors.add(err);
 			accessValid = false;
 		}
 		request.getSession().setAttribute("accessValid", accessValid);
