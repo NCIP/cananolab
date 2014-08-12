@@ -1,10 +1,10 @@
 'use strict';
 var app = angular.module('angularApp')
-	.controller('SampleDataAvailabilityCtrl', function ($rootScope,$scope,$http,$filter,$routeParams,$modalInstance,sampleId,sampleData,edit) {
+	.controller('SampleDataAvailabilityCtrl', function ($rootScope,$scope,$http,$filter,$routeParams,$modalInstance,sampleId,sampleData,availabilityData,edit) {
 
 	$scope.sampleId = sampleId;
 	$scope.sampleData = sampleData;
-	$scope.availabilityData = sampleData;
+	$scope.availabilityData = availabilityData;
      $scope.edit = edit;
 
 	$scope.ok = function () {
@@ -20,12 +20,13 @@ var app = angular.module('angularApp')
             // called if yes button is pressed on delete block //
             if (val) {
                 // $scope.poc.dirty = true;
-                // $scope.loader = true;
-                // $scope.loaderMessage = "Deleting";
+                $scope.loader = true;
+                $scope.loaderMessage = "Deleting";
                 // $scope.message = 'Point of contact deleted';
-                $http({method: 'POST', url: '/caNanoLab/rest/sample/deleteDataAvailability',data: $scope.sampleId}).
+                $http({method: 'POST', url: '/caNanoLab/rest/sample/deleteDataAvailability',data: $scope.sampleData}).
                     success(function(data, status, headers, config) {
-                        $modalInstance.close();
+                    	$scope.sampleData = data;
+                        $modalInstance.close(data);
                     }).
                     error(function(data, status, headers, config) {
                         $scope.loader = false;
@@ -43,12 +44,16 @@ var app = angular.module('angularApp')
 
 
     $scope.regenerate = function() {
+           $scope.loader = true;
+	      $scope.loaderMessage = "Regenerating";    	
 		$http({method: 'GET', url: '/caNanoLab/rest/sample/regenerateDataAvailability',params: {"sampleId":$scope.sampleId}}).
             success(function(data, status, headers, config) {
-                $scope.sampleData = data;
+                $modalInstance.close(data);
+
             }).
             error(function(data, status, headers, config) {
                 $scope.message = data;
+                $scope.loader = false;
             });
     }         
 

@@ -4,7 +4,12 @@ var app = angular.module('angularApp')
 .controller('editSampleCtrl', function (sampleService,navigationService,groupService,$scope,$rootScope,$filter,ngTableParams,$http,$location,$modal,$routeParams) {
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();
-    $scope.sampleData = sampleService.sampleData;
+
+
+    $scope.sampleResultData =sampleService.sampleData;
+    
+
+    $scope.sampleData = {};
     $scope.sampleId = sampleService.sampleId;
     $scope.pocData = sampleService.pocData;
     $scope.scratchPad = sampleService.scratchPad;
@@ -75,6 +80,7 @@ var app = angular.module('angularApp')
     //Populate the sampleData if browsing in Firefox to local file
     if(location.hostname == "") {
         $scope.loader = true;
+        $scope.loaderText = "Loading";
         /* if no hostname then populate with raw data */
     	console.info("No REST Service, loading hard coded sampleData")
         var hardCodedSampleData = {"sampleName":"NCL-23-1","newSampleName":null,"sampleId":20917507,"userIsCurator":true,"pointOfContacts":[{"id":52985856,"contactPerson":"","organization":{"id":24030464,"name":"C-Sixty (CNI)"},"role":"","address":{"line1":"","line2":"","city":"","stateProvince":"","zip":"","country":""},"firstName":"23232232","lastName":"","middleInitial":"","phoneNumber":"","email":"","dirty":false,"primaryContact":true},{"id":53051393,"contactPerson":"","organization":{"id":11239424,"name":"CWRU"},"role":"","address":{"line1":"","line2":"","city":"","stateProvince":"","zip":"","country":""},"firstName":"","lastName":"","middleInitial":"","phoneNumber":"","email":"","dirty":false,"primaryContact":false},{"id":52985856,"contactPerson":"","organization":{"id":24030464,"name":"C-Sixty (CNI)"},"role":"","address":{"line1":"","line2":"","city":"","stateProvince":"","zip":"","country":""},"firstName":"23232232","lastName":"","middleInitial":"","phoneNumber":"","email":"","dirty":false,"primaryContact":false},{"id":53051392,"contactPerson":"","organization":{"id":9568257,"name":"BROWN_STANFORD"},"role":"","address":{"line1":"","line2":"","city":"","stateProvince":"","zip":"","country":""},"firstName":"shaun","lastName":"Einolf","middleInitial":"","phoneNumber":"","email":"","dirty":false,"primaryContact":false},{"id":52985857,"contactPerson":"","organization":{"id":24030464,"name":"C-Sixty (CNI)"},"role":"","address":{"line1":"","line2":"","city":"","stateProvince":"","zip":"","country":""},"firstName":"Einolf","lastName":"Shaun","middleInitial":"","phoneNumber":"","email":"","dirty":false,"primaryContact":false},{"id":52920323,"contactPerson":"","organization":{"id":9568257,"name":"BROWN_STANFORD"},"role":"","address":{"line1":"","line2":"","city":"","stateProvince":"","zip":"","country":""},"firstName":"weq33","lastName":"","middleInitial":"","phoneNumber":"","email":"","dirty":false,"primaryContact":false},{"id":52920321,"contactPerson":"","organization":{"id":9568257,"name":"BROWN_STANFORD"},"role":"","address":{"line1":"","line2":"","city":"","stateProvince":"","zip":"","country":""},"firstName":"BOB","lastName":"","middleInitial":"","phoneNumber":"","email":"","dirty":false,"primaryContact":false},{"id":52953088,"contactPerson":"","organization":{"id":36306944,"name":"BB_SH_KCI_DFCI_WCMC_BWH_MIT"},"role":"","address":{"line1":"","line2":"","city":"","stateProvince":"","zip":"","country":""},"firstName":"weq33","lastName":"","middleInitial":"","phoneNumber":"","email":"","dirty":false,"primaryContact":false},{"id":53018624,"contactPerson":"","organization":{"id":15728641,"name":"DWU_SNU_SU_US"},"role":"","address":{"line1":"","line2":"","city":"","stateProvince":"","zip":"","country":""},"firstName":"23232232","lastName":"","middleInitial":"","phoneNumber":"","email":"","dirty":false,"primaryContact":false},{"id":52953089,"contactPerson":"","organization":{"id":36306944,"name":"BB_SH_KCI_DFCI_WCMC_BWH_MIT"},"role":"","address":{"line1":"","line2":"","city":"","stateProvince":"","zip":"","country":""},"firstName":"weq33","lastName":"","middleInitial":"","phoneNumber":"","email":"","dirty":false,"primaryContact":false},{"id":43646976,"contactPerson":"","organization":{"id":35782656,"name":"BB_SH_DFCI_WCMC_BWH_MIT"},"role":"Chris Contact Role","address":{"line1":"","line2":"","city":"sdadsadsa","stateProvince":"","zip":"","country":""},"firstName":"","lastName":"","middleInitial":"","phoneNumber":"","email":"","dirty":false,"primaryContact":false},{"id":53673984,"contactPerson":"","organization":{"id":53706752,"name":"test org"},"role":"investigator","address":{"line1":"","line2":"","city":"","stateProvince":"","zip":"","country":""},"firstName":"","lastName":"","middleInitial":"","phoneNumber":"","email":"","dirty":false,"primaryContact":false}],"keywords":["MAGNEVIST","MRI","NCL-23"],"accessToSample":{"userAccesses":[{"groupName":"","roleName":"","roleDisplayName":"read update delete","loginName":"Omelchen","accessBy":"","dirty":false}],"groupAccesses":[{"groupName":"Curator","roleName":"","roleDisplayName":"read update delete","loginName":"","accessBy":"","dirty":false}]},"groupAccesses":[{"userBean":{"userId":null,"displayName":"","loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[]},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"}],"userAccesses":[{"userBean":{"userId":null,"displayName":"Omelchen","loginName":"Omelchen","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[]},"groupName":"","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"user"}],"theAccess":{"userBean":{"userId":null,"displayName":"","loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[]},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"dataAvailability":{"sampleName":"NCL-23-1","dataAvailability":"caNanoLab: 50%; MINChar: 33%","caNanoLabScore":"50.0% (15 out of 30)","mincharScore":"33.0% (3 out of 9)","chemicalAssocs":["attachment","encapsulation","entrapment"],"physicoChars":["molecular weight","physical state","purity","relaxivity","shape","size","solubility","surface"],"invitroChars":["blood contact","cytotoxicity","enzyme induction","immune cell function","metabolic stability","oxidative stress","sterility","targeting","transfection"],"invivoChars":["pharmacokinetics","toxicology"],"availableEntityNames":["molecular weight","sample function","physical state","sample composition","purity","blood contact","association","solubility","publications","general sample information","functionalizing entities","encapsulation","size","nanomaterial entities","cytotoxicity"],"caNano2MINChar":{"zeta potential":"surface charge","sample composition":"chemical composition","purity":"purity","surface charge":"surface charge","shape":"shape","attachment":"surface chemistry","surface area":"surface area","size":"particle size/size distribution"}},"organizationNamesForUser":["AIST_HTRC","BB_SH_DFCI_WCMC_BWH_MIT","BB_SH_KCI_DFCI_WCMC_BWH_MIT","BROWN_STANFORD","BWH_AnesthesiologyD","C-Sixty (CNI)","CAS_VT_VCU","CLM_UHA_CDS_INSERM","CP_UCLA_CalTech","CWRU","Childrens Hospital Los Angeles","Chris","Chris 2","Chris Org","DC","DNT","DWU_SNU_SU_US","GATECH","GATECH_EMORY","GATECH_UCSF","GIST_LifeScienceD","HarvardU_PhysD","Harvard_MIT_DHST","JHU_KSU","JSTA_FHU_NEC_MU_AIST_JAPAN","JSTA_JFCR_NEC_FHU_TUSM_NIAIST","JST_AIST_FHU_TU_NEC_MU_JAPAN","Joe Barchi","KI","KU_JSTC_JAPAN","LMRT","MIT_ChemD","MIT_ChemEngineeringD","MIT_LMRT","MIT_MGH","MIT_MGH_GIST","MIT_UC_BBIC_HST_CU","MSKCC_CU_UA","Mansoor Amiji","Mark Kester","Mark Kester PSU","Monday Org","Monday4","NCL","NEU","NEU_DPS","NEU_MGH_UP_FCCC","NEU_MIT_MGH","NIEHS","NIOSH","NRCWE","NWU","NWU_ChemD_IIN","Nanotechnology Characterization Laboratory","Nanotechnology_Characterization_Laboratory","New One","PNNL_CBBG","PURDUE","PURDUEU_BN","RIT_KI_SU","SNL_UNM","SNU_CHINA","STANFORD","STANFORD_ChemD","STANFORD_MIPS","STANFORD_OM","SUNYB_ILPB","SY Org","SY company","Sharon","TAM_UT","TTU","UAM_CSIC_IMDEA","UCSD_ChemBiochemD","UCSD_MIT_MGH","UC_HU_UEN_GERMANY","UI","UKY","UL_NL","UM","UM-C","UMC_DVP","UMC_RadiolD","UN","UNC","UNC_ChemD","UTHSCH_UMG_MDACC_RU_UTA","UT_UMG_MDACC_RU_UTA","UToronto","VCU_VT_EHC","WSU","WSU_DPS","WUSTL","WUSTL_DIM","WU_SU_CHINA","YALE","my org","natcompany","other","shanyang","shanyangcomp","test org"],"contactRoles":["Chris Contact Role","investigator","manufacturer"],"allGroupNames":["Carbon Tube Group","Demo University","Demo-Collaboration","NCI group","NCNHIR","Test Collaboration"],"filteredUsers":{"lethai":"Le, Thai","Omelchen":"Omelchenko, Marina","burnskd":"Burns, Kevin","canano_guest":"Guest, Guest","grodzinp":"Grodzinski, Piotr","swand":"Swan, Don","sternstephan":"Stern, Stephan","zolnik":"Zolnik, Banu","canano_res":"Researcher, CaNano","hunseckerk":"Hunsecker, Kelly","lipkeyfg":"Lipkey, Foster","marina":"Dobrovolskaia, Marina","pottert":"Potter, Tim","uckunf":"Uckun, Fatih","michal":"Lijowski, Michal","mcneils":"Mcneil, Scott","neunb":"Neun, Barry","cristr":"Crist, Rachael","zhengji":"Zheng, Jiwen","SchaeferH":"Schaefer, Henry","frittsmj":"Fritts, Martin","benhamm":"Benham, Mick","masoods":"Masood, Sana","mclelandc":"McLeland, Chris","torresdh":"Torres, David","KlemmJ":"Klemm, Juli","patria":"Patri, Anil","hughesbr":"Hughes, Brian","clogstonj":"Clogston, Jeff","hinkalgw":"Hinkal, George","MorrisS2":"Morris, Stephanie","sharon":"Gaheen, Sharon"},"roleNames":{"R":"read","CURD":"read update delete"},"showReviewButton":false,"errors":[]} ;
@@ -86,6 +92,7 @@ var app = angular.module('angularApp')
         $scope.editSampleForm = true;
 
     } else {
+        $scope.loaderText = "Loading";
 
         $http({method: 'GET', url: '/caNanoLab/rest/sample/edit?sampleId='+$scope.sampleId.data}).
             success(function(data, status, headers, config, statusText) {
@@ -136,31 +143,25 @@ var app = angular.module('angularApp')
 
 
     $scope.copy = function() {
-        //Submit a copy of $root.master with the samplName changed
-        $modal.open({
-            templateUrl: 'views/sample/edit/modal/copySample.html',
-            backdrop: true,
-            windowClass: 'modal',
-            controller: function ($scope, $modalInstance, sampleName) {
-                $scope.copyOfSampleData = angular.copy($scope.master);
-                $scope.copyOfSampleData.sampleName = sampleName;
-                $scope.submit = function () {
-                    console.log('Submiting user info.');
-                    console.log(user);
-                    $modalInstance.dismiss('cancel');
-
-                }
-                $scope.cancel = function () {
-                    $modalInstance.dismiss('cancel');
-                };
-            },
-            resolve: {
-                copyOfSampleData: function () {
-                    return $scope.copyOfSampleData;
-                }
-            }
-        });
+        //Submit a copy of sampleName to cloneSample url //
+        $location.path("/cloneSample").search({'sampleName':$scope.sampleData.sampleName}).replace();
     };
+
+    $scope.delete = function() {
+        // Delete sample, send back to results //
+        $scope.loader = true;
+        $scope.loaderText = "Deleting Sample";
+        $http({method: 'GET', url: '/caNanoLab/rest/sample/deleteSample',params: {"sampleId":$scope.sampleData.sampleId}}).
+        success(function(data, status, headers, config) {
+            $scope.sampleData = data;
+            $location.path("/sampleResults").replace();
+        }).
+        error(function(data, status, headers, config) {
+            $scope.loader = false;
+            $scope.message = data;
+        });        
+    };    
+
     $scope.reset = function() {
          $scope.sampleData = angular.copy($scope.master);
     };
@@ -347,13 +348,19 @@ var app = angular.module('angularApp')
                 sampleId: function () {
                   return sampleId;
                 },
-                sampleData: function() {
+                availabilityData: function() {
                   return data;
                 },
+                sampleData: function() {
+                  return $scope.sampleData;
+                },                
                 edit: function() {
                   return 1;
                 }                
               }
+            });
+            modalInstance.result.then(function(data) {
+                $scope.sampleData = data;
             });
           }).
           error(function(data, status, headers, config) {
@@ -361,6 +368,8 @@ var app = angular.module('angularApp')
             // or server returns response with an error status.
             $scope.message = data;
           });
+
+
     };
     
     

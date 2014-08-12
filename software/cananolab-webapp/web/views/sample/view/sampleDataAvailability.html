@@ -18,9 +18,9 @@
 		</td>
 	</tr>
 	<tr>
-		<td ></td>
-		<td >agglomeration and/or aggregation </td>
-		<td ></td>
+		<td></td>
+		<td>agglomeration and/or aggregation </td>
+		<td></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -196,8 +196,10 @@
 		<td align="center">
 					<img src="images/icon_checkMark.png" ng-repeat="entity in data.availableEntityNames" ng-if="entity=='publications'" />
 		</td>
-	</tr>	
+	</tr>
 </table>
+
+
 	<div style="margin-top:100px;margin-left:38px;width:300px" ng-show="deleteBlock" class="message">
 	    	<br /><br />Are you sure you wish to delete the data availability metric?<br /><br />
 	    	<div>
@@ -205,11 +207,18 @@
 	    	<button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn btn-warning btn-modal">No</button>
 		</div>
 	</div>
+
 </div>
 
-
+<br />
 <div class="modal-footer">
-  <button ng-if="edit" class="btn btn-warning btn-danger" ng-click="delete()">Delete</button>
-  <button ng-if="edit" class="btn btn-primary btn-modal" ng-click="regenerate()">Regenerate</button>
-  <button class="btn btn-warning btn-modal" ng-click="ok()">Close</button>
+  <button ng-disabled="loader" ng-if="edit" class="btn btn-warning btn-danger" ng-click="delete()">Delete</button>
+  <button ng-disabled="loader" ng-if="edit" class="btn btn-primary btn-modal" ng-click="regenerate()">Regenerate</button>
+  <button ng-disabled="loader" class="btn btn-warning btn-modal" ng-click="ok()">Close</button>
 </div>
+  <div id="loader" style="top:-300px;left:300px" ng-show="loader">
+    <div id="loaderText">
+      {{loaderMessage}}
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>

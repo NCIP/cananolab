@@ -4,8 +4,11 @@ var app = angular.module('angularApp')
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();
     $scope.sampleData = sampleService.sampleData;
+    $scope.sampleData2 = sampleService.sampleData;
     $rootScope.navTree=false;
     $scope.utilsService = utilsService;
+  
+    
     $scope.goBack = function() {
       $location.path("/searchSample").replace();      
     };
