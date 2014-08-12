@@ -23,7 +23,7 @@ var app = angular.module('angularApp')
                 // $scope.loader = true;
                 // $scope.loaderMessage = "Deleting";
                 // $scope.message = 'Point of contact deleted';
-                $http({method: 'POST', url: '/caNanoLab/rest/sample/deleteDataAvailability',data: $scope.sampleData}).
+                $http({method: 'POST', url: '/caNanoLab/rest/sample/deleteDataAvailability',data: $scope.sampleId}).
                     success(function(data, status, headers, config) {
                         $modalInstance.close();
                     }).
@@ -40,5 +40,16 @@ var app = angular.module('angularApp')
             };
         };
     };
+
+
+    $scope.regenerate = function() {
+		$http({method: 'GET', url: '/caNanoLab/rest/sample/regenerateDataAvailability',params: {"sampleId":$scope.sampleId}}).
+            success(function(data, status, headers, config) {
+                $scope.sampleData = data;
+            }).
+            error(function(data, status, headers, config) {
+                $scope.message = data;
+            });
+    }         
 
     });
