@@ -475,7 +475,7 @@ public class SampleServices {
 	@Path("/deleteDataAvailability")
 	@Produces("application/json")
 	 public Response deleteDataAvailability(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleSampleBean){
-		logger.debug("In deleteSample");
+		logger.info("In deleteDataAvailability");
 		try {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");

@@ -84,13 +84,6 @@ public class TabGenerationBO {
 			tabWithLink[1] =  urlBase + "#/managePublications";;
 			tabs.add(tabWithLink);
 			
-			if (userBean.isAdmin()) {
-				tabWithLink = new String[2];
-				tabWithLink[0] = "ADMINISTRATION";
-				tabWithLink[1] =  urlBase + "TBD";
-				tabs.add(tabWithLink);
-			}
-			
 			if (userBean.isCurator()) {
 				tabWithLink = new String[2];
 				tabWithLink[0] = "CURATION";

@@ -490,22 +490,8 @@ public class SampleBO extends BaseAnnotationBO {
 				return this.wrapErrorInEditBean("Current sample id doesn't match sample id in session");
 		}
 		
-		
-		//PointOfContactBean thePOC = new PointOfContactBean(); //sample.getThePOC();
-		
 		PointOfContactBean thePOC = resolveThePOCToSaveFromInput(sample, simplePOC, user.getLoginName());
-		
-		//getPointOfContactBeanFromInput(thePOC, simplePOC, user.getLoginName());
-		//PointOfContactBean thePOC = getPointOfContactBeanFromInput(thePOC1, simplePOC, user.getLoginName());
-		
-		
-		
-		
 		Long oldPOCId = thePOC.getDomain().getId();
-		
-		//Need to find the org POC if it's an update
-				//because new org name means a create-new POC with old data
-		//PointOfContactBean orgPOC = sample.getDomain().get
 		
 		// set up one sampleService
 		SampleService service = setServiceInSession(request);
@@ -1023,22 +1009,26 @@ public class SampleBO extends BaseAnnotationBO {
 //		PointOfContactBean newPOC = new PointOfContactBean();
 //		return getPointOfContactBeanFromInput(newPOC, simplePOC, createdBy);
 		
+		PointOfContactBean newPOC = new PointOfContactBean();
+		
 		PointOfContactBean primary = sample.getPrimaryPOCBean();
 		List<PointOfContactBean> others = sample.getOtherPOCBeans();
 		long pocId = simplePOC.getId();
 		
 		if (primary == null || pocId == 0) { //new sample for submission or adding new POC
-			PointOfContactBean newPOC = new PointOfContactBean();
 			return getPointOfContactBeanFromInput(newPOC, simplePOC, createdBy);
 		} 
 		
-		if (primary.getDomain().getId().longValue() == simplePOC.getId()) 
-			return getPointOfContactBeanFromInput(primary, simplePOC, createdBy);
+		if (primary.getDomain().getId().longValue() == simplePOC.getId()) {
+			newPOC.getDomain().setCreatedBy(primary.getDomain().getCreatedBy());
+			return getPointOfContactBeanFromInput(newPOC, simplePOC, createdBy);
+		}
 		
 		if (others != null) {
 			for (PointOfContactBean poc : others) {
 				if (pocId == poc.getDomain().getId().longValue()) {
-					return getPointOfContactBeanFromInput(poc, simplePOC, createdBy);
+					newPOC.getDomain().setCreatedBy(poc.getDomain().getCreatedBy());
+					return getPointOfContactBeanFromInput(newPOC, simplePOC, createdBy);
 				}
 			}
 		}
@@ -1046,6 +1036,10 @@ public class SampleBO extends BaseAnnotationBO {
 		return null;
 	}
 	
+//	protected PointOfContactBean getPointOfContactBeanFromInput(SimplePointOfContactBean simplePOC, String createdBy) {
+//		PointOfContactBean newPOC = new PointOfContactBean();
+//		return getPointOfContactBeanFromInput(newPOC, simplePOC, createdBy);
+//	}
 	protected PointOfContactBean getPointOfContactBeanFromInput(PointOfContactBean pocBean, SimplePointOfContactBean simplePOC, String createdBy) {
 		
 		
