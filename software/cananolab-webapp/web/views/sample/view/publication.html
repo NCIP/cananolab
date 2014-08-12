@@ -28,7 +28,7 @@
 
   <tabset justified="true">
     <tab heading="All" ng-click="select(-1)"></tab>
-    <tab ng-repeat="p in publicationCategories" heading="{{p}}" ng-click="select({{$index}})"></tab>
+    <tab ng-repeat="p in masterPublicationCategories" heading="{{p}}" ng-click="select({{$index}})"></tab>
   </tabset>
 </div>
 <div class="summaryBorder">
@@ -58,7 +58,7 @@
                                 <tr  ng-repeat="pubBean in category2Publications[type]" ng-init="pubObj = pubBean.domainFile" ng-if="category2Publications[type] != null">
                                     <td>
 	                                    	<div class="editButton" ng-if="pubBean.userUpdatable == true">
-												<a href="#/editPublication?sampleId={{sampleId.data}}&amp;publicationId={{pubBean.publicationId}}">Edit</a>
+												<a href="#/editPublication?sampleId={{sampleId.data}}&amp;publicationId={{pubBean.publicationId}}&amp;sampleName={{sampleData.data[0].sampleName}}">Edit</a>
 											</div>
                                             <table class="summaryViewNoGrid" width="99%" align="center" ng-style="{'background-color':'#F5F5f5'}">
 
