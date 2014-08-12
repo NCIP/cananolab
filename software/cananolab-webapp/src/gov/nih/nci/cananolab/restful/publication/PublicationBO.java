@@ -56,7 +56,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 public class PublicationBO extends BaseAnnotationBO{
 	Logger logger = Logger.getLogger(PublicationBO.class);
 	
-		public SimplePublicationSummaryViewBean create(SimpleSubmitPublicationBean simplePubBean,
+		public List<String> create(SimpleSubmitPublicationBean simplePubBean,
 			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
@@ -74,7 +74,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		msgs = savePublication(request, publicationBean);
 		if(msgs.size()>0){
 			bean.setErrors(msgs);
-			return bean;
+			return msgs;
 		}
 	
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -89,7 +89,7 @@ public class PublicationBO extends BaseAnnotationBO{
 					"publication");
 			msgs.add(PropertyUtil.getProperty("publication", "message.updatePublication.retractFromPublic"));
 			bean.setErrors(msgs);
-			return bean;
+			return msgs;
 		
 		} else {
 			msgs.add("success");
@@ -97,10 +97,10 @@ public class PublicationBO extends BaseAnnotationBO{
 			
 		}
 		
-		if (!StringUtils.isEmpty(sampleId)) {
-			return summaryEdit(sampleId, request);
-		} 
-		return bean;
+	//	if (!StringUtils.isEmpty(sampleId)) {
+	//		return summaryEdit(sampleId, request);
+	//	} 
+		return msgs;
 	}
 
 	public List<String> savePublication(HttpServletRequest request,
