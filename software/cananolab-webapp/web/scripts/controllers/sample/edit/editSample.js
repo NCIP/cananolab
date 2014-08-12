@@ -105,7 +105,11 @@ var app = angular.module('angularApp')
                 
                 if( $scope.userAccesses != null && $scope.userAccesses.length > 0 ) {
                 	$scope.accessExists = true;
-                }                
+                }  
+                
+                if( $scope.groupAccesses != null && $scope.groupAccesses.length > 1 ) {
+                	$scope.accessExists = true;
+                }
             }).
             error(function(data, status, headers, config, statusText) {
                 // called asynchronously if an error occurs
@@ -507,6 +511,10 @@ var app = angular.module('angularApp')
                     $scope.userAccesses = $scope.sampleData.userAccesses;
                     
                     if( $scope.userAccesses != null && $scope.userAccesses.length > 0 ) {
+	                	$scope.accessExists = true;
+	                }
+                    
+	                if( $scope.groupAccesses != null && $scope.groupAccesses.length > 1 ) {
 	                	$scope.accessExists = true;
 	                }
                     

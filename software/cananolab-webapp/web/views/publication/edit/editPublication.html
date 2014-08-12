@@ -452,7 +452,8 @@
 <table width="100%" class="invisibleTable" summary="layout">
     <tbody><tr>
         <td align="left" width="600">
-        	<input type="button" value="Delete" ng-click="doDelete()" ng-if="publicationId != null">
+        	<input type="button" value="Delete" ng-click="doDelete()" ng-if="publicationId != null && sampleId == null">
+        	<input type="button" value="Remove from Sample" ng-click="removeFromSample()" id="removeFromSampleButton" ng-if="sampleId != null && publicationId != null">
         </td>
         <td align="right" width="300">
             <input type="reset" value="Reset" ng-click="resetForm()">

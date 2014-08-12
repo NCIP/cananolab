@@ -56,7 +56,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 public class PublicationBO extends BaseAnnotationBO{
 	Logger logger = Logger.getLogger(PublicationBO.class);
 	
-		public SimplePublicationSummaryViewBean create(SimpleSubmitPublicationBean simplePubBean,
+		public List<String> create(SimpleSubmitPublicationBean simplePubBean,
 			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
@@ -74,7 +74,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		msgs = savePublication(request, publicationBean);
 		if(msgs.size()>0){
 			bean.setErrors(msgs);
-			return bean;
+			return msgs;
 		}
 	
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -89,7 +89,7 @@ public class PublicationBO extends BaseAnnotationBO{
 					"publication");
 			msgs.add(PropertyUtil.getProperty("publication", "message.updatePublication.retractFromPublic"));
 			bean.setErrors(msgs);
-			return bean;
+			return msgs;
 		
 		} else {
 			msgs.add("success");
@@ -97,10 +97,10 @@ public class PublicationBO extends BaseAnnotationBO{
 			
 		}
 		
-		if (!StringUtils.isEmpty(sampleId)) {
-			return summaryEdit(sampleId, request);
-		} 
-		return bean;
+	//	if (!StringUtils.isEmpty(sampleId)) {
+	//		return summaryEdit(sampleId, request);
+	//	} 
+		return msgs;
 	}
 
 	public List<String> savePublication(HttpServletRequest request,
@@ -373,11 +373,12 @@ public class PublicationBO extends BaseAnnotationBO{
 //		return forward;
 	}
 
-	public SimpleSubmitPublicationBean setupUpdate(String publicationId, 
+	public SimpleSubmitPublicationBean setupUpdate(String publicationId, String sampleId,
 			HttpServletRequest request)
 			throws Exception {
 		HttpSession session = request.getSession();
 		List<String> messages = new ArrayList<String>();
+		SimpleSubmitPublicationBean bean = new SimpleSubmitPublicationBean();
 //		super.checkOpenAccessForm(request);
 		publicationId = super.validateId(request, "publicationId");		
 		PublicationService publicationService = this
@@ -395,7 +396,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		request.getSession().setAttribute("updatePublication", "true");
 		
 		//detect whether request is related to sample
-		String sampleId = request.getParameter("sampleId");
+		//String sampleId = request.getParameter("sampleId");
 		if (sampleId==null) {
 			sampleId=(String)request.getSession().getAttribute("sampleId");
 		}
@@ -403,20 +404,16 @@ public class PublicationBO extends BaseAnnotationBO{
 		if (!StringUtils.isEmpty(sampleId)) {
 			form.setSampleId(sampleId);
 			//clear copy other samples
-			form.setOtherSamples(new String[0]); 
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
-			 messages.add(PropertyUtil.getProperty("sample", "message.submitPublication"));
-	//		 return messages;
-	//		return mapping.findForward("sampleSubmitPublication");
+			messages.add(PropertyUtil.getProperty("sample", "message.submitPublication"));
+	
 		} else {
-	//		return mapping.findForward("publicationSubmitPublication");
 			messages.add(PropertyUtil.getProperty("publication", "message.submitPublication"));
-	//		return messages;
-	//		return pubBean;
+	
 		}
-		SimpleSubmitPublicationBean bean = new SimpleSubmitPublicationBean();
-		bean.transferPublicationBeanForEdit(pubBean);
+		
+		bean.transferPublicationBeanForEdit(pubBean, request);
 		return bean;
 	}
 
@@ -467,6 +464,8 @@ public class PublicationBO extends BaseAnnotationBO{
 			throws Exception {
 		// Prepare data.
 		PublicationSummaryViewBean summaryView = this.prepareSummary(sampleId, request);
+		HttpSession session = request.getSession();
+		session.setAttribute("sampleId", sampleId);
 
 	//	return mapping.findForward("summaryView");
 		return summaryView;
@@ -862,7 +861,7 @@ public class PublicationBO extends BaseAnnotationBO{
 			request.setAttribute("sampleId", sampleId);
 		}
 //		return setupUpdate(mapping, form, request, response);
-		return setupUpdate(pBean.getDomainFile().getId().toString(), request);
+		return setupUpdate(pBean.getDomainFile().getId().toString(),sampleId, request);
 	}
 
 	protected PublicationBean setAccesses(HttpServletRequest request,
@@ -905,7 +904,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		}
 	//	setupUpdate(form, request, response);
 		return setupUpdate(publication.getDomainFile()
-				.getId().toString(), request);
+				.getId().toString(),simplePubBean.getSampleId().toString(), request);
 	}
 
 	protected void removePublicAccess(PublicationForm theForm,

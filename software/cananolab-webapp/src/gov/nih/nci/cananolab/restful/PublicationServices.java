@@ -216,7 +216,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	@Path("/edit")
 	@Produces ("application/json")
 	 public Response edit(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("publicationId") String publicationId){
+	    		@DefaultValue("") @QueryParam("publicationId") String publicationId,@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
 			 
@@ -224,7 +224,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 					(PublicationBO) applicationContext.getBean("publicationBO");
 
 				 
-		 SimpleSubmitPublicationBean view = publicationBO.setupUpdate(publicationId, httpRequest);
+		 SimpleSubmitPublicationBean view = publicationBO.setupUpdate(publicationId,sampleId, httpRequest);
 			
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?
@@ -269,7 +269,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 		try {
 			
-			System.out.println("Inside submit publication");
 			PublicationBO pubBO = 
 					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
@@ -278,13 +277,11 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			SimplePublicationSummaryViewBean bean = pubBO.create(form, httpRequest);
+			List<String> msgs = pubBO.create(form, httpRequest);
 			 
 			
-			List<String> errors = bean.getErrors();
-			return (errors == null || errors.size() == 0) ?
-					Response.ok(bean).build() :
-						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
 					
 		} catch (Exception e) {
 			logger.error(e.getMessage());

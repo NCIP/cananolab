@@ -4,9 +4,14 @@ import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 //import org.hibernate.validator.NotNull;
 //import org.hibernate.validator.constraints.NotEmpty;
@@ -48,7 +53,15 @@ public class SimpleSubmitPublicationBean {
 	String externalUrl = "";
 	String[] sampleNames;
 	List<String> errors;
-
+	List<String> otherSampleNames;
+	
+	
+	public List<String> getOtherSampleNames() {
+		return otherSampleNames;
+	}
+	public void setOtherSampleNames(List<String> otherSampleNames) {
+		this.otherSampleNames = otherSampleNames;
+	}
 	public List<String> getErrors() {
 		return errors;
 	}
@@ -263,7 +276,7 @@ public class SimpleSubmitPublicationBean {
 	}
 	
 
-	public void transferPublicationBeanForEdit(PublicationBean pubBean) {
+	public void transferPublicationBeanForEdit(PublicationBean pubBean, HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		authors = new ArrayList<Author>();
 		Publication pub = (Publication) pubBean.getDomainFile();
@@ -300,6 +313,9 @@ public class SimpleSubmitPublicationBean {
 		setIsOwner(pubBean.getUserIsOwner());
 		setCreatedBy(pub.getCreatedBy());
 		setUserDeletable(pubBean.getUserDeletable());
+		List<String> otherSampleNamesList = (List<String>) request.getSession().getAttribute("otherSampleNames");
+		setOtherSampleNames(otherSampleNamesList);
 		
 	}
+		
 }
