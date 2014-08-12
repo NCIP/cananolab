@@ -282,13 +282,12 @@ var app = angular.module('angularApp')
 
         $scope.fillPubMedInfo = function() {
         	var retrievePubMed = false;
-        	/*
-        	var anum = /^\d+$/;
-        	if (!anum.test(pubMedId)) {
-        		alert("PubMed ID must be a number");
-        		return false;
-        	}
-        	*/
+
+            var anum = /^\d+$/;
+            if (!anum.test($scope.publicationForm.pubMedId)) {
+                alert("PubMed ID must be a number");
+                return false;
+            }        	
         	
         	 $http({method: 'GET', url: '/caNanoLab/rest/publication/getPubmedPublication?pubmedId=' + $scope.publicationForm.pubMedId}).
              success(function(data, status, headers, config) {
