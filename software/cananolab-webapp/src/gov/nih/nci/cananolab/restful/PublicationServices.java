@@ -269,7 +269,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 		try {
 			
-			System.out.println("Inside submit publication");
 			PublicationBO pubBO = 
 					 (PublicationBO) applicationContext.getBean("publicationBO");
 			

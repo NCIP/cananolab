@@ -4,9 +4,13 @@ import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 //import org.hibernate.validator.NotNull;
 //import org.hibernate.validator.constraints.NotEmpty;
@@ -48,7 +52,7 @@ public class SimpleSubmitPublicationBean {
 	String externalUrl = "";
 	String[] sampleNames;
 	List<String> errors;
-
+	
 	public List<String> getErrors() {
 		return errors;
 	}
@@ -302,4 +306,5 @@ public class SimpleSubmitPublicationBean {
 		setUserDeletable(pubBean.getUserDeletable());
 		
 	}
+	
 }

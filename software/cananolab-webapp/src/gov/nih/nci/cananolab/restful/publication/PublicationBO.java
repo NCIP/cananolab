@@ -406,7 +406,7 @@ public class PublicationBO extends BaseAnnotationBO{
 			form.setOtherSamples(new String[0]); 
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
-			 messages.add(PropertyUtil.getProperty("sample", "message.submitPublication"));
+			messages.add(PropertyUtil.getProperty("sample", "message.submitPublication"));
 	//		 return messages;
 	//		return mapping.findForward("sampleSubmitPublication");
 		} else {
@@ -467,6 +467,8 @@ public class PublicationBO extends BaseAnnotationBO{
 			throws Exception {
 		// Prepare data.
 		PublicationSummaryViewBean summaryView = this.prepareSummary(sampleId, request);
+		HttpSession session = request.getSession();
+		session.setAttribute("sampleId", sampleId);
 
 	//	return mapping.findForward("summaryView");
 		return summaryView;
