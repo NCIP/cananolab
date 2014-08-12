@@ -15,6 +15,7 @@ var app = angular.module('angularApp')
         $scope.localForm = {};
         $scope.publicationId = '';
         $scope.sampleId = '';
+        $scope.localForm.otherSampleNames = [];
 
         // Access variables
         $scope.publicationForm.theAccess = {};
@@ -62,11 +63,12 @@ var app = angular.module('angularApp')
         $scope.sampleName = $routeParams.sampleName;
         $scope.type = $routeParams.type;
         
-        $scope.type = $routeParams.type;
-
+        if (typeof $scope.sampleId == 'undefined') {
+        	$scope.sampleId = '';
+        }
+        
         $scope.$on('$viewContentLoaded', function() {
             if ($scope.type != null) {
-                console.log($scope.type);
                 $scope.publicationForm.category = $scope.type;
             }
         });        
@@ -211,6 +213,8 @@ var app = angular.module('angularApp')
             if ($scope.sampleId != null) {
             	$scope.publicationForm.sampleId = $scope.sampleId;
             }
+            
+            $scope.publicationForm.otherSampleNames = $scope.localForm.otherSampleNames;
 
             $http({method: 'POST', url: '/caNanoLab/rest/publication/submitPublication',data: $scope.publicationForm}).
                 success(function(data, status, headers, config) {

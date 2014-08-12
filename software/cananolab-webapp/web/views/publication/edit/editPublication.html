@@ -373,10 +373,29 @@
         </tr>
     </table>
 </div>
-<div ng-if="publicationForm.map.sampleId == ''">
-    <!--
-    <jsp:include
-            page="/sample/bodyAnnotationCopy.jsp?annotation=publication" />  -->
+<div ng-if="sampleId !=''">
+    <table width="100%" align="center" class="submissionView">
+        <tbody>
+            <tr ng-if="publicationForm.otherSampleNames != null">
+                <td width="20%">
+                    <strong><label for="otherSamples">Copy to other samples with the same primary organization?</label></strong>
+                </td>
+                <td width="20%">
+                    <select ng-disabled="loader" id="otherSamples" ng-model="localForm.otherSampleNames" multiple="true" size="10">
+                        <option ng-repeat="option in publicationForm.otherSampleNames" value="{{option}}">
+                            {{option}}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr ng-if="publicationForm.otherSampleNames == null">
+                <td colspan="3">
+                    There are no other samples to copy annotation to.
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <br>
 <table width="100%" align="center" class="submissionView" summary="layout" id="accessBlock">
