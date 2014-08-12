@@ -606,14 +606,15 @@ public class PublicationBO extends BaseAnnotationBO{
 		return pubBean;
 	}
 
-	public PublicationBean input(ActionMapping mapping, PublicationForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SimpleSubmitPublicationBean input(SimpleSubmitPublicationBean simplePubBean,
+			HttpServletRequest request)
 			throws Exception {
+		PublicationForm form = new PublicationForm();
 		// save new entered other types
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		super.checkOpenAccessForm(request);
-		PublicationBean publicationBean = (PublicationBean) form.getPublicationBean();
+		PublicationBean publicationBean = transferSimpleSubmitPublicationBean(simplePubBean);//(PublicationBean) form.getPublicationBean();
 		// set empty year to null instead of the default 0
 		Integer year = ((Publication) publicationBean.getDomainFile())
 				.getYear();
@@ -662,7 +663,10 @@ public class PublicationBO extends BaseAnnotationBO{
 					"updateSubmitFormBasedOnCategory();enableAutoFields();toggleAccessNameLabel()");
 		}
 //		return mapping.findForward("publicationSubmitPublication");
-		return publicationBean;
+//		return publicationBean;
+		SimpleSubmitPublicationBean bean = new SimpleSubmitPublicationBean();
+		bean.transferPublicationBeanForEdit(publicationBean, request);
+		return bean;
 	}
 
 	public PublicationBean addAuthor(PublicationForm form,
