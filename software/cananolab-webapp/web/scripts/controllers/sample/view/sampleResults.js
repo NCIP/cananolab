@@ -7,11 +7,11 @@ var app = angular.module('angularApp')
     $scope.sampleData2 = sampleService.sampleData;
     $rootScope.navTree=false;
     $scope.utilsService = utilsService;
-  
+    
     
     $scope.goBack = function() {
       $location.path("/searchSample").replace();      
-    };
+    }; 
 
     $scope.openDataAvailability = function(sampleId) {
 
