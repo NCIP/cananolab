@@ -495,6 +495,10 @@ var app = angular.module('angularApp')
 		                	$scope.accessExists = true;
 		                }
 	                    
+		                if( $scope.groupAccesses != null && $scope.groupAccesses.length > 1 ) {
+		                	$scope.accessExists = true;
+		                }	                    
+	                    
 	                    $scope.loader = false;
 	                }).
 	                error(function(data, status, headers, config) {
