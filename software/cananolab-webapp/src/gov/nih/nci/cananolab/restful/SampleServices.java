@@ -484,7 +484,7 @@ public class SampleServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			SampleEditGeneralBean editBean = sampleBO.deleteAccess(simpleSampleBean, httpRequest);
+			SampleEditGeneralBean editBean = sampleBO.deleteDataAvailability(simpleSampleBean, httpRequest);
 			List<String> errors = editBean.getErrors();
 			
 			return (errors == null || errors.size() == 0) ?
