@@ -86,6 +86,10 @@ var app = angular.module('angularApp')
 		                	$scope.accessExists = true;
 		                }
 		                
+		                if( $scope.groupAccesses != null && $scope.groupAccesses.length > 1 ) {
+		                	$scope.accessExists = true;
+		                }
+		                
 		                if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
 		                    $scope.showAuthorTable = true;
 		                }
