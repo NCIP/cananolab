@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 import gov.nih.nci.cananolab.util.Constants;
@@ -79,7 +80,7 @@ public class SampleServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("sample/viewDataAvailability")
-				.queryParam("sampleId", "20917507")
+				.queryParam("sampleId", "24063233")
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
@@ -94,13 +95,13 @@ public class SampleServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("sample/characterizationView")
-				.queryParam("sampleId", "20917507") //ncl-23
+				.queryParam("sampleId", "24063233") //ncl-17
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
 
 		assertNotNull(jsonString);
-		assertTrue(jsonString.contains("Experiment Configurations"));
+		assertTrue(jsonString.contains("blood contact"));
 	}
 	@Test
 	public void testSummaryView() {
@@ -108,7 +109,7 @@ public class SampleServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("sample/view")
-				.queryParam("sampleId", "20917507") 
+				.queryParam("sampleId", "24063233") 
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
@@ -123,7 +124,7 @@ public class SampleServicesTest {
 		
 		SearchSampleForm form = new SearchSampleForm();
 		//Because "contains" operand is not set, exact name is needed;
-		form.setSampleName("ncl-23-1");
+		form.setSampleName("ncl-17");
 		
 		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
 		webTarget.register(SampleServices.class);
@@ -142,7 +143,7 @@ public class SampleServicesTest {
 		String json = (String) postResponse.readEntity(String.class);
 				
 		assertNotNull(json);
-		assertTrue(json.contains("NCL-23-1"));
+		assertTrue(json.contains("NCL-17"));
 		
 		//should check other things
 	}
@@ -227,15 +228,13 @@ public class SampleServicesTest {
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("deletePOC");
-			
-		SampleEditGeneralBean editBean = new SampleEditGeneralBean();
-		editBean.setSampleId(44695553);
-		editBean.setSampleName("SY-New Sample");
-		editBean.getKeywords().add("NewKeywork-" + System.currentTimeMillis());
+		
+		SimplePointOfContactBean simplePOCBean = new SimplePointOfContactBean();
+	
 		
 		Response postResponse =
 				searchSampleWebTarget.request("application/json")
-		         .post(Entity.json(editBean));
+		         .post(Entity.json(simplePOCBean));
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
