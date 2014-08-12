@@ -49,6 +49,7 @@ public class SampleEditGeneralBean {
 	List<String> allGroupNames;
 	Map<String, String> filteredUsers;
 	Map<String, String> roleNames;
+	Boolean isPublic = false;
 	
 	boolean showReviewButton;
 
@@ -199,6 +200,13 @@ public class SampleEditGeneralBean {
 	public void setErrors(List<String> errors) {
 		this.errors = errors;
 	}
+	
+	public Boolean getIsPublic() {
+		return isPublic;
+	}
+	public void setIsPublic(Boolean isPublic) {
+		this.isPublic = isPublic;
+	}	
 	
 	public void transferSampleBeanData(HttpServletRequest request, 
 			CurationService curatorService, SampleBean sampleBean, String[] availableEntityNames) 

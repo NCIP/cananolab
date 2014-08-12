@@ -519,6 +519,10 @@ var app = angular.module('angularApp')
                 $scope.accessForm.theAccess.roleName = key;
             }
         }
+        
+        if($scope.accessForm.theAccess.groupName == 'Public') {
+            $scope.accessForm.theAccess.accessBy='public';
+        }
     }
 
     
