@@ -216,7 +216,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	@Path("/edit")
 	@Produces ("application/json")
 	 public Response edit(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("publicationId") String publicationId){
+	    		@DefaultValue("") @QueryParam("publicationId") String publicationId,@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
 			 
@@ -224,7 +224,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 					(PublicationBO) applicationContext.getBean("publicationBO");
 
 				 
-		 SimpleSubmitPublicationBean view = publicationBO.setupUpdate(publicationId, httpRequest);
+		 SimpleSubmitPublicationBean view = publicationBO.setupUpdate(publicationId,sampleId, httpRequest);
 			
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?
