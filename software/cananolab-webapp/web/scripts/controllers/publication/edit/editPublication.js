@@ -16,6 +16,8 @@ var app = angular.module('angularApp')
         $scope.publicationId = '';
         $scope.sampleId = '';
         $scope.localForm.otherSampleNames = [];
+        $scope.localForm.otherCategoryText = '';
+        $scope.localForm.otherStatusText = '';        
 
         // Access variables
         $scope.publicationForm.theAccess = {};

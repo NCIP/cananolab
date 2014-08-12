@@ -49,7 +49,7 @@
                         <!--                        <select ng-disabled="loader" id="category" ng-model="publicationForm.category" ng-change="callPrompt('Publication Type', 'category', 'categoryPrompt');
                                                                                 clearPublication();updateSubmitFormBasedOnCategory();enableAutoFields();" required>  -->
                         <select ng-disabled="loader" id="category" ng-model="publicationForm.category"
-                                onchange="callPrompt('Publication Type', 'category', 'categoryPrompt');" required>
+                                required>
                             <option ng-repeat="option in publicationCategories" value="{{option}}" ng-selected="{{option==publicationForm.category}}">
                                 {{option}}
                             </option>
@@ -58,6 +58,28 @@
                             </option>
                         </select>
                         <span ng-show="publicationForm.category.$invalid && submitted" class="help-block">Select a valid Type</span>
+                        <div id="promptCategory" ng-if="publicationForm.category=='other'">
+                            <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                <tbody>
+                                <tr>
+                                    <td class="cellLabel">
+                                        <label for="textCategory" category="">New Publication Type:</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" id="textCategory" ng-model='localForm.otherCategoryText' class="promptbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">
+                                        <input type="button" class="promptButton" value="Add" ng-click="publicationForm.category=localForm.otherCategoryText; publicationCategories.push(localForm.otherCategoryText);">
+                                        <input type="button" class="promptButton" value="Cancel" ng-click="publicationForm.category='';">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </td>
                 <td class="cellLabel">
@@ -66,8 +88,8 @@
                 <td colspan="3">
                     <div id="statusPrompt">
                         <select ng-disabled="loader" id="status" ng-model="publicationForm.status"
-                                onchange="callPrompt('Publication status', 'status', 'statusPrompt');" required>
-                            <option ng-repeat="option in publicationStatuses" value="{{option}}">
+                                 required>
+                            <option ng-repeat="option in publicationStatuses" value="{{option}}" ng-selected="{{option==publicationForm.status}}">
                                 {{option}}
                             </option>
                             <option value="other">
@@ -75,6 +97,28 @@
                             </option>
                         </select>
                         <span ng-show="publicationForm.category.$invalid && submitted" class="help-block">Select a valid Status</span>
+                        <div id="promptCategory" ng-if="publicationForm.status=='other'">
+                            <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                <tbody>
+                                <tr>
+                                    <td class="cellLabel">
+                                        <label for="textStatus" category="">New Publication Status:</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" id="textStatus" ng-model='localForm.otherStatusText' class="promptbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">
+                                        <input type="button" class="promptButton" value="Add" ng-click="publicationForm.status=localForm.otherStatusText; publicationStatuses.push(localForm.otherStatusText);">
+                                        <input type="button" class="promptButton" value="Cancel" ng-click="publicationForm.status='';">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </td>
             </tr>
