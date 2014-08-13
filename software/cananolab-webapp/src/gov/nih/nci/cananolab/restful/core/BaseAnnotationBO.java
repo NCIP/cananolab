@@ -613,7 +613,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 			errors.add(err);
 			accessValid = false;
 		}
-		if (!theAccess.getRoleName().equalsIgnoreCase(
+		if (theAccess.getRoleName() == null ||!theAccess.getRoleName().equalsIgnoreCase(
 				AccessibilityBean.CSM_CURD_ROLE)
 				&& !theAccess.getRoleName().equalsIgnoreCase(
 						AccessibilityBean.CSM_READ_ROLE)) {
