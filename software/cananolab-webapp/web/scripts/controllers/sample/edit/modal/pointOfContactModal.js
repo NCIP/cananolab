@@ -84,8 +84,8 @@ var app = angular.module('angularApp')
             }).
             error(function(data, status, headers, config) {
                 $scope.loader = false;
-            $scope.message = data;
-             $modalInstance.close(data);
+                $scope.message = data;
+             // $modalInstance.close(data);
 
             });
     };
