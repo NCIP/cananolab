@@ -968,23 +968,41 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		SimpleAddressBean addrBean = simplePOC.getAddress();
 		if (addrBean != null) {
-			if (!InputValidationUtil.isTextFieldWhiteList(addrBean.getLine1()))
+			String val = addrBean.getLine1();
+			if (val != null && val.length() > 0 && !InputValidationUtil.isTextFieldWhiteList(val))
 				errors.add(PropertyUtil.getProperty("sample", "organization.address1.invalid"));
-			if (!InputValidationUtil.isTextFieldWhiteList(addrBean.getLine2()))
-				errors.add(PropertyUtil.getProperty("sample", "organization.address2.invalid"));
 			
-			if (!InputValidationUtil.isRelaxedAlphabetic(addrBean.getCity()))
+			val = addrBean.getLine2();
+			if (val != null && val.length() > 0 && !InputValidationUtil.isTextFieldWhiteList(val))
+				errors.add(PropertyUtil.getProperty("sample", "organization.address2.invalid"));
+			val = addrBean.getCity();
+			if (val != null && val.length() > 0 && !InputValidationUtil.isRelaxedAlphabetic(val))
 				errors.add(PropertyUtil.getProperty("sample", "organization.city.invalid"));
 			
-			if (!InputValidationUtil.isRelaxedAlphabetic(addrBean.getStateProvince()))
+			val = addrBean.getStateProvince();
+			if (val != null && val.length() > 0 && !InputValidationUtil.isRelaxedAlphabetic(val))
 				errors.add(PropertyUtil.getProperty("sample", "organization.state.invalid"));
 			
-			if (!InputValidationUtil.isRelaxedAlphabetic(addrBean.getCountry()))
+			val = addrBean.getCountry();
+			if (val != null && val.length() > 0 && !InputValidationUtil.isRelaxedAlphabetic(val))
 				errors.add(PropertyUtil.getProperty("sample", "organization.country.invalid"));
 			
-			if (addrBean.getZip().length() > 0 && !InputValidationUtil.isZipValid(addrBean.getZip()))
+			val = addrBean.getZip();
+			if (val != null && val.length() > 0 && !InputValidationUtil.isZipValid(addrBean.getZip()))
 				errors.add(PropertyUtil.getProperty("sample", "postalCode.invalid"));
 		}
+		
+		String name = simplePOC.getFirstName();
+		if (name != null && name.length() > 0 && !InputValidationUtil.isRelaxedAlphabetic(name))
+			errors.add(PropertyUtil.getProperty("sample", "firstName.invalid"));
+		
+		name = simplePOC.getLastName();
+		if (name != null && name.length() > 0 && !InputValidationUtil.isRelaxedAlphabetic(name))
+			errors.add(PropertyUtil.getProperty("sample", "lastName.invalid"));
+		
+		name = simplePOC.getMiddleInitial();
+		if (name != null && name.length() > 0 && !InputValidationUtil.isRelaxedAlphabetic(name))
+			errors.add(PropertyUtil.getProperty("sample", "middleInitial.invalid"));
 		
 		String phone = simplePOC.getPhoneNumber();
 		if ( phone.length() > 0 && !InputValidationUtil.isPhoneValid(phone))
