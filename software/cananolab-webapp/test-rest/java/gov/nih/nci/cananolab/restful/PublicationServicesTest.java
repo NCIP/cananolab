@@ -106,7 +106,7 @@ public class PublicationServicesTest {
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
-		webTarget.register(SampleServices.class);
+		webTarget.register(PublicationServices.class);
 		
 		WebTarget searchPublicationWebTarget = webTarget.path("publication").path("searchPublication");
 

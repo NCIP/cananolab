@@ -301,10 +301,10 @@ public class ProtocolBO extends BaseAnnotationBO{
 				protocol.getDomain());
 	}
 
-	public void download(ProtocolForm form,
+	public String download(String fileId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ProtocolService service = this.setServiceInSession(request);
-	//	return downloadFile(service, mapping, form, request, response);
+		return downloadFile(service, fileId, request, response);
 	}
 }

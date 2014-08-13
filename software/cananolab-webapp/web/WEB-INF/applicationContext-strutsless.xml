@@ -84,6 +84,13 @@
 		class="gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO">
 	</bean>
 	
+	<bean id="protocolBO"							
+		class="gov.nih.nci.cananolab.restful.protocol.ProtocolBO">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 

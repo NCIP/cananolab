@@ -80,5 +80,18 @@ public class ProtocolServicesTest {
 		
 	}
 
+	@Test
+	public void testdownload() {
+		String jsonString = client.target(urlbase)
+				.register(ProtocolServices.class)
+				.path("protocol/download")
+				.queryParam("fileId", "23178496") 
+				.request("application/pdf")
+				.header("some-header", "true")
+				.get(String.class);
+
+		assertNotNull(jsonString);
+	}
+	
 	
 }

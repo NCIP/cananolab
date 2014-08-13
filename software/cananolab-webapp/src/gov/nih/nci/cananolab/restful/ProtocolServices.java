@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
 import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
@@ -14,6 +15,7 @@ import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -74,4 +76,24 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 		}
 	}
 	
+	@GET
+	@Path("/download")
+	@Produces ("application/pdf")
+	 public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse, 
+	    		@DefaultValue("") @QueryParam("fileId") String fileId){
+		
+		try { 
+
+			 ProtocolBO protocolBO = 
+						(ProtocolBO) applicationContext.getBean("protocolBO");
+
+			String result = protocolBO.download(fileId, httpRequest, httpResponse);
+		
+			return Response.ok(result).build();
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while downloading the file" + e.getMessage())).build();
+
+		}
+	}
 }

@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.view;
 
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -17,6 +18,22 @@ public class SimpleSearchProtocolBean {
 	String version;
 	Date createdDate;
 	String fileInfo;
+	long id;
+	boolean editable = false;
+
+
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public boolean isEditable() {
+		return editable;
+	}
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
 	public String getType() {
 		return type;
 	}
@@ -62,6 +79,8 @@ public class SimpleSearchProtocolBean {
 		setVersion(bean.getDomain().getVersion());
 		String fileInformation = fileInfo(bean);
 		setFileInfo(fileInformation);
+		editable = SecurityUtil.isEntityEditableForUser(bean.getAllAccesses(), user);
+		id = bean.getDomain().getId();
 	}
 	private String fileInfo(ProtocolBean protocol) {
 		// TODO Auto-generated method stub
@@ -86,7 +105,7 @@ public class SimpleSearchProtocolBean {
 								.escapeXmlButPreserveLineBreaks(description)).append("<br>");
 			}
 			if (file.getDomainFile().getId() != null) {
-				String link = "protocol.do?dispatch=download&fileId="
+				String link = "rest/protocol/download?fileId="
 						+ file.getDomainFile().getId();
 				String linkText = "View";
 				sb.append("<br>").append("<a href=");
