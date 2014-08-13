@@ -19,17 +19,6 @@
 <!-- Message Area -->
 <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>
 <div class="message">{{message}}</div>
-<!--
-<h2>sampleId{{sampleData.sampleId}}</h2>
-<h2>sampleData.pointOfContacts[0].contactPerson {{sampleData.pointOfContacts[0].contactPerson}}</h2>
-<h2>sampleData.pointOfContacts[1].contactPerson {{sampleData.pointOfContacts[1].contactPerson}}</h2>
-<h2>sampleData.pointOfContacts[0].organizationName {{sampleData.pointOfContacts[0].organizationName}}</h2>
-
-<h2>sampleData.pointOfContacts {{sampleData.pointOfContacts}}</h2>
-<div ng-repeat="item in sampleData.pointOfContacts">
-    Header {{ item.id }}
-</div>
--->
     <br>
 
 <!-- Application  -->
@@ -113,13 +102,6 @@
                         <label for="keywords">Keywords</label>
                     </td>
                     <td>
-                        <!-- Old way
-                        <ul id="keywords" class="list-group keywords" >
-                            <li class="list-group-item" ng-repeat="keyword in sampleData.keywords track by $index" ng-click="removeKeyword(keyword)"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}" title="Remove keyword">
-                               {{keyword}}
-                            </li>
-                        </ul>
-                        -->
                         <div class="keywords-container">
                             <ul id="keywords" class="keywords">
                                 <li ng-repeat="keyword in sampleData.keywords track by $index">

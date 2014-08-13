@@ -1,0 +1,114 @@
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+        <tr>
+            <th scope="col" align="left">
+                My Workspace
+            </th>
+            <td align="right" width="30%">
+                <a class="helpText" href=
+                        "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SearchingPublications')">Help</a>   <a class=
+                                                                                                                                                                                                                          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <div>
+        <input type="checkbox" ng-model="mySamples"><span style="font-size:16px;"> Samples </span>
+        <input type="checkbox" ng-model="myProtocols"><span style="font-size:16px;"> Protocols </span>
+        <input type="checkbox" ng-model="myPublications"><span style="font-size:16px;"> Publications </span>
+    </div>
+    <hr>
+    <div style="font-size:18px;" ng-show="mySamples">My Samples</div>
+    <table class="table publication" width="100%" cellpadding="0" cellspacing="0" ng-show="mySamples">
+        <tr>
+            <th>Actions</th>
+            <th>Sample Name</th>
+            <th>Sample Submission Status</th>
+            <th>Created Date</th>
+            <th>Sample Access</th>
+        </tr>
+        <tr ng-repeat="data in samples">
+            <td class="columnOne"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}">View</a></td>
+            <td>
+                <div>{{data.sampleName}}</div>
+            </td>
+            <td>
+                <div>{{data.status}}</div>
+            </td>
+            <td>
+                <div>{{data.createdDate}}</div>
+            </td>
+            <td>Shared by:
+                <div ng-repeat="user in data.sharedAccess">
+                    {{user.name}}
+                </div>
+            </td>
+        </tr>
+    </table>
+    <br/>
+    <div style="font-size:18px;" ng-show="myProtocols">My Protocols</div>
+    <table class="table publication" width="100%" cellpadding="0" cellspacing="0" ng-show="myProtocols">
+        <tr>
+            <th>Actions</th>
+            <th>Protocol Name</th>
+            <th>Protocol Submission Status</th>
+            <th>Created Date</th>
+            <th>Protocol Access</th>
+        </tr>
+        <tr ng-repeat="data in protocols">
+            <td class="columnOne"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}">View</a></td>
+            <td>
+                <div>{{data.protocolName}}</div>
+            </td>
+            <td>
+                <div>{{data.status}}</div>
+            </td>
+            <td>
+                <div>{{data.createdDate}}</div>
+            </td>
+            <td>Shared by:
+                <div ng-repeat="user in data.sharedAccess">
+                    {{user.name}}
+                </div>
+            </td>
+        </tr>
+    </table>
+     <br/>
+    <div style="font-size:18px;" ng-show="myPublications">My Publications</div>
+    <table class="table publication" width="100%" cellpadding="0" cellspacing="0" ng-show="myPublications">
+        <tr>
+            <th>Actions</th>
+            <th>Publication ID</th>
+            <th>Publication Title</th>
+            <th>Publication Submission Status</th>
+            <th>Created Date</th>
+            <th>Publication Access</th>
+        </tr>
+        <tr ng-repeat="data in publications">
+            <td class="columnOne"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}">View</a></td>
+            <td>
+                <div>{{data.id}}</div>
+            </td>
+            <td>
+                <div>{{data.publicationTitle}}</div>
+            </td>
+            <td>
+                <div>{{data.status}}</div>
+            </td>
+            <td>
+                <div>{{data.createdDate}}</div>
+            </td>
+            <td>Shared by:
+                <div ng-repeat="user in data.sharedAccess">
+                    {{user.name}}
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div id="loader" class="sample offset" ng-show="loader">
+        <div id="loaderText">
+            Loading
+        </div>
+        <div id="loaderGraphic"></div>
+    </div>
+</div>

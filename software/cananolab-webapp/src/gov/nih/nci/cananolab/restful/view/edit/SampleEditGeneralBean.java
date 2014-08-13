@@ -494,6 +494,7 @@ public class SampleEditGeneralBean {
 		
 		poc.setFirstName(samplePOC.getFirstName());
 		poc.setLastName(samplePOC.getLastName());
+		poc.setMiddleInitial(samplePOC.getMiddleInitial());
 		poc.setSampleId(sampleId);
 		
 		SimpleOrganizationBean simpleOrg = new SimpleOrganizationBean();
