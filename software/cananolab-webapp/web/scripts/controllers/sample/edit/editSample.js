@@ -203,13 +203,13 @@ var app = angular.module('angularApp')
          $scope.sampleData = angular.copy($scope.master);
     };
     $scope.update = function() {
-        console.info("Rest call here.  /caNanoLab/rest/sample/updateSample");
+        $scope.loader = true;
         $http({method: 'POST', url: '/caNanoLab/rest/sample/updateSample',data: $scope.sampleData}).
-        success(function(data, status, headers, config) {
+        success(function(data, status, headers, config) {            
             $scope.sampleData.pointOfContacts = data.pointOfContacts;
             $scope.master = angular.copy($scope.sampleData);
-            $scope.message = "Sample has been saved";
             $scope.scratchPad.editSampleData.dirty = false;
+            $scope.loader = false;
 
         }).
         error(function(data, status, headers, config) {
