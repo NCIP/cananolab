@@ -119,7 +119,10 @@ app.config(function ($routeProvider, $httpProvider) {
             templateUrl: 'views/sample/view/manageSamples.html',
             controller: 'ManageSampleCtrl'
       })
-      
+      .when('/myWorkspace', {
+            templateUrl: 'views/myWorkspace.html',
+            controller: 'MyWorkspaceCtrl'
+      })      
       .otherwise({
         redirectTo: '/'
       });
