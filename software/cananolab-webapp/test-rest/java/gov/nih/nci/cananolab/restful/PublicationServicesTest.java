@@ -94,7 +94,7 @@ public class PublicationServicesTest {
 	
 
 	@Test
-	public void testSearchSample() {
+	public void testSearchPublication() {
 
 		
 		SearchPublicationForm form = new SearchPublicationForm();
