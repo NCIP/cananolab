@@ -123,6 +123,14 @@ app.config(function ($routeProvider, $httpProvider) {
             templateUrl: 'views/myWorkspace.html',
             controller: 'MyWorkspaceCtrl'
       })      
+      .when('/searchProtocol', {
+            templateUrl: 'views/protocol/view/protocolSearch.html',
+            controller: 'ProtocolSearchCtrl'
+      })
+      .when('/protocolResults', {
+            templateUrl: 'views/protocol/view/protocolResults.html',
+            controller: 'ProtocolResultsCtrl'
+      })      
       .otherwise({
         redirectTo: '/'
       });
