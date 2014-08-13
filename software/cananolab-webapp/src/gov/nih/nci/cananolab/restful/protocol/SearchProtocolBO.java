@@ -2,9 +2,13 @@ package gov.nih.nci.cananolab.restful.protocol;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.ProtocolUtil;
 import gov.nih.nci.cananolab.restful.util.PublicationUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleSearchProtocolBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSearchPublicationBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -35,6 +39,7 @@ public class SearchProtocolBO extends BaseAnnotationBO {
 		HttpSession session = request.getSession();
 		// get the page number from request
 		int displayPage = getDisplayPage(request);
+		List<String> msgs = new ArrayList<String>();
 		List<ProtocolBean> protocolBeans = null;
 		// retrieve from session if it's not null and not the first page
 		if (session.getAttribute("protocolSearchResults") != null
@@ -46,12 +51,8 @@ public class SearchProtocolBO extends BaseAnnotationBO {
 			if (protocolBeans != null && !protocolBeans.isEmpty()) {
 				session.setAttribute("protocolSearchResults", protocolBeans);
 			} else {
-			//	ActionMessages msgs = new ActionMessages();
-			//	ActionMessage msg = new ActionMessage(
-			//			"message.searchProtocol.noresult");
-			//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			//	saveMessages(request, msgs);
-			//	return protocolBeans;
+				msgs.add(PropertyUtil.getProperty("protocol", "message.searchProtocol.noresult"));
+				return msgs;
 			}
 		}
 		// display 25 protocols at a time
@@ -72,7 +73,22 @@ public class SearchProtocolBO extends BaseAnnotationBO {
 		request.getSession().setAttribute("resultSize",
 				new Integer(protocolBeans.size()));
 
-		return protocolBeansPerPage;
+		//return protocolBeansPerPage;
+		List<SimpleSearchProtocolBean> simpleProtocolBeans = transfertoSimpleProtocolBeans(protocolBeansPerPage, user);
+		return simpleProtocolBeans;
+	}
+	
+	protected List<SimpleSearchProtocolBean> transfertoSimpleProtocolBeans(
+			List<ProtocolBean> protocolBeansPerPage, UserBean user) {
+     List<SimpleSearchProtocolBean> simpleBeans = new ArrayList<SimpleSearchProtocolBean>();
+		
+		for (ProtocolBean bean : protocolBeansPerPage) {
+			SimpleSearchProtocolBean simpleBean = new SimpleSearchProtocolBean();
+			simpleBean.transferProtocolBeanForBasicResultView(bean, user);
+			simpleBeans.add(simpleBean);
+		}
+		
+		return simpleBeans;
 	}
 
 	private List<ProtocolBean> getProtocolsPerPage(

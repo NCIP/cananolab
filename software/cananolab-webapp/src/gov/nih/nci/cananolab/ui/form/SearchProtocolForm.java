@@ -2,13 +2,13 @@ package gov.nih.nci.cananolab.ui.form;
 
 public class SearchProtocolForm {
 
-	String fileTitle;
-	String titleOperand;
-	String protocolType;
-	String protocolName;
-	String nameOperand;
-	String protocolAbbreviation;
-	String abbreviationOperand;
+	String fileTitle = "";
+	String titleOperand = "";
+	String protocolType = "";
+	String protocolName = "";
+	String nameOperand = "";
+	String protocolAbbreviation = "";
+	String abbreviationOperand = "";
 	int page;
 	
 	public String getFileTitle() {
