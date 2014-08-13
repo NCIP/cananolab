@@ -128,7 +128,7 @@ var app = angular.module('angularApp')
             author.firstName = $scope.theAuthor.firstName;
             author.lastName = $scope.theAuthor.lastName;
             author.initial = $scope.theAuthor.initial;
-            if (author.firstName.length > 0 && author.lastName.length > 0 && author.initial.length > 0) {
+            if (author.firstName.length > 0 && author.lastName.length > 0) {
                 if (newAuthor) {
                     $scope.publicationForm.authors.push(author);
                 }
