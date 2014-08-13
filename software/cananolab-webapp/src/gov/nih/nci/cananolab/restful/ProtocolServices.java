@@ -157,4 +157,91 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 		}
 	}
 	
+	
+	@POST
+	@Path("/saveAccess")
+	@Produces ("application/json")
+	public Response saveAccess(@Context HttpServletRequest httpRequest, SimpleSubmitProtocolBean bean) {
+	
+		try {
+			ProtocolBO protocolBO = 
+					(ProtocolBO) applicationContext.getBean("protocolBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+		
+			SimpleSubmitProtocolBean view = protocolBO.saveAccess(bean, httpRequest);
+			
+			List<String> errors = view.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(view).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+			
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the access to protocol " + e.getMessage())).build();
+		}
+	}
+	@POST
+	@Path("/deleteProtocol")
+	@Produces ("application/json")
+	public Response deleteProtocol(@Context HttpServletRequest httpRequest, SimpleSubmitProtocolBean form) {
+	
+		try {
+			
+			ProtocolBO protocolBO = 
+					(ProtocolBO) applicationContext.getBean("protocolBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			List<String> msgs = protocolBO.delete(form, httpRequest);
+			 
+			
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the protocol " + e.getMessage())).build();
+		}
+	}
+	
+	@POST
+	@Path("/deleteAccess")
+	@Produces ("application/json")
+	public Response deleteAccess(@Context HttpServletRequest httpRequest, SimpleSubmitProtocolBean form) {
+	
+		try {
+			
+			ProtocolBO protocolBO = 
+					(ProtocolBO) applicationContext.getBean("protocolBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			SimpleSubmitProtocolBean bean = protocolBO.deleteAccess(form, httpRequest);
+			 
+			
+			List<String> errors = bean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(bean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the access " + e.getMessage())).build();
+		}
+	}
 }

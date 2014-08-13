@@ -48,7 +48,7 @@ public class ProtocolServicesTest {
 
 		
 		SearchProtocolForm form = new SearchProtocolForm();
-		form.setProtocolType("in vitro assay");
+		form.setProtocolType("sterility");
 		form.setTitleOperand("contains");
 		form.setNameOperand("contains");
 		form.setAbbreviationOperand("contains");
@@ -75,7 +75,7 @@ public class ProtocolServicesTest {
 		String json = (String) postResponse.readEntity(String.class);
 				
 		assertNotNull(json);
-		assertTrue(json.contains("in vitro assay"));
+		assertTrue(json.contains("sterility"));
 		System.out.println(json);
 		
 	}
