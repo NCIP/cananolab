@@ -74,7 +74,7 @@ public class SimpleSearchProtocolBean {
 			UserBean user) {
 		
 		setType(bean.getDomain().getType());
-		setViewName(bean.getDisplayName());
+		setViewName(bean.getDomain().getName());
 		setAbbreviation(bean.getDomain().getAbbreviation());
 		setVersion(bean.getDomain().getVersion());
 		String fileInformation = fileInfo(bean);

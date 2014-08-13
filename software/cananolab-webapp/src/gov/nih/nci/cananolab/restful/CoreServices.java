@@ -5,7 +5,10 @@ import gov.nih.nci.cananolab.restful.core.AccessibilityManager;
 import gov.nih.nci.cananolab.restful.core.CustomPlugInBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.core.TabGenerationBO;
+import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleTabsBean;
+import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceBean;
+import gov.nih.nci.cananolab.restful.workspace.WorkspaceManager;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.io.FileOutputStream;
@@ -99,6 +102,27 @@ public class CoreServices {
 	}
 
 	@GET
+	@Path("/getWorkspaceItems")
+	@Produces ("application/json")
+    public Response getWorkspaceItems(@Context HttpServletRequest httpRequest) {
+				
+		try { 
+			WorkspaceManager manager = 
+					 (WorkspaceManager) applicationContext.getBean("workspaceManager");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			SimpleWorkspaceBean value = manager.getWorkspaceItems(httpRequest);
+			return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the users"+ e.getMessage()).build();
+		}
+	}
+	
+	@GET
 	@Path("/getUsers")
 	@Produces ("application/json")
     public Response getUsers(@Context HttpServletRequest httpRequest,
@@ -120,4 +144,6 @@ public class CoreServices {
 			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the users"+ e.getMessage()).build();
 		}
 	}
+	
+	
 }

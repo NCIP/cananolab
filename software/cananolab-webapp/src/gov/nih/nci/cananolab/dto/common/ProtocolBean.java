@@ -99,6 +99,10 @@ public class ProtocolBean extends SecuredDataBean {
 	public Protocol getDomain() {
 		return domain;
 	}
+	
+	public void setDomain(Protocol protocol) {
+		this.domain = protocol;
+	}
 
 	public String[] getVisibilityGroups() {
 		return visibilityGroups;

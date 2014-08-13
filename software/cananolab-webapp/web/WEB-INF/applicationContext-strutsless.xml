@@ -91,6 +91,10 @@
 		</property>
 	</bean>
 	
+	<bean id="workspaceManager"							
+		class="gov.nih.nci.cananolab.restful.workspace.WorkspaceManager">
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 
