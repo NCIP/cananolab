@@ -27,8 +27,15 @@ public class SimpleSubmitProtocolBean {
 	Date createdDate;
 	AccessibilityBean theAccess;
 	Boolean userDeletable = false;
+	List<String> errors;
 
 	
+	public List<String> getErrors() {
+		return errors;
+	}
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
+	}
 	public Boolean getUserDeletable() {
 		return userDeletable;
 	}
@@ -142,9 +149,11 @@ public class SimpleSubmitProtocolBean {
 		setAbbreviation(bean.getDomain().getAbbreviation());
 		setCreatedBy(bean.getDomain().getCreatedBy());
 		setCreatedDate(bean.getDomain().getCreatedDate());
+		if(bean.getDomain().getFile()!= null){
 		setFileDescription(bean.getDomain().getFile().getDescription());
 		setFileId(bean.getDomain().getFile().getId());
 		setFileTitle(bean.getDomain().getFile().getTitle());
+		}
 		setGroupAccesses(bean.getGroupAccesses());
 		setUserAccesses(bean.getUserAccesses());
 		setTheAccess(bean.getTheAccess());
