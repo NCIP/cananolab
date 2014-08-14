@@ -1,0 +1,159 @@
+<div class="nanoPageContainer">
+<div class="spacer">
+<form novalidate>
+<table class="contentTitle" width="100%" border="0" summary="layout">
+    <tbody>
+    <tr>
+        <th scope="col" align="left" ng-if="protocolId==null">
+            Submit Protocol
+        </th>
+
+        <th scope="col" align="left" ng-if="protocolId!=null">
+            Update Protocol
+        </th>
+
+        <td align="right" width="30%">
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SubmittingaPublication')">Help</a>
+            &nbsp;
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            &nbsp;
+        </td>
+    </tr>
+    </tbody>
+</table>
+<span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
+    <ul>
+        <li ng-repeat="message in messages">
+            {{message}}
+        </li>
+    </ul>
+</span>
+<table width="100%" align="center" class="submissionView" summary="layout">
+<tr>
+    <td class="cellLabel" width="100">
+        <label for="type">Protocol Type *</label>
+    </td>
+    <td>
+        <select ng-disabled="loader" id="type" ng-model="protocolForm.type">
+            <option ng-repeat="option in protocolTypes" value="{{option}}" ng-selected="{{option==protocolForm.type}}">
+                {{option}}
+            </option>
+        </select>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="protocolName">Protocol Name*</label>
+    </td>
+    <td>
+        <div id="protocolNamePrompt">
+            <input type="text" ng-model="protocolForm.name" name="protocol.domain.name" size="100" ng-model-onblur ng-change="fillProtocolInfo()" id="protocolName">
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel" width="20%">
+        <label for="protocolAbbreviation">Protocol Abbreviation</label>
+    </td>
+    <td>
+        <input type="text" ng-model="protocolForm.abbreviation" name="protocol.domain.abbreviation" size="30" id="protocolAbbreviation">
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="protocolVersion">Protocol Version</label>
+    </td>
+    <td>
+        <div id="protocolVersionPrompt">
+            <input type="text" ng-model="protocolForm.version" name="protocol.domain.version" size="30" id="protocolVersion">
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">Protocol File
+    </td>
+    <td>
+        <table class="invisibleTable" summary="layout">
+            <tbody>
+            <tr>
+                <td class="cellLabel" width="40%">
+                    <input type="radio" ng-model="protocolForm.uriExternal" value="false" ng-checked="true" id="external0">
+                    <label for="external0">Upload</label>
+                </td>
+                <td class="cellLabel">
+                    <input type="radio" ng-model="protocolForm.uriExternal" value="true" id="external1">
+                    <label for="external1">Enter File URL</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                            <span id="load" style="display: block;" ng-show="protocolForm.uriExternal=='false'">
+        						<input type="file" ng-model="protocolForm.uploadedFile" size="60" value="" ng-change="updateWithExistingNonPubMedDOIPublication('');" id="uploadedFile">
+        						<!-- <input type="file" file-model="localForm.uploadedFile" ng-model="localForm.uploadedFile" size="60" value="" onchange="angular.element(this).scope().uploadFile(this);" id="uploadedFile"> -->
+				            </span>
+                    <label for="uploadedFile">&nbsp;&nbsp;</label>
+                            <span id="uploadedUri" style="display: block;" ng-show="protocolForm.uriExternal=='false'">
+			                    <a href="publication.do?dispatch=download&amp;fileId="></a>
+                            </span>
+			                <span id="link" ng-show="protocolForm.uriExternal=='true'">
+                                <input type="text" ng-model="protocolForm.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
+					        </span>
+                    <label for="externalUrl">&nbsp;</label>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+<!--        <input type="hidden" name="protocol.domain.id" value="29949966" id="protocolId">
+        <input type="hidden" name="protocol.fileBean.domainFile.id" value="29655061" id="fileId">
+        <input type="hidden" name="protocol.fileBean.domainFile.uri" value="http://ncl.cancer.gov/NCL_Method_GTA-12.pdf" id="fileUri">
+        <input type="hidden" name="protocol.fileBean.domainFile.name" value="http://ncl.cancer.gov/NCL_Method_GTA-12.pdf" id="fileName">  -->
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="fileTitle">File Title</label>
+    </td>
+    <td>
+        <input type="text" ng-model="protocolForm.fileTitle" name="protocol.fileBean.domainFile.title" size="100" id="fileTitle">
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="fileDescription">Description</label>
+    </td>
+    <td>
+        <textarea ng-model="protocolForm.fileDescription" name="protocol.fileBean.domainFile.description" cols="80" rows="3" id="fileDescription"></textarea>
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        <table>
+            <ng-include src="'/caNanoLab/views/manageAccessibility.html'"></ng-include>
+        </table>
+    </td>
+</tr>
+
+</table>
+<br>
+<table width="100%" class="invisibleTable" summary="layout">
+    <tbody><tr>
+        <td align="left" width="600">
+            <input type="button" value="Delete" ng-click="doDelete()" ng-if="protocolId != null">
+        </td>
+        <td align="right" width="300">
+            <input type="reset" value="Reset" ng-click="resetForm()">
+            <input type="submit" value="Submit" ng-click="doSubmit()" ng-if="protocolId == null">
+            <input type="submit" value="Update" ng-click="doSubmit()" ng-if="protocolId != null">
+        </td>
+    </tr>
+    </tbody>
+</table>
+</form>
+<div id="loader" ng-show="loader">
+    <div id="loaderText">
+        Loading
+    </div>
+    <div id="loaderGraphic"></div>
+</div>
+</div>
+</div>

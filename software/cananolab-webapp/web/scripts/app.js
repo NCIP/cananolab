@@ -134,6 +134,14 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/protocolResults', {
             templateUrl: 'views/protocol/view/protocolResults.html',
             controller: 'ProtocolResultsCtrl'
+      })  
+      .when('/submitProtocol', {
+            templateUrl: 'views/protocol/edit/editProtocol.html',
+            controller: 'EditProtocolCtrl'
+      })
+      .when('/editProtocol', {
+            templateUrl: 'views/protocol/edit/editProtocol.html',
+            controller: 'EditProtocolCtrl'
       })      
       .otherwise({
         redirectTo: '/'
