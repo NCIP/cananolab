@@ -4,8 +4,6 @@ var app = angular.module('angularApp')
 .controller('editSampleCtrl', function (sampleService,navigationService,groupService,$scope,$rootScope,$filter,ngTableParams,$http,$location,$modal,$routeParams) {
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();
-
-
     $scope.sampleResultData =sampleService.sampleData;
     $scope.sampleData = {};
     $scope.sampleId = sampleService.sampleId;
@@ -22,8 +20,6 @@ var app = angular.module('angularApp')
     $scope.csmRoleNames = {"R":"read","CURD":"read update delete"};
     $scope.sampleData.theAccess = {};
     $scope.accessForm = {};
-    // $scope.dataType = 'Sample';
-    // $scope.parentFormName = 'sampleForm';
     $scope.accessForm.theAcccess = {};
     $scope.accessForm.theAcccess.userBean = {};
     $scope.isCurator = groupService.isCurator();
@@ -118,8 +114,8 @@ var app = angular.module('angularApp')
         $scope.updateButton = "Submit";
     };
 
-// * Page Change Events *
-//Add keyword
+    // * Page Change Events *
+    //Add keyword
     $scope.addKeyword=function(){
         if($scope.newKeyword.length > 1) {
             $scope.sampleData.keywords.push($scope.newKeyword.toUpperCase());
@@ -146,13 +142,13 @@ var app = angular.module('angularApp')
     };
 
     $scope.delete = function() {
-        // Delete sample, send back to results //        
+            // Delete sample, send back to results //        
 
-        var modalHtml = '<div class="modal-header">Are you sure you wish to delete this sample?</div>';
-         modalHtml+= '<div class="modal-body"><button ng-disabled="loader" style="margin-right:50px !important;" ng-click="closeModal(1)" class="btn btn-primary btn-sm">Yes</button>';
-         modalHtml+= '<button ng-disabled="loader" ng-click="closeModal(0)" class="btn btn-primary  btn-sm">No</button></div>';
-         modalHtml+='<div id="loader" style="top:0px;left:30px;" ng-show="loader"><div id="loaderText">Deleting sample</div><div id="loaderGraphic"></div></div>';        
-        var modalInstance = $modal.open({
+            var modalHtml = '<div class="modal-header">Are you sure you wish to delete this sample?</div>';
+            modalHtml+= '<div class="modal-body"><button ng-disabled="loader" style="margin-right:50px !important;" ng-click="closeModal(1)" class="btn btn-primary btn-sm">Yes</button>';
+            modalHtml+= '<button ng-disabled="loader" ng-click="closeModal(0)" class="btn btn-primary  btn-sm">No</button></div>';
+            modalHtml+='<div id="loader" style="top:0px;left:30px;" ng-show="loader"><div id="loaderText">Deleting sample</div><div id="loaderGraphic"></div></div>';        
+            var modalInstance = $modal.open({
             template:modalHtml,
             size:"sm",
             controller:"modalCtrl",
@@ -162,6 +158,7 @@ var app = angular.module('angularApp')
                 }
             }
         });
+
         modalInstance.result.then(function(selection) {
             if (selection) {
                 $scope.loader = true;
@@ -199,9 +196,6 @@ var app = angular.module('angularApp')
 
         }).
         error(function(data, status, headers, config) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-            // $rootScope.sampleData = data;
             $scope.loader = false;
             $scope.message = data;
         });
@@ -209,7 +203,7 @@ var app = angular.module('angularApp')
 
     };
 
-// Modal for Access To Sample (1)
+    // Modal for Access To Sample (1)
     $scope.openPointOfContactModal = function(sampleId, poc) {
         sampleService.sampleData = angular.copy($scope.sampleData);
         sampleService.pocData = angular.copy(poc);
@@ -241,104 +235,7 @@ var app = angular.module('angularApp')
         modalInstance.result.then(function (sampleData) {
             $scope.sampleData = sampleData;
         });
-
-        var savePoc = function(poc) {
-                $scope.message = "";
-                $scope.loader = true;
-                //$scope.newPoc = sampleService.pocData.data;
-                //console.dir($scope.newPoc);
-                //Set dirty flag
-                //poc.dirty = true;
-                sampleService.pocData.dirty = true;
-                //Update sampleData with newPoc
-                if(parseInt(sampleService.pocData.id) > 0){
-                    //Update
-                    //$scope.sampleData.pointOfContacts.push(sampleService.pocData);
-                    //Find the id and replace it.
-                    //
-                    //sampleService.pocData = poc;
-                    //Update Screen
-                    poc = sampleService.pocData;
-                    var index = sampleService.sampleData.pointOfContacts.map(function(x) {return x.id; }).indexOf(sampleService.pocData.id);
-                    $scope.sampleData.pointOfContacts[index] = poc;
-                } else {
-                    //Append to PointOfContact
-                    console.info("Appending to PointOfContact");
-                    $scope.sampleData.pointOfContacts.push(sampleService.pocData);
-                };
-                if(location.hostname == "") {
-                } else {
-                    console.info("Rest call here.  /caNanoLab/rest/sample/savePOC");
-                    $http({method: 'POST', url: '/caNanoLab/rest/sample/savePOC',data: $scope.sampleData}).
-                    success(function(data, status, headers, config) {
-                        //alert(data);
-                        //TODO: This next line needs to be $scope.sampleData = data;
-                        // The server is messing up keywords by changing array of strings to string with returns.
-                        // So I left this alone until after the demo.
-                        //
-                        $scope.sampleData.pointOfContacts = data.pointOfContacts;
-                        $scope.master = angular.copy($scope.sampleData);
-                        $scope.message = "Point of Contact has been saved";
-
-                    }).
-                    error(function(data, status, headers, config) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        // $rootScope.sampleData = data;
-                        $scope.loader = false;
-                        $scope.message = data;
-                    });
-                }
-                $scope.loader = false;        alert($scope.sampleData.organizationNamesForUser)
-
-        };
-        // modalInstance.result.then(function (poc) {
-        //     // Save POC
-        //     //alert("Save hit");
-        //     savePoc(poc);
-        //     console.info('User hits save.');
-        // }, function () {
-        //     //Do not save - replace any changes to POC
-        //     //alert("Cancel hit");
-        //     console.info('Modal dismissed at: ' + new Date());
-        // });
-
     };
-
-// Modal for Access To Sample (2)
-// Modal for Access To Sample (1)
-    $scope.openAccessToSampleModal = function(sampleId, ats) {
-        console.log('openAccessToSampleModal');
-        console.dir(sampleId);
-        console.log('ats');
-        console.dir(ats);
-
-        sampleService.sampleData = angular.copy($scope.sampleData);
-        $scope.pocData = poc.data;
-        var modalInstance = $modal.open({
-          templateUrl: 'views/sample/edit/modal/pointOfContactModal.html',
-          controller: 'PointOfContactModalCtrl',
-          windowClass: 'pointOfContact-modal-window',
-          resolve: {
-            sampleId: function () {
-              return sampleId;
-            },
-            poc: function() {
-              return poc;
-            }
-          }
-        });
-        modalInstance.result.then(function (poc) {
-            $scope.newPoc = poc;
-            /*Save POC*/
-            alert("Save hit");
-            console.info('User hit save.');
-        }, function () {
-            /*Do not save - replace any changes to POC*/
-            alert("Cancel hit");
-            console.info('Modal dismissed at: ' + new Date());
-        });
-     };
 
     // generates data availability //
     $scope.generateDataAvailability = function(sampleId) {
@@ -358,9 +255,8 @@ var app = angular.module('angularApp')
 
     };
 
-// Modal for Data Availability (3)
+    // Modal for Data Availability //
     $scope.openDataAvailability = function(sampleId) {
-
           $http({method: 'GET', url: '/caNanoLab/rest/sample/viewDataAvailability',params: {"sampleId":sampleId}}).
           success(function(data, status, headers, config) {
             var modalInstance = $modal.open({
@@ -387,8 +283,6 @@ var app = angular.module('angularApp')
             });
           }).
           error(function(data, status, headers, config) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
             $scope.message = data;
           });
 
@@ -412,8 +306,6 @@ var app = angular.module('angularApp')
                 // or server returns response with an error status.
                 $scope.message = data;
             });
-
-        //$scope.collabGroups = ["curator group", "NCI", "NCIP"];
         $scope.showAccessSelection=true;
 
     };
@@ -432,8 +324,6 @@ var app = angular.module('angularApp')
                 // or server returns response with an error status.
                 $scope.message = data;
             });
-
-        //$scope.accessUsers = {"lethai":"Le Thai","Omelchen":"Omelchenko Marina","burnskd":"Burns Kevin","canano_guest":"Guest Guest","grodzinp":"Grodzinski Piotr","swand":"Swan Don","skoczens":"Skoczen Sarah","sternstephan":"Stern Stephan","zolnik":"Zolnik Banu","hunseckerk":"Hunsecker Kelly","lipkeyfg":"Lipkey Foster","marina":"Dobrovolskaia Marina","pottert":"Potter Tim","uckunf":"Uckun Fatih","michal":"Lijowski Michal","mcneils":"Mcneil Scott","neunb":"Neun Barry","cristr":"Crist Rachael","zhengji":"Zheng Jiwen","frittsmj":"Fritts Martin","SchaeferH":"Schaefer Henry","benhamm":"Benham Mick","masoods":"Masood Sana","mclelandc":"McLeland Chris","torresdh":"Torres David","KlemmJ":"Klemm Juli","patria":"Patri Anil","hughesbr":"Hughes Brian","clogstonj":"Clogston Jeff","hinkalgw":"Hinkal George","MorrisS2":"Morris Stephanie","sharon":"Gaheen Sharon"};
         $scope.showAccessSelection=true;
 
     };
@@ -454,11 +344,7 @@ var app = angular.module('angularApp')
         }
 
         $http({method: 'POST', url: '/caNanoLab/rest/sample/saveAccess',data: $scope.sampleData}).
-            success(function(data, status, headers, config) {
-                // $rootScope.sampleData = data;
-                //$scope.sampleData.data = data;
-                //$location.path("/sampleResults").replace();
-            	
+            success(function(data, status, headers, config) {            	
             	$scope.sampleData = data;
             	
             	$scope.groupAccesses = $scope.sampleData.groupAccesses;
@@ -468,9 +354,6 @@ var app = angular.module('angularApp')
                 $scope.accessExists = true;
             }).
             error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                // $rootScope.sampleData = data;
                 $scope.loader = false;
                 $scope.messages = data;
             });
@@ -523,11 +406,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
         
             $http({method: 'POST', url: '/caNanoLab/rest/sample/deleteAccess',data: $scope.sampleData}).
-                success(function(data, status, headers, config) {
-                    // $rootScope.sampleData = data;
-                    //$scope.sampleData.data = data;
-                    //$location.path("/sampleResults").replace();
-                	
+                success(function(data, status, headers, config) {            	
                 	$scope.sampleData = data;
                 	
                 	$scope.groupAccesses = $scope.sampleData.groupAccesses;
@@ -544,9 +423,6 @@ var app = angular.module('angularApp')
                     $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                    // $rootScope.sampleData = data;
                     $scope.loader = false;
                     $scope.messages = data;
                 });

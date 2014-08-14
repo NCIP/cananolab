@@ -25,7 +25,7 @@
                 </th>
                 <th></th>
             </tr>
-                <tr valign="top" ng-repeat="access in $parent.groupAccesses">
+                <tr valign="top" ng-repeat="access in $parent.groupAccesses track by $index">
                     <td>
                         {{access.groupName}}
                     </td>
@@ -56,7 +56,7 @@
                     </th>
                     <th></th>
                 </tr>
-                    <tr valign="top" ng-repeat="access in $parent.userAccesses">
+                    <tr valign="top" ng-repeat="access in $parent.userAccesses track by $index">
                         <td>
                             {{access.userBean.loginName}}
                         </td>
@@ -133,13 +133,13 @@
                                 <td>
                                     <label for="matchedUserNameSelect" style="display:none" id="userNameSelectLabel">Select a user</label>
                                     <select ng-model="access.loginName" id="matchedUserNameSelect"  ng-click="$parent.accessForm.theAccess.userBean.loginName = $parent.access.loginName;" ng-if="$parent.showAccessuser && $parent.showAccessSelection">
-                                        <option ng-repeat="(loginId, name) in $parent.accessUsers" value="{{loginId}}">
+                                        <option ng-repeat="(loginId, name) in $parent.accessUsers track by $index" value="{{loginId}}">
                                             {{name}}
                                         </option>
                                     </select>
                                     <label for="matchedGroupNameSelect" style="display:none">Select a group</label>
                                     <select ng-model="access.groupName" id="matchedGroupNameSelect" ng-click="$parent.accessForm.theAccess.groupName = $parent.access.groupName;" ng-if="$parent.showCollaborationGroup && $parent.showAccessSelection">
-                                        <option ng-repeat="group in $parent.collabGroups" value="{{group}}">
+                                        <option ng-repeat="group in $parent.collabGroups track by $index" value="{{group}}">
                                             {{group}}
                                         </option>
                                     </select>
