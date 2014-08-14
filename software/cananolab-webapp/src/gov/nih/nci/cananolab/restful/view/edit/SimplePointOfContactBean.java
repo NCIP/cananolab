@@ -35,7 +35,6 @@ public class SimplePointOfContactBean {
 	@PatternMatchIfNotNullNotEmpty(regexpName="phone", messageSource="sample", messageKey="phone.invalid")
 	String phoneNumber = "";
 	
-	//@PatternMatchIfNotNullNotEmpty(regexpName="phone", messageSource="sample", messageKey="phone.invalid")
 	String email = "";
 	
 	boolean dirty = false;

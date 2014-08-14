@@ -500,7 +500,7 @@ public class SampleEditGeneralBean {
 		SimpleOrganizationBean simpleOrg = new SimpleOrganizationBean();
 		simpleOrg.setName(samplePOC.getOrganization().getName());
 		simpleOrg.setId(samplePOC.getOrganization().getId());
-		poc.setOrganization(simpleOrg);
+		
 		poc.setRole(samplePOC.getRole());
 		poc.setId(samplePOC.getId());
 		poc.setPhoneNumber(samplePOC.getPhone());
@@ -514,6 +514,9 @@ public class SampleEditGeneralBean {
 		simpleAddress.setStateProvince(samplePOC.getOrganization().getState());
 		simpleAddress.setCountry(samplePOC.getOrganization().getCountry());
 		simpleAddress.setZip(samplePOC.getOrganization().getPostalCode());
+		
+		simpleOrg.setAddress(simpleAddress);
+		poc.setOrganization(simpleOrg);
 		
 		poc.setAddress(simpleAddress);
 		
