@@ -25,6 +25,9 @@ var app = angular.module('angularApp')
                 sampleId: function () {
                   return sampleId;
                 },
+                availabilityData: function() {
+                  return data;
+                },                
                 sampleData: function() {
                   return data;
                 },
