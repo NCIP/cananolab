@@ -28,20 +28,20 @@
             <th>Sample Access</th>
         </tr>
         <tr ng-repeat="data in samples">
-            <td class="columnOne"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}">View</a></td>
+            <td class="columnOne"><a href="https://cananolab-dev.nci.nih.gov/caNanoLab/#/sample?sampleId={{data.id}}">View</a></td>
             <td>
-                <div>{{data.sampleName}}</div>
+                <div>{{data.name}}</div>
             </td>
             <td>
-                <div>{{data.status}}</div>
+                <div>{{data.submisstionStatus}}</div>
             </td>
             <td>
-                <div>{{data.createdDate}}</div>
+                <div>{{data.createdDate | date:'shortDate'}}</div>
             </td>
-            <td>Shared by:
-                <div ng-repeat="user in data.sharedAccess">
+            <td>Shared by: {{data.access}}
+                <!-- <div ng-repeat="user in data.sharedAccess">
                     {{user.name}}
-                </div>
+                </div> -->
             </td>
         </tr>
     </table>
@@ -58,22 +58,22 @@
         <tr ng-repeat="data in protocols">
             <td class="columnOne"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}">View</a></td>
             <td>
-                <div>{{data.protocolName}}</div>
+                <div>{{data.name}}</div>
             </td>
             <td>
-                <div>{{data.status}}</div>
+                <div>{{data.submisstionStatus}}</div>
             </td>
             <td>
-                <div>{{data.createdDate}}</div>
+                <div>{{data.createdDate | date:'shortDate'}}</div>
             </td>
-            <td>Shared by:
-                <div ng-repeat="user in data.sharedAccess">
+            <td>Shared by: {{data.access}}
+                <!-- <div ng-repeat="user in data.sharedAccess">
                     {{user.name}}
-                </div>
+                </div> -->
             </td>
         </tr>
     </table>
-     <br/>
+    <br/>
     <div style="font-size:18px;" ng-show="myPublications">My Publications</div>
     <table class="table publication" width="100%" cellpadding="0" cellspacing="0" ng-show="myPublications">
         <tr>
@@ -85,23 +85,23 @@
             <th>Publication Access</th>
         </tr>
         <tr ng-repeat="data in publications">
-            <td class="columnOne"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}">View</a></td>
+            <td class="columnOne"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}" _target="new">View</a></td>
             <td>
-                <div>{{data.id}}</div>
+                <div>{{data.pubMedId}}</div>
             </td>
             <td>
-                <div>{{data.publicationTitle}}</div>
+                <div>{{data.name}}</div>
             </td>
             <td>
-                <div>{{data.status}}</div>
+                <div>{{data.submisstionStatus}}</div>
             </td>
             <td>
-                <div>{{data.createdDate}}</div>
+                <div>{{data.createdDate | date:'shortDate'}}</div>
             </td>
-            <td>Shared by:
-                <div ng-repeat="user in data.sharedAccess">
+            <td>Shared by: {{data.access}}
+                <!-- <div ng-repeat="user in data.sharedAccess">
                     {{user.name}}
-                </div>
+                </div> -->
             </td>
         </tr>
     </table>
