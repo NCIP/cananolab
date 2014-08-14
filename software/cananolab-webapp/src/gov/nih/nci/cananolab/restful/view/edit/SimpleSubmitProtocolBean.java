@@ -14,7 +14,7 @@ public class SimpleSubmitProtocolBean {
 	String abbreviation = "";
 	String version = "";
 	Long fileId;
-	Long id;
+	Long id = 0L;
 	String fileTitle = "";
 	String fileDescription = "";
 	List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
