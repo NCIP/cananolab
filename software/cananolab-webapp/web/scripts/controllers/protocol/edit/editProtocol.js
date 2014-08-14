@@ -128,7 +128,7 @@ var app = angular.module('angularApp')
                 $http({method: 'POST', url: '/caNanoLab/rest/protocol/deleteProtocol',data: $scope.protocolForm}).
                     success(function(data, status, headers, config) {
                         if (data == "success") {
-                            $location.search('message','Protocol successfully removed with title "' + $scope.protocolForm.title + '"').path('/message').replace();
+                            $location.search('message','Protocol successfully removed with title "' + $scope.protocolForm.name + '"').path('/message').replace();
                         }
                         else {
                             $scope.loader = false;
