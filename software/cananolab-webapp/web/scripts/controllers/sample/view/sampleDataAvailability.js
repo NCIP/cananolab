@@ -8,7 +8,7 @@ var app = angular.module('angularApp')
      $scope.edit = edit;
 
 	$scope.ok = function () {
-		$modalInstance.close();
+		$modalInstance.close(sampleData);
 	};
 
     // delete the data availability metric //
