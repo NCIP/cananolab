@@ -70,6 +70,9 @@ var app = angular.module('angularApp')
             $scope.sampleData.pointOfContacts[index] = originalPoc;
         } 
         else {
+            if ($scope.sampleData.pointOfContacts == null) {
+                $scope.sampleData.pointOfContacts = [];
+            }
             $scope.sampleData.pointOfContacts.push(sampleService.pocData);
         };
         
