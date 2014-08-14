@@ -98,6 +98,11 @@
 	<bean id="pointOfContactManager"
 		class="gov.nih.nci.cananolab.restful.core.PointOfContactManager">
 	</bean>
+	
+	<bean id="protocolManager"
+		class="gov.nih.nci.cananolab.restful.protocol.ProtocolManager">
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 
