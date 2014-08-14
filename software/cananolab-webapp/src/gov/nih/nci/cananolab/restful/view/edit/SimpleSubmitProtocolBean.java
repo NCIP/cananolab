@@ -28,8 +28,14 @@ public class SimpleSubmitProtocolBean {
 	AccessibilityBean theAccess;
 	Boolean userDeletable = false;
 	List<String> errors;
-
+	Boolean userUpdatable = false;
 	
+	public Boolean getUserUpdatable() {
+		return userUpdatable;
+	}
+	public void setUserUpdatable(Boolean userUpdatable) {
+		this.userUpdatable = userUpdatable;
+	}
 	public List<String> getErrors() {
 		return errors;
 	}
@@ -164,7 +170,7 @@ public class SimpleSubmitProtocolBean {
 		setType(bean.getDomain().getType());
 		setUserDeletable(bean.getUserDeletable());
 		setVersion(bean.getDomain().getVersion());
-		
+		setUserUpdatable(bean.getUserUpdatable());
 		
 	}
 	
