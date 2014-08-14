@@ -275,6 +275,7 @@ public class SimpleSampleBean {
 		this.setMincharScore(sampleBean.getMincharScore());
 
 		setSampleName(sampleBean.getDomain().getName());
+		setSampleId(sampleBean.getDomain().getId());
 		
 		SortedSet<String> ca = (SortedSet<String>) request.getSession().getServletContext().getAttribute("chemicalAssocs");
 		this.chemicalAssocs = SampleUtil.getStringArrayFromSortedSet(ca);
