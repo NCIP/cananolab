@@ -7,10 +7,6 @@ var app = angular.module('angularApp')
     $scope.sampleResultData =sampleService.sampleData;
     $scope.sampleData = {};
     $scope.sampleId = sampleService.sampleId;
-    
-
-
-    // $scope.sampleResultData = {"data":[{"sampleId":27131907,"sampleName":"NCL-MGelderman-IJN2008-01","pointOfContact":"NCL<br>CBER, FDA, 1401 Rockville Pike<br>HFM 335<br>Rockville MD 20852-1448 USA","composition":["Fullerene"],"functions":[],"characterizations":["Size"],"dataAvailability":"caNanoLab: 16%; MINChar: 22%","createdDate":1238731200000,"editable":true},{"sampleId":24063238,"sampleName":"NCL-49","pointOfContact":"my org<br>searea<br>dfafa","composition":["Liposome"],"functions":[],"characterizations":["BloodContact","Cytotoxicity","Size"],"dataAvailability":"caNanoLab: 23%; MINChar: 22%","createdDate":1407591871000,"editable":true},{"sampleId":24063237,"sampleName":"NCL-48","pointOfContact":"Mark Kester PSU","composition":["Liposome"],"functions":[],"characterizations":["Cytotoxicity","Size","Surface"],"dataAvailability":"caNanoLab: 23%; MINChar: 33%","createdDate":1181275200000,"editable":true},{"sampleId":24063236,"sampleName":"NCL-45","pointOfContact":"C-Sixty (CNI)","composition":["Fullerene"],"functions":[],"characterizations":["BloodContact","MolecularWeight","Purity","Size"],"dataAvailability":"caNanoLab: 26%; MINChar: 33%","createdDate":1179374400000,"editable":true},{"sampleId":24063235,"sampleName":"NCL-42","pointOfContact":"C-Sixty (CNI)","composition":["Fullerene"],"functions":[],"characterizations":["BloodContact","Cytotoxicity","ImmuneCellFunction","MolecularWeight","OxidativeStress","Purity","Size","Surface"],"dataAvailability":"caNanoLab: 40%; MINChar: 44%","createdDate":1179374400000,"editable":true},{"sampleId":24063234,"sampleName":"NCL-19","pointOfContact":"C-Sixty (CNI)","composition":["Fullerene"],"functions":[],"characterizations":["BloodContact","Cytotoxicity","OxidativeStress"],"dataAvailability":"caNanoLab: 23%; MINChar: 11%","createdDate":1179374400000,"editable":true},{"sampleId":24063233,"sampleName":"NCL-17","pointOfContact":"C-Sixty (CNI)","composition":["Fullerene"],"functions":[],"characterizations":["BloodContact","Cytotoxicity"],"dataAvailability":"caNanoLab: 20%; MINChar: 11%","createdDate":1179374400000,"editable":true},{"sampleId":24063232,"sampleName":"NCL-16","pointOfContact":"C-Sixty (CNI)","composition":["Fullerene"],"functions":[],"characterizations":["BloodContact","Cytotoxicity","OxidativeStress"],"dataAvailability":"caNanoLab: 23%; MINChar: 11%","createdDate":1179374400000,"editable":true},{"sampleId":20917519,"sampleName":"NCL-59-2","pointOfContact":"Mansoor Amiji","composition":null,"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 3%; MINChar: 0%","createdDate":1152504000000,"editable":true},{"sampleId":20917518,"sampleName":"NCL-58-2","pointOfContact":"Mansoor Amiji","composition":null,"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 3%; MINChar: 0%","createdDate":1152504000000,"editable":true},{"sampleId":20917517,"sampleName":"NCL-57-2","pointOfContact":"Mansoor Amiji","composition":null,"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 3%; MINChar: 0%","createdDate":1152504000000,"editable":true},{"sampleId":20917516,"sampleName":"NCL-56-2","pointOfContact":"Mansoor Amiji","composition":null,"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 3%; MINChar: 0%","createdDate":1152504000000,"editable":true},{"sampleId":20917515,"sampleName":"NCL-55-1","pointOfContact":"Mansoor Amiji","composition":null,"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 3%; MINChar: 0%","createdDate":1152504000000,"editable":true},{"sampleId":20917514,"sampleName":"NCL-51-3","pointOfContact":"Mark Kester","composition":["Liposome"],"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 13%; MINChar: 11%","createdDate":1152504000000,"editable":true},{"sampleId":20917513,"sampleName":"NCL-50-1","pointOfContact":"Mark Kester","composition":["Liposome"],"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 13%; MINChar: 11%","createdDate":1152504000000,"editable":true},{"sampleId":20917512,"sampleName":"NCL-49-4","pointOfContact":"BB_SH_DFCI_WCMC_BWH_MIT","composition":["Liposome"],"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 13%; MINChar: 11%","createdDate":1407360221000,"editable":true},{"sampleId":20917511,"sampleName":"NCL-48-4","pointOfContact":"Mark Kester","composition":["Liposome"],"functions":[],"characterizations":[],"dataAvailability":"caNanoLab: 13%; MINChar: 11%","createdDate":1152504000000,"editable":true},{"sampleId":20917510,"sampleName":"NCL-26-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":[],"characterizations":["Purity"],"dataAvailability":"caNanoLab: 16%; MINChar: 22%","createdDate":1152504000000,"editable":true},{"sampleId":20917509,"sampleName":"NCL-25-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":[],"characterizations":["Purity"],"dataAvailability":"caNanoLab: 16%; MINChar: 22%","createdDate":1152504000000,"editable":true},{"sampleId":20917508,"sampleName":"NCL-24-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":["ImagingFunction"],"characterizations":["BloodContact","Cytotoxicity","ImmuneCellFunction"],"dataAvailability":"caNanoLab: 30%; MINChar: 11%","createdDate":1152504000000,"editable":true},{"sampleId":20917507,"sampleName":"NCL-23-1","pointOfContact":"C-Sixty (CNI)","composition":["OtherNanomaterialEntity","OtherNanomaterialEntity","Emulsion","CarbonNanotube","Biopolymer","Polymer","QuantumDot","MetalParticle","Liposome","Fullerene","Dendrimer"],"functions":["ImagingFunction","TargetingFunction","endosomolysis"],"characterizations":["BloodContact","Cytotoxicity","ImmuneCellFunction","MolecularWeight","PhysicalState","Purity","Size","Solubility"],"dataAvailability":"caNanoLab: 50%; MINChar: 33%","createdDate":1152504000000,"editable":true},{"sampleId":20917506,"sampleName":"NCL-22-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":[],"characterizations":["BloodContact","Cytotoxicity","ImmuneCellFunction","MolecularWeight","PhysicalState","Purity","Size","Solubility"],"dataAvailability":"caNanoLab: 40%; MINChar: 33%","createdDate":1152504000000,"editable":true},{"sampleId":20917505,"sampleName":"NCL-21-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":[],"characterizations":["MolecularWeight","Purity"],"dataAvailability":"caNanoLab: 20%; MINChar: 22%","createdDate":1152504000000,"editable":true},{"sampleId":20917504,"sampleName":"NCL-20-1","pointOfContact":"DNT","composition":["Dendrimer"],"functions":[],"characterizations":["MolecularWeight","Purity","Size"],"dataAvailability":"caNanoLab: 23%; MINChar: 33%","createdDate":1152504000000,"editable":true}]};
     $scope.pocData = sampleService.pocData;
     $scope.scratchPad = sampleService.scratchPad;
     $scope.master = {};
@@ -111,7 +107,21 @@ var app = angular.module('angularApp')
     }
     else {
         $scope.editSampleForm = true;
+        $scope.loaderText = "Loading";
+        
         $scope.updateButton = "Submit";
+        $scope.loader = true;
+        $http({method: 'GET', url: '/caNanoLab/rest/sample/submissionSetup'}).
+            success(function(data, status, headers, config, statusText) {
+                $scope.sampleData = data;
+                $scope.loader = false;
+            }).
+            error(function(data, status, headers, config, statusText) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                $scope.loader = false;
+        });
+
     };
 
     // * Page Change Events *
@@ -123,6 +133,7 @@ var app = angular.module('angularApp')
             $scope.scratchPad.editSampleData.dirty = true;
         }
     };
+
     $scope.removeKeyword = function(item) {
         var index = $scope.sampleData.keywords.indexOf(item)
         $scope.sampleData.keywords.splice(index, 1);
@@ -132,9 +143,6 @@ var app = angular.module('angularApp')
     $scope.changedSampleName = function() {
         $scope.scratchPad.editSampleData.dirty = true;
     };
-
-
-
 
     $scope.copy = function() {
         //Submit a copy of sampleName to cloneSample url //
