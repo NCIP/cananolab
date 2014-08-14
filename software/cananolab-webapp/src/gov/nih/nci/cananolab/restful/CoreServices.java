@@ -1,13 +1,17 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.restful.core.AccessibilityManager;
 import gov.nih.nci.cananolab.restful.core.CustomPlugInBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
+import gov.nih.nci.cananolab.restful.core.PointOfContactManager;
 import gov.nih.nci.cananolab.restful.core.TabGenerationBO;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleTabsBean;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleOrganizationBean;
 import gov.nih.nci.cananolab.restful.workspace.WorkspaceManager;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
@@ -145,5 +149,31 @@ public class CoreServices {
 		}
 	}
 	
-	
+	@GET
+	@Path("/getOrganizationByName")
+	@Produces ("application/json")
+    public Response getOrganizationByName(@Context HttpServletRequest httpRequest,
+    		@DefaultValue("") @QueryParam("organizationName") String organizationName) {
+		logger.info("In getOrganizationByName");
+		try { 
+			PointOfContactManager manager = 
+					 (PointOfContactManager) applicationContext.getBean("pointOfContactManager");
+			if (manager == null)
+				logger.info("manager is null" );
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED).entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			logger.info("Calling getO");
+			Organization domainOrg = manager.getOrganizationByName(httpRequest, organizationName.trim());
+			SimpleOrganizationBean simpleOrg = new SimpleOrganizationBean();
+			simpleOrg.transferOrganizationData(domainOrg);
+			
+			return Response.ok(simpleOrg).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity("Error while getting data for organization: " + organizationName).build();
+		}
+	}
 }

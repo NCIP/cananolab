@@ -95,6 +95,9 @@
 		class="gov.nih.nci.cananolab.restful.workspace.WorkspaceManager">
 	</bean>
 	
+	<bean id="pointOfContactManager"
+		class="gov.nih.nci.cananolab.restful.core.PointOfContactManager">
+	</bean>
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 
