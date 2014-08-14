@@ -70,6 +70,9 @@ public class ProtocolBO extends BaseAnnotationBO{
 		file.setTitle(bean.getFileTitle());
 		file.setDescription(bean.getFileDescription());
 		file.setId(bean.getFileId());
+		file.setUri(bean.getUri());
+		file.setUriExternal(bean.getUriExternal());
+		
 		protocol.setType(bean.getType());
 		protocol.setName(bean.getName());
 		protocol.setVersion(bean.getVersion());

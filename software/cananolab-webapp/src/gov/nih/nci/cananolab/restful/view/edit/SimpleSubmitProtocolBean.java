@@ -29,7 +29,28 @@ public class SimpleSubmitProtocolBean {
 	Boolean userDeletable = false;
 	List<String> errors;
 	Boolean userUpdatable = false;
+	String uri = "";
+	Boolean uriExternal = false;
+	String externalUrl = "";
 	
+	public String getUri() {
+		return uri;
+	}
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+	public Boolean getUriExternal() {
+		return uriExternal;
+	}
+	public void setUriExternal(Boolean uriExternal) {
+		this.uriExternal = uriExternal;
+	}
+	public String getExternalUrl() {
+		return externalUrl;
+	}
+	public void setExternalUrl(String externalUrl) {
+		this.externalUrl = externalUrl;
+	}
 	public Boolean getUserUpdatable() {
 		return userUpdatable;
 	}
@@ -171,6 +192,8 @@ public class SimpleSubmitProtocolBean {
 		setUserDeletable(bean.getUserDeletable());
 		setVersion(bean.getDomain().getVersion());
 		setUserUpdatable(bean.getUserUpdatable());
+		setUri(bean.getDomain().getFile().getUri());
+		setUriExternal(bean.getDomain().getFile().getUriExternal());
 		
 	}
 	
