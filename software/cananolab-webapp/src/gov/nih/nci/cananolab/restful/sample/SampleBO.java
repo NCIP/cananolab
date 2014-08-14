@@ -328,6 +328,8 @@ public class SampleBO extends BaseAnnotationBO {
 		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
 		
 		this.setServiceInSession(request);
+		
+		request.getSession().removeAttribute("theSample");
 
 		sampleEdit.setupLookups(request);
 	
@@ -477,13 +479,14 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		long sampleId = simpleSampleBean.getSampleId();
 		String newSampleName = simpleSampleBean.getNewSampleName();
+		String sampleName = simpleSampleBean.getSampleName();
 		
 		if (sample == null) { 
-			if (newSampleName == null || newSampleName.length() == 0) 
+			if (sampleName == null || sampleName.length() == 0) 
 				return this.wrapErrorInEditBean("Sample object in session is not valid for sample update operation");
 			else { //add poc in submit new sample workflow
 				sample = new SampleBean();
-				sample.getDomain().setName(newSampleName);
+				sample.getDomain().setName(sampleName);
 			}
 		} else {
 			if (sample.getDomain().getId() != sampleId) 
@@ -854,10 +857,9 @@ public class SampleBO extends BaseAnnotationBO {
 		AccessibilityBean theAccess = simpleEditBean.getTheAccess();
 		List<String> errors = validateAccess(request, theAccess);
 		if (errors.size() > 0) {
-			SampleEditGeneralBean errorBean = new SampleEditGeneralBean();
-			errorBean.setErrors(errors);
-			return errorBean;
+			return this.wrapErrorsInEditBean(errors);
 		}
+		
 		SampleService service = this.setServiceInSession(request);
 		// if sample is public, the access is not public, retract public
 		// privilege would be handled in the service method
@@ -946,17 +948,15 @@ public class SampleBO extends BaseAnnotationBO {
 	
 	protected List<String> validatePointOfContactInput(SimplePointOfContactBean simplePOC) {
 		
-		/*
-		 * Only org name is required
-		 * */
 		List<String> errors = new ArrayList<String>();
 		
 		if (simplePOC == null) {
-			errors.add("Input point of contact object invalid");
+			errors.add("Input point of contact object invalid"); //shouldn't happen
 			return errors;
 		}
 		
 		//errors = RestValidator.validate(simplePOC);
+		
 		
 		SimpleOrganizationBean simpleOrg = simplePOC.getOrganization();
 		if (simpleOrg != null) {
@@ -1007,7 +1007,7 @@ public class SampleBO extends BaseAnnotationBO {
 		String phone = simplePOC.getPhoneNumber();
 		if ( phone.length() > 0 && !InputValidationUtil.isPhoneValid(phone))
 			errors.add(PropertyUtil.getProperty("sample", "phone.invalid"));
-			
+//			
 		String email = simplePOC.getEmail();
 		EmailValidator emailValidator = EmailValidator.getInstance();
 		if (email != null && email.length() > 0 && !emailValidator.isValid(email))
