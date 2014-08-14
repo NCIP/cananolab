@@ -82,6 +82,7 @@ public class ProtocolBO extends BaseAnnotationBO{
 		proBean.setUserAccesses(bean.getUserAccesses());
 		proBean.setTheAccess(bean.getTheAccess());
 		proBean.setUserDeletable(bean.getUserDeletable());
+		proBean.setUserUpdatable(bean.getUserUpdatable());
 		proBean.setDomain(protocol);
 		return proBean;
 		

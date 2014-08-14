@@ -3,8 +3,10 @@ package gov.nih.nci.cananolab.restful;
 import java.util.List;
 import java.util.Map;
 
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
+import gov.nih.nci.cananolab.restful.protocol.ProtocolManager;
 import gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
 import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
@@ -242,6 +244,35 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 			logger.error(e.getMessage());
 			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the access " + e.getMessage())).build();
+		}
+	}
+	
+	@GET
+	@Path("/getProtocol")
+	@Produces ("application/json")
+	 public Response getProtocol(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("protocolType") String protocolType, @DefaultValue("") @QueryParam("protocolName") String protocolName, @DefaultValue("") @QueryParam("protocolVersion") String protocolVersion){
+		
+		try { 
+			 
+			ProtocolManager protocolManager = 
+					(ProtocolManager) applicationContext.getBean("protocolManager");
+
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+				 
+		 ProtocolBean bean = protocolManager.getProtocol(httpRequest, protocolType, protocolName, protocolVersion);
+		 SimpleSubmitProtocolBean view = new SimpleSubmitProtocolBean();
+		 view.transferProtocolBeanForEdit(bean);
+			
+					return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for protocol " + e.getMessage())).build();
+
 		}
 	}
 }
