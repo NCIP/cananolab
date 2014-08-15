@@ -14,9 +14,10 @@ public class TabGenerationBO {
 	public SimpleTabsBean getTabs(HttpServletRequest httpRequest, String homePage) {
 		
 		List<String[]> tabs = new ArrayList<String[]>();
-		HttpSession session = httpRequest.getSession(false);
+		HttpSession session = httpRequest.getSession();
 		UserBean userBean = (session == null)? null : (UserBean)session.getAttribute("user");
-		boolean hasResultWaiting = (session == null)? false : (Boolean)session.getAttribute("hasResultsWaiting") ;
+		Object hasResult = (session == null)? null : session.getAttribute("hasResultsWaiting") ;
+		boolean hasResultWaiting = (hasResult == null) ? false : (Boolean)hasResult;
 		homePage = homePage.trim().toLowerCase();
 		
 		String urlBase = getUrlBase(httpRequest.getRequestURL().toString());
