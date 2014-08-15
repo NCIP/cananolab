@@ -89,7 +89,7 @@ public class TabGenerationBO {
 			if (userBean.isCurator()) {
 				tabWithLink = new String[2];
 				tabWithLink[0] = "CURATION";
-				tabWithLink[1] =  urlBase + "manageCuration.do";
+				tabWithLink[1] =  urlBase + "#/manageCuration";
 				tabs.add(tabWithLink);
 			}
 			
@@ -97,7 +97,7 @@ public class TabGenerationBO {
 			if (userBean.isCurator() && hasResultWaiting) {
 				tabWithLink = new String[2];
 				tabWithLink[0] = "RESULTS";
-				tabWithLink[1] =  urlBase + "TBD";
+				tabWithLink[1] =  urlBase + "#/batchDataResults";
 				tabs.add(tabWithLink);
 			}
 			
