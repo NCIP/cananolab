@@ -106,6 +106,24 @@
 		class="gov.nih.nci.cananolab.restful.protocol.ProtocolManager">
 	</bean>
 	
+	<bean id="reviewDataBO"
+		class="gov.nih.nci.cananolab.restful.curation.ReviewDataBO">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+	
+	<bean id="batchDataAvailabilityBO"
+		class="gov.nih.nci.cananolab.restful.curation.BatchDataAvailabilityBO">
+		<property name="dataAvailabilityService">
+			<ref bean="dataAvailabilityServiceDAO" />
+		</property>
+	</bean>
+	
+	<bean id="manageResultBO"
+		class="gov.nih.nci.cananolab.restful.core.ManageResultBO">
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 

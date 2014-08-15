@@ -1,0 +1,60 @@
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+        <tr>
+            <th scope="col" align="left">
+                Review By Curator
+            </th>
+            <td align="right" width="30%">
+                <a class="helpText" href=
+                        "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/7+-+Administration+in+caNanoLab#id-7-AdministrationincaNanoLab-ReviewingDataPendingRelease')">Help</a>
+                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            </td>
+        </tr>
+    </table>
+    <br />
+
+    <table width="100%" align="center" class="submissionView">
+        <tbody><tr>
+            <th class="cellLabel">
+                Data Pending Review
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <table class="editTableWithGrid" width="95%" align="center">
+                    <tbody><tr>
+                        <th scope="col">
+                            Data Type
+                        </th>
+                        <th scope="col">
+                            Data Name
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    <tr valign="top" ng-repeat="data in reviewData">
+                        <td>
+                            {{data.dataType}}
+                        </td>
+                        <td>
+                            {{data.dataName}}
+                        </td>
+                        <td>
+                            <div align="right">
+                                <a href="{{data.reviewLink}}">Edit</a>&nbsp;
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

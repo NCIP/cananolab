@@ -147,7 +147,14 @@ app.config(function ($routeProvider, $httpProvider) {
        templateUrl: 'views/protocol/view/manageProtocols.html',
        controller: 'ManageProtocolCtrl'
       })                                                          
-      
+      .when('/manageCuration', {
+       templateUrl: 'views/curation/manageCuration.html',
+       controller: 'ManageCurationCtrl'
+      })     
+      .when('/reviewData', {
+            templateUrl: 'views/curation/reviewData.html',
+            controller: 'ReviewDataCtrl'
+      })      
       .otherwise({
         redirectTo: '/'
       });
