@@ -176,10 +176,13 @@ public class SimpleSubmitProtocolBean {
 		setAbbreviation(bean.getDomain().getAbbreviation());
 		setCreatedBy(bean.getDomain().getCreatedBy());
 		setCreatedDate(bean.getDomain().getCreatedDate());
+		
 		if(bean.getDomain().getFile()!= null){
-		setFileDescription(bean.getDomain().getFile().getDescription());
-		setFileId(bean.getDomain().getFile().getId());
-		setFileTitle(bean.getDomain().getFile().getTitle());
+			setFileDescription(bean.getDomain().getFile().getDescription());
+			setFileId(bean.getDomain().getFile().getId());
+			setFileTitle(bean.getDomain().getFile().getTitle());
+			setUri(bean.getDomain().getFile().getUri());
+			setUriExternal(bean.getDomain().getFile().getUriExternal());
 		}
 		setGroupAccesses(bean.getGroupAccesses());
 		setUserAccesses(bean.getUserAccesses());
@@ -192,8 +195,7 @@ public class SimpleSubmitProtocolBean {
 		setUserDeletable(bean.getUserDeletable());
 		setVersion(bean.getDomain().getVersion());
 		setUserUpdatable(bean.getUserUpdatable());
-		setUri(bean.getDomain().getFile().getUri());
-		setUriExternal(bean.getDomain().getFile().getUriExternal());
+		
 		
 	}
 	
