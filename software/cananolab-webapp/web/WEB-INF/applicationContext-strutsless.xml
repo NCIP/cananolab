@@ -110,6 +110,17 @@
 		</property>
 	</bean>
 	
+	<bean id="batchDataAvailabilityBO"
+		class="gov.nih.nci.cananolab.restful.curation.BatchDataAvailabilityBO">
+		<property name="dataAvailabilityService">
+			<ref bean="dataAvailabilityServiceDAO" />
+		</property>
+	</bean>
+	
+	<bean id="manageResultBO"
+		class="gov.nih.nci.cananolab.restful.core.ManageResultBO">
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 
