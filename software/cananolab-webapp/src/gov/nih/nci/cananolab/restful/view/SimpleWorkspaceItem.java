@@ -2,12 +2,13 @@ package gov.nih.nci.cananolab.restful.view;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class SimpleWorkspaceItem {
 	
-	List<String> actions;
+	List<String> actions = new ArrayList<String>();
 	String name;
 	long id;
 	String submisstionStatus;

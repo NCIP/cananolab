@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleWorkspaceBean {
@@ -7,6 +8,8 @@ public class SimpleWorkspaceBean {
 	List<SimpleWorkspaceItem> samples;
 	List<SimpleWorkspaceItem> protocols;
 	List<SimpleWorkspaceItem> publications;
+	
+	List<String> errors = new ArrayList<String>();
 	
 	public List<SimpleWorkspaceItem> getSamples() {
 		return samples;
@@ -26,5 +29,12 @@ public class SimpleWorkspaceBean {
 	public void setPublications(List<SimpleWorkspaceItem> publications) {
 		this.publications = publications;
 	}
+	public List<String> getErrors() {
+		return errors;
+	}
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
+	}
 
+	
 }
