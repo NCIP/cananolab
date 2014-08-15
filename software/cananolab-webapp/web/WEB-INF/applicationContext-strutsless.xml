@@ -93,6 +93,9 @@
 	
 	<bean id="workspaceManager"							
 		class="gov.nih.nci.cananolab.restful.workspace.WorkspaceManager">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
 	</bean>
 	
 	<bean id="pointOfContactManager"
