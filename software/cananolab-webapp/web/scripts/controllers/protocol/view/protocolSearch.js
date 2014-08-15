@@ -36,7 +36,6 @@ var app = angular.module('angularApp')
                     $scope.protocolData.data = data;
                     $location.path("/protocolResults").replace();
                     //$scope.message = data;
-                    alert(data);
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
