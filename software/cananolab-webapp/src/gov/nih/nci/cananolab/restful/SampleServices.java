@@ -311,7 +311,7 @@ public class SampleServices {
 	@Path("/saveAccess")
 	@Produces ("application/json")
 	public Response saveAccess(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleEdit) {
-		logger.info("In savePOC");
+		logger.debug("In saveAccess");
 		try {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");
