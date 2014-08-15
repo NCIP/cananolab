@@ -15,7 +15,8 @@ public class TabGenerationBO {
 		
 		List<String[]> tabs = new ArrayList<String[]>();
 		HttpSession session = httpRequest.getSession(false);
-		UserBean userBean = (session == null)? null : (UserBean)session.getAttribute("user");	
+		UserBean userBean = (session == null)? null : (UserBean)session.getAttribute("user");
+		boolean hasResultWaiting = (session == null)? false : (Boolean)session.getAttribute("hasResultsWaiting") ;
 		homePage = homePage.trim().toLowerCase();
 		
 		String urlBase = getUrlBase(httpRequest.getRequestURL().toString());
@@ -87,13 +88,17 @@ public class TabGenerationBO {
 			if (userBean.isCurator()) {
 				tabWithLink = new String[2];
 				tabWithLink[0] = "CURATION";
-				tabWithLink[1] =  urlBase + "TBD";
+				tabWithLink[1] =  urlBase + "manageCuration.do";
 				tabs.add(tabWithLink);
 			}
 			
-			//TODO: 
-			//if (userBean.isCurator() && hasResultWaiting)
-			//	tabs.add("RESULT");
+			
+			if (userBean.isCurator() && hasResultWaiting) {
+				tabWithLink = new String[2];
+				tabWithLink[0] = "RESULTS";
+				tabWithLink[1] =  urlBase + "TBD";
+				tabs.add(tabWithLink);
+			}
 			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "HELP";
