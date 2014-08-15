@@ -99,6 +99,10 @@ var app = angular.module('angularApp')
 
         $scope.doSubmit = function() {
             $scope.loader = true;
+            
+            if (typeof $scope.protocolForm.fileId == 'undefined' || $scope.protocolForm.fileId == null) {
+            	$scope.protocolForm.fileId = '0';
+            }
 
             $http({method: 'POST', url: '/caNanoLab/rest/protocol/submitProtocol',data: $scope.protocolForm}).
                 success(function(data, status, headers, config) {
@@ -240,6 +244,10 @@ var app = angular.module('angularApp')
             if( $scope.accessForm.theAccess.accessBy == 'public') {
                 $scope.protocolForm.isPublic = true;
             }
+            
+            if (typeof $scope.protocolForm.fileId == 'undefined' || $scope.protocolForm.fileId == null) {
+            	$scope.protocolForm.fileId = '0';
+            }
 
             $http({method: 'POST', url: '/caNanoLab/rest/protocol/saveAccess',data: $scope.protocolForm}).
                 success(function(data, status, headers, config) {
@@ -310,6 +318,10 @@ var app = angular.module('angularApp')
 
             if (confirm("Are you sure you want to delete?")) {
                 $scope.loader = true;
+                
+                if (typeof $scope.protocolForm.fileId == 'undefined' || $scope.protocolForm.fileId == null) {
+                	$scope.protocolForm.fileId = '0';
+                }
 
                 $http({method: 'POST', url: '/caNanoLab/rest/protocol/deleteAccess',data: $scope.protocolForm}).
                     success(function(data, status, headers, config) {
