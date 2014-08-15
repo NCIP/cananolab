@@ -150,7 +150,11 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/manageCuration', {
        templateUrl: 'views/curation/manageCuration.html',
        controller: 'ManageCurationCtrl'
-      })       
+      })     
+      .when('/reviewData', {
+            templateUrl: 'views/curation/reviewData.html',
+            controller: 'ReviewDataCtrl'
+      })      
       .otherwise({
         redirectTo: '/'
       });
