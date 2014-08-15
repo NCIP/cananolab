@@ -14,6 +14,12 @@ package gov.nih.nci.cananolab.restful.workspace;
  * @author lethai, pansu
  */
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceBean;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceItem;
 import gov.nih.nci.cananolab.service.BaseService;
@@ -23,6 +29,7 @@ import gov.nih.nci.cananolab.service.admin.impl.OwnershipTransferServiceImpl;
 import gov.nih.nci.cananolab.service.common.LongRunningProcess;
 import gov.nih.nci.cananolab.service.community.CommunityService;
 import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
+import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
@@ -30,6 +37,7 @@ import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImp
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 
 import java.util.ArrayList;
@@ -40,6 +48,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -48,39 +57,194 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class WorkspaceManager {
-	private static final int CUT_OFF_NUM_DATA = 30;
+	
+	private static Logger logger = Logger.getLogger(WorkspaceManager.class);
+	
+	CurationService curationService;
 
-//	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
-//			HttpServletRequest request, HttpServletResponse response)
-//			throws Exception {
-//		return mapping.findForward("input");
-//	}
 
 	public SimpleWorkspaceBean getWorkspaceItems(HttpServletRequest request)
 			throws Exception {
 		
-		SimpleWorkspaceBean workspaceBean = new SimpleWorkspaceBean();
+		logger.info("In getWorkspaceItems");
+		SecurityService securityService = getSecurityService(request);
+		UserBean user = (UserBean)request.getSession().getAttribute("user");
+		SimpleWorkspaceBean simpleWorkspace = new SimpleWorkspaceBean();
 		
+		List<SimpleWorkspaceItem> sampleItems = getSampleItems(request, securityService, user);
+		simpleWorkspace.setSamples(sampleItems);
+		
+		List<SimpleWorkspaceItem> pubItems = getPublicationItems(request, securityService, user);
+		simpleWorkspace.setPublications(pubItems);
+		
+		List<SimpleWorkspaceItem> protoItems = getProtocolItems(request, securityService, user);
+		simpleWorkspace.setProtocols(protoItems);
+		
+		return simpleWorkspace;
+	}
+	
+	protected List<SimpleWorkspaceItem> getPublicationItems(HttpServletRequest request,
+			SecurityService securityService, UserBean user) 
+			throws Exception {
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
-		for (int i = 0; i < 6; i++) {
+		
+		PublicationService service = this.getPublicationServiceInSession(request, securityService);
+		List<String> publicationIds = service.findPublicationIdsByOwner(user.getLoginName());
+		if (publicationIds == null)
+			return items;
+		
+		for (String id : publicationIds) {
+			PublicationBean pubBean = service.findPublicationById(id, true);
+			if (pubBean == null) continue;
+			
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
-			item.setName("Sample " + i);
-			item.setId(2030493 + i);
-			item.setCreatedDate(new Date());
-			item.setSubmisstionStatus("In Progress");
-			List<String> actions = new ArrayList<String>();
-			actions.add("View");
-			actions.add("Edit");
-			actions.add("Delete");
-			item.setActions(actions);
-			item.setAccess("Read Write Delete (Owner)");
+			item.setName(pubBean.getDomainFile().getTitle());
+			item.setId(pubBean.getDomainFile().getId());
+			item.setCreatedDate(pubBean.getDomainFile().getCreatedDate());
+			item.getActions().add("View");
+			
+			item.setSubmisstionStatus("Approved"); //default
+			DataReviewStatusBean reviewBean =  this.curationService.findDataReviewStatusBeanByDataId(id, securityService);
+			if (reviewBean != null) {
+				item.setSubmisstionStatus(reviewBean.getReviewStatus());
+			}
+			
+			List<AccessibilityBean> groupAccesses = pubBean.getGroupAccesses();
+			List<AccessibilityBean> userAccesses = pubBean.getUserAccesses();
+			boolean isOwner = (user.getLoginName().equals(pubBean.getDomainFile().getCreatedBy())) ? true : false;
+			String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), isOwner);
+			item.setAccess(access);
 			
 			items.add(item);
 		}
 		
-		workspaceBean.setSamples(items);
+		return items;
+	}
+	
+	protected List<SimpleWorkspaceItem> getProtocolItems(HttpServletRequest request,
+			SecurityService securityService, UserBean user) 
+			throws Exception {
+		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
+		ProtocolService protocolService = getProtocolServiceInSession(request, securityService);
+		List<String> protoIds = protocolService.findProtocolIdsByOwner(user.getLoginName());
 		
-		items = new ArrayList<SimpleWorkspaceItem>();
+		if (protoIds == null)
+			return items;
+		
+		for (String id : protoIds) {
+			ProtocolBean protoBean = protocolService.findProtocolById(id);
+		
+			if (protoBean == null) continue;
+			
+			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
+			item.setName(protoBean.getDomain().getName());
+			item.setId(protoBean.getDomain().getId());
+			item.setCreatedDate(protoBean.getDomain().getCreatedDate());
+			item.getActions().add("View");
+			
+			item.setSubmisstionStatus("Approved"); //default
+			DataReviewStatusBean reviewBean =  this.curationService.findDataReviewStatusBeanByDataId(id, securityService);
+			if (reviewBean != null) {
+				item.setSubmisstionStatus(reviewBean.getReviewStatus());
+			}
+			
+			List<AccessibilityBean> groupAccesses = protoBean.getGroupAccesses();
+			List<AccessibilityBean> userAccesses = protoBean.getUserAccesses();
+			boolean isOwner = (user.getLoginName().equals(protoBean.getDomain().getCreatedBy())) ? true : false;
+			String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), isOwner);
+			item.setAccess(access);
+			
+			items.add(item);
+		}
+		return items;
+	}
+
+	
+	protected List<SimpleWorkspaceItem> getSampleItems(HttpServletRequest request,
+			SecurityService securityService, UserBean user) 
+			throws Exception {
+		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
+		SampleService sampleService = this.getSampleServiceInSession(request, securityService);
+		String loginUser = user.getLoginName();
+		
+		List<String> sampleIds = sampleService.findSampleIdsByOwner(loginUser);
+		if (sampleIds == null)
+			return items;
+	
+		for (String id : sampleIds) {
+			SampleBean sampleBean = sampleService.findSampleById(id, true);
+			if (sampleBean == null) continue;
+			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
+			item.setName(sampleBean.getDomain().getName());
+			item.setId(sampleBean.getDomain().getId());
+			item.setCreatedDate(sampleBean.getDomain().getCreatedDate());
+			item.getActions().add("View");
+			
+			item.setSubmisstionStatus("Approved"); //default
+			
+			DataReviewStatusBean reviewBean =  this.curationService.findDataReviewStatusBeanByDataId(id, securityService);
+			if (reviewBean != null) {
+				item.setSubmisstionStatus(reviewBean.getReviewStatus());
+			}
+			
+			List<AccessibilityBean> groupAccesses = sampleBean.getGroupAccesses();
+			List<AccessibilityBean> userAccesses = sampleBean.getUserAccesses();
+			boolean isOwner = (loginUser.equals(sampleBean.getDomain().getCreatedBy())) ? true : false;
+			String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), isOwner);
+			
+			item.setAccess(access);
+					
+			items.add(item);
+		}
+		
+		return items;
+	}
+	
+	protected String getAccessString(List<AccessibilityBean> groupAccesses, List<AccessibilityBean> userAccesses, 
+			String loginUser, boolean isOwner) {
+		//List<AccessibilityBean> groupAccesses = sampleBean.getGroupAccesses();
+		StringBuilder sb = new StringBuilder();
+		
+		if (groupAccesses != null) {
+			sb.append("Shared by: ");
+			
+			for (AccessibilityBean access : groupAccesses) {
+				sb.append(access.getGroupName()).append(", ");
+			}
+		}
+		
+		//List<AccessibilityBean> userAccesses = sampleBean.getUserAccesses();
+		if (userAccesses != null) {
+			for (AccessibilityBean access : userAccesses) {
+				UserBean ubean = access.getUserBean();
+				if (!loginUser.equals(ubean.getLoginName()))
+					
+					sb.append(ubean.getFirstName()).append(" ").append(ubean.getLastName()).append(", ");
+			}
+		}
+		
+		String accessString = isOwner ? "(Owner, " : "(";
+		accessString += sb.subSequence(0, sb.lastIndexOf(","));
+		accessString += ")";
+		
+		return accessString;
+	}
+
+	private SecurityService getSecurityService(HttpServletRequest request)
+			throws Exception {
+		SecurityService securityService = (SecurityService) request
+				.getSession().getAttribute("securityService");
+
+		if (securityService == null) {
+			securityService = new SecurityService(
+					AccessibilityBean.CSM_APP_NAME);
+		}
+		return securityService;
+	}
+	
+	protected SimpleWorkspaceBean createDummy(SimpleWorkspaceBean workspaceBean) {
+		
+		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
 		for (int i = 0; i < 5; i++) {
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
 			item.setName("Protocol " + i);
@@ -122,142 +286,46 @@ public class WorkspaceManager {
 		
 		
 		return workspaceBean;
+	}
+	
+	private SampleService getSampleServiceInSession(HttpServletRequest request, SecurityService securityService) {
+		
+		SampleService sampleService = (SampleService)request.getSession().getAttribute("sampleService");
+		if (sampleService == null) {	
+			sampleService = new SampleServiceLocalImpl(securityService);
+			request.getSession().setAttribute("sampleService", sampleService);
+		}
+		return sampleService;
 
-//		SecurityService securityService = getSecurityService(request);
-//		
-//		
-//		
-//		String currentOwner = (String) theForm.get("currentOwner");
-//		String newOwner = (String) theForm.get("newOwner");
-//		
-//		
-//		
-//		ActionMessages messages = new ActionMessages();
-//		// validate owner names
-//		if (!securityService.isUserValid(currentOwner)) {
-//			ActionMessage message = new ActionMessage(
-//					"message.transferOwner.invalid.currentOwner");
-//			messages.add(ActionMessages.GLOBAL_MESSAGE, message);
-//			saveErrors(request, messages);
-//			return mapping.findForward("input");
-//		}
-//		if (!securityService.isUserValid(newOwner)) {
-//			ActionMessage message = new ActionMessage(
-//					"message.transferOwner.invalid.newOwner");
-//			messages.add(ActionMessages.GLOBAL_MESSAGE, message);
-//			saveErrors(request, messages);
-//			return mapping.findForward("input");
-//		}
-//		HttpSession session = request.getSession();
-//
-//		// String[] dataTypes = new String[0];
-//		// if (theForm != null) {
-//		// dataTypes = (String[]) theForm
-//		// .get("dataType");
-//		//
-//		// }
-//
-//		String dataType = theForm.getString("dataType");
-//		OwnershipTransferService transferService = new OwnershipTransferServiceImpl();
-//		List<String> dataIds = null;
-//		BaseService service = null;
-//		if (dataType
-//				.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_SAMPLE)) {
-//			service = new SampleServiceLocalImpl(securityService);
-//			dataIds = ((SampleService) service)
-//					.findSampleIdsByOwner(currentOwner);
-//		} else if (dataType
-//				.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_PROTOCOL)) {
-//			service = new ProtocolServiceLocalImpl(securityService);
-//			dataIds = ((ProtocolService) service)
-//					.findProtocolIdsByOwner(currentOwner);
-//		} else if (dataType
-//				.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_PUBLICATION)) {
-//			service = new PublicationServiceLocalImpl(securityService);
-//			dataIds = ((PublicationService) service)
-//					.findPublicationIdsByOwner(currentOwner);
-//		} else if (dataType
-//				.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_GROUP)) {
-//			service = new CommunityServiceLocalImpl(securityService);
-//			dataIds = ((CommunityService) service)
-//					.findCollaborationGroupIdsByOwner(currentOwner);
-//		} else {
-//			ActionMessage message = new ActionMessage(
-//					"message.transferOwner.invalid.type");
-//			messages.add(ActionMessages.GLOBAL_MESSAGE, message);
-//			saveErrors(request, messages);
-//			return mapping.findForward("input");
-//		}
-//		if (dataIds == null || dataIds.isEmpty()) {
-//			ActionMessage message = new ActionMessage(
-//					"message.transferOwner.empty.data");
-//			messages.add(ActionMessages.GLOBAL_MESSAGE, message);
-//			saveMessages(request, messages);
-//			return mapping.findForward("input");
-//		}
-//		if (dataIds.size() < CUT_OFF_NUM_DATA) {
-//			int failures = transferService.transferOwner(service, dataIds,
-//					currentOwner, newOwner);
-//			ActionMessage message = new ActionMessage(
-//					"message.batchTransferOwner.generate.success", dataIds
-//							.size()
-//							- failures, dataType.toLowerCase());
-//			messages.add(ActionMessages.GLOBAL_MESSAGE, message);
-//			saveMessages(request, messages);
-//			if (failures > 0) {
-//				ActionMessage msg = new ActionMessage(
-//						"message.batchTransferOwner.failed", failures, dataType
-//								.toLowerCase());
-//				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			}
-//
-//			saveMessages(request, messages);
-//			return mapping.findForward("success");
-//		}
-//		// run in a separate thread
-//		//
-//		// We only want one BatchOwnershipTransferService per session.
-//		//
-//		BatchOwnershipTransferProcess batchProcess = (BatchOwnershipTransferProcess) session
-//				.getAttribute("BatchOwnershipTransferProcess");
-//		if (batchProcess == null) {
-//			this.startThreadForBatchProcess(batchProcess, session, dataIds,
-//					transferService, service, dataType, dataIds, currentOwner,
-//					newOwner);
-//		} else {
-//			if (!batchProcess.isComplete()) {
-//				ActionMessage msg = new ActionMessage(
-//						"message.batchTransferOwner.duplicateRequest");
-//				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveMessages(request, messages);
-//				return mapping.findForward("input");
-//			} else {
-//				ActionMessage msg = new ActionMessage(
-//						"message.batchTransferOwner.previousRequest.completed");
-//				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveMessages(request, messages);
-//				return mapping.findForward("input");
-//			}
-//		}
-//		ActionMessage msg = new ActionMessage(
-//				"message.batchTransferOwner.longRunning", dataIds.size(),
-//				dataType.toLowerCase());
-//		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//		saveMessages(request, messages);
-//		return mapping.findForward("input");
+	}
+	
+	private PublicationService getPublicationServiceInSession(HttpServletRequest request, SecurityService securityService)
+			throws Exception {
+		PublicationService publicationService = (PublicationService)request.getSession().getAttribute("publicationService");
+			
+		if (publicationService == null) {
+			publicationService = new PublicationServiceLocalImpl(securityService);
+			request.getSession().setAttribute("publicationService", publicationService);
+		}
+		return publicationService;
+	}
+	
+	private ProtocolService getProtocolServiceInSession(HttpServletRequest request, SecurityService securityService)
+			throws Exception {
+		
+		ProtocolService protocolService = (ProtocolService)request.getSession().getAttribute("protocolService");
+		if (protocolService == null) {	
+			protocolService =	new ProtocolServiceLocalImpl(securityService);
+			request.getSession().setAttribute("protocolService", protocolService);
+		}	
+		return protocolService;
 	}
 
-	
+	public CurationService getCurationService() {
+		return curationService;
+	}
 
-	private SecurityService getSecurityService(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
-
-		if (securityService == null) {
-			securityService = new SecurityService(
-					AccessibilityBean.CSM_APP_NAME);
-		}
-		return securityService;
+	public void setCurationService(CurationService curationService) {
+		this.curationService = curationService;
 	}
 }
