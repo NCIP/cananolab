@@ -72,14 +72,12 @@ public class ProtocolBO extends BaseAnnotationBO{
 		ProtocolBean proBean = new ProtocolBean();
 		Protocol protocol = new Protocol();
 		File file = new File();
-		
-		file.setTitle(bean.getFileTitle());
-		file.setDescription(bean.getFileDescription());
-		file.setId(bean.getFileId());
-		file.setUri(bean.getUri());
-		file.setUriExternal(bean.getUriExternal());
-		file.setName(bean.getFileName());
-		
+			file.setTitle(bean.getFileTitle());
+			file.setDescription(bean.getFileDescription());
+			file.setId(bean.getFileId());
+			file.setUri(bean.getUri());
+			file.setUriExternal(bean.getUriExternal());
+			file.setName(bean.getFileName());
 		protocol.setType(bean.getType());
 		protocol.setName(bean.getName());
 		protocol.setVersion(bean.getVersion());
@@ -329,6 +327,7 @@ public class ProtocolBO extends BaseAnnotationBO{
 		}
 		// if protocol is public, the access is not public, retract public
 		// privilege would be handled in the service method
+		
 		service.assignAccessibility(theAccess, protocol.getDomain());
 		// update status to retracted if the access is not public and protocol
 		// is public
@@ -367,6 +366,7 @@ public class ProtocolBO extends BaseAnnotationBO{
 		ProtocolBean protocol = transferSimpleSubmitProtocolBean(form);  //form.getProtocol();
 		AccessibilityBean theAccess = protocol.getTheAccess();
 		ProtocolService service = this.setServiceInSession(request);
+		
 		service.removeAccessibility(theAccess, protocol.getDomain());
 		this.setAccesses(request, protocol);
 		request.setAttribute("protocolId", protocol.getDomain().getId()

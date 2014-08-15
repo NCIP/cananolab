@@ -103,6 +103,13 @@
 		class="gov.nih.nci.cananolab.restful.protocol.ProtocolManager">
 	</bean>
 	
+	<bean id="reviewDataBO"
+		class="gov.nih.nci.cananolab.restful.curation.ReviewDataBO">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 
