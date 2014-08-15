@@ -16,6 +16,7 @@ public class SimpleSubmitProtocolBean {
 	Long fileId;
 	Long id = 0L;
 	String fileTitle = "";
+	String fileName = "";
 	String fileDescription = "";
 	List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
 	List<AccessibilityBean> userAccesses =  new ArrayList<AccessibilityBean>();
@@ -33,6 +34,12 @@ public class SimpleSubmitProtocolBean {
 	Boolean uriExternal = false;
 	String externalUrl = "";
 	
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 	public String getUri() {
 		return uri;
 	}
@@ -183,6 +190,7 @@ public class SimpleSubmitProtocolBean {
 			setFileTitle(bean.getDomain().getFile().getTitle());
 			setUri(bean.getDomain().getFile().getUri());
 			setUriExternal(bean.getDomain().getFile().getUriExternal());
+			setFileName(bean.getDomain().getFile().getName());
 		}
 		setGroupAccesses(bean.getGroupAccesses());
 		setUserAccesses(bean.getUserAccesses());

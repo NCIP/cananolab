@@ -2,11 +2,14 @@ package gov.nih.nci.cananolab.restful.protocol;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
@@ -43,7 +46,10 @@ public class ProtocolBO extends BaseAnnotationBO{
 				&& protocolBean.getDomain().getId() > 0) {
 			newProtocol = false;
 		}
-		this.saveProtocol(request, protocolBean);
+		msgs = this.saveProtocol(request, protocolBean);
+		if(msgs.size()>0){
+			return msgs;
+		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// retract from public if updating an existing public record and not
 		// curator
@@ -72,6 +78,7 @@ public class ProtocolBO extends BaseAnnotationBO{
 		file.setId(bean.getFileId());
 		file.setUri(bean.getUri());
 		file.setUriExternal(bean.getUriExternal());
+		file.setName(bean.getFileName());
 		
 		protocol.setType(bean.getType());
 		protocol.setName(bean.getName());
@@ -91,16 +98,72 @@ public class ProtocolBO extends BaseAnnotationBO{
 		
 	}
 
-	private void saveProtocol(HttpServletRequest request,
+	private List<String> saveProtocol(HttpServletRequest request,
 			ProtocolBean protocolBean) throws Exception {
+		List<String> msgs = new ArrayList<String>();
+		msgs = validateProtocolBean(protocolBean);
+		if(msgs.size()>0){
+			return msgs;
+		}
 		ProtocolService service = this.setServiceInSession(request);
+		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		protocolBean
 				.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
 				protocolBean);
 		service.saveProtocol(protocolBean);
+		return msgs;
 	}
+
+	private List<String> validateProtocolBean(ProtocolBean protocolBean) {
+		List<String> errors = new ArrayList<String>();
+		
+		Protocol protocol = (Protocol) protocolBean.getDomain();
+		String name = protocol.getName();
+		if(name == null||name == ""){
+			errors.add("Protocol Name is required.");
+		}
+		if(!InputValidationUtil.isTextFieldWhiteList(name)){
+			errors.add(PropertyUtil.getProperty("protocol", "protocol.name.invalid"));
+		}
+		String type = protocol.getType();
+		if(type == null||type == ""){
+			errors.add("Protocol Type is required.");
+		}
+		if(!InputValidationUtil.isTextFieldWhiteList(type)){
+			errors.add(PropertyUtil.getProperty("protocol", "protocol.type.invalid"));
+		}
+		String version = protocol.getVersion();
+		
+		if(!InputValidationUtil.isTextFieldWhiteList(version)){
+			errors.add(PropertyUtil.getProperty("protocol", "protocol.version.invalid"));
+		}
+		String abbreviation = protocol.getAbbreviation();
+		
+		if(!InputValidationUtil.isTextFieldWhiteList(abbreviation)){
+			errors.add(PropertyUtil.getProperty("protocol", "protocol.abbreviation.invalid"));
+		}
+		String title = protocol.getFile().getTitle();
+		
+		if(!InputValidationUtil.isTextFieldWhiteList(title)){
+			errors.add(PropertyUtil.getProperty("protocol", "protocol.title.invalid"));
+		}
+		String fileName = protocol.getFile().getName();
+		
+		if(!InputValidationUtil.isTextFieldWhiteList(fileName)){
+			errors.add(PropertyUtil.getProperty("protocol", "protocol.file.name.invalid"));
+		}
+		
+		
+		String externalUrl = protocol.getFile().getUri();
+		if(!InputValidationUtil.isTextFieldWhiteList(externalUrl)){
+			errors.add(PropertyUtil.getProperty("protocol", "file.uri.invalid"));
+		}
+		
+		return errors;
+	}
+	
 
 	// for retaining user selected values during validation
 	public void input(ProtocolForm form,

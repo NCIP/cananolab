@@ -79,6 +79,7 @@ public class SimpleSearchProtocolBean {
 		setVersion(bean.getDomain().getVersion());
 		String fileInformation = fileInfo(bean);
 		setFileInfo(fileInformation);
+		setCreatedDate(bean.getDomain().getCreatedDate());
 		editable = SecurityUtil.isEntityEditableForUser(bean.getAllAccesses(), user);
 		id = bean.getDomain().getId();
 	}
