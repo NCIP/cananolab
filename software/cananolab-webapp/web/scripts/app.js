@@ -142,7 +142,12 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/editProtocol', {
             templateUrl: 'views/protocol/edit/editProtocol.html',
             controller: 'EditProtocolCtrl'
-      })      
+      }) 
+      .when('/manageProtocols', {
+       templateUrl: 'views/protocol/view/manageProtocols.html',
+       controller: 'ManageProtocolCtrl'
+      })                                                          
+      
       .otherwise({
         redirectTo: '/'
       });
