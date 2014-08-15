@@ -32,7 +32,8 @@ import javax.validation.constraints.Pattern;
  * This is based on hibernate's PatternValidator. 
  * <br><br>
  * What's changed: 1. empty string is accepted as valid <br>
- * 					2. regexpName is accepted to resolve a valid regexp from a saved hashmap
+ * 					2. regexpName is accepted to resolve a valid regexp from a saved hashmap <br>
+ *
  * 
  * 
  * @author YangS8
