@@ -67,6 +67,9 @@ public class WorkspaceManager {
 			throws Exception {
 		
 		logger.info("In getWorkspaceItems");
+		
+		//return createDummy(new SimpleWorkspaceBean());
+		
 		SecurityService securityService = getSecurityService(request);
 		UserBean user = (UserBean)request.getSession().getAttribute("user");
 		SimpleWorkspaceBean simpleWorkspace = new SimpleWorkspaceBean();
