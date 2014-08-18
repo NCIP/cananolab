@@ -16,6 +16,7 @@ var app = angular.module('angularApp')
              $http({method: 'POST', url: '/caNanoLab/rest/curation/generateBatchDataAvailability',data: $scope.generateBatchDataAvailabilityForm}).
              success(function(data, status, headers, config) {
                  $scope.loader = false;
+                 $rootScope.tabs = navigationService.get();
                  $scope.messages = data;
              }).
              error(function(data, status, headers, config) {

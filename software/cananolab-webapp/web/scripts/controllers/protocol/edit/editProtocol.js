@@ -10,6 +10,11 @@ var app = angular.module('angularApp')
         $scope.protocolId = '';
         $scope.protocolForm.uriExternal = false;
         $scope.protocolForm.review = false;
+        $scope.reviewData = {
+        		reviewDataId : null,
+        		reviewDataName : null,
+        		reviewDataType : 'protocol'
+            };
 
         // Access variables
         $scope.protocolForm.theAccess = {};
@@ -192,14 +197,13 @@ var app = angular.module('angularApp')
         $scope.submitForReview = function() {
             $scope.loader = true;
             
-            if (typeof $scope.protocolForm.fileId == 'undefined' || $scope.protocolForm.fileId == null) {
-            	$scope.protocolForm.fileId = '0';
-            }
+            $scope.reviewData.reviewDataId = $scope.protocolId;
+            $scope.reviewData.reviewDataName = 	$scope.protocolForm.name;
 
-            $http({method: 'POST', url: '/caNanoLab/rest/protocol/submitProtocol',data: $scope.protocolForm}).
+            $http({method: 'POST', url: '/caNanoLab/rest/protocol/submitForReview',data: $scope.reviewData}).
                 success(function(data, status, headers, config) {
                     if (data == "success") {
-                        $location.search('message', 'You've successfully submitted the protocol to the curator for review and release to public.').path('/message').replace();
+                        $location.search('message', 'Protocol successfully submitted to the curator for review and release to public.').path('/message').replace();
                     }
                     else {
                         $scope.loader = false;
