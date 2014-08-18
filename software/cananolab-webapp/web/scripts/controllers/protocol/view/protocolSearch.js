@@ -9,7 +9,7 @@ var app = angular.module('angularApp')
         $rootScope.groups = groupService.getGroups.data.get();
 
         $scope.$on('$viewContentLoaded', function(){
-            $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/protocol/setup'}).
+            $http({method: 'GET', url: '/caNanoLab/rest/protocol/setup'}).
                 success(function(data, status, headers, config) {
                     $scope.data = data;
                     $scope.protocolTypes = data.protocolTypes;
@@ -31,7 +31,7 @@ var app = angular.module('angularApp')
 
             }
 
-            $http({method: 'POST', url: 'http://localhost:8080/caNanoLab/rest/protocol/searchProtocol',data: $scope.searchProtocolForm}).
+            $http({method: 'POST', url: '/caNanoLab/rest/protocol/searchProtocol',data: $scope.searchProtocolForm}).
                 success(function(data, status, headers, config) {
                     $scope.protocolData.data = data;
                     $location.path("/protocolResults").replace();

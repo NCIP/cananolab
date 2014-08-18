@@ -44,7 +44,6 @@ var app = angular.module('angularApp')
         $scope.loader = true;
         
         $http({method: 'GET', url: '/caNanoLab/rest/publication/summaryView?sampleId=' + $scope.sampleId.data}).
-        // $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/summaryView?sampleId=24063238'}).
             success(function(data, status, headers, config) {
                 $scope.publicationData = data;
                 $scope.publicationCategories = data.publicationCategories;

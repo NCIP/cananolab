@@ -9,6 +9,7 @@ var app = angular.module('angularApp')
 
         $scope.protocolId = '';
         $scope.protocolForm.uriExternal = false;
+        $scope.protocolForm.review = false;
 
         // Access variables
         $scope.protocolForm.theAccess = {};
@@ -38,7 +39,7 @@ var app = angular.module('angularApp')
 
 
         $scope.$on('$viewContentLoaded', function(){
-            $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/protocol/setup'}).
+            $http({method: 'GET', url: '/caNanoLab/rest/protocol/setup'}).
                 success(function(data, status, headers, config) {
                     $scope.data = data;
                     $scope.protocolTypes = data.protocolTypes;
@@ -54,7 +55,7 @@ var app = angular.module('angularApp')
         $scope.loadProtocolData = function() {
             if( $scope.protocolId != null ) {
                 $scope.loader = true;
-                $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/protocol/edit?protocolId=' + $scope.protocolId}).
+                $http({method: 'GET', url: '/caNanoLab/rest/protocol/edit?protocolId=' + $scope.protocolId}).
                     success(function(data, status, headers, config) {
                         $scope.protocolForm = data;
                         $scope.loader = false;
@@ -161,7 +162,7 @@ var app = angular.module('angularApp')
             	$scope.protocolForm.version = '';
             }
 
-            $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/protocol/getProtocol?protocolType=' + $scope.protocolForm.type + '&protocolName=' + $scope.protocolForm.name + '&protocolVersion=' + $scope.protocolForm.version }).
+            $http({method: 'GET', url: '/caNanoLab/rest/protocol/getProtocol?protocolType=' + $scope.protocolForm.type + '&protocolName=' + $scope.protocolForm.name + '&protocolVersion=' + $scope.protocolForm.version }).
                 success(function(data, status, headers, config) {
                     $scope.protocol = data;
                     $scope.protocolId = data.id;
@@ -187,6 +188,34 @@ var app = angular.module('angularApp')
             $location.path("/protocolResults").replace();
             $location.search('protocolId', null);
         };
+        
+        $scope.submitForReview = function() {
+            $scope.loader = true;
+            
+            if (typeof $scope.protocolForm.fileId == 'undefined' || $scope.protocolForm.fileId == null) {
+            	$scope.protocolForm.fileId = '0';
+            }
+
+            $http({method: 'POST', url: '/caNanoLab/rest/protocol/submitProtocol',data: $scope.protocolForm}).
+                success(function(data, status, headers, config) {
+                    if (data == "success") {
+                        $location.search('message', 'You've successfully submitted the protocol to the curator for review and release to public.').path('/message').replace();
+                    }
+                    else {
+                        $scope.loader = false;
+                        $scope.messages = data;
+                    }
+
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    // $rootScope.sampleData = data;
+                    $scope.loader = false;
+                    $scope.messages = data;
+                });
+
+        };        
 
         /** Start - Access functions **/
 

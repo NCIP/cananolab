@@ -7,7 +7,7 @@ var app = angular.module('angularApp')
         $rootScope.groups = groupService.getGroups.data.get();
 
         $scope.$on('$viewContentLoaded', function(){
-             $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/curation/reviewData'}).
+             $http({method: 'GET', url: '/caNanoLab/rest/curation/reviewData'}).
                 success(function(data, status, headers, config) {
                     $scope.reviewData = data;
                 }).
