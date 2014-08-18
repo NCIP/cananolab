@@ -20,7 +20,15 @@ public class SimpleSearchProtocolBean {
 	String fileInfo;
 	long id;
 	boolean editable = false;
+	boolean userDeletable = false;
+	
+	public boolean getUserDeletable() {
+		return userDeletable;
+	}
 
+	public void setUserDeletable(boolean userDeletable) {
+		this.userDeletable = userDeletable;
+	}
 
 	public long getId() {
 		return id;
@@ -80,7 +88,8 @@ public class SimpleSearchProtocolBean {
 		String fileInformation = fileInfo(bean);
 		setFileInfo(fileInformation);
 		setCreatedDate(bean.getDomain().getCreatedDate());
-		editable = SecurityUtil.isEntityEditableForUser(bean.getAllAccesses(), user);
+		setUserDeletable(bean.getUserDeletable());
+		setEditable(bean.getUserUpdatable()); //SecurityUtil.isEntityEditableForUser(bean.getAllAccesses(), user);
 		id = bean.getDomain().getId();
 	}
 	private String fileInfo(ProtocolBean protocol) {

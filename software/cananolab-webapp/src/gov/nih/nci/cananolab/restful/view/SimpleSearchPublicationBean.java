@@ -17,7 +17,17 @@ public class SimpleSearchPublicationBean {
 	String descriptionDetail;
 	String status;
 	Date createdDate;
+	boolean userDeletable = false;
 	
+	public boolean getUserDeletable() {
+		return userDeletable;
+	}
+
+	public void setUserDeletable(boolean userDeletable) {
+		this.userDeletable = userDeletable;
+	}
+
+
 	boolean editable = false;
 	
 	public long getId() {
@@ -120,8 +130,9 @@ public class SimpleSearchPublicationBean {
 			setDescriptionDetail(pub.getDescription());
 			setStatus(pub.getStatus());
 			setCreatedDate(pub.getCreatedDate());
-
-			editable = SecurityUtil.isEntityEditableForUser(bean.getAllAccesses(), user);
+			setUserDeletable(bean.getUserDeletable());
+			setEditable(bean.getUserUpdatable());
+		//	editable = SecurityUtil.isEntityEditableForUser(bean.getUserAccesses(), user);
 			id = bean.getDomainFile().getId();
 		}catch(Exception e){
 			System.out.println("error while setting up simple bean  "+e);
