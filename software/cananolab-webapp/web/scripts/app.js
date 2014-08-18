@@ -158,7 +158,11 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/batchDataAvailability', {
             templateUrl: 'views/curation/batchDataAvailability.html',
             controller: 'BatchDataAvailabilityCtrl'
-      })      
+      })    
+      .when('/batchDataResults', {
+            templateUrl: 'views/curation/batchDataResults.html',
+            controller: 'BatchDataResultsCtrl'
+      })       
       .otherwise({
         redirectTo: '/'
       });
