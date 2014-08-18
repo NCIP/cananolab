@@ -5,6 +5,7 @@ import java.util.Map;
 
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.protocol.ProtocolManager;
 import gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO;
@@ -265,7 +266,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 				 
 		 ProtocolBean bean = protocolManager.getProtocol(httpRequest, protocolType, protocolName, protocolVersion);
 		 SimpleSubmitProtocolBean view = new SimpleSubmitProtocolBean();
-		 view.transferProtocolBeanForEdit(bean);
+		 view.transferProtocolBeanForEdit(bean,httpRequest);
 			
 					return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
@@ -275,4 +276,33 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 
 		}
 	}
-}
+	
+	@POST
+	@Path("/submitForReview")
+	@Produces ("application/json")
+	public Response submitForReview(@Context HttpServletRequest httpRequest,
+			@DefaultValue("") @QueryParam("reviewDataId") String reviewDataId, @DefaultValue("") @QueryParam("reviewDataName") String reviewDataName, @DefaultValue("") @QueryParam("reviewDataType") String reviewDataType) {
+	
+		try {
+			
+			ProtocolBO protocolBO = 
+					(ProtocolBO) applicationContext.getBean("protocolBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			String result = protocolBO.submitForReview(httpRequest, reviewDataId, reviewDataName, reviewDataType);
+			 
+			return Response.ok(result).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the access " + e.getMessage())).build();
+		}
+	}
+	
+	}

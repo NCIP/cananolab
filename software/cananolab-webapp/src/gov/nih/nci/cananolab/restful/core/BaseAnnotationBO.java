@@ -426,14 +426,14 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		}
 	}
 
-	public String submitForReview(HttpServletRequest request,
-			String response) throws Exception {
+	public String submitForReview(HttpServletRequest request, String dataId, String dataName, String dataType) throws Exception {
 		SecurityService securityService = super
 				.getSecurityServiceFromSession(request);
-		String dataId = request.getParameter("reviewDataId");
-		String dataType = request.getParameter("reviewDataType");
-		String dataName = request.getParameter("reviewDataName");
+	//	String dataId = request.getParameter("reviewDataId");
+	//	String dataType = request.getParameter("reviewDataType");
+	//	String dataName = request.getParameter("reviewDataName");
 		String forwardName = request.getParameter("forwardName");
+		String msg ="";
 		if (!validateToken(request)) {
 		//	return mapping.findForward(dataType+"Message");
 		}
@@ -459,7 +459,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	//	messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 	//	saveMessages(request, messages);
 	//	resetToken(request);
-		return forwardName;
+		msg = PropertyUtil.getProperty(dataType, "message.submitReview");
+		return msg;
 	}
 
 	protected void setUpSubmitForReviewButton(HttpServletRequest request,

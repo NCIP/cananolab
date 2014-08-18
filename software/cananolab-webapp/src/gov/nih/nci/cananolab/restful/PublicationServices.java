@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
 import gov.nih.nci.cananolab.restful.publication.PublicationManager;
 import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
@@ -487,5 +488,34 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the access " + e.getMessage())).build();
 		}
 	}
+	
+	@POST
+	@Path("/submitForReview")
+	@Produces ("application/json")
+	public Response submitForReview(@Context HttpServletRequest httpRequest,
+			@DefaultValue("") @QueryParam("reviewDataId") String reviewDataId, @DefaultValue("") @QueryParam("reviewDataName") String reviewDataName, @DefaultValue("") @QueryParam("reviewDataType") String reviewDataType) {
+	
+		try {
+			
+			PublicationBO publicationBO = 
+					(PublicationBO) applicationContext.getBean("publicationBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			String result = publicationBO.submitForReview(httpRequest, reviewDataId, reviewDataName, reviewDataType);
+			 
+			return Response.ok(result).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the access " + e.getMessage())).build();
+		}
+	}
+	
 }
 	

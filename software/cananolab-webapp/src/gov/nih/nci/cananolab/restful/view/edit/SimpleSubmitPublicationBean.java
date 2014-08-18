@@ -54,8 +54,15 @@ public class SimpleSubmitPublicationBean {
 	String[] sampleNames;
 	List<String> errors;
 	List<String> otherSampleNames;
+	Boolean review = false;
 	
 	
+	public Boolean getReview() {
+		return review;
+	}
+	public void setReview(Boolean review) {
+		this.review = review;
+	}
 	public List<String> getOtherSampleNames() {
 		return otherSampleNames;
 	}
@@ -315,6 +322,7 @@ public class SimpleSubmitPublicationBean {
 		setUserDeletable(pubBean.getUserDeletable());
 		List<String> otherSampleNamesList = (List<String>) request.getSession().getAttribute("otherSampleNames");
 		setOtherSampleNames(otherSampleNamesList);
+		setReview((Boolean) request.getAttribute("review"));
 		
 	}
 		

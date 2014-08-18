@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class SimpleSubmitProtocolBean {
 
 	String type = "";
@@ -33,7 +35,14 @@ public class SimpleSubmitProtocolBean {
 	String uri = "";
 	Boolean uriExternal = false;
 	String externalUrl = "";
+	Boolean review =false;
 	
+	public Boolean getReview() {
+		return review;
+	}
+	public void setReview(Boolean review) {
+		this.review = review;
+	}
 	public String getFileName() {
 		return fileName;
 	}
@@ -179,7 +188,7 @@ public class SimpleSubmitProtocolBean {
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-	public void transferProtocolBeanForEdit(ProtocolBean bean) {
+	public void transferProtocolBeanForEdit(ProtocolBean bean, HttpServletRequest request) {
 		setAbbreviation(bean.getDomain().getAbbreviation());
 		setCreatedBy(bean.getDomain().getCreatedBy());
 		setCreatedDate(bean.getDomain().getCreatedDate());
@@ -203,6 +212,7 @@ public class SimpleSubmitProtocolBean {
 		setUserDeletable(bean.getUserDeletable());
 		setVersion(bean.getDomain().getVersion());
 		setUserUpdatable(bean.getUserUpdatable());
+		setReview((Boolean) request.getAttribute("review"));
 		
 		
 	}

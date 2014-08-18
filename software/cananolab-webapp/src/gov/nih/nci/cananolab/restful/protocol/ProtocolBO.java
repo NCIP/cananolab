@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -253,7 +254,7 @@ public class ProtocolBO extends BaseAnnotationBO{
 				.toString(), protocolBean.getPublicStatus());
 	//	saveToken(request);
 	//	return mapping.findForward("inputPage");
-		bean.transferProtocolBeanForEdit(protocolBean);
+		bean.transferProtocolBeanForEdit(protocolBean, request);
 		return bean;
 	}
 
@@ -389,4 +390,13 @@ public class ProtocolBO extends BaseAnnotationBO{
 		ProtocolService service = this.setServiceInSession(request);
 		return downloadFile(service, fileId, request, response);
 	}
+	
+//	public String submitForReview(HttpServletRequest request, String dataId, String dataName, String dataType) throws Exception {
+//		SecurityService securityService = super
+//				.getSecurityServiceFromSession(request);
+//	
+//		String msg ="";
+//		msg= super.submitForReview(request, dataId, dataName, dataType);
+//		return msg;
+//	}
 }
