@@ -17,7 +17,12 @@ var app = angular.module('angularApp')
         $scope.sampleId = '';
         $scope.localForm.otherSampleNames = [];
         $scope.localForm.otherCategoryText = '';
-        $scope.localForm.otherStatusText = '';        
+        $scope.localForm.otherStatusText = '';   
+        $scope.reviewData = {
+        		reviewDataId : null,
+        		reviewDataName : null,
+        		reviewDataType : 'protocol'
+            };        
 
         // Access variables
         $scope.publicationForm.theAccess = {};
@@ -360,7 +365,35 @@ var app = angular.module('angularApp')
                         $scope.messages = data;
                     });
             }
+        };   
+        
+        $scope.submitForReview = function() {
+            $scope.loader = true;
+            
+            $scope.reviewData.reviewDataId = $scope.protocolId;
+            $scope.reviewData.reviewDataName = 	$scope.publicationForm.name;
+
+            $http({method: 'POST', url: '/caNanoLab/rest/publication/submitForReview',data: $scope.reviewData}).
+                success(function(data, status, headers, config) {
+                    if (data == "success") {
+                        $location.search('message', 'Protocol successfully submitted to the curator for review and release to public.').path('/message').replace();
+                    }
+                    else {
+                        $scope.loader = false;
+                        $scope.messages = data;
+                    }
+
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    // $rootScope.sampleData = data;
+                    $scope.loader = false;
+                    $scope.messages = data;
+                });
+
         };        
+        
         
         /** Start - Access functions **/
         
