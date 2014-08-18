@@ -99,7 +99,8 @@ public class BatchDataAvailabilityBO extends AbstractDispatchBO {
 //				ActionMessage msg = new ActionMessage(
 //						"message.batchDataAvailability.generate.success",
 //						sampleIdsToRun.size());
-				messages.add(PropertyUtil.getProperty("application", "message.batchDataAvailability.generate.success"));
+			//	messages.add(PropertyUtil.getProperty("application", "message.batchDataAvailability.generate.success")+":"+sampleIdsToRun.size());
+				messages.add("You've successfully generated data availability metrics for "+sampleIdsToRun.size()+" sample(s).");
 			}
 			if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION3)) {
 				failures = dataAvailabilityService.deleteBatchDataAvailability(
@@ -107,12 +108,14 @@ public class BatchDataAvailabilityBO extends AbstractDispatchBO {
 //				ActionMessage msg = new ActionMessage(
 //						"message.batchDataAvailability.delete.success",
 //						sampleIdsToRun.size() - failures);
-				messages.add(PropertyUtil.getProperty("application", "message.batchDataAvailability.delete.success"));
+				//messages.add(PropertyUtil.getProperty("application", "message.batchDataAvailability.delete.success"));
+				messages.add("You've successfully deleted data availability metrics for "+sampleIdsToRun.size() +"-"+failures +" sample(s).");
 			}
 			if (failures > 0) {
 //				ActionMessage msg = new ActionMessage(
 //						"message.batchDataAvailability.failed", failures);
-				messages.add(PropertyUtil.getProperty("application", "message.batchDataAvailability.failed"));
+			//	messages.add(PropertyUtil.getProperty("application", "message.batchDataAvailability.failed"));
+				messages.add(failures +"samples failed to be processed due to an internal error.");
 			}
 
 		//	saveMessages(request, messages);
@@ -139,8 +142,8 @@ public class BatchDataAvailabilityBO extends AbstractDispatchBO {
 			//	saveMessages(request, messages);
 			//	return mapping.findForward("input");
 			} else {
-				ActionMessage msg = new ActionMessage(
-						"message.batchDataAvailability.previousRequest.completed");
+			//	ActionMessage msg = new ActionMessage(
+			//			"message.batchDataAvailability.previousRequest.completed");
 				messages.add(PropertyUtil.getProperty("application", "message.batchDataAvailability.previousRequest.completed"));
 			//	saveMessages(request, messages);
 			//	return mapping.findForward("input");
@@ -152,10 +155,12 @@ public class BatchDataAvailabilityBO extends AbstractDispatchBO {
 		if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION3)) {
 			optionMessage = "delete";
 		}
-		ActionMessage msg = new ActionMessage(
-				"message.batchDataAvailability.longRunning", sampleIdsToRun
-						.size(), optionMessage);
-		messages.add(PropertyUtil.getProperty("application", "message.batchDataAvailability.longRunning"));
+	//	ActionMessage msg = new ActionMessage(
+	//			"message.batchDataAvailability.longRunning", sampleIdsToRun
+	//					.size(), optionMessage);
+	//	messages.add(PropertyUtil.getProperty("application", "message.batchDataAvailability.longRunning"));
+		messages.add("It will take a while to "+ optionMessage +" data availability metrics for "+ sampleIdsToRun
+				.size() +" samples.  Please click on the RESULTS tab later to check the progress.");
 	//	saveMessages(request, messages);
 	//	return mapping.findForward("input");
 		return messages;
