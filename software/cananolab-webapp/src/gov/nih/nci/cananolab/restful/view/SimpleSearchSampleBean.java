@@ -145,7 +145,8 @@ public class SimpleSearchSampleBean {
 		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain()
 				.getCreatedDate());
 
-		editable = SecurityUtil.isEntityEditableForUser(sampleBean.getUserAccesses(), user);
+		//editable = SecurityUtil.isEntityEditableForUser(sampleBean.getUserAccesses(), user);
+		editable = sampleBean.getUserUpdatable();
 	}
 	
 
