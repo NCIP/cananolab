@@ -20,7 +20,12 @@ var app = angular.module('angularApp')
       $location.search('sampleId', null);      };
 
     $scope.select = function(tab) {
-        for (var x=0; x<$scope.publicationCategories.length;x++) {
+        var size = 0, key;
+        for (key in $scope.masterPublicationCategories) {
+          size+=1
+        };
+
+        for (var x=0; x<size;x++) {
             if (tab>=0) {
                 if (x==tab){
                     $scope['show'+x]=false;                
@@ -33,7 +38,8 @@ var app = angular.module('angularApp')
                 $scope['show'+x]=false;
             }      
         }
-    };
+    };    
+    
 
     // $scope.data = {"publicationCategories":["report","review"],"category2Publications":{"report":[{"displayName":"DENDRITIC NANOTECHNOLOGIES 122006. <a href=rest/publication/download?fileId=23178496 target='_self'>View</a>.","researchAreas":null,"description":"Dendrimer-Based MRI Contrast Agents prepared for Dendritic Nanotechnologies, December, 2006","keywordsDisplayName":"","keywordsStr":"","status":"published"}],"review":[{"displayName":"Hall, JB, Dobrovolskaia, MA, Patri, AK, McNeil, SE. Characterization of nanoparticles for therapeutics. Nanomedicine (London, England). 2007; 2:789-803. <a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/18095846>PMID: 18095846</a>.","researchAreas":["characterization","in vitro","in vivo"],"description":"Nanotechnology offers many advantages to traditional drug design, delivery and medical diagnostics; however, nanomedicines present considerable challenges for preclinical development. Nanoparticle constructs intended for medical applications consist of a wide variety of materials, and their small size, unique physicochemical properties and biological activity often require modification of standard characterization techniques. A rational characterization strategy for nanomedicines includes physicochemical characterization, sterility and pyrogenicity assessment, biodistribution (absorption, distribution, metabolism and excretion [ADME]) and toxicity characterization, which includes both in vitro tests and in vivo animal studies. Here, we highlight progress for a few methods that are uniquely useful for nanoparticles or are indicative of their toxicity or efficacy.","keywordsDisplayName":"CHARACTERIZATION<br>CHARGE<br>NANOPARTICLE<br>SIZE<br>TOXICITY","keywordsStr":"CHARACTERIZATION\r\nCHARGE\r\nNANOPARTICLE\r\nSIZE\r\nTOXICITY","status":"published"},{"displayName":"Dobrovolskaia, MA, McNeil, SE. Immunological properties of engineered nanomaterials. Nature nanotechnology. 2007; 2:469-478. <a target='_abstract' href=http://www.ncbi.nlm.nih.gov/pubmed/18654343>PMID: 18654343</a>.","researchAreas":["characterization","in vitro","in vivo"],"description":"Most research on the toxicology of nanomaterials has focused on the effects of nanoparticles that enter the body accidentally. There has been much less research on the toxicology of nanoparticles that are used for biomedical applications, such as drug delivery or imaging, in which the nanoparticles are deliberately placed in the body. Moreover, there are no harmonized standards for assessing the toxicity of nanoparticles to the immune system (immunotoxicity). Here we review recent research on immunotoxicity, along with data on a range of nanotechnology-based drugs that are at different stages in the approval process. Research shows that nanoparticles can stimulate and/or suppress the immune responses, and that their compatibility with the immune system is largely determined by their surface chemistry. Modifying these factors can significantly reduce the immunotoxicity of nanoparticles and make them useful platforms for drug delivery.","keywordsDisplayName":"IMMUNOTOXICITY<br>SURFACE CHEMISTRY","keywordsStr":"IMMUNOTOXICITY\r\nSURFACE CHEMISTRY","status":"published"}]}};    
     //             $scope.publicationCategories = $scope.data.publicationCategories;
