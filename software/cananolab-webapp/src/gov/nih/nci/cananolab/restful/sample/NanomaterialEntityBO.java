@@ -332,7 +332,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		this.setLookups(request);
-	//	this.checkOpenForms(entityBean, request);
+		this.checkOpenForms(entityBean, request);
 		// clear copy to otherSamples
 		form.setOtherSamples(new String[0]);
 		return CompositionUtil.reformatLocalSearchDropdownsInSession(request.getSession());
@@ -520,19 +520,19 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();
-		Boolean openFile = false, openComposingElement = false;
-		if (dispatch.equals("input") && browserDispatch.equals("saveFile")) {
-			openFile = true;
-		}
-		session.setAttribute("openFile", openFile);
-		if (dispatch.equals("input")
-				&& browserDispatch.equals("saveComposingElement")
-				|| ((dispatch.equals("setupNew") || dispatch
-						.equals("setupUpdate")) && entity
-						.getComposingElements().isEmpty())) {
-			openComposingElement = true;
-		}
-		session.setAttribute("openComposingElement", openComposingElement);
+//		Boolean openFile = false, openComposingElement = false;
+//		if (dispatch.equals("input") && browserDispatch.equals("saveFile")) {
+//			openFile = true;
+//		}
+//		session.setAttribute("openFile", openFile);
+//		if (dispatch.equals("input")
+//				&& browserDispatch.equals("saveComposingElement")
+//				|| ((dispatch.equals("setupNew") || dispatch
+//						.equals("setupUpdate")) && entity
+//						.getComposingElements().isEmpty())) {
+//			openComposingElement = true;
+//		}
+//		session.setAttribute("openComposingElement", openComposingElement);
 
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);

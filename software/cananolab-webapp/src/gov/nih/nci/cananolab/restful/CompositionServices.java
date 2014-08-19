@@ -142,21 +142,4 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 				return Response.ok(e.getMessage()).build();
 			}
 		}
-		@GET
-		@Path("/setup")
-		@Produces ("application/json")
-	    public Response setup(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId) {
-					
-			try { 
-				NanomaterialEntityBO nanomaterialEntityBO = 
-						(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
-				Map<String, Object> dropdownMap = nanomaterialEntityBO.setupNew(sampleId, httpRequest);
-				return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-
-				// return Response.ok(dropdownMap).build();
-			} catch (Exception e) {
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
-
-			}
-		}
-}
+	}
