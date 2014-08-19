@@ -35,7 +35,7 @@
                     <table class="invisibleTable" summary="layout">
                         <tbody><tr>
                             <td><label for="nameOperand" style="display:none">Name Operand</label>
-                                <select name="nameOperand" id="nameOperand" ng-model="searchProtocolForm.nameOperand">
+                                <select name="nameOperand" id="nameOperand" ng-model="searchProtocolForm.nameOperand" ng-init="searchProtocolForm.nameOperand='contains'">
                                     <option value="contains">contains</option>
                                     <option value="equals">equals</option>
                                 </select>
@@ -55,7 +55,7 @@
                     <table class="invisibleTable" summary="layout">
                         <tbody><tr>
                             <td><label for="abbreviationOperand" style="display:none">Abbreviation Operand</label>
-                                <select name="abbreviationOperand" id="abbreviationOperand" ng-model="searchProtocolForm.abbreviationOperand">
+                                <select name="abbreviationOperand" id="abbreviationOperand" ng-model="searchProtocolForm.abbreviationOperand" ng-init="searchProtocolForm.abbreviationOperand='contains'">
                                     <option value="contains">contains</option>
                                     <option value="equals">equals</option>
                                 </select>
@@ -75,7 +75,7 @@
                     <table class="invisibleTable" summary="layout">
                         <tbody><tr>
                             <td><label for="titleOperand" style="display:none">Title Operand</label>
-                                <select name="titleOperand" id="titleOperand" ng-model="searchProtocolForm.titleOperand">
+                                <select name="titleOperand" id="titleOperand" ng-model="searchProtocolForm.titleOperand" ng-init="searchProtocolForm.titleOperand='contains'">
                                     <option value="contains">contains</option>
                                     <option value="equals">equals</option>
                                 </select>

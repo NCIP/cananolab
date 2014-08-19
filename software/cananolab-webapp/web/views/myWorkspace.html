@@ -28,7 +28,10 @@
             <th>Sample Access</th>
         </tr>
         <tr ng-repeat="data in samples">
-            <td class="columnOne"><a href="https://cananolab-dev.nci.nih.gov/caNanoLab/#/sample?sampleId={{data.id}}">View</a></td>
+            <td class="columnOne">
+            	<a href="https://cananolab-dev.nci.nih.gov/caNanoLab/#/sample?sampleId={{data.id}}">View</a>&nbsp;
+            	<a href="/caNanoLab/#/editSample?sampleId={{data.id}}">Edit</a>
+            </td>
             <td>
                 <div>{{data.name}}</div>
             </td>
@@ -56,7 +59,10 @@
             <th>Protocol Access</th>
         </tr>
         <tr ng-repeat="data in protocols">
-            <td class="columnOne"><!-- <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}">View</a> --> &nbsp;</td>
+            <td class="columnOne">
+            	<a href="rest/protocol/download?fileId={{data.id}}" target="_blank">View</a>&nbsp;
+            	<a href="/caNanoLab/#/editProtocol?protocolId={{data.id}}">Edit</a>
+            </td>
             <td>
                 <div>{{data.name}}</div>
             </td>
@@ -85,7 +91,10 @@
             <th>Publication Access</th>
         </tr>
         <tr ng-repeat="data in publications">
-            <td class="columnOne"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}" target="_blank">View</a></td>
+            <td class="columnOne">
+            	<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}" target="_blank">View</a>&nbsp;
+            	<a href="/caNanoLab/#/editPublication?publicationId={{data.id}}">Edit</a>
+            </td>
             <td>
                 <div>{{data.pubMedId}}</div>
             </td>
