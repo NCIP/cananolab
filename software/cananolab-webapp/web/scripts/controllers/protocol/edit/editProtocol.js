@@ -11,9 +11,9 @@ var app = angular.module('angularApp')
         $scope.protocolForm.uriExternal = false;
         $scope.protocolForm.review = false;
         $scope.reviewData = {
-        		reviewDataId : null,
-        		reviewDataName : null,
-        		reviewDataType : 'protocol'
+        		dataId : null,
+        		dataName : null,
+        		dataType : 'protocol'
             };
 
         // Access variables
@@ -197,8 +197,8 @@ var app = angular.module('angularApp')
         $scope.submitForReview = function() {
             $scope.loader = true;
             
-            $scope.reviewData.reviewDataId = $scope.protocolId;
-            $scope.reviewData.reviewDataName = 	$scope.protocolForm.name;
+            $scope.reviewData.dataId = $scope.protocolId;
+            $scope.reviewData.dataName = 	$scope.protocolForm.name;
 
             $http({method: 'POST', url: '/caNanoLab/rest/protocol/submitForReview',data: $scope.reviewData}).
                 success(function(data, status, headers, config) {

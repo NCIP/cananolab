@@ -19,10 +19,10 @@ var app = angular.module('angularApp')
         $scope.localForm.otherCategoryText = '';
         $scope.localForm.otherStatusText = '';   
         $scope.reviewData = {
-        		reviewDataId : null,
-        		reviewDataName : null,
-        		reviewDataType : 'protocol'
-            };        
+        		dataId : null,
+        		dataName : null,
+        		dataType : 'publication'
+            };       
 
         // Access variables
         $scope.publicationForm.theAccess = {};
@@ -370,8 +370,8 @@ var app = angular.module('angularApp')
         $scope.submitForReview = function() {
             $scope.loader = true;
             
-            $scope.reviewData.reviewDataId = $scope.protocolId;
-            $scope.reviewData.reviewDataName = 	$scope.publicationForm.name;
+            $scope.reviewData.dataId = $scope.protocolId;
+            $scope.reviewData.dataName = 	$scope.publicationForm.name;
 
             $http({method: 'POST', url: '/caNanoLab/rest/publication/submitForReview',data: $scope.reviewData}).
                 success(function(data, status, headers, config) {
