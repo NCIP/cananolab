@@ -124,6 +124,13 @@
 		class="gov.nih.nci.cananolab.restful.core.ManageResultBO">
 	</bean>
 	
+	<bean id="nanomaterialEntityBO"
+		class="gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 

@@ -13,14 +13,12 @@ import java.util.SortedSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-//import org.hibernate.validator.NotNull;
-//import org.hibernate.validator.constraints.NotEmpty;
 
 public class SimpleSubmitPublicationBean {
 
 	String sampleTitle = "";
 	String title = "";
-    String category = "";
+	String category = "";
   	String status = "";
 	Long pubMedId;
 	String digitalObjectId = "";

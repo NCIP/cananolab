@@ -9,6 +9,7 @@ import java.util.Map;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -492,8 +493,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	@POST
 	@Path("/submitForReview")
 	@Produces ("application/json")
-	public Response submitForReview(@Context HttpServletRequest httpRequest,
-			@DefaultValue("") @QueryParam("reviewDataId") String reviewDataId, @DefaultValue("") @QueryParam("reviewDataName") String reviewDataName, @DefaultValue("") @QueryParam("reviewDataType") String reviewDataType) {
+	public Response submitForReview(@Context HttpServletRequest httpRequest, DataReviewStatusBean dataReviewStatusBean) {
 	
 		try {
 			
@@ -505,7 +505,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			String result = publicationBO.submitForReview(httpRequest, reviewDataId, reviewDataName, reviewDataType);
+			String result = publicationBO.submitForReview(httpRequest, dataReviewStatusBean);
 			 
 			return Response.ok(result).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
