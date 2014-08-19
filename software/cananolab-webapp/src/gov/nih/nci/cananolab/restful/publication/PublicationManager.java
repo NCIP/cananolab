@@ -333,6 +333,7 @@ public class PublicationManager {
 		simplePubBean.transferDataFromPublication(publication);
 		simplePubBean.transferSampleDataFromSampleList(samples);
 		simplePubBean.setType(type);
+		simplePubBean.setId(val.toString());
 		
 		return simplePubBean;
 	}

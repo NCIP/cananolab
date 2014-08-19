@@ -25,7 +25,10 @@
 		<th>Vol(lss)Pg</th>
 	</tr>
 	<tr>
-		<td class="columnOne"><span ng-if="data.type=='DOI'">DOI Id: {{data.id}}</span><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}" ng-if="data.type=='PubMed'" target="_blank">PubMed ID: {{data.id}}</a></td>
+		<td class="columnOne">
+			<span ng-if="data.type=='DOI'">DOI Id: {{data.id}}</span>
+			<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}" ng-if="data.type=='PubMed'" target="_blank">PubMed ID: {{data.id}}</a>
+		</td>
 		<td>
 			<div>{{data.authors}}</div>
 		</td>
@@ -42,7 +45,7 @@
 				<a href="#/characterization?sampleId={{key}}">{{val}}</a>
 			</div>
 		</td>
-		<td>{{data.journal}}</td>
+		<td ng-bind-html="data.journal"></td>
 		<td>{{data.year}}</td>
 		<td>{{data.volumn}}</td>
 	</tr>

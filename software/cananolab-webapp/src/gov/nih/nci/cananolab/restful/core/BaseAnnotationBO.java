@@ -460,7 +460,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	//	saveMessages(request, messages);
 	//	resetToken(request);
 		msg = PropertyUtil.getProperty(dataReviewStatusBean.getDataType(), "message.submitReview");
-		return msg;
+		return "success";
 	}
 
 	protected void setUpSubmitForReviewButton(HttpServletRequest request,
