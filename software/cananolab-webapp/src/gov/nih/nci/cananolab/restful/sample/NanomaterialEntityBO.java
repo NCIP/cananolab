@@ -304,10 +304,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		return true;
 	}
 
-	public Map<String, Object> setLookups(HttpServletRequest request) throws Exception {
+	public void setLookups(HttpServletRequest request) throws Exception {
 		InitCompositionSetup.getInstance().setNanomaterialEntityDropdowns(
 				request);
-		return CompositionUtil.reformatLocalSearchDropdownsInSession(request.getSession());
 
 	}
 
@@ -321,7 +320,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	 * @return
 	 * @throws Exception
 	 */
-	public void setupNew(String sampleId,
+	public Map<String, Object> setupNew(String sampleId,
 			HttpServletRequest request)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -333,9 +332,11 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		this.setLookups(request);
-		this.checkOpenForms(entityBean, request);
+	//	this.checkOpenForms(entityBean, request);
 		// clear copy to otherSamples
 		form.setOtherSamples(new String[0]);
+		return CompositionUtil.reformatLocalSearchDropdownsInSession(request.getSession());
+
 
 	//	return mapping.findForward("inputForm");
 	}

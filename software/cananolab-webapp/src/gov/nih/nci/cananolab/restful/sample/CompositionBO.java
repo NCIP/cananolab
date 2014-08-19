@@ -59,10 +59,10 @@ public class CompositionBO extends BaseAnnotationBO {
 			HttpServletRequest request)
 			throws Exception {
 		// Call shared function to prepare CompositionBean for editing.
-		this.prepareSummary(form, request);
+		CompositionBean compBean = this.prepareSummary(form, request);
 		setSummaryTab(request, CompositionBean.ALL_COMPOSITION_SECTIONS.length);
 	//	return mapping.findForward("summaryEdit");
-		return null;
+		return compBean;
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class CompositionBO extends BaseAnnotationBO {
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	private void prepareSummary(CompositionForm form,
+	private CompositionBean prepareSummary(CompositionForm form,
 			HttpServletRequest request)
 			throws Exception {
 		// Remove previous result from session.
@@ -222,6 +222,7 @@ public class CompositionBO extends BaseAnnotationBO {
 	//			.getAttribute(ActionMessages.GLOBAL_MESSAGE);
 	//	saveMessages(request, msgs);
 	//	session.removeAttribute(ActionMessages.GLOBAL_MESSAGE);
+		return compBean;
 	}
 
 	/**

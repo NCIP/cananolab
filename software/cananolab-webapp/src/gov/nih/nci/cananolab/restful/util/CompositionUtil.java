@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
@@ -12,16 +13,51 @@ import javax.servlet.http.HttpSession;
 public class CompositionUtil {
 	public static Map<String, Object> reformatLocalSearchDropdownsInSession(
 			HttpSession session) {
-        if (session == null) 
+        if (session == null)                      
         	return null;
         
 		Map<String, Object> typeMap = new HashMap<String, Object>();
 		
-		SortedSet<String> types = (SortedSet<String>) session.getAttribute("publicationCategories");
+		SortedSet<String> types = (SortedSet<String>) session.getAttribute("nanomaterialEntityTypes");
 					
-		types = (SortedSet<String>) session.getAttribute("nanomaterialEntityTypes");
 		if (types != null) 
 			typeMap.put("nanomaterialEntityTypes", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("composingElementTypes");
+		if (types != null) 
+			typeMap.put("composingElementTypes", new ArrayList<String>(types));
+		
+		List<String> list = (List<String>) session.getAttribute("emulsionComposingElementTypes");
+		if (list != null) 
+			typeMap.put("emulsionComposingElementTypes", list);
+		
+		types = (SortedSet<String>) session.getAttribute("pubChemDataSources");
+		if (types != null) 
+			typeMap.put("pubChemDataSources", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("composingElementUnits");
+		if (types != null) 
+			typeMap.put("composingElementUnits", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("molecularFormulaTypes");
+		if (types != null) 
+			typeMap.put("molecularFormulaTypes", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("functionTypes");
+		if (types != null) 
+			typeMap.put("functionTypes", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("modalityTypes");
+		if (types != null) 
+			typeMap.put("modalityTypes", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("fileTypes");
+		if (types != null) 
+			typeMap.put("fileTypes", new ArrayList<String>(types));
+		
+		list = (List<String>) session.getAttribute("otherSampleNames");
+		if (list != null) 
+			typeMap.put("otherSampleNames", list);
 		
 		return typeMap;
 	}

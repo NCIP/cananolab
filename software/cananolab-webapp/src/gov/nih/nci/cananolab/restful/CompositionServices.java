@@ -150,7 +150,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 			try { 
 				NanomaterialEntityBO nanomaterialEntityBO = 
 						(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
-				Map<String, Object> dropdownMap = nanomaterialEntityBO.setLookups(httpRequest);
+				Map<String, Object> dropdownMap = nanomaterialEntityBO.setupNew(sampleId, httpRequest);
 				return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 				// return Response.ok(dropdownMap).build();
