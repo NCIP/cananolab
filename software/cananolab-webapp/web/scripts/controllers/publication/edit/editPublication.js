@@ -370,13 +370,13 @@ var app = angular.module('angularApp')
         $scope.submitForReview = function() {
             $scope.loader = true;
             
-            $scope.reviewData.dataId = $scope.protocolId;
-            $scope.reviewData.dataName = 	$scope.publicationForm.name;
+            $scope.reviewData.dataId = $scope.publicationId;
+            $scope.reviewData.dataName = 	$scope.publicationForm.title;
 
             $http({method: 'POST', url: '/caNanoLab/rest/publication/submitForReview',data: $scope.reviewData}).
                 success(function(data, status, headers, config) {
                     if (data == "success") {
-                        $location.search('message', 'Protocol successfully submitted to the curator for review and release to public.').path('/message').replace();
+                        $location.search('message', 'Publication successfully submitted to the curator for review and release to public.').path('/message').replace();
                     }
                     else {
                         $scope.loader = false;
