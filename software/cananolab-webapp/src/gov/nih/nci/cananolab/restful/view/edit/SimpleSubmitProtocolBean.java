@@ -194,9 +194,9 @@ public class SimpleSubmitProtocolBean {
 		setCreatedDate(bean.getDomain().getCreatedDate());
 		
 		if(bean.getDomain().getFile()!= null){
-			setFileDescription(bean.getDomain().getFile().getDescription());
+		//	setFileDescription(bean.getDomain().getFile().getDescription());
 			setFileId(bean.getDomain().getFile().getId());
-			setFileTitle(bean.getDomain().getFile().getTitle());
+		//	setFileTitle(bean.getDomain().getFile().getTitle());
 			setUri(bean.getDomain().getFile().getUri());
 			setUriExternal(bean.getDomain().getFile().getUriExternal());
 			setFileName(bean.getDomain().getFile().getName());
@@ -213,6 +213,10 @@ public class SimpleSubmitProtocolBean {
 		setVersion(bean.getDomain().getVersion());
 		setUserUpdatable(bean.getUserUpdatable());
 		setReview((Boolean) request.getAttribute("review"));
+		setFileDescription(bean.getDomain().getFile().getDescription());
+		setFileTitle(bean.getDomain().getFile().getTitle());
+
+
 		
 		
 	}

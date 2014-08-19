@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
@@ -72,6 +73,8 @@ public class ProtocolBO extends BaseAnnotationBO{
 			SimpleSubmitProtocolBean bean) {
 		ProtocolBean proBean = new ProtocolBean();
 		Protocol protocol = new Protocol();
+		FileBean fileBean = new FileBean();
+		
 		File file = new File();
 			file.setTitle(bean.getFileTitle());
 			file.setDescription(bean.getFileDescription());
@@ -79,6 +82,7 @@ public class ProtocolBO extends BaseAnnotationBO{
 			file.setUri(bean.getUri());
 			file.setUriExternal(bean.getUriExternal());
 			file.setName(bean.getFileName());
+		fileBean.setDomainFile(file);
 		protocol.setType(bean.getType());
 		protocol.setName(bean.getName());
 		protocol.setVersion(bean.getVersion());
@@ -86,7 +90,7 @@ public class ProtocolBO extends BaseAnnotationBO{
 		protocol.setId(bean.getId());
 		protocol.setCreatedBy(bean.getCreatedBy());
 		protocol.setAbbreviation(bean.getAbbreviation());
-		protocol.setFile(file);
+		proBean.setFileBean(fileBean);
 		proBean.setGroupAccesses(bean.getGroupAccesses());
 		proBean.setUserAccesses(bean.getUserAccesses());
 		proBean.setTheAccess(bean.getTheAccess());
@@ -143,19 +147,19 @@ public class ProtocolBO extends BaseAnnotationBO{
 		if(!InputValidationUtil.isTextFieldWhiteList(abbreviation)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.abbreviation.invalid"));
 		}
-		String title = protocol.getFile().getTitle();
+		String title = protocolBean.getFileBean().getDomainFile().getTitle();
 		
 		if(!InputValidationUtil.isTextFieldWhiteList(title)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.title.invalid"));
 		}
-		String fileName = protocol.getFile().getName();
+		String fileName = protocolBean.getFileBean().getDomainFile().getName();
 		
 		if(!InputValidationUtil.isTextFieldWhiteList(fileName)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.file.name.invalid"));
 		}
 		
 		
-		String externalUrl = protocol.getFile().getUri();
+		String externalUrl = protocolBean.getFileBean().getDomainFile().getUri();
 		if(!InputValidationUtil.isTextFieldWhiteList(externalUrl)){
 			errors.add(PropertyUtil.getProperty("protocol", "file.uri.invalid"));
 		}

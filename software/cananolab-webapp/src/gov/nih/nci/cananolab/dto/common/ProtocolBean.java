@@ -96,6 +96,9 @@ public class ProtocolBean extends SecuredDataBean {
 		return fileBean;
 	}
 
+	public void setFileBean(FileBean bean) {
+		this.fileBean = bean;
+	}
 	public Protocol getDomain() {
 		return domain;
 	}

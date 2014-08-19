@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -14,6 +16,9 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Rule;
+
+
 
 public class ProtocolServicesTest {
 
@@ -21,12 +26,13 @@ public class ProtocolServicesTest {
 	Client client; 
 
 	
+	
 	@Before
 	public void setUp() throws Exception {
-		client = ClientBuilder.newClient(new ClientConfig()
+		client = ClientBuilder.newClient(new ClientConfig());
 		//.register(MyClientResponseFilter.class)
 		//.register(new AnotherClientFilter())
-				);
+				
 	}
 	
 	@Test
