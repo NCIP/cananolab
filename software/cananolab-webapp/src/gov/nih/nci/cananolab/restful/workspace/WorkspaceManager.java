@@ -39,6 +39,7 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -79,7 +80,7 @@ public class WorkspaceManager {
 		
 		List<SimpleWorkspaceItem> pubItems = getPublicationItems(request, securityService, user);
 		simpleWorkspace.setPublications(pubItems);
-		
+	
 		List<SimpleWorkspaceItem> protoItems = getProtocolItems(request, securityService, user);
 		simpleWorkspace.setProtocols(protoItems);
 		
@@ -143,6 +144,10 @@ public class WorkspaceManager {
 			item.setName(protoBean.getDomain().getName());
 			item.setId(protoBean.getDomain().getId());
 			item.setCreatedDate(protoBean.getDomain().getCreatedDate());
+			
+			if( protoBean.getFileBean().getDomainFile() != null && protoBean.getFileBean().getDomainFile().getId() != null && !StringUtils.isEmpty(protoBean.getFileBean().getDomainFile().getUri())) {
+				item.setFileId(protoBean.getFileBean().getDomainFile().getId().longValue());
+			}
 			item.getActions().add("View");
 			
 			item.setSubmisstionStatus("Approved"); //default

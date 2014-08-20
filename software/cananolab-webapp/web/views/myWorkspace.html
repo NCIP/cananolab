@@ -60,7 +60,7 @@
         </tr>
         <tr ng-repeat="data in protocols">
             <td class="columnOne">
-            	<a href="rest/protocol/download?fileId={{data.id}}" target="_blank">View</a>&nbsp;
+            	<a href="rest/protocol/download?fileId={{data.fileId}}" target="_blank" ng-if="data.fileId != null && data.fileId != ''">View</a>&nbsp;
             	<a href="/caNanoLab/#/editProtocol?protocolId={{data.id}}">Edit</a>
             </td>
             <td>

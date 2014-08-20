@@ -13,7 +13,10 @@ public class SimpleWorkspaceItem {
 	long id;
 	String submisstionStatus;
 	Date createdDate;
+	long fileId;
 	
+
+
 	String comments;
 	
 	String pubMedId;
@@ -86,5 +89,13 @@ public class SimpleWorkspaceItem {
 	public void setAccess(String access) {
 		this.access = access;
 	}
+	
+	public long getFileId() {
+		return fileId;
+	}
+
+	public void setFileId(long fileId) {
+		this.fileId = fileId;
+	}	
 
 }
