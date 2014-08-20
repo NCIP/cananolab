@@ -200,6 +200,8 @@ public class SimpleSubmitProtocolBean {
 			setUri(bean.getDomain().getFile().getUri());
 			setUriExternal(bean.getDomain().getFile().getUriExternal());
 			setFileName(bean.getDomain().getFile().getName());
+			setFileDescription(bean.getDomain().getFile().getDescription());
+			setFileTitle(bean.getDomain().getFile().getTitle());
 		}
 		setGroupAccesses(bean.getGroupAccesses());
 		setUserAccesses(bean.getUserAccesses());
@@ -213,12 +215,8 @@ public class SimpleSubmitProtocolBean {
 		setVersion(bean.getDomain().getVersion());
 		setUserUpdatable(bean.getUserUpdatable());
 		setReview((Boolean) request.getAttribute("review"));
-		setFileDescription(bean.getDomain().getFile().getDescription());
-		setFileTitle(bean.getDomain().getFile().getTitle());
-
-
 		
-		
+
 	}
 	
 	
