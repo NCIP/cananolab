@@ -215,7 +215,7 @@ public class SimpleSubmitProtocolBean {
 		setVersion(bean.getDomain().getVersion());
 		setUserUpdatable(bean.getUserUpdatable());
 		setReview((Boolean) request.getAttribute("review"));
-		
+		setExternalUrl(bean.getFileBean().getExternalUrl());
 
 	}
 	

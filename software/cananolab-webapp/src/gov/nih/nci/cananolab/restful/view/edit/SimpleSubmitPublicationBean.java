@@ -321,6 +321,7 @@ public class SimpleSubmitPublicationBean {
 		List<String> otherSampleNamesList = (List<String>) request.getSession().getAttribute("otherSampleNames");
 		setOtherSampleNames(otherSampleNamesList);
 		setReview((Boolean) request.getAttribute("review"));
+		setExternalUrl(pubBean.getExternalUrl());
 		
 	}
 		
