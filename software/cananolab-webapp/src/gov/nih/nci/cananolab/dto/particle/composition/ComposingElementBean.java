@@ -192,6 +192,11 @@ public class ComposingElementBean {
 	public void setTheFunction(FunctionBean theFunction) {
 		this.theFunction = theFunction;
 	}
+	
+	public void setDomain(ComposingElement composingElement) {
+		this.domain = composingElement;
+	}
+
 
 	public void setInherentFunctions(List<FunctionBean> inherentFunctions) {
 		this.inherentFunctions = inherentFunctions;
