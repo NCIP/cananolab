@@ -341,11 +341,11 @@
                     <tbody>
                     <tr>
                         <td class="cellLabel" width="40%">
-                            <input type="radio" ng-model="publicationForm.uriExternal" value="false" ng-checked="true" id="external0">
+                            <input type="radio" ng-model="publicationForm.uriExternal" value="false" ng-checked="externalUrlEnabled==false" id="external0">
                             <label for="external0">Upload</label>
                         </td>
                         <td class="cellLabel">
-                            <input type="radio" ng-model="publicationForm.uriExternal" value="true" id="external1">
+                            <input type="radio" ng-model="publicationForm.uriExternal" value="true" ng-checked="externalUrlEnabled==true" id="external1">
                             <label for="external1">Enter File URL</label>
                         </td>
                     </tr>

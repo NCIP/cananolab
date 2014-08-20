@@ -49,6 +49,7 @@ var app = angular.module('angularApp')
         $scope.publicationForm.isPublic = false;
         $scope.accessForm.theAccess.accessBy = 'group';        
         $scope.accessExists = false;
+        $scope.externalUrlEnabled  = false;        
 
 
         //$scope.$on('$viewContentLoaded', function(){
@@ -101,6 +102,23 @@ var app = angular.module('angularApp')
 		                
 		                if($scope.publicationForm.authors != null && $scope.publicationForm.authors.length > 0 ) {
 		                    $scope.showAuthorTable = true;
+		                }
+		                
+		                if( $scope.publicationForm.uriExternal != null && $scope.publicationForm.uriExternal != '') {
+		                    $scope.externalUrlEnabled = true;
+
+		                    $timeout(function() {
+		                        var el = document.getElementById('external1');
+		                        angular.element(el).triggerHandler('click');
+		                    }, 0);
+		                }
+		                else {
+		                    $scope.externalUrlEnabled  = false;
+
+		                    $timeout(function() {
+		                        var el = document.getElementById('external0');
+		                        angular.element(el).triggerHandler('click');
+		                    }, 0);
 		                }
 
 	                }).
