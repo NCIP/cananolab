@@ -219,6 +219,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		pubBean.setUserDeletable(bean.getUserDeletable());
 		pubBean.setKeywordsStr(bean.getKeywordsStr());
 		pubBean.setTheAccess(bean.getTheAccess());
+		pubBean.setExternalUrl(bean.getExternalUrl());
 		return pubBean;
 	}
 
