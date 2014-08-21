@@ -16,7 +16,7 @@ var app = angular.module('angularApp', [
     'ngRoute',
     'ngTable',
     'ngSanitize',
-    'ngTouch','ngGrid','ui.bootstrap']);
+    'ngTouch','ngGrid','ui.bootstrap','angularFileUpload']);
 
 
 app.config(function ($routeProvider, $httpProvider) {
@@ -162,7 +162,7 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/batchDataResults', {
             templateUrl: 'views/curation/batchDataResults.html',
             controller: 'BatchDataResultsCtrl'
-      })       
+      }) 
       .otherwise({
         redirectTo: '/'
       });

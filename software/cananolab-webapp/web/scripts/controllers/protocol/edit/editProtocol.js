@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('angularApp')
 
-    .controller('EditProtocolCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams) {
+    .controller('EditProtocolCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams,$upload) {
         $scope.protocolForm = {};
         $rootScope.navTree=false;
         //$rootScope.tabs = navigationService.query();
@@ -42,6 +42,9 @@ var app = angular.module('angularApp')
         $scope.accessForm.theAccess.accessBy = 'group';
         $scope.accessExists = false;
 
+        /* File Variables */
+        $scope.usingFlash = FileAPI && FileAPI.upload != null;
+        $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
 
         $scope.$on('$viewContentLoaded', function(){
             $http({method: 'GET', url: '/caNanoLab/rest/protocol/setup'}).
@@ -219,6 +222,56 @@ var app = angular.module('angularApp')
                     $scope.messages = data;
                 });
 
+        };        
+        
+        /* File Section */
+        $scope.onFileSelect = function($files) {
+            $scope.selectedFiles = [];
+
+            $scope.selectedFiles = $files;
+            $scope.dataUrls = [];
+            for ( var i = 0; i < $files.length; i++) {
+                var $file = $files[i];
+                if ($scope.fileReaderSupported && $file.type.indexOf('image') > -1) {
+                    var fileReader = new FileReader();
+                    fileReader.readAsDataURL($files[i]);
+                    var loadFile = function(fileReader, index) {
+                        fileReader.onload = function(e) {
+                            $timeout(function() {
+                                $scope.dataUrls[index] = e.target.result;
+                            });
+                        }
+                    }(fileReader, i);
+                }
+              }
+        };
+
+        $scope.uploadFile = function() {
+            $scope.errorMsg = null;
+            var index = 0;
+            $scope.upload = [];
+                $scope.upload[index] = $upload.upload({
+                    url: 'http://localhost:8080/caNanoLab/rest/protocol/uploadFile',
+                    method: 'POST',
+                    headers: {'my-header': 'my-header-value'},
+                    data : $scope.protocolForm,
+                    file: $scope.selectedFiles[index],
+                    fileFormDataName: 'myFile'
+                });
+                $scope.upload[index].then(function(response) {
+                    $timeout(function() {
+                        //$scope.uploadResult.push(response.data);
+                    	alert(response.data);
+                    });
+                }, function(response) {
+                    if (response.status > 0) $scope.errorMsg = response.status + ': ' + response.data;
+                }, function(evt) {
+                    // Math.min is to fix IE which reports 200% sometimes
+                    // $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                });
+                $scope.upload[index].xhr(function(xhr){
+//				xhr.upload.addEventListener('abort', function() {console.log('abort complete')}, false);
+                });
         };        
 
         /** Start - Access functions **/
