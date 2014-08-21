@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.restful.util;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.util.SampleConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,10 +33,6 @@ public class CompositionUtil {
 		if (list != null) 
 			typeMap.put("emulsionComposingElementTypes", list);
 		
-		types = (SortedSet<String>) session.getAttribute("pubChemDataSources");
-		if (types != null) 
-			typeMap.put("pubChemDataSources", new ArrayList<String>(types));
-		
 		types = (SortedSet<String>) session.getAttribute("composingElementUnits");
 		if (types != null) 
 			typeMap.put("composingElementUnits", new ArrayList<String>(types));
@@ -58,6 +56,10 @@ public class CompositionUtil {
 		list = (List<String>) session.getAttribute("otherSampleNames");
 		if (list != null) 
 			typeMap.put("otherSampleNames", list);
+		
+		List<String> pubChemSources = Arrays.asList(SampleConstants.PUBCHEM_DS_LIST);  
+		if(pubChemSources != null)
+			typeMap.put("pubChemDataSources", pubChemSources);
 		
 		return typeMap;
 	}
