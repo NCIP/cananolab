@@ -455,6 +455,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		bean.setTheFile(fileBean);
 		bean.setType(nanoBean.getType());
 		bean.setDescription(nanoBean.getDescription());
+		try {
+			bean.setupDomainEntity(nanoBean.getCreatedBy());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return bean;
 	}
 

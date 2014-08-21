@@ -43,7 +43,6 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			Map<String, Object> dropdownMap = nanomaterialEntityBO.setupNew(sampleId, httpRequest);
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
-			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
 
@@ -64,11 +63,13 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 						.entity("Session expired").build();
 			
 			NanomaterialEntityBean nanoBean = nanomaterialEntityBO.setupUpdate(sampleId, dataId, httpRequest);
-			return Response.ok(nanoBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
+			
+			nano.transferNanoMaterialEntityBeanToSimple(nanoBean, httpRequest);
+			return Response.ok(nano).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
-			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the NanoMaterial Entity" + e.getMessage())).build();
 
 		}
 	}
@@ -93,9 +94,8 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			nano.transferNanoMaterialEntityBeanToSimple(bean, httpRequest);
 			return Response.ok(nano).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
-			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the composing element" + e.getMessage())).build();
 
 		}
 	}
@@ -121,9 +121,8 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			nano.transferNanoMaterialEntityBeanToSimple(bean, httpRequest);
 			return Response.ok(nano).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
-			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the composing element" + e.getMessage())).build();
 
 		}
 	}
@@ -149,9 +148,8 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			nano.transferNanoMaterialEntityBeanToSimple(bean, httpRequest);
 			return Response.ok(nano).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
-			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the file" + e.getMessage())).build();
 
 		}
 	}
