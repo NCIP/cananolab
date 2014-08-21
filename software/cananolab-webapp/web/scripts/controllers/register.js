@@ -8,7 +8,7 @@
  * Controller of the angularApp
  */
 angular.module('angularApp')
-  .controller('RegisterCtrl', function (navigationService,groupService, $rootScope, $scope, $http) {
+  .controller('RegisterCtrl', function (navigationService,groupService, $rootScope, $scope, $http,$location) {
     $rootScope.tabs = navigationService.get();
 	$rootScope.groups = groupService.getGroups.data.get();
 	$rootScope.navTree=false;
@@ -21,7 +21,8 @@ angular.module('angularApp')
 			    success(function(data, status, headers, config) {
 			      // this callback will be called asynchronously
 			      // when the response is available
-			    	$scope.message="Your registration request has been sent to the administrator for assignment of your User ID and Password. You should receive this information via e-mail within one business day from time of submission.";
+			    	//$scope.message="Your registration request has been sent to the administrator for assignment of your User ID and Password. You should receive this information via e-mail within one business day from time of submission.";
+			    	$location.search('message', 'Your registration request has been sent to the administrator for assignment of your User ID and Password. You should receive this information via e-mail within one business day from time of submission.').path('/message').replace();
 			    }).
 			    error(function(data, status, headers, config) {
 			      // called asynchronously if an error occurs
