@@ -11,7 +11,7 @@ public class SimpleComposingElementBean {
 	String molecularFormulaType = "";
 	String molecularFormula = "";
 	String description = "";
-	String id = "";
+	Long id = 0L;
 	String functionId = "";
 	String functionType = "";
 	String imagingModality = "";
@@ -79,10 +79,10 @@ public class SimpleComposingElementBean {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getFunctionId() {

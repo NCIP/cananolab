@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
@@ -86,6 +87,62 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 						.entity("Session expired").build();
 			
 			NanomaterialEntityBean bean = nanomaterialEntityBO.saveComposingElement(nanoBean, httpRequest);
+			
+			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
+			
+			nano.transferNanoMaterialEntityBeanToSimple(bean, httpRequest);
+			return Response.ok(nano).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+			// return Response.ok(dropdownMap).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
+
+		}
+	}
+	
+	@POST
+	@Path("/removeComposingElement")
+	@Produces ("application/json")
+    public Response removeComposingElement(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean) {
+				
+		try { 
+			NanomaterialEntityBO nanomaterialEntityBO = 
+					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+					
+			NanomaterialEntityBean bean = nanomaterialEntityBO.removeComposingElement(nanoBean, httpRequest);
+			
+			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
+			
+			nano.transferNanoMaterialEntityBeanToSimple(bean, httpRequest);
+			return Response.ok(nano).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+			// return Response.ok(dropdownMap).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
+
+		}
+	}
+	
+	@POST
+	@Path("/saveFile")
+	@Produces ("application/json")
+    public Response saveFile(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean) {
+				
+		try { 
+			NanomaterialEntityBO nanomaterialEntityBO = 
+					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			
+			NanomaterialEntityBean bean = nanomaterialEntityBO.saveFile(nanoBean, httpRequest);
 			
 			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
 			

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -426,6 +427,18 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		comp.setName(nanoBean.getSimpleCompBean().getName());
 		comp.setPubChemDataSourceName(nanoBean.getSimpleCompBean().getPubChemDataSourceName());
 		comp.setPubChemId(nanoBean.getSimpleCompBean().getPubChemId());
+		FileBean fileBean = new FileBean();
+
+		if(nanoBean.getFileBean()!= null){
+		File file = new File();
+		file.setType(nanoBean.getFileBean().getType());
+		file.setTitle(nanoBean.getFileBean().getTitle());
+		file.setDescription(nanoBean.getFileBean().getDescription());
+		file.setUri(nanoBean.getFileBean().getUri());
+		file.setUriExternal(nanoBean.getFileBean().getUriExternal());
+		fileBean.setKeywordsStr(nanoBean.getFileBean().getKeywordsStr());
+		fileBean.setDomainFile(file);
+		}
 		
 		FunctionBean func = new FunctionBean();
 		ImagingFunction img = new ImagingFunction();
@@ -438,16 +451,16 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		compBean.setTheFunction(func);
 		compBean.setDomain(comp);
 		bean.setTheComposingElement(compBean);
+		bean.setTheFile(fileBean);
 		bean.setType(nanoBean.getType());
 		bean.setDescription(nanoBean.getDescription());
 		return bean;
 	}
 
-	public void removeComposingElement(CompositionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public NanomaterialEntityBean removeComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanomaterialEntityBean entity = form
-				.getNanomaterialEntity(); //("nanomaterialEntity");
+		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean);//form
+				//.getNanomaterialEntity(); //("nanomaterialEntity");
 		ComposingElementBean composingElement = entity.getTheComposingElement();
 		// check if composing element is associated with an association
 		CompositionServiceLocalImpl compService = (CompositionServiceLocalImpl) (this
@@ -462,22 +475,23 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		if (!validateInputs(request, entity)) {
 			//return mapping.getInputForward();
 		}
-		this.saveEntity(request, form.getSampleId(), entity);
+		this.saveEntity(request, nanoBean.getSampleId(), entity);
 		compService.removeAccesses(entity.getDomainEntity(),
 				composingElement.getDomain());
 		this.checkOpenForms(entity, request);
+		return entity;
 		//return mapping.findForward("inputForm");
 	}
 
-	public void saveFile(CompositionForm form,
+	public NanomaterialEntityBean saveFile(SimpleNanomaterialEntityBean nanoBean,
 			HttpServletRequest request)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanomaterialEntityBean entity = form
-				.getNanomaterialEntity(); //("nanomaterialEntity");
+		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean);//form
+				//.getNanomaterialEntity(); //("nanomaterialEntity");
 		FileBean theFile = entity.getTheFile();
 		this.setServicesInSession(request);
-		SampleBean sampleBean = setupSampleById(form.getSampleId(), request); //(theForm, request);
+		SampleBean sampleBean = setupSampleById(nanoBean.getSampleId(), request); //(theForm, request);
 		// setup domainFile uri for fileBean
 		String internalUriPath = Constants.FOLDER_PARTICLE + '/'
 				+ sampleBean.getDomain().getName() + '/' + "nanomaterialEntity";
@@ -492,7 +506,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		if (!validateInputs(request, entity)) {
 			//return mapping.getInputForward();
 		}
-		this.saveEntity(request,form.getSampleId(), entity);
+		this.saveEntity(request,nanoBean.getSampleId(), entity);
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
@@ -503,6 +517,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
 				.toString());
 //		return setupUpdate(mapping, form, request, response);
+		return entity;
 	}
 
 	public void removeFile(CompositionForm form,
