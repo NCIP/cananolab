@@ -522,30 +522,29 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 	@GET
 	@Path("/searchByIdImage")
-	@Produces("image/png")
+	@Produces("text/plain")
 	 public Response searchByIdImage(@Context HttpServletRequest httpRequest, 
 	    		@DefaultValue("") @QueryParam("id") String id, @QueryParam("type") String type){
 		
 		PublicationManager pubManager = 
 				(PublicationManager) applicationContext.getBean("publicationManager");
 
-		String fileRoot = PropertyUtils.getProperty(
-				Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
+		//String fileRoot = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 		
-		java.io.File fileSuccess = new java.io.File(fileRoot + java.io.File.separator +"appLogo-nanolab.gif");
-		java.io.File fileError = new java.io.File(fileRoot + java.io.File.separator +"shim.gif");
+		//java.io.File fileSuccess = new java.io.File(fileRoot + java.io.File.separator +"appLogo-nanolab.gif");
+		//java.io.File fileError = new java.io.File(fileRoot + java.io.File.separator +"shim.gif");
 		try {
 			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
 			
 			
 			return (result.getErrors().size() > 0) ?
-					Response.ok(fileError).build()
+					Response.ok("/caNanoLab/images/shim.gif").build()
 						:
-						Response.ok(fileSuccess).build();
+						Response.ok("/caNanoLab/images/appLogo-nanolab.gif").build();
 		} 
 
 		catch (Exception e) {
-			return Response.ok(fileError).build();
+			return Response.ok("/caNanoLab/images/shim.gif").build();
 		}
 	}	
 

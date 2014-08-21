@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />        
+      <link rel="stylesheet" href="../styles/bootstrap.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <link rel="stylesheet" href="../css/summaryView.css">
+      <script src="../bower_components/angular/angular.js"></script>
+      
+</head>  
+<body ng-app="angularApp">
+	<div ng-controller="PublicationSampleImageCtrl">
+	  <div id="loader" class="sample offset" ng-show="loader">
+	    <div id="loaderText">
+	      Loading
+	    </div>
+	    <div id="loaderGraphic"></div>
+	  </div>    
+	  <img src="{{fileInfo}}" alt="caNanoLab logo" />
+	</div>
+	
+	<script src="../scripts/controllers/publication/view/publicationSampleImage.js"></script>
+	<script src="../bower_components/angular-route/angular-route.js"></script>
+	<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+	<script src="../scripts/factories/utils.js"></script>
+	
+	</div>
+
+</body>
+</html>
