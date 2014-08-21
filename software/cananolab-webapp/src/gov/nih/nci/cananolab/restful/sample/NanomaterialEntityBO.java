@@ -413,8 +413,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		// after saving to database.
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
 				.toString());
-		//return setupUpdate(mapping, form, request, response);
-		return entity;
+		return setupUpdate(sampleId, entity.getDomainEntity().getId()
+				.toString(), request);
+		//return entity;
 	}
 
 	private NanomaterialEntityBean transferNanoMateriaEntityBean(
@@ -516,8 +517,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		request.setAttribute("anchor", "file");
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
 				.toString());
-//		return setupUpdate(mapping, form, request, response);
-		return entity;
+		return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId()
+				.toString(), request);
+	//	return entity;
 	}
 
 	public void removeFile(CompositionForm form,

@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,6 +31,8 @@ import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 
 
 import javax.inject.Inject;
@@ -516,6 +519,36 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the access " + e.getMessage())).build();
 		}
 	}
+	
+	@GET
+	@Path("/searchByIdImage")
+	@Produces("image/png")
+	 public Response searchByIdImage(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("id") String id, @QueryParam("type") String type){
+		
+		PublicationManager pubManager = 
+				(PublicationManager) applicationContext.getBean("publicationManager");
+
+		String fileRoot = PropertyUtils.getProperty(
+				Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
+		
+		java.io.File fileSuccess = new java.io.File(fileRoot + java.io.File.separator +"appLogo-nanolab.gif");
+		java.io.File fileError = new java.io.File(fileRoot + java.io.File.separator +"shim.gif");
+		try {
+			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
+			
+			
+			return (result.getErrors().size() > 0) ?
+					Response.ok(fileError).build()
+						:
+						Response.ok(fileSuccess).build();
+		} 
+
+		catch (Exception e) {
+			return Response.ok(fileError).build();
+		}
+	}	
+
 	
 }
 	
