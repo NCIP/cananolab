@@ -261,7 +261,8 @@ var app = angular.module('angularApp')
                 $scope.upload[index].then(function(response) {
                     $timeout(function() {
                         //$scope.uploadResult.push(response.data);
-                    	alert(response.data);
+                    	//alert(response.data);
+                    	$scope.protocolForm.uri = response.data;
                     });
                 }, function(response) {
                     if (response.status > 0) $scope.errorMsg = response.status + ': ' + response.data;

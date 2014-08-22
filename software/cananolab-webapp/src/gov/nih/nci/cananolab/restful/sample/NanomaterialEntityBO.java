@@ -1,12 +1,14 @@
 package gov.nih.nci.cananolab.restful.sample;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -421,7 +423,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	private NanomaterialEntityBean transferNanoMateriaEntityBean(
 			SimpleNanomaterialEntityBean nanoBean) {
 		NanomaterialEntityBean bean = new NanomaterialEntityBean();
+		NanomaterialEntity nanoEntity = new NanomaterialEntity();
 		ComposingElementBean compBean = new ComposingElementBean();
+		
 		ComposingElement comp = new ComposingElement();
 		comp.setDescription(nanoBean.getSimpleCompBean().getDescription());
 		comp.setType(nanoBean.getSimpleCompBean().getType());
@@ -455,12 +459,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		bean.setTheFile(fileBean);
 		bean.setType(nanoBean.getType());
 		bean.setDescription(nanoBean.getDescription());
-		try {
-			bean.setupDomainEntity(nanoBean.getCreatedBy());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return bean;
 	}
 

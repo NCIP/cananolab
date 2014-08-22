@@ -20,6 +20,7 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,25 +46,12 @@ public class SimpleNanomaterialEntityBean {
 	String createdBy = "";
 	
 	Date createdDate;
-	
-	Map<Object, Object> polymer;
 
-	Map<Object, Object> biopolymer;
-
-	Map<Object, Object> dendrimer;
-
-	Map<Object, Object> carbonNanotube;
-
-	Map<Object, Object> liposome;
-
-	Map<Object, Object> emulsion;
-
-	Map<Object, Object> fullerene;
+	Map<Object, Object> domainEntity;
 
 	List<SimpleComposingElementBean> composingElements;
 
 	List<SimpleFileBean> files;
-	NanomaterialEntity domainEntity;
 
 	boolean withProperties = false;
 
@@ -71,62 +59,6 @@ public class SimpleNanomaterialEntityBean {
 
 	String isCrossLinked;
 	
-	public Map<Object, Object> getPolymer() {
-		return polymer;
-	}
-
-	public void setPolymer(Map<Object, Object> polymer) {
-		this.polymer = polymer;
-	}
-
-	public Map<Object, Object> getBiopolymer() {
-		return biopolymer;
-	}
-
-	public void setBiopolymer(Map<Object, Object> biopolymer) {
-		this.biopolymer = biopolymer;
-	}
-
-	public Map<Object, Object> getDendrimer() {
-		return dendrimer;
-	}
-
-	public void setDendrimer(Map<Object, Object> dendrimer) {
-		this.dendrimer = dendrimer;
-	}
-
-	public Map<Object, Object> getCarbonNanotube() {
-		return carbonNanotube;
-	}
-
-	public void setCarbonNanotube(Map<Object, Object> carbonNanotube) {
-		this.carbonNanotube = carbonNanotube;
-	}
-
-	public Map<Object, Object> getLiposome() {
-		return liposome;
-	}
-
-	public void setLiposome(Map<Object, Object> liposome) {
-		this.liposome = liposome;
-	}
-
-	public Map<Object, Object> getEmulsion() {
-		return emulsion;
-	}
-
-	public void setEmulsion(Map<Object, Object> emulsion) {
-		this.emulsion = emulsion;
-	}
-
-	public Map<Object, Object> getFullerene() {
-		return fullerene;
-	}
-
-	public void setFullerene(Map<Object, Object> fullerene) {
-		this.fullerene = fullerene;
-	}
-
 	public SimpleComposingElementBean getSimpleCompBean() {
 		return simpleCompBean;
 	}
@@ -171,6 +103,14 @@ public class SimpleNanomaterialEntityBean {
 		return sampleId;
 	}
 
+	public Map<Object, Object> getDomainEntity() {
+		return domainEntity;
+	}
+
+	public void setDomainEntity(Map<Object, Object> domainEntity) {
+		this.domainEntity = domainEntity;
+	}
+
 	public void setSampleId(String sampleId) {
 		this.sampleId = sampleId;
 	}
@@ -207,14 +147,6 @@ public class SimpleNanomaterialEntityBean {
 		this.createdDate = createdDate;
 	}
 
-	public NanomaterialEntity getDomainEntity() {
-		return domainEntity;
-	}
-
-	public void setDomainEntity(NanomaterialEntity domainEntity) {
-		this.domainEntity = domainEntity;
-	}
-
 	public boolean isWithProperties() {
 		return withProperties;
 	}
@@ -244,73 +176,82 @@ public class SimpleNanomaterialEntityBean {
 		simpleCompBean = new SimpleComposingElementBean();
 		fileBean = new SimpleFileBean();
 		NanomaterialEntity nanoEntity = bean.getDomainEntity();
-		
-		for(FileBean file : bean.getFiles()){
-			fileBean.setDescription(file.getDescription());
-			fileBean.setId(file.getDomainFile().getId());
-			fileBean.setKeywordsStr(file.getKeywordsStr());
-			fileBean.setTitle(file.getDomainFile().getTitle());
-			fileBean.setType(file.getDomainFile().getType());
-			fileBean.setUri(file.getDomainFile().getUri());
-			fileBean.setUriExternal(file.getDomainFile().getUriExternal());
-			setFileBean(fileBean);
-		}
 		setType(bean.getType());
 		setDescription(bean.getDescription());
 		setCreatedBy(nanoEntity.getCreatedBy());
 		setCreatedDate(nanoEntity.getCreatedDate());
-		if(bean.getDendrimer()!=null){
-		dendrimer = new HashMap<Object, Object>();
-		dendrimer.put("branch", bean.getDendrimer().getBranch());
-		dendrimer.put("generation", bean.getDendrimer().getGeneration());
-		dendrimer.put("createdBy", bean.getDendrimer().getCreatedBy());
-		dendrimer.put("createdDate", bean.getDendrimer().getCreatedDate());
-		composingElements = new ArrayList<SimpleComposingElementBean>();
-		if(bean.getDendrimer().getComposingElementCollection()!=null){
-		for(ComposingElementBean comp : bean.getComposingElements()){
-			simpleCompBean = new SimpleComposingElementBean();
-			simpleCompBean.setDescription(comp.getDescription());
-			simpleCompBean.setId(comp.getDomain().getId());
-			simpleCompBean.setMolecularFormula(comp.getDomain().getMolecularFormula());
-			simpleCompBean.setMolecularFormulaType(comp.getDomain().getMolecularFormulaType());
-			simpleCompBean.setName(comp.getDomain().getName());
-			simpleCompBean.setPubChemDataSourceName(comp.getDomain().getPubChemDataSourceName());
-			simpleCompBean.setPubChemId(comp.getDomain().getPubChemId());
-			simpleCompBean.setType(comp.getDomain().getType());
-			simpleCompBean.setValue(comp.getDomain().getValue());
-			simpleCompBean.setValueUnit(comp.getDomain().getValueUnit());
-			simpleCompBean.setFunctionDescription(comp.getInherentFunctions().get(0).getDescription());
-			simpleCompBean.setFunctionType(comp.getInherentFunctions().get(0).getType());
-			simpleCompBean.setImagingModality(comp.getInherentFunctions().get(0).getImagingFunction().getModality());
-			composingElements.add(simpleCompBean);
+		setDomainEntityInfo(bean);
+}
+
+	private void setDomainEntityInfo(NanomaterialEntityBean bean) {
+		// TODO Auto-generated method stub
+		NanomaterialEntity nanoEntity = bean.getDomainEntity();
+
+		domainEntity = new HashMap<Object, Object>();
+		if(bean.getType().equalsIgnoreCase("dendrimer")){
+			domainEntity = new HashMap<Object, Object>();
+			domainEntity.put("branch", bean.getDendrimer().getBranch());
+			domainEntity.put("generation", bean.getDendrimer().getGeneration());
+			domainEntity.put("createdDate", bean.getDendrimer().getCreatedBy());
+			domainEntity.put("createdBy", bean.getDendrimer().getCreatedBy());
 		}
-		dendrimer.put("composingElementCollection", composingElements);
+		if(bean.getType().equalsIgnoreCase("polymer")){
+			domainEntity = new HashMap<Object, Object>();
+			domainEntity.put("crossLinked", bean.getPolymer().getCrossLinked());
+			domainEntity.put("crossLinkDegree", bean.getPolymer().getCrossLinkDegree());
+			domainEntity.put("initiator", bean.getPolymer().getInitiator());
+			domainEntity.put("createdDate", bean.getPolymer().getCreatedBy());
+			domainEntity.put("createdBy", bean.getPolymer().getCreatedBy());
+		}
+		if(bean.getType().equalsIgnoreCase("biopolymer")){
+			domainEntity = new HashMap<Object, Object>();
+
+			domainEntity.put("name", bean.getBiopolymer().getName());
+			domainEntity.put("type", bean.getBiopolymer().getType());
+			domainEntity.put("sequence", bean.getBiopolymer().getSequence());
+			domainEntity.put("createdDate", bean.getBiopolymer().getCreatedBy());
+			domainEntity.put("createdBy", bean.getBiopolymer().getCreatedBy());
+		}
+		if(bean.getType().equalsIgnoreCase("CarbonNanotube")){
+			domainEntity = new HashMap<Object, Object>();
+
+			domainEntity.put("averageLength", bean.getCarbonNanotube().getAverageLength());
+			domainEntity.put("averageLengthUnit", bean.getCarbonNanotube().getAverageLengthUnit());
+			domainEntity.put("chirality", bean.getCarbonNanotube().getChirality());
+			domainEntity.put("diameter", bean.getCarbonNanotube().getDiameter());
+			domainEntity.put("diameterUnit",bean.getCarbonNanotube().getDiameterUnit());
+			domainEntity.put("wallType", bean.getCarbonNanotube().getWallType());
+			domainEntity.put("createdDate", bean.getCarbonNanotube().getCreatedBy());
+			domainEntity.put("createdBy", bean.getCarbonNanotube().getCreatedBy());
+		}
+		if(bean.getType().equalsIgnoreCase("Liposome")){
+			domainEntity = new HashMap<Object, Object>();
+
+			domainEntity.put("IsPolymarized",bean.getLiposome().getPolymerized());
+			domainEntity.put("PolymerName",	bean.getLiposome().getPolymerName());
+			domainEntity.put("createdDate", bean.getLiposome().getCreatedBy());
+			domainEntity.put("createdBy", bean.getLiposome().getCreatedBy());
+		}
+		if(bean.getType().equalsIgnoreCase("Emulsion")){
+			domainEntity = new HashMap<Object, Object>();
+
+			domainEntity.put("IsPolymarized",bean.getEmulsion().getPolymerized());
+			domainEntity.put("PolymerName",	bean.getEmulsion().getPolymerName());
+			domainEntity.put("createdDate", bean.getEmulsion().getCreatedBy());
+			domainEntity.put("createdBy", bean.getEmulsion().getCreatedBy());
+
+		}
+		if(bean.getType().equalsIgnoreCase("Fullerene")){
+			domainEntity = new HashMap<Object, Object>();
+
+			domainEntity.put("AverageDiameter",	bean.getFullerene().getAverageDiameter());
+			domainEntity.put("AverageDiameterUnit",bean.getFullerene().getAverageDiameterUnit());
+			domainEntity.put("NoOfCarbons",	bean.getFullerene().getNumberOfCarbon());
+			domainEntity.put("createdDate", bean.getFullerene().getCreatedBy());
+			domainEntity.put("createdBy", bean.getFullerene().getCreatedBy());
+		}
 		
-	}
-		if(bean.getDendrimer().getFileCollection()!=null){
-			files = new ArrayList<SimpleFileBean>();
-		for(File file : bean.getDendrimer().getFileCollection()){
-			fileBean = new SimpleFileBean();
-			fileBean.setDescription(file.getDescription());
-			fileBean.setType(file.getType());
-			fileBean.setTitle(file.getTitle());
-			fileBean.setUri(file.getUri());
-			fileBean.setUriExternal(file.getUriExternal());
-			files.add(fileBean);
-		}
-		dendrimer.put("fileCollection", files);
-	}
-		}
-		
-		if(bean.getPolymer()!=null){
-			polymer = new HashMap<Object, Object>();
-			polymer.put("description", bean.getPolymer().getDescription());
-			polymer.put("crossLinked", bean.getPolymer().getCrossLinked());
-			polymer.put("crossLinkDegree", bean.getPolymer().getCrossLinkDegree());
-			polymer.put("createdDate", bean.getPolymer().getCreatedDate());
-			polymer.put("createdBy", bean.getPolymer().getCreatedBy());
-			polymer.put("initiator", bean.getPolymer().getInitiator());
-			if(bean.getPolymer().getComposingElementCollection()!=null){
+		if(bean.getDomainEntity().getComposingElementCollection()!=null){
 			composingElements = new ArrayList<SimpleComposingElementBean>();
 			for(ComposingElementBean comp : bean.getComposingElements()){
 				simpleCompBean = new SimpleComposingElementBean();
@@ -324,27 +265,31 @@ public class SimpleNanomaterialEntityBean {
 				simpleCompBean.setType(comp.getDomain().getType());
 				simpleCompBean.setValue(comp.getDomain().getValue());
 				simpleCompBean.setValueUnit(comp.getDomain().getValueUnit());
-				simpleCompBean.setFunctionDescription(comp.getInherentFunctions().get(0).getDescription());
-				simpleCompBean.setFunctionType(comp.getInherentFunctions().get(0).getType());
-				simpleCompBean.setImagingModality(comp.getTheFunction().getImagingFunction().getModality());
+				if(comp.getInherentFunctions().size()>0){
+					for(FunctionBean func : comp.getInherentFunctions()){
+						
+					simpleCompBean.setFunctionDescription(comp.getInherentFunctions().get(0).getDescription());
+					simpleCompBean.setFunctionType(comp.getInherentFunctions().get(0).getType());
+					simpleCompBean.setImagingModality(comp.getInherentFunctions().get(0).getImagingFunction().getModality());
+					}
+				}
 				composingElements.add(simpleCompBean);
 			}
-			polymer.put("composingElementCollection", composingElements);
+			domainEntity.put("composingElementCollection", composingElements);
 			
 		}
-			if(bean.getPolymer().getFileCollection()!=null){
+			if(bean.getDomainEntity().getFileCollection()!=null){
 				files = new ArrayList<SimpleFileBean>();
-			for(File file : bean.getPolymer().getFileCollection()){
+			for(FileBean file : bean.getFiles()){
 				fileBean = new SimpleFileBean();
 				fileBean.setDescription(file.getDescription());
-				fileBean.setType(file.getType());
-				fileBean.setTitle(file.getTitle());
-				fileBean.setUri(file.getUri());
-				fileBean.setUriExternal(file.getUriExternal());
+				fileBean.setType(file.getDomainFile().getType());
+				fileBean.setTitle(file.getDomainFile().getTitle());
+				fileBean.setUri(file.getDomainFile().getUri());
+				fileBean.setUriExternal(file.getDomainFile().getUriExternal());
 				files.add(fileBean);
 			}
-			polymer.put("fileCollection", files);
+			domainEntity.put("fileCollection", files);
 		}
 	}
-}
 }
