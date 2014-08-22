@@ -100,10 +100,10 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 		}
 	}
 	
-	@POST
+	@GET
 	@Path("/removeComposingElement")
 	@Produces ("application/json")
-    public Response removeComposingElement(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean) {
+    public Response removeComposingElement(@Context HttpServletRequest httpRequest) {
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
@@ -112,8 +112,13 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
-			
-					
+			SimpleNanomaterialEntityBean nanoBean = new SimpleNanomaterialEntityBean();
+			SimpleComposingElementBean comp= new SimpleComposingElementBean();
+			nanoBean.setType("fullerene");
+			nanoBean.setSampleId("20917506");
+			comp.setType("shell");
+			comp.setName("shell");
+			nanoBean.setSimpleCompBean(comp);
 			NanomaterialEntityBean bean = nanomaterialEntityBO.removeComposingElement(nanoBean, httpRequest);
 			
 			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();

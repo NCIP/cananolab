@@ -10,16 +10,24 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.exception.FileException;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.upload.FormFile;
 
@@ -139,11 +147,17 @@ public class FileBean extends SecuredDataBean {
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFile.setCreatedBy(createdBy);
 		}
-		if (uploadedFile != null
-				&& !StringUtils.isEmpty(uploadedFile.getFileName())) {
-			domainFile.setName(uploadedFile.getFileName());
-			newFileData = uploadedFile.getFileData();
-		} else {
+//		if (uploadedFile != null
+//				&& !StringUtils.isEmpty(uploadedFile.getFileName())) {
+//			domainFile.setName(uploadedFile.getFileName());
+//			newFileData = uploadedFile.getFileData();
+//		}
+		if(!StringUtils.isEmpty(domainFile.getUri())){
+			domainFile.setName(domainFile.getUri());
+			//newFileData =(byte[]) request.getSession().getAttribute("newFileData");
+
+		}
+		else {
 			newFileData = null;
 		}
 		// if entered external url
@@ -175,6 +189,7 @@ public class FileBean extends SecuredDataBean {
 			}
 		}
 	}
+	
 
 	public byte[] getNewFileData() {
 		return newFileData;

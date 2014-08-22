@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -425,7 +426,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		NanomaterialEntityBean bean = new NanomaterialEntityBean();
 		NanomaterialEntity nanoEntity = new NanomaterialEntity();
 		ComposingElementBean compBean = new ComposingElementBean();
-		
+		Collection<ComposingElement> coll = new ArrayList<ComposingElement>();
+		Collection<File> filecoll = new ArrayList<File>();
+		SampleComposition sampleComp = new SampleComposition();
 		ComposingElement comp = new ComposingElement();
 		comp.setDescription(nanoBean.getSimpleCompBean().getDescription());
 		comp.setType(nanoBean.getSimpleCompBean().getType());
@@ -433,9 +436,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		comp.setPubChemDataSourceName(nanoBean.getSimpleCompBean().getPubChemDataSourceName());
 		comp.setPubChemId(nanoBean.getSimpleCompBean().getPubChemId());
 		FileBean fileBean = new FileBean();
+		File file = new File();
 
 		if(nanoBean.getFileBean()!= null){
-		File file = new File();
 		file.setType(nanoBean.getFileBean().getType());
 		file.setTitle(nanoBean.getFileBean().getTitle());
 		file.setDescription(nanoBean.getFileBean().getDescription());
@@ -455,10 +458,18 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		func.setType(nanoBean.getSimpleCompBean().getType());
 		compBean.setTheFunction(func);
 		compBean.setDomain(comp);
+		coll.add(comp);
+		filecoll.add(file);
+		nanoEntity.setId((Long) nanoBean.getDomainEntity().get("id"));
+		nanoEntity.setComposingElementCollection(coll);
+		nanoEntity.setFileCollection(filecoll);
+		nanoEntity.setSampleComposition(sampleComp);
 		bean.setTheComposingElement(compBean);
 		bean.setTheFile(fileBean);
 		bean.setType(nanoBean.getType());
 		bean.setDescription(nanoBean.getDescription());
+		bean.setDomainEntity(nanoEntity);
+		
 		
 		return bean;
 	}

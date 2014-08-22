@@ -211,6 +211,9 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	public NanomaterialEntity getDomainEntity() {
 		return domainEntity;
 	}
+	public void setDomainEntity(NanomaterialEntity nanoEntity) {
+		this.domainEntity = nanoEntity;
+	}
 
 	public void setupDomainEntity(String createdBy) throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);

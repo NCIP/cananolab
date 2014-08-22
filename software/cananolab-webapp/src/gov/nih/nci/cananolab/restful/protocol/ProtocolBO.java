@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
@@ -20,8 +21,15 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.ProtocolForm;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,7 +82,7 @@ public class ProtocolBO extends BaseAnnotationBO{
 		ProtocolBean proBean = new ProtocolBean();
 		Protocol protocol = new Protocol();
 		FileBean fileBean = new FileBean();
-		
+		fileBean.setNewFileData(bean.getNewFileData());
 		File file = new File();
 			file.setTitle(bean.getFileTitle());
 			file.setDescription(bean.getFileDescription());
@@ -115,6 +123,13 @@ public class ProtocolBO extends BaseAnnotationBO{
 				.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
 				protocolBean);
+		String timestamp = DateUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS");
+		
+			protocolBean.getFileBean().setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
+			protocolBean.getFileBean().getDomainFile().setUri(Constants.FOLDER_PROTOCOL+ "/" + timestamp + "_"
+					+ protocolBean.getFileBean().getDomainFile().getName());
+
 		service.saveProtocol(protocolBean);
 		return msgs;
 	}
@@ -394,13 +409,31 @@ public class ProtocolBO extends BaseAnnotationBO{
 		ProtocolService service = this.setServiceInSession(request);
 		return downloadFile(service, fileId, request, response);
 	}
-	
-//	public String submitForReview(HttpServletRequest request, String dataId, String dataName, String dataType) throws Exception {
-//		SecurityService securityService = super
-//				.getSecurityServiceFromSession(request);
-//	
-//		String msg ="";
-//		msg= super.submitForReview(request, dataId, dataName, dataType);
-//		return msg;
-//	}
+
+	public void saveFile(InputStream fileInputStream, String fileName, HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		byte[] fileData = new byte[1024];
+		int offset = 0;
+		int numRead = 0;
+		try {
+			while (offset < fileData.length
+					&& (numRead = fileInputStream.read(fileData, offset, fileData.length
+							- offset)) >= 0) {
+				offset += numRead;
+			}
+			if (offset < fileData.length) {
+				throw new FileException("Could not completely read file "
+						+ fileName);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		request.getSession().setAttribute("newFileData", fileData);
+		
+	}
 }

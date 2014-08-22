@@ -1,5 +1,8 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +17,14 @@ import gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
 import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
+import gov.nih.nci.cananolab.util.Constants;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -148,8 +153,10 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
             @FormDataParam("myFile") FormDataContentDisposition contentDispositionHeader) {
 	
 		try {
+			ProtocolBO protocolBO = 
+					(ProtocolBO) applicationContext.getBean("protocolBO");
 			String fileName = contentDispositionHeader.getFileName();
-
+			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
 			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 					
@@ -158,6 +165,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the protocol file " + e.getMessage())).build();
 		}
+		
 	}
 
 	

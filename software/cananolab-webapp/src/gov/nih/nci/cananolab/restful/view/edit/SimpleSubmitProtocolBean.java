@@ -36,7 +36,14 @@ public class SimpleSubmitProtocolBean {
 	Boolean uriExternal = false;
 	String externalUrl = "";
 	Boolean review =false;
+	byte[] newFileData;
 	
+	public byte[] getNewFileData() {
+		return newFileData;
+	}
+	public void setNewFileData(byte[] newFileData) {
+		this.newFileData = newFileData;
+	}
 	public Boolean getReview() {
 		return review;
 	}
