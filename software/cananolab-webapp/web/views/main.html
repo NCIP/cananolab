@@ -1,3 +1,4 @@
+  <div ng-class="{formFocus:loader}">
 <a name="content" id="content"></a>
 <div>
   <input type="hidden" name="org.apache.struts.taglib.html.TOKEN" value="a20425137da163fb429407eb7995284a" />
@@ -54,7 +55,7 @@
             </table>
           </td>
           <td>
-            <span class="counts" id="protocolCount"><a href="#/searchProtocol">{{numOfPublicProtocols}}</a></span>
+            <span class="counts" id="protocolCount"><a href="" ng-click="doSearch('protocols')">{{numOfPublicProtocols}}</a></span>
           </td>
         </tr>
         <tr class="alt">
@@ -78,7 +79,7 @@
           </td>
           <td>
             <div id="sampleCounts" class="counts">
-              <span id="sampleCount"><a href="#/searchSample">{{numOfPublicSamples}}</a></span><br />
+              <span id="sampleCount"><a href="" ng-click="doSearch('samples')">{{numOfPublicSamples}}</a></span><br />
               <div id="sampleRelatedCounts" class="indented1">
                 <span id="sampleSourceCount">{{numOfPublicSources}} Sample Sources</span><br />
                 <span id="CharacterizationCount">{{numOfPublicCharacterizations}} Characterizations</span><br />
@@ -111,7 +112,7 @@
             </table>
           </td>
           <td>
-            <span id="publicationCount" class="counts"><a href="#/searchPublication">{{numOfPublicPublications}}</a></span>
+            <span id="publicationCount" class="counts"><a href="" ng-click="doSearch('publications')">{{numOfPublicPublications}}</a></span>
           </td>
         </tr>
       </table>
@@ -259,4 +260,12 @@
             </table>
           </td>
         </tr>
-      </table>
+      </table>   
+</div>  
+
+  <div id="loader" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div> 
