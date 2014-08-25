@@ -380,7 +380,7 @@ public class SampleServices {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList("Error while saving Access: " + e.getMessage())).build();
+					.entity(CommonUtil.wrapErrorMessageInList("Error while updating sample: " + e.getMessage())).build();
 		}
 	}
 	
