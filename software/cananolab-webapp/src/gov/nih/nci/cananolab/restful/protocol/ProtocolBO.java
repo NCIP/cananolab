@@ -38,6 +38,7 @@ import java.util.SortedSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -72,6 +73,7 @@ public class ProtocolBO extends BaseAnnotationBO{
 		} else {
 		
 			msgs.add("success");
+			request.getSession().removeAttribute("newFileData");
 		}
 	//	forward = mapping.findForward("success");
 		return msgs;
@@ -125,11 +127,12 @@ public class ProtocolBO extends BaseAnnotationBO{
 				protocolBean);
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
-		
+		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
+		if(newFileData!=null){
 			protocolBean.getFileBean().setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
 			protocolBean.getFileBean().getDomainFile().setUri(Constants.FOLDER_PROTOCOL+ "/" + timestamp + "_"
 					+ protocolBean.getFileBean().getDomainFile().getName());
-
+		}
 		service.saveProtocol(protocolBean);
 		return msgs;
 	}
@@ -412,28 +415,14 @@ public class ProtocolBO extends BaseAnnotationBO{
 
 	public void saveFile(InputStream fileInputStream, String fileName, HttpServletRequest request) {
 		// TODO Auto-generated method stub
-		byte[] fileData = new byte[1024];
-		int offset = 0;
-		int numRead = 0;
+	
 		try {
-			while (offset < fileData.length
-					&& (numRead = fileInputStream.read(fileData, offset, fileData.length
-							- offset)) >= 0) {
-				offset += numRead;
-			}
-			if (offset < fileData.length) {
-				throw new FileException("Could not completely read file "
-						+ fileName);
-			}
+			byte[] fileData = IOUtils.toByteArray(fileInputStream);
+			request.getSession().setAttribute("newFileData", fileData);
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (FileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		request.getSession().setAttribute("newFileData", fileData);
-		
+		}		
 	}
 }

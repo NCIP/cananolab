@@ -184,4 +184,29 @@ public class CoreServices {
 					.entity("Error while getting data for organization: " + organizationName).build();
 		}
 	}
+	
+	@POST
+	@Path("/uploadFile")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces ("application/json")
+	public Response uploadFile(@Context HttpServletRequest httpRequest, @FormDataParam("myFile") InputStream fileInputStream,
+            @FormDataParam("myFile") FormDataContentDisposition contentDispositionHeader) {
+	
+		try {
+			ProtocolBO protocolBO = 
+					(ProtocolBO) applicationContext.getBean("protocolBO");
+			String fileName = contentDispositionHeader.getFileName();
+			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
+			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+					
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the protocol file " + e.getMessage())).build();
+		}
+		
+	}
+
+	
 }

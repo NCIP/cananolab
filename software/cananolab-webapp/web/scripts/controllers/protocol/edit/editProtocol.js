@@ -251,7 +251,7 @@ var app = angular.module('angularApp')
             var index = 0;
             $scope.upload = [];
                 $scope.upload[index] = $upload.upload({
-                    url: '/caNanoLab/rest/protocol/uploadFile',
+                    url: '/caNanoLab/rest/core/uploadFile',
                     method: 'POST',
                     headers: {'my-header': 'my-header-value'},
                     data : $scope.protocolForm,

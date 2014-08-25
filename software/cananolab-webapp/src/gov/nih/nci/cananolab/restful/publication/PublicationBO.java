@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -94,6 +95,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		} else {
 			msgs.add("success");
 			bean.setErrors(msgs);
+			request.getSession().removeAttribute("newFileData");
 			
 		}
 		
@@ -156,6 +158,14 @@ public class PublicationBO extends BaseAnnotationBO{
 
 		publicationBean.setupDomain(Constants.FOLDER_PUBLICATION,
 				user.getLoginName());
+		String timestamp = DateUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS");
+		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
+		if(newFileData!=null){
+			publicationBean.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
+			publicationBean.getDomainFile().setUri(Constants.FOLDER_PUBLICATION+ "/" + timestamp + "_"
+					+ publicationBean.getDomainFile().getName());
+		}
 		service.savePublication(publicationBean);
 	//	msgs.add("success");
 
