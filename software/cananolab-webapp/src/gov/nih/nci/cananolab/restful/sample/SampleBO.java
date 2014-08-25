@@ -109,9 +109,8 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		setServiceInSession(request);
 		saveSample(request, sampleBean);
-		System.out.println("3");
-		// retract from public if updating an existing public record and not
-		// curator
+		
+		// retract from public if updating an existing public record and not curator
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		if (!newSample && !user.isCurator() && sampleBean.getPublicStatus()) {
 			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
@@ -120,13 +119,11 @@ public class SampleBO extends BaseAnnotationBO {
 			return wrapErrorInEditBean(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
 			
 		}
-		System.out.println("4");
-		request.getSession().setAttribute("updateSample", "true");
-//		request.setAttribute("theSample", sampleBean);
-//		request.setAttribute("sampleId", sampleBean.getDomain().getId()
-//				.toString());
 		
-		System.out.println("5");
+		request.getSession().setAttribute("updateSample", "true");
+		
+		//To help determine whether or not to show "Submit for Review" button in Update Sample page
+		request.setAttribute("submitSample", "true");
 	
 		return summaryEdit(String.valueOf(sampleBean.getDomain().getId()), request);
 	}
@@ -253,6 +250,7 @@ public class SampleBO extends BaseAnnotationBO {
 			throws Exception {
 	
 		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
+		sampleEdit.setSubmitForReviewButton(request);
 	
 		this.setServiceInSession(request);
 
