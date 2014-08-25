@@ -195,6 +195,11 @@ public class WorkspaceManager {
 				item.setSubmisstionStatus(reviewBean.getReviewStatus());
 			}
 			
+			if (item.getName().equals("QA-Demo3")) {
+				int i = 0;
+				i++;
+			}
+			
 			List<AccessibilityBean> groupAccesses = sampleBean.getGroupAccesses();
 			List<AccessibilityBean> userAccesses = sampleBean.getUserAccesses();
 			boolean isOwner = (loginUser.equals(sampleBean.getDomain().getCreatedBy())) ? true : false;
@@ -210,7 +215,6 @@ public class WorkspaceManager {
 	
 	protected String getAccessString(List<AccessibilityBean> groupAccesses, List<AccessibilityBean> userAccesses, 
 			String loginUser, boolean isOwner) {
-		//List<AccessibilityBean> groupAccesses = sampleBean.getGroupAccesses();
 		StringBuilder sb = new StringBuilder();
 		
 		if (groupAccesses != null) {
@@ -221,13 +225,12 @@ public class WorkspaceManager {
 			}
 		}
 		
-		//List<AccessibilityBean> userAccesses = sampleBean.getUserAccesses();
 		if (userAccesses != null) {
 			for (AccessibilityBean access : userAccesses) {
 				UserBean ubean = access.getUserBean();
 				if (!loginUser.equals(ubean.getLoginName()))
-					
-					sb.append(ubean.getFirstName()).append(" ").append(ubean.getLastName()).append(", ");
+					sb.append(ubean.getLoginName()).append(", ");
+					//sb.append(ubean.getFirstName()).append(" ").append(ubean.getLastName()).append(", ");
 			}
 		}
 		
