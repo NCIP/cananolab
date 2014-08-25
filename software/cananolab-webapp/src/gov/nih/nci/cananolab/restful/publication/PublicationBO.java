@@ -87,7 +87,7 @@ public class PublicationBO extends BaseAnnotationBO{
 					.getId().toString(), ((Publication) publicationBean.getDomainFile()).getTitle(), "publication");
 			removePublicAccess(publicationBean, request);
 			
-			msgs.add(PropertyUtil.getProperty("publication", "message.updatePublication.retractFromPublic"));
+			msgs.add("retract success");
 			bean.setErrors(msgs);
 			return msgs;
 		
@@ -386,7 +386,6 @@ public class PublicationBO extends BaseAnnotationBO{
 	public SimpleSubmitPublicationBean setupUpdate(String publicationId, String sampleId,
 			HttpServletRequest request)
 			throws Exception {
-		HttpSession session = request.getSession();
 		List<String> messages = new ArrayList<String>();
 		SimpleSubmitPublicationBean bean = new SimpleSubmitPublicationBean();
 //		super.checkOpenAccessForm(request);
