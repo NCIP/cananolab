@@ -106,7 +106,7 @@ var app = angular.module('angularApp')
             }  */
         }
 
-        $scope.doSubmit = function() {
+        $scope.doSubmitData = function() {
             $scope.loader = true;
             
             if (typeof $scope.protocolForm.fileId == 'undefined' || $scope.protocolForm.fileId == null) {
@@ -227,26 +227,10 @@ var app = angular.module('angularApp')
         /* File Section */
         $scope.onFileSelect = function($files) {
             $scope.selectedFiles = [];
-
             $scope.selectedFiles = $files;
-            $scope.dataUrls = [];
-            for ( var i = 0; i < $files.length; i++) {
-                var $file = $files[i];
-                if ($scope.fileReaderSupported && $file.type.indexOf('image') > -1) {
-                    var fileReader = new FileReader();
-                    fileReader.readAsDataURL($files[i]);
-                    var loadFile = function(fileReader, index) {
-                        fileReader.onload = function(e) {
-                            $timeout(function() {
-                                $scope.dataUrls[index] = e.target.result;
-                            });
-                        }
-                    }(fileReader, i);
-                }
-              }
         };
 
-        $scope.uploadFile = function() {
+        $scope.doSubmit = function() {
             $scope.errorMsg = null;
             var index = 0;
             $scope.upload = [];
@@ -263,6 +247,7 @@ var app = angular.module('angularApp')
                         //$scope.uploadResult.push(response.data);
                     	//alert(response.data);
                     	$scope.protocolForm.uri = response.data;
+                    	$scope.doSubmitData();
                     });
                 }, function(response) {
                     if (response.status > 0) $scope.errorMsg = response.status + ': ' + response.data;
