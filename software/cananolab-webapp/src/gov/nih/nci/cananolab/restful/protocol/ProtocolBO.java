@@ -63,7 +63,7 @@ public class ProtocolBO extends BaseAnnotationBO{
 					protocolBean.getDomain()
 					.getId().toString(), protocolBean.getDomain().getName(), "protocol");
 			removePublicAccess(protocolBean, request);
-			msgs.add(PropertyUtil.getProperty("protocol", "message.updateProtocol.retractFromPublic"));
+			msgs.add("retract success");
 			return msgs;
 		
 		} else {

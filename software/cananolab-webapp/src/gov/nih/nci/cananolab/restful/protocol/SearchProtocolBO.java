@@ -2,13 +2,10 @@ package gov.nih.nci.cananolab.restful.protocol;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.ProtocolUtil;
-import gov.nih.nci.cananolab.restful.util.PublicationUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchProtocolBean;
-import gov.nih.nci.cananolab.restful.view.SimpleSearchPublicationBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -22,15 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorForm;
 
 public class SearchProtocolBO extends BaseAnnotationBO {
 	public List search(SearchProtocolForm form,
