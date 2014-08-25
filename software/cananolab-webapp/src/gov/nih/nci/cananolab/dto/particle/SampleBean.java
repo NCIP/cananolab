@@ -153,7 +153,7 @@ public class SampleBean extends SecuredDataBean {
 		} else {
 			domain.setKeywordCollection(new HashSet<Keyword>());
 		}
-		if (keywordsStr.length() > 0) {
+		if (keywordsStr != null && keywordsStr.length() > 0) {
 			String[] strs = keywordsStr.split("\r\n");
 			for (String str : strs) {
 				// change to upper case
