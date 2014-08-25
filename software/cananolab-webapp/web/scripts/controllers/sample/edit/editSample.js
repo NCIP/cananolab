@@ -108,7 +108,6 @@ var app = angular.module('angularApp')
     else {
         $scope.editSampleForm = true;
         $scope.loaderText = "Loading";
-        
         $scope.updateButton = "Submit";
         $scope.loader = true;
         $http({method: 'GET', url: '/caNanoLab/rest/sample/submissionSetup'}).
@@ -119,6 +118,8 @@ var app = angular.module('angularApp')
             error(function(data, status, headers, config, statusText) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
+                var path = $location.path();
+                $location.path("/login").search({'came_from':path}).replace();
                 $scope.loader = false;
         });
 
@@ -195,12 +196,14 @@ var app = angular.module('angularApp')
     };
     $scope.update = function() {
         $scope.loader = true;
+        $scope.loaderText = "Saving Sample";
         $http({method: 'POST', url: '/caNanoLab/rest/sample/updateSample',data: $scope.sampleData}).
         success(function(data, status, headers, config) {            
             $scope.sampleData.pointOfContacts = data.pointOfContacts;
             $scope.master = angular.copy($scope.sampleData);
             $scope.scratchPad.editSampleData.dirty = false;
             $scope.loader = false;
+            $scope.message = "Sample Saved";
 
         }).
         error(function(data, status, headers, config) {

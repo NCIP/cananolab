@@ -1,10 +1,10 @@
 <div class="nanoPageContainer">
 <div class="spacer">
-<!-- Menu Bar -->{{sampleData}}
+<!-- Menu Bar -->
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
             <th align="left" scope="col"><!-- {{sampleData}} -->
-                Update Sample
+                {{updateButton}} Sample
             </th>
             <td align="right" width="30%">
                 <button class="btn back btn-xs" ng-click="goBack()">Back</button>
@@ -97,7 +97,7 @@
                 </tr> <!-- End of Point of Contact -->
 
                 <!-- Keywords -->
-                <tr>
+                <tr ng-show="sampleData.pointOfContacts">
                     <td class="cellLabel">{{sampleService.pocData.dirty}}
                         <label for="keywords">Keywords</label>
                     </td>
@@ -116,7 +116,7 @@
                    </td>
                 </tr>
 
-				<tr>
+				<tr ng-show="sampleData.pointOfContacts">
                     <td colspan="5">
                         <table>
                             <ng-include src="'/caNanoLab/views/manageAccessibility.html'"></ng-include>
@@ -124,7 +124,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr ng-show="sampleData.pointOfContacts">
 
 
                             <td class="cellLabel">
@@ -142,7 +142,7 @@
 
                         </td>
                     </tr>
-                    <tr ng-if="sampleData.dataAvailability">
+                    <tr ng-show="sampleData.dataAvailability && sampleData.pointOfContacts">
                         <td colspan="2">
                             <table class="editTableWithGrid" width="95%" align="center">
                                 <tbody><tr>
@@ -174,7 +174,7 @@
             </div>
             <div class="btn-group pull-right">
                 <button ng-click="reset()" class='btn btn-default' ng-disabled="!scratchPad.editSampleData.dirty">Reset</button>
-                <button ng-click="update()" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty">{{updateButton}}</button>
+                <button ng-click="update()" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts">{{updateButton}}</button>
             </div>
         </div>
 
