@@ -479,12 +479,14 @@ public class SampleBO extends BaseAnnotationBO {
 		String newSampleName = simpleSampleBean.getNewSampleName();
 		String sampleName = simpleSampleBean.getSampleName();
 		
+		boolean newSample = false;
 		if (sample == null) { 
 			if (sampleName == null || sampleName.length() == 0) 
 				return this.wrapErrorInEditBean("Sample object in session is not valid for sample update operation");
 			else { //add poc in submit new sample workflow
 				sample = new SampleBean();
 				sample.getDomain().setName(sampleName);
+				newSample = true;
 			}
 		} else {
 			if (sample.getDomain().getId() != sampleId) 
@@ -493,6 +495,8 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		PointOfContactBean thePOC = resolveThePOCToSaveFromInput(sample, simplePOC, user.getLoginName());
 		Long oldPOCId = thePOC.getDomain().getId();
+		if (newSample == true)
+			thePOC.setPrimaryStatus(true);
 		
 		// set up one sampleService
 		SampleService service = setServiceInSession(request);
