@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.restful.publication;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -17,12 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorForm;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
@@ -84,10 +77,16 @@ public class PublicationBO extends BaseAnnotationBO{
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newPub && !user.isCurator() && publicationBean.getPublicStatus()) {
-			retractFromPublic(sampleId, request, publicationBean.getDomainFile()
-					.getId().toString(),
-					((Publication) publicationBean.getDomainFile()).getTitle(),
-					"publication");
+//			retractFromPublic(sampleId, request, publicationBean.getDomainFile()
+//					.getId().toString(),
+//					((Publication) publicationBean.getDomainFile()).getTitle(),
+//					"publication");
+			
+			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request,
+					publicationBean.getDomainFile()
+					.getId().toString(), ((Publication) publicationBean.getDomainFile()).getTitle(), "publication");
+			removePublicAccess(publicationBean, request);
+			
 			msgs.add(PropertyUtil.getProperty("publication", "message.updatePublication.retractFromPublic"));
 			bean.setErrors(msgs);
 			return msgs;
@@ -922,9 +921,9 @@ public class PublicationBO extends BaseAnnotationBO{
 				.getId().toString(),simplePubBean.getSampleId().toString(), request);
 	}
 
-	protected void removePublicAccess(PublicationForm theForm,
+	protected void removePublicAccess(PublicationBean publication,
 			HttpServletRequest request) throws Exception {
-		PublicationBean publication = (PublicationBean) theForm.getPublicationBean();
+	//	PublicationBean publication = (PublicationBean) theForm.getPublicationBean();
 		PublicationService service = this.setServicesInSession(request);
 		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
 				(Publication) publication.getDomainFile());
