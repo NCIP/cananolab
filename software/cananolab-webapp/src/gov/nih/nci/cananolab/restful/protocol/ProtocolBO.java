@@ -2,12 +2,10 @@ package gov.nih.nci.cananolab.restful.protocol;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Protocol;
-import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
@@ -24,12 +22,9 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,12 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorForm;
+
 
 public class ProtocolBO extends BaseAnnotationBO{
 	public List<String> create(SimpleSubmitProtocolBean bean,
@@ -65,10 +55,16 @@ public class ProtocolBO extends BaseAnnotationBO{
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newProtocol && !user.isCurator() && protocolBean.getPublicStatus()) {
-		//	retractFromPublic(form, request, protocolBean.getDomain()
-		//			.getId().toString(), protocolBean.getDomain().getName(),
-		//			"protocol");
-		//	msg = new ActionMessage("message.updateProtocol.retractFromPublic");
+//			retractFromPublic(request, protocolBean.getDomain()
+//					.getId().toString(), protocolBean.getDomain().getName(),
+//					"protocol");
+			
+			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request,
+					protocolBean.getDomain()
+					.getId().toString(), protocolBean.getDomain().getName(), "protocol");
+			removePublicAccess(protocolBean, request);
+			msgs.add(PropertyUtil.getProperty("protocol", "message.updateProtocol.retractFromPublic"));
+			return msgs;
 		
 		} else {
 		
@@ -398,9 +394,9 @@ public class ProtocolBO extends BaseAnnotationBO{
 				.toString(), request);
 	}
 
-	protected void removePublicAccess(DynaValidatorForm theForm,
+	protected void removePublicAccess(ProtocolBean protocol,
 			HttpServletRequest request) throws Exception {
-		ProtocolBean protocol = (ProtocolBean) theForm.get("protocol");
+	//	ProtocolBean protocol = theForm.getProtocol();
 		ProtocolService service = this.setServiceInSession(request);
 		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
 				protocol.getDomain());
