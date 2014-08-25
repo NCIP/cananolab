@@ -50,8 +50,15 @@ var app = angular.module('angularApp')
     //goBack
     //Change location if user hits the Back button
     $scope.goBack = function() {
-        $location.path("/sampleResults").replace();
-        $location.search('sampleId', null);
+        if ($scope.updateButton=='Submit') {
+            $location.path("/manageSamples").replace();
+            $location.search('sampleId', null);
+        }
+        else {
+            $location.path("/sampleResults").replace();
+            $location.search('sampleId', null);
+        }
+
     };
 
     //Get URL params
