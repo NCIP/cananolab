@@ -52,10 +52,17 @@ public class SampleEditGeneralBean {
 	Boolean isPublic = false;
 	
 	boolean showReviewButton;
+	boolean showSubmitForReviewButton = false;;
 
 	List<String> errors = new ArrayList<String>();
 	
-	
+	public boolean isShowSubmitForReviewButton() {
+		return showSubmitForReviewButton;
+	}
+
+	public void setShowSubmitForReviewButton(boolean showSubmitForReviewButton) {
+		this.showSubmitForReviewButton = showSubmitForReviewButton;
+	}
 
 	public List<AccessibilityBean> getGroupAccesses() {
 		return groupAccesses;
@@ -450,22 +457,6 @@ public class SampleEditGeneralBean {
 		
 		dataAvailability = new SimpleDataAvailabilityBean();
 		dataAvailability.transferSampleBeanForDataAvailability(sampleBean, request, availableEntityNames);
-//		dataAvailability.setCaNanoLabScore(sampleBean.getCaNanoLabScore());
-//		dataAvailability.setMincharScore(sampleBean.getMincharScore());
-//		
-//		SortedSet<String> ca = (SortedSet<String>) request.getSession().getServletContext().getAttribute("chemicalAssocs");
-//		dataAvailability.setChemicalAssocs(new ArrayList<String>(ca));
-//		
-//		dataAvailability.setCaNano2MINChar((Map<String, String>) request.getSession().getServletContext()
-//				.getAttribute("caNano2MINChar"));
-//		
-//		
-//		SortedSet<String> pc = (SortedSet<String>) request.getSession().getServletContext().getAttribute("physicoChars");
-//		dataAvailability.setPhysicoChars(new ArrayList<String>(pc));
-//		SortedSet<String> iv = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invitroChars");
-//		dataAvailability.setInvitroChars(new ArrayList<String>(iv));
-//		SortedSet<String> invivo = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invivoChars");
-//		dataAvailability.setInvivoChars(new ArrayList<String>(invivo));
 	}
 	
 	protected void transferPointOfContactData(SampleBean sampleBean) {
@@ -537,20 +528,26 @@ public class SampleEditGeneralBean {
 		//ref. SampleServiceLocalImpl.saveSample()
 		List<String> keywords = this.getKeywords();
 		if (keywords != null) {
-			Collection<Keyword> keywordColl = new HashSet<Keyword>();
 			String keywordString = "";
 			for (String keyword : keywords) {
 				keywordString += keyword;
 				keywordString += "\r\n";
-//				Keyword kwObj = new Keyword();
-//				kwObj.setName(keyword);
-//				keywordColl.add(kwObj);
 			}
 			
 			destSampleBean.setKeywordsStr(keywordString);
-			//destSampleBean.getDomain().setKeywordCollection(keywordColl);
 		}
 		
 		destSampleBean.getDomain().setName(this.sampleName);
+	}
+	
+	public void setSubmitForReviewButton(HttpServletRequest request) {
+		if (request == null) return;
+		
+		String submit = (String)request.getAttribute("submitSample");
+		if (submit != null && submit.equals("true"))
+			this.showSubmitForReviewButton = true;
+		else
+			this.showSubmitForReviewButton = false;
+	
 	}
 }
