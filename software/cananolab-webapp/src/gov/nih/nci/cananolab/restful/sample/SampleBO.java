@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
@@ -123,7 +124,8 @@ public class SampleBO extends BaseAnnotationBO {
 		request.getSession().setAttribute("updateSample", "true");
 		
 		//To help determine whether or not to show "Submit for Review" button in Update Sample page
-		request.setAttribute("submitSample", "true");
+		if (!user.isCurator())
+			request.setAttribute("submitSample", "true");
 	
 		return summaryEdit(String.valueOf(sampleBean.getDomain().getId()), request);
 	}
@@ -503,7 +505,6 @@ public class SampleBO extends BaseAnnotationBO {
 		// have to save POC separately because the same organizations can not be
 		// saved in the same session
 		service.savePointOfContact(thePOC);
-		
 		sample.addPointOfContact(thePOC, oldPOCId);
 
 		// if the oldPOCId is different from the one after POC save
@@ -514,8 +515,18 @@ public class SampleBO extends BaseAnnotationBO {
 							.getDomain().getName(), oldPOCId, thePOC
 							.getDomain().getId());
 		}
+		
+		try {
 		// save sample
-		saveSample(request, sample);		
+			saveSample(request, sample);
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (DuplicateEntriesException e) {
+			request.getSession().setAttribute("theSample", sample);
+			return this.wrapErrorInEditBean(PropertyUtil.getProperty("sample", "error.duplicateSample"));
+		} catch (Exception e) {
+			throw e;
+		}
 		
 		if (newSampleName != null && newSampleName.length() > 0)
 			this.setAccesses(request, sample); //this will assign default curator access to this sample.
@@ -1141,6 +1152,11 @@ public class SampleBO extends BaseAnnotationBO {
 			return null;
 		}
 		
+		if (sampleId != null && sampleId.length() > 0 && sampleId.equals("0"))
+			return sampleBean;
+				
+				
+				
 		if (Long.valueOf(sampleId).longValue() != sampleBean.getDomain().getId().longValue()) {
 			logger.error("The given sample id doesn't match the sample id in session");
 			return null;
