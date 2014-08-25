@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('angularApp')
 
-    .controller('EditPublicationCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams) {
+    .controller('EditPublicationCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams,$upload) {
         $scope.publicationForm = {};
         $rootScope.navTree=false;
         //$rootScope.tabs = navigationService.query();
@@ -50,7 +50,10 @@ var app = angular.module('angularApp')
         $scope.accessForm.theAccess.accessBy = 'group';        
         $scope.accessExists = false;
         $scope.externalUrlEnabled  = false;        
-
+        
+        /* File Variables */
+        $scope.usingFlash = FileAPI && FileAPI.upload != null;
+        $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
 
         //$scope.$on('$viewContentLoaded', function(){
         $http({method: 'GET', url: '/caNanoLab/rest/publication/setup'}).
@@ -232,7 +235,7 @@ var app = angular.module('angularApp')
         };
 
 
-        $scope.doSubmit = function() {
+        $scope.doSubmitData = function() {
             $scope.loader = true;
             
             if ($scope.sampleId != null) {
@@ -266,6 +269,46 @@ var app = angular.module('angularApp')
                 });
             
         };
+        
+        $scope.onFileSelect = function($files) {
+            $scope.selectedFiles = [];
+            $scope.selectedFiles = $files;
+        };
+
+        $scope.doSubmit = function() {
+            var index = 0;
+            $scope.upload = [];
+            if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) {
+                $scope.upload[index] = $upload.upload({
+                    url: '/caNanoLab/rest/core/uploadFile',
+                    method: 'POST',
+                    headers: {'my-header': 'my-header-value'},
+                    data : $scope.publicationForm,
+                    file: $scope.selectedFiles[index],
+                    fileFormDataName: 'myFile'
+                });
+                $scope.upload[index].then(function(response) {
+                    $timeout(function() {
+                        //$scope.uploadResult.push(response.data);
+                    	//alert(response.data);
+                    	$scope.publicationForm.uri = response.data;
+                    	$scope.doSubmitData();
+                    });
+                }, function(response) {
+                    if (response.status > 0) $scope.messages = response.status + ': ' + response.data;
+                }, function(evt) {
+                    // Math.min is to fix IE which reports 200% sometimes
+                    // $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                });
+                $scope.upload[index].xhr(function(xhr){
+//				xhr.upload.addEventListener('abort', function() {console.log('abort complete')}, false);
+                });
+            }
+            else {
+            	$scope.doSubmitData();            
+            }
+        };        
+        
         
         $scope.doDelete = function() {
             if (confirm("Delete the Publication?")) {

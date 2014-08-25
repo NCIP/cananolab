@@ -231,9 +231,9 @@ var app = angular.module('angularApp')
         };
 
         $scope.doSubmit = function() {
-            $scope.errorMsg = null;
             var index = 0;
             $scope.upload = [];
+            if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) {
                 $scope.upload[index] = $upload.upload({
                     url: '/caNanoLab/rest/core/uploadFile',
                     method: 'POST',
@@ -250,7 +250,7 @@ var app = angular.module('angularApp')
                     	$scope.doSubmitData();
                     });
                 }, function(response) {
-                    if (response.status > 0) $scope.errorMsg = response.status + ': ' + response.data;
+                    if (response.status > 0) $scope.messages = response.status + ': ' + response.data;
                 }, function(evt) {
                     // Math.min is to fix IE which reports 200% sometimes
                     // $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
@@ -258,6 +258,10 @@ var app = angular.module('angularApp')
                 $scope.upload[index].xhr(function(xhr){
 //				xhr.upload.addEventListener('abort', function() {console.log('abort complete')}, false);
                 });
+        	}
+        	else {
+        		$scope.doSubmitData();
+        	}
         };        
 
         /** Start - Access functions **/
