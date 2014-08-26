@@ -201,7 +201,8 @@ var app = angular.module('angularApp')
     $scope.reset = function() {
          $scope.sampleData = angular.copy($scope.master);
     };
-    $scope.update = function() {
+
+    $scope.submitSample = function() {
         $scope.loader = true;
         $scope.loaderText = "Saving Sample";
         $http({method: 'POST', url: '/caNanoLab/rest/sample/updateSample',data: $scope.sampleData}).
@@ -211,7 +212,24 @@ var app = angular.module('angularApp')
             $scope.scratchPad.editSampleData.dirty = false;
             $scope.loader = false;
             $location.path("/editSample").search({'sampleId':$scope.sampleData.sampleId}).replace();
+        }).
+        error(function(data, status, headers, config) {
+            $scope.loader = false;
+            $scope.sampleData.errors = data;
+        });
 
+
+    };
+
+    $scope.update = function() {
+        $scope.loader = true;
+        $scope.loaderText = "Saving Sample";
+        $http({method: 'POST', url: '/caNanoLab/rest/sample/submitSample',data: $scope.sampleData}).
+        success(function(data, status, headers, config) {            
+            $scope.sampleData.pointOfContacts = data.pointOfContacts;
+            $scope.master = angular.copy($scope.sampleData);
+            $scope.scratchPad.editSampleData.dirty = false;
+            $scope.loader = false;
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
