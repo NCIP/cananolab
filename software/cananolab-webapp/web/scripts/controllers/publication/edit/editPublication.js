@@ -251,7 +251,15 @@ var app = angular.module('angularApp')
                             $location.search('sampleId', $scope.sampleId).path('/publication').replace();
                         }
                         else {
-                            $location.search('message', 'Publication successfully saved with title "' + $scope.publicationForm.title + '"').path('/message').replace();
+                            $location.search('message', 'Publication successfully updated with title "' + $scope.publicationForm.title + '"').path('/message').replace();
+                        }
+                	}
+                	else if (data == "retract success") {
+                		if ($scope.sampleId != null && $scope.sampleId != '') {
+                            $location.search('sampleId', $scope.sampleId).path('/publication').replace();
+                        }
+                        else {
+                            $location.search('message', 'Publication successfully saved with title "' + $scope.publicationForm.title + '" and retracted from public access.').path('/message').replace();
                         }
                 	}
                 	else {
@@ -276,6 +284,13 @@ var app = angular.module('angularApp')
         };
 
         $scope.doSubmit = function() {
+        	if( $scope.publicationForm.isPublic && ! $scope.isCurator.curator) {
+        		if (confirm("The data has been assigned to Public.  Updating the data would retract it from Public.  You will need to resubmit the data to the curator for review before the curator reassigns it to Public.  Are you sure you want to continue?")) {
+        			// continue
+        		} else {
+        			return false;
+        		}
+        	}
             var index = 0;
             $scope.upload = [];
             if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) {

@@ -136,6 +136,9 @@ var app = angular.module('angularApp')
                     if (data == "success") {
                         $location.search('message', 'Protocol successfully saved with title "' + $scope.protocolForm.name + '"').path('/message').replace();
                     }
+                    else if (data == "retract success") {
+                    	$location.search('message', 'Protocol successfully saved with title "' + $scope.protocolForm.name + '" and retracted from public access.').path('/message').replace();
+                	}                    
                     else {
                         $scope.loader = false;
                         $scope.messages = data;
@@ -249,6 +252,13 @@ var app = angular.module('angularApp')
         };
 
         $scope.doSubmit = function() {
+        	if( $scope.protocolForm.isPublic && ! $scope.isCurator.curator) {
+        		if (confirm("The data has been assigned to Public.  Updating the data would retract it from Public.  You will need to resubmit the data to the curator for review before the curator reassigns it to Public.  Are you sure you want to continue?")) {
+        			// continue
+        		} else {
+        			return false;
+        		}
+        	}
             var index = 0;
             $scope.upload = [];
             if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) {
