@@ -291,7 +291,7 @@ public class SampleBO extends BaseAnnotationBO {
 			throws Exception {
 	
 		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
-		sampleEdit.setSubmitForReviewButton(request);
+		//sampleEdit.setSubmitForReviewButton(request);
 	
 		this.setServiceInSession(request);
 
