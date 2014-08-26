@@ -69,7 +69,16 @@ public class InputValidationUtil {
 	
 	public static boolean doi(String input) {
 		String reg = "^[a-zA-Z0-9\\/\\-\\_\\s\\(\\)\\:\\.]*$";
-		return (input == null) ? false : input.matches(reg);
+		if(input.matches(reg))
+			return false;
+		return true;
+	}
+	
+	public static boolean url(String input){
+		String reg = "(@)?(href=')?(HREF=')?(HREF=\")?(href=\")?(http://)?[a-zA-Z_0-9\\-]+(\\.\\w[a-zA-Z_0-9\\-]+)+(/[#&\\n\\-=?\\+\\%/\\.\\w]+)?";
+		if(input.matches(reg))
+			return false;
+		return true;
 	}
 	/*
 

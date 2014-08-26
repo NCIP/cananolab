@@ -175,9 +175,14 @@ public class ProtocolBO extends BaseAnnotationBO{
 		}
 		
 		
-		String externalUrl = protocolBean.getFileBean().getDomainFile().getUri();
-		if(!InputValidationUtil.isTextFieldWhiteList(externalUrl)){
+		String uri = protocolBean.getFileBean().getDomainFile().getUri();
+		if(!InputValidationUtil.isTextFieldWhiteList(uri)){
 			errors.add(PropertyUtil.getProperty("protocol", "file.uri.invalid"));
+		}
+		
+		String externalUrl = protocolBean.getFileBean().getExternalUrl();
+		if(!InputValidationUtil.url(externalUrl)){
+			errors.add("External URL is invalid");
 		}
 		
 		return errors;

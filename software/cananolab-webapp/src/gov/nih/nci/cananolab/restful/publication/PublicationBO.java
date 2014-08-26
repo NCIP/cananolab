@@ -259,8 +259,8 @@ public class PublicationBO extends BaseAnnotationBO{
 		if(!InputValidationUtil.isTextFieldWhiteList(title)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.title.invalid"));
 		}
-//		String externalUrl = publication.getUri();
-//		if(!InputValidationUtil.isTextFieldWhiteList(externalUrl)){
+//		String uri = publication.getUri();
+//		if(!InputValidationUtil.isTextFieldWhiteList(uri)){
 //			errors.add(PropertyUtil.getProperty("publication", "file.uri.invalid"));
 //		}
 		for(int i=0;i<publicationBean.getAuthors().size();i++){
@@ -281,6 +281,10 @@ public class PublicationBO extends BaseAnnotationBO{
 //		if(!InputValidationUtil.doi(digitalObjectId)){
 //			errors.add(PropertyUtil.getProperty("publication", "publication.doi.invalid"));
 //		}
+		String externalUrl = publicationBean.getExternalUrl();
+		if(!InputValidationUtil.url(externalUrl)){
+			errors.add("External URL is invalid");
+		}
 		return errors;
 	}
 
@@ -702,9 +706,9 @@ public class PublicationBO extends BaseAnnotationBO{
 		} else if (publication.getUriExternal()
 				&& !StringUtils.isEmpty(pubBean.getExternalUrl())) {
 			return true;
-		} else if (publication.getUriExternal()
+		} else if (!publication.getUriExternal()
 				&& !StringUtils
-					.isEmpty(pubBean.getUploadedFile().getFileName())) {
+					.isEmpty(pubBean.getDomainFile().getName())) {
 			return true;
 		} else if (!StringUtils.isEmpty(publication.getUri())) {
 			return true;
