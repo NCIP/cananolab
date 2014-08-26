@@ -30,10 +30,16 @@ public class SimplePublicationWithSamplesBean {
 	String journal;
 	
 	String description;
-	
+	String externalUrl;
 	Map<String, String> samples;
 	
 	
+	public String getExternalUrl() {
+		return externalUrl;
+	}
+	public void setExternalUrl(String externalUrl) {
+		this.externalUrl = externalUrl;
+	}
 	public String getDescription() {
 		return description;
 	}
@@ -119,7 +125,7 @@ public class SimplePublicationWithSamplesBean {
 		this.setJournal(pubBean.getJournalName());
 		this.setVolumn(pubBean.getVolume() + ":" + pubBean.getStartPage() + "-" + pubBean.getEndPage());
 		this.setDescription(pubBean.getDescription());
-		
+		this.setExternalUrl(pubBean.getUri());
 		Collection<Author> authors = pubBean.getAuthorCollection();
 		if (authors != null) {
 			StringBuilder sb = new StringBuilder();

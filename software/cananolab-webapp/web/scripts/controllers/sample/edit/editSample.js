@@ -221,6 +221,9 @@ var app = angular.module('angularApp')
 
     };
 
+    $scope.submitForReview = function() {
+    };    
+
     $scope.update = function() {
         $scope.loader = true;
         $scope.loaderText = "Saving Sample";

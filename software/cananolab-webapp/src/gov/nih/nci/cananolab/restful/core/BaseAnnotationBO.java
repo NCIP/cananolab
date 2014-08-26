@@ -425,9 +425,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	public String submitForReview(HttpServletRequest request, DataReviewStatusBean dataReviewStatusBean) throws Exception {
 		SecurityService securityService = super
 				.getSecurityServiceFromSession(request);
-	//	String dataId = request.getParameter("reviewDataId");
-	//	String dataType = request.getParameter("reviewDataType");
-	//	String dataName = request.getParameter("reviewDataName");
+	
 		String forwardName = request.getParameter("forwardName");
 		String msg ="";
 //		if (!validateToken(request)) {
@@ -437,10 +435,6 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		if (forwardName == null) {
 			forwardName = "summaryEdit";
 		}
-//		DataReviewStatusBean dataReviewStatusBean = new DataReviewStatusBean();
-//		dataReviewStatusBean.setDataId(dataId);
-//		dataReviewStatusBean.setDataName(dataName);
-//		dataReviewStatusBean.setDataType(dataType);
 		dataReviewStatusBean
 				.setReviewStatus(DataReviewStatusBean.PENDING_STATUS);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -449,12 +443,6 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		curationService.submitDataForReview(dataReviewStatusBean,
 				securityService);
 
-	//	ActionMessages messages = new ActionMessages();
-	//	ActionMessage msg = null;
-	//	msg = new ActionMessage("message.submitReview");
-	//	messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	//	saveMessages(request, messages);
-	//	resetToken(request);
 		msg = PropertyUtil.getProperty(dataReviewStatusBean.getDataType(), "message.submitReview");
 		return "success";
 	}
