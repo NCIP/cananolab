@@ -78,6 +78,24 @@ var app = angular.module('angularApp')
                         if( $scope.groupAccesses != null && $scope.groupAccesses.length > 1 ) {
                             $scope.accessExists = true;
                         }
+                        
+		                if( $scope.protocolForm.uriExternal != null && $scope.protocolForm.uriExternal != '') {
+		                    $scope.externalUrlEnabled = true;
+
+		                    $timeout(function() {
+		                        var el = document.getElementById('external1');
+		                        angular.element(el).triggerHandler('click');
+		                    }, 0);
+		                }
+		                else {
+		                    $scope.externalUrlEnabled  = false;
+
+		                    $timeout(function() {
+		                        var el = document.getElementById('external0');
+		                        angular.element(el).triggerHandler('click');
+		                    }, 0);
+		                }
+                        
                     }).
                     error(function(data, status, headers, config) {
                         $scope.message = data;
