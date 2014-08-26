@@ -130,7 +130,46 @@ public class SampleBO extends BaseAnnotationBO {
 		return summaryEdit(String.valueOf(sampleBean.getDomain().getId()), request);
 	}
 	
+	public SampleEditGeneralBean submit(SampleEditGeneralBean simpleEditBean, HttpServletRequest request)
+			throws Exception {
+		
+		String sampleId = String.valueOf(simpleEditBean.getSampleId());
+		Boolean newSample = true;
+		if (sampleId == null || sampleId.length() == 0) {
+			newSample = false;
+		}
+		
+		SampleBean sampleBean = (SampleBean) this.findMatchSampleInSession(request, sampleId);
+		
+		if (sampleBean == null) {
+			System.out.println("No Sample in session");
+			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to update the sample.");
+		}
+		
+		// transfer keyword and sample name from simple Edit bean
+		simpleEditBean.populateDataForSavingSample(sampleBean);
+		
+		setServiceInSession(request);
+		saveSample(request, sampleBean);
+		
+		// retract from public if updating an existing public record and not curator
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		if (!newSample && !user.isCurator() && sampleBean.getPublicStatus()) {
+			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
+					.toString(), sampleBean.getDomain().getName(), "sample");
+			
+			return wrapErrorInEditBean(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
+			
+		}
+		
+		request.getSession().setAttribute("updateSample", "true");
+		
+		//To help determine whether or not to show "Submit for Review" button in Update Sample page
+		if (!user.isCurator())
+			request.setAttribute("submitSample", "true");
 	
+		return summaryEdit(String.valueOf(sampleBean.getDomain().getId()), request);
+	}
 
 	private void saveSample(HttpServletRequest request, SampleBean sampleBean)
 			throws Exception {
