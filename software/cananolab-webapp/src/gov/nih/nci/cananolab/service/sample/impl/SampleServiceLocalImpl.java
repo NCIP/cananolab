@@ -598,6 +598,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			HQLCriteria crit = new HQLCriteria(
 					"select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
 			List results = appService.query(crit);
+			
+			
+			logger.error("Completed select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
 			for (Object obj : results) {
 				String name = ((String) obj).trim();
 				names.add(name);

@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
-import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
@@ -13,9 +12,7 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -233,16 +230,6 @@ public class SampleEditGeneralBean {
 		this.userIsCurator = sampleBean.getUser().isCurator();
 		
 		transferPointOfContactData(sampleBean);
-		
-		String ke = sampleBean.getKeywordsDisplayName();
-		System.out.println("Keyworddisplayname: " + ke);
-		
-		String v = sampleBean.getKeywordsStr();
-		System.out.println("KeywordsStr: " + v);
-		SortedSet<String> keyws = sampleBean.getKeywordSet();
-		System.out.println("There are " + keyws.size() + " keywords");
-		for (String k : keyws) 
-			System.out.println(k);
 		
 		this.keywords = new ArrayList<String>(sampleBean.getKeywordSet());
 

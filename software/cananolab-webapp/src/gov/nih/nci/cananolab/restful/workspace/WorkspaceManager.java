@@ -188,16 +188,15 @@ public class WorkspaceManager {
 			item.setCreatedDate(sampleBean.getDomain().getCreatedDate());
 			item.getActions().add("View");
 			
-			item.setSubmisstionStatus("Approved"); //default
+			//preset default
+			if (sampleBean.getPublicStatus())
+				item.setSubmisstionStatus("Approved"); 
+			else
+				item.setSubmisstionStatus("In Draft");
 			
 			DataReviewStatusBean reviewBean =  this.curationService.findDataReviewStatusBeanByDataId(id, securityService);
 			if (reviewBean != null) {
 				item.setSubmisstionStatus(reviewBean.getReviewStatus());
-			}
-			
-			if (item.getName().equals("QA-Demo3")) {
-				int i = 0;
-				i++;
 			}
 			
 			List<AccessibilityBean> groupAccesses = sampleBean.getGroupAccesses();
