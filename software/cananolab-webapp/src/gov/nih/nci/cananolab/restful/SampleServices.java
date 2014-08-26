@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
@@ -371,7 +372,7 @@ public class SampleServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			SampleEditGeneralBean editBean = sampleBO.create(simpleEdit, httpRequest);
+			SampleEditGeneralBean editBean = sampleBO.update(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(editBean).build() :
@@ -603,6 +604,30 @@ public class SampleServices {
 			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while deleting Access from sample: " + e.getMessage())).build();
+		}
+	}
+	
+	@POST
+	@Path("/submitForReview")
+	@Produces("application/json")
+	 public Response submitForReview(@Context HttpServletRequest httpRequest, DataReviewStatusBean reviewBean){
+		logger.debug("In submitForReview");
+		try {
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			String message = sampleBO.submitForReview(httpRequest, reviewBean);
+			
+			return Response.ok(message).build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while submitting sample for review: " + e.getMessage())).build();
 		}
 	}
 }

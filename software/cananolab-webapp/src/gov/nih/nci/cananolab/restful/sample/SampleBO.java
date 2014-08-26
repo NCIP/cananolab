@@ -76,27 +76,29 @@ public class SampleBO extends BaseAnnotationBO {
 	private DataAvailabilityService dataAvailabilityService;
 	
 	/**
-	 * This is actually an update. Given the current implementation, when it gets here, a saveAccess or savePOC has been called and
-	 * the sample's id has been generated. (In the new sample submission form, if you only enter a sample name, the "Submit" button
-	 * is grayed out.
 	 * 
+	 * Method to support the Update button on Update Sample page. Given the current implementation, when it gets here, 
+	 * a saveAccess or savePOC has been called and the sample's id has been generated. 
+	 * <br><br>
 	 * Revisit if the above workflow changes.
 	 * 
-	 * @param mapping
-	 * @param form
+	 * @param simpleEditBean
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
-	public SampleEditGeneralBean create(SampleEditGeneralBean simpleEditBean, HttpServletRequest request)
+	public SampleEditGeneralBean update(SampleEditGeneralBean simpleEditBean, HttpServletRequest request)
 			throws Exception {
 		
-		String sampleId = String.valueOf(simpleEditBean.getSampleId());
-		Boolean newSample = true;
-		if (sampleId == null || sampleId.length() == 0) {
-			newSample = false;
-		}
+		long sampleId = simpleEditBean.getSampleId();
+		if (sampleId <= 0)
+			throw new Exception("No valid sample id found. Unable to update sample");
+		
+		//String sampleId = String.valueOf(simpleEditBean.getSampleId());
+//		Boolean newSample = true;
+//		if (sampleId == null || sampleId.length() == 0) {
+//			newSample = false;
+//		}
 		
 		SampleBean sampleBean = (SampleBean) this.findMatchSampleInSession(request, sampleId);
 		
@@ -113,8 +115,8 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		// retract from public if updating an existing public record and not curator
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		if (!newSample && !user.isCurator() && sampleBean.getPublicStatus()) {
-			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
+		if (!user.isCurator() && sampleBean.getPublicStatus()) {
+			retractFromPublic(String.valueOf(simpleEditBean.getSampleId()), request, sampleBean.getDomain().getId()
 					.toString(), sampleBean.getDomain().getName(), "sample");
 			
 			return wrapErrorInEditBean(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
@@ -122,22 +124,29 @@ public class SampleBO extends BaseAnnotationBO {
 		}
 		
 		request.getSession().setAttribute("updateSample", "true");
-		
-		//To help determine whether or not to show "Submit for Review" button in Update Sample page
-		if (!user.isCurator())
-			request.setAttribute("submitSample", "true");
 	
 		return summaryEdit(String.valueOf(sampleBean.getDomain().getId()), request);
 	}
 	
+	/**
+	 * This is to support the "Submit" button in new sample submission page.
+	 * <br><br>
+	 * 2 scenarios when we get here: 1) new sample has been created successfully when saving a primary POC 
+	 * from new sample submission page, in such case, the sample in session has an id. 2) new sample failed to be
+	 * created when saving a primary POC from new sample submission page. In such case, the sample in session
+	 * doesn't have an id.
+	 * 
+	 * 
+	 * @param simpleEditBean
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	public SampleEditGeneralBean submit(SampleEditGeneralBean simpleEditBean, HttpServletRequest request)
 			throws Exception {
 		
-		String sampleId = String.valueOf(simpleEditBean.getSampleId());
-		Boolean newSample = true;
-		if (sampleId == null || sampleId.length() == 0) {
-			newSample = false;
-		}
+		long sampleId = simpleEditBean.getSampleId(); //String.valueOf();
+		Boolean newSample = (sampleId <= 0);
 		
 		SampleBean sampleBean = (SampleBean) this.findMatchSampleInSession(request, sampleId);
 		
@@ -150,23 +159,9 @@ public class SampleBO extends BaseAnnotationBO {
 		simpleEditBean.populateDataForSavingSample(sampleBean);
 		
 		setServiceInSession(request);
-		saveSample(request, sampleBean);
-		
-		// retract from public if updating an existing public record and not curator
-		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		if (!newSample && !user.isCurator() && sampleBean.getPublicStatus()) {
-			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
-					.toString(), sampleBean.getDomain().getName(), "sample");
-			
-			return wrapErrorInEditBean(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
-			
-		}
+		saveSample(request, sampleBean);		
 		
 		request.getSession().setAttribute("updateSample", "true");
-		
-		//To help determine whether or not to show "Submit for Review" button in Update Sample page
-		if (!user.isCurator())
-			request.setAttribute("submitSample", "true");
 	
 		return summaryEdit(String.valueOf(sampleBean.getDomain().getId()), request);
 	}
@@ -517,7 +512,6 @@ public class SampleBO extends BaseAnnotationBO {
 		SampleBean sample = (SampleBean)request.getSession().getAttribute("theSample");
 		
 		long sampleId = simpleSampleBean.getSampleId();
-		String newSampleName = simpleSampleBean.getNewSampleName();
 		String sampleName = simpleSampleBean.getSampleName();
 		
 		boolean newSample = false;
@@ -529,6 +523,9 @@ public class SampleBO extends BaseAnnotationBO {
 				sample.getDomain().setName(sampleName);
 				newSample = true;
 			}
+		} else if (sampleId <= 0) {
+			sample.getDomain().setName(sampleName);
+			newSample = true;
 		} else {
 			if (sample.getDomain().getId() != sampleId) 
 				return this.wrapErrorInEditBean("Current sample id doesn't match sample id in session");
@@ -536,8 +533,8 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		PointOfContactBean thePOC = resolveThePOCToSaveFromInput(sample, simplePOC, user.getLoginName());
 		Long oldPOCId = thePOC.getDomain().getId();
-		if (newSample == true)
-			thePOC.setPrimaryStatus(true);
+		determinePrimaryPOC(thePOC, sample, newSample);
+		
 		
 		// set up one sampleService
 		SampleService service = setServiceInSession(request);
@@ -567,7 +564,8 @@ public class SampleBO extends BaseAnnotationBO {
 			throw e;
 		}
 		
-		if (newSampleName != null && newSampleName.length() > 0)
+		//if (newSample != null && newSampleName.length() > 0)
+		if (newSample)
 			this.setAccesses(request, sample); //this will assign default curator access to this sample.
 		
 		//TODO: check on this
@@ -575,6 +573,13 @@ public class SampleBO extends BaseAnnotationBO {
 		// return forward;
 		
 		return summaryEdit(sample.getDomain().getId().toString(), request);
+	}
+	
+	protected void determinePrimaryPOC(PointOfContactBean thePOC, SampleBean sample, boolean newSample) {
+		if (newSample == true) {
+			if (sample.getDomain().getPrimaryPointOfContact() == null)
+				thePOC.setPrimaryStatus(true);
+		}
 	}
 
 	/**
@@ -590,7 +595,7 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		long sampleId = simplePOC.getSampleId();
 		
-		SampleBean sample = (SampleBean) this.findMatchSampleInSession(request, String.valueOf(sampleId));
+		SampleBean sample = (SampleBean) this.findMatchSampleInSession(request, sampleId);
 		if (sample == null) {
 			System.out.println("No Sample in session");
 			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to update delete POC to the sample.");
@@ -663,7 +668,7 @@ public class SampleBO extends BaseAnnotationBO {
 	public String delete(String sampleId, HttpServletRequest request)
 			throws Exception {
 		
-		SampleBean sampleBean = findMatchSampleInSession(request, sampleId);
+		SampleBean sampleBean = findMatchSampleInSession(request, Long.parseLong(sampleId));
 		if (sampleBean == null)
 			return "Error: unable to find a valid sample in session with id . Sample deletion failed";
 		
@@ -760,7 +765,7 @@ public class SampleBO extends BaseAnnotationBO {
 	public SampleEditGeneralBean updateDataAvailability(String sampleId, HttpServletRequest request) 
 			throws Exception {
 		
-		SampleBean sampleBean = findMatchSampleInSession(request, sampleId);
+		SampleBean sampleBean = findMatchSampleInSession(request, Long.parseLong(sampleId));
 		if (sampleBean == null) {
 			SampleEditGeneralBean simpleBean = new SampleEditGeneralBean();
 			simpleBean.getErrors().add("No valid sample in session matching given sample id. Unable to update data availabilty.");
@@ -793,7 +798,7 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		long sampleId = simpleEditBean.getSampleId();
 		
-		SampleBean sampleBean = (SampleBean) this.findMatchSampleInSession(request, String.valueOf(sampleId));
+		SampleBean sampleBean = (SampleBean) this.findMatchSampleInSession(request, sampleId);
 		if (sampleBean == null) {
 			System.out.println("No Sample in session");
 			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to delete Data Availability to sample.");
@@ -941,7 +946,7 @@ public class SampleBO extends BaseAnnotationBO {
 		long sampleId = simpleEditBean.getSampleId();
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		
-		SampleBean sample = (SampleBean) this.findMatchSampleInSession(request, String.valueOf(sampleId));
+		SampleBean sample = (SampleBean) this.findMatchSampleInSession(request, sampleId);
 		if (sample == null) {
 			System.out.println("No Sample in session");
 			return wrapErrorInEditBean("No valid sample in session matching given sample id. Unable to update delete accecc to the sample.");
@@ -1156,12 +1161,6 @@ public class SampleBO extends BaseAnnotationBO {
 	}
 	
 	protected void populateAccessBeanWithInput(SimpleAccessBean simpleAccess, AccessibilityBean theAccess, String loginName) {
-//		simpleAccess.getAccessBy();
-//		simpleAccess.getAccessRight();
-//		simpleAccess.getGroupName();
-//		simpleAccess.getLoginName();
-//		simpleAccess.getRoleDisplayName();
-//		simpleAccess.getSampleId();
 		
 		String accessBy = simpleAccess.getAccessBy();
 		theAccess.setAccessBy(accessBy);
@@ -1179,11 +1178,7 @@ public class SampleBO extends BaseAnnotationBO {
 		theAccess.setRoleName(simpleAccess.getRoleName());
 	}
 	
-	protected SampleBean findMatchSampleInSession(HttpServletRequest request, String sampleId) {
-		if (sampleId == null || sampleId.length() == 0) {
-			logger.error("Input sample id is null or empty");
-			return null;
-		}
+	protected SampleBean findMatchSampleInSession(HttpServletRequest request, long sampleId) {
 		
 		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute("theSample");
 		if (sampleBean == null) {
@@ -1191,12 +1186,10 @@ public class SampleBO extends BaseAnnotationBO {
 			return null;
 		}
 		
-		if (sampleId != null && sampleId.length() > 0 && sampleId.equals("0"))
-			return sampleBean;
+//		if (sampleId != null && sampleId.length() > 0 && sampleId.equals("0"))
+//			return sampleBean;
 				
-				
-				
-		if (Long.valueOf(sampleId).longValue() != sampleBean.getDomain().getId().longValue()) {
+		if (sampleId != sampleBean.getDomain().getId().longValue()) {
 			logger.error("The given sample id doesn't match the sample id in session");
 			return null;
 		}

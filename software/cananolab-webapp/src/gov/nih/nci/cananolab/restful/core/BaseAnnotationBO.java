@@ -432,9 +432,9 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	
 		String forwardName = request.getParameter("forwardName");
 		String msg ="";
-		if (!validateToken(request)) {
-		//	return mapping.findForward(dataType+"Message");
-		}
+//		if (!validateToken(request)) {
+//		//	return mapping.findForward(dataType+"Message");
+//		}
 		// set default forward name to be summaryEdit
 		if (forwardName == null) {
 			forwardName = "summaryEdit";
