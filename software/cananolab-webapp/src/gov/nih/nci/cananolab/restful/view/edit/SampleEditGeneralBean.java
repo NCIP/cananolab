@@ -52,7 +52,7 @@ public class SampleEditGeneralBean {
 	Boolean isPublic = false;
 	
 	boolean showReviewButton;
-	boolean showSubmitForReviewButton = false;;
+	//boolean showSubmitForReviewButton = false;;
 
 	List<String> errors = new ArrayList<String>();
 	String message; //requested by front end
@@ -65,13 +65,13 @@ public class SampleEditGeneralBean {
 		this.message = message;
 	}
 
-	public boolean isShowSubmitForReviewButton() {
-		return showSubmitForReviewButton;
-	}
-
-	public void setShowSubmitForReviewButton(boolean showSubmitForReviewButton) {
-		this.showSubmitForReviewButton = showSubmitForReviewButton;
-	}
+//	public boolean isShowSubmitForReviewButton() {
+//		return showSubmitForReviewButton;
+//	}
+//
+//	public void setShowSubmitForReviewButton(boolean showSubmitForReviewButton) {
+//		this.showSubmitForReviewButton = showSubmitForReviewButton;
+//	}
 
 	public List<AccessibilityBean> getGroupAccesses() {
 		return groupAccesses;
@@ -549,14 +549,14 @@ public class SampleEditGeneralBean {
 		destSampleBean.getDomain().setName(this.sampleName);
 	}
 	
-	public void setSubmitForReviewButton(HttpServletRequest request) {
-		if (request == null) return;
-		
-		String submit = (String)request.getAttribute("submitSample");
-		if (submit != null && submit.equals("true"))
-			this.showSubmitForReviewButton = true;
-		else
-			this.showSubmitForReviewButton = false;
-	
-	}
+//	public void setSubmitForReviewButton(HttpServletRequest request) {
+//		if (request == null) return;
+//		
+//		String submit = (String)request.getAttribute("submitSample");
+//		if (submit != null && submit.equals("true"))
+//			this.showSubmitForReviewButton = true;
+//		else
+//			this.showSubmitForReviewButton = false;
+//	
+//	}
 }
