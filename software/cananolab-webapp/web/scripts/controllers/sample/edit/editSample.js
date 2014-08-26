@@ -210,19 +210,19 @@ var app = angular.module('angularApp')
             $scope.master = angular.copy($scope.sampleData);
             $scope.scratchPad.editSampleData.dirty = false;
             $scope.loader = false;
-            $scope.message = "Sample Saved";
+            $location.path("/editSample").search({'sampleId':$scope.sampleData.sampleId}).replace();
 
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
-            $scope.message = data;
+            $scope.sampleData.errors = data;
         });
 
 
     };
 
     // Modal for Access To Sample (1)
-    $scope.openPointOfContactModal = function(sampleId, poc) {
+    $scope.openPointOfContactModal = function(sampleId, poc,type) {
         sampleService.sampleData = angular.copy($scope.sampleData);
         sampleService.pocData = angular.copy(poc);
 
@@ -241,6 +241,9 @@ var app = angular.module('angularApp')
             originalPoc: function () {
               return poc;
             },
+            type: function () {
+              return type;
+            },            
             master: function() {
                 return $scope.master;
             },
@@ -252,6 +255,7 @@ var app = angular.module('angularApp')
 
         modalInstance.result.then(function (sampleData) {
             $scope.sampleData = sampleData;
+            // $scope.message = $scope.sampleData.message;
         });
     };
 

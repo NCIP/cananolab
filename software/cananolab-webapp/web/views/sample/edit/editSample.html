@@ -19,8 +19,20 @@
 <!-- Message Area -->
 <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>
 <div class="message">{{message}}</div>
-    <br>
+<br>
 
+<div ng-if="sampleData.message">
+    <div class="message">{{sampleData.message}}</div>
+    <br>    
+</div>
+
+
+<div ng-if="sampleData.errors">
+    <div class="message" ng-repeat="e in sampleData.errors track by $index">
+        {{e}}
+    </div>
+        <br>    
+</div>
 <!-- Application  -->
 <div ng-show="editSampleForm">
     <form name="sampleForm" id="sampleForm">
@@ -43,7 +55,7 @@
                         Point of Contact *
                     </td>
                     <td>
-                            <button ng-click="openPointOfContactModal(sampleId.data, {})" class="btn btn-primary btn-xxs">Add</button>
+                            <button ng-disabled="!sampleData.sampleName" ng-click="openPointOfContactModal(sampleId.data, {},'add')" class="btn btn-primary btn-xxs">Add</button>
                     </td>
                 </tr>
                 <!-- Point of Contact Data -->
@@ -97,7 +109,7 @@
                 </tr> <!-- End of Point of Contact -->
 
                 <!-- Keywords -->
-                <tr ng-show="sampleData.pointOfContacts">
+                <tr ng-show="sampleData.pointOfContacts && sampleData.errors.length==0">
                     <td class="cellLabel">{{sampleService.pocData.dirty}}
                         <label for="keywords">Keywords</label>
                     </td>
@@ -116,7 +128,7 @@
                    </td>
                 </tr>
 
-				<tr ng-show="sampleData.pointOfContacts">
+				<tr ng-show="sampleData.pointOfContacts && sampleData.errors.length==0"">
                     <td colspan="5">
                         <table>
                             <ng-include src="'/caNanoLab/views/manageAccessibility.html'"></ng-include>
@@ -124,7 +136,7 @@
                     </td>
                 </tr>
 
-                <tr ng-show="sampleData.pointOfContacts">
+                <tr ng-show="updateButton=='Update'">
 
 
                             <td class="cellLabel">
