@@ -1,6 +1,6 @@
 'use strict';
 var app = angular.module('angularApp')
-	.controller('PointOfContactModalCtrl', function ($scope,$http,$modalInstance,sampleId, originalPoc, sampleData,master, message, sampleService) {
+	.controller('PointOfContactModalCtrl', function ($scope,$http,$modalInstance,sampleId, originalPoc, sampleData,master, message, type, sampleService) {
 
     // define variables //
     	$scope.sampleId = sampleId;
@@ -9,9 +9,10 @@ var app = angular.module('angularApp')
         $scope.other = {'organization':'','role':''};
         $scope.organizations = $scope.sampleData.organizationNamesForUser; $scope.organizations.push('[other]');
         $scope.roles = $scope.sampleData.contactRoles; $scope.roles.push('[other]');
-        $scope.message = "";
+        $scope.message = message;
         $scope.loader = false;
         $scope.master = master;
+        $scope.type = type;
         /* Initialize master for poc */
     $scope.master = angular.copy($scope.poc);
 
@@ -40,14 +41,15 @@ var app = angular.module('angularApp')
                 $scope.poc.dirty = true;
                 $scope.loader = true;
                 $scope.loaderMessage = "Deleting";
-                $scope.message = 'Point of contact deleted';
                 $http({method: 'POST', url: '/caNanoLab/rest/sample/deletePOC',data: $scope.poc}).
                     success(function(data, status, headers, config) {
-                        $modalInstance.close(data);
+                        $scope.sampleData = data;
+                        $scope.sampleData.message = "Point of contact deleted";
+
+                        $modalInstance.close($scope.sampleData);
                     }).
                     error(function(data, status, headers, config) {
                         $scope.loader = false;
-                        $scope.message = data;
                         $modalInstance.close($scope.sampleData);
 
                 });
@@ -62,7 +64,6 @@ var app = angular.module('angularApp')
     $scope.savePoc = function() {
         $scope.loader = true;
         $scope.loaderMessage = "Saving";
-        $scope.message = "";
         sampleService.pocData.dirty = true;
         if(parseInt(sampleService.pocData.id) > 0) {
             originalPoc = sampleService.pocData;
@@ -78,17 +79,18 @@ var app = angular.module('angularApp')
         
         $http({method: 'POST', url: '/caNanoLab/rest/sample/savePOC',data: $scope.sampleData}).
             success(function(data, status, headers, config) {
-                $scope.message = 'Point of contact saved.';
                 $scope.sampleData.pointOfContacts = data.pointOfContacts;
                 $scope.master = angular.copy($scope.sampleData);
                 $scope.loader = false;
-                $modalInstance.close(data);
+                $scope.sampleData = data;
+                $scope.sampleData.message = "Point of contact saved";
+                $modalInstance.close($scope.sampleData);
 
             }).
             error(function(data, status, headers, config) {
                 $scope.loader = false;
-                $scope.message = data;
-             // $modalInstance.close(data);
+                $scope.sampleData.errors = data;
+                $modalInstance.close($scope.sampleData);
 
             });
     };
