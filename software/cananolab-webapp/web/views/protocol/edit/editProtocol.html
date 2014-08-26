@@ -92,7 +92,7 @@
         						<!-- <input type="button" value="Upload" ng-click="uploadFile()" ng-show="protocolForm.uriExternal=='false'">  -->
         						<!-- <input type="file" file-model="localForm.uploadedFile" ng-model="localForm.uploadedFile" size="60" value="" onchange="angular.element(this).scope().uploadFile(this);" id="uploadedFile"> -->
 				            </span>
-                            <span id="uploadedUri" ng-show="protocolForm.uriExternal=='false' && protocolForm.fileId != null">
+                            <span id="uploadedUri" ng-show="protocolForm.uriExternal=='false' && protocolForm.uri != null">
 			                    <a href="rest/protocol/download?fileId={{protocolForm.fileId}}">{{protocolForm.uri}}</a>
                             </span>
 				            
@@ -129,7 +129,7 @@
 </tr>
 <tr>
     <td colspan="2">
-        <table>
+        <table width="95%">
             <ng-include src="'/caNanoLab/views/manageAccessibility.html'"></ng-include>
         </table>
     </td>
