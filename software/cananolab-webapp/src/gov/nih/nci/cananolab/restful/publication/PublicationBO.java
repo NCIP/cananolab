@@ -66,6 +66,8 @@ public class PublicationBO extends BaseAnnotationBO{
 			newPub = false;
 		}
 		msgs = savePublication(request, publicationBean);
+		request.getSession().removeAttribute("newFileData");
+
 		if(msgs.size()>0){
 			bean.setErrors(msgs);
 			return msgs;
@@ -94,7 +96,6 @@ public class PublicationBO extends BaseAnnotationBO{
 		} else {
 			msgs.add("success");
 			bean.setErrors(msgs);
-			request.getSession().removeAttribute("newFileData");
 			
 		}
 		

@@ -48,6 +48,8 @@ public class ProtocolBO extends BaseAnnotationBO{
 			newProtocol = false;
 		}
 		msgs = this.saveProtocol(request, protocolBean);
+		request.getSession().removeAttribute("newFileData");
+
 		if(msgs.size()>0){
 			return msgs;
 		}
@@ -69,7 +71,6 @@ public class ProtocolBO extends BaseAnnotationBO{
 		} else {
 		
 			msgs.add("success");
-			request.getSession().removeAttribute("newFileData");
 		}
 	//	forward = mapping.findForward("success");
 		return msgs;
@@ -81,6 +82,7 @@ public class ProtocolBO extends BaseAnnotationBO{
 		Protocol protocol = new Protocol();
 		FileBean fileBean = new FileBean();
 		fileBean.setNewFileData(bean.getNewFileData());
+		fileBean.setExternalUrl(bean.getExternalUrl());
 		File file = new File();
 			file.setTitle(bean.getFileTitle());
 			file.setDescription(bean.getFileDescription());
