@@ -6,6 +6,8 @@ var app = angular.module('angularApp')
     $rootScope.groups = groupService.getGroups.data.get();
     $scope.sampleResultData =sampleService.sampleData;
     $scope.sampleData = {};
+    $scope.reviewBean = {}; 
+    $scope.submitForReviewButton=1;
     $scope.sampleId = sampleService.sampleId;
     $scope.pocData = sampleService.pocData;
     $scope.scratchPad = sampleService.scratchPad;
@@ -205,7 +207,7 @@ var app = angular.module('angularApp')
     $scope.submitSample = function() {
         $scope.loader = true;
         $scope.loaderText = "Saving Sample";
-        $http({method: 'POST', url: '/caNanoLab/rest/sample/updateSample',data: $scope.sampleData}).
+        $http({method: 'POST', url: '/caNanoLab/rest/sample/submitSample',data: $scope.sampleData}).
         success(function(data, status, headers, config) {            
             $scope.sampleData.pointOfContacts = data.pointOfContacts;
             $scope.master = angular.copy($scope.sampleData);
@@ -222,12 +224,27 @@ var app = angular.module('angularApp')
     };
 
     $scope.submitForReview = function() {
+        $scope.reviewBean.dataId=$scope.sampleData.sampleId;
+        $scope.reviewBean.dataName=$scope.sampleData.sampleName;
+        $scope.reviewBean.dataType='sample';
+        $scope.submitForReviewButton = 0;
+        $scope.loader = true;
+        $scope.loaderText = "Submitting sample for review";
+        $http({method: 'POST', url: '/caNanoLab/rest/sample/submitForReview',data: $scope.reviewBean}).
+        success(function(data, status, headers, config) {            
+            $scope.message = data;
+            $scope.loader = false;
+        }).
+        error(function(data, status, headers, config) {
+            $scope.loader = false;
+            $scope.sampleData.errors = data;
+        });        
     };    
 
     $scope.update = function() {
         $scope.loader = true;
         $scope.loaderText = "Saving Sample";
-        $http({method: 'POST', url: '/caNanoLab/rest/sample/submitSample',data: $scope.sampleData}).
+        $http({method: 'POST', url: '/caNanoLab/rest/sample/updateSample',data: $scope.sampleData}).
         success(function(data, status, headers, config) {            
             $scope.sampleData.pointOfContacts = data.pointOfContacts;
             $scope.master = angular.copy($scope.sampleData);
