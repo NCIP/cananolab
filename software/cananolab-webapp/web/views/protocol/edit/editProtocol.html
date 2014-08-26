@@ -88,14 +88,15 @@
             <tr>
                 <td colspan="2">
                             <span id="load" style="display: block;" ng-show="protocolForm.uriExternal=='false'">
-        						<input type="file" ng-model="protocolForm.uri" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
+        						<input type="file" ng-model="protocolForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
         						<!-- <input type="button" value="Upload" ng-click="uploadFile()" ng-show="protocolForm.uriExternal=='false'">  -->
         						<!-- <input type="file" file-model="localForm.uploadedFile" ng-model="localForm.uploadedFile" size="60" value="" onchange="angular.element(this).scope().uploadFile(this);" id="uploadedFile"> -->
 				            </span>
-                    <label for="uploadedFile">&nbsp;&nbsp;</label>
-                            <span id="uploadedUri" style="display: block;" ng-show="protocolForm.uriExternal=='false'">
-			                    <a href="publication.do?dispatch=download&amp;fileId="></a>
+                            <span id="uploadedUri" ng-show="protocolForm.uriExternal=='false' && protocolForm.fileId != null">
+			                    <a href="rest/protocol/download?fileId={{protocolForm.fileId}}">{{protocolForm.uri}}</a>
                             </span>
+				            
+                    <label for="uploadedFile">&nbsp;&nbsp;</label>
 			                <span id="link" ng-show="protocolForm.uriExternal=='true'">
                                 <input type="text" ng-model="protocolForm.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
 					        </span>

@@ -352,13 +352,13 @@
                     <tr>
                         <td colspan="2">
                             <span id="load" style="display: block;" ng-show="publicationForm.uriExternal=='false'">
-        						<input type="file" ng-model="publicationForm.uri" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
+        						<input type="file" ng-model="publicationForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
         						<!-- <input type="file" file-model="localForm.uploadedFile" ng-model="localForm.uploadedFile" size="60" value="" onchange="angular.element(this).scope().uploadFile(this);" id="uploadedFile"> -->
 				            </span>
-                            <label for="uploadedFile">&nbsp;&nbsp;</label>
-                            <span id="uploadedUri" style="display: block;" ng-show="publicationForm.uriExternal=='false'">
-			                    <a href="publication.do?dispatch=download&amp;fileId="></a>
+                            <span id="uploadedUri" ng-show="publicationForm.uriExternal=='false' && publicationForm.fileId != null">
+			                    <a href="rest/publication/download?fileId={{publicationForm.fileId}}">{{publicationForm.uri}}</a>
                             </span>
+                            <label for="uploadedFile">&nbsp;&nbsp;</label>
 			                <span id="link" ng-show="publicationForm.uriExternal=='true'">
                                 <input type="text" ng-model="publicationForm.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
 					        </span>
