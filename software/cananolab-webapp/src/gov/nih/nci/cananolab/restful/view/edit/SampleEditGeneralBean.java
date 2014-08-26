@@ -55,7 +55,16 @@ public class SampleEditGeneralBean {
 	boolean showSubmitForReviewButton = false;;
 
 	List<String> errors = new ArrayList<String>();
+	String message; //requested by front end
 	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public boolean isShowSubmitForReviewButton() {
 		return showSubmitForReviewButton;
 	}
