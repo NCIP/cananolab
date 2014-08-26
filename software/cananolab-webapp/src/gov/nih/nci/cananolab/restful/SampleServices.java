@@ -388,7 +388,7 @@ public class SampleServices {
 	@Path("/submitSample")
 	@Produces ("application/json")
 	public Response submitSample(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleEdit) {
-		logger.info("In updateSample");
+		logger.info("In submitSample");
 		try {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");
