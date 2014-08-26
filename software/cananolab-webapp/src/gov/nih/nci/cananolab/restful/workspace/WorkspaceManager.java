@@ -13,6 +13,7 @@ package gov.nih.nci.cananolab.restful.workspace;
  *
  * @author lethai, pansu
  */
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
@@ -75,7 +76,7 @@ public class WorkspaceManager {
 		UserBean user = (UserBean)request.getSession().getAttribute("user");
 		SimpleWorkspaceBean simpleWorkspace = new SimpleWorkspaceBean();
 		
-		List<SimpleWorkspaceItem> sampleItems = getSampleItems(request, securityService, user);
+		List<SimpleWorkspaceItem> sampleItems =  getSampleItems(request, securityService, user);
 		simpleWorkspace.setSamples(sampleItems);
 		
 		List<SimpleWorkspaceItem> pubItems = getPublicationItems(request, securityService, user);
@@ -107,7 +108,11 @@ public class WorkspaceManager {
 			item.setCreatedDate(pubBean.getDomainFile().getCreatedDate());
 			item.getActions().add("View");
 			
-			item.setSubmisstionStatus("Approved"); //default
+			if (pubBean.getPublicStatus())
+				item.setSubmisstionStatus("Approved"); 
+			else
+				item.setSubmisstionStatus("In Draft");
+			
 			DataReviewStatusBean reviewBean =  this.curationService.findDataReviewStatusBeanByDataId(id, securityService);
 			if (reviewBean != null) {
 				item.setSubmisstionStatus(reviewBean.getReviewStatus());
@@ -145,12 +150,26 @@ public class WorkspaceManager {
 			item.setId(protoBean.getDomain().getId());
 			item.setCreatedDate(protoBean.getDomain().getCreatedDate());
 			
-			if( protoBean.getFileBean().getDomainFile() != null && protoBean.getFileBean().getDomainFile().getId() != null && !StringUtils.isEmpty(protoBean.getFileBean().getDomainFile().getUri())) {
+			File domainFile = protoBean.getFileBean().getDomainFile();
+			if( domainFile != null && 
+					domainFile.getId() != null && 
+					!StringUtils.isEmpty(domainFile.getUri())) {
 				item.setFileId(protoBean.getFileBean().getDomainFile().getId().longValue());
 			}
+			
+			File file = protoBean.getDomain().getFile();
+			if (file != null && file.getUriExternal())
+				item.setExternalURL(file.getUri());
+				
 			item.getActions().add("View");
 			
 			item.setSubmisstionStatus("Approved"); //default
+			
+			if (protoBean.getPublicStatus())
+				item.setSubmisstionStatus("Approved"); 
+			else
+				item.setSubmisstionStatus("In Draft");
+			
 			DataReviewStatusBean reviewBean =  this.curationService.findDataReviewStatusBeanByDataId(id, securityService);
 			if (reviewBean != null) {
 				item.setSubmisstionStatus(reviewBean.getReviewStatus());

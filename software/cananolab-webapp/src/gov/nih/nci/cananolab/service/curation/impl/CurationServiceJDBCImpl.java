@@ -96,9 +96,9 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements
 			NoAccessException {
 		DataReviewStatusBean dataReviewStatusBean = null;
 		try {
-			if (!securityService.checkCreatePermission(dataId)) {
-				throw new NoAccessException();
-			}
+//			if (!securityService.checkCreatePermission(dataId)) {
+//				throw new NoAccessException();
+//			}
 			JdbcTemplate template = this.getJdbcTemplate();
 			String sql = "select " + REVIEW_STATUS_TABLE_ALL_COLS + " from "
 					+ REVIEW_STATUS_TABLE + " where data_id=?";
@@ -108,8 +108,8 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements
 			for (int i = 0; i < result.size(); i++) {
 				dataReviewStatusBean = (DataReviewStatusBean) result.get(0);
 			}
-		} catch (NoAccessException e) {
-			throw e;
+//		} catch (NoAccessException e) {
+//			throw e;
 		} catch (Exception e) {
 			String error = "Error finding existing pending for review data by Id";
 			throw new CurationException(error, e);

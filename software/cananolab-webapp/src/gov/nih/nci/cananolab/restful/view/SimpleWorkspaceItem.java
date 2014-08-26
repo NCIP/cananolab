@@ -13,18 +13,22 @@ public class SimpleWorkspaceItem {
 	long id;
 	String submisstionStatus;
 	Date createdDate;
-	long fileId;
+	long fileId;  //for protocol
 	
-
-
+	String externalURL;
+	
 	String comments;
-	
 	String pubMedId;
-	
-	//List<AccessibilityBean> groupAccesses;
-	//List<AccessibilityBean> userAccesses; 
-	
 	String access;
+
+	
+	public String getExternalURL() {
+		return externalURL;
+	}
+
+	public void setExternalURL(String externalURL) {
+		this.externalURL = externalURL;
+	}
 
 	public List<String> getActions() {
 		return actions;

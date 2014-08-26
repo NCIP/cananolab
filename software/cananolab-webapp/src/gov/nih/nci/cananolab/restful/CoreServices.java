@@ -130,7 +130,7 @@ public class CoreServices {
 			//return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
-			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the users"+ e.getMessage()).build();
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the workspace items: "+ e.getMessage()).build();
 		}
 	}
 	
