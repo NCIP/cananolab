@@ -1185,9 +1185,6 @@ public class SampleBO extends BaseAnnotationBO {
 			logger.error("No sample in session");
 			return null;
 		}
-		
-//		if (sampleId != null && sampleId.length() > 0 && sampleId.equals("0"))
-//			return sampleBean;
 				
 		if (sampleId != sampleBean.getDomain().getId().longValue()) {
 			logger.error("The given sample id doesn't match the sample id in session");
@@ -1229,4 +1226,17 @@ public class SampleBO extends BaseAnnotationBO {
 		List<String> names = new ArrayList(Arrays.asList(nameArray));
 		return names;
 	}
+
+	@Override
+	public String submitForReview(HttpServletRequest request,
+			DataReviewStatusBean dataReviewStatusBean) throws Exception {
+		String message = super.submitForReview(request, dataReviewStatusBean);
+		
+		return (message.equals("success")) ?
+			PropertyUtil.getProperty("sample", "message.submitReview") 
+			: "Error while submitting your sample for review";
+			
+	}
+
+	
 }
