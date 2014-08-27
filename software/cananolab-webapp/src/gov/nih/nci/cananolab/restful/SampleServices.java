@@ -286,7 +286,7 @@ public class SampleServices {
 	@Path("/savePOC")
 	@Produces ("application/json")
 	public Response savePOC(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleEditBean) {
-		logger.info("In savePOC");
+		logger.debug("In savePOC");
 		try {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");
@@ -297,9 +297,12 @@ public class SampleServices {
 			
 			SampleEditGeneralBean editBean = sampleBO.savePointOfContactList(simpleEditBean, httpRequest);
 			List<String> errors = editBean.getErrors();
-			return (errors == null || errors.size() == 0) ?
-					Response.ok(editBean).build() :
-						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			logger.debug("SavePOC completed with " + errors.size() + " errors");
+			
+			return Response.ok(editBean).build();
+//			return (errors == null || errors.size() == 0) ?
+//					Response.ok(editBean).build() :
+//						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
