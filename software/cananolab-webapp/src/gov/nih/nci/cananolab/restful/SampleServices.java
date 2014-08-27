@@ -51,7 +51,7 @@ public class SampleServices {
 	@Path("/setup")
 	@Produces ("application/json")
     public Response setup(@Context HttpServletRequest httpRequest) {
-		System.out.println("In initSetup");		
+		logger.debug("In initSetup");		
 		
 		try { 
 			SearchSampleBO searchSampleBO = 
@@ -98,10 +98,10 @@ public class SampleServices {
 			
 			Object result = results.get(0);
 			if (result instanceof String) {
-				logger.info("Search sampel has error: " + results.get(0));
+				logger.debug("Search sampel has error: " + results.get(0));
 				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
 			} else {
-				logger.info("Sample search successful");
+				logger.debug("Sample search successful");
 				return Response.ok(results).build();
 			}
 
@@ -389,7 +389,7 @@ public class SampleServices {
 	@Path("/submitSample")
 	@Produces ("application/json")
 	public Response submitSample(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleEdit) {
-		logger.info("In submitSample");
+		logger.debug("In submitSample");
 		try {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");
@@ -401,7 +401,8 @@ public class SampleServices {
 			SampleEditGeneralBean editBean = sampleBO.submit(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();
 			
-			logger.error("Sumbit sample completed with " + errors.size() + " errors");
+			logger.debug("Sumbit sample completed with " + errors.size() + " errors");
+			logger.debug("Submitted sample id: " + editBean.getSampleId());
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(editBean).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
@@ -458,7 +459,7 @@ public class SampleServices {
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			String msg = sampleBO.delete(sampleId, httpRequest);
-			logger.error("Delete sample complete: " + msg);
+			logger.debug("Delete sample complete: " + msg);
 			return (msg == null || msg.startsWith("Error")) ?
 					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build()
 					:
@@ -504,7 +505,7 @@ public class SampleServices {
 	@Path("/deleteDataAvailability")
 	@Produces("application/json")
 	 public Response deleteDataAvailability(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleSampleBean){
-		logger.info("In deleteDataAvailability");
+		logger.debug("In deleteDataAvailability");
 		try {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");
