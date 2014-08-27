@@ -5,6 +5,7 @@ var app = angular.module('angularApp')
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();
     $scope.sampleResultData =sampleService.sampleData;
+
     $scope.sampleData = {};
     $scope.reviewBean = {}; 
     $scope.submitForReviewButton=1;
@@ -185,11 +186,13 @@ var app = angular.module('angularApp')
                 $http({method: 'GET', url: '/caNanoLab/rest/sample/deleteSample',params: {"sampleId":$scope.sampleData.sampleId}}).
                 success(function(data, status, headers, config) {
                     var b = $scope.sampleResultData['data'];
-                    for (var g = 0;g<b.length;g++) {
-                      if (b[g].sampleId==$scope.sampleId.data) {
-                        $scope.sampleResultsData = b.splice(g,1);
-                      };
-                    };
+                    if (b) {
+                        for (var g = 0;g<b.length;g++) {
+                          if (b[g].sampleId==$scope.sampleId.data) {
+                            $scope.sampleResultsData = b.splice(g,1);
+                          };
+                        };
+                     }   
                     $location.path("/sampleResults").replace();
                 }).
                 error(function(data, status, headers, config) {

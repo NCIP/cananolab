@@ -51,6 +51,7 @@ var app = angular.module('angularApp')
     $scope.sampleData.data  = data;
     if (data==null) {
       $scope.sampleData.data = [];
+      data = [];
       $location.path("/searchSample").replace();
     }  
 
