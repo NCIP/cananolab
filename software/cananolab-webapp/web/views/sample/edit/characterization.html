@@ -1,0 +1,68 @@
+<div class="spacer">
+<table border="0" class="contentTitle" summary="layout" width="100%">
+  <tr>
+    <th align="left" scope="col">
+      Sample {{sampleData.data[0].sampleName}} Characterization
+    </th>
+    <td align="right" width="30%">
+    <button class="btn back btn-xs" ng-click="goBack()">Back</button>
+
+    <a class="helpText" ng-click="print()" href="" target="_blank">Print</a> 
+    <!-- <a class="helpText" ng-click="print()" ng-href="views/printCharacterization.html?sampleId={{sampleId.data}}&type=all" target="_blank">Print</a>  -->    
+    <a class="helpText" href="/caNanoLab/rest/sample/exportCharacterizationView?sampleId={{sampleId.data}}" target="_blank">Export</a>         
+      <a class="helpText" href=
+      "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
+      "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+    </td>
+  </tr> 
+</table>
+<div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>   
+ <ul class="liNav">
+    <li><a href="#/sample">General Info</a></li>
+    <li><a href="#/composition">Composition</a></li>
+    <li><a href="#/characterization">Characterization</a></li>
+    <li><a href="#/publication">Publication</a></li>
+</ul>
+<tabset justified="true">
+  <tab heading="All" ng-click="select(-1)"></tab>
+  <tab ng-repeat="item in data" heading="{{item.type}}" ng-click="select({{$index}})"></tab>
+</tabset>
+
+
+<table border="0" ng-hide="show{{$index}}" cellspacing="0" cellpadding="0" style=""  width="100%" summary="layout" ng-repeat="type in data" border="0" class="dataTable">
+
+  <tr class="heading">
+      <td>
+        <!-- type -->
+            <div>{{type.type}}</div>
+        <!-- type -->
+      </td>
+  </tr> 
+  <tr ng-repeat="(key,characterization) in type.charsByAssayType track by $index">
+      <td>
+        <table summary="layout" width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td class="characterization">
+                  <!-- characterization -->
+                  {{key}}
+                  <!-- characterization -->                  
+              </td>
+            </tr>
+            <tr>
+              <td><div ng-include="'views/sample/edit/assay.html'"></div>
+              </td>
+            </tr>
+        </table><br />
+      </td>
+  </tr>
+  <tr>
+    <td class="break">&nbsp;</td>
+  </tr> 
+</table>
+  <div id="loader" class="sample offset" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>
+</div>
