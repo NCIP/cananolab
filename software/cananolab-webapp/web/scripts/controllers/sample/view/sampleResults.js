@@ -52,7 +52,7 @@ var app = angular.module('angularApp')
     if (data==null) {
       $scope.sampleData.data = [];
       data = [];
-      $location.path("/searchSample").replace();
+      $location.path("/searchSample").search({}).replace();
     }  
 
     $scope.tableParams = new ngTableParams(
