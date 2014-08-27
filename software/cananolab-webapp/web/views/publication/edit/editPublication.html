@@ -372,7 +372,7 @@
     </table>
 </div>
 <br>
-<div ng-if="publicationForm.map.sampleId != ''">
+<div ng-if="sampleId == null || sampleId ==''">
     <a id="sampleNameField" class="anchorLink"></a>
     <table width="100%" align="center" class="submissionView" summary="layout">
         <tr>
@@ -417,7 +417,7 @@
         </tr>
     </table>
 </div>
-<div ng-if="sampleId !=''">
+<div ng-if="sampleId != null && sampleId !=''">
     <table width="100%" align="center" class="submissionView">
         <tbody>
             <tr ng-if="publicationForm.otherSampleNames != null">
