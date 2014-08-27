@@ -1,44 +1,27 @@
 package gov.nih.nci.cananolab.restful;
 
-import java.awt.image.BufferedImage;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
-import gov.nih.nci.cananolab.domain.common.Author;
-import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
 import gov.nih.nci.cananolab.restful.publication.PublicationManager;
 import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
-import gov.nih.nci.cananolab.restful.sample.SampleBO;
-import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.restful.view.SimplePublicationBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
-import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
-import gov.nih.nci.cananolab.restful.view.edit.SampleEditPublicationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
-import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
-import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.PropertyUtils;
 
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -46,13 +29,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.log4j.Logger;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.context.ApplicationContext;
 
 @Path("/publication")

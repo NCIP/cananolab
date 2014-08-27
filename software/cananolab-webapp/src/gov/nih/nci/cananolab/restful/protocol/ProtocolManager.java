@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.ui.protocol.DWRProtocolManager;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.SortedSet;

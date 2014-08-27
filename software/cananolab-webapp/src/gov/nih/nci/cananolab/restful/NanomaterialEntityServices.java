@@ -4,11 +4,9 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -24,6 +22,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+
 @Path("/nanomaterialEntity")
 public class NanomaterialEntityServices {
 	

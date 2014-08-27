@@ -1,18 +1,10 @@
 package gov.nih.nci.cananolab.restful;
 
 import java.io.FileInputStream;
-import java.util.Map;
 
-import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
-import gov.nih.nci.cananolab.restful.publication.PublicationBO;
-import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.CompositionBO;
-import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
-import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleCompositionBean;
-import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 
 import javax.inject.Inject;

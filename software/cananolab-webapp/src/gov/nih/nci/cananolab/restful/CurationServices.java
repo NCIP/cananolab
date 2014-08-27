@@ -4,18 +4,12 @@ import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.restful.core.ManageResultBO;
 import gov.nih.nci.cananolab.restful.curation.BatchDataAvailabilityBO;
 import gov.nih.nci.cananolab.restful.curation.ReviewDataBO;
-import gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO;
-import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.service.common.LongRunningProcess;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.GenerateBatchDataAvailabilityForm;
-import gov.nih.nci.cananolab.ui.form.ReviewDataForm;
-import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
-import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;

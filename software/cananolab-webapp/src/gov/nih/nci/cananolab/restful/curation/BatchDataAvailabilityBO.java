@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.service.sample.impl.BatchDataAvailabilityProcess;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.form.GenerateBatchDataAvailabilityForm;
 
 import java.util.ArrayList;
@@ -20,12 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.action.DynaActionForm;
 
 public class BatchDataAvailabilityBO extends AbstractDispatchBO {
 	private DataAvailabilityService dataAvailabilityService;

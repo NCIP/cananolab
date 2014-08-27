@@ -1,51 +1,31 @@
 package gov.nih.nci.cananolab.restful;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
-import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.protocol.ProtocolManager;
 import gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO;
-import gov.nih.nci.cananolab.restful.publication.PublicationBO;
-import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.restful.util.PropertyUtil;
-import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
-import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
-import gov.nih.nci.cananolab.util.Constants;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
-import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.ApplicationContext;
 
 @Path("/protocol")

@@ -18,9 +18,7 @@ import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;

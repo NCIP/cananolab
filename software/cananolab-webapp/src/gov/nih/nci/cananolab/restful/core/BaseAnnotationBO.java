@@ -46,8 +46,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 
 /**
@@ -265,8 +263,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		}
 
 		if (File.getType().length() == 0) {
-			ActionMessage msg = new ActionMessage("errors.required",
-					"file type");
+//			ActionMessage msg = new ActionMessage("errors.required",
+//					"file type");
 		//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		//	this.saveErrors(request, msgs);
 			noErrors = false;
@@ -275,8 +273,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		if (File.getUriExternal()) {
 			if (fileBean.getExternalUrl() == null
 					|| fileBean.getExternalUrl().trim().length() == 0) {
-				ActionMessage msg = new ActionMessage("errors.required",
-						"external url");
+//				ActionMessage msg = new ActionMessage("errors.required",
+//						"external url");
 		//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		//		this.saveErrors(request, msgs);
 				noErrors = false;
@@ -299,8 +297,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 			} else if ((fileBean.getUploadedFile() == null || StringUtils
 					.isEmpty(fileBean.getUploadedFile().getFileName()))
 					&& !StringUtils.isEmpty(fileBean.getExternalUrl())) {
-				ActionMessage msg = new ActionMessage("errors.required",
-						"uploaded file");
+//				ActionMessage msg = new ActionMessage("errors.required",
+//						"uploaded file");
 			//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			//	this.saveErrors(request, msgs);
 				noErrors = false;
@@ -405,12 +403,12 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 			return true;
 		} else {
 			// per app scan check id format
-			ActionMessages msgs = new ActionMessages();
+	//		ActionMessages msgs = new ActionMessages();
 			if (protectedData != null
 					&& !protectedData.matches(Constants.NUMERIC_PATTERN)) {
-				ActionMessage msg = new ActionMessage("invalid.id");
-				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			//	this.saveErrors(request, msgs);
+//				ActionMessage msg = new ActionMessage("invalid.id");
+//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+//			//	this.saveErrors(request, msgs);
 				throw new NotExistException("Invalid ID format");
 			}
 			try {

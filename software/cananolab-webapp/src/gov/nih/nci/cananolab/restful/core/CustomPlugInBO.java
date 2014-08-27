@@ -15,16 +15,13 @@ import java.util.Properties;
 
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
-import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.action.ActionServlet;
-import org.apache.struts.config.ModuleConfig;
+
 
 /**
  * Creates default CSM groups and sample types and initialize Hibernate

@@ -4,16 +4,10 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-
 public class ManageCurationBO {
-	public void execute(ActionForm form,
-			HttpServletRequest request)
+	public void execute(HttpServletRequest request)
 			throws Exception {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");

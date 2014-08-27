@@ -19,7 +19,6 @@ import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.CompositionUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
-import gov.nih.nci.cananolab.restful.util.PublicationUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -34,13 +33,6 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorForm;
 
 public class NanomaterialEntityBO extends BaseAnnotationBO{
 	/**
@@ -72,7 +64,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	//	ActionMessage msg = new ActionMessage("message.addNanomaterialEntity");
 		msgs.add(PropertyUtil.getProperty("sample", "message.addNanomaterialEntity"));
 		// save action messages in the session so composition.do know about them
-		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+	//	request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		// to preselect nanomaterial entity after returning to the summary page
 		request.getSession().setAttribute("tab", "1");
 	//	return mapping.findForward("success");
@@ -160,9 +152,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		if (!newEntity && !user.isCurator() && sampleBean.getPublicStatus()) {
 //			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
 //					.toString(), sampleBean.getDomain().getName(), "sample");
-			ActionMessages messages = new ActionMessages();
-			ActionMessage msg = null;
-			msg = new ActionMessage("message.updateSample.retractFromPublic");
+//			ActionMessages messages = new ActionMessages();
+//			ActionMessage msg = null;
+//			msg = new ActionMessage("message.updateSample.retractFromPublic");
 			msgs.add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
 			return msgs;
 		//	messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -201,7 +193,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	// per app scan, can not easily validate in the validation.xml
 	private boolean validateEntity(HttpServletRequest request,
 			NanomaterialEntityBean entityBean) {
-		ActionMessages msgs = new ActionMessages();
+//		ActionMessages msgs = new ActionMessages();
 		boolean status = true;
 		if (entityBean.getType().equalsIgnoreCase("biopolymer")) {
 			if (entityBean.getBiopolymer().getName() != null
@@ -582,7 +574,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		msgs.add(PropertyUtil.getProperty("sample", "message.deleteNanomaterialEntity"));
 		// save action messages in the session so composition.do know about
 		// them
-		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+	//	request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		//return mapping.findForward("success");
 		return msgs;
 	}
