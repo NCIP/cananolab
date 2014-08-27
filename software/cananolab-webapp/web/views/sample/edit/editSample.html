@@ -109,7 +109,7 @@
                 </tr> <!-- End of Point of Contact -->
 
                 <!-- Keywords -->
-                <tr ng-show="sampleData.pointOfContacts && sampleData.errors.length==0">
+                <tr ng-show="sampleData.pointOfContacts.length && sampleData.errors.length==0">
                     <td class="cellLabel">{{sampleService.pocData.dirty}}
                         <label for="keywords">Keywords</label>
                     </td>
@@ -128,7 +128,7 @@
                    </td>
                 </tr>
 
-				<tr ng-show="sampleData.pointOfContacts && sampleData.errors.length==0"">
+				<tr ng-show="sampleData.pointOfContacts.length && sampleData.errors.length==0"">
                     <td colspan="5">
                         <table>
                             <ng-include src="'/caNanoLab/views/manageAccessibility.html'"></ng-include>
@@ -154,7 +154,7 @@
 
                         </td>
                     </tr>
-                    <tr ng-show="sampleData.dataAvailability && sampleData.pointOfContacts">
+                    <tr ng-show="sampleData.dataAvailability && sampleData.pointOfContacts.length">
                         <td colspan="2">
                             <table class="editTableWithGrid" width="95%" align="center">
                                 <tbody><tr>
@@ -187,9 +187,9 @@
             <div class="btn-group pull-right">
                 <button ng-click="reset()" class='btn btn-default' ng-disabled="!scratchPad.editSampleData.dirty">Reset</button>
                 <button ng-click="submitForReview()" ng-if="updateButton=='Update' && sampleData.showReviewButton && submitForReviewButton" class='btn btn-primary'>Submit for Review</button> 
-                <button ng-click="update()" ng-if="updateButton=='Update'" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts">{{updateButton}}</button>
+                <button ng-click="update()" ng-if="updateButton=='Update'" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts.length">{{updateButton}}</button>
               
-                <button ng-click="submitSample()" ng-if="updateButton=='Submit'" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts">{{updateButton}}</button>                
+                <button ng-click="submitSample()" ng-if="updateButton=='Submit'" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts.length">{{updateButton}}</button>                
             </div>
         </div>
 
