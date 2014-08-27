@@ -216,7 +216,7 @@ var app = angular.module('angularApp')
             $scope.master = angular.copy($scope.sampleData);
             $scope.scratchPad.editSampleData.dirty = false;
             $scope.loader = false;
-            $location.path("/editSample").search({'sampleId':$scope.sampleData.sampleId}).replace();
+            $location.path("/editSample").search({'sampleId':data.sampleId}).replace();
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
