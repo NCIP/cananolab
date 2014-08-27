@@ -245,7 +245,7 @@ public class PublicationBean extends FileBean {
 		authors.remove(ind);
 	}
 
-	private String getAuthorsDisplayName() {
+	public String getAuthorsDisplayName() {
 		List<String> strs = new ArrayList<String>();
 		for (Author author : authors) {
 			List<String> authorStrs = new ArrayList<String>();

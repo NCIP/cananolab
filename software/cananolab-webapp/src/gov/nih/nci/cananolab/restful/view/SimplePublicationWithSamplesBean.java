@@ -3,6 +3,8 @@ package gov.nih.nci.cananolab.restful.view;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -112,32 +114,24 @@ public class SimplePublicationWithSamplesBean {
 		this.errors = errors;
 	}
 	
-	public void transferDataFromPublication(Publication pubBean) {
+	public void transferDataFromPublication(PublicationBean pubBean) {
 		
 		if (pubBean == null) {
 			logger.error("Input publication object is null!!");
 			return;
 		}
-		this.setId(String.valueOf(pubBean.getId()));
 		
-		this.setTitle(pubBean.getTitle());
-		this.setYear(pubBean.getYear().longValue());
-		this.setJournal(pubBean.getJournalName());
-		this.setVolumn(pubBean.getVolume() + ":" + pubBean.getStartPage() + "-" + pubBean.getEndPage());
-		this.setDescription(pubBean.getDescription());
-		this.setExternalUrl(pubBean.getUri());
-		Collection<Author> authors = pubBean.getAuthorCollection();
-		if (authors != null) {
-			StringBuilder sb = new StringBuilder();
-			for (Author author : authors) {
-				if (sb.length() > 0) 
-					sb.append("; ");
-				
-				sb.append(author.getLastName()).append(", ").append(author.getFirstName()).append(" ").append(author.getInitial());
-			}
-			
-			this.setAuthors(sb.toString());
-		}
+		Publication pub = (Publication)pubBean.getDomainFile();
+		
+		this.setId(String.valueOf(pub.getId()));
+		
+		this.setTitle(pub.getTitle());
+		this.setYear(pub.getYear().longValue());
+		this.setJournal(pub.getJournalName());
+		this.setVolumn(pub.getVolume() + ":" + pub.getStartPage() + "-" + pub.getEndPage());
+		this.setDescription(pub.getDescription());
+		this.setExternalUrl(pub.getUri());
+		this.setAuthors(pubBean.getAuthorsDisplayName());
 	}
 	
 	public void transferSampleDataFromSampleList(List<Sample> sampleBeans) {
@@ -150,5 +144,50 @@ public class SimplePublicationWithSamplesBean {
 		for (Sample sample : sampleBeans) {
 			samples.put(String.valueOf(sample.getId()), sample.getName());
 		}
+	}
+	
+//	protected String getAuthorDisplayNames(Publication pub) {
+//		// standard PubMed journal citation format
+//		// e.g. Freedman SB, Adler M, Seshadri R, Powell EC. Oral ondansetron
+//		// for gastroenteritis in a pediatric emergency department. N Engl J
+//		// Med. 2006 Apr 20;354(16):1698-705. PubMed PMID: 12140307.
+//		List<String> strs = new ArrayList<String>();
+//		
+//		Collection<Author> authors = pub.getAuthorCollection();
+//		
+//		strs.add(getAuthorsDisplayName());
+//		// remove last . in the title
+//		if (pub.getTitle().endsWith(".")) {
+//			strs.add(pub.getTitle().substring(0, pub.getTitle().length() - 1));
+//		} else {
+//			strs.add(pub.getTitle());
+//		}
+//		strs.add(pub.getJournalName());
+//		strs.add(getPublishInfoDisplayName());
+//		strs.add(getPubMedDisplayName());
+//
+//		if (pub.getPubMedId() == null) {
+//			strs.add(getDOIDisplayName());
+//		}
+//		if (pub.getPubMedId() == null
+//				&& StringUtils.isEmpty(pub.getDigitalObjectId())) {
+//			strs.add(getUriDisplayName());
+//		}
+//
+//		displayName = StringUtils.join(strs, ". ") + ".";
+//
+//		return displayName;
+//	}
+	
+	protected String getAuthorsDisplayName(Publication pub) {
+		Collection<Author> authors = pub.getAuthorCollection();
+		List<String> strs = new ArrayList<String>();
+		for (Author author : authors) {
+			List<String> authorStrs = new ArrayList<String>();
+			authorStrs.add(author.getLastName());
+			authorStrs.add(author.getInitial());
+			strs.add(StringUtils.join(authorStrs, ", "));
+		}
+		return StringUtils.join(strs, ", ");
 	}
 }

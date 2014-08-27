@@ -305,19 +305,18 @@ public class PublicationManager {
 		} else
 			throw new Exception("type parameter is not valid");
 		
-		Publication publication = null;
+		PublicationBean pubBean = null;
 		List<Sample> samples = null;
 		try {
 			SecurityService securityService = (SecurityService) request
 					.getSession().getAttribute("securityService");
 			PublicationServiceLocalImpl service = new PublicationServiceLocalImpl(securityService);
-			publication = service.getHelper()
-					.findPublicationByKey(key, val);
+			pubBean = service.findPublicationByKey(key, val, false);
 		
-			if (publication == null) 
+			if (pubBean == null) 
 				throw new Exception("No publication found with id \"" + id + "\" of type \"" + type + "\"");
 			
-			long pubId = publication.getId();
+			long pubId = pubBean.getDomainFile().getId().longValue();
 			samples = service.getHelper().findSamplesByPublicationId(pubId);
 			
 		} catch (NoAccessException ne) {
@@ -328,9 +327,8 @@ public class PublicationManager {
 			throw e;
 		}
 		
-		
 		SimplePublicationWithSamplesBean simplePubBean = new SimplePublicationWithSamplesBean();
-		simplePubBean.transferDataFromPublication(publication);
+		simplePubBean.transferDataFromPublication(pubBean);
 		simplePubBean.transferSampleDataFromSampleList(samples);
 		simplePubBean.setType(type);
 		simplePubBean.setId(val.toString());
@@ -338,42 +336,42 @@ public class PublicationManager {
 		return simplePubBean;
 	}
 	
-	public Publication getPubMedPublication(String pubmedID, HttpServletRequest request) {
-		String publicationId = null;
-		try {
-			SecurityService securityService = (SecurityService) request
-					.getSession().getAttribute("securityService");
-			PublicationServiceLocalImpl service = new PublicationServiceLocalImpl(securityService);
-			Publication publication = service.getHelper()
-					.findPublicationByKey("pubMedId", new Long(pubmedID));
-			return publication;
-		} catch (NoAccessException ne) {
-			logger.info("User can't access the publication with Pub Med ID "
-					+ pubmedID);
-			publicationId="no access";
-		} catch (Exception e) {
-			logger.info("Error in retrieving publication with Pub Med ID "
-					+ pubmedID);
-		}
-		return null;
-	}
+//	public Publication getPubMedPublication(String pubmedID, HttpServletRequest request) {
+//		String publicationId = null;
+//		try {
+//			SecurityService securityService = (SecurityService) request
+//					.getSession().getAttribute("securityService");
+//			PublicationServiceLocalImpl service = new PublicationServiceLocalImpl(securityService);
+//			Publication publication = service.getHelper()
+//					.findPublicationByKey("pubMedId", new Long(pubmedID));
+//			return publication;
+//		} catch (NoAccessException ne) {
+//			logger.info("User can't access the publication with Pub Med ID "
+//					+ pubmedID);
+//			publicationId="no access";
+//		} catch (Exception e) {
+//			logger.info("Error in retrieving publication with Pub Med ID "
+//					+ pubmedID);
+//		}
+//		return null;
+//	}
 
-	public Publication getDOIPublication(String doi) {
-		String publicationId = null;
-		try {
-			Publication publication = getService().getHelper()
-					.findPublicationByKey("digitalObjectId", doi);
-			
-			return publication;
-//			if (publication != null) {
-//				publicationId = publication.getId().toString();
-//			}
-		} catch (NoAccessException ne) {
-			logger.info("User can't access the publication with DOI " + doi);
-			publicationId="no access";
-		} catch (Exception e) {
-			logger.info("Error in retrieving publication with DOI " + doi);
-		}
-		return null;
-	}
+//	public Publication getDOIPublication(String doi) {
+//		String publicationId = null;
+//		try {
+//			Publication publication = getService().getHelper()
+//					.findPublicationByKey("digitalObjectId", doi);
+//			
+//			return publication;
+////			if (publication != null) {
+////				publicationId = publication.getId().toString();
+////			}
+//		} catch (NoAccessException ne) {
+//			logger.info("User can't access the publication with DOI " + doi);
+//			publicationId="no access";
+//		} catch (Exception e) {
+//			logger.info("Error in retrieving publication with DOI " + doi);
+//		}
+//		return null;
+//	}
 }
