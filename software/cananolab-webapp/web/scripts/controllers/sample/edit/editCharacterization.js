@@ -14,7 +14,7 @@ app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,
     // Displays left hand nav for samples section. navTree shows nav and navDetail is page index //
     $rootScope.navTree = true;
     $rootScope.navDetail = 2;  
-
+    alert("fix left nav for edit pages");
     $scope.goBack = function() {
       $location.path("/sampleResults").replace(); 
       $location.search('sampleId', null);
