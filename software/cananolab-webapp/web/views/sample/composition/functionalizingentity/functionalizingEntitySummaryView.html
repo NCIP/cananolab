@@ -123,8 +123,7 @@
                                     <th scope="row" class="cellLabel" width="10%">
                                         Description
                                     </th>
-                                    <td>
-                                        {{entityType.FunctionDescriptionDisplayName}}
+                                    <td ng-bind-html="entityType.FunctionDescriptionDisplayName">
                                     </td>
                                 </tr>
                                 <tr ng-if="entityType.Files.length > 0">
