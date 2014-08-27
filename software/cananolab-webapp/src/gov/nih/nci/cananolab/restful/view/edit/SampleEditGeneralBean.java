@@ -30,7 +30,7 @@ public class SampleEditGeneralBean {
 	long sampleId;
 	boolean userIsCurator;
 	
-	List<SimplePointOfContactBean> pointOfContacts;
+	List<SimplePointOfContactBean> pointOfContacts = new ArrayList<SimplePointOfContactBean>();;
 	List<String> keywords = new ArrayList<String>();
 	Map<String, List<SimpleAccessBean>> accessToSample;
 	
@@ -61,14 +61,6 @@ public class SampleEditGeneralBean {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-
-//	public boolean isShowSubmitForReviewButton() {
-//		return showSubmitForReviewButton;
-//	}
-//
-//	public void setShowSubmitForReviewButton(boolean showSubmitForReviewButton) {
-//		this.showSubmitForReviewButton = showSubmitForReviewButton;
-//	}
 
 	public List<AccessibilityBean> getGroupAccesses() {
 		return groupAccesses;
@@ -455,10 +447,10 @@ public class SampleEditGeneralBean {
 		dataAvailability.transferSampleBeanForDataAvailability(sampleBean, request, availableEntityNames);
 	}
 	
-	protected void transferPointOfContactData(SampleBean sampleBean) {
-		pointOfContacts = new ArrayList<SimplePointOfContactBean>();
+	public void transferPointOfContactData(SampleBean sampleBean) {
+		//pointOfContacts = new ArrayList<SimplePointOfContactBean>();
 		PointOfContact samplePOC = sampleBean.getPrimaryPOCBean().getDomain();
-		long sampleId = sampleBean.getDomain().getId().longValue();
+		long sampleId = (sampleBean.getDomain().getId() == null) ? 0 : sampleBean.getDomain().getId().longValue();
 		if (samplePOC != null && samplePOC.getId() > 0) {
 			SimplePointOfContactBean poc = new SimplePointOfContactBean();
 			transferPointOfContactData(samplePOC, poc, sampleId);
@@ -476,7 +468,7 @@ public class SampleEditGeneralBean {
 		}
 	}
 	
-	protected void transferPointOfContactData(PointOfContact samplePOC, SimplePointOfContactBean poc,
+	public void transferPointOfContactData(PointOfContact samplePOC, SimplePointOfContactBean poc,
 			long sampleId) {
 		
 		poc.setFirstName(samplePOC.getFirstName());

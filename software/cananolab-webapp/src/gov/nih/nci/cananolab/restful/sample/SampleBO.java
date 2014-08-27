@@ -522,6 +522,7 @@ public class SampleBO extends BaseAnnotationBO {
 				sample = new SampleBean();
 				sample.getDomain().setName(sampleName);
 				newSample = true;
+				
 			}
 		} else if (sampleId <= 0) {
 			sample.getDomain().setName(sampleName);
@@ -558,8 +559,17 @@ public class SampleBO extends BaseAnnotationBO {
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (DuplicateEntriesException e) {
+			if (newSample)
+				simpleSampleBean.getPointOfContacts().clear();
+			
 			request.getSession().setAttribute("theSample", sample);
-			return this.wrapErrorInEditBean(PropertyUtil.getProperty("sample", "error.duplicateSample"));
+			simpleSampleBean.getErrors().add(PropertyUtil.getProperty("sample", "error.duplicateSample"));
+			simpleSampleBean.transferPointOfContactData(sample);;
+//			SimplePointOfContactBean poc = new SimplePointOfContactBean();
+//			simpleSampleBean.transferPointOfContactData(thePOC.getDomain(), poc, (long)0);
+			//simpleSampleBean.getPointOfContacts().add(poc);
+			return simpleSampleBean;
+			//return this.wrapErrorInEditBean(PropertyUtil.getProperty("sample", "error.duplicateSample"));
 		} catch (Exception e) {
 			throw e;
 		}
