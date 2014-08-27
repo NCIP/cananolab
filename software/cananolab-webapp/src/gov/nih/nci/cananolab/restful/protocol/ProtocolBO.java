@@ -181,7 +181,7 @@ public class ProtocolBO extends BaseAnnotationBO{
 		}
 		
 		String externalUrl = protocolBean.getFileBean().getExternalUrl();
-		if(!InputValidationUtil.url(externalUrl)){
+		if(!InputValidationUtil.isUrlValid(externalUrl)){
 			errors.add("External URL is invalid");
 		}
 		

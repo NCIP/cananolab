@@ -12,9 +12,13 @@ public class InputValidationUtil {
 	}
 	
 	public static boolean isRelaxedAlphabetic(String input) {
+		if(input == null || input == "")
+			return true;
 		String reg = "^[a-zA-Z\\s\\-\\.\\']*$";
 		
-		return (input == null) ? false : input.matches(reg);
+		if(input.matches(reg))
+			return true;
+		return false;
 
 	}
 	
@@ -55,8 +59,12 @@ public class InputValidationUtil {
 	}
 	
 	public static boolean isTextFieldWhiteList(String input) {
+		if(input == null || input == "")
+			return true;
 		String reg = "^(?!.*(<script|<%00script|\\%3C\\%73\\%63\\%72\\%69\\%70\\%74|<script|<script|<%00script|\\%uff1cscript\\%uff1e|\\%BC\\%F3\\%E3\\%F2\\%E9\\%F0\\%F4|\\+ADw\\-SCRIPT\\+AD4|\\u003Cscript|javascript\\:|\\%6A\\%61\\%76\\%61\\%73\\%63%\\%72\\%69\\%70\\%74\\%3A|javascript:|javascript:|<iframe|<frame|etc/passwd|/bin/id|\\.ini|;vol\\||id\\||AVAK\\$\\(RETURN_CODE\\)OS|sys\\.dba_user|\\+select\\+|\\+and\\+|WFXSSProbe|WF_XSRF|alert\\(|TEXT/VBSCRIPT|=\"|\\.\\./|\\.\\.\\|\\'|\\\"|background\\:|\\'\\+|\\\"\\+|%\\d+)).*$";
-		return (input == null) ? false : input.matches(reg);
+		if(input.matches(reg))
+			return true;
+		return false;
 	}
 	
 	public static boolean isNumber(String input) {
@@ -65,22 +73,30 @@ public class InputValidationUtil {
 	}
 	
 	public static boolean isRelaxedTextFieldWhiteList0(String input) {
+		if(input == null || input == "")
+			return true;
 		String reg = "^[a-zA-Z0-9\\-\\_\\s\\(\\)\\:\\.\\,\\/\\?\\*]*$";
-		return (input == null) ? false : input.matches(reg);
+		if(input.matches(reg))
+			return true;
+		return false;
 	}
 	
-	public static boolean doi(String input) {
+	public static boolean isDoiValid(String input) {
+		if(input == null || input == "")
+			return true;
 		String reg = "^[a-zA-Z0-9\\/\\-\\_\\s\\(\\)\\:\\.]*$";
 		if(input.matches(reg))
-			return false;
-		return true;
+			return true;
+		return false;
 	}
 	
-	public static boolean url(String input){
-		String reg = "(@)?(href=')?(HREF=')?(HREF=\")?(href=\")?(http://)?[a-zA-Z_0-9\\-]+(\\.\\w[a-zA-Z_0-9\\-]+)+(/[#&\\n\\-=?\\+\\%/\\.\\w]+)?";
+	public static boolean isUrlValid(String input){
+		if(input == null || input == "")
+			return true;
+		String reg = "((http://|https://|ftp://)([\\S.]+))|((\\\\)(.+)(\\.)(\\w+))";
 		if(input.matches(reg))
-			return false;
-		return true;
+			return true;
+		return false;
 	}
 	
 	public static boolean isEmailValid(String email) {
