@@ -1182,11 +1182,21 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute("theSample");
 		if (sampleBean == null) {
-			logger.error("No sample in session");
+			logger.error("No sample in session"); //should not happen
 			return null;
 		}
-				
-		if (sampleId != sampleBean.getDomain().getId().longValue()) {
+			
+		Long domainSampleId = sampleBean.getDomain().getId();
+		if (domainSampleId == null) {
+			if (sampleId == 0)
+				return sampleBean; // from a failed save, incomplete sampleBean
+			else {
+				logger.error("Sample in session doesn't seem to be valid");
+				return null;
+			}
+		}
+		
+		if (sampleId != domainSampleId.longValue()) {
 			logger.error("The given sample id doesn't match the sample id in session");
 			return null;
 		}
