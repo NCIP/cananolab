@@ -400,6 +400,8 @@ public class SampleServices {
 			
 			SampleEditGeneralBean editBean = sampleBO.submit(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();
+			
+			logger.error("Sumbit sample completed with " + errors.size() + " errors");
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(editBean).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
@@ -407,7 +409,7 @@ public class SampleServices {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList("Error while updating sample: " + e.getMessage())).build();
+					.entity(CommonUtil.wrapErrorMessageInList("Error while submitting sample: " + e.getMessage())).build();
 		}
 	}
 	
@@ -456,7 +458,7 @@ public class SampleServices {
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			String msg = sampleBO.delete(sampleId, httpRequest);
-			
+			logger.error("Delete sample complete: " + msg);
 			return (msg == null || msg.startsWith("Error")) ?
 					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build()
 					:
