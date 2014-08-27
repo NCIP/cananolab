@@ -26,7 +26,7 @@ public class InputValidationUtilTest {
 	
 	@Test
 	public void testIsDOI() {
-		boolean is = InputValidationUtil.doi(null);
+		boolean is = InputValidationUtil.isDoiValid(null);
 		assertFalse(is);
 	}
 	
