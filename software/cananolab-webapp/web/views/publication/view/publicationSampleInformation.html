@@ -26,7 +26,10 @@
 	</tr>
 	<tr>
 		<td class="columnOne">
-			<span ng-if="data.type=='DOI'">DOI Id: {{data.id}}</span>
+			<span ng-if="data.type=='DOI' && (data.externalUrl == null || data.externalUrl == '')">DOI Id: {{data.id}}</span>
+			<span ng-if="data.type=='DOI' && data.externalUrl != null && data.externalUrl != ''">
+				<a href="{{data.externalUrl}}" target="_blank">DOI Id: {{data.id}}</a>
+			</span>
 			<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}" ng-if="data.type=='PubMed'" target="_blank">PubMed ID: {{data.id}}</a>
 		</td>
 		<td>
