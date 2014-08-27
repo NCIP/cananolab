@@ -7,6 +7,7 @@ import java.util.List;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
@@ -45,7 +46,7 @@ public class PublicationServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(PublicationServices.class)
 				.path("publication/summaryView")
-				.queryParam("sampleId", "20917508") 
+				.queryParam("sampleId", "20917506") 
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
@@ -84,7 +85,7 @@ public class PublicationServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(PublicationServices.class)
 				.path("publication/summaryEdit")
-				.queryParam("sampleId", "20917508") 
+				.queryParam("sampleId", "20917506") 
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
@@ -361,6 +362,36 @@ public class PublicationServicesTest {
 		
 		}
 		
+	
+	@Test
+	public void testSubmitForReview() {
+		DataReviewStatusBean bean = new DataReviewStatusBean();
+		bean.setDataType("publication");
+		bean.setDataId("58753024");
+		bean.setDataName("Test DEV Pub 1");
+		
+		final Client aClient = ClientBuilder.newBuilder()
+		        .register(ObjectMapperProvider.class)
+		        .register(JacksonFeature.class)
+		        .build();
+		
+		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		webTarget.register(PublicationServices.class);
+		
+		WebTarget submitProtocolWebTarget = webTarget.path("publication").path("submitForReview");
+
+		Response postResponse =
+				submitProtocolWebTarget.request("application/json")
+		         .post(Entity.json(bean));
+		
+		assertNotNull(postResponse);
+		assertTrue(postResponse.getStatus() == 401);
+		
+		postResponse.bufferEntity();
+		String json = (String) postResponse.readEntity(String.class);
+		assertTrue(json.contains("Session expired"));
+
+	}
 }
 
 
