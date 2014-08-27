@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO;
 import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.service.common.LongRunningProcess;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.GenerateBatchDataAvailabilityForm;
 import gov.nih.nci.cananolab.ui.form.ReviewDataForm;
 import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
@@ -42,6 +43,10 @@ private Logger logger = Logger.getLogger(CurationServices.class);
 		try { 
 			ReviewDataBO reviewDataBO = 
 					(ReviewDataBO) applicationContext.getBean("reviewDataBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
 			List<DataReviewStatusBean> list = reviewDataBO.setupNew(httpRequest);
 			return Response.ok(list).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
@@ -60,8 +65,11 @@ private Logger logger = Logger.getLogger(CurationServices.class);
 		try {
 			BatchDataAvailabilityBO batchDataAvailabilityBO = 
 					(BatchDataAvailabilityBO) applicationContext.getBean("batchDataAvailabilityBO");
-			
-						
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();		
 			List<String> results = batchDataAvailabilityBO.generate(form, httpRequest);
 			
 			return Response.ok(results).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -79,6 +87,13 @@ private Logger logger = Logger.getLogger(CurationServices.class);
 		try { 
 			ManageResultBO manageResultBO = 
 					(ManageResultBO) applicationContext.getBean("manageResultBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();	
+			
 			List<LongRunningProcess> list = manageResultBO.execute(httpRequest);
 			return Response.ok(list).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
