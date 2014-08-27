@@ -539,7 +539,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return (result.getErrors().size() > 0) ?
 					Response.ok("/caNanoLab/images/doi-transparent.png").build()
 						:
-						Response.ok("/caNanoLab/images/cananolab_logo_mini.jpg").build();
+						Response.ok("/caNanoLab/images/canano_logo_mini.jpg").build();
 		} 
 
 		catch (Exception e) {
