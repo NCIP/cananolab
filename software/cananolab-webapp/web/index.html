@@ -331,11 +331,12 @@ src="images/mainMenuSeparator.gif" width="1">
 	<script>
         //optional need to be loaded before angular-file-upload-shim(.min).js
         FileAPI = {
+        		 debug: true
             //only one of jsPath or jsUrl.
-            jsPath: 'bower_components/ng-file-upload/FileAPI.min.js/folder/',
+            //jsPath: 'bower_components/ng-file-upload/FileAPI.min.js/folder/',
 
             //only one of staticPath or flashUrl.
-            staticPath: 'bower_components/ng-file-upload/FileAPI.flash.swf/folder/'
+            //staticPath: 'bower_components/ng-file-upload/FileAPI.flash.swf/folder/'
 
             //forceLoad: true, html5: false //to debug flash in HTML5 browsers
         }
@@ -344,9 +345,9 @@ src="images/mainMenuSeparator.gif" width="1">
       <!-- bower:js -->
       <script src="bower_components/jquery/dist/jquery.js"></script>
       <script src="bower_components/es5-shim/es5-shim.js"></script>
-	  <script src="bower_components/ng-file-upload/angular-file-upload-shim.min.js"></script>
+	  <script src="bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
       <script src="bower_components/angular/angular.js"></script>
-      <script src="bower_components/ng-file-upload/angular-file-upload.min.js"></script>      
+      <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>      
       <script src="bower_components/json3/lib/json3.min.js"></script>
       <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
       <script src="bower_components/angular-resource/angular-resource.js"></script>
