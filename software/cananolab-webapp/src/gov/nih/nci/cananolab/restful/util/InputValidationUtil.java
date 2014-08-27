@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.restful.util;
 
+import org.apache.commons.validator.EmailValidator;
+
 public class InputValidationUtil {
 	
 	public static boolean isAlphabetic(String input) {
@@ -79,6 +81,11 @@ public class InputValidationUtil {
 		if(input.matches(reg))
 			return false;
 		return true;
+	}
+	
+	public static boolean isEmailValid(String email) {
+		EmailValidator emailValidator = EmailValidator.getInstance();
+		return (email == null || email.length() == 0) ? true : emailValidator.isValid(email);
 	}
 	/*
 
