@@ -15,6 +15,9 @@ var app = angular.module('angularApp')
         		dataName : null,
         		dataType : 'protocol'
             };
+        $scope.localForm = {};        
+        $scope.localForm.otherCategoryText = '';
+        
 
         // Access variables
         $scope.protocolForm.theAccess = {};
