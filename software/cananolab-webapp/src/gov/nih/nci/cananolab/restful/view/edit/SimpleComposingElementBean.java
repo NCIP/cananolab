@@ -12,13 +12,20 @@ public class SimpleComposingElementBean {
 	String molecularFormula = "";
 	String description = "";
 	Long id = 0L;
-	String functionId = "";
+	Long functionId = 0L;
 	String functionType = "";
 	String imagingModality = "";
 	String functionDescription = "";
 	String sampleId = "";
 	String modality ="";
+	String createdBy="";
 	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 	public String getModality() {
 		return modality;
 	}
@@ -85,10 +92,10 @@ public class SimpleComposingElementBean {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getFunctionId() {
+	public Long getFunctionId() {
 		return functionId;
 	}
-	public void setFunctionId(String functionId) {
+	public void setFunctionId(Long functionId) {
 		this.functionId = functionId;
 	}
 	public String getFunctionType() {

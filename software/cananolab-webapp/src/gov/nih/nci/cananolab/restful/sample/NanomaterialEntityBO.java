@@ -2,12 +2,22 @@ package gov.nih.nci.cananolab.restful.sample;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
+import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
+import gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube;
+import gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer;
+import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
+import gov.nih.nci.cananolab.domain.nanomaterial.Fullerene;
+import gov.nih.nci.cananolab.domain.nanomaterial.Liposome;
+import gov.nih.nci.cananolab.domain.nanomaterial.Polymer;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -34,6 +44,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.collection.PersistentSet;
+
+
 public class NanomaterialEntityBO extends BaseAnnotationBO{
 	/**
 	 * Add or update the data to database
@@ -45,16 +58,18 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> create(CompositionForm form,
+	public List<String> create(SimpleNanomaterialEntityBean nanoBean,
 			HttpServletRequest request)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
 		List<String> msgs = new ArrayList<String>();
-		String sampleId = form.getSampleId();
-		NanomaterialEntityBean entityBean = form.getNanomaterialEntity();
+		String sampleId = nanoBean.getSampleId();
+		NanomaterialEntityBean entityBean = transferNanoMateriaEntityBean(nanoBean);  //form.getNanomaterialEntity();
 		this.setServicesInSession(request);
-		if (!validateInputs(request, entityBean)) {
+		msgs = validateInputs(request, entityBean);
+		if (msgs.size()>0) {
 			//return mapping.getInputForward();
+			return msgs;
 		}
 		this.saveEntity(request, sampleId, entityBean);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
@@ -71,18 +86,21 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		return msgs;
 	}
 
-	private Boolean validateInputs(HttpServletRequest request,
+	private List<String> validateInputs(HttpServletRequest request,
 			NanomaterialEntityBean entityBean) {
-		if (!validateEntity(request, entityBean)) {
-			return false;
+		List<String> msgs = validateEntity(request, entityBean);
+		if (msgs.size()>0) {
+			return msgs;
 		}
-		if (!validateInherentFunctionType(request, entityBean)) {
-			return false;
+		msgs = validateInherentFunctionType(request, entityBean);
+		if (msgs.size()>0) {
+			return msgs;
 		}
-		if (!validateEntityFile(request, entityBean)) {
-			return false;
+		msgs = validateEntityFile(request, entityBean);
+		if (msgs.size()>0) {
+			return msgs;
 		}
-		return true;
+		return msgs;
 	}
 
 	public void input(CompositionForm form,
@@ -101,7 +119,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	//	return mapping.findForward("inputForm");
 	}
 
-	private List<String> saveEntity(HttpServletRequest request, String sampleId,
+	private List<String> saveEntity(HttpServletRequest request, String sampleId, 
 			NanomaterialEntityBean entityBean)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
@@ -163,9 +181,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		return msgs;
 	}
 
-	private boolean validateInherentFunctionType(HttpServletRequest request,
+	private List<String> validateInherentFunctionType(HttpServletRequest request,
 			NanomaterialEntityBean entityBean) {
 
+		List<String> msgs = new ArrayList<String>();
 		for (ComposingElementBean composingElementBean : entityBean
 				.getComposingElements()) {
 			for (FunctionBean functionBean : composingElementBean
@@ -176,24 +195,28 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 //							"Inherent function type");
 //					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //					this.saveErrors(request, msgs);
-					return false;
+					msgs.add(PropertyUtil.getProperty("sample", "Inherent function type"));
+				//	return msgs;
 				} else if (!StringUtils.xssValidate(functionBean.getType())) {
 //					ActionMessages msgs = new ActionMessages();
 //					ActionMessage msg = new ActionMessage(
 //							"function.type.invalid");
 //					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //					this.saveErrors(request, msgs);
-					return false;
+					msgs.add(PropertyUtil.getProperty("sample", "function.type.invalid"));
+
+			//		return false;
 				}
 			}
 		}
-		return true;
+		return msgs;
 	}
 
 	// per app scan, can not easily validate in the validation.xml
-	private boolean validateEntity(HttpServletRequest request,
+	private List<String> validateEntity(HttpServletRequest request,
 			NanomaterialEntityBean entityBean) {
 //		ActionMessages msgs = new ActionMessages();
+		List<String> msgs = new ArrayList<String>();
 		boolean status = true;
 		if (entityBean.getType().equalsIgnoreCase("biopolymer")) {
 			if (entityBean.getBiopolymer().getName() != null
@@ -203,7 +226,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 //						"nanomaterialEntityForm.biopolymer.name.invalid");
 //				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //				saveErrors(request, msgs);
-				status = false;
+				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.biopolymer.name.invalid"));
+				return msgs;
+//				status = false;
 			}
 			if (entityBean.getBiopolymer().getType() != null
 					&& !StringUtils.xssValidate(entityBean.getBiopolymer()
@@ -212,6 +237,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 //						"nanomaterialEntityForm.biopolymer.type.invalid");
 //				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //				saveErrors(request, msgs);
+				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.biopolymer.type.invalid"));
+
 				status = false;
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("liposome")) {
@@ -222,6 +249,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 //						"nanomaterialEntityForm.liposome.polymerName.invalid");
 //				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //				saveErrors(request, msgs);
+				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.liposome.polymerName.invalid"));
+
 				status = false;
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("emulsion")) {
@@ -233,6 +262,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 //				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //				saveErrors(request, msgs);
 				status = false;
+				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.emulsion.polymerName.invalid"));
+
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("polymer")) {
 			if (entityBean.getPolymer().getInitiator() != null
@@ -243,6 +274,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 //				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //				saveErrors(request, msgs);
 				status = false;
+				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.polymer.initiator.invalid"));
+
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("dendrimer")) {
 			if (entityBean.getDendrimer().getBranch() != null
@@ -252,7 +285,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 //						"nanomaterialEntityForm.dendrimer.branch.invalid");
 //				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //				saveErrors(request, msgs);
-				status = false;
+//				status = false;
+				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.dendrimer.branch.invalid"));
+
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("carbon nanotube")) {
 			if (entityBean.getCarbonNanotube().getAverageLengthUnit() != null
@@ -262,7 +297,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 //						"nanomaterialEntityForm.carbonNanotube.averageLengthUnit.invalid");
 //				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //				saveErrors(request, msgs);
-				status = false;
+//				status = false;
+				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.carbonNanotube.averageLengthUnit.invalid"));
+
 			}
 			if (entityBean.getCarbonNanotube().getChirality() != null
 					&& !StringUtils.xssValidate(entityBean.getCarbonNanotube()
@@ -271,7 +308,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 //						"nanomaterialEntityForm.carbonNanotube.chirality.invalid");
 //				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //				saveErrors(request, msgs);
-				status = false;
+//				status = false;
+				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.carbonNanotube.chirality.invalid"));
+
 			}
 			if (entityBean.getCarbonNanotube().getDiameterUnit() != null
 					&& !entityBean.getCarbonNanotube().getDiameterUnit()
@@ -280,7 +319,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 //						"nanomaterialEntityForm.carbonNanotube.diameterUnit.invalid");
 //				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //				saveErrors(request, msgs);
-				status = false;
+//				status = false;
+				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.carbonNanotube.diameterUnit.invalid"));
+
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("fullerene")) {
 			if (entityBean.getFullerene().getAverageDiameterUnit() != null
@@ -290,21 +331,25 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 //						"nanomaterialEntityForm.fullerene.averageDiameterUnit.invalid");
 //				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //				saveErrors(request, msgs);
-				status = false;
+//				status = false;
+				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.fullerene.averageDiameterUnit.invalid"));
+				
 			}
 		}
-		return status;
+		return msgs;
 	}
 
-	private boolean validateEntityFile(HttpServletRequest request,
+	private List<String> validateEntityFile(HttpServletRequest request,
 			NanomaterialEntityBean entityBean) {
+		List<String> msgs = new ArrayList<String>();
 		//ActionMessages msgs = new ActionMessages();
 		for (FileBean filebean : entityBean.getFiles()) {
-			if (!validateFileBean(request, filebean)) {
-				return false;
+		msgs = validateFileBean(request, filebean);
+			if (msgs.size()>0) {
+				return msgs;
 			}
 		}
-		return true;
+		return msgs;
 	}
 
 	public void setLookups(HttpServletRequest request) throws Exception {
@@ -344,7 +389,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	//	return mapping.findForward("inputForm");
 	}
 
-	public NanomaterialEntityBean setupUpdate(String sampleId, String entityId,
+	public SimpleNanomaterialEntityBean setupUpdate(String sampleId, String entityId,
 			HttpServletRequest request)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -361,7 +406,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		form.setOtherSamples(new String[0]);
 		this.setLookups(request);
 		this.checkOpenForms(entityBean, request);
-		return entityBean;
+		SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
+		nano.transferNanoMaterialEntityBeanToSimple(entityBean, request);
+		return nano;
 	//	return mapping.findForward("inputForm");
 	}
 
@@ -383,7 +430,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	//	return mapping.findForward("singleSummaryView");
 	}
 
-	public NanomaterialEntityBean saveComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
+	public SimpleNanomaterialEntityBean saveComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean);//form
 			//	.getNanomaterialEntity();//("nanomaterialEntity");
@@ -394,8 +441,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		composingElement.setupDomain(user.getLoginName());
 		entity.addComposingElement(composingElement);
 		// save nanomaterial entity
-		if (!validateInputs(request, entity)) {
+		msgs = validateInputs(request, entity);
+		if (msgs.size()>0) {
 			//return mapping.getInputForward();
+			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
+			nano.setErrors(msgs);
+			return nano;
 		}
 		msgs = this.saveEntity(request, sampleId, entity);
 		
@@ -416,11 +467,25 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	private NanomaterialEntityBean transferNanoMateriaEntityBean(
 			SimpleNanomaterialEntityBean nanoBean) {
 		NanomaterialEntityBean bean = new NanomaterialEntityBean();
-		NanomaterialEntity nanoEntity = new NanomaterialEntity();
+		NanomaterialEntity nanoEntity = null;
+		if(nanoBean.getType().equalsIgnoreCase("fullerene"))
+			nanoEntity = new Fullerene();
+		if(nanoBean.getType().equalsIgnoreCase("dendrimer"))
+			nanoEntity = new Dendrimer();
+		if(nanoBean.getType().equalsIgnoreCase("biopolymer"))
+			nanoEntity = new Biopolymer();
+		if(nanoBean.getType().equalsIgnoreCase("Liposome"))
+			nanoEntity = new Liposome();
+		if(nanoBean.getType().equalsIgnoreCase("Emulsion"))
+			nanoEntity = new Emulsion();
+		if(nanoBean.getType().equalsIgnoreCase("Polymer"))
+			nanoEntity = new Polymer();
+		if(nanoBean.getType().equalsIgnoreCase("CarbonNanotube"))
+			nanoEntity = new CarbonNanotube();
 		ComposingElementBean compBean = new ComposingElementBean();
-		Collection<ComposingElement> coll = new ArrayList<ComposingElement>();
+		Collection<ComposingElement> coll = new HashSet<ComposingElement>();
 		Collection<File> filecoll = new ArrayList<File>();
-		SampleComposition sampleComp = new SampleComposition();
+		SampleComposition sampleComp = new SampleComposition();//(SampleComposition) nanoBean.getDomainEntity().get("sampleComposition");
 		ComposingElement comp = new ComposingElement();
 		comp.setDescription(nanoBean.getSimpleCompBean().getDescription());
 		comp.setType(nanoBean.getSimpleCompBean().getType());
@@ -439,20 +504,25 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		fileBean.setKeywordsStr(nanoBean.getFileBean().getKeywordsStr());
 		fileBean.setDomainFile(file);
 		}
-		
+		Function domainFunc = new Function();
+		domainFunc.setCreatedBy(nanoBean.getSimpleCompBean().getCreatedBy());
+		domainFunc.setId(nanoBean.getSimpleCompBean().getFunctionId());
+		Collection<Function> hash = new HashSet<Function>();
 		FunctionBean func = new FunctionBean();
 		ImagingFunction img = new ImagingFunction();
 		img.setModality(nanoBean.getSimpleCompBean().getModality());
 		
 		func.setDescription(nanoBean.getSimpleCompBean().getFunctionDescription());
-		func.setId(nanoBean.getSimpleCompBean().getFunctionId());
+	//	func.setId(nanoBean.getSimpleCompBean().getFunctionId());
 		func.setImagingFunction(img);
 		func.setType(nanoBean.getSimpleCompBean().getType());
+		hash.add(domainFunc);
+		comp.setInherentFunctionCollection(hash);
 		compBean.setTheFunction(func);
 		compBean.setDomain(comp);
 		coll.add(comp);
 		filecoll.add(file);
-		nanoEntity.setId((Long) nanoBean.getDomainEntity().get("id"));
+	//	nanoEntity.setId((Long) nanoBean.getDomainEntity().get("id"));
 		nanoEntity.setComposingElementCollection(coll);
 		nanoEntity.setFileCollection(filecoll);
 		nanoEntity.setSampleComposition(sampleComp);
@@ -462,18 +532,20 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		bean.setDescription(nanoBean.getDescription());
 		bean.setDomainEntity(nanoEntity);
 		
-		
 		return bean;
 	}
 
-	public NanomaterialEntityBean removeComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
+	public SimpleNanomaterialEntityBean removeComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
+		List<String> msgs = new ArrayList<String>();
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean);//form
 				//.getNanomaterialEntity(); //("nanomaterialEntity");
+		entity.getDomainEntity().setId((Long) nanoBean.getDomainEntity().get("id"));
 		ComposingElementBean composingElement = entity.getTheComposingElement();
 		// check if composing element is associated with an association
 		CompositionServiceLocalImpl compService = (CompositionServiceLocalImpl) (this
 				.setServicesInSession(request));
+		SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
 		if (!compService.checkChemicalAssociationBeforeDelete(entity
 				.getDomainEntity().getSampleComposition(), composingElement
 				.getDomain())) {
@@ -481,18 +553,21 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 					"The composing element is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
 		}
 		entity.removeComposingElement(composingElement);
-		if (!validateInputs(request, entity)) {
-			//return mapping.getInputForward();
+		msgs = validateInputs(request, entity);
+		if (msgs.size()>0) {
+			nano.setErrors(msgs);
+			return nano;
 		}
 		this.saveEntity(request, nanoBean.getSampleId(), entity);
 		compService.removeAccesses(entity.getDomainEntity(),
 				composingElement.getDomain());
 		this.checkOpenForms(entity, request);
-		return entity;
+		return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId()
+				.toString(), request);
 		//return mapping.findForward("inputForm");
 	}
 
-	public NanomaterialEntityBean saveFile(SimpleNanomaterialEntityBean nanoBean,
+	public SimpleNanomaterialEntityBean saveFile(SimpleNanomaterialEntityBean nanoBean,
 			HttpServletRequest request)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -512,8 +587,11 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		restoreUploadedFile(request, theFile);
 
 		// save nanomaterial entity to save file because inverse="false"
-		if (!validateInputs(request, entity)) {
-			//return mapping.getInputForward();
+		List<String> msgs = validateInputs(request, entity);
+		if (msgs.size()>0) {
+			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
+			nano.setErrors(msgs);
+			return nano;
 		}
 		this.saveEntity(request,nanoBean.getSampleId(), entity);
 		// comp service has already been created
@@ -530,20 +608,25 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	//	return entity;
 	}
 
-	public void removeFile(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SimpleNanomaterialEntityBean removeFile(SimpleNanomaterialEntityBean nanoBean,
+			HttpServletRequest request)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanomaterialEntityBean entity = form
-				.getNanomaterialEntity(); //("nanomaterialEntity");
+		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean); //form
+				//.getNanomaterialEntity(); //("nanomaterialEntity");
+		entity.getDomainEntity().setId((Long) nanoBean.getDomainEntity().get("id"));
+
 		FileBean theFile = entity.getTheFile();
 		entity.removeFile(theFile);
 		entity.setTheFile(new FileBean());
 		// save nanomaterial entity
-		if (!validateInputs(request, entity)) {
-	//		return mapping.getInputForward();
+		List<String> msgs = validateInputs(request, entity);
+		if (msgs.size()>0) {
+			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
+			nano.setErrors(msgs);
+			return nano;
 		}
-		this.saveEntity(request, form.getSampleId(), entity);
+		this.saveEntity(request, nanoBean.getSampleId(), entity);
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
@@ -552,17 +635,20 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		request.setAttribute("anchor", "file");
 		this.checkOpenForms(entity, request);
 //		return mapping.findForward("inputForm");
+		return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId()
+				.toString(), request);
 	}
 
-	public List<String> delete(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public List<String> delete(SimpleNanomaterialEntityBean nanoBean,
+			HttpServletRequest request)
 			throws Exception {
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		List<String> msgs = new ArrayList<String>();
 		CompositionService compositionService = this
 				.setServicesInSession(request);
-		NanomaterialEntityBean entityBean = form
-				.getNanomaterialEntity(); //("nanomaterialEntity");
+		NanomaterialEntityBean entityBean = transferNanoMateriaEntityBean(nanoBean);
+		entityBean.getDomainEntity().setId((Long) nanoBean.getDomainEntity().get("id"));
+
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		entityBean.setupDomainEntity(user.getLoginName());
 		compositionService.deleteNanomaterialEntity(entityBean

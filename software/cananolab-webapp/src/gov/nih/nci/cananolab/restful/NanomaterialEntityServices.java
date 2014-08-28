@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -61,12 +62,13 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			NanomaterialEntityBean nanoBean = nanomaterialEntityBO.setupUpdate(sampleId, dataId, httpRequest);
-			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
+			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.setupUpdate(sampleId, dataId, httpRequest);
 			
-			nano.transferNanoMaterialEntityBeanToSimple(nanoBean, httpRequest);
-			return Response.ok(nano).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-
+			List<String> errors = nano.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(nano).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the NanoMaterial Entity" + e.getMessage())).build();
 
@@ -85,24 +87,24 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
+		 		 
+			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.saveComposingElement(nanoBean, httpRequest);
 			
-			NanomaterialEntityBean bean = nanomaterialEntityBO.saveComposingElement(nanoBean, httpRequest);
-			
-			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
-			
-			nano.transferNanoMaterialEntityBeanToSimple(bean, httpRequest);
-			return Response.ok(nano).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-
+			List<String> errors = nano.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(nano).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+					
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the composing element" + e.getMessage())).build();
 
 		}
 	}
 	
-	@GET
+	@POST
 	@Path("/removeComposingElement")
 	@Produces ("application/json")
-    public Response removeComposingElement(@Context HttpServletRequest httpRequest) {
+    public Response removeComposingElement(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean) {
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
@@ -111,20 +113,12 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
-			SimpleNanomaterialEntityBean nanoBean = new SimpleNanomaterialEntityBean();
-			SimpleComposingElementBean comp= new SimpleComposingElementBean();
-			nanoBean.setType("fullerene");
-			nanoBean.setSampleId("20917506");
-			comp.setType("shell");
-			comp.setName("shell");
-			nanoBean.setSimpleCompBean(comp);
-			NanomaterialEntityBean bean = nanomaterialEntityBO.removeComposingElement(nanoBean, httpRequest);
 			
-			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
-			
-			nano.transferNanoMaterialEntityBeanToSimple(bean, httpRequest);
-			return Response.ok(nano).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-
+			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.removeComposingElement(nanoBean, httpRequest);
+			List<String> errors = nano.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(nano).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the composing element" + e.getMessage())).build();
 
@@ -145,15 +139,91 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 						.entity("Session expired").build();
 			
 			
-			NanomaterialEntityBean bean = nanomaterialEntityBO.saveFile(nanoBean, httpRequest);
+			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.saveFile(nanoBean, httpRequest);
 			
-			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
 			
-			nano.transferNanoMaterialEntityBeanToSimple(bean, httpRequest);
-			return Response.ok(nano).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-
+			List<String> errors = nano.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(nano).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+					
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the file" + e.getMessage())).build();
+
+		}
+	}
+	
+	@POST
+	@Path("/removeFile")
+	@Produces ("application/json")
+    public Response removeFile(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean) {
+				
+		try { 
+			NanomaterialEntityBO nanomaterialEntityBO = 
+					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			
+			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.removeFile(nanoBean, httpRequest);
+			
+			
+			List<String> errors = nano.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(nano).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+					
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the file" + e.getMessage())).build();
+
+		}
+	}
+	
+	@POST
+	@Path("/submit")
+	@Produces ("application/json")
+    public Response submit(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean) {
+				
+		try { 
+			NanomaterialEntityBO nanomaterialEntityBO = 
+					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+				
+			List<String> msgs = nanomaterialEntityBO.create(nanoBean, httpRequest);
+			
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+	
+					
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the nano material entity" + e.getMessage())).build();
+
+		}
+	}
+	@POST
+	@Path("/delete")
+	@Produces ("application/json")
+    public Response delete(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean) {
+				
+		try { 
+			NanomaterialEntityBO nanomaterialEntityBO = 
+					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+				
+			List<String> msgs = nanomaterialEntityBO.delete(nanoBean, httpRequest);
+			
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+	
+					
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the nanomaterial entity " + e.getMessage())).build();
 
 		}
 	}

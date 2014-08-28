@@ -247,11 +247,12 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		return sampleBeans;
 	}
 
-	protected boolean validateFileBean(HttpServletRequest request, FileBean fileBean) {
+	protected List<String> validateFileBean(HttpServletRequest request, FileBean fileBean) {
 
+		List<String> msgs = new ArrayList<String>();
 		boolean noErrors = true;
 		if (fileBean == null) {
-			return noErrors;
+			return msgs;
 		}
 		File File = fileBean.getDomainFile();
 		if (File.getTitle().length() == 0) {
@@ -259,7 +260,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	//				"file title");
 	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 	//		this.saveErrors(request, msgs);
-			noErrors = false;
+			msgs.add(PropertyUtil.getProperty("sample", "file title"));
+	//		noErrors = false;
 		}
 
 		if (File.getType().length() == 0) {
@@ -267,6 +269,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 //					"file type");
 		//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		//	this.saveErrors(request, msgs);
+			msgs.add(PropertyUtil.getProperty("sample", "file type"));
+
 			noErrors = false;
 		}
 
@@ -277,6 +281,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 //						"external url");
 		//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		//		this.saveErrors(request, msgs);
+				msgs.add(PropertyUtil.getProperty("sample", "external url"));
+
 				noErrors = false;
 			}
 		} else {
@@ -292,6 +298,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		//		this.saveErrors(request, msgs);
 				noErrors = false;
+				msgs.add(PropertyUtil.getProperty("sample", "uploaded file"));
+
 				// the case that user switch from url to upload file, but no
 				// file is selected
 			} else if ((fileBean.getUploadedFile() == null || StringUtils
@@ -301,10 +309,12 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 //						"uploaded file");
 			//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			//	this.saveErrors(request, msgs);
+				msgs.add(PropertyUtil.getProperty("sample", "uploaded file"));
+
 				noErrors = false;
 			}
 		}
-		return noErrors;
+		return msgs;
 	}
 
 	/**

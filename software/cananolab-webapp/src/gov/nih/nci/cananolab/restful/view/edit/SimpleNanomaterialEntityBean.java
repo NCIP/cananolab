@@ -59,6 +59,16 @@ public class SimpleNanomaterialEntityBean {
 
 	String isCrossLinked;
 	
+	List<String> errors;
+	
+	public List<String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
+	}
+
 	public SimpleComposingElementBean getSimpleCompBean() {
 		return simpleCompBean;
 	}
@@ -186,7 +196,8 @@ public class SimpleNanomaterialEntityBean {
 	private void setDomainEntityInfo(NanomaterialEntityBean bean) {
 		// TODO Auto-generated method stub
 		NanomaterialEntity nanoEntity = bean.getDomainEntity();
-
+		SampleComposition sampleComp =  new SampleComposition();
+				
 		domainEntity = new HashMap<Object, Object>();
 		if(bean.getType().equalsIgnoreCase("dendrimer")){
 			domainEntity = new HashMap<Object, Object>();
@@ -283,9 +294,9 @@ public class SimpleNanomaterialEntityBean {
 				if(comp.getInherentFunctions().size()>0){
 					for(FunctionBean func : comp.getInherentFunctions()){
 						
-					simpleCompBean.setFunctionDescription(comp.getInherentFunctions().get(0).getDescription());
-					simpleCompBean.setFunctionType(comp.getInherentFunctions().get(0).getType());
-					simpleCompBean.setImagingModality(comp.getInherentFunctions().get(0).getImagingFunction().getModality());
+					simpleCompBean.setFunctionDescription(func.getDescription());
+					simpleCompBean.setFunctionType(func.getType());
+					simpleCompBean.setImagingModality(func.getImagingFunction().getModality());
 					}
 				}
 				composingElements.add(simpleCompBean);
@@ -306,5 +317,7 @@ public class SimpleNanomaterialEntityBean {
 			}
 			domainEntity.put("fileCollection", files);
 		}
+			domainEntity.put("sampleComposition", new SampleComposition());
+			setDomainEntity(domainEntity);
 	}
 }
