@@ -1,6 +1,10 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
+import gov.nih.nci.cananolab.service.sample.SampleService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,26 +30,51 @@ public class SimpleCharacterizationEditBean {
 	List<String> protocolNameVersionLookup;
 	List<String> charSourceLookup;
 	
-	
-	public SimpleCharacterizationEditBean(HttpServletRequest request) 
+	public void transferCharacterizationEditData(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
 	throws Exception {
-		//create dummpy
-		charTypesLookup = InitCharacterizationSetup
-				.getInstance().getCharacterizationTypes(request);;
 		
-		characterizationNameLookup = new ArrayList<String>();
-		
-		SortedSet<String> charNames = InitCharacterizationSetup
-				.getInstance().getCharNamesByCharType(request, "physico-chemical");
-		
-		characterizationNameLookup.addAll(charNames);
-		
-		AssayTypeLookup = new ArrayList<String>();
-		protocolNameVersionLookup = new ArrayList<String>();
-		charSourceLookup = new ArrayList<String>();
+		setupLookups(request, charBean, sampleId);
 	}
 	
-	
+	protected void setupLookups(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
+			throws Exception {
+		//create dummpy
+		charTypesLookup = InitCharacterizationSetup
+				.getInstance().getCharacterizationTypes(request);
+
+		characterizationNameLookup = new ArrayList<String>();
+		SortedSet<String> charNames = InitCharacterizationSetup
+				.getInstance().getCharNamesByCharType(request, charBean.getCharacterizationType());
+		characterizationNameLookup.addAll(charNames);
+
+		//This is empty for new char
+		AssayTypeLookup = new ArrayList<String>();
+		// setup Assay Type drop down.
+//				InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+//						"charNameAssays", charBean.getCharacterizationName(),
+//						"assayType", "otherAssayType", true);
+		
+		
+		
+		//Proto needs:
+		//property="achar.protocolBean.fileBean.domainFile.uri" 
+		//property="achar.protocolBean.domain.id"
+		//characterizationForm.map.achar.protocolBean.fileBean.domainFile.id
+		//characterizationForm.map.achar.protocolBean.fileBean.domainFile.uri
+		
+		protocolNameVersionLookup = new ArrayList<String>();
+		
+		SampleService service = (SampleService)request.getSession().getAttribute("sampleService");
+		List<PointOfContactBean> pocs = service
+				.findPointOfContactsBySampleId(sampleId);
+		//source = poc
+		//needs:
+		//achar.pocBean.domain.id
+		//poc display name: 
+		charSourceLookup = new ArrayList<String>();
+	}
+
+
 	public String getType() {
 		return type;
 	}

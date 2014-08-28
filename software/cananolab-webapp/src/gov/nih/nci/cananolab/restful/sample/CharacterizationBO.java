@@ -143,23 +143,28 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		this.setServicesInSession(request);
 		
 		setupInputForm(request, sampleId, charType);
+		
 		// reset characterizationBean
 		CharacterizationBean charBean = new CharacterizationBean();
 		//theForm.set("achar", charBean);
 		//String charType = request.getParameter("charType");
+		
+		
 		if (!StringUtils.isEmpty(charType)) {
 			charBean.setCharacterizationType(charType);
-			SortedSet<String> charNames = InitCharacterizationSetup
-					.getInstance().getCharNamesByCharType(request,
-							charBean.getCharacterizationType());
-			request.getSession().setAttribute("charTypeChars", charNames);
+//			SortedSet<String> charNames = InitCharacterizationSetup
+//					.getInstance().getCharNamesByCharType(request,
+//							charBean.getCharacterizationType());
+//			request.getSession().setAttribute("charTypeChars", charNames);
 		}
 		
 		//this.checkOpenForms(charBean, theForm, request);
 		// clear copy to otherSamples
 //		clearCopy(theForm);
 //		return mapping.findForward("inputForm");
-		return new SimpleCharacterizationEditBean(request);
+		SimpleCharacterizationEditBean editBean = new SimpleCharacterizationEditBean();
+		editBean.transferCharacterizationEditData(request, charBean, sampleId);
+		return editBean;
 	}
 
 	/**
