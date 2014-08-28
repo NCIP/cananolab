@@ -126,7 +126,8 @@ public class SimplePublicationWithSamplesBean {
 		this.setId(String.valueOf(pub.getId()));
 		
 		this.setTitle(pub.getTitle());
-		this.setYear(pub.getYear().longValue());
+		if (pub.getYear() != null)
+			this.setYear(pub.getYear().longValue());
 		this.setJournal(pub.getJournalName());
 		this.setVolumn(pub.getVolume() + ":" + pub.getStartPage() + "-" + pub.getEndPage());
 		this.setDescription(pub.getDescription());
