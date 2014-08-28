@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
@@ -137,16 +138,15 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SimpleCharacterizationEditBean setupNew(HttpServletRequest request, String sampleId, String charType)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		this.setServicesInSession(request);
-		setupInputForm(request, theForm);
+		
+		setupInputForm(request, sampleId, charType);
 		// reset characterizationBean
 		CharacterizationBean charBean = new CharacterizationBean();
-		theForm.set("achar", charBean);
-		String charType = request.getParameter("charType");
+		//theForm.set("achar", charBean);
+		//String charType = request.getParameter("charType");
 		if (!StringUtils.isEmpty(charType)) {
 			charBean.setCharacterizationType(charType);
 			SortedSet<String> charNames = InitCharacterizationSetup
@@ -154,10 +154,12 @@ public class CharacterizationBO extends BaseAnnotationBO {
 							charBean.getCharacterizationType());
 			request.getSession().setAttribute("charTypeChars", charNames);
 		}
-		this.checkOpenForms(charBean, theForm, request);
+		
+		//this.checkOpenForms(charBean, theForm, request);
 		// clear copy to otherSamples
-		clearCopy(theForm);
-		return mapping.findForward("inputForm");
+//		clearCopy(theForm);
+//		return mapping.findForward("inputForm");
+		return new SimpleCharacterizationEditBean(request);
 	}
 
 	/**
@@ -167,13 +169,16 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @param theForm
 	 * @throws Exception
 	 */
-	private void setupInputForm(HttpServletRequest request,
-			DynaValidatorForm theForm) throws Exception {
-		String sampleId = theForm.getString("sampleId");
-		String charType = request.getParameter("charType");
-		if (charType == null) {
-			charType = (String) request.getAttribute("charType");
-		}
+	private void setupInputForm(HttpServletRequest request, String sampleId, String charType) throws Exception {
+//		String sampleId = theForm.getString("sampleId");
+//		String charType = request.getParameter("charType");
+//		if (charType == null) {
+//			charType = (String) request.getAttribute("charType");
+//		}
+		
+		//TODO: validate sampleId and charType
+		
+		
 		if (!StringUtils.isEmpty(charType))
 			InitProtocolSetup.getInstance().getProtocolsByChar(request,
 					charType);
@@ -181,20 +186,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				sampleId);
 		InitCharacterizationSetup.getInstance().setCharacterizationDropdowns(
 				request);
-		// String detailPage = setupDetailPage(charBean);
-		// request.getSession().setAttribute("characterizationDetailPage",
-		// detailPage);
 
 		// set up other samples with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
-
-		// // clear the session list that stores other column names for the
-		// // characterization
-		// request.getSession().removeAttribute("otherCharDatumNames");
-		// request.getSession().removeAttribute("otherCharConditionNames");
-		// request.getSession().removeAttribute("otherCharConditionProperties");
-		// request.getSession().removeAttribute("otherCharValueUnits");
-		// request.getSession().removeAttribute("otherCharValueTypes");
 	}
 
 	/**
@@ -207,10 +201,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public ActionForward setupUpdate(HttpServletRequest request, String sampleId, String charType)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationService charService = this
 				.setServicesInSession(request);
 		String charId = super.validateId(request, "charId");
@@ -231,14 +223,16 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				charBean.getCharacterizationName(), charBean.getAssayType());
 
 		request.setAttribute("achar", charBean);
-		theForm.set("achar", charBean);
-		this.setupInputForm(request, theForm);
+		//theForm.set("achar", charBean);
+		this.setupInputForm(request, sampleId, charType);
 		this.setupIsSoluble(charBean); // setup "isSoluble" property.
 
-		this.checkOpenForms(charBean, theForm, request);
+		//this.checkOpenForms(charBean, theForm, request);
 		// clear copy to otherSamples
-		clearCopy(theForm);
-		return mapping.findForward("inputForm");
+//		clearCopy(theForm);
+//		return mapping.findForward("inputForm");
+		
+		return null;
 	}
 
 	private void clearCopy(DynaValidatorForm theForm) {
@@ -333,16 +327,20 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public CharacterizationSummaryViewBean summaryEdit(String sampleId,
+			HttpServletRequest request)
 			throws Exception {
 		// Prepare data.
-//		this.prepareSummary(mapping, form, request, response);
-//		// prepare characterization tabs and forward to appropriate tab
+		CharacterizationSummaryViewBean sumBean = this.prepareSummary(sampleId, request);
+		
+		// prepare characterization tabs and forward to appropriate tab
 //		List<String> allCharacterizationTypes = InitCharacterizationSetup
 //				.getInstance().getCharacterizationTypes(request);
-//		setSummaryTab(request, allCharacterizationTypes.size());
-		return mapping.findForward("summaryEdit");
+		
+		
+		//setSummaryTab(request, allCharacterizationTypes.size());
+		
+		return sumBean;
 	}
 
 	/**
@@ -365,7 +363,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		CharacterizationSummaryViewBean viewBean = prepareSummary(sampleId, request);
 		List<String> charTypes = prepareCharacterizationTypes(request);
-		setSummaryTab(request, charTypes.size());
+		//setSummaryTab(request, charTypes.size());
 		return viewBean;
 	}
 
@@ -570,7 +568,10 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		// after saving to database.
 		request.setAttribute("charId", achar.getDomainChar().getId().toString());
 		request.setAttribute("charType", achar.getCharacterizationType());
-		return setupUpdate(mapping, form, request, response);
+		
+		
+		//return setupUpdate(mapping, form, request, response);
+		return null;
 	}
 
 	public ActionForward getFinding(ActionMapping mapping, ActionForm form,

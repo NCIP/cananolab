@@ -57,6 +57,7 @@ public class SimpleCharacterizationSummaryViewBean {
 				
 				for (CharacterizationBean charBean : charBeans) {
 					logger.debug("Proccessing char bean: " + charBean.getCharacterizationName());
+					
 					List<SimpleCharacterizationUnitBean> aBeanUnitList = tranferCharacterizationBeanData(charBean);
 					charBeansByCharName.add(aBeanUnitList);
 					logger.info("End Proccessing char bean: " + charBean.getCharacterizationName());

@@ -7,6 +7,9 @@ public class SimpleCharacterizationsByTypeBean {
 	
 	String type;
 	SortedMap<String, Object> charsByAssayType = new TreeMap<String, Object>();
+	
+	long parentSampleId;
+	
 	public String getType() {
 		return type;
 	}
@@ -18,6 +21,12 @@ public class SimpleCharacterizationsByTypeBean {
 	}
 	public void setCharsByAssayType(SortedMap<String, Object> charsByAssayType) {
 		this.charsByAssayType = charsByAssayType;
+	}
+	public long getParentSampleId() {
+		return parentSampleId;
+	}
+	public void setParentSampleId(long parentSampleId) {
+		this.parentSampleId = parentSampleId;
 	}
 	
 	
