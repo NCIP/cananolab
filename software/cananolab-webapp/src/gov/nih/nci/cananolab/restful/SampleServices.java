@@ -183,10 +183,16 @@ public class SampleServices {
 			
 			List<SimpleCharacterizationsByTypeBean> finalBean = viewBean.transferData(charView);
 			
-			return Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			logger.debug("Found " + finalBean.size() + " characterizations for sample: " + sampleId);
+			
+			return (finalBean.size() == 0) ? Response.status(Response.Status.NOT_FOUND)
+					.entity(CommonUtil.wrapErrorMessageInList("There is no characterization with your sample.")).build()
+							: 
+							Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true")
+							.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+							.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
-			//return Response.ok(e.getMessage()).build();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
