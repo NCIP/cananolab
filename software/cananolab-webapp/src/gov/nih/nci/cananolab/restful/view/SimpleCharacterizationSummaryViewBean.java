@@ -41,7 +41,7 @@ public class SimpleCharacterizationSummaryViewBean {
 		Map<String, SortedSet<String>> charNames = viewBean.getType2CharacterizationNames();
 		
 		if (charTypes == null || charTypes.size() == 0) 
-			throw new Exception("No characterization for this sample");
+			return charByTypeBeans;
 		
 		for (String type : charTypes) {
 			logger.info("Processing type: " + type);
@@ -315,7 +315,8 @@ public class SimpleCharacterizationSummaryViewBean {
 				aFile.put("keywordsString", fileBean.getKeywordsDisplayName());
 			}
 
-			if (fileBean.getDomainFile().getDescription().length() > 0) {
+			
+			if (fileBean.getDomainFile().getDescription() != null && fileBean.getDomainFile().getDescription().length() > 0) {
 				logger.info("File description: " + fileBean.getDescription());
 				aFile.put("description", fileBean.getDescription());
 			}
