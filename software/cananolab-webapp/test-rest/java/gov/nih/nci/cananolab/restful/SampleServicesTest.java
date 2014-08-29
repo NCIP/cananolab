@@ -80,7 +80,7 @@ public class SampleServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("sample/viewDataAvailability")
-				.queryParam("sampleId", "24063233")
+				.queryParam("sampleId", "20917507")
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
@@ -95,7 +95,7 @@ public class SampleServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("sample/characterizationView")
-				.queryParam("sampleId", "24063233") //ncl-17
+				.queryParam("sampleId", "20917507") //ncl-17
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
@@ -109,7 +109,7 @@ public class SampleServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("sample/view")
-				.queryParam("sampleId", "24063233") 
+				.queryParam("sampleId", "20917507") 
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
@@ -124,7 +124,7 @@ public class SampleServicesTest {
 		
 		SearchSampleForm form = new SearchSampleForm();
 		//Because "contains" operand is not set, exact name is needed;
-		form.setSampleName("ncl-17");
+		form.setSampleName("SY-NCL-23-1");
 		
 		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
 		webTarget.register(SampleServices.class);
@@ -143,7 +143,7 @@ public class SampleServicesTest {
 		String json = (String) postResponse.readEntity(String.class);
 				
 		assertNotNull(json);
-		assertTrue(json.contains("NCL-17"));
+		assertTrue(json.contains("SY-NCL-23-1"));
 		
 		//should check other things
 	}
