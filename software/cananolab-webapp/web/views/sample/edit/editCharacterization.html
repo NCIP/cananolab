@@ -1,7 +1,7 @@
 <div class="spacer">
 <table border="0" class="contentTitle" summary="layout" width="100%">
   <tr>
-    <th align="left" scope="col">
+    <th align="left" scope="col"><h1>fix left nav for edit pages</h1>
       Sample {{sampleData.data[0].sampleName}} Characterization
     </th>
     <td align="right" width="30%">
@@ -17,12 +17,6 @@
   </tr> 
 </table>
 <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>   
- <ul class="liNav">
-    <li><a href="#/sample">General Info</a></li>
-    <li><a href="#/composition">Composition</a></li>
-    <li><a href="#/characterization">Characterization</a></li>
-    <li><a href="#/publication">Publication</a></li>
-</ul>
 <tabset justified="true">
   <tab heading="All" ng-click="select(-1)"></tab>
   <tab ng-repeat="item in data" heading="{{item.type}}" ng-click="select({{$index}})"></tab>
@@ -34,7 +28,10 @@
   <tr class="heading">
       <td>
         <!-- type -->
-            <div>{{type.type}}</div>
+            <div style="float:left;">{{type.type}}</div>
+            <div style="float:right;margin-right:10px;">
+                <button ng-click="addCharacterization()">Add</button>
+            </div>
         <!-- type -->
       </td>
   </tr> 
@@ -43,8 +40,12 @@
         <table summary="layout" width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td class="characterization">
+
                   <!-- characterization -->
-                  {{key}}
+                  <div style="float:left;">{{key}}</div>
+                  <div style="float:right;margin-right:10px;"> 
+                      <button ng-click="editCharacterization()">Edit</button>
+                  </div>
                   <!-- characterization -->                  
               </td>
             </tr>

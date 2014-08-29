@@ -90,9 +90,11 @@ var app = angular.module('angularApp')
             error(function(data, status, headers, config) {
                 $scope.loader = false;
                 $scope.sampleData.errors = data;
+                $scope.sampleData.pointOfContacts.pop();
+                // alert("fail");
                 // $scope.sampleData = data;
                 
-                $modalInstance.close($scope.sampleData);
+                // $modalInstance.close($scope.sampleData);
 
             });
     };
