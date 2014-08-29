@@ -297,6 +297,16 @@ var app = angular.module('angularApp')
         modalInstance.result.then(function (sampleData) {
             $scope.sampleData = sampleData;
             // $scope.message = $scope.sampleData.message;
+            $scope.groupAccesses = $scope.sampleData.groupAccesses;
+            $scope.userAccesses = $scope.sampleData.userAccesses;
+            
+            if( $scope.userAccesses != null && $scope.userAccesses.length > 0 ) {
+            	$scope.accessExists = true;
+            }  
+            
+            if( $scope.groupAccesses != null && $scope.groupAccesses.length > 1 ) {
+            	$scope.accessExists = true;
+            }            
         });
     };
 
