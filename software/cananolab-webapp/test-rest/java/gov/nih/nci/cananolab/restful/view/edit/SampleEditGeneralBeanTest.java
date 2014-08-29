@@ -18,22 +18,6 @@ public class SampleEditGeneralBeanTest {
 		editBean.setSampleName("SomeName");
 	}
 	
-	@Test
-	public void testSetSubmitForReviewButton() {
-		HttpServletRequest request = mock(HttpServletRequest.class);
-		
-		when(request.getAttribute("submitSample")).thenReturn(null );
-		SampleEditGeneralBean editBean = new SampleEditGeneralBean();
-		editBean.setSubmitForReviewButton(request);
-		assertFalse(editBean.isShowSubmitForReviewButton());
-		
-		when(request.getAttribute("submitSample")).thenReturn("false");
-		editBean.setSubmitForReviewButton(request);
-		assertFalse(editBean.isShowSubmitForReviewButton());
-		
-		when(request.getAttribute("submitSample")).thenReturn("true");
-		editBean.setSubmitForReviewButton(request);
-		assertTrue(editBean.isShowSubmitForReviewButton());
-	}
+	
 
 }
