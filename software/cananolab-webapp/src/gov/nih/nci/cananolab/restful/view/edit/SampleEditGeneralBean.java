@@ -49,11 +49,20 @@ public class SampleEditGeneralBean {
 	Boolean isPublic = false;
 	
 	boolean showReviewButton;
-	//boolean showSubmitForReviewButton = false;;
 
 	List<String> errors = new ArrayList<String>();
+	String errorType = "";
 	String message; //requested by front end
 	
+	
+	public String getErrorType() {
+		return errorType;
+	}
+
+	public void setErrorType(String errorType) {
+		this.errorType = errorType;
+	}
+
 	public String getMessage() {
 		return message;
 	}

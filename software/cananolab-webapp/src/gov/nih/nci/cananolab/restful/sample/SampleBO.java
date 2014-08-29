@@ -505,7 +505,7 @@ public class SampleBO extends BaseAnnotationBO {
 
 		List<String> errors = validatePointOfContactInput(simplePOC);
 		if (errors.size() > 0) {
-			return wrapErrorsInEditBean(errors);
+			return wrapErrorsInEditBean(errors, "POC");
 		}
 		
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
@@ -557,7 +557,13 @@ public class SampleBO extends BaseAnnotationBO {
 		// save sample
 			saveSample(request, sample);
 		} catch (NoAccessException e) {
-			throw e;
+			if (newSample)
+				simpleSampleBean.getPointOfContacts().clear();
+			
+			request.getSession().setAttribute("theSample", sample);
+			simpleSampleBean.getErrors().add("User has no access to edit this sample");
+			simpleSampleBean.transferPointOfContactData(sample);;
+			return simpleSampleBean;
 		} catch (DuplicateEntriesException e) {
 			if (newSample)
 				simpleSampleBean.getPointOfContacts().clear();
@@ -568,7 +574,13 @@ public class SampleBO extends BaseAnnotationBO {
 			return simpleSampleBean;
 			//return this.wrapErrorInEditBean(PropertyUtil.getProperty("sample", "error.duplicateSample"));
 		} catch (Exception e) {
-			throw e;
+			if (newSample)
+				simpleSampleBean.getPointOfContacts().clear();
+			
+			request.getSession().setAttribute("theSample", sample);
+			simpleSampleBean.getErrors().add(e.getMessage());
+			simpleSampleBean.transferPointOfContactData(sample);;
+			return simpleSampleBean;
 		}
 		
 		//if (newSample != null && newSampleName.length() > 0)
@@ -1221,6 +1233,13 @@ public class SampleBO extends BaseAnnotationBO {
 	protected SampleEditGeneralBean wrapErrorsInEditBean(List<String> errors) {
 		SampleEditGeneralBean simpleBean = new SampleEditGeneralBean();
 		simpleBean.setErrors(errors);
+		return simpleBean;
+	}
+	
+	protected SampleEditGeneralBean wrapErrorsInEditBean(List<String> errors, String errorType) {
+		SampleEditGeneralBean simpleBean = new SampleEditGeneralBean();
+		simpleBean.setErrors(errors);
+		simpleBean.setErrorType(errorType);
 		return simpleBean;
 	}
 	

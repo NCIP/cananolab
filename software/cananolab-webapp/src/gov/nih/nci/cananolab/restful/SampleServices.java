@@ -308,17 +308,9 @@ public class SampleServices {
 			List<String> errors = editBean.getErrors();
 			logger.debug("SavePOC completed with " + errors.size() + " errors");
 			
-			//ugly for now
-			if (errors.size() > 0) {
-				String error = errors.get(0);
-				if (error.contains("name is already in use")) 
-					return Response.ok(editBean).build();
-						
-			}
-			
-			
 			//return Response.ok(editBean).build();
-			return (errors == null || errors.size() == 0) ?
+			return (errors == null || errors.size() == 0 || 
+					(errors.size() > 0 && !editBean.getErrorType().equals("POC"))) ?
 					Response.ok(editBean).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
