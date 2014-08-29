@@ -1,21 +1,19 @@
 package gov.nih.nci.cananolab.restful.view;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class SimpleWorkspaceItem {
 	
-	boolean isEditable; 
+	boolean editable; 
 	String name;
 	long id;
 	String submisstionStatus;
 	Date createdDate;
-	long fileId;  //for protocol
 	
-	String externalURL;
+	long fileId;  //for protocol
+	String externalURL; //for protocol
 	
 	String comments;
 	String pubMedId;
@@ -39,12 +37,13 @@ public class SimpleWorkspaceItem {
 		this.externalURL = externalURL;
 	}
 
+
 	public boolean isEditable() {
-		return isEditable;
+		return editable;
 	}
 
-	public void setEditable(boolean isEditable) {
-		this.isEditable = isEditable;
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 
 	public String getName() {
