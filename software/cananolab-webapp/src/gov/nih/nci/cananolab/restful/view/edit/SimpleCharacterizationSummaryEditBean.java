@@ -10,6 +10,13 @@ import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 
+/**
+ * Class to support Characterization edit main page. This page is almost the same as Characterization 
+ * view page, except that all characterization types need be present, even there is no char of a type.
+ * 
+ * @author yangs8
+ *
+ */
 public class SimpleCharacterizationSummaryEditBean extends SimpleCharacterizationSummaryViewBean {
 	
 	public List<SimpleCharacterizationsByTypeBean> transferData(HttpServletRequest request, 
@@ -21,8 +28,7 @@ public class SimpleCharacterizationSummaryEditBean extends SimpleCharacterizatio
 		
 		List<SimpleCharacterizationsByTypeBean> charByTypeBeans = super.transferData(viewBean);
 		
-		List<SimpleCharacterizationsByTypeBean> allCharByTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>();
-		//if (charByTypeBean.size() == 0) 
+		List<SimpleCharacterizationsByTypeBean> allCharByTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>(); 
 		
 		for (String aType : allCharacterizationTypes) {
 			boolean exists = false;
@@ -42,7 +48,12 @@ public class SimpleCharacterizationSummaryEditBean extends SimpleCharacterizatio
 				allCharByTypeBeans.add(emptyBean);
 			}
 		}
-			
+		
+		//place holder
+		SimpleCharacterizationsByTypeBean other = new SimpleCharacterizationsByTypeBean();
+		other.setType("other");
+		other.setParentSampleId(Long.parseLong(sampleId));
+		allCharByTypeBeans.add(other);
 		
 		return allCharByTypeBeans;
 	}
