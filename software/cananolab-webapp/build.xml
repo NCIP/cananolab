@@ -363,7 +363,8 @@ L-->
 		 		</classpath>
 		 	     
 		 		<batchtest fork="yes" todir="${report.dir}">
-		 			 <fileset dir="${test.src.dir}" includes="**/*Test.java" excludes="**/PropertyUtilTest.java" />
+		 			 <fileset dir="${test.src.dir}" includes="**/*Test.java" 
+		 			 	excludes="**/PropertyUtilTest.java, **/RestValidatorTest.java, **/SimplePublicationWithSamplesBeanTest.java" />
 		 		</batchtest>
 		 		<formatter type="xml"/> 
 		 	 </junit>
