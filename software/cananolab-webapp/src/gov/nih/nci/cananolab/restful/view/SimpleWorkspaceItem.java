@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SimpleWorkspaceItem {
 	
-	List<String> actions = new ArrayList<String>();
+	boolean isEditable; 
 	String name;
 	long id;
 	String submisstionStatus;
@@ -21,7 +21,16 @@ public class SimpleWorkspaceItem {
 	String pubMedId;
 	String access;
 
+	List<String> actions = new ArrayList<String>();
 	
+	public List<String> getActions() {
+		return actions;
+	}
+
+	public void setActions(List<String> actions) {
+		this.actions = actions;
+	}
+
 	public String getExternalURL() {
 		return externalURL;
 	}
@@ -30,12 +39,12 @@ public class SimpleWorkspaceItem {
 		this.externalURL = externalURL;
 	}
 
-	public List<String> getActions() {
-		return actions;
+	public boolean isEditable() {
+		return isEditable;
 	}
 
-	public void setActions(List<String> actions) {
-		this.actions = actions;
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
 	}
 
 	public String getName() {

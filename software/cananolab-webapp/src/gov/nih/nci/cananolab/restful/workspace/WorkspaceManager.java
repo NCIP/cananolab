@@ -18,6 +18,7 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
@@ -106,23 +107,8 @@ public class WorkspaceManager {
 			item.setName(pubBean.getDomainFile().getTitle());
 			item.setId(pubBean.getDomainFile().getId());
 			item.setCreatedDate(pubBean.getDomainFile().getCreatedDate());
-			item.getActions().add("View");
 			
-			if (pubBean.getPublicStatus())
-				item.setSubmisstionStatus("Approved"); 
-			else
-				item.setSubmisstionStatus("In Draft");
-			
-			DataReviewStatusBean reviewBean =  this.curationService.findDataReviewStatusBeanByDataId(id, securityService);
-			if (reviewBean != null) {
-				item.setSubmisstionStatus(reviewBean.getReviewStatus());
-			}
-			
-			List<AccessibilityBean> groupAccesses = pubBean.getGroupAccesses();
-			List<AccessibilityBean> userAccesses = pubBean.getUserAccesses();
-			boolean isOwner = (user.getLoginName().equals(pubBean.getDomainFile().getCreatedBy())) ? true : false;
-			String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), isOwner);
-			item.setAccess(access);
+			setCommonDataFields(id, item, pubBean, securityService, user.getLoginName());
 			
 			items.add(item);
 		}
@@ -142,6 +128,8 @@ public class WorkspaceManager {
 		
 		for (String id : protoIds) {
 			ProtocolBean protoBean = protocolService.findProtocolById(id);
+			
+			
 		
 			if (protoBean == null) continue;
 			
@@ -161,25 +149,7 @@ public class WorkspaceManager {
 			if (file != null && file.getUriExternal())
 				item.setExternalURL(file.getUri());
 				
-			item.getActions().add("View");
-			
-			item.setSubmisstionStatus("Approved"); //default
-			
-			if (protoBean.getPublicStatus())
-				item.setSubmisstionStatus("Approved"); 
-			else
-				item.setSubmisstionStatus("In Draft");
-			
-			DataReviewStatusBean reviewBean =  this.curationService.findDataReviewStatusBeanByDataId(id, securityService);
-			if (reviewBean != null) {
-				item.setSubmisstionStatus(reviewBean.getReviewStatus());
-			}
-			
-			List<AccessibilityBean> groupAccesses = protoBean.getGroupAccesses();
-			List<AccessibilityBean> userAccesses = protoBean.getUserAccesses();
-			boolean isOwner = (user.getLoginName().equals(protoBean.getDomain().getCreatedBy())) ? true : false;
-			String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), isOwner);
-			item.setAccess(access);
+			setCommonDataFields(id, item, protoBean, securityService, user.getLoginName());
 			
 			items.add(item);
 		}
@@ -202,28 +172,12 @@ public class WorkspaceManager {
 			SampleBean sampleBean = sampleService.findSampleById(id, true);
 			if (sampleBean == null) continue;
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
+			
 			item.setName(sampleBean.getDomain().getName());
 			item.setId(sampleBean.getDomain().getId());
 			item.setCreatedDate(sampleBean.getDomain().getCreatedDate());
-			item.getActions().add("View");
 			
-			//preset default
-			if (sampleBean.getPublicStatus())
-				item.setSubmisstionStatus("Approved"); 
-			else
-				item.setSubmisstionStatus("In Draft");
-			
-			DataReviewStatusBean reviewBean =  this.curationService.findDataReviewStatusBeanByDataId(id, securityService);
-			if (reviewBean != null) {
-				item.setSubmisstionStatus(reviewBean.getReviewStatus());
-			}
-			
-			List<AccessibilityBean> groupAccesses = sampleBean.getGroupAccesses();
-			List<AccessibilityBean> userAccesses = sampleBean.getUserAccesses();
-			boolean isOwner = (loginUser.equals(sampleBean.getDomain().getCreatedBy())) ? true : false;
-			String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), isOwner);
-			
-			item.setAccess(access);
+			setCommonDataFields(id, item, sampleBean, securityService, user.getLoginName());
 					
 			items.add(item);
 		}
@@ -281,12 +235,8 @@ public class WorkspaceManager {
 			item.setCreatedDate(new Date());
 			item.setSubmisstionStatus("Submitted for Public Access");
 			List<String> actions = new ArrayList<String>();
-			actions.add("View");
-			actions.add("Edit");
-			actions.add("Delete");
-			item.setActions(actions);
 			item.setAccess("Read Write Delete (Owner)");
-			
+			item.setEditable(false);
 			items.add(item);
 		}
 		
@@ -300,12 +250,9 @@ public class WorkspaceManager {
 			item.setCreatedDate(new Date());
 			item.setSubmisstionStatus("In Review");
 			List<String> actions = new ArrayList<String>();
-			actions.add("View");
-			actions.add("Edit");
-			actions.add("Delete");
-			item.setActions(actions);
-			item.setAccess("Read Write Delete (Owner)");
 			
+			item.setAccess("Read Write Delete (Owner)");
+			item.setEditable(false);
 			item.setPubMedId("1868677" + i);
 			
 			items.add(item);
@@ -315,6 +262,31 @@ public class WorkspaceManager {
 		
 		
 		return workspaceBean;
+	}
+	
+	protected void setCommonDataFields(String itemId, SimpleWorkspaceItem item, 
+			SecuredDataBean dataBean, SecurityService securityService, String loginName) {
+		item.setEditable(dataBean.getUserUpdatable());
+		
+		if (dataBean.getPublicStatus())
+			item.setSubmisstionStatus("Approved"); 
+		else
+			item.setSubmisstionStatus("In Draft");
+		
+		try {
+			DataReviewStatusBean reviewBean =  this.curationService.findDataReviewStatusBeanByDataId(itemId, securityService);
+			if (reviewBean != null) {
+				item.setSubmisstionStatus(StringUtils.getCamelCaseFormatInWords(reviewBean.getReviewStatus()));
+			}
+		} catch (Exception e) {
+			logger.debug("Exception while finding data review status due to curator role restriction. Ignore for now");
+		}
+		
+		List<AccessibilityBean> groupAccesses = dataBean.getGroupAccesses();
+		List<AccessibilityBean> userAccesses = dataBean.getUserAccesses();
+		
+		String access = this.getAccessString(groupAccesses, userAccesses, loginName, dataBean.getUserIsOwner());
+		item.setAccess(access);
 	}
 	
 	private SampleService getSampleServiceInSession(HttpServletRequest request, SecurityService securityService) {
