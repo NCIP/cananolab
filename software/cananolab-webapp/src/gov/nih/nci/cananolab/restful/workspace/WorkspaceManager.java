@@ -108,7 +108,7 @@ public class WorkspaceManager {
 			item.setId(pubBean.getDomainFile().getId());
 			item.setCreatedDate(pubBean.getDomainFile().getCreatedDate());
 			
-			setCommonDataFields(id, item, pubBean, securityService, user.getLoginName());
+			setCommonDataFields(id, item, pubBean, securityService, user);
 			
 			items.add(item);
 		}
@@ -149,7 +149,7 @@ public class WorkspaceManager {
 			if (file != null && file.getUriExternal())
 				item.setExternalURL(file.getUri());
 				
-			setCommonDataFields(id, item, protoBean, securityService, user.getLoginName());
+			setCommonDataFields(id, item, protoBean, securityService, user);
 			
 			items.add(item);
 		}
@@ -177,7 +177,7 @@ public class WorkspaceManager {
 			item.setId(sampleBean.getDomain().getId());
 			item.setCreatedDate(sampleBean.getDomain().getCreatedDate());
 			
-			setCommonDataFields(id, item, sampleBean, securityService, user.getLoginName());
+			setCommonDataFields(id, item, sampleBean, securityService, user);
 					
 			items.add(item);
 		}
@@ -265,7 +265,8 @@ public class WorkspaceManager {
 	}
 	
 	protected void setCommonDataFields(String itemId, SimpleWorkspaceItem item, 
-			SecuredDataBean dataBean, SecurityService securityService, String loginName) {
+			SecuredDataBean dataBean, SecurityService securityService, UserBean user) {
+		
 		item.setEditable(dataBean.getUserUpdatable());
 		
 		if (dataBean.getPublicStatus())
@@ -285,7 +286,7 @@ public class WorkspaceManager {
 		List<AccessibilityBean> groupAccesses = dataBean.getGroupAccesses();
 		List<AccessibilityBean> userAccesses = dataBean.getUserAccesses();
 		
-		String access = this.getAccessString(groupAccesses, userAccesses, loginName, dataBean.getUserIsOwner());
+		String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), dataBean.getUserIsOwner());
 		item.setAccess(access);
 	}
 	
