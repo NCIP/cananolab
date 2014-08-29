@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
@@ -293,6 +294,8 @@ public class SampleServices {
 	@Produces ("application/json")
 	public Response savePOC(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleEditBean) {
 		logger.debug("In savePOC");
+		
+		SampleEditGeneralBean editBean = null;
 		try {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");
@@ -301,14 +304,23 @@ public class SampleServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			SampleEditGeneralBean editBean = sampleBO.savePointOfContactList(simpleEditBean, httpRequest);
+			editBean = sampleBO.savePointOfContactList(simpleEditBean, httpRequest);
 			List<String> errors = editBean.getErrors();
 			logger.debug("SavePOC completed with " + errors.size() + " errors");
 			
-			return Response.ok(editBean).build();
-//			return (errors == null || errors.size() == 0) ?
-//					Response.ok(editBean).build() :
-//						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			//ugly for now
+			if (errors.size() > 0) {
+				String error = errors.get(0);
+				if (error.contains("name is already in use")) 
+					return Response.ok(editBean).build();
+						
+			}
+			
+			
+			//return Response.ok(editBean).build();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(editBean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
