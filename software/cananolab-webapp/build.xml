@@ -358,11 +358,12 @@ L-->
 		 	     	<!--
 		 	     	<pathelement path="${basedir}/WebContent/WEB-INF"/>
 		 	     	<pathelement path="${resources.dir}"/> -->
+		 	     	<pathelement path="${test.dir}/resources" />
 		 	     	
 		 		</classpath>
 		 	     
 		 		<batchtest fork="yes" todir="${report.dir}">
-		 			 <fileset dir="${test.src.dir}" includes="**/*Test.java"/>
+		 			 <fileset dir="${test.src.dir}" includes="**/*Test.java" excludes="**/PropertyUtilTest.java" />
 		 		</batchtest>
 		 		<formatter type="xml"/> 
 		 	 </junit>
