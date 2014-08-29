@@ -62,6 +62,6 @@ public class RestValidatorTest {
 		pocBean.setOrganization(orgBean);
 		
 		List<String> errors = RestValidator.validate(pocBean);
-		assertTrue(errors.size() > 3);
+		assertTrue(errors.size() > 0);
 	}
 }
