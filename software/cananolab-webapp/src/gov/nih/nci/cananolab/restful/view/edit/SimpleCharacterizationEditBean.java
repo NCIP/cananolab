@@ -1,9 +1,13 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
+import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
+import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 
 import java.util.ArrayList;
@@ -27,8 +31,9 @@ public class SimpleCharacterizationEditBean {
 	List<String> charTypesLookup;
 	List<String> characterizationNameLookup;
 	List<String> AssayTypeLookup;
-	List<String> protocolNameVersionLookup;
-	List<String> charSourceLookup;
+	List<SimpleProtocol> protocolLookup;
+	List<SimplePOC> charSourceLookup;
+	List<String> otherSampleNameLookup;
 	
 	public void transferCharacterizationEditData(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
 	throws Exception {
@@ -38,42 +43,80 @@ public class SimpleCharacterizationEditBean {
 	
 	protected void setupLookups(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
 			throws Exception {
-		//create dummpy
+	
+		String charType = charBean.getCharacterizationType();
+		
 		charTypesLookup = InitCharacterizationSetup
 				.getInstance().getCharacterizationTypes(request);
 
 		characterizationNameLookup = new ArrayList<String>();
 		SortedSet<String> charNames = InitCharacterizationSetup
-				.getInstance().getCharNamesByCharType(request, charBean.getCharacterizationType());
+				.getInstance().getCharNamesByCharType(request, charType);
 		characterizationNameLookup.addAll(charNames);
 
-		//This is empty for new char
 		AssayTypeLookup = new ArrayList<String>();
-		// setup Assay Type drop down.
-//				InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
-//						"charNameAssays", charBean.getCharacterizationName(),
-//						"assayType", "otherAssayType", true);
+		String charName = charBean.getCharacterizationName();
+		if (charName != null && charName.length() > 0) {
+			SortedSet<String> assayTypes = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+					"charNameAssays", charName, "assayType", "otherAssayType", true);
+			AssayTypeLookup.addAll(assayTypes);
+		}
+		
+		setProtocolLookup(request, charType);
+		
+		setPOCLookup(request, sampleId);
 		
 		
-		
-		//Proto needs:
-		//property="achar.protocolBean.fileBean.domainFile.uri" 
-		//property="achar.protocolBean.domain.id"
-		//characterizationForm.map.achar.protocolBean.fileBean.domainFile.id
-		//characterizationForm.map.achar.protocolBean.fileBean.domainFile.uri
-		
-		protocolNameVersionLookup = new ArrayList<String>();
-		
+		otherSampleNameLookup = InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+	}
+	
+	protected void setPOCLookup(HttpServletRequest request, String sampleId) 
+	throws Exception {
+		charSourceLookup = new ArrayList<SimplePOC>();
 		SampleService service = (SampleService)request.getSession().getAttribute("sampleService");
 		List<PointOfContactBean> pocs = service
 				.findPointOfContactsBySampleId(sampleId);
-		//source = poc
-		//needs:
-		//achar.pocBean.domain.id
-		//poc display name: 
-		charSourceLookup = new ArrayList<String>();
+		
+		if (pocs == null) return;
+			
+		for (PointOfContactBean poc : pocs) {
+			SimplePOC simplePOC = new SimplePOC();
+			simplePOC.transferFromPointOfContactBean(poc);
+			charSourceLookup.add(simplePOC);
+		}
 	}
 
+	protected void setProtocolLookup(HttpServletRequest request, String charType) 
+	throws Exception {
+		protocolLookup = new ArrayList<SimpleProtocol>();
+		List<ProtocolBean> protoBeans = InitProtocolSetup.getInstance()
+				.getProtocolsByChar(request, charType);
+		
+		if (protoBeans == null)
+			return;
+		
+		for (ProtocolBean protoBean : protoBeans) {
+			SimpleProtocol simpleProto = new SimpleProtocol();
+			simpleProto.transferFromProtocolBean(protoBean);
+			protocolLookup.add(simpleProto);
+		}
+	}
+
+	public List<SimpleProtocol> getProtocolLookup() {
+		return protocolLookup;
+	}
+
+	public void setProtocolLookup(List<SimpleProtocol> protocolLookup) {
+		this.protocolLookup = protocolLookup;
+	}
+
+	public List<String> getOtherSampleNameLookup() {
+		return otherSampleNameLookup;
+	}
+
+	public void setOtherSampleNameLookup(List<String> otherSampleNameLookup) {
+		this.otherSampleNameLookup = otherSampleNameLookup;
+	}
 
 	public String getType() {
 		return type;
@@ -135,20 +178,94 @@ public class SimpleCharacterizationEditBean {
 	}
 	public void setAssayTypeLookup(List<String> assayTypeLookup) {
 		AssayTypeLookup = assayTypeLookup;
-	}
-	public List<String> getProtocolNameVersionLookup() {
-		return protocolNameVersionLookup;
-	}
-	public void setProtocolNameVersionLookup(List<String> protocolNameVersionLookup) {
-		this.protocolNameVersionLookup = protocolNameVersionLookup;
-	}
-	public List<String> getCharSourceLookup() {
+	}	
+	
+	public List<SimplePOC> getCharSourceLookup() {
 		return charSourceLookup;
 	}
-	public void setCharSourceLookup(List<String> charSourceLookup) {
+
+	public void setCharSourceLookup(List<SimplePOC> charSourceLookup) {
 		this.charSourceLookup = charSourceLookup;
 	}
-	
-	
 
+	public class SimpleProtocol {
+		//Proto needs:
+				//property="achar.protocolBean.fileBean.domainFile.uri" 
+				//property="achar.protocolBean.domain.id"
+				//characterizationForm.map.achar.protocolBean.fileBean.domainFile.id
+				//characterizationForm.map.achar.protocolBean.fileBean.domainFile.uri
+		
+		long domainId;
+		long domainFileId;
+		String domainFileUri;
+		String displayName;
+		
+		public long getDomainId() {
+			return domainId;
+		}
+
+		public void setDomainId(long domainId) {
+			this.domainId = domainId;
+		}
+
+		public long getDomainFileId() {
+			return domainFileId;
+		}
+
+		public void setDomainFileId(long domainFileId) {
+			this.domainFileId = domainFileId;
+		}
+
+		public String getDomainFileUri() {
+			return domainFileUri;
+		}
+
+		public void setDomainFileUri(String domainFileUri) {
+			this.domainFileUri = domainFileUri;
+		}
+
+		public String getDisplayName() {
+			return displayName;
+		}
+
+		public void setDisplayName(String displayName) {
+			this.displayName = displayName;
+		}
+
+		
+		
+		public void transferFromProtocolBean(ProtocolBean protoBean) {
+			if (protoBean == null) return;
+			
+			domainId = protoBean.getDomain().getId();
+			FileBean domainFile = protoBean.getFileBean();
+			if (domainFile != null) {
+				domainFileId = domainFile.getDomainFile().getId();
+				domainFileUri = domainFile.getDomainFile().getUri();
+			}
+			displayName = protoBean.getDisplayName();
+		}
+	}
+	
+	public class SimplePOC {
+		long id;
+		String displayName;
+		public long getId() {
+			return id;
+		}
+		public void setId(long id) {
+			this.id = id;
+		}
+		public String getDisplayName() {
+			return displayName;
+		}
+		public void setDisplayName(String displayName) {
+			this.displayName = displayName;
+		}
+		
+		public void transferFromPointOfContactBean(PointOfContactBean pocBean) {
+			id = pocBean.getDomain().getId();
+			displayName = pocBean.getDisplayName();
+		}
+	}
 }

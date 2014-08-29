@@ -140,23 +140,18 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 */
 	public SimpleCharacterizationEditBean setupNew(HttpServletRequest request, String sampleId, String charType)
 			throws Exception {
-		this.setServicesInSession(request);
+		if (StringUtils.isEmpty(sampleId))
+			throw new Exception("Sample id is empty");
+		
+		if (StringUtils.isEmpty(charType))
+			throw new Exception("Characterization type is empty");
+		
+		setServicesInSession(request);
 		
 		setupInputForm(request, sampleId, charType);
 		
-		// reset characterizationBean
-		CharacterizationBean charBean = new CharacterizationBean();
-		//theForm.set("achar", charBean);
-		//String charType = request.getParameter("charType");
-		
-		
-		if (!StringUtils.isEmpty(charType)) {
-			charBean.setCharacterizationType(charType);
-//			SortedSet<String> charNames = InitCharacterizationSetup
-//					.getInstance().getCharNamesByCharType(request,
-//							charBean.getCharacterizationType());
-//			request.getSession().setAttribute("charTypeChars", charNames);
-		}
+		CharacterizationBean charBean = new CharacterizationBean();		
+		charBean.setCharacterizationType(charType);
 		
 		//this.checkOpenForms(charBean, theForm, request);
 		// clear copy to otherSamples
@@ -175,14 +170,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @throws Exception
 	 */
 	private void setupInputForm(HttpServletRequest request, String sampleId, String charType) throws Exception {
-//		String sampleId = theForm.getString("sampleId");
-//		String charType = request.getParameter("charType");
-//		if (charType == null) {
-//			charType = (String) request.getAttribute("charType");
-//		}
-		
-		//TODO: validate sampleId and charType
-		
+
+		if (StringUtils.isEmpty(sampleId))
+			throw new Exception("Sample id is invalid");
 		
 		if (!StringUtils.isEmpty(charType))
 			InitProtocolSetup.getInstance().getProtocolsByChar(request,
