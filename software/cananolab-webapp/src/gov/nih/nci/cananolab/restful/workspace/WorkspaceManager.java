@@ -267,9 +267,7 @@ public class WorkspaceManager {
 	protected void setCommonDataFields(String itemId, SimpleWorkspaceItem item, 
 			SecuredDataBean dataBean, SecurityService securityService, UserBean user) {
 		
-		boolean editable = dataBean.getUserUpdatable();
-		editable = (dataBean.getPublicStatus() && !user.isCurator()) ? false : editable;
-		item.setEditable(editable);
+		item.setEditable(dataBean.getUserUpdatable());
 		
 		if (dataBean.getPublicStatus())
 			item.setSubmisstionStatus("Approved"); 
