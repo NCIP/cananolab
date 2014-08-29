@@ -46,7 +46,7 @@ app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,
     };    
     
     $scope.loader = true;
-    $http({method: 'GET', url: '/caNanoLab/rest/sample/characterizationView?sampleId='+$scope.sampleId.data}).
+    $http({method: 'GET', url: '/caNanoLab/rest/characterization/setupEdit?sampleId='+$scope.sampleId.data}).
     success(function(data, status, headers, config) {
       $scope.data = data;
 	 $scope.loader = false;      
