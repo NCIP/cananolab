@@ -565,9 +565,6 @@ public class SampleBO extends BaseAnnotationBO {
 			request.getSession().setAttribute("theSample", sample);
 			simpleSampleBean.getErrors().add(PropertyUtil.getProperty("sample", "error.duplicateSample"));
 			simpleSampleBean.transferPointOfContactData(sample);;
-//			SimplePointOfContactBean poc = new SimplePointOfContactBean();
-//			simpleSampleBean.transferPointOfContactData(thePOC.getDomain(), poc, (long)0);
-			//simpleSampleBean.getPointOfContacts().add(poc);
 			return simpleSampleBean;
 			//return this.wrapErrorInEditBean(PropertyUtil.getProperty("sample", "error.duplicateSample"));
 		} catch (Exception e) {
