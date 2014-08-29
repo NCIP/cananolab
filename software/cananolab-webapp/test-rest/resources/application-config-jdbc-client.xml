@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-lazy-init="false" default-dependency-check="none"
+	default-autowire="no">
+
+	<!-- Bean Definitions for Admin Services -->
+	<bean id="caNanoLabDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:/caNanoLab</value>
+		</property>
+	</bean>
+
+	<bean id="caNanoLabTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref bean="caNanoLabDataSource" />
+		</property>
+	</bean>
+
+	<bean id="caNanoLabTxInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager">
+			<ref bean="caNanoLabTransactionManager" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean name="AdminServiceJDBCImpl"
+		class="gov.nih.nci.cananolab.service.admin.impl.AdminServiceJDBCImpl">
+		<property name="dataSource">
+			<ref bean="caNanoLabDataSource" />
+		</property>
+	</bean>
+
+	<bean id="adminServiceDAO" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="AdminServiceJDBCImpl" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>caNanoLabTxInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="/admin" class="gov.nih.nci.cananolab.ui.admin.AdministrationAction">
+		<property name="adminService">
+			<ref bean="adminServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="DataAvailabilityServiceJDBCImpl"
+		class="gov.nih.nci.cananolab.service.sample.impl.DataAvailabilityServiceJDBCImpl">
+		<property name="dataSource">
+			<ref bean="caNanoLabDataSource" />
+		</property>
+	</bean>
+
+	<bean id="dataAvailabilityServiceDAO" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="DataAvailabilityServiceJDBCImpl" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>caNanoLabTxInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="/searchSample" class="gov.nih.nci.cananolab.ui.sample.SearchSampleAction">
+		<property name="dataAvailabilityService">
+			<ref bean="dataAvailabilityServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/sample" class="gov.nih.nci.cananolab.ui.sample.SampleAction">
+		<property name="dataAvailabilityService">
+			<ref bean="dataAvailabilityServiceDAO" />
+		</property>
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/nanomaterialEntity"
+		class="gov.nih.nci.cananolab.ui.sample.NanomaterialEntityAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/functionalizingEntity"
+		class="gov.nih.nci.cananolab.ui.sample.FunctionalizingEntityAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/compositionFile"
+		class="gov.nih.nci.cananolab.ui.sample.CompositionFileAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/chemicalAssociation"
+		class="gov.nih.nci.cananolab.ui.sample.ChemicalAssociationAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/characterization"
+		class="gov.nih.nci.cananolab.ui.sample.CharacterizationAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/protocol" class="gov.nih.nci.cananolab.ui.protocol.ProtocolAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/publication"
+		class="gov.nih.nci.cananolab.ui.publication.PublicationAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="curationServiceJDBCImpl"
+		class="gov.nih.nci.cananolab.service.curation.impl.CurationServiceJDBCImpl">
+		<property name="dataSource">
+			<ref bean="caNanoLabDataSource" />
+		</property>
+	</bean>
+
+	<bean id="curationServiceDAO" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="curationServiceJDBCImpl" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>caNanoLabTxInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="/reviewData" class="gov.nih.nci.cananolab.ui.curation.ReviewDataAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+	<bean name="/generateBatchDataAvailability" class="gov.nih.nci.cananolab.ui.curation.BatchDataAvailabilityAction">
+		<property name="dataAvailabilityService">
+			<ref bean="dataAvailabilityServiceDAO" />
+		</property>
+	</bean>
+
+</beans>
