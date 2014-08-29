@@ -27,7 +27,7 @@ public class SecurityServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("security/login")
-				.queryParam("username", "canano_res").queryParam("password", "Quality@6")
+				.queryParam("username", "canano_res").queryParam("password", "sfsfasf")
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
@@ -42,14 +42,11 @@ public class SecurityServicesTest {
 				.header("some-header", "true")
 				.get(String.class);
 		
+		//test with fake password
 		assertNotNull(jsonString);
-		assertTrue(jsonString.contains("success"));
+		assertTrue(!jsonString.contains("success"));
 	}
 
-	//@Test
-	public void testRegister() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testLogout() {
