@@ -55,7 +55,7 @@ public class SearchSampleBOTest {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	//@Test
 	public void testSetup() {
 		SearchSampleBO searchbo = new SearchSampleBO();
 		
