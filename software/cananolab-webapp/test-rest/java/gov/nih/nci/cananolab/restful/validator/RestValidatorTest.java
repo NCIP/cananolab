@@ -12,7 +12,7 @@ import org.junit.Test;
 
 public class RestValidatorTest {
 
-	@Test
+	//@Test
 	public void testValidate1LevelObject() {
 		SimpleAddressBean address = new SimpleAddressBean();
 		address.setZip(null);
@@ -43,7 +43,7 @@ public class RestValidatorTest {
 //			System.out.println(errors.get(0));
 	}
 
-	@Test
+	//@Test
 	public void testValidate2LevelObject() {
 		SimplePointOfContactBean pocBean = new SimplePointOfContactBean();
 		
