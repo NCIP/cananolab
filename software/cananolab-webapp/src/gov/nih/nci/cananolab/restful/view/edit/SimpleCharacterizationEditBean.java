@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
@@ -39,7 +38,7 @@ public class SimpleCharacterizationEditBean {
 	
 	//for Edit
 	
-	
+	SimpleTechniqueAndInstrument techniqueInstruments = new SimpleTechniqueAndInstrument();
 	
 	
 	///
@@ -65,18 +64,22 @@ public class SimpleCharacterizationEditBean {
 		
 		this.type = charBean.getCharacterizationType();
 		
-		if (charBean.getDomainChar() != null) {
-			Long id = charBean.getDomainChar().getId();
-			if (id != null) {
-				this.charId = id.longValue();
-				this.assayType = charBean.getAssayType();
-			}
-		}
+		transferCharBeanData(charBean);
 		
 		setupLookups(request, charBean, sampleId);
 	}
 	
-	
+	protected void transferCharBeanData(CharacterizationBean charBean) {
+		if (charBean.getDomainChar() == null) 
+			return;
+
+		Long id = charBean.getDomainChar().getId();
+		if (id != null) {
+			this.charId = id.longValue();
+			this.assayType = charBean.getAssayType();
+		}
+
+	}
 	
 	protected void setupLookups(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
 			throws Exception {
@@ -91,31 +94,11 @@ public class SimpleCharacterizationEditBean {
 				.getInstance().getCharNamesByCharType(request, charType);
 		charNamesForCurrentType.addAll(charNames);
 		
-		
-//		for (String charName : characterizationNameLookup) {
-//			List<String> assayTypes = new ArrayList<String>();
-//			SortedSet<String> assTypes = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
-//					"charNameAssays", charName, "assayType", "otherAssayType", true);
-//			assayTypes.addAll(assTypes);
-//			
-//			this.assayTypesByCharNameLookup.put(charName, assayTypes);
-//		}
-
-//		AssayTypeLookup = new ArrayList<String>();
-//		String charName = charBean.getCharacterizationName();
-//		if (charName != null && charName.length() > 0) {
-//			SortedSet<String> assayTypes = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
-//					"charNameAssays", charName, "assayType", "otherAssayType", true);
-//			AssayTypeLookup.addAll(assayTypes);
-//		}
-	
-		
 		setProtocolLookup(request, charType);
-		
 		setPOCLookup(request, sampleId);
-		
-		
 		otherSampleNameLookup = InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+		
+		this.techniqueInstruments.setupLookups(request);
 	}
 	
 	protected void setPOCLookup(HttpServletRequest request, String sampleId) 
@@ -276,8 +259,15 @@ public class SimpleCharacterizationEditBean {
 	public void setCharSourceLookup(List<SimplePOC> charSourceLookup) {
 		this.charSourceLookup = charSourceLookup;
 	}
-	
-	
+
+	public SimpleTechniqueAndInstrument getTechniqueInstruments() {
+		return techniqueInstruments;
+	}
+
+	public void setTechniqueInstruments(
+			SimpleTechniqueAndInstrument techniqueInstruments) {
+		this.techniqueInstruments = techniqueInstruments;
+	}
 
 	public class SimpleProtocol {
 		//Proto needs:
@@ -330,8 +320,9 @@ public class SimpleCharacterizationEditBean {
 			
 			domainId = protoBean.getDomain().getId();
 			FileBean domainFile = protoBean.getFileBean();
-			if (domainFile != null) {
-				domainFileId = domainFile.getDomainFile().getId();
+			if (domainFile != null && domainFile.getDomainFile() != null) {
+				if (domainFile.getDomainFile().getId() != null)
+					domainFileId = domainFile.getDomainFile().getId();
 				domainFileUri = domainFile.getDomainFile().getUri();
 			}
 			displayName = protoBean.getDisplayName();

@@ -3,16 +3,13 @@ package gov.nih.nci.cananolab.restful;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
-import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
+import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationSummaryEditBean;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -151,6 +148,50 @@ public class CharacterizationServices {
 		List<String> assayTypes = characterizationMgr.getAssayTypes(httpRequest, charName);
 
 		return Response.ok(assayTypes).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	@GET
+	@Path("/setupAddTechnique")
+	@Produces ("application/json")
+    public Response setupAddTechnique(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("charName") String charName) {
+		logger.debug("In setupAddTechnique");		
+		
+		try {
+			CharacterizationManager characterizationMgr = 
+				(CharacterizationManager) applicationContext.getBean("characterizationManager");
+
+		List<String> assayTypes = characterizationMgr.getAssayTypes(httpRequest, charName);
+
+		return Response.ok(assayTypes).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	@GET
+	@Path("/getAbbreviationByTechnique")
+	@Produces ("application/json")
+    public Response getAbbreviationByTechnique(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("techniqueType") String techniqueType) {
+		logger.debug("In getAbbreviationByTechnique");		
+		
+		try {
+			ExperimentConfigManager experimentMgr = 
+				(ExperimentConfigManager) applicationContext.getBean("experimentConfigManager");
+
+		String abbr = experimentMgr.getTechniqueAbbreviation(httpRequest, techniqueType);
+
+		return Response.ok(abbr).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
