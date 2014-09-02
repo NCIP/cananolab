@@ -22,7 +22,7 @@
                     </th>
                     <td align="right" width="3%">
                         <!-- <a href="#submitComposingElement" onclick="javascript:setTheComposingElement(21409029);">Edit</a>&nbsp; -->
-                        <button ng-click="editComposingElement({{$parent.composingElementForm.id}});openAddComposingElement();" class="btn btn-primary btn-xxs">Edit</button>&nbsp;
+                        <button ng-click="editComposingElement('{{composingElement.id}}');openAddComposingElement();" class="btn btn-primary btn-xxs">Edit</button>&nbsp;
                     </td>
                 </tr>
                 <tr>
@@ -103,7 +103,7 @@
             <label for="elementName">Chemical Name*</label>
         </td>
         <td>
-            <input type="text" name="$parent.composingElementForm.name" size="30" value="" id="elementName">
+            <input type="text" ng-model="$parent.composingElementForm.name" size="30" id="elementName">
         </td>
     </tr>
     <tr>
@@ -125,7 +125,7 @@
             <label for="pubChemId">PubChem Id</label>
         </td>
         <td>
-            <input type="text" name="$parent.composingElementForm.pubChemId" size="30" value="" onkeydown="return filterInteger(event)" id="pubChemId">
+            <input type="text" ng-model="$parent.composingElementForm.pubChemId" size="30" onkeydown="return filterInteger(event)" id="pubChemId">
         </td>
     </tr>
     <tr>
@@ -133,7 +133,7 @@
             <label for="elementValue">Amount</label>
         </td>
         <td>
-            <input type="text" name="$parent.composingElementForm.value" size="30" value="" id="elementValue">
+            <input type="text" ng-model="$parent.composingElementForm.value" size="30" id="elementValue">
 
         </td>
         <td class="cellLabel">
@@ -161,7 +161,7 @@
         </td>
         <td>
             <div id="molFormulaTypePrompt">
-                <select name="$parent.composingElementForm.molecularFormulaType" id="molFormulaType">
+                <select ng-model="$parent.composingElementForm.molecularFormulaType" id="molFormulaType">
                     <option value="">
                     </option>
                     <option ng-repeat="type in $parent.molecularFormulaTypes track by $index" value="{{type}}">
@@ -177,7 +177,7 @@
             <label for="molFormula">Molecular Formula</label>
         </td>
         <td>
-            <textarea name="$parent.composingElementForm.molecularFormula" cols="40" rows="2" id="molFormula"></textarea>
+            <textarea ng-model="$parent.composingElementForm.molecularFormula" cols="40" rows="2" id="molFormula"></textarea>
         </td>
     </tr>
     <tr>
@@ -185,7 +185,7 @@
             <label for="elementDescription">Description</label>
         </td>
         <td colspan="3">
-            <textarea name="$parent.composingElementForm.description" cols="65" rows="3" id="elementDescription"></textarea>
+            <textarea ng-model="$parent.composingElementForm.description" cols="65" rows="3" id="elementDescription"></textarea>
             <input type="hidden" name="nanomaterialEntity.theComposingElement.domain.id" value="" id="elementId">
         </td>
     </tr>
@@ -269,16 +269,16 @@
                             </div>
                         </td>
                         <td class="cellLabel">
-                            <div id="modalityLabel" style="display: none">
+                            <div id="modalityLabel" ng-show="showModality">
                                 <label for="imagingModality">Imaging Modality Type</label>
                             </div>
                         </td>
                         <td>
-                            <div id="imagingModalityPrompt" style="display: none">
-                                <select ng-model="theInherentFunction.modality" ng-show="showModality" id="imagingModality">
+                            <div id="imagingModalityPrompt" ng-show="showModality">
+                                <select ng-model="theInherentFunction.modality" id="imagingModality">
                                     <option value="">
                                     </option>
-                                    <option ng-repeat="modality in $parent.imagingModality track by $index" value="{{modality}}">
+                                    <option ng-repeat="modality in modalityTypes track by $index" value="{{modality}}">
                                         {{modality}}
                                     </option>
 
@@ -319,7 +319,7 @@
     <tr>
         <td>
 
-            <input type="button" value="Remove" ng-click="removeComposingElement({{$parent.composingElementForm.id}});" id="deleteComposingElement" style="display: none;">
+            <input type="button" value="Remove" ng-click="removeComposingElement('{{composingElementForm.id}}');" id="deleteComposingElement" ng-show="composingElementForm.id != null">
 
         </td>
         <td colspan="3">
