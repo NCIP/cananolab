@@ -18,7 +18,7 @@
 
                 <tr>
                     <th class="cellLabel" colspan="2" scope="row">
-                        {{composingElement.name}}
+                        {{composingElement.type}}
                     </th>
                     <td align="right" width="3%">
                         <!-- <a href="#submitComposingElement" onclick="javascript:setTheComposingElement(21409029);">Edit</a>&nbsp; -->
@@ -30,7 +30,8 @@
                         PubChem ID
                     </th>
                     <td>
-                        {{composingElement.pubChemId}}&nbsp;({{composingElement.pubChemDataSourceName}})
+                    	<a href="http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid={{composingElement.pubChemId}}" target="caNanoLab - View PubChem">{{composingElement.pubChemId}}</a>
+                        &nbsp;({{composingElement.pubChemDataSourceName}})
                     </td>
                     <td></td>
                 </tr>
@@ -39,7 +40,7 @@
                         Molecular Formula
                     </th>
                     <td>
-                        {{composingElement.molecularFormula}}
+                        {{composingElement.molecularFormula}}&nbsp;({{composingElement.molecularFormulaType}})
                     </td>
 
 
@@ -324,7 +325,7 @@
         </td>
         <td colspan="3">
             <div align="right">
-                <input type="button" value="Save" ng-click="addComposingElement();">
+                <input type="button" value="Save" ng-click="saveComposingElement();">
                 <input type="button" value="Cancel" ng-click="closeAddComposingElement();">
             </div>
         </td>

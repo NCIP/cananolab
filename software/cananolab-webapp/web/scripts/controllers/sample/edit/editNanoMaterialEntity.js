@@ -26,7 +26,7 @@ var app = angular.module('angularApp')
         $scope.externalUrlEnabled = false;
         $scope.addNewFile = false;
 
-        /** Composing Element Variables */
+        /* Composing Element Variables */
         $scope.composingElementForm = {};
         $scope.addNewInherentFunction = false;
         $scope.showInherentFunctionTable = false;
@@ -61,92 +61,7 @@ var app = angular.module('angularApp')
                     $scope.message = data;
                 });
         });
-
-        $scope.loadNanoEntityData = function() {
-            if( $scope.nanoEntityId != null ) {
-                    $scope.loader = true;
-                    $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/nanomaterialEntity/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.nanoEntityId}).
-                        success(function(data, status, headers, config) {
-                            $scope.nanoEntityForm = data;
-                            //$scope.nanoEntityForm = {"simpleCompBean":{"type":"coat","name":"coat","pubChemDataSourceName":"Compound","pubChemId":12,"value":null,"valueUnit":"%vol","molecularFormulaType":"Hill","molecularFormula":"","description":"Test","id":59637770,"functionId":"","functionType":"imaging function","imagingModality":"fluorescence","functionDescription":"Test img function","sampleId":"","modality":""},"fileBean":{"uriExternal":false,"uri":"","type":"movie","title":"movie","description":"","keywordsStr":"","id":null},"type":"dendrimer","id":0,"description":"Test Nano Entity","sampleId":"","userDeletable":false,"userUpdatable":false,"createdBy":"jonnalah","createdDate":1408630200000,"domainEntity":{"id":60260353,"createdBy":"jonnalah","fileCollection":[{"uriExternal":false,"uri":"","type":"movie","title":"movie","description":"","keywordsStr":"","id":null}],"composingElementCollection":[{"type":"coat","name":"coat","pubChemDataSourceName":"Compound","pubChemId":12,"value":null,"valueUnit":"%vol","molecularFormulaType":"Hill","molecularFormula":"","description":"Test","id":59637770,"functionId":"","functionType":"imaging function","imagingModality":"fluorescence","functionDescription":"Test img function","sampleId":"","modality":""}],"branch":null,"createdDate":"jonnalah","generation":null},"withProperties":true,"detailsPage":"/caNanoLab/views/sample/composition/nanomaterialEntity/PolymerInfoEdit.html","isPolymerized":null,"isCrossLinked":null};
-                            $scope.composingElements = $scope.nanoEntityForm.domainEntity.composingElementCollection;
-                            $scope.files = $scope.nanoEntityForm.files;
-                            $scope.loader = false;
-                        }).
-                        error(function(data, status, headers, config) {
-                            $scope.message = data;
-                            $scope.loader = false;
-                        }); 
-            }
-        }
-
-        if( $scope.nanoEntityId != null ) {
-            $scope.loadNanoEntityData();
-        }
-        else {
-            $scope.addNewComposingElement=true;
-        }
-
-        $scope.doSubmitData = function() {
-            $scope.loader = true;
-
-            if (typeof $scope.protocolForm.fileId == 'undefined' || $scope.protocolForm.fileId == null) {
-                $scope.protocolForm.fileId = '0';
-            }
-
-            $http({method: 'POST', url: '/caNanoLab/rest/protocol/submitProtocol',data: $scope.protocolForm}).
-                success(function(data, status, headers, config) {
-                    if (data == "success") {
-                        $location.search('message', 'Protocol successfully saved with title "' + $scope.protocolForm.name + '"').path('/message').replace();
-                    }
-                    else if (data == "retract success") {
-                        $location.search('message', 'Protocol successfully saved with title "' + $scope.protocolForm.name + '" and retracted from public access.').path('/message').replace();
-                    }
-                    else {
-                        $scope.loader = false;
-                        $scope.messages = data;
-                    }
-
-                }).
-                error(function(data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                    // $rootScope.sampleData = data;
-                    $scope.loader = false;
-                    $scope.messages = data;
-                });
-
-        };
-
-        $scope.doDelete = function() {
-            if (confirm("Delete the Protocol?")) {
-                $scope.loader = true;
-
-                $http({method: 'POST', url: '/caNanoLab/rest/protocol/deleteProtocol',data: $scope.protocolForm}).
-                    success(function(data, status, headers, config) {
-                        if (data == "success") {
-                            $location.search('message','Protocol successfully removed with title "' + $scope.protocolForm.name + '"').path('/message').replace();
-                        }
-                        else {
-                            $scope.loader = false;
-                            $scope.messages = data;
-                        }
-
-                    }).
-                    error(function(data, status, headers, config) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        // $rootScope.sampleData = data;
-                        $scope.loader = false;
-                        $scope.messages = data;
-                    });
-            }
-        };
-
-        $scope.resetForm = function() {
-            $scope.nanoEntityForm = {};
-        };
-
+        
         $scope.showProperties = function() {
             if( $scope.nanoEntityForm.type == 'biopolymer') {
                 $scope.nanoEntityForm.withProperties = true;
@@ -172,6 +87,88 @@ var app = angular.module('angularApp')
             } else {
                 $scope.nanoEntityForm.withProperties = false;
             }
+        };        
+
+        $scope.loadNanoEntityData = function() {
+            if( $scope.nanoEntityId != null ) {
+                    $scope.loader = true;
+                    $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/nanomaterialEntity/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.nanoEntityId}).
+                        success(function(data, status, headers, config) {
+                            $scope.nanoEntityForm = data;
+                            //$scope.nanoEntityForm = {"simpleCompBean":{"type":"coat","name":"coat","pubChemDataSourceName":"Compound","pubChemId":12,"value":null,"valueUnit":"%vol","molecularFormulaType":"Hill","molecularFormula":"","description":"Test","id":59637770,"functionId":"","functionType":"imaging function","imagingModality":"fluorescence","functionDescription":"Test img function","sampleId":"","modality":""},"fileBean":{"uriExternal":false,"uri":"","type":"movie","title":"movie","description":"","keywordsStr":"","id":null},"type":"dendrimer","id":0,"description":"Test Nano Entity","sampleId":"","userDeletable":false,"userUpdatable":false,"createdBy":"jonnalah","createdDate":1408630200000,"domainEntity":{"id":60260353,"createdBy":"jonnalah","fileCollection":[{"uriExternal":false,"uri":"","type":"movie","title":"movie","description":"","keywordsStr":"","id":null}],"composingElementCollection":[{"type":"coat","name":"coat","pubChemDataSourceName":"Compound","pubChemId":12,"value":null,"valueUnit":"%vol","molecularFormulaType":"Hill","molecularFormula":"","description":"Test","id":59637770,"functionId":"","functionType":"imaging function","imagingModality":"fluorescence","functionDescription":"Test img function","sampleId":"","modality":""}],"branch":null,"createdDate":"jonnalah","generation":null},"withProperties":true,"detailsPage":"/caNanoLab/views/sample/composition/nanomaterialEntity/PolymerInfoEdit.html","isPolymerized":null,"isCrossLinked":null};
+                            $scope.composingElements = $scope.nanoEntityForm.domainEntity.composingElementCollection;
+                            $scope.files = $scope.nanoEntityForm.domainEntity.fileCollection;
+                            
+                            $scope.showProperties();
+
+                            $scope.loader = false;
+                        }).
+                        error(function(data, status, headers, config) {
+                            $scope.message = data;
+                            $scope.loader = false;
+                        }); 
+            }
+        }
+
+        if( $scope.nanoEntityId != null ) {
+            $scope.loadNanoEntityData();
+        }
+        else {
+            $scope.addNewComposingElement=true;
+        }
+
+        $scope.doSubmit = function() {
+            $scope.loader = true;
+
+            $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/submit',data: $scope.nanoEntityForm}).
+                success(function(data, status, headers, config) {
+                    if (data == "success") {
+                        //$location.search('message', 'Nanomaterial Entity successfully saved "').path('/message').replace();
+                        $location.search('message', 'Nanomaterial Entity successfully saved."').path('/editComposition').replace();
+                    }
+                    else {
+                        $scope.loader = false;
+                        $scope.messages = data;
+                    }
+
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    // $rootScope.sampleData = data;
+                    $scope.loader = false;
+                    $scope.messages = data;
+                });
+
+        };
+
+        $scope.doDelete = function() {
+            if (confirm("Are you sure you want to delete the Nanomaterial Entity?")) {
+                $scope.loader = true;
+
+                $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/delete',data: $scope.nanoEntityForm}).
+                    success(function(data, status, headers, config) {
+                        if (data == "success") {
+                        	$location.search('message', 'Nanomaterial Entity successfully deleted."').path('/editComposition').replace();
+                        }
+                        else {
+                            $scope.loader = false;
+                            $scope.messages = data;
+                        }
+
+                    }).
+                    error(function(data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        // $rootScope.sampleData = data;
+                        $scope.loader = false;
+                        $scope.messages = data;
+                    });
+            }
+        };
+
+        $scope.resetForm = function() {
+            $scope.nanoEntityForm = {};
         };
 
         $scope.closeAddComposingElement = function() {
@@ -212,7 +209,8 @@ var app = angular.module('angularApp')
 
                 $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeComposingElement',data: $scope.composingElementForm}).
                     success(function(data, status, headers, config) {
-                        //$location.search('message','Publication Association successfully removed with title "' + $scope.publicationForm.title + '"').path('/publication').replace();
+                    	$scope.nanoEntityForm = data;
+                    	$scope.composingElements = $scope.nanoEntityForm.domainEntity.composingElementCollection;
                         $scope.loader = false;
                     }).
                     error(function(data, status, headers, config) {
@@ -224,6 +222,24 @@ var app = angular.module('angularApp')
                     });
             }
         };
+        
+        $scope.saveComposingElement = function() {
+            $scope.loader = true;
+
+            $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveComposingElement',data: $scope.composingElementForm}).
+                success(function(data, status, headers, config) {
+                	$scope.nanoEntityForm = data;
+                	$scope.composingElements = $scope.nanoEntityForm.domainEntity.composingElementCollection;
+                    $scope.loader = false;
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    // $rootScope.sampleData = data;
+                    $scope.loader = false;
+                    $scope.messages = data;
+                });
+        };        
         
         
         $scope.checkFunctionType = function() {
@@ -330,15 +346,46 @@ var app = angular.module('angularApp')
             $scope.selectedFiles = [];
             $scope.selectedFiles = $files;
         };
+        
+        $scope.editFile = function(fileId) {
+            for (var k = 0; k < $scope.files.length; ++k) {
+                var element = $scope.files[k];
+                if (element.id == fileId ) {
+                    $scope.fileForm.externalUrl = element.externalUrl;
+                    $scope.fileForm.uri = element.uri;
+                    $scope.fileForm.uriExternal = element.uriExternal;
+                    $scope.fileForm.type = element.type;
+                    $scope.fileForm.title = element.title;
+                    $scope.fileForm.keywordsStr = element.keywordsStr;
+                    $scope.fileForm.id = element.id;
 
-        $scope.doSubmit = function() {
-            if( $scope.protocolForm.isPublic && ! $scope.isCurator.curator) {
-                if (confirm("The data has been assigned to Public.  Updating the data would retract it from Public.  You will need to resubmit the data to the curator for review before the curator reassigns it to Public.  Are you sure you want to continue?")) {
-                    // continue
-                } else {
-                    return false;
+                    break;
                 }
             }
+        }
+
+        $scope.removeFile = function(fileId) {
+            if (confirm("Are you sure you want to delete the File?")) {
+                $scope.loader = true;
+
+                $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeFile',data: $scope.fileForm}).
+                    success(function(data, status, headers, config) {
+                    	$scope.nanoEntityForm = data;
+                        $scope.files = $scope.nanoEntityForm.domainEntity.fileCollection;
+                    	$scope.loader = false;
+                    }).
+                    error(function(data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        // $rootScope.sampleData = data;
+                        $scope.loader = false;
+                        $scope.messages = data;
+                    });
+            }
+        };
+
+        $scope.saveFile = function() {
+            $scope.loader = true;
             var index = 0;
             $scope.upload = [];
             if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) {
@@ -354,11 +401,15 @@ var app = angular.module('angularApp')
                     $timeout(function() {
                         //$scope.uploadResult.push(response.data);
                         //alert(response.data);
-                        $scope.protocolForm.uri = response.data;
-                        $scope.doSubmitData();
+                        $scope.nanoEntityForm = response.data;
+                        $scope.saveFileData();
+                        $scope.loader = false;
                     });
                 }, function(response) {
-                    if (response.status > 0) $scope.messages = response.status + ': ' + response.data;
+                    if (response.status > 0) {
+                    	$scope.messages = response.status + ': ' + response.data;
+                    	$scope.loader = false;
+                    }
                 }, function(evt) {
                     // Math.min is to fix IE which reports 200% sometimes
                     // $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
@@ -367,10 +418,31 @@ var app = angular.module('angularApp')
 //				xhr.upload.addEventListener('abort', function() {console.log('abort complete')}, false);
                 });
             }
-            else {
+            /*else {
                 $scope.doSubmitData();
-            }
+            }*/
         };
+        
+        $scope.saveFileData = function() {
+            $scope.loader = true;
+
+            $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveFile',data: $scope.fileForm}).
+                success(function(data, status, headers, config) {
+                	$scope.nanoEntityForm = data;
+                    $scope.files = $scope.nanoEntityForm.domainEntity.fileCollection;
+                    $scope.loader = false;
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    // $rootScope.sampleData = data;
+                    $scope.loader = false;
+                    $scope.messages = data;
+                });
+        };        
+        
+        /* End File Section */
+
     });
 
 
