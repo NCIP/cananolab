@@ -185,8 +185,6 @@ public class SimpleNanomaterialEntityBean {
 
 	public void transferNanoMaterialEntityBeanToSimple(
 			NanomaterialEntityBean bean, HttpServletRequest httpRequest) {
-		simpleCompBean = new SimpleComposingElementBean();
-		fileBean = new SimpleFileBean();
 		NanomaterialEntity nanoEntity = bean.getDomainEntity();
 		setType(bean.getType());
 		setDescription(bean.getDescription());
@@ -293,10 +291,11 @@ public class SimpleNanomaterialEntityBean {
 				simpleCompBean.setType(comp.getDomain().getType());
 				simpleCompBean.setValue(comp.getDomain().getValue());
 				simpleCompBean.setValueUnit(comp.getDomain().getValueUnit());
-				Map<String, Object> function = new HashMap<String, Object>();
+				
 				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				if(comp.getInherentFunctions().size()>0){
 					for(FunctionBean func : comp.getInherentFunctions()){
+						Map<String, Object> function = new HashMap<String, Object>();
 						
 						function.put("description", func.getDescription());
 						function.put("type", func.getType());
