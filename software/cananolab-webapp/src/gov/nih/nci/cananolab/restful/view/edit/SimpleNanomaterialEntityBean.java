@@ -303,9 +303,6 @@ public class SimpleNanomaterialEntityBean {
 						function.put("modality",func.getImagingFunction().getModality());
 						function.put("id", func.getDomainFunction().getId());
 						list.add(function);
-				//	simpleCompBean.setFunctionDescription(func.getDescription());
-				//	simpleCompBean.setFunctionType(func.getType());
-				//	simpleCompBean.setImagingModality(func.getImagingFunction().getModality());
 					}
 					simpleCompBean.setInherentFunction(list);
 				}
@@ -323,6 +320,8 @@ public class SimpleNanomaterialEntityBean {
 				fileBean.setTitle(file.getDomainFile().getTitle());
 				fileBean.setUri(file.getDomainFile().getUri());
 				fileBean.setUriExternal(file.getDomainFile().getUriExternal());
+				fileBean.setKeywordsStr(file.getKeywordsStr());
+				fileBean.setId(file.getDomainFile().getId());
 				files.add(fileBean);
 			}
 			domainEntity.put("fileCollection", files);
