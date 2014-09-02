@@ -167,6 +167,15 @@ app.config(function ($routeProvider, $httpProvider) {
             templateUrl: 'views/curation/batchDataResults.html',
             controller: 'BatchDataResultsCtrl'
       }) 
+      .when('/editComposition', {
+            templateUrl: 'views/sample/edit/editComposition.html',
+            controller: 'EditCompositionCtrl'
+        })
+      .when('/editNanoMaterialEntity', {
+            templateUrl: 'views/sample/composition/nanomaterialEntity/editNanoMaterialEntity.html',
+            controller: 'EditNanoEntityCtrl'
+        })
+      
       .otherwise({
         redirectTo: '/'
       });
