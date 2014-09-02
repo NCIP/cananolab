@@ -32,6 +32,10 @@ public class SimpleCharacterizationEditBean {
 	String characterizationSource;
 	Date characterizationDate;
 	
+	List<String> charNamesForCurrentType;
+	
+	String designMethodsDescription;
+	
 	
 	//for Edit
 	
@@ -82,10 +86,10 @@ public class SimpleCharacterizationEditBean {
 		charTypesLookup = InitCharacterizationSetup
 				.getInstance().getCharacterizationTypes(request);
 
-//		characterizationNameLookup = new ArrayList<String>();
-//		SortedSet<String> charNames = InitCharacterizationSetup
-//				.getInstance().getCharNamesByCharType(request, charType);
-//		characterizationNameLookup.addAll(charNames);
+		charNamesForCurrentType = new ArrayList<String>();
+		SortedSet<String> charNames = InitCharacterizationSetup
+				.getInstance().getCharNamesByCharType(request, charType);
+		charNamesForCurrentType.addAll(charNames);
 		
 		
 //		for (String charName : characterizationNameLookup) {
@@ -229,13 +233,9 @@ public class SimpleCharacterizationEditBean {
 	public void setCharTypesLookup(List<String> charTypesLookup) {
 		this.charTypesLookup = charTypesLookup;
 	}
-//	public List<String> getCharacterizationNameLookup() {
-//		return characterizationNameLookup;
-//	}
-//	public void setCharacterizationNameLookup(
-//			List<String> characterizationNameLookup) {
-//		this.characterizationNameLookup = characterizationNameLookup;
-//	}
+	
+	
+
 //	public List<String> getAssayTypeLookup() {
 //		return AssayTypeLookup;
 //	}
@@ -243,6 +243,32 @@ public class SimpleCharacterizationEditBean {
 //		AssayTypeLookup = assayTypeLookup;
 //	}	
 	
+	
+
+	public String getDesignMethodsDescription() {
+		return designMethodsDescription;
+	}
+
+
+
+	public List<String> getCharNamesForCurrentType() {
+		return charNamesForCurrentType;
+	}
+
+
+
+	public void setCharNamesForCurrentType(List<String> charNamesForCurrentType) {
+		this.charNamesForCurrentType = charNamesForCurrentType;
+	}
+
+
+
+	public void setDesignMethodsDescription(String designMethodsDescription) {
+		this.designMethodsDescription = designMethodsDescription;
+	}
+
+
+
 	public List<SimplePOC> getCharSourceLookup() {
 		return charSourceLookup;
 	}
