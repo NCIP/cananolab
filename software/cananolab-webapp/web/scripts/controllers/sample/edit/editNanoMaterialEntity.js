@@ -12,6 +12,7 @@ var app = angular.module('angularApp')
         $scope.localForm.otherCategoryText = '';
         $scope.sampleId = $routeParams.sampleId;
         $scope.nanoEntityId = $routeParams.nanoEntityId;
+        $scope.sampleName = $routeParams.sampleName;
         //$scope.sampleId = 20917506;
         //$scope.nanoEntityId = 60260353;
         $scope.nanoEntityForm.otherSampleNames = [];
@@ -38,50 +39,44 @@ var app = angular.module('angularApp')
             $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/nanomaterialEntity/setup?sampleId=' + $scope.sampleId}).
                 success(function(data, status, headers, config) {
                     $scope.data = data;
-                    $scope.protocolTypes = data.protocolTypes;
-                    $scope.csmRoleNames = data.csmRoleNames;
+                    //$scope.data = {"pubChemDataSources":["Compound","Substance","BioAssay"],"modalityTypes":["beta radiation","bioluminescence","fluorescence","gamma ray","infrared","MRI","neutron scattering","NMR","PET","photoluminescence","Raman spectroscopy","SPECT","ultrasound","X-ray"],"fileTypes":["document","graph","image","movie","spread sheet"],"otherSampleNames":["Demo123","NCL-20-1","NCL-21-1","NCL-22-1","NCL-24-1","NCL-24-1-Copy","NCL-25-1","QA"],"emulsionComposingElementTypes":["bulk phase","coat","core","dispersed phase","emulsifier","excipient","modifier","coat","core","excipient","Internal buffer","lipid","modifier","monomer","polymer","repeat unit","RNA","shell","terminal group"],"nanomaterialEntityTypes":["biopolymer","carbon","carbon black","carbon nanotube","dendrimer","emulsion","fullerene","liposome","metal oxide","metal particle","metalloid","nanohorn","nanolipogel","nanorod","nanoshell","polymer","quantum dot","silica"],"functionTypes":["endosomolysis","imaging function","other","targeting function","therapeutic function","transfection"],"molecularFormulaTypes":["Hill","SMARTS","SMILES"],"composingElementTypes":["coat","core","excipient","Internal buffer","lipid","modifier","monomer","polymer","repeat unit","RNA","shell","terminal group"],"composingElementUnits":["%","%mole","%vol","%w","%wt","%wt/vol","%wt/wt","Da","g","M","MBq","mCi","mg","mg/mL","mL","mM","mmol","nM","nmol","pmol","uCi/mg","ug","ug/mL","ug/uL","uL","uM","umol","wt%","wt/wt"]};
+                    $scope.nanoEntityTypes = $scope.data.nanomaterialEntityTypes;
+                    $scope.composingElementTypes = $scope.data.composingElementTypes;
+                    $scope.pubChemDataSources = $scope.data.pubChemDataSources;
+                    $scope.composingElementUnits = $scope.data.composingElementUnits;
+                    $scope.molecularFormulaTypes = $scope.data.molecularFormulaTypes;
+                    $scope.functionTypes = $scope.data.functionTypes;
+                    $scope.modalityTypes = $scope.data.modalityTypes;
+                    $scope.otherSampleNames = $scope.data.otherSampleNames;
+                    $scope.fileTypes = $scope.data.fileTypes;
+                    $scope.biopolymerTypes = $scope.data.biopolymerTypes;
+                    $scope.carbonNanoTubeaverageLengthUnits = $scope.data.composingElementUnits;
+                    $scope.carbonNanoTubeDiameterUnits = $scope.data.dimensionUnits;
+                    $scope.carbonNanoTubeWallTypes = $scope.data.wallTypes;
+                    $scope.fullereneDiameterUnits = $scope.data.dimensionUnits;
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     $scope.message = data;
                 });
-
-            //$scope.data = {"pubChemDataSources":["Compound","Substance","BioAssay"],"modalityTypes":["beta radiation","bioluminescence","fluorescence","gamma ray","infrared","MRI","neutron scattering","NMR","PET","photoluminescence","Raman spectroscopy","SPECT","ultrasound","X-ray"],"fileTypes":["document","graph","image","movie","spread sheet"],"otherSampleNames":["Demo123","NCL-20-1","NCL-21-1","NCL-22-1","NCL-24-1","NCL-24-1-Copy","NCL-25-1","QA"],"emulsionComposingElementTypes":["bulk phase","coat","core","dispersed phase","emulsifier","excipient","modifier","coat","core","excipient","Internal buffer","lipid","modifier","monomer","polymer","repeat unit","RNA","shell","terminal group"],"nanomaterialEntityTypes":["biopolymer","carbon","carbon black","carbon nanotube","dendrimer","emulsion","fullerene","liposome","metal oxide","metal particle","metalloid","nanohorn","nanolipogel","nanorod","nanoshell","polymer","quantum dot","silica"],"functionTypes":["endosomolysis","imaging function","other","targeting function","therapeutic function","transfection"],"molecularFormulaTypes":["Hill","SMARTS","SMILES"],"composingElementTypes":["coat","core","excipient","Internal buffer","lipid","modifier","monomer","polymer","repeat unit","RNA","shell","terminal group"],"composingElementUnits":["%","%mole","%vol","%w","%wt","%wt/vol","%wt/wt","Da","g","M","MBq","mCi","mg","mg/mL","mL","mM","mmol","nM","nmol","pmol","uCi/mg","ug","ug/mL","ug/uL","uL","uM","umol","wt%","wt/wt"]};
-            $scope.nanoEntityTypes = $scope.data.nanomaterialEntityTypes;
-            $scope.composingElementTypes = $scope.data.composingElementTypes;
-            $scope.pubChemDataSources = $scope.data.pubChemDataSources;
-            $scope.composingElementUnits = $scope.data.composingElementUnits;
-            $scope.molecularFormulaTypes = $scope.data.molecularFormulaTypes;
-            $scope.functionTypes = $scope.data.functionTypes;
-            $scope.imagingModality = $scope.data.imagingModality;
-            $scope.otherSampleNames = $scope.data.otherSampleNames;
-            $scope.fileTypes = $scope.data.fileTypes;
-            /* need  nanoEntityId */
-            $scope.biopolymerTypes = ["Type 1", "Type 2"];
-            $scope.carbonNanoTubeaverageLengthUnits = $scope.data.composingElementUnits;
-            $scope.carbonNanoTubeDiameterUnits = $scope.data.composingElementUnits;
-            $scope.carbonNanoTubeWallTypes = ["Type 1", "Type 2"];
-            $scope.fullereneDiameterUnits = $scope.data.composingElementUnits;
-
         });
 
         $scope.loadNanoEntityData = function() {
             if( $scope.nanoEntityId != null ) {
-                $scope.nanoEntityForm = {"simpleCompBean":{"type":"coat","name":"coat","pubChemDataSourceName":"Compound","pubChemId":12,"value":null,"valueUnit":"%vol","molecularFormulaType":"Hill","molecularFormula":"","description":"Test","id":59637770,"functionId":"","functionType":"imaging function","imagingModality":"fluorescence","functionDescription":"Test img function","sampleId":"","modality":""},"fileBean":{"uriExternal":false,"uri":"","type":"movie","title":"movie","description":"","keywordsStr":"","id":null},"type":"dendrimer","id":0,"description":"Test Nano Entity","sampleId":"","userDeletable":false,"userUpdatable":false,"createdBy":"jonnalah","createdDate":1408630200000,"domainEntity":{"id":60260353,"createdBy":"jonnalah","fileCollection":[{"uriExternal":false,"uri":"","type":"movie","title":"movie","description":"","keywordsStr":"","id":null}],"composingElementCollection":[{"type":"coat","name":"coat","pubChemDataSourceName":"Compound","pubChemId":12,"value":null,"valueUnit":"%vol","molecularFormulaType":"Hill","molecularFormula":"","description":"Test","id":59637770,"functionId":"","functionType":"imaging function","imagingModality":"fluorescence","functionDescription":"Test img function","sampleId":"","modality":""}],"branch":null,"createdDate":"jonnalah","generation":null},"withProperties":true,"detailsPage":"/caNanoLab/views/sample/composition/nanomaterialEntity/PolymerInfoEdit.html","isPolymerized":null,"isCrossLinked":null};
-                $scope.composingElements = $scope.nanoEntityForm.domainEntity.composingElementCollection;
-                $scope.files = $scope.nanoEntityForm.files;
-
-                /*    $scope.loader = true;
+                    $scope.loader = true;
                     $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/nanomaterialEntity/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.nanoEntityId}).
                         success(function(data, status, headers, config) {
                             $scope.nanoEntityForm = data;
+                            //$scope.nanoEntityForm = {"simpleCompBean":{"type":"coat","name":"coat","pubChemDataSourceName":"Compound","pubChemId":12,"value":null,"valueUnit":"%vol","molecularFormulaType":"Hill","molecularFormula":"","description":"Test","id":59637770,"functionId":"","functionType":"imaging function","imagingModality":"fluorescence","functionDescription":"Test img function","sampleId":"","modality":""},"fileBean":{"uriExternal":false,"uri":"","type":"movie","title":"movie","description":"","keywordsStr":"","id":null},"type":"dendrimer","id":0,"description":"Test Nano Entity","sampleId":"","userDeletable":false,"userUpdatable":false,"createdBy":"jonnalah","createdDate":1408630200000,"domainEntity":{"id":60260353,"createdBy":"jonnalah","fileCollection":[{"uriExternal":false,"uri":"","type":"movie","title":"movie","description":"","keywordsStr":"","id":null}],"composingElementCollection":[{"type":"coat","name":"coat","pubChemDataSourceName":"Compound","pubChemId":12,"value":null,"valueUnit":"%vol","molecularFormulaType":"Hill","molecularFormula":"","description":"Test","id":59637770,"functionId":"","functionType":"imaging function","imagingModality":"fluorescence","functionDescription":"Test img function","sampleId":"","modality":""}],"branch":null,"createdDate":"jonnalah","generation":null},"withProperties":true,"detailsPage":"/caNanoLab/views/sample/composition/nanomaterialEntity/PolymerInfoEdit.html","isPolymerized":null,"isCrossLinked":null};
+                            $scope.composingElements = $scope.nanoEntityForm.domainEntity.composingElementCollection;
+                            $scope.files = $scope.nanoEntityForm.files;
                             $scope.loader = false;
                         }).
                         error(function(data, status, headers, config) {
                             $scope.message = data;
                             $scope.loader = false;
-                        }); */
+                        }); 
             }
         }
 
@@ -181,17 +176,64 @@ var app = angular.module('angularApp')
 
         $scope.closeAddComposingElement = function() {
             $scope.addNewComposingElement=false;
-            console.log($scope.addNewComposingElement);
-        }
+        };
 
         $scope.openAddComposingElement = function() {
             $scope.addNewComposingElement=true;
-            console.log($scope.addNewComposingElement);
-        }
+        };
 
         $scope.getAddComposingElement = function() {
             return $scope.addNewComposingElement;
+        };
+        
+        $scope.editComposingElement = function(composingElementId) {
+            for (var k = 0; k < $scope.composingElements.length; ++k) {
+                var element = $scope.composingElements[k];
+                if (element.id == composingElementId ) {
+                    $scope.composingElementForm.type = element.type;
+                    $scope.composingElementForm.name = element.name;
+                    $scope.composingElementForm.pubChemDataSourceName = element.pubChemDataSourceName;
+                    $scope.composingElementForm.pubChemId = element.pubChemId;
+                    $scope.composingElementForm.value = element.value;
+                    $scope.composingElementForm.valueUnit = element.valueUnit;
+                    $scope.composingElementForm.molecularFormulaType = element.molecularFormulaType;
+                    $scope.composingElementForm.molecularFormula = element.molecularFormula;
+                    $scope.composingElementForm.description = element.description;
+                    $scope.composingElementForm.id = element.id;
+
+                    break;
+                }
+            }
         }
+
+        $scope.removeComposingElement = function(composingElementId) {
+            if (confirm("Are you sure you want to delete the Composing Element?")) {
+                $scope.loader = true;
+
+                $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeComposingElement',data: $scope.composingElementForm}).
+                    success(function(data, status, headers, config) {
+                        //$location.search('message','Publication Association successfully removed with title "' + $scope.publicationForm.title + '"').path('/publication').replace();
+                        $scope.loader = false;
+                    }).
+                    error(function(data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        // $rootScope.sampleData = data;
+                        $scope.loader = false;
+                        $scope.messages = data;
+                    });
+            }
+        };
+        
+        
+        $scope.checkFunctionType = function() {
+            if( $scope.theInherentFunction.type == 'imaging function') {
+                $scope.showModality = true;
+            }
+            else {
+                $scope.showModality = false;
+            }
+        };       
 
         /* Inherent Function Start */
         $scope.addInherentFunction = function() {
