@@ -9,7 +9,7 @@
             <label for="averageDiameter">Average Diameter</label>
         </td>
         <td class="cellLabel">
-            <input type="text" ng-model="nanomaterialEntity.fullerene.averageDiameter"
+            <input type="text" ng-model="nnanoEntityForm.domainEntity.averageDiameter"
                    id="averageDiameter" />
         </td>
         <td class="cellLabel">
@@ -17,7 +17,7 @@
         </td>
         <td class="cellLabel">
             <div id="averageDiameterUnitPrompt">
-                <select ng-model="nanomaterialEntity.fullerene.averageDiameterUnit"
+                <select ng-model="nanoEntityForm.domainEntity.averageDiameterUnit"
                         id="averageDiameterUnit">
                     <option value=""></option>
                     <option ng-repeat="unit in $parent.fullereneDiameterUnits track by $index" value="{{unit}}">
@@ -33,7 +33,7 @@
             <label for="numberOfCarbon">Number of Carbons</label>
         </td>
         <td class="cellLabel">
-            <input type="text" ng-model="nanomaterialEntity.fullerene.numberOfCarbon"
+            <input type="text" ng-model="nanoEntityForm.domainEntity.numberOfCarbon"
                    id="numberOfCarbon" />
         </td>
     </tr>

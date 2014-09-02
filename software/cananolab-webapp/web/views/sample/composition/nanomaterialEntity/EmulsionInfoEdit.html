@@ -9,7 +9,7 @@
             <label for="emulsionIsPolymerized">Is Polymerized</label>
         </td>
         <td class="cellLabel">
-            <select ng-model="nanomaterialEntity.isPolymerized" id="emulsionIsPolymerized">
+            <select ng-model="nanoEntityForm.domainEntity.isPolymerized" id="emulsionIsPolymerized">
                 <option value="None"></option>
                 <option value="true">Yes</option>
                 <option value="false">No</option>
@@ -19,7 +19,7 @@
             <label for="emulsionPolymerName">Polymer Name</label>
         </td>
         <td class="cellLabel">
-            <input type="text" ng-model="nanomaterialEntity.emulsion.polymerName" id="emulsionPolymerName" />
+            <input type="text" ng-model="nanoEntityForm.domainEntity.polymerName" id="emulsionPolymerName" />
         </td>
     </tr>
 </table>

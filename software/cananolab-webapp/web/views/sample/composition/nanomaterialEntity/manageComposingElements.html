@@ -60,7 +60,10 @@
                         Function
                     </th>
                     <td>
-                        {{composingElement.functionType}} : {{composingElement.imagingModality}}
+                        <span ng-repeat="inherentFunction in composingElement.inherentFunction">
+                            {{inherentFunction.type}} : {{inherentFunction.description}}
+                            <span ng-if="inherentFunction.type=='imaging function'"> (imaging modaility: {{inherentFunction.modality}})</span>;
+                        </span>
                     </td>
                     <td></td>
                 </tr>
@@ -197,7 +200,7 @@
         <td colspan="3">
             <div id="functionSection" style="position: relative;">
                 <!-- <a style="display: block" id="addInherentFunction" href="javascript:confirmAddNew(null, 'InherentFunction', 'Inherent Function', 'clearInherentFunction()');">Add</a> -->
-                <button type="button" class="btn btn-primary" ng-click="addNewInherentFunction=true" id="addInherentFunction">Add</button>
+                <button type="button" class="btn btn-primary" ng-click="openAddNewInherentFunction();" id="addInherentFunction">Add</button>
                 <br>
                 <table id="functionTable" class="editTableWithGrid" width="85%" ng-show="showInherentFunctionTable">
                     <tbody id="functionRows">
@@ -216,7 +219,7 @@
                         <td>
                         </td>
                     </tr>
-                    <tr id="inPattern" ng-repeat="inherentFunction in composingElementForm.inherentFunctions">
+                    <tr id="inPattern" ng-repeat="inherentFunction in composingElementForm.inherentFunction">
                         <td>
                             <span id="functionTypeValue1">{{inherentFunction.type}}</span>
                         </td>
@@ -227,30 +230,14 @@
                             <span id="functionDescriptionValue1">{{inherentFunction.description}}</span>
                         </td>
                         <td>
-                            <input class="noBorderButton" id="editInFunction" type="button" value="Edit" ng-click="addNewInherentFunction=true; editInherentFunction(-1000);">                        </td>
-
-                    </tr>
-                    <!-- w4rwr45 b  -->
-                    <tr id="pattern" class="ng-scope">
-                        <td>
-                            <span id="functionTypeValue" class="ng-binding">endosomolysis</span>
-                        </td>
-                        <td>
-                            <span id="functionModalityTypeValue" class="ng-binding"></span>
-                        </td>
-                        <td>
-                            <span id="functionDescriptionValue" class="ng-binding">mjjjj</span>
-                        </td>
-                        <td>
-                            <input class="noBorderButton" id="edit" type="button" value="Edit" ng-click="addNewInherentFunction=true; editInherentFunction(-1000);">
+                            <input class="noBorderButton" id="editInFunction" type="button" value="Edit" ng-click="editInherentFunction('{{inherentFunction.id}}');">
                         </td>
 
                     </tr>
-                    <!-- sererewr -->
                     </tbody>
                 </table>
                 <br>
-                <table id="newInherentFunction" width="85%" class="promptbox" ng-show="addNewInherentFunction">
+                <table id="newInherentFunction" width="85%" class="promptbox" ng-show="getAddNewInherentFunction()">
                     <tbody>
                     <tr>
                         <input type="hidden" name="nanomaterialEntity.theComposingElement.theFunction.id" value="" id="functionId">
@@ -279,7 +266,7 @@
                                 <select ng-model="theInherentFunction.modality" id="imagingModality">
                                     <option value="">
                                     </option>
-                                    <option ng-repeat="modality in modalityTypes track by $index" value="{{modality}}">
+                                    <option ng-repeat="modality in $parent.modalityTypes track by $index" value="{{modality}}">
                                         {{modality}}
                                     </option>
 
@@ -298,7 +285,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td ng-show="theInherentFunction.id != null || $scope.theInherentFunction.id != ''">
+                        <td ng-show="theInherentFunction.id != null || theInherentFunction.id != ''">
                             <input class="promptButton"
                                    id="deleteInherentFunction" type="button" value="Remove"
                                    ng-click="deleteInherentFunction()" />
@@ -306,9 +293,9 @@
                         <td colspan="3">
                             <div align="right">
                                 <input class="promptButton" type="button" value="Save"
-                                       ng-click="addNewInherentFunction=false;addInherentFunction();" />
+                                       ng-click="closeAddNewInherentFunction();addInherentFunction();" />
                                 <input class="promptButton" type="button" value="Cancel"
-                                       ng-click="addNewInherentFunction=false" />
+                                       ng-click="closeAddNewInherentFunction();" />
                             </div>
                         </td>
                     </tr>

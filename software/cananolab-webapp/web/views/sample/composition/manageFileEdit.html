@@ -5,7 +5,7 @@
         </td>
         <td>
             <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanomaterialEntity'); openSubmissionForm('File');"><img align="top" src="images/btn_add.gif" border="0" alt="add a nanomaterial entity file"></a> -->
-            <button type="button" class="btn btn-primary" ng-click="addNewFile=true" id="addFile">Add</button>
+            <button type="button" class="btn btn-primary" ng-click="openAddNewFile()" id="addFile">Add</button>
         </td>
     </tr>
     <tr>
@@ -43,7 +43,7 @@
                         {{file.description}}
                     </td>
                     <td align="right">
-                        <button ng-click="editFile('{{file.id}}');addNewFile=true;" class="btn btn-primary btn-xxs">Edit</button>&nbsp;
+                        <button ng-click="editFile('{{file.id}}');" class="btn btn-primary btn-xxs">Edit</button>&nbsp;
                     </td>
                 </tr>
                 </tbody>
@@ -86,7 +86,7 @@
                         </td>
                         <td>
                             <div id="fileTypePrompt">
-                                <select name="fileForm.type" id="fileType">
+                                <select  ng-model="fileForm.type" id="fileType">
                                     <option value="">
                                     </option>
                                     <option ng-repeat="type in $parent.fileTypes track by $index" value="{{type}}">
@@ -105,7 +105,7 @@
                             <label for="fileTitle">File Title*</label>
                         </td>
                         <td>
-                            <input type="text" name="fileForm.title" size="60" value="" id="fileTitle">
+                            <input type="text"  ng-model="fileForm.title" size="60" value="" id="fileTitle">
                         </td>
                     </tr>
                     <tr>
@@ -113,7 +113,7 @@
                             <label for="fileKeywords">Keywords</label>
                         </td>
                         <td>
-                            <textarea name="fileForm.keywordsStr" cols="60" rows="3" id="fileKeywords"></textarea>
+                            <textarea  ng-model="fileForm.keywordsStr" cols="60" rows="3" id="fileKeywords"></textarea>
                             <br>
                             <em>(one word per line)</em>
                         </td>
@@ -123,7 +123,7 @@
                             <label for="fileDescription">Description</label>
                         </td>
                         <td>
-                            <textarea name="fileForm.description" cols="60" rows="3" id="fileDescription"></textarea>
+                            <textarea  ng-model="fileForm.description" cols="60" rows="3" id="fileDescription"></textarea>
                         </td>
                     </tr>
 
@@ -135,9 +135,9 @@
                         <td colspan="3">
                             <div align="right">
                                 <input class="promptButton" type="button" value="Save"
-                                       ng-click="addNewFile=false;saveFile();" />
+                                       ng-click="closeAddNewFile();saveFile();" />
                                 <input class="promptButton" type="button" value="Cancel"
-                                       ng-click="addNewFile=false" />
+                                       ng-click="closeAddNewFile();" />
                             </div>
                         </td>
                     </tr>

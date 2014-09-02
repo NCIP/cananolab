@@ -30,7 +30,7 @@ var app = angular.module('angularApp')
         $scope.composingElementForm = {};
         $scope.addNewInherentFunction = false;
         $scope.showInherentFunctionTable = false;
-        $scope.composingElementForm.inherentFunctions = [];
+        $scope.composingElementForm.inherentFunction = [];
         $scope.theInherentFunction = {};
         $scope.showModality = false;
 
@@ -65,25 +65,25 @@ var app = angular.module('angularApp')
         $scope.showProperties = function() {
             if( $scope.nanoEntityForm.type == 'biopolymer') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.nanoEntityForm.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/BiopolymerInfoEdit.html';
+                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/BiopolymerInfoEdit.html';
             }else if( $scope.nanoEntityForm.type == 'polymer') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.nanoEntityForm.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/PolymerInfoEdit.html';
+                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/PolymerInfoEdit.html';
             }else if( $scope.nanoEntityForm.type == 'carbon nanotube') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.nanoEntityForm.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/CarbonNanotubeInfoEdit.html';
+                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/CarbonNanotubeInfoEdit.html';
             }else if( $scope.nanoEntityForm.type == 'dendrimer') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.nanoEntityForm.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/DendrimerInfoEdit.html';
+                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/DendrimerInfoEdit.html';
             }else if( $scope.nanoEntityForm.type == 'emulsion') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.nanoEntityForm.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/EmulsionInfoEdit.html';
+                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/EmulsionInfoEdit.html';
             }else if( $scope.nanoEntityForm.type == 'fullerene') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.nanoEntityForm.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/FullereneInfoEdit.html';
+                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/FullereneInfoEdit.html';
             }else if( $scope.nanoEntityForm.type == 'liposome') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.nanoEntityForm.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/LiposomeInfoEdit.html';
+                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/LiposomeInfoEdit.html';
             } else {
                 $scope.nanoEntityForm.withProperties = false;
             }
@@ -197,8 +197,14 @@ var app = angular.module('angularApp')
                     $scope.composingElementForm.molecularFormula = element.molecularFormula;
                     $scope.composingElementForm.description = element.description;
                     $scope.composingElementForm.id = element.id;
+                    $scope.composingElementForm.inherentFunction = element.inherentFunction;
 
-                    break;
+                    if ( $scope.composingElementForm.inherentFunction != null && $scope.composingElementForm.inherentFunction.length > 0)
+                        $scope.showInherentFunctionTable = true;
+                    else
+                        $scope.showInherentFunctionTable = false;
+
+                    break;                    
                 }
             }
         }
@@ -225,8 +231,22 @@ var app = angular.module('angularApp')
         
         $scope.saveComposingElement = function() {
             $scope.loader = true;
-
-            $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveComposingElement',data: $scope.composingElementForm}).
+            
+            if ( $scope.composingElementForm.id != null && $scope.composingElementForm.id != '' ) {
+                for (var k = 0; k < $scope.composingElements.length; ++k) {
+                    var element = $scope.composingElements[k];
+                    if (element.id == $scope.composingElementForm.id) {
+                        $scope.composingElements[k] = $scope.composingElementForm;
+                    }
+                }
+            }
+            else {
+                $scope.composingElements.push($scope.composingElementForm);
+            }
+            
+            $scope.nanoEntityForm.domainEntity.composingElementCollection = $scope.composingElements;
+            
+            $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveComposingElement',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
                 	$scope.nanoEntityForm = data;
                 	$scope.composingElements = $scope.nanoEntityForm.domainEntity.composingElementCollection;
@@ -262,7 +282,7 @@ var app = angular.module('angularApp')
             var newInherentFunction = false
             inherentFunction.id = $scope.theInherentFunction.id;
             if (inherentFunction.id == null || inherentFunction.id.length == 0) {
-                inherentFunction.id = -1000 - $scope.composingElementForm.inherentFunctions.length;
+                inherentFunction.id = -1000 - $scope.composingElementForm.inherentFunction.length;
                 newInherentFunction = true;
             }
             inherentFunction.type = $scope.theInherentFunction.type;
@@ -270,17 +290,17 @@ var app = angular.module('angularApp')
             inherentFunction.description = $scope.theInherentFunction.description;
             if (inherentFunction.type.length > 0 && inherentFunction.description.length > 0) {
                 if (newInherentFunction) {
-                    $scope.composingElementForm.inherentFunctions.push(inherentFunction);
+                    $scope.composingElementForm.inherentFunction.push(inherentFunction);
                 }
                 else {
                     var k;
-                    for (k = 0; k < $scope.composingElementForm.inherentFunctions.length; ++k)
+                    for (k = 0; k < $scope.composingElementForm.inherentFunction.length; ++k)
                     {
-                        var inherentFunctionL = $scope.composingElementForm.inherentFunctions[k];
+                        var inherentFunctionL = $scope.composingElementForm.inherentFunction[k];
                         if (inherentFunction.id == inherentFunctionL.id ) {
-                            $scope.composingElementForm.inherentFunctions[k].type = inherentFunction.type;
-                            $scope.composingElementForm.inherentFunctions[k].modality = inherentFunction.modality;
-                            $scope.composingElementForm.inherentFunctions[k].description = inherentFunction.description;
+                            $scope.composingElementForm.inherentFunction[k].type = inherentFunction.type;
+                            $scope.composingElementForm.inherentFunction[k].modality = inherentFunction.modality;
+                            $scope.composingElementForm.inherentFunction[k].description = inherentFunction.description;
                         }
                     }
                 }
@@ -299,9 +319,9 @@ var app = angular.module('angularApp')
 
         $scope.editInherentFunction = function(id) {
             var k;
-            for (k = 0; k < $scope.composingElementForm.inherentFunctions.length; ++k)
+            for (k = 0; k < $scope.composingElementForm.inherentFunction.length; ++k)
             {
-                var inherentFunction = $scope.composingElementForm.inherentFunctions[k];
+                var inherentFunction = $scope.composingElementForm.inherentFunction[k];
                 if (id == inherentFunction.id ) {
                     $scope.theInherentFunction.type = inherentFunction.type;
                     $scope.theInherentFunction.modality = inherentFunction.modality;
@@ -316,15 +336,15 @@ var app = angular.module('angularApp')
 
         $scope.deleteInherentFunction = function() {
             var k;
-            for (k = 0; k < $scope.composingElementForm.inherentFunctions.length; ++k)
+            for (k = 0; k < $scope.composingElementForm.inherentFunction.length; ++k)
             {
-                var inherentFunction = $scope.composingElementForm.inherentFunctions[k];
+                var inherentFunction = $scope.composingElementForm.inherentFunction[k];
                 if ($scope.theInherentFunction.id == inherentFunction.id ) {
-                    $scope.composingElementForm.inherentFunctions.splice(k,1);
+                    $scope.composingElementForm.inherentFunction.splice(k,1);
                 }
             }
             $scope.addNewInherentFunction=false;
-            if( $scope.composingElementForm.inherentFunctions.length > 0 ) {
+            if( $scope.composingElementForm.inherentFunction.length > 0 ) {
                 $scope.showInherentFunctionTable = true;
             }
             else {
@@ -335,6 +355,19 @@ var app = angular.module('angularApp')
             $scope.theInherentFunction.modality = '';
             $scope.theInherentFunction.description = '';
             $scope.theInherentFunction.id = '';
+        }
+        
+        $scope.getAddNewInherentFunction = function() {
+            return $scope.addNewInherentFunction;
+        }
+
+        $scope.closeAddNewInherentFunction = function() {
+            $scope.addNewInherentFunction = false;
+        }
+
+
+        $scope.openAddNewInherentFunction = function() {
+            $scope.addNewInherentFunction = true;
         }
 
 
@@ -357,6 +390,7 @@ var app = angular.module('angularApp')
                     $scope.fileForm.type = element.type;
                     $scope.fileForm.title = element.title;
                     $scope.fileForm.keywordsStr = element.keywordsStr;
+                    $scope.fileForm.description = element.description;
                     $scope.fileForm.id = element.id;
 
                     break;
@@ -425,8 +459,22 @@ var app = angular.module('angularApp')
         
         $scope.saveFileData = function() {
             $scope.loader = true;
+            
+            if ( $scope.fileForm.id != null && $scope.fileForm.id != '' ) {
+                for (var k = 0; k < $scope.files.length; ++k) {
+                    var element = $scope.files[k];
+                    if (element.id == $scope.fileForm.id) {
+                        $scope.files[k] = $scope.fileForm;
+                    }
+                }
+            }
+            else {
+                $scope.files.push($scope.fileForm);
+            }
 
-            $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveFile',data: $scope.fileForm}).
+            $scope.nanoEntityForm.domainEntity.fileCollection = $scope.files;            
+
+            $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveFile',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
                 	$scope.nanoEntityForm = data;
                     $scope.files = $scope.nanoEntityForm.domainEntity.fileCollection;
@@ -439,8 +487,21 @@ var app = angular.module('angularApp')
                     $scope.loader = false;
                     $scope.messages = data;
                 });
-        };        
+        };  
         
+        $scope.getAddNewFile = function() {
+            return $scope.addNewFile;
+        }
+
+        $scope.closeAddNewFile = function() {
+            $scope.addNewFile = false;
+        }
+
+
+        $scope.openAddNewFile = function() {
+            $scope.addNewFile = true;
+        }
+
         /* End File Section */
 
     });

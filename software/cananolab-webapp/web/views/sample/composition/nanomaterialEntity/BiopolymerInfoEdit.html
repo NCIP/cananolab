@@ -9,14 +9,14 @@
             <label for="biopolymerName">Name*</label>
         </td>
         <td class="cellLabel">
-            <input type="text" ng-model="nanomaterialEntity.biopolymer.name" id="biopolymerName">
+            <input type="text" ng-model="nanoEntityForm.domainEntity.name" id="biopolymerName">
         </td>
         <td class="cellLabel">
             <label for="biopolymerType">Biopolymer Type*</label>
         </td>
         <td class="cellLabel">
             <div id="biopolymerTypePrompt">
-                <select name="nanomaterialEntity.biopolymer.type"  id="biopolymerType">
+                <select ng-model="nanoEntityForm.domainEntity..type"  id="biopolymerType">
                     <option value=""></option>
                     <option ng-repeat="type in $parent.biopolymerTypes track by $index" value="{{type}}">
                         {{type}}
@@ -33,7 +33,7 @@
             <label for="biopolymerSequence">Sequence</label>
         </td>
         <td class="cellLabel" colspan="3">
-            <textarea id="biopolymerSequence" ng-model="nanomaterialEntity.biopolymer.sequence" cols="80"
+            <textarea id="biopolymerSequence" ng-model="nanoEntityForm.domainEntity..sequence" cols="80"
                       rows="3"></textarea>
         </td>
     </tr>

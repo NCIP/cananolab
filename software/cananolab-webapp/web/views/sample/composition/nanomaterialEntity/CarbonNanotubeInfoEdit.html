@@ -11,14 +11,14 @@
         <td class="cellLabel">
             <input type="text"
                    id="averageLength"
-                   ng-value="nanomaterialEntity.carbonNanotube.averageLength" />
+                   ng-model="nanoEntityForm.domainEntity.averageLength" />
         </td>
         <td class="cellLabel">
             <label for="averageLengthUnit">Average Length Unit</label>
         </td>
         <td class="cellLabel">
             <div id="averageLengthUnitPrompt">
-                <select ng-model="nanomaterialEntity.carbonNanotube.averageLengthUnit"
+                <select ng-model="nanoEntityForm.domainEntity.averageLengthUnit"
                         id="averageLengthUnit">
                     <option value=""></option>
                     <option ng-repeat="unit in $parent.carbonNanoTubeaverageLengthUnits track by $index" value="{{unit}}">
@@ -35,7 +35,7 @@
         </td>
         <td class="cellLabel">
             <input id="chirality" type="text"
-                   ng-model="nanomaterialEntity.carbonNanotube.chirality" />
+                   ng-model="nanoEntityForm.domainEntity.chirality" />
         </td>
     </tr>
     <tr>
@@ -45,14 +45,14 @@
         <td class="cellLabel">
             <input type="text"
                    id="tubeDiameter"
-                   ng-model="nanomaterialEntity.carbonNanotube.diameter" />
+                   ng-model="nanoEntityForm.domainEntity.diameter" />
         </td>
         <td class="cellLabel">
             <label for="diameterUnit">Diameter Unit</label>
         </td>
         <td class="cellLabel">
             <div id="diameterUnitPrompt">
-                <select ng-model="nanomaterialEntity.carbonNanotube.diameterUnit"
+                <select ng-model="nanoEntityForm.domainEntity.diameterUnit"
                         id="diameterUnit">
                     <option value=""></option>
                     <option ng-repeat="unit in $parent.carbonNanoTubeDiameterUnits track by $index" value="{{unit}}">
@@ -68,7 +68,7 @@
             <label for="wallType">Wall Type</label>
         </td>
         <td class="cellLabel">
-            <select ng-model="nanomaterialEntity.carbonNanotube.wallType"
+            <select ng-model="nanoEntityForm.domainEntity.wallType"
                     id="wallType">
                 <option value=""></option>
                 <option ng-repeat="type in $parent.carbonNanoTubeWallTypes track by $index" value="{{type}}">
