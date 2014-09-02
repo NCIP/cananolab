@@ -56,10 +56,12 @@ public class SimpleCharacterizationEditBean {
 	public void transferCharacterizationEditData(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
 	throws Exception {
 		
-		Long id = charBean.getDomainChar().getId();
-		if (id != null) {
-			this.charId = id.longValue();
-			this.assayType = charBean.getAssayType();
+		if (charBean.getDomainChar() != null) {
+			Long id = charBean.getDomainChar().getId();
+			if (id != null) {
+				this.charId = id.longValue();
+				this.assayType = charBean.getAssayType();
+			}
 		}
 		
 		setupLookups(request, charBean, sampleId);
