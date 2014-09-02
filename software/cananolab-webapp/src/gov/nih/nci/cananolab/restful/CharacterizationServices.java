@@ -120,7 +120,7 @@ public class CharacterizationServices {
 	@Produces ("application/json")
     public Response getCharNamesByCharType(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("charType") String charType) {
-		logger.debug("In setupAdd");		
+		logger.debug("In getCharNamesByCharType");		
 		
 		try {
 			CharacterizationManager characterizationMgr = 
@@ -137,4 +137,25 @@ public class CharacterizationServices {
 		}
 	}
 	
+	@GET
+	@Path("/getAssayTypesByCharName")
+	@Produces ("application/json")
+    public Response getAssayTypesByCharName(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("charName") String charName) {
+		logger.debug("In getAssayTypesByCharName");		
+		
+		try {
+			CharacterizationManager characterizationMgr = 
+				(CharacterizationManager) applicationContext.getBean("characterizationManager");
+
+		List<String> assayTypes = characterizationMgr.getAssayTypes(httpRequest, charName);
+
+		return Response.ok(assayTypes).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
 }

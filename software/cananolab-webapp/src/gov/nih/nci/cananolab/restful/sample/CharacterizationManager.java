@@ -105,14 +105,16 @@ public class CharacterizationManager {
 		return charNamesWithAssayTypes;
 	}
 
-	public String[] getAssayTypeOptions(String characterizationName)
+	public List<String> getAssayTypes(HttpServletRequest request, String characterizationName)
 			throws Exception {
-		WebContext wctx = WebContextFactory.get();
 		SortedSet<String> assayTypes = // setup Assay Type drop down.
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(
-				wctx.getHttpServletRequest(), "charNameAssays",
+				request, "charNameAssays",
 				characterizationName, "assayType", "otherAssayType", true);
-		return assayTypes.toArray(new String[assayTypes.size()]);
+		
+		List<String> types = new ArrayList<String>();
+		types.addAll(assayTypes);
+		return types;
 	}
 
 	public String getCharacterizationDetailPage(String charType, String charName)
