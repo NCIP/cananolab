@@ -86,5 +86,42 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		
 		RestTestLoginUtil.logoutTest();
 	}
+	
+	
+	
+	@Test
+	public void testGetCharNamesByCharType() {
+		String jsessionId = RestTestLoginUtil.loginTest();
+
+
+		Response res =
+				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+				.parameter("charType", "physico-chemical characterization")
+				.expect()
+				.body("", hasItems("molecular weight"))
+				.when().get("http://localhost:8080/caNanoLab/rest/characterization/getCharNamesByCharType");
+
+		System.out.println(res.getBody().asString());
+
+		RestTestLoginUtil.logoutTest();
+	}
+	
+	
+	@Test
+	public void testGetAssayTypesByCharName() {
+		String jsessionId = RestTestLoginUtil.loginTest();
+
+
+		Response res =
+				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+				.parameter("charName", "other_pc")
+				.expect()
+				.body("", hasItems("chelation stability"))
+				.when().get("http://localhost:8080/caNanoLab/rest/characterization/getAssayTypesByCharName");
+
+		System.out.println(res.getBody().asString());
+
+		RestTestLoginUtil.logoutTest();
+	}
 
 }
