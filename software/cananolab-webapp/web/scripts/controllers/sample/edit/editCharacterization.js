@@ -68,6 +68,8 @@ app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,
         var modalInstance = $modal.open({
           templateUrl: 'views/sample/edit/modal/editCharacterizationModal.html',
           controller: 'EditCharacterizationModalCtrl',
+          size:'lg',
+
           resolve: {
             sampleId: function () {
               return $scope.sampleId.data;

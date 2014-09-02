@@ -21,6 +21,7 @@
             </td>
             <td colspan="2">
                 <select ng-disabled="loader" ng-model="searchPublicationForm.category" name="category" ng-change="displayPubMed()"><option ng-repeat="category in data.publicationCategories" value="{{category}}">{{category}}</option>
+                </select>
             </td>
         </tr>
         <tr>
