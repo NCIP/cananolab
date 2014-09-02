@@ -59,6 +59,8 @@ public class SimpleCharacterizationEditBean {
 	public void transferCharacterizationEditData(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
 	throws Exception {
 		
+		this.type = charBean.getCharacterizationType();
+		
 		if (charBean.getDomainChar() != null) {
 			Long id = charBean.getDomainChar().getId();
 			if (id != null) {
@@ -69,6 +71,8 @@ public class SimpleCharacterizationEditBean {
 		
 		setupLookups(request, charBean, sampleId);
 	}
+	
+	
 	
 	protected void setupLookups(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
 			throws Exception {
