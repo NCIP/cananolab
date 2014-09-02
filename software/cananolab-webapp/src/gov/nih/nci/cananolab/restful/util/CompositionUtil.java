@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 public class CompositionUtil {
@@ -17,7 +18,7 @@ public class CompositionUtil {
 			HttpSession session) {
         if (session == null)                      
         	return null;
-        
+        ServletContext appContext = session.getServletContext();
 		Map<String, Object> typeMap = new HashMap<String, Object>();
 		
 		SortedSet<String> types = (SortedSet<String>) session.getAttribute("nanomaterialEntityTypes");
@@ -61,6 +62,17 @@ public class CompositionUtil {
 		if(pubChemSources != null)
 			typeMap.put("pubChemDataSources", pubChemSources);
 		
+		types = (SortedSet<String>) session.getAttribute("dimensionUnits");
+		if (types != null) 
+			typeMap.put("dimensionUnits", new ArrayList<String>(types));         
+		
+		types = (SortedSet<String>) session.getAttribute("biopolymerTypes");
+		if (types != null) 
+			typeMap.put("biopolymerTypes", new ArrayList<String>(types));
+				
+		types = (SortedSet<String>) appContext.getAttribute("wallTypes");
+		if (types != null) 
+			typeMap.put("wallTypes", new ArrayList<String>(types));
 		return typeMap;
 	}
 }
