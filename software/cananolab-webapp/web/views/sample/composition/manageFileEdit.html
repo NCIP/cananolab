@@ -28,8 +28,8 @@
                     <th></th>
                 </tr>
 
-                <tr>
-                    <td ng-repeat="file in $parent.composingElements track by $index">
+                <tr ng-repeat="file in $parent.files track by $index">
+                    <td>
                         {{file.type}}
                     </td>
                     <td>
@@ -43,9 +43,7 @@
                         {{file.description}}
                     </td>
                     <td align="right">
-                        <input class="noBorderButton" id="edit" type="button"
-                               value="Edit" style="display: block"
-                               ng-click="addNewFile=true; editFile({{file.id}});" />
+                        <button ng-click="editFile('{{file.id}}');addNewFile=true;" class="btn btn-primary btn-xxs">Edit</button>&nbsp;
                     </td>
                 </tr>
                 </tbody>
@@ -131,15 +129,13 @@
 
 
                     <tr>
-                        <td ng-show="theInherentFunction.id != null || $scope.theInherentFunction.id != ''">
-                            <input class="promptButton"
-                                   id="deleteInherentFunction" type="button" value="Remove"
-                                   ng-click="deleteInherentFunction()" />
+                        <td>
+                            <input type="button" value="Remove" ng-click="removeFile('{{fileForm.id}}');" id="deleteFile" ng-show="fileForm.id != null">
                         </td>
                         <td colspan="3">
                             <div align="right">
                                 <input class="promptButton" type="button" value="Save"
-                                       ng-click="addNewFile=false;addInherentFunction();" />
+                                       ng-click="addNewFile=false;saveFile();" />
                                 <input class="promptButton" type="button" value="Cancel"
                                        ng-click="addNewFile=false" />
                             </div>
