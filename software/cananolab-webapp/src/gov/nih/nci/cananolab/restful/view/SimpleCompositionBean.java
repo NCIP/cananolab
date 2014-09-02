@@ -43,7 +43,7 @@ public class SimpleCompositionBean {
 	Map<String, Object> smallMolecule;
 
 	Map<String, Object> chemicalassociation;
-
+	
 	public Map<String, Object> getChemicalassociation() {
 		return chemicalassociation;
 	}
@@ -115,6 +115,7 @@ public class SimpleCompositionBean {
 						.getType2NanoEntities().get(entityType)) {
 					nanoentitiy.put("Description",
 							nanoMaterialEntity.getDescriptionDisplayName());
+					nanoentitiy.put("dataId", nanoMaterialEntity.getDomainEntity().getId());
 
 					if (nanoMaterialEntity.isWithProperties()) {
 
