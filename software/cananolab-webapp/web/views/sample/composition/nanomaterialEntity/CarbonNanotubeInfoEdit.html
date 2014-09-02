@@ -1,0 +1,80 @@
+<table width="100%" align="center" class="submissionView">
+    <tr>
+        <th colspan="6">
+            Carbon Nanotube Properties
+        </th>
+    </tr>
+    <tr>
+        <td class="cellLabel">
+            <label for="averageLength">Average Length</label>
+        </td>
+        <td class="cellLabel">
+            <input type="text"
+                   id="averageLength"
+                   ng-value="nanomaterialEntity.carbonNanotube.averageLength" />
+        </td>
+        <td class="cellLabel">
+            <label for="averageLengthUnit">Average Length Unit</label>
+        </td>
+        <td class="cellLabel">
+            <div id="averageLengthUnitPrompt">
+                <select ng-model="nanomaterialEntity.carbonNanotube.averageLengthUnit"
+                        id="averageLengthUnit">
+                    <option value=""></option>
+                    <option ng-repeat="unit in $parent.carbonNanoTubeaverageLengthUnits track by $index" value="{{unit}}">
+                        {{unit}}
+                    </option>
+                    <option value="other">
+                        [other]
+                    </option>
+                </select>
+            </div>
+        </td>
+        <td class="cellLabel">
+            <label for="chirality">Chirality</label>
+        </td>
+        <td class="cellLabel">
+            <input id="chirality" type="text"
+                   ng-model="nanomaterialEntity.carbonNanotube.chirality" />
+        </td>
+    </tr>
+    <tr>
+        <td class="cellLabel">
+            <label for="tubeDiameter">Diameter</label>
+        </td>
+        <td class="cellLabel">
+            <input type="text"
+                   id="tubeDiameter"
+                   ng-model="nanomaterialEntity.carbonNanotube.diameter" />
+        </td>
+        <td class="cellLabel">
+            <label for="diameterUnit">Diameter Unit</label>
+        </td>
+        <td class="cellLabel">
+            <div id="diameterUnitPrompt">
+                <select ng-model="nanomaterialEntity.carbonNanotube.diameterUnit"
+                        id="diameterUnit">
+                    <option value=""></option>
+                    <option ng-repeat="unit in $parent.carbonNanoTubeDiameterUnits track by $index" value="{{unit}}">
+                        {{unit}}
+                    </option>
+                    <option value="other">
+                        [other]
+                    </option>
+                </select>
+            </div>
+        </td>
+        <td class="cellLabel">
+            <label for="wallType">Wall Type</label>
+        </td>
+        <td class="cellLabel">
+            <select ng-model="nanomaterialEntity.carbonNanotube.wallType"
+                    id="wallType">
+                <option value=""></option>
+                <option ng-repeat="type in $parent.carbonNanoTubeWallTypes track by $index" value="{{type}}">
+                    {{type}}
+                </option>
+            </select>
+        </td>
+    </tr>
+</table>

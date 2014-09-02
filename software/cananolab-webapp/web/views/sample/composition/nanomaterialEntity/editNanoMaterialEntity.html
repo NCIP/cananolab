@@ -1,0 +1,134 @@
+<div class="nanoPageContainer">
+    <div class="spacer">
+        <form novalidate>
+            <table class="contentTitle" width="100%" border="0" summary="layout">
+                <tbody>
+                <tr>
+                    <th scope="col" align="left" ng-if="nanoEntityId!=''">
+                        {{sampleName}} Sample Composition - Nanomaterial Entity - {{entityName}}
+                    </th>
+
+                    <th scope="col" align="left" ng-if="nanoEntityId==null">
+                        {{sampleName}} Sample Composition - Nanomaterial Entity
+                    </th>
+
+                    <td align="right" width="30%">
+                        <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/4+-+Managing+Sample+Composition+Annotations#id-4-ManagingSampleCompositionAnnotations-AddingNanomaterialEntityCompositionAnnotations')">Help</a>
+                        &nbsp;
+                        <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+                        &nbsp;
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
+                <ul>
+                    <li ng-repeat="message in messages">
+                        {{message}}
+                    </li>
+                </ul>
+            </span>
+            <table width="100%" align="center" class="submissionView" summary="layout">
+                <tr ng-show="nanoEntityId == null">
+                    <td class="cellLabel" width="100">
+                        <label for="type">Nanomaterial Entity Type *</label>
+                    </td>
+                    <td>
+                        <div id="categoryPrompt">
+                            <select ng-disabled="loader" id="type" ng-model="nanoEntityForm.type" ng-click="showProperties();">
+                                <option ng-repeat="option in nanoEntityTypes" value="{{option}}" ng-selected="{{option==nanoEntityForm.type}}">
+                                    {{option}}
+                                </option>
+                                <option value="other">
+                                    [other]
+                                </option>
+                            </select>
+                            <div id="promptCategory" ng-if="nanoEntityForm.type=='other'">
+                                <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                    <tbody>
+                                    <tr>
+                                        <td class="cellLabel">
+                                            <label for="textCategory" category="">New Nanomaterial Entity Type:</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="text" id="textCategory" ng-model='localForm.otherCategoryText' class="promptbox">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right">
+                                            <input type="button" class="promptButton" value="Add" ng-click="nanoEntityForm.type=localForm.otherCategoryText; nanoEntityTypes.push(localForm.otherCategoryText);">
+                                            <input type="button" class="promptButton" value="Cancel" ng-click="nanoEntityForm.type='';">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cellLabel">
+                        <label for="neDescription">Description</label>
+                    </td>
+                    <td>
+                        <textarea  ng-model="nanoEntityForm.description" cols="100" rows="3" id="neDescription"></textarea>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <span ng-if="nanoEntityForm.withProperties">
+                 <ng-include src="nanoEntityForm.detailsPage"></ng-include>
+            </span>
+            <br />
+            <ng-include src="'/caNanoLab/views/sample/composition/nanomaterialEntity/manageComposingElements.html'"></ng-include>
+            <br />
+            <ng-include src="'/caNanoLab/views/sample/composition/manageFileEdit.html'"></ng-include>
+            <br />
+
+            <table width="100%" align="center" class="submissionView">
+                <tbody>
+                <tr ng-if="otherSampleNames != null">
+                    <td width="5%">
+                        <strong><label for="otherSamples">Copy to other samples with the same primary organization?</label></strong>
+                    </td>
+                    <td width="20%">
+                        <select ng-disabled="loader" id="otherSamples" ng-model="nanoEntityForm.otherSampleNames" multiple="true" size="10">
+                            <option ng-repeat="option in otherSampleNames" value="{{option}}">
+                                {{option}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr ng-if="otherSampleNames == null">
+                    <td colspan="3">
+                        There are no other samples to copy annotation to.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <br />
+            <table width="100%" class="invisibleTable" summary="layout">
+                <tbody><tr>
+                    <td align="left" width="600">
+                        <input type="button" value="Delete" ng-click="doDelete()" ng-if="nanoEntityId != null">
+                    </td>
+                    <td align="right" width="300">
+                        <input type="reset" value="Reset" ng-click="resetForm()">
+                        <input type="submit" value="Submit" ng-click="doSubmit()" ng-if="nanoEntityId == null" ng-show="!addNewComposingElement">
+                        <input type="submit" value="Update" ng-click="doSubmit()" ng-if="nanoEntityId != null" ng-show="!addNewComposingElement">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <div id="loader" ng-show="loader">
+            <div id="loaderText">
+                Loading
+            </div>
+            <div id="loaderGraphic"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<table width="100%" align="center" class="submissionView">
+    <tr>
+        <th colspan="6">
+            Fullerene Properties
+        </th>
+    </tr>
+    <tr>
+        <td class="cellLabel">
+            <label for="averageDiameter">Average Diameter</label>
+        </td>
+        <td class="cellLabel">
+            <input type="text" ng-model="nanomaterialEntity.fullerene.averageDiameter"
+                   id="averageDiameter" />
+        </td>
+        <td class="cellLabel">
+            <label for="averageDiameterUnit">Average Diameter Unit</label>
+        </td>
+        <td class="cellLabel">
+            <div id="averageDiameterUnitPrompt">
+                <select ng-model="nanomaterialEntity.fullerene.averageDiameterUnit"
+                        id="averageDiameterUnit">
+                    <option value=""></option>
+                    <option ng-repeat="unit in $parent.fullereneDiameterUnits track by $index" value="{{unit}}">
+                        {{unit}}
+                    </option>
+                    <option value="other">
+                        [other]
+                    </option>
+                </select>
+            </div>
+        </td>
+        <td class="cellLabel">
+            <label for="numberOfCarbon">Number of Carbons</label>
+        </td>
+        <td class="cellLabel">
+            <input type="text" ng-model="nanomaterialEntity.fullerene.numberOfCarbon"
+                   id="numberOfCarbon" />
+        </td>
+    </tr>
+</table>
