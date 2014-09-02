@@ -12,7 +12,9 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +25,7 @@ public class SimpleCharacterizationEditBean {
 	String name;
 	long parentSampleId;
 	
-	long charId;
-	
+	long charId;	
 	
 	String assayType;
 	String protocolNameVersion;
@@ -47,14 +48,18 @@ public class SimpleCharacterizationEditBean {
 	
 	
 	List<String> charTypesLookup;
-	List<String> characterizationNameLookup;
-	List<String> AssayTypeLookup;
+	//List<String> characterizationNameLookup;
+	//List<String> AssayTypeLookup;
 	List<SimpleProtocol> protocolLookup;
 	List<SimplePOC> charSourceLookup;
 	List<String> otherSampleNameLookup;
 	
+	Map<String, List<String>> assayTypesByCharNameLookup = new HashMap<String, List<String>>();
+	
 	public void transferCharacterizationEditData(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
 	throws Exception {
+		
+		this.type = charBean.getCharacterizationType();
 		
 		if (charBean.getDomainChar() != null) {
 			Long id = charBean.getDomainChar().getId();
@@ -67,6 +72,8 @@ public class SimpleCharacterizationEditBean {
 		setupLookups(request, charBean, sampleId);
 	}
 	
+	
+	
 	protected void setupLookups(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
 			throws Exception {
 	
@@ -75,18 +82,29 @@ public class SimpleCharacterizationEditBean {
 		charTypesLookup = InitCharacterizationSetup
 				.getInstance().getCharacterizationTypes(request);
 
-		characterizationNameLookup = new ArrayList<String>();
-		SortedSet<String> charNames = InitCharacterizationSetup
-				.getInstance().getCharNamesByCharType(request, charType);
-		characterizationNameLookup.addAll(charNames);
+//		characterizationNameLookup = new ArrayList<String>();
+//		SortedSet<String> charNames = InitCharacterizationSetup
+//				.getInstance().getCharNamesByCharType(request, charType);
+//		characterizationNameLookup.addAll(charNames);
+		
+		
+//		for (String charName : characterizationNameLookup) {
+//			List<String> assayTypes = new ArrayList<String>();
+//			SortedSet<String> assTypes = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+//					"charNameAssays", charName, "assayType", "otherAssayType", true);
+//			assayTypes.addAll(assTypes);
+//			
+//			this.assayTypesByCharNameLookup.put(charName, assayTypes);
+//		}
 
-		AssayTypeLookup = new ArrayList<String>();
-		String charName = charBean.getCharacterizationName();
-		if (charName != null && charName.length() > 0) {
-			SortedSet<String> assayTypes = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
-					"charNameAssays", charName, "assayType", "otherAssayType", true);
-			AssayTypeLookup.addAll(assayTypes);
-		}
+//		AssayTypeLookup = new ArrayList<String>();
+//		String charName = charBean.getCharacterizationName();
+//		if (charName != null && charName.length() > 0) {
+//			SortedSet<String> assayTypes = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+//					"charNameAssays", charName, "assayType", "otherAssayType", true);
+//			AssayTypeLookup.addAll(assayTypes);
+//		}
+	
 		
 		setProtocolLookup(request, charType);
 		
@@ -129,6 +147,15 @@ public class SimpleCharacterizationEditBean {
 	}
 	
 	
+
+	public Map<String, List<String>> getAssayTypesByCharNameLookup() {
+		return assayTypesByCharNameLookup;
+	}
+
+	public void setAssayTypesByCharNameLookup(
+			Map<String, List<String>> assayTypesByCharNameLookup) {
+		this.assayTypesByCharNameLookup = assayTypesByCharNameLookup;
+	}
 
 	public long getCharId() {
 		return charId;
@@ -202,19 +229,19 @@ public class SimpleCharacterizationEditBean {
 	public void setCharTypesLookup(List<String> charTypesLookup) {
 		this.charTypesLookup = charTypesLookup;
 	}
-	public List<String> getCharacterizationNameLookup() {
-		return characterizationNameLookup;
-	}
-	public void setCharacterizationNameLookup(
-			List<String> characterizationNameLookup) {
-		this.characterizationNameLookup = characterizationNameLookup;
-	}
-	public List<String> getAssayTypeLookup() {
-		return AssayTypeLookup;
-	}
-	public void setAssayTypeLookup(List<String> assayTypeLookup) {
-		AssayTypeLookup = assayTypeLookup;
-	}	
+//	public List<String> getCharacterizationNameLookup() {
+//		return characterizationNameLookup;
+//	}
+//	public void setCharacterizationNameLookup(
+//			List<String> characterizationNameLookup) {
+//		this.characterizationNameLookup = characterizationNameLookup;
+//	}
+//	public List<String> getAssayTypeLookup() {
+//		return AssayTypeLookup;
+//	}
+//	public void setAssayTypeLookup(List<String> assayTypeLookup) {
+//		AssayTypeLookup = assayTypeLookup;
+//	}	
 	
 	public List<SimplePOC> getCharSourceLookup() {
 		return charSourceLookup;

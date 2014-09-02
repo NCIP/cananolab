@@ -3,7 +3,7 @@
 
 var app = angular.module('angularApp')
 
-app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$routeParams) {
+app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$modal,$routeParams) {
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();   
     $scope.sampleData = sampleService.sampleData;
@@ -57,6 +57,48 @@ app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,
       $scope.loader = false;
     });
 
+    $scope.editCharacterization = function() {
+    		alert()
+    };
+    $scope.addCharacterization = function(type) {
+        sampleService.sampleData = angular.copy($scope.sampleData);
+        // sampleService.pocData = angular.copy(poc);
+
+        // $scope.pocData = poc.data;
+        var modalInstance = $modal.open({
+          templateUrl: 'views/sample/edit/modal/editCharacterizationModal.html',
+          controller: 'EditCharacterizationModalCtrl',
+          resolve: {
+            sampleId: function () {
+              return $scope.sampleId.data;
+            },
+            sampleData: function () {
+              return $scope.sampleData;
+            },
+            message: function() {
+                return $scope.message;
+            },
+            type: function() {
+            	return type;
+            }  
+          }
+        });
+
+        modalInstance.result.then(function (sampleData) {
+            $scope.sampleData = sampleData;
+            // $scope.message = $scope.sampleData.message;
+            $scope.groupAccesses = $scope.sampleData.groupAccesses;
+            $scope.userAccesses = $scope.sampleData.userAccesses;
+            
+            if( $scope.userAccesses != null && $scope.userAccesses.length > 0 ) {
+            	$scope.accessExists = true;
+            }  
+            
+            if( $scope.groupAccesses != null && $scope.groupAccesses.length > 1 ) {
+            	$scope.accessExists = true;
+            }            
+        });
+    };    
     $scope.print = function() {
     	window.open('views/sample/view/printCharacterization.html?sampleId='+$scope.sampleId.data+'&sampleName='+$scope.sampleData.data[0].sampleName)
     }

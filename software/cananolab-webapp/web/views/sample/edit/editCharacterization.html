@@ -1,4 +1,4 @@
-<div class="spacer">{{data}}
+<div class="spacer"><!-- {{data}} -->
 <table border="0" class="contentTitle" summary="layout" width="100%">
   <tr>
     <th align="left" scope="col"><h1>fix left nav for edit pages</h1>
@@ -30,7 +30,7 @@
         <!-- type -->
             <div style="float:left;">{{type.type}}</div>
             <div style="float:right;margin-right:10px;">
-                <button ng-click="addCharacterization()">Add</button>
+                <button ng-click="addCharacterization(type.type)">Add</button>
             </div>
         <!-- type -->
       </td>
@@ -44,7 +44,7 @@
                   <!-- characterization -->
                   <div style="float:left;">{{key}}</div>
                   <div style="float:right;margin-right:10px;"> 
-                      <button ng-click="editCharacterization()">Edit</button>
+                      <button ng-click="editCharacterization(type.type)">Edit</button>
                   </div>
                   <!-- characterization -->                  
               </td>

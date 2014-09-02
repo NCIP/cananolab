@@ -131,6 +131,10 @@
 		</property>
 	</bean>
 	
+	<bean id="characterizationManager"
+		class="gov.nih.nci.cananolab.restful.sample.CharacterizationManager">
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 
