@@ -135,6 +135,13 @@
 		class="gov.nih.nci.cananolab.restful.sample.CharacterizationManager">
 	</bean>
 	
+	<bean id="functionalizingEntityBO"
+		class="gov.nih.nci.cananolab.restful.sample.FunctionalizingEntityBO">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 

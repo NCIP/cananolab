@@ -14,7 +14,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 public class CompositionUtil {
-	public static Map<String, Object> reformatLocalSearchDropdownsInSession(
+	public static Map<String, Object> reformatLocalSearchDropdownsInSessionForNanoEntity(
 			HttpSession session) {
         if (session == null)                      
         	return null;
@@ -73,6 +73,70 @@ public class CompositionUtil {
 		types = (SortedSet<String>) appContext.getAttribute("wallTypes");
 		if (types != null) 
 			typeMap.put("wallTypes", new ArrayList<String>(types));
+		return typeMap;
+	}
+
+	public static Map<String, Object> reformatLocalSearchDropdownsInSessionForFunctionalizingEntity(
+			HttpSession session) {
+		ServletContext appContext = session.getServletContext();
+		Map<String, Object> typeMap = new HashMap<String, Object>();
+		
+		SortedSet<String> types = (SortedSet<String>) session.getAttribute("functionalizingEntityTypes");
+					
+		if (types != null) 
+			typeMap.put("functionalizingEntityTypes", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("functionalizingEntityUnits");
+		if (types != null) 
+			typeMap.put("functionalizingEntityUnits", new ArrayList<String>(types)); 
+		
+		types = (SortedSet<String>) session.getAttribute("molecularFormulaTypes");
+		if (types != null) 
+			typeMap.put("molecularFormulaTypes", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("activationMethods");
+		if (types != null) 
+			typeMap.put("activationMethods", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("functionTypes");
+		if (types != null) 
+			typeMap.put("functionTypes", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("modalityTypes");
+		if (types != null) 
+			typeMap.put("modalityTypes", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("fileTypes");
+		if (types != null) 
+			typeMap.put("fileTypes", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("targetTypes");
+		if (types != null) 
+			typeMap.put("targetTypes", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) appContext.getAttribute("speciesTypes");
+		if (types != null) 
+			typeMap.put("speciesTypes", new ArrayList<String>(types));
+		
+		List<String> list = (List<String>) session.getAttribute("otherSampleNames");
+		if (list != null) 
+			typeMap.put("otherSampleNames", list);
+		
+		types = (SortedSet<String>) session.getAttribute("biopolymerTypes");
+		if (types != null) 
+			typeMap.put("biopolymerTypes", new ArrayList<String>(types));         
+					
+		types = (SortedSet<String>) session.getAttribute("antibodyIsotypes");
+		if (types != null) 
+			typeMap.put("antibodyIsotypes", new ArrayList<String>(types));      
+				
+		types = (SortedSet<String>) session.getAttribute("antibodyTypes");
+		if (types != null) 
+			typeMap.put("antibodyTypes", new ArrayList<String>(types));
+				
+		List<String> pubChemSources = Arrays.asList(SampleConstants.PUBCHEM_DS_LIST);  
+		if(pubChemSources != null)
+			typeMap.put("pubChemDataSources", pubChemSources);
 		return typeMap;
 	}
 }

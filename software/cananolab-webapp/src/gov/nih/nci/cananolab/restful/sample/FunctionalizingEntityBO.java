@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.sample;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -9,6 +10,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.util.CompositionUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -160,12 +162,12 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	 * @return
 	 * @throws Exception
 	 */
-	public void setupNew(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public Map<String, Object> setupNew(String sampleId,
+			HttpServletRequest request)
 			throws Exception {
 		FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean();
-		form.setFunctionalizingEntity(entityBean);
-		String sampleId = request.getParameter("sampleId");
+//		form.setFunctionalizingEntity(entityBean);
+//		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		this.setLookups(request);
@@ -173,9 +175,9 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				"setEntityInclude('feType', 'functionalizingEntity')");
 		this.checkOpenForms(entityBean, request);
 		// clear copy to otherSamples
-		form.setOtherSamples(new String[0]);
+//		form.setOtherSamples(new String[0]);
 
-//		return mapping.findForward("inputForm");
+		return CompositionUtil.reformatLocalSearchDropdownsInSessionForFunctionalizingEntity(request.getSession());
 	}
 
 	private void setLookups(HttpServletRequest request) throws Exception {
@@ -443,22 +445,22 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 
 	private void checkOpenForms(FunctionalizingEntityBean entity,
 			HttpServletRequest request) throws Exception {
-		String dispatch = request.getParameter("dispatch");
-		String browserDispatch = getBrowserDispatch(request);
-		HttpSession session = request.getSession();
-		Boolean openFile = false, openFunction = false;
-		if (dispatch.equals("input") && browserDispatch.equals("saveFile")) {
-			openFile = true;
-		}
-		session.setAttribute("openFile", openFile);
-		if (dispatch.equals("input")
-				&& browserDispatch.equals("saveFunction")
-				|| ((dispatch.equals("setupNew") || dispatch
-						.equals("setupUpdate")) && entity.getFunctions()
-						.isEmpty())) {
-			openFunction = true;
-		}
-		session.setAttribute("openFunction", openFunction);
+//		String dispatch = request.getParameter("dispatch");
+//		String browserDispatch = getBrowserDispatch(request);
+//		HttpSession session = request.getSession();
+//		Boolean openFile = false, openFunction = false;
+//		if (dispatch.equals("input") && browserDispatch.equals("saveFile")) {
+//			openFile = true;
+//		}
+//		session.setAttribute("openFile", openFile);
+//		if (dispatch.equals("input")
+//				&& browserDispatch.equals("saveFunction")
+//				|| ((dispatch.equals("setupNew") || dispatch
+//						.equals("setupUpdate")) && entity.getFunctions()
+//						.isEmpty())) {
+//			openFunction = true;
+//		}
+//		session.setAttribute("openFunction", openFunction);
 
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);

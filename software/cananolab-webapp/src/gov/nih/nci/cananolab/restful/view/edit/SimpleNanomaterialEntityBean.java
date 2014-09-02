@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
 import gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube;
 import gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer;
@@ -16,6 +17,7 @@ import gov.nih.nci.cananolab.domain.nanomaterial.Fullerene;
 import gov.nih.nci.cananolab.domain.nanomaterial.Liposome;
 import gov.nih.nci.cananolab.domain.nanomaterial.Polymer;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -291,13 +293,21 @@ public class SimpleNanomaterialEntityBean {
 				simpleCompBean.setType(comp.getDomain().getType());
 				simpleCompBean.setValue(comp.getDomain().getValue());
 				simpleCompBean.setValueUnit(comp.getDomain().getValueUnit());
+				Map<String, Object> function = new HashMap<String, Object>();
+				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				if(comp.getInherentFunctions().size()>0){
 					for(FunctionBean func : comp.getInherentFunctions()){
 						
-					simpleCompBean.setFunctionDescription(func.getDescription());
-					simpleCompBean.setFunctionType(func.getType());
-					simpleCompBean.setImagingModality(func.getImagingFunction().getModality());
+						function.put("description", func.getDescription());
+						function.put("type", func.getType());
+						function.put("modality",func.getImagingFunction().getModality());
+						function.put("id", func.getDomainFunction().getId());
+						list.add(function);
+				//	simpleCompBean.setFunctionDescription(func.getDescription());
+				//	simpleCompBean.setFunctionType(func.getType());
+				//	simpleCompBean.setImagingModality(func.getImagingFunction().getModality());
 					}
+					simpleCompBean.setInherentFunction(list);
 				}
 				composingElements.add(simpleCompBean);
 			}

@@ -1,5 +1,11 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
+
+import java.util.List;
+import java.util.Map;
+
 public class SimpleComposingElementBean {
 
 	String type ="";
@@ -12,14 +18,18 @@ public class SimpleComposingElementBean {
 	String molecularFormula = "";
 	String description = "";
 	Long id = 0L;
-	Long functionId = 0L;
-	String functionType = "";
-	String imagingModality = "";
-	String functionDescription = "";
 	String sampleId = "";
 	String modality ="";
 	String createdBy="";
+	List<Map<String, Object>> inherentFunction;
 	
+
+	public List<Map<String, Object>> getInherentFunction() {
+		return inherentFunction;
+	}
+	public void setInherentFunction(List<Map<String, Object>> inherentFunction) {
+		this.inherentFunction = inherentFunction;
+	}
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -91,30 +101,6 @@ public class SimpleComposingElementBean {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public Long getFunctionId() {
-		return functionId;
-	}
-	public void setFunctionId(Long functionId) {
-		this.functionId = functionId;
-	}
-	public String getFunctionType() {
-		return functionType;
-	}
-	public void setFunctionType(String functionType) {
-		this.functionType = functionType;
-	}
-	public String getImagingModality() {
-		return imagingModality;
-	}
-	public void setImagingModality(String imagingModality) {
-		this.imagingModality = imagingModality;
-	}
-	public String getFunctionDescription() {
-		return functionDescription;
-	}
-	public void setFunctionDescription(String functionDescription) {
-		this.functionDescription = functionDescription;
 	}
 	public String getSampleId() {
 		return sampleId;

@@ -63,28 +63,22 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	public List<String> create(SimpleNanomaterialEntityBean nanoBean,
 			HttpServletRequest request)
 			throws Exception {
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
 		List<String> msgs = new ArrayList<String>();
 		String sampleId = nanoBean.getSampleId();
 		NanomaterialEntityBean entityBean = transferNanoMateriaEntityBean(nanoBean);  //form.getNanomaterialEntity();
 		this.setServicesInSession(request);
 		msgs = validateInputs(request, entityBean);
 		if (msgs.size()>0) {
-			//return mapping.getInputForward();
 			return msgs;
 		}
 		this.saveEntity(request, sampleId, entityBean);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entityBean);
 
-	//	ActionMessages msgs = new ActionMessages();
-	//	ActionMessage msg = new ActionMessage("message.addNanomaterialEntity");
 		msgs.add(PropertyUtil.getProperty("sample", "message.addNanomaterialEntity"));
 		// save action messages in the session so composition.do know about them
-	//	request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		// to preselect nanomaterial entity after returning to the summary page
 		request.getSession().setAttribute("tab", "1");
-	//	return mapping.findForward("success");
 		return msgs;
 	}
 
@@ -376,22 +370,16 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	public Map<String, Object> setupNew(String sampleId,
 			HttpServletRequest request)
 			throws Exception {
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CompositionForm form = new CompositionForm();
 		NanomaterialEntityBean entityBean = new NanomaterialEntityBean();
-		form.setNanomaterialEntity(entityBean);
-		// request.getSession().removeAttribute("compositionForm");
-	//	String sampleId = request.getParameter("sampleId");
+//		form.setNanomaterialEntity(entityBean);
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		this.setLookups(request);
 		this.checkOpenForms(entityBean, request);
 		// clear copy to otherSamples
-		form.setOtherSamples(new String[0]);
-		return CompositionUtil.reformatLocalSearchDropdownsInSession(request.getSession());
+//		form.setOtherSamples(new String[0]);
+		return CompositionUtil.reformatLocalSearchDropdownsInSessionForNanoEntity(request.getSession());
 
-
-	//	return mapping.findForward("inputForm");
 	}
 
 	public SimpleNanomaterialEntityBean setupUpdate(String sampleId, String entityId,
@@ -511,13 +499,13 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		}
 		Function domainFunc = new Function();
 		domainFunc.setCreatedBy(nanoBean.getSimpleCompBean().getCreatedBy());
-		domainFunc.setId(nanoBean.getSimpleCompBean().getFunctionId());
+		domainFunc.setId((Long) nanoBean.getSimpleCompBean().getInherentFunction().get(0).get("id"));
 		Collection<Function> hash = new HashSet<Function>();
 		FunctionBean func = new FunctionBean();
 		ImagingFunction img = new ImagingFunction();
 		img.setModality(nanoBean.getSimpleCompBean().getModality());
 		
-		func.setDescription(nanoBean.getSimpleCompBean().getFunctionDescription());
+		func.setDescription((String) nanoBean.getSimpleCompBean().getInherentFunction().get(0).get("description"));
 	//	func.setId(nanoBean.getSimpleCompBean().getFunctionId());
 		func.setImagingFunction(img);
 		func.setType(nanoBean.getSimpleCompBean().getType());
