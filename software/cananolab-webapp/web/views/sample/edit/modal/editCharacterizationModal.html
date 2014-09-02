@@ -28,7 +28,7 @@
             <td>
                 <div id="charTypePrompt">
                     <select data-ng-model="characterizationData.characterizationType" ng-init="characterizationData.characterizationType=type"
-                    data-ng-options="option for option in data.charTypesLookup" ng-change="organizationDropdownChanged()" id="charType">
+                    data-ng-options="option for option in data.charTypesLookup" ng-change="characterizationTypeDropdownChanged()" id="charType">
                     </select>                        
                 </div>
             </td>
@@ -38,7 +38,7 @@
             <td>
                 <div id="charNamePrompt">
                     <select data-ng-model="characterizationData.characterizationName"
-                    data-ng-options="option for option in data.charNamesForCurrentType" ng-change="organizationDropdownChanged()" id="charName">
+                    data-ng-options="option for option in data.charNamesForCurrentType" ng-change="characterizationNameDropdownChanged()" id="charName">
                     </select>  
 
 
@@ -52,36 +52,23 @@
         </td>
         <td>
             <div style="" id="assayTypePrompt">
-                <select name="achar.assayType" onchange="javascript:callPrompt('Assay Type', 'assayType', 'assayTypePrompt');" id="assayType">
-                    
-                    
-                        
+                    <select data-ng-model="characterizationData.assayType"
+                    data-ng-options="option for option in data.assayTypes" id="assayType">
+                    </select>  
 
-                    
-                    <option value=""></option><option value="[other]">[other]</option></select>
             </div>
         </td>
         <td class="cellLabel">
             <label for="protocolId">Protocol Name - Version</label>
         </td>
-        <input name="achar.protocolBean.fileBean.domainFile.uri" value="" id="updatedUri" type="hidden">
+<!--         <input name="achar.protocolBean.fileBean.domainFile.uri" value="" id="updatedUri" type="hidden"> -->
         <td colspan="3">
             
-                
-                    <select name="achar.protocolBean.domain.id" onchange="retrieveProtocolById()" id="protocolId"><option>
-                        </option><option value="69435392">Physicochemical and biological assays for quality control of biopharmaceuticals: Interferon alfa-2 case study, version v1.0</option>
-<option value="63340544">Test File Protocol3</option>
-<option value="31817728">Demo-PCC, version 1.0</option>
-<option value="29949960">NIST - NCL Joint Assay Protocol, PCC-13 (PCC-13), version 1.1</option>
-<option value="29949959">NIST - NCL Joint Assay Protocol, PCC-12 (PCC-12), version 1.1</option>
-<option value="29949958">NIST - NCL Joint Assay Protocol, PCC-14 (PCC-14), version 1.0</option>
-<option value="29949957">NIST - NCL Joint Assay Protocol, PCC-11 (PCC-11), version 1.1</option>
-<option value="29949956">NIST - NCL Joint Assay Protocol, PCC-9 (PCC-9), version 1.1</option>
-<option value="29949955">NIST - NCL Joint Assay Protocol, PCC-8 (PCC-8), version 1.1</option>
-<option value="29949954">NIST - NCL Joint Assay Protocol, PCC-10 (PCC-10), version 1.1</option>
-<option value="29949953">NIST - NCL Joint Assay Protocol, PCC-7 (PCC-7), version 1.1</option>
-<option value="29949952">NIST - NCL Joint Assay Protocol, PCC-6 (PCC-6), version 1.1</option>
-<option value="25210112">NIST - NCL Joint Assay Protocol, PCC-1 (PCC-1), version 1.1</option></select> &nbsp;<span id="protocolFileUri"><a href="protocol.do?dispatch=download&amp;fileId="></a>
+                    <select data-ng-model="characterizationData.protocolBean.domain.id"
+                    data-ng-options="option.domainId as option.displayName for option in data.protocolLookup" id="protocolId" ng-change="getDomainFileUri()">
+                    </select>  <br />
+
+ &nbsp;<span id="protocolFileUri"><a href="{{domainFileUri}}" target="_blank">{{domainFileUri}}</a>
                     </span>
                 
                 
@@ -93,6 +80,10 @@
             <label for="charSource">Characterization Source</label>
         </td>
         <td>
+                    <select data-ng-model="characterizationData.pocBean.domain.id"
+                    data-ng-options="option.domainId as option.displayName for option in data.protocolLookup" id="charSource" ng-change="getDomainFileUri()">
+                    </select> 
+
             <select name="achar.pocBean.domain.id" id="charSource"><option value=""></option>
                 <option value="68812800">CLM_UHA_CDS_INSERM</option></select>
         </td>
