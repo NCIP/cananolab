@@ -644,6 +644,27 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		}
 		return id;
 	}
+	
+	/**
+	 * Another version of validateId() with id value passed in.
+	 * 
+	 * @param request
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	protected String validateCharId(String id)
+			throws Exception {
+		
+		if (id == null) {
+			throw new NotExistException("No such ID in the database");
+		}
+		// per app scan
+		if (!id.matches(Constants.NUMERIC_PATTERN)) {
+			throw new NotExistException("Invalid value for ID");
+		}
+		return id;
+	}
 
 	protected void checkOpenAccessForm(HttpServletRequest request) throws Exception {
 		String dispatch = request.getParameter("dispatch");

@@ -23,10 +23,28 @@ public class SimpleCharacterizationEditBean {
 	String name;
 	long parentSampleId;
 	
+	long charId;
+	
+	
 	String assayType;
 	String protocolNameVersion;
 	String characterizationSource;
 	Date characterizationDate;
+	
+	
+	//for Edit
+	
+	
+	
+	
+	///
+	
+	
+	
+	
+	
+	
+	
 	
 	List<String> charTypesLookup;
 	List<String> characterizationNameLookup;
@@ -37,6 +55,12 @@ public class SimpleCharacterizationEditBean {
 	
 	public void transferCharacterizationEditData(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
 	throws Exception {
+		
+		Long id = charBean.getDomainChar().getId();
+		if (id != null) {
+			this.charId = id.longValue();
+			this.assayType = charBean.getAssayType();
+		}
 		
 		setupLookups(request, charBean, sampleId);
 	}
@@ -100,6 +124,16 @@ public class SimpleCharacterizationEditBean {
 			simpleProto.transferFromProtocolBean(protoBean);
 			protocolLookup.add(simpleProto);
 		}
+	}
+	
+	
+
+	public long getCharId() {
+		return charId;
+	}
+
+	public void setCharId(long charId) {
+		this.charId = charId;
 	}
 
 	public List<SimpleProtocol> getProtocolLookup() {
@@ -187,6 +221,8 @@ public class SimpleCharacterizationEditBean {
 	public void setCharSourceLookup(List<SimplePOC> charSourceLookup) {
 		this.charSourceLookup = charSourceLookup;
 	}
+	
+	
 
 	public class SimpleProtocol {
 		//Proto needs:

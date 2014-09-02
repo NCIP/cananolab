@@ -88,4 +88,28 @@ public class CharacterizationServices {
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
+	
+	@GET
+	@Path("/setupUpdate")
+	@Produces ("application/json")
+    public Response setupUpdate(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("charId") String charId,
+    		@DefaultValue("") @QueryParam("charClassName") String charClassName,
+    		@DefaultValue("") @QueryParam("charType") String charType) {
+		logger.debug("In setupAdd");		
+		
+		try {
+		CharacterizationBO characterizationBO = 
+				(CharacterizationBO) applicationContext.getBean("characterizationBO");
+
+		SimpleCharacterizationEditBean charView = characterizationBO.setupUpdate(httpRequest, sampleId, charId, charClassName, charType);
+
+		return Response.ok(charView).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
 }

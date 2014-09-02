@@ -196,38 +196,41 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward setupUpdate(HttpServletRequest request, String sampleId, String charType)
+	public SimpleCharacterizationEditBean setupUpdate(HttpServletRequest request, String sampleId, String charId, 
+			String charClassName, String charType)
 			throws Exception {
-		CharacterizationService charService = this
-				.setServicesInSession(request);
-		String charId = super.validateId(request, "charId");
+		CharacterizationService charService = this.setServicesInSession(request);
+		charId = super.validateCharId(charId);
+		
 		CharacterizationBean charBean = charService
 				.findCharacterizationById(charId);
-		// setup Characterization Name drop down.
-		InitCharacterizationSetup.getInstance().getCharNamesByCharType(request,
-				charBean.getCharacterizationType());
-
-		// setup Assay Type drop down.
-		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
-				"charNameAssays", charBean.getCharacterizationName(),
-				"assayType", "otherAssayType", true);
-
-		// TODO: Find out usage of "charNameDatumNames", not used in any JSPs.
-		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
-				request, charBean.getCharacterizationType(),
-				charBean.getCharacterizationName(), charBean.getAssayType());
-
-		request.setAttribute("achar", charBean);
-		//theForm.set("achar", charBean);
-		this.setupInputForm(request, sampleId, charType);
-		this.setupIsSoluble(charBean); // setup "isSoluble" property.
-
-		//this.checkOpenForms(charBean, theForm, request);
-		// clear copy to otherSamples
-//		clearCopy(theForm);
-//		return mapping.findForward("inputForm");
 		
-		return null;
+		
+//		// setup Characterization Name drop down.
+//		InitCharacterizationSetup.getInstance().getCharNamesByCharType(request,
+//				charBean.getCharacterizationType());
+//
+//		// setup Assay Type drop down.
+//		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+//				"charNameAssays", charBean.getCharacterizationName(),
+//				"assayType", "otherAssayType", true);
+//
+//		// TODO: Find out usage of "charNameDatumNames", not used in any JSPs.
+//		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
+//				request, charBean.getCharacterizationType(),
+//				charBean.getCharacterizationName(), charBean.getAssayType());
+//
+//		request.setAttribute("achar", charBean);
+//		//theForm.set("achar", charBean);
+//		this.setupInputForm(request, sampleId, charType);
+//		
+//		this.setupIsSoluble(charBean); // setup "isSoluble" property.
+		
+		
+		SimpleCharacterizationEditBean editBean = new SimpleCharacterizationEditBean();
+		editBean.transferCharacterizationEditData(request, charBean, sampleId);
+		
+		return editBean;
 	}
 
 	private void clearCopy(DynaValidatorForm theForm) {
