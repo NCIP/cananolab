@@ -27,6 +27,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.util.CompositionUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
@@ -40,6 +41,7 @@ import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -353,8 +355,11 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	}
 
 	public void setLookups(HttpServletRequest request) throws Exception {
+		ServletContext appContext = request.getSession().getServletContext();
 		InitCompositionSetup.getInstance().setNanomaterialEntityDropdowns(
 				request);
+		InitSetup.getInstance().getDefaultTypesByLookup(appContext,
+				"wallTypes", "carbon nanotube", "wallType");
 
 	}
 
