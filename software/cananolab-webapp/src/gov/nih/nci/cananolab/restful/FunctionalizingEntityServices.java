@@ -1,9 +1,14 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.restful.sample.FunctionalizingEntityBO;
 import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionalizingEntityBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
+import gov.nih.nci.cananolab.service.security.UserBean;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -40,6 +45,33 @@ private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
+
+		}
+	}
+	
+	@GET
+	@Path("/edit")
+	@Produces ("application/json")
+    public Response edit(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
+				
+		try { 
+			FunctionalizingEntityBO functionalizingEntity = 
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			FunctionalizingEntityBean bean = functionalizingEntity.setupUpdate(sampleId, dataId, httpRequest);
+			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
+			funcBean.tranferSimpleFunctionalizingBean(bean);
+			List<String> errors = funcBean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(funcBean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the NanoMaterial Entity" + e.getMessage())).build();
 
 		}
 	}

@@ -203,23 +203,21 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	//	return mapping.findForward("singleSummaryView");
 	}
 
-	public void setupUpdate(CompositionForm form,
+	public FunctionalizingEntityBean setupUpdate(String sampleId, String dataId,
 			HttpServletRequest request)
 			throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String sampleId = form.getSampleId();
 		CompositionService compService = this.setServicesInSession(request);
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		String entityId = super.validateId(request, "dataId");
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityById(entityId);
-		form.setFunctionalizingEntity(entityBean);
 		this.setLookups(request);
 		// clear copy to otherSamples
-		form.setOtherSamples(new String[0]);
+	//	form.setOtherSamples(new String[0]);
 		checkOpenForms(entityBean, request);
 //		return mapping.findForward("inputForm");
+		return entityBean;
 	}
 
 	public void saveFunction(CompositionForm form,

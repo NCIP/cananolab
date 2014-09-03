@@ -302,6 +302,7 @@ public class SimpleCompositionBean {
 					for (FunctionalizingEntityBean funcBean : compBean
 							.getType2FuncEntities().get(entityType)) {
 
+						function.put("dataId", funcBean.getDomainEntity().getId());
 						function.put("Name", funcBean.getName());
 						function.put("pubChemID", funcBean.getPubChemId());
 						function.put("pubChemLink", funcBean.getPubChemLink());
