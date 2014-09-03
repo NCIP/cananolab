@@ -95,7 +95,13 @@
                            <td ng-class="{'subMenuSecondaryTitleSelectedSample': navDetail==3, 'subMenuSecondaryTitleSample':navDetail!=3}" onclick="gotoPage('#/publication')">
                               PUBLICATION
                            </td>
-                        </tr>     
+                        </tr>  
+                        <tr ng-show="navTree">
+                           <td ng-class="{'subMenuSecondaryTitleSelectedSample': navDetail==3, 'subMenuSecondaryTitleSample':navDetail!=3}" onclick="gotoPage('#/publication')">
+                              REMOVE                           <navigation>test</navigation>
+
+                           </td>
+                        </tr>                             
                         <tr ng-show="navTree">
                            <td class="subMenuFill" height="50">
                               &nbsp;
@@ -396,6 +402,7 @@ src="images/mainMenuSeparator.gif" width="1">
       <script src="scripts/controllers/publication/view/publicationSampleSearch.js"></script>
       <script src="scripts/controllers/publication/view/managePublications.js"></script>
       <script src="scripts/directives/gridList.js"></script>
+      <script src="scripts/directives/navigation.js"></script>
       <script src="scripts/controllers/publication/edit/editPublication.js"></script>
       <script src="scripts/directives/ngModelOnblur.js"></script>
       <script src="scripts/directives/fileModel.js"></script>
