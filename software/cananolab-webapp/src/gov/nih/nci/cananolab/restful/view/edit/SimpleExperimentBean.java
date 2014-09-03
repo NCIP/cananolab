@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleExperimentBean {
@@ -13,7 +14,7 @@ public class SimpleExperimentBean {
 	String abbreviation;
 	String description;
 	
-	List<SimpleInstrumentBean> instruments;
+	List<SimpleInstrumentBean> instruments = new ArrayList<SimpleInstrumentBean>();
 	
 	
 	public void transferToExperimentConfigBean(ExperimentConfigBean expConfigBean) {
