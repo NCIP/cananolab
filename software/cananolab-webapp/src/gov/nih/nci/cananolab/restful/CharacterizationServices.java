@@ -42,9 +42,9 @@ public class CharacterizationServices {
     		@DefaultValue("") @QueryParam("sampleId") String sampleId) {
 		logger.debug("In setupEdit");		
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
-			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+//		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+//			return Response.status(Response.Status.UNAUTHORIZED)
+//					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 		
 		try {
 		CharacterizationBO characterizationBO = 
@@ -74,9 +74,9 @@ public class CharacterizationServices {
     		@DefaultValue("") @QueryParam("charType") String charType) {
 		logger.debug("In setupAdd");		
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
-			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+//		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+//			return Response.status(Response.Status.UNAUTHORIZED)
+//					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 		
 		try {
 		CharacterizationBO characterizationBO = 
@@ -107,9 +107,9 @@ public class CharacterizationServices {
     		@DefaultValue("") @QueryParam("charType") String charType) {
 		logger.debug("In setupAdd");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
-			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+//		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+//			return Response.status(Response.Status.UNAUTHORIZED)
+//					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 		
 		try {
 		CharacterizationBO characterizationBO = 
@@ -178,9 +178,9 @@ public class CharacterizationServices {
     		@DefaultValue("") @QueryParam("charName") String charName) {
 		logger.debug("In setupAddTechnique");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
-			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+//		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+//			return Response.status(Response.Status.UNAUTHORIZED)
+//					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 		
 		try {
 			CharacterizationManager characterizationMgr = 

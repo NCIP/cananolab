@@ -70,6 +70,7 @@ public class SimpleCharacterizationEditBean {
 		this.type = charBean.getCharacterizationType();
 		this.parentSampleId = Long.parseLong(sampleId);
 		
+		
 		transferCharBeanData(charBean);
 		
 		setupLookups(request, charBean, sampleId);
