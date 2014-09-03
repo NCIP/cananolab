@@ -119,6 +119,10 @@ var app = angular.module('angularApp')
 
         $scope.doSubmit = function() {
             $scope.loader = true;
+            
+            if( $scope.sampleId != null ) {
+            	$scope.nanoEntityForm.sampleId = $scope.sampleId;
+            }
 
             $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/submit',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
