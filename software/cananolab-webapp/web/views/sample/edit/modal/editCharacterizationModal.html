@@ -27,7 +27,7 @@
             </td>
             <td>
                 <div id="charTypePrompt">
-                    <select data-ng-model="characterizationData.characterizationType" ng-init="characterizationData.characterizationType=type"
+                    <select data-ng-model="data.type" ng-init="data.type=type"
                     data-ng-options="option for option in data.charTypesLookup" ng-change="characterizationTypeDropdownChanged()" id="charType">
                     </select>                        
                 </div>
@@ -37,7 +37,7 @@
             </td>
             <td>
                 <div id="charNamePrompt">
-                    <select data-ng-model="characterizationData.characterizationName"
+                    <select data-ng-model="data.name"
                     data-ng-options="option for option in data.charNamesForCurrentType" ng-change="characterizationNameDropdownChanged()" id="charName">
                     </select>  
 
@@ -52,7 +52,7 @@
         </td>
         <td>
             <div style="" id="assayTypePrompt">
-                    <select data-ng-model="characterizationData.assayType"
+                    <select data-ng-model="data.assayType"
                     data-ng-options="option for option in data.assayTypes" id="assayType">
                     </select>  
 
@@ -64,7 +64,7 @@
 <!--         <input name="achar.protocolBean.fileBean.domainFile.uri" value="" id="updatedUri" type="hidden"> -->
         <td colspan="3">
             
-                    <select data-ng-model="characterizationData.protocolBean.domain.id"
+                    <select data-ng-model="data.protocolNameVersion"
                     data-ng-options="option.domainId as option.displayName for option in data.protocolLookup" id="protocolId" ng-change="getDomainFileUri()">
                     </select>  <br />
 
@@ -80,17 +80,54 @@
             <label for="charSource">Characterization Source</label>
         </td>
         <td>
-                    <select data-ng-model="characterizationData.pocBean.domain.id"
-                    data-ng-options="option.domainId as option.displayName for option in data.protocolLookup" id="charSource" ng-change="getDomainFileUri()">
-                    </select> 
-
-            <select name="achar.pocBean.domain.id" id="charSource"><option value=""></option>
-                <option value="68812800">CLM_UHA_CDS_INSERM</option></select>
+                    <select data-ng-model="data.characterizationSource"
+                    data-ng-options="option.id as option.displayName for option in data.charSourceLookup" id="characterizationSource">
+                    </select>
         </td>
         <td class="cellLabel">
             <label for="charDate">Characterization Date</label>
         </td>
         <td>
+
+
+
+
+ <pre>Selected date is: <em>{{dt | date:'fullDate' }}</em></pre>
+
+
+
+    <h4>Popup</h4>
+    <div class="row">
+        <div class="col-md-6">
+            <p class="input-group">
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label>Format:</label> <select class="form-control" ng-model="format" ng-options="f for f in formats"><option></option></select>
+        </div>
+    </div>
+
+    <hr />
+    <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
+    <button type="button" class="btn btn-sm btn-default" ng-click="dt = '2009-08-24'">2009-08-24</button>
+    <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
+    <button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" tooltip="After today restriction">Min date</button>
+
+
+
+
+
+
+
+
+
+            FIX THIS>>>>> Popup cal and store as long string. Convert on display?
             <input name="achar.dateString" size="10" value="" id="charDate" type="text">
             <a href="javascript:cal1.popup();"><img src="images/calendar-icon.gif" alt="Click Here to Pick up the date" title="Click Here to Pick up the date" border="0" align="top" height="18" width="22"></a>
         </td>
