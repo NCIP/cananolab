@@ -435,7 +435,7 @@ var app = angular.module('angularApp')
                     $timeout(function() {
                         //$scope.uploadResult.push(response.data);
                         //alert(response.data);
-                        $scope.nanoEntityForm = response.data;
+                        //$scope.nanoEntityForm = response.data;
                         $scope.saveFileData();
                         $scope.loader = false;
                     });
@@ -452,9 +452,9 @@ var app = angular.module('angularApp')
 //				xhr.upload.addEventListener('abort', function() {console.log('abort complete')}, false);
                 });
             }
-            /*else {
-                $scope.doSubmitData();
-            }*/
+            else {
+                $scope.saveFileData();
+            }
         };
         
         $scope.saveFileData = function() {
@@ -472,7 +472,7 @@ var app = angular.module('angularApp')
                 $scope.files.push($scope.fileForm);
             }
 
-            $scope.nanoEntityForm.domainEntity.fileCollection = $scope.files;            
+            $scope.nanoEntityForm.domainEntity.fileCollection = $scope.files;
 
             $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveFile',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
