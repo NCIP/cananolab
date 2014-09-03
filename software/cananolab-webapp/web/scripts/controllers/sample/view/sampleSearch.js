@@ -4,7 +4,6 @@ var app = angular.module('angularApp')
   .controller('SampleSearchCtrl', function (sampleService,navigationService,groupService,$rootScope,$scope,$http,$location) {
     $scope.searchSampleForm = {};
     $scope.sampleData = sampleService.sampleData;
-    $rootScope.navTree=false;
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();   
     

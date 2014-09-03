@@ -3,7 +3,6 @@ var app = angular.module('angularApp')
 
     .controller('EditNanoEntityCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams,$upload) {
         $scope.nanoEntityForm = {};
-        $rootScope.navTree=false;
         //$rootScope.tabs = navigationService.query();
         //$rootScope.groups = groupService.getGroups.data.get();
 

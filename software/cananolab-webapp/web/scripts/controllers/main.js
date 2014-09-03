@@ -5,7 +5,6 @@ var app = angular.module('angularApp')
     $scope.userActions = 1;
     $scope.loginShow = 0;
     $scope.authErrors = 0;
-    $rootScope.navTree=false;
     $scope.homepage = true;
     $rootScope.tabs = navigationService.get({'homePage':'true'});
     $rootScope.groups = groupService.getGroups.data.get();

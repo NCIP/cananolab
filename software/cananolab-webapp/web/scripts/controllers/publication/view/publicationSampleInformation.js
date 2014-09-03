@@ -3,7 +3,6 @@ var app = angular.module('angularApp')
   .controller('PublicationSampleInformationCtrl', function (navigationService, groupService, $rootScope,$scope,$http,$filter,$location,$routeParams) {
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();   
-    $rootScope.navTree = false;
 
     $scope.id = $routeParams.id;
     $scope.type = $routeParams.type;

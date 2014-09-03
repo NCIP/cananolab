@@ -3,7 +3,6 @@ var app = angular.module('angularApp')
 
     .controller('EditProtocolCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams,$upload) {
         $scope.protocolForm = {};
-        $rootScope.navTree=false;
         //$rootScope.tabs = navigationService.query();
         //$rootScope.groups = groupService.getGroups.data.get();
 

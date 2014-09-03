@@ -6,7 +6,6 @@ var app = angular.module('angularApp')
   	$scope.loginShow = 0;
     $scope.authErrors = 0;
 
-    $rootScope.navTree=false;
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();   
     $scope.came_from = $routeParams.came_from;

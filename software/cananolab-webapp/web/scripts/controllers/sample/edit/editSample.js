@@ -46,9 +46,7 @@ var app = angular.module('angularApp')
     $scope.editSampleForm = false;
 
 
-    // Displays left hand nav for samples section. navTree shows nav and navDetail is page index //
-    $rootScope.navTree = true;
-    $rootScope.navDetail = 0;
+
 
     //goBack
     //Change location if user hits the Back button

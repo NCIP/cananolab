@@ -4,5 +4,4 @@ var app = angular.module('angularApp')
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();
     $scope.publicationData = publicationService.publicationData;
-    $rootScope.navTree=false;
   });

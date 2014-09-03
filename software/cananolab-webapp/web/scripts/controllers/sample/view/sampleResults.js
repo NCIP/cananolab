@@ -5,7 +5,6 @@ var app = angular.module('angularApp')
     $rootScope.groups = groupService.getGroups.data.get();
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleData2 = sampleService.sampleData;
-    $rootScope.navTree=false;
     $scope.utilsService = utilsService;
     
     

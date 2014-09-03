@@ -3,7 +3,6 @@ var app = angular.module('angularApp')
 
   .controller('PublicationSearchCtrl', function (publicationService,navigationService,groupService,$rootScope,$scope,$http,$location) {
     $scope.searchPublicationForm = {};
-    $rootScope.navTree=false;
     $scope.publicationData = publicationService.publicationData;    
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();   

@@ -6,9 +6,6 @@ var app = angular.module('angularApp')
     $scope.sampleData = sampleService.sampleData;
     // $scope.sampleData = {"sampleId":27131906,"sampleName":"UMC_HSTVAMC_NCL_NB-NChandaNNBM2010-01","pointOfContact":null,"composition":null,"functions":null,"characterizations":null,"dataAvailability":null,"createdDate":1275683278000,"keywords":"BIOCOMPATIBILITY<br>GOLD<br>GUM ARABIC","pointOfContactMap":{"organizationDisplayName":["UMC_RadiolD<br>Department of Radiology<br>University of Missouri-Columbia<br>Columbia MO 65212 USA","UMC_RadiolD<br>Department of Radiology<br>University of Missouri-Columbia<br>Columbia MO 65212 USA"],"primaryContact":["true","false"],"role":["investigator","investigator"],"contactPerson":["Raghuraman Kannan<br>kannanr@health.missouri.edu","Kattesh V Katti<br>kattik@health.missouri.edu"]},"pocBeanDomainId":27066372,"availableEntityNames":null,"caNanoLabScore":null,"mincharScore":null,"chemicalAssocs":null,"physicoChars":null,"invitroChars":null,"invivoChars":null,"caNano2MINChar":null,"caNanoMINChar":null};
     $scope.sampleId = sampleService.sampleId;
-    // Displays left hand nav for samples section. navTree shows nav and navDetail is page index //
-    $rootScope.navTree = true;
-    $rootScope.navDetail = 0;
 
     $scope.goBack = function() {
       $location.path("/sampleResults").replace(); 

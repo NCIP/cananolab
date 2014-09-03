@@ -3,7 +3,6 @@ var app = angular.module('angularApp')
 
     .controller('EditFuncEntityCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams,$upload) {
         $scope.funcEntityForm = {};
-        $rootScope.navTree=false;
         //$rootScope.tabs = navigationService.query();
         //$rootScope.groups = groupService.getGroups.data.get();
 

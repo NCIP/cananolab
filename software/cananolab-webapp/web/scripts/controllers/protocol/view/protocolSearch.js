@@ -3,7 +3,6 @@ var app = angular.module('angularApp')
 
     .controller('ProtocolSearchCtrl', function (protocolService,navigationService,groupService,$rootScope,$scope,$http,$location) {
         $scope.searchProtocolForm = {};
-        $rootScope.navTree=false;
         $scope.protocolData = protocolService.protocolData;
         $rootScope.tabs = navigationService.get();
         $rootScope.groups = groupService.getGroups.data.get();
