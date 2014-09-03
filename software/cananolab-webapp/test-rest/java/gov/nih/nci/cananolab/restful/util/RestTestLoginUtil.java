@@ -32,7 +32,7 @@ public class RestTestLoginUtil {
 	public static String loginTest() {
 
 		if (jsessionId == null) {
-			Response response = with().parameters("username", "yangs8", "password", "password-value")
+			Response response = with().parameters("username", "yangs8", "password", "Neznoir8\\")
 					.expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/rest/security/login");
 
 			jsessionId = response.getCookie("JSESSIONID");
