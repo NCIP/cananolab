@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 
 public class SimpleTechniqueAndInstrument {
 	
-	List<SimpleExperimentBean> simpleExperiments = new ArrayList<SimpleExperimentBean>();
+	List<SimpleExperimentBean> experiments = new ArrayList<SimpleExperimentBean>();
 	
-	List<String> techniquesLookup = new ArrayList<String>();
+	List<String> techniqueTypeLookup = new ArrayList<String>();
 	List<String> manufacturerLookup = new ArrayList<String>();
+	List<String> instrumentTypeLookup = new ArrayList<String>();
 	
 	
 	public void setupLookups(HttpServletRequest request) 
@@ -23,25 +24,39 @@ public class SimpleTechniqueAndInstrument {
 				"manufacturers", "instrument", "manufacturer",
 				"otherManufacturer", true);
 		manufacturerLookup.addAll(values);
+		manufacturerLookup.add("[other]");
 
 		values = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"techniqueTypes", "technique", "type", "otherType", true);
 
-		techniquesLookup.addAll(values);
+		techniqueTypeLookup.addAll(values);
+		techniqueTypeLookup.add("[other]");
+		
+		instrumentTypeLookup.add("TestType1");
+		instrumentTypeLookup.add("[other]");
 	}
 	
-	public List<SimpleExperimentBean> getSimpleExperiments() {
-		return simpleExperiments;
+	
+	public List<SimpleExperimentBean> getExperiments() {
+		return experiments;
 	}
-	public void setSimpleExperiments(List<SimpleExperimentBean> simpleExperiments) {
-		this.simpleExperiments = simpleExperiments;
+
+
+	public void setExperiments(List<SimpleExperimentBean> experiments) {
+		this.experiments = experiments;
 	}
-	public List<String> getTechniquesLookup() {
-		return techniquesLookup;
+
+
+	public List<String> getTechniqueTypeLookup() {
+		return techniqueTypeLookup;
 	}
-	public void setTechniquesLookup(List<String> techniquesLookup) {
-		this.techniquesLookup = techniquesLookup;
+
+
+	public void setTechniqueTypeLookup(List<String> techniqueTypeLookup) {
+		this.techniqueTypeLookup = techniqueTypeLookup;
 	}
+
+
 	public List<String> getManufacturerLookup() {
 		return manufacturerLookup;
 	}

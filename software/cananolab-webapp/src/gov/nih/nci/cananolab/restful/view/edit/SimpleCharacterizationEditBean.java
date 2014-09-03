@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
@@ -44,15 +45,10 @@ public class SimpleCharacterizationEditBean {
 	
 	//When saving, could propagate to other samples
 	List<String> selectedOtherSampleNames;
-	boolean copyData;
+	boolean copyToOtherSamples;
 	
 	///
-	
-	
-	
-	
-	
-	
+
 	
 	
 	List<String> charTypesLookup;
@@ -65,7 +61,7 @@ public class SimpleCharacterizationEditBean {
 	Map<String, List<String>> assayTypesByCharNameLookup = new HashMap<String, List<String>>();
 	
 	List<String> errors = new ArrayList<String>();
-	String message;
+	List<String> messages;
 	
 	public void transferCharacterizationEditData(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
 	throws Exception {
@@ -88,7 +84,23 @@ public class SimpleCharacterizationEditBean {
 			this.charId = id.longValue();
 			this.assayType = charBean.getAssayType();
 		}
-
+		
+		transferExperimentConfigs(charBean.getExperimentConfigs());
+			
+		
+	}
+	
+	protected void transferExperimentConfigs(List<ExperimentConfigBean> expConfigs) {
+		if (expConfigs == null) return;
+	
+		for (ExperimentConfigBean expConfig : expConfigs) {
+			//SimpleExperiment
+			expConfig.getDescription();
+			expConfig.getTechniqueDisplayName();
+			expConfig.getDomain().getId();
+			
+			expConfig.getInstruments();
+		}
 	}
 	
 	protected void setupLookups(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
@@ -158,20 +170,20 @@ public class SimpleCharacterizationEditBean {
 		this.protocolId = protocolId;
 	}
 
-	public String getMessage() {
-		return message;
+	public List<String> getMessages() {
+		return messages;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setMessages(List<String> messages) {
+		this.messages = messages;
 	}
 
-	public boolean isCopyData() {
-		return copyData;
+	public boolean isCopyToOtherSamples() {
+		return copyToOtherSamples;
 	}
 
-	public void setCopyData(boolean copyData) {
-		this.copyData = copyData;
+	public void setCopyToOtherSamples(boolean copyToOtherSamples) {
+		this.copyToOtherSamples = copyToOtherSamples;
 	}
 
 	public List<String> getSelectedOtherSampleNames() {

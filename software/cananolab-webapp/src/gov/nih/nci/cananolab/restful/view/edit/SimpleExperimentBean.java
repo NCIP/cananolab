@@ -1,12 +1,10 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
-import gov.nih.nci.cananolab.restful.core.InitSetup;
+import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class SimpleExperimentBean {
 	
@@ -16,7 +14,32 @@ public class SimpleExperimentBean {
 	String description;
 	
 	List<SimpleInstrumentBean> instruments;
-
+	
+	
+	public void transferToExperimentConfigBean(ExperimentConfigBean expConfigBean) {
+		if (id > 0)
+			expConfigBean.getDomain().setId(id);
+		
+		expConfigBean.getDomain().setDescription(description);
+		Technique tech = expConfigBean.getDomain().getTechnique();
+		if (tech == null) {
+			tech = new Technique();
+			expConfigBean.getDomain().setTechnique(new Technique());
+		}
+		tech.setType(this.displayName);
+		
+		List<Instrument> instListInDomainBean = expConfigBean.getInstruments();
+		instListInDomainBean.clear();
+		
+		for (SimpleInstrumentBean inst : instruments) {
+			Instrument domainInst = new Instrument();
+			domainInst.setManufacturer(inst.getManufacturer());
+			domainInst.setModelName(inst.getModelName());
+			domainInst.setType(inst.getType());
+			
+			instListInDomainBean.add(domainInst);
+		}
+	}
 	
 	public long getId() {
 		return id;

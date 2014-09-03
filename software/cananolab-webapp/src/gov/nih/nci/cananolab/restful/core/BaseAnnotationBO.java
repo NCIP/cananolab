@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -225,13 +226,14 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	}
 
 	protected SampleBean[] prepareCopy(HttpServletRequest request,
-			CompositionForm theForm, SampleBean oldSampleBean)
+			SimpleCharacterizationEditBean simpleEdit, SampleBean oldSampleBean)
 			throws Exception {
-		String[] otherSamples = (String[]) theForm.getOtherSamples();
-		if (otherSamples.length == 0) {
+		List<String> otherSamples = simpleEdit.getSelectedOtherSampleNames();
+		if (otherSamples.size() == 0) {
 			return null;
 		}
-		SampleBean[] sampleBeans = new SampleBean[otherSamples.length];
+		SampleBean[] sampleBeans = new SampleBean[otherSamples.size()];
+		
 		SampleService sampleService = (SampleService) request.getSession()
 				.getAttribute("sampleService");
 		int i = 0;

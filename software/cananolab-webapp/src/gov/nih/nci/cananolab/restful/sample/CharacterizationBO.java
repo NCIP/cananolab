@@ -16,12 +16,12 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.restful.CharacterizationServices;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
-import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
-import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
-import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
@@ -31,27 +31,23 @@ import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImp
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.form.SampleForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
-import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
@@ -61,6 +57,8 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 public class CharacterizationBO extends BaseAnnotationBO {
+	
+	private Logger logger = Logger.getLogger(CharacterizationBO.class);
 
 	/**
 	 * Add or update the data to database
@@ -72,41 +70,47 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward create(SampleForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SimpleCharacterizationEditBean create(HttpServletRequest request, SimpleCharacterizationEditBean simpleEdit)
 			throws Exception {
 		//DynaValidatorForm theForm = (DynaValidatorForm) form;
+		
 //		CharacterizationBean charBean = (CharacterizationBean) form
 //				.get("achar");
-//		this.setServicesInSession(request);
-//		// Copy "isSoluble" property from char bean to mapping bean.
-//		this.copyIsSoluble(charBean);
-//
-//		InitCharacterizationSetup.getInstance()
-//				.persistCharacterizationDropdowns(request, charBean);
-//		if (!validateInputs(request, charBean)) {
-//			return mapping.getInputForward();
-//		}
-//		this.saveCharacterization(request, theForm, charBean);
 		
-		//TODO
+		CharacterizationBean charBean = (CharacterizationBean)request.getSession().getAttribute("theChar");
+		
+		simpleEdit.getErrors().clear();
+		simpleEdit.getMessages().clear();
+		
+		//TODO: 
+		//transfer from simpleEdit to charBean
+		
+		this.setServicesInSession(request);
+		// Copy "isSoluble" property from char bean to mapping bean.
+		this.copyIsSoluble(charBean);
 
-//		ActionMessages msgs = new ActionMessages();
-//		ActionMessage msg = new ActionMessage("message.addCharacterization",
-//				charBean.getCharacterizationName());
-//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//		saveMessages(request, msgs);
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, charBean);
+		
+		if (!validateInputs(request, charBean, simpleEdit.getErrors())) {
+			return simpleEdit;
+		}
+		
+		this.saveCharacterization(request, charBean, simpleEdit);
+		simpleEdit.getMessages().add(PropertyUtil.getPropertyReplacingToken("sample", "message.addCharacterization", "0", 
+				charBean.getCharacterizationName()));
 		// to preselect the same characterization type after returning to the
 		// summary page
-//		List<String> allCharacterizationTypes = InitCharacterizationSetup
-//				.getInstance().getCharacterizationTypes(request);
-//		int ind = allCharacterizationTypes.indexOf(charBean
-//				.getCharacterizationType()) + 1;
-//		request.getSession().setAttribute("tab", String.valueOf(ind));
-//
-//		return summaryEdit(mapping, form, request, response);
+		List<String> allCharacterizationTypes = InitCharacterizationSetup
+				.getInstance().getCharacterizationTypes(request);
+		int ind = allCharacterizationTypes.indexOf(charBean
+				.getCharacterizationType()) + 1;
+		request.getSession().setAttribute("tab", String.valueOf(ind));
+
+		//return summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request);
 		
 		return null;
+
 	}
 
 	public ActionForward input(ActionMapping mapping, ActionForm form,
@@ -159,6 +163,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //		return mapping.findForward("inputForm");
 		SimpleCharacterizationEditBean editBean = new SimpleCharacterizationEditBean();
 		editBean.transferCharacterizationEditData(request, charBean, sampleId);
+		
+		request.getSession().setAttribute("theEditChar", editBean);
 		return editBean;
 	}
 
@@ -224,12 +230,17 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //		//theForm.set("achar", charBean);
 //		this.setupInputForm(request, sampleId, charType);
 //		
-//		this.setupIsSoluble(charBean); // setup "isSoluble" property.
 		
+		//What is this?
+		this.setupIsSoluble(charBean); // setup "isSoluble" property.
+		
+		//SY: new
+		request.getSession().setAttribute("theChar", charBean);
+		logger.debug("Setting theChar in session: " + request.getSession().getId());;
 		
 		SimpleCharacterizationEditBean editBean = new SimpleCharacterizationEditBean();
 		editBean.transferCharacterizationEditData(request, charBean, sampleId);
-		
+		request.getSession().setAttribute("theEditChar", editBean);
 		return editBean;
 	}
 
@@ -246,46 +257,53 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @param charBean
 	 * @throws Exception
 	 */
-	private void saveCharacterization(HttpServletRequest request,
-			DynaValidatorForm theForm, CharacterizationBean charBean)
+	private void saveCharacterization(HttpServletRequest request, 
+			CharacterizationBean charBean, SimpleCharacterizationEditBean simpleEdit)
 			throws Exception {
 
-//		SampleBean sampleBean = setupSample(theForm, request);
-//		UserBean user = (UserBean) request.getSession().getAttribute("user");
-//		charBean.setupDomain(user.getLoginName());
-//		Boolean newChar = true;
-//		if (charBean.getDomainChar().getId() != null) {
-//			newChar = false;
-//		}
-//		// reuse the existing char service
-//		CharacterizationService charService = (CharacterizationService) request
-//				.getSession().getAttribute("characterizationService");
-//		charService.saveCharacterization(sampleBean, charBean);
-//		// retract from public if updating an existing public record and not
-//		// curator
-//		if (!newChar && !user.isCurator() && sampleBean.getPublicStatus()) {
-//			retractFromPublic(theForm, request, sampleBean.getDomain().getId()
-//					.toString(), sampleBean.getDomain().getName(), "sample");
-//			ActionMessages messages = new ActionMessages();
-//			ActionMessage msg = null;
-//			msg = new ActionMessage("message.updateSample.retractFromPublic");
-//			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			saveMessages(request, messages);
-//		}
-//		// save to other samples (only when user click [Submit] button.)
-//		String dispatch = (String) theForm.get("dispatch");
-//		if ("create".equals(dispatch)) {
-//			SampleBean[] otherSampleBeans = prepareCopy(request, theForm,
-//					sampleBean);
-//			if (otherSampleBeans != null) {
-//				Boolean copyData = (Boolean) theForm.get("copyData");
-//				charService.copyAndSaveCharacterization(charBean, sampleBean,
-//						otherSampleBeans, copyData);
-//			}
-//		}
-//		sampleBean = setupSample(theForm, request);
-//		request.setAttribute("sampleId", sampleBean.getDomain().getId()
-//				.toString());
+		SampleBean sampleBean = setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
+		
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		charBean.setupDomain(user.getLoginName());
+		Boolean newChar = true;
+		if (charBean.getDomainChar().getId() != null) {
+			newChar = false;
+		}
+		logger.debug("Saving new char? " + newChar);
+		
+		// reuse the existing char service
+		CharacterizationService charService = (CharacterizationService) request
+				.getSession().getAttribute("characterizationService");
+		charService.saveCharacterization(sampleBean, charBean);
+		// retract from public if updating an existing public record and not
+		// curator
+		if (!newChar && !user.isCurator() && sampleBean.getPublicStatus()) {
+			retractFromPublic(String.valueOf(simpleEdit.getParentSampleId()), request, sampleBean.getDomain().getId()
+					.toString(), sampleBean.getDomain().getName(), "sample");
+			
+			simpleEdit.getErrors().add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
+		}
+		
+		// save to other samples (only when user click [Submit] button.)
+		
+		
+		//String dispatch = (String) theForm.get("dispatch");
+		
+		//TODO: need a way to know if we're clicking submit
+		boolean clickSumit = false;
+		if (clickSumit) {
+			SampleBean[] otherSampleBeans = prepareCopy(request, simpleEdit,
+					sampleBean);
+			if (otherSampleBeans != null) {
+				charService.copyAndSaveCharacterization(charBean, sampleBean,
+						otherSampleBeans, simpleEdit.isCopyToOtherSamples());
+			}
+		}
+		
+		sampleBean = setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
+		request.setAttribute("sampleId", sampleBean.getDomain().getId()
+				.toString());
+		logger.debug("Done saving characterization: " + charBean.getDomainChar().getId());
 	}
 
 	private void deleteCharacterization(HttpServletRequest request,
@@ -542,25 +560,54 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return "success";
 	}
 
-	public ActionForward saveExperimentConfig(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
+	public SimpleCharacterizationEditBean saveExperimentConfig(HttpServletRequest request, 
+			SimpleExperimentBean simpleExpConfig) 
+			throws Exception {
+		
+		//DynaValidatorForm theForm = (DynaValidatorForm) form;
+		
+		logger.debug("Start saving experiment confg");
+		
+		logger.debug("Getting theChar in session: " + request.getSession().getId());;
+		
+		//editBean's charId could be null, indicating new char
+		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
+		SimpleCharacterizationEditBean editBean = 
+				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+		
+		if (achar == null)
+			logger.debug("theChar is null");
+		
+		if (editBean == null)
+			logger.debug("theEditChar is null");
+		
+				
+		//TODO: get the exp config object from "theChar" based on id
+		// if id is null, it's a new exp config
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
+		simpleExpConfig.transferToExperimentConfigBean(configBean);
+		
+		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		configBean.setupDomain(user.getLoginName());
 		CharacterizationService service = this.setServicesInSession(request);
+		logger.debug("Call saveExperimentConfig");
 		service.saveExperimentConfig(configBean);
+		logger.debug("Save exp config complete");
 		achar.addExperimentConfig(configBean);
+		
 		// also save characterization
-		if (!validateInputs(request, achar)) {
-			return mapping.getInputForward();
+		if (!validateInputs(request, achar, editBean.getErrors())) {
+			return editBean;
 		}
-		this.saveCharacterization(request, theForm, achar);
+		
+		this.saveCharacterization(request, achar, editBean);
+		logger.debug("Save char complete");
 		service.assignAccesses(achar.getDomainChar(), configBean.getDomain());
-		this.checkOpenForms(achar, theForm, request);
+		
+		//TODO:
+		//this.checkOpenForms(achar, theForm, request);
+		
 		// return to setupUpdate to retrieve the data matrix in the correct
 		// form from database
 		// after saving to database.
@@ -568,8 +615,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		request.setAttribute("charType", achar.getCharacterizationType());
 		
 		
-		//return setupUpdate(mapping, form, request, response);
-		return null;
+		return setupUpdate(request, String.valueOf(editBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
+				achar.getClassName(), achar.getCharacterizationType());
+		
 	}
 
 	public ActionForward getFinding(ActionMapping mapping, ActionForm form,
@@ -799,10 +847,16 @@ public class CharacterizationBO extends BaseAnnotationBO {
 
 		achar.removeExperimentConfig(configBean);
 		// also save characterization
-		if (!validateInputs(request, achar)) {
-			return mapping.getInputForward();
-		}
-		this.saveCharacterization(request, theForm, achar);
+		
+		
+		//TODO
+//		if (!validateInputs(request, achar)) {
+//			return mapping.getInputForward();
+//		}
+//		
+		
+		//TODO
+		//this.saveCharacterization(request, theForm, achar);
 
 		service.removeAccesses(achar.getDomainChar(), configBean.getDomain());
 		this.checkOpenForms(achar, theForm, request);
@@ -829,9 +883,11 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	private void checkOpenForms(CharacterizationBean achar,
 			DynaValidatorForm theForm, HttpServletRequest request)
 			throws Exception {
+		
 		achar.updateEmptyFieldsToNull();
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
+		
 		HttpSession session = request.getSession();
 		Boolean openFile = false, openExperimentConfig = false, openFinding = false;
 		if (dispatch.equals("input") && browserDispatch.equals("addFile")) {
@@ -924,85 +980,70 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	}
 
 	private boolean validateCharacterization(HttpServletRequest request,
-			CharacterizationBean achar) {
+			CharacterizationBean achar, List<String> errors) {
 		ActionMessages msgs = new ActionMessages();
 		boolean status = true;
-//		if (achar.getCharacterizationName().equalsIgnoreCase("shape")) {
-//			if (achar.getShape().getType() != null
-//					&& !StringUtils.xssValidate(achar.getShape().getType())) {
-//				ActionMessage msg = new ActionMessage(
-//						"achar.shape.type.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
-//			}
-//			if (achar.getShape().getMaxDimensionUnit() != null
-//					&& !achar.getShape().getMaxDimensionUnit()
-//							.matches(Constants.UNIT_PATTERN)) {
-//				ActionMessage msg = new ActionMessage(
-//						"achar.shape.maxDimensionUnit.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
-//			}
-//			if (achar.getShape().getMinDimensionUnit() != null
-//					&& !achar.getShape().getMinDimensionUnit()
-//							.matches(Constants.UNIT_PATTERN)) {
-//				ActionMessage msg = new ActionMessage(
-//						"achar.shape.minDimensionUnit.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
-//			}
-//		} else if (achar.getCharacterizationName().equalsIgnoreCase(
-//				"physical state")) {
-//			if (achar.getPhysicalState().getType() != null
-//					&& !StringUtils.xssValidate(achar.getPhysicalState()
-//							.getType())) {
-//				ActionMessage msg = new ActionMessage(
-//						"achar.physicalState.type.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
-//			}
-//		} else if (achar.getCharacterizationName().equalsIgnoreCase(
-//				"solubility")) {
-//			if (achar.getSolubility().getSolvent() != null
-//					&& !StringUtils.xssValidate(achar.getSolubility()
-//							.getSolvent())) {
-//				ActionMessage msg = new ActionMessage(
-//						"achar.solubility.solvent.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
-//			}
-//			if (achar.getSolubility().getCriticalConcentrationUnit() != null
-//					&& !achar.getSolubility().getCriticalConcentrationUnit()
-//							.matches(Constants.UNIT_PATTERN)) {
-//				ActionMessage msg = new ActionMessage(
-//						"achar.solubility.criticalConcentrationUnit.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
-//			}
-//		} else if (achar.getCharacterizationName().equalsIgnoreCase(
-//				"enzyme induction")) {
-//			if (achar.getEnzymeInduction().getEnzyme() != null
-//					&& !StringUtils.xssValidate(achar.getSolubility()
-//							.getSolvent())) {
-//				ActionMessage msg = new ActionMessage(
-//						"achar.enzymeInduction.enzyme.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
-//			}
-//		}
+		if (achar.getCharacterizationName().equalsIgnoreCase("shape")) {
+			if (achar.getShape().getType() != null
+					&& !StringUtils.xssValidate(achar.getShape().getType())) {
+				
+				errors.add(PropertyUtil.getProperty("sample", "achar.shape.type.invalid"));
+				status = false;
+			}
+			if (achar.getShape().getMaxDimensionUnit() != null
+					&& !achar.getShape().getMaxDimensionUnit()
+							.matches(Constants.UNIT_PATTERN)) {
+				
+				errors.add(PropertyUtil.getProperty("sample", "achar.shape.maxDimensionUnit.invalid"));
+				status = false;
+			}
+			if (achar.getShape().getMinDimensionUnit() != null
+					&& !achar.getShape().getMinDimensionUnit()
+							.matches(Constants.UNIT_PATTERN)) {
+				
+				errors.add(PropertyUtil.getProperty("sample", "achar.shape.minDimensionUnit.invalid"));
+				status = false;
+			}
+		} else if (achar.getCharacterizationName().equalsIgnoreCase(
+				"physical state")) {
+			if (achar.getPhysicalState().getType() != null
+					&& !StringUtils.xssValidate(achar.getPhysicalState()
+							.getType())) {
+				
+				errors.add(PropertyUtil.getProperty("sample", "achar.physicalState.type.invalid"));
+				status = false;
+			}
+		} else if (achar.getCharacterizationName().equalsIgnoreCase(
+				"solubility")) {
+			if (achar.getSolubility().getSolvent() != null
+					&& !StringUtils.xssValidate(achar.getSolubility()
+							.getSolvent())) {
+				
+				errors.add(PropertyUtil.getProperty("sample", "achar.solubility.solvent.invalid"));
+				status = false;
+			}
+			if (achar.getSolubility().getCriticalConcentrationUnit() != null
+					&& !achar.getSolubility().getCriticalConcentrationUnit()
+							.matches(Constants.UNIT_PATTERN)) {
+			
+				errors.add(PropertyUtil.getProperty("sample", "achar.solubility.criticalConcentrationUnit.invalid"));
+				status = false;
+			}
+		} else if (achar.getCharacterizationName().equalsIgnoreCase(
+				"enzyme induction")) {
+			if (achar.getEnzymeInduction().getEnzyme() != null
+					&& !StringUtils.xssValidate(achar.getSolubility()
+							.getSolvent())) {
+				errors.add(PropertyUtil.getProperty("sample", "achar.enzymeInduction.enzyme.invalid"));
+				status = false;
+			}
+		}
 		return status;
 	}
 
 	private Boolean validateInputs(HttpServletRequest request,
-			CharacterizationBean achar) {
-		if (!validateCharacterization(request, achar)) {
+			CharacterizationBean achar, List<String> errors) {
+		if (!validateCharacterization(request, achar, errors)) {
 			return false;
 		}
 		return true;

@@ -5,9 +5,11 @@ import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
 import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationSummaryEditBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -38,6 +41,10 @@ public class CharacterizationServices {
     public Response setupEdit(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("sampleId") String sampleId) {
 		logger.debug("In setupEdit");		
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 		
 		try {
 		CharacterizationBO characterizationBO = 
@@ -67,6 +74,10 @@ public class CharacterizationServices {
     		@DefaultValue("") @QueryParam("charType") String charType) {
 		logger.debug("In setupAdd");		
 		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		
 		try {
 		CharacterizationBO characterizationBO = 
 				(CharacterizationBO) applicationContext.getBean("characterizationBO");
@@ -94,7 +105,11 @@ public class CharacterizationServices {
     		@DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("charId") String charId,
     		@DefaultValue("") @QueryParam("charClassName") String charClassName,
     		@DefaultValue("") @QueryParam("charType") String charType) {
-		logger.debug("In setupAdd");		
+		logger.debug("In setupAdd");	
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 		
 		try {
 		CharacterizationBO characterizationBO = 
@@ -161,7 +176,11 @@ public class CharacterizationServices {
 	@Produces ("application/json")
     public Response setupAddTechnique(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("charName") String charName) {
-		logger.debug("In setupAddTechnique");		
+		logger.debug("In setupAddTechnique");	
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 		
 		try {
 			CharacterizationManager characterizationMgr = 
@@ -192,6 +211,32 @@ public class CharacterizationServices {
 		String abbr = experimentMgr.getTechniqueAbbreviation(httpRequest, techniqueType);
 
 		return Response.ok(abbr).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	@POST
+	@Path("/saveExperimentConfig")
+	@Produces ("application/json")
+    public Response saveExperimentConfig(@Context HttpServletRequest httpRequest, 
+    		SimpleExperimentBean simpleExpConfig) {
+		logger.debug("In getAbbreviationByTechnique");	
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			
+			SimpleCharacterizationEditBean editBean = characterizationBO.saveExperimentConfig(httpRequest, simpleExpConfig);
+
+		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
