@@ -1,0 +1,115 @@
+<table width="100%" align="center" class="submissionView" summary="layout" ng-show="addNewFunction">
+    <tbody>
+    <tr>
+        <td class="cellLabel">
+            Inherent Function
+        </td>
+        <td colspan="3">
+            <div id="functionSection" style="position: relative;">
+                <!-- <a style="display: block" id="addInherentFunction" href="javascript:confirmAddNew(null, 'InherentFunction', 'Inherent Function', 'clearInherentFunction()');">Add</a> -->
+                <button type="button" class="btn btn-primary" ng-click="openAddNewInherentFunction();" id="addInherentFunction">Add</button>
+                <br>
+                <table id="functionTable" class="editTableWithGrid" width="85%" ng-show="showInherentFunctionTable">
+                    <tbody id="functionRows">
+                    <tr id="patternHeader">
+                        <td width="30%" class="cellLabel" scope="col">
+                            Function Type
+                        </td>
+                        <td width="30%" class="cellLabel" scope="col">
+                            <div id="modalityHeader">
+                                Imaging Modality
+                            </div>
+                        </td>
+                        <td width="30%" class="cellLabel" scope="col">
+                            Description
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr id="inPattern" ng-repeat="inherentFunction in composingElementForm.inherentFunction">
+                        <td>
+                            <span id="functionTypeValue1">{{inherentFunction.type}}</span>
+                        </td>
+                        <td>
+                            <span id="functionModalityTypeValue1">{{inherentFunction.modality}}</span>
+                        </td>
+                        <td>
+                            <span id="functionDescriptionValue1">{{inherentFunction.description}}</span>
+                        </td>
+                        <td>
+                            <input class="noBorderButton" id="editInFunction" type="button" value="Edit" ng-click="editInherentFunction('{{inherentFunction.id}}');">
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table id="newInherentFunction" width="85%" class="promptbox" ng-show="getAddNewInherentFunction()">
+                    <tbody>
+                    <tr>
+                        <input type="hidden" name="nanomaterialEntity.theComposingElement.theFunction.id" value="" id="functionId">
+                        <td class="cellLabel">
+                            <label for="functionType">Function Type</label>
+                        </td>
+                        <td>
+                            <div id="functionTypePrompt">
+                                <select ng-model="theInherentFunction.type" id="functionType" ng-click="checkFunctionType()">
+                                    <option value=""></option>
+                                    <option ng-repeat="type in $parent.functionTypes track by $index" value="{{type}}">
+                                        {{type}}
+                                    </option>
+                                    <option value="other">
+                                        [other]
+                                    </option></select>
+                            </div>
+                        </td>
+                        <td class="cellLabel">
+                            <div id="modalityLabel" ng-show="showModality">
+                                <label for="imagingModality">Imaging Modality Type</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="imagingModalityPrompt" ng-show="showModality">
+                                <select ng-model="theInherentFunction.modality" id="imagingModality">
+                                    <option value="">
+                                    </option>
+                                    <option ng-repeat="modality in $parent.modalityTypes track by $index" value="{{modality}}">
+                                        {{modality}}
+                                    </option>
+
+                                    <option value="other">
+                                        [other]
+                                    </option></select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cellLabel">
+                            <label for="functionDescription">Description</label>
+                        </td>
+                        <td colspan="3">
+                            <textarea ng-model="theInherentFunction.description" cols="50" rows="3" id="functionDescription"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td ng-show="theInherentFunction.id != null || theInherentFunction.id != ''">
+                            <input class="promptButton"
+                                   id="deleteInherentFunction" type="button" value="Remove"
+                                   ng-click="deleteInherentFunction()" />
+                        </td>
+                        <td colspan="3">
+                            <div align="right">
+                                <input class="promptButton" type="button" value="Save"
+                                       ng-click="closeAddNewInherentFunction();addInherentFunction();" />
+                                <input class="promptButton" type="button" value="Cancel"
+                                       ng-click="closeAddNewInherentFunction();" />
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

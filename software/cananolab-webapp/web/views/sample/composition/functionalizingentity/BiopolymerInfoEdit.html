@@ -1,0 +1,35 @@
+<table width="100%" align="center" class="submissionView" summary="layout">
+    <tbody>
+    <tr>
+        <th colspan="4">
+            Biopolymer Properties
+        </th>
+    </tr>
+    <tr>
+        <td class="cellLabel">
+            <label for="biopolymerType">Type*</label>
+        </td>
+        <td colspan="2">
+            <div id="biopolymerTypePrompt">
+                <select ng-model="funcEntityForm.domainEntity.type" id="biopolymerType">
+                    <option value=""></option>
+                    <option ng-repeat="type in $parent.biopolymerTypes track by $index" value="{{type}}">
+                        {{type}}
+                    </option>
+                    <option value="other">
+                        [other]
+                    </option>
+                </select>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td class="cellLabel">
+            <label for="biopolymerSequence">Sequence</label>
+        </td>
+        <td colspan="2">
+            <textarea ng-model="funcEntityForm.domainEntity.sequence" id="biopolymerSequence" cols="80" rows="3"></textarea>
+        </td>
+    </tr>
+    </tbody>
+</table>

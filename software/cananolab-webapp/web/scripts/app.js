@@ -175,7 +175,10 @@ app.config(function ($routeProvider, $httpProvider) {
             templateUrl: 'views/sample/composition/nanomaterialEntity/editNanoMaterialEntity.html',
             controller: 'EditNanoEntityCtrl'
         })
-      
+        .when('/editFunctionalizingEntity', {
+            templateUrl: 'views/sample/composition/functionalizingentity/editFunctionalizingEntity.html',
+            controller: 'EditFuncEntityCtrl'
+        })
       .otherwise({
         redirectTo: '/'
       });
