@@ -4,7 +4,7 @@ var app = angular.module('angularApp')
   .directive('navigation',function($location) {
     var url = $location.path();
     var isEdit = 0;
-    var edit = ['/editSample','/editComposition','/editCharacterization','/editPublication'];
+    var edit = ['/editSample','/editComposition','/editCharacterization','/updatePublication'];
     var view = ['/sample','/composition','/characterization','/publication'];
 
     for (var x=0;x<edit.length;x++) {

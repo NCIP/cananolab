@@ -86,7 +86,7 @@ app.config(function ($routeProvider, $httpProvider) {
        templateUrl: 'views/sample/view/publication.html',
        controller: 'PublicationCtrl'
       }) 
-      .when('/editPublication', {
+      .when('/updatePublication', {
        templateUrl: 'views/sample/view/publication.html',
        controller: 'PublicationCtrl'
       })         
