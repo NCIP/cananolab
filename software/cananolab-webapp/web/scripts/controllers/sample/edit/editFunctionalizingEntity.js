@@ -17,7 +17,6 @@ var app = angular.module('angularApp')
         $scope.sampleName='Test Sample';
         //$scope.funcEntityId = 60260353;
         $scope.funcEntityForm.otherSampleNames = [];
-        $scope.addNewFunction=false;
 
 
         /* File Variables */
@@ -104,7 +103,7 @@ var app = angular.module('angularApp')
             $scope.loadFuncEntityData();
         }
         else {
-            $scope.addNewFunction=true;
+            $scope.addNewInherentFunction=true;
         }
 
         $scope.doSubmit = function() {
