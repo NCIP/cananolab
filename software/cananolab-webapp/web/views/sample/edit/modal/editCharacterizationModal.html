@@ -1,13 +1,13 @@
-<div ng-class="{formFocus:loader}">{{data}}
-<div class="modal-header">
-    <h3 class="modal-title pull-left">Add Characterization</h3>
+<div ng-class="{formFocus:loader}"><span style="font-size:45%">{{data}}</span>
+    <div class="modal-header">
+        <h3 class="modal-title pull-left">Add Characterization</h3>
 
-    {{characterizationData}}
-    <div class="pull-right">
-        <a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
-        <a href="" ng-click="cancel()" class="help">Hide</a>
-    </div>
-    <div style="clear:both"></div>
+        {{characterizationData}}
+        <div class="pull-right">
+            <a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
+            <a href="" ng-click="cancel()" class="help">Hide</a>
+        </div>
+        <div style="clear:both"></div>
 <!--     <h4 ng-if="poc.primaryContact" class="modal-title">Primary</h4>
     <h4 ng-if="!poc.primaryContact" class="modal-title">Secondary</h4> -->
 </div>
@@ -20,15 +20,15 @@
         <div class="message">
             <div ng-repeat="i in sampleData.errors track by $index">{{i}}</div><br />
         </div>        
-<table class="submissionView" align="center" width="100%">
-        <tbody><tr>
-            <td class="cellLabel">
-                <label for="charType">Characterization Type *</label>
-            </td>
-            <td>
-                <div id="charTypePrompt">
-                    <select data-ng-model="data.type" ng-init="data.type=type"
-                    data-ng-options="option for option in data.charTypesLookup" ng-change="characterizationTypeDropdownChanged()" id="charType">
+        <table class="submissionView" align="center" width="100%">
+            <tbody><tr>
+                <td class="cellLabel">
+                    <label for="charType">Characterization Type *</label>
+                </td>
+                <td>
+                    <div id="charTypePrompt">
+                        <select data-ng-model="data.type" ng-init="data.type=type"
+                        data-ng-options="option for option in data.charTypesLookup" ng-change="characterizationTypeDropdownChanged()" id="charType">
                     </select>                        
                 </div>
             </td>
@@ -39,12 +39,12 @@
                 <div id="charNamePrompt">
                     <select data-ng-model="data.name"
                     data-ng-options="option for option in data.charNamesForCurrentType" ng-change="characterizationNameDropdownChanged()" id="charName">
-                    </select>  
+                </select>  
 
 
-                </div>
-            </td>
-        </tr>
+            </div>
+        </td>
+    </tr>
     
     <tr>
         <td class="cellLabel">
@@ -52,94 +52,59 @@
         </td>
         <td>
             <div style="" id="assayTypePrompt">
-                    <select data-ng-model="data.assayType"
-                    data-ng-options="option for option in data.assayTypes" id="assayType">
-                    </select>  
+                <select data-ng-model="data.assayType"
+                data-ng-options="option for option in data.assayTypes" id="assayType">
+            </select>  
 
-            </div>
-        </td>
-        <td class="cellLabel">
-            <label for="protocolId">Protocol Name - Version</label>
-        </td>
-<!--         <input name="achar.protocolBean.fileBean.domainFile.uri" value="" id="updatedUri" type="hidden"> -->
-        <td colspan="3">
-            
-                    <select data-ng-model="data.protocolNameVersion"
-                    data-ng-options="option.domainId as option.displayName for option in data.protocolLookup" id="protocolId" ng-change="getDomainFileUri()">
-                    </select>  <br />
+        </div>
+    </td>
+    <td class="cellLabel">
+        <label for="protocolId">Protocol Name - Version</label>
+    </td>
+    <!--         <input name="achar.protocolBean.fileBean.domainFile.uri" value="" id="updatedUri" type="hidden"> -->
+    <td colspan="3">
 
- &nbsp;<span id="protocolFileUri"><a href="{{domainFileUri}}" target="_blank">{{domainFileUri}}</a>
-                    </span>
-                
-                
-            
-        </td>
-    </tr>
-    <tr>
-        <td class="cellLabel">
-            <label for="charSource">Characterization Source</label>
-        </td>
-        <td>
-                    <select data-ng-model="data.characterizationSource"
-                    data-ng-options="option.id as option.displayName for option in data.charSourceLookup" id="characterizationSource">
-                    </select>
-        </td>
-        <td class="cellLabel">
-            <label for="charDate">Characterization Date</label>
-        </td>
-        <td>
+        <select data-ng-model="data.protocolNameVersion"
+        data-ng-options="option.domainId as option.displayName for option in data.protocolLookup" id="protocolId" ng-change="getDomainFileUri()">
+    </select>  <br />
+
+    &nbsp;<span id="protocolFileUri"><a href="{{domainFileUri}}" target="_blank">{{domainFileUri}}</a>
+</span>
 
 
 
-
- <pre>Selected date is: <em>{{dt | date:'fullDate' }}</em></pre>
-
-
-
-    <h4>Popup</h4>
-    <div class="row">
-        <div class="col-md-6">
-            <p class="input-group">
-              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+</td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="charSource">Characterization Source</label>
+    </td>
+    <td>
+        <select data-ng-model="data.characterizationSource"
+        data-ng-options="option.id as option.displayName for option in data.charSourceLookup" id="characterizationSource">
+    </select>
+</td>
+<td class="cellLabel">
+    <label for="charDate">Characterization Date</label>
+</td>
+<td>
+                <div class="input-group" style="width:350px;">
+              <input type="text" readonly class="form-control" datepicker-popup="{{format}}" ng-model="data.characterizationDate" is-open="$parent.opened" min-date="minDate" max-date="'2050-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
               <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
               </span>
-            </p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <label>Format:</label> <select class="form-control" ng-model="format" ng-options="f for f in formats"><option></option></select>
-        </div>
-    </div>
+            </div>
 
-    <hr />
-    <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
-    <button type="button" class="btn btn-sm btn-default" ng-click="dt = '2009-08-24'">2009-08-24</button>
-    <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
-    <button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" tooltip="After today restriction">Min date</button>
-
-
-
-
-
-
-
-
-
-            FIX THIS>>>>> Popup cal and store as long string. Convert on display?
-            <input name="achar.dateString" size="10" value="" id="charDate" type="text">
-            <a href="javascript:cal1.popup();"><img src="images/calendar-icon.gif" alt="Click Here to Pick up the date" title="Click Here to Pick up the date" border="0" align="top" height="18" width="22"></a>
-        </td>
-    </tr>
+</td>
+</tr>
 </tbody></table>
-    </div>
+</div>
 <div style="padding-top:20px;margin-left:38px;width:300px" ng-show="deleteBlock" class="message">
     Are you sure you wish to delete this contact?<br /><br />
     <div>
-    <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(1,1)" class="btn btn-danger btn-sm">Yes</button>
-    <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn btn-warning btn-modal">No</button>
-</div>
+        <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(1,1)" class="btn btn-danger btn-sm">Yes</button>
+        <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn btn-warning btn-modal">No</button>
+    </div>
 </div>
 
 </div>
@@ -147,15 +112,15 @@
 <div class="modal-footer">
     <button ng-click="cancel()" class="btn btn-warning btn-modal" ng-disabled="loader">Cancel</button>
     <button ng-if="!poc.primaryContact&&type!='add'" ng-click="delete()" class="btn btn-warning btn-danger" ng-disabled="loader">Delete</button>    
-    <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="!poc.organization.name || loader">Save</button>
+    <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="loader">Submit</button>
 </div>
 
 
 
 </div>
-  <div id="loader" style="top:-300px;left:300px" ng-show="loader">
+<div id="loader" style="top:-300px;left:300px" ng-show="loader">
     <div id="loaderText">
       {{loaderMessage}}
-    </div>
-    <div id="loaderGraphic"></div>
   </div>
+  <div id="loaderGraphic"></div>
+</div>
