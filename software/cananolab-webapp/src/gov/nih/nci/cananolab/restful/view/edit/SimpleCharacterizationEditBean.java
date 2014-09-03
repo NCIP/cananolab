@@ -28,6 +28,7 @@ public class SimpleCharacterizationEditBean {
 	
 	String assayType;
 	String protocolNameVersion;
+	long protocolId;
 	String characterizationSource;
 	Date characterizationDate;
 	
@@ -40,6 +41,10 @@ public class SimpleCharacterizationEditBean {
 	
 	SimpleTechniqueAndInstrument techniqueInstruments = new SimpleTechniqueAndInstrument();
 	
+	
+	//When saving, could propagate to other samples
+	List<String> selectedOtherSampleNames;
+	boolean copyData;
 	
 	///
 	
@@ -59,10 +64,15 @@ public class SimpleCharacterizationEditBean {
 	
 	Map<String, List<String>> assayTypesByCharNameLookup = new HashMap<String, List<String>>();
 	
+	List<String> errors = new ArrayList<String>();
+	String message;
+	
 	public void transferCharacterizationEditData(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
 	throws Exception {
 		
+		//TODO: handle type=other than in the list
 		this.type = charBean.getCharacterizationType();
+		this.parentSampleId = Long.parseLong(sampleId);
 		
 		transferCharBeanData(charBean);
 		
@@ -88,11 +98,13 @@ public class SimpleCharacterizationEditBean {
 		
 		charTypesLookup = InitCharacterizationSetup
 				.getInstance().getCharacterizationTypes(request);
+		charTypesLookup.add("[other]");
 
 		charNamesForCurrentType = new ArrayList<String>();
 		SortedSet<String> charNames = InitCharacterizationSetup
 				.getInstance().getCharNamesByCharType(request, charType);
 		charNamesForCurrentType.addAll(charNames);
+		charNamesForCurrentType.add("[other]");
 		
 		setProtocolLookup(request, charType);
 		setPOCLookup(request, sampleId);
@@ -115,6 +127,10 @@ public class SimpleCharacterizationEditBean {
 			simplePOC.transferFromPointOfContactBean(poc);
 			charSourceLookup.add(simplePOC);
 		}
+		
+		SimplePOC other = new SimplePOC();
+		other.setDisplayName("[other]");
+		charSourceLookup.add(other);
 	}
 
 	protected void setProtocolLookup(HttpServletRequest request, String charType) 
@@ -134,6 +150,45 @@ public class SimpleCharacterizationEditBean {
 	}
 	
 	
+	public long getProtocolId() {
+		return protocolId;
+	}
+
+	public void setProtocolId(long protocolId) {
+		this.protocolId = protocolId;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public boolean isCopyData() {
+		return copyData;
+	}
+
+	public void setCopyData(boolean copyData) {
+		this.copyData = copyData;
+	}
+
+	public List<String> getSelectedOtherSampleNames() {
+		return selectedOtherSampleNames;
+	}
+
+	public void setSelectedOtherSampleNames(List<String> selectedOtherSampleNames) {
+		this.selectedOtherSampleNames = selectedOtherSampleNames;
+	}
+
+	public List<String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
+	}
 
 	public Map<String, List<String>> getAssayTypesByCharNameLookup() {
 		return assayTypesByCharNameLookup;
