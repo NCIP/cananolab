@@ -29,7 +29,7 @@
         </tr>
         <tr ng-repeat="data in samples">
             <td class="columnOne">
-            	<a href="https://cananolab-dev.nci.nih.gov/caNanoLab/#/sample?sampleId={{data.id}}">View</a>&nbsp;
+            	<a href="/caNanoLab/#/sample?sampleId={{data.id}}">View</a>&nbsp;
             	<a href="/caNanoLab/#/editSample?sampleId={{data.id}}" ng-if="data.editable">Edit</a>
             </td>
             <td>
