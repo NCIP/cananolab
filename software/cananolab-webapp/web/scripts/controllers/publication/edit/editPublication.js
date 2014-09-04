@@ -387,6 +387,10 @@ var app = angular.module('angularApp')
              }).
              error(function(data, status, headers, config) {
                  $scope.message = data;
+                 
+                 if ( data == 'No pub found') {
+                	 $scope.retrievePubMedData();
+                 }                 
              });
         };
         
