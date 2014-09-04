@@ -3,8 +3,8 @@ var app = angular.module('angularApp')
 
     .controller('EditPublicationCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams,$upload) {
         $scope.publicationForm = {};
-        //$rootScope.tabs = navigationService.query();
-        //$rootScope.groups = groupService.getGroups.data.get();
+        $rootScope.tabs = navigationService.get();
+        $rootScope.groups = groupService.getGroups.data.get();
 
         $scope.addNewAuthor = false;
         $scope.showAuthorTable = false;

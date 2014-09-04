@@ -1,4 +1,4 @@
-<div class="nanoPageContainer">
+<div class="nanoPageContainer" ng-class="{formFocus:loader}">
 <div class="spacer">
 <form ng-submit="validateSavingTheData('newAuthor', 'Authors');"  novalidate>
 <table class="contentTitle" width="100%" border="0" summary="layout">
@@ -528,11 +528,11 @@
     </tbody>
 </table>
 </form>
-<div id="loader" ng-show="loader">
+</div>
+</div>
+<div id="loader" style="top: -600px; " ng-show="loader">
     <div id="loaderText">
       Loading
     </div>
     <div id="loaderGraphic"></div>
-</div>
-</div>
 </div>
