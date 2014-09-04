@@ -222,6 +222,8 @@ public class SimpleNanomaterialEntityBean {
 				simpleCompBean.setType(comp.getDomain().getType());
 				simpleCompBean.setValue(comp.getDomain().getValue());
 				simpleCompBean.setValueUnit(comp.getDomain().getValueUnit());
+				simpleCompBean.setCreatedBy(comp.getDomain().getCreatedBy());
+				simpleCompBean.setCreatedDate(comp.getDomain().getCreatedDate());
 				
 				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				if(comp.getInherentFunctions().size()>0){
@@ -232,6 +234,8 @@ public class SimpleNanomaterialEntityBean {
 						function.put("type", func.getType());
 						function.put("modality",func.getImagingFunction().getModality());
 						function.put("id", func.getDomainFunction().getId());
+						function.put("createdBy", func.getDomainFunction().getCreatedBy());
+						function.put("createdDate", func.getDomainFunction().getCreatedDate());
 						list.add(function);
 					}
 					simpleCompBean.setInherentFunction(list);

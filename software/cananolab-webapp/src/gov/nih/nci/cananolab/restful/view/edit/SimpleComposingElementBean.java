@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful.view.edit;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,9 +22,16 @@ public class SimpleComposingElementBean {
 	String sampleId = "";
 	String modality ="";
 	String createdBy="";
+	Date createdDate;
 	List<Map<String, Object>> inherentFunction;
 	
 
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 	public List<Map<String, Object>> getInherentFunction() {
 		return inherentFunction;
 	}

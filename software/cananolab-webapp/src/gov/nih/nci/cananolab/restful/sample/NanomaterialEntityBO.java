@@ -38,6 +38,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -495,6 +496,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			comp.setName(simpleComp.getName());
 			comp.setPubChemDataSourceName(simpleComp.getPubChemDataSourceName());
 			comp.setPubChemId(simpleComp.getPubChemId());
+			comp.setCreatedBy(simpleComp.getCreatedBy());
+			comp.setCreatedDate(simpleComp.getCreatedDate());
 			List<Map<String, Object>> funclist = simpleComp.getInherentFunction();
 			if(funclist!= null){
 			for(int j=0;j<funclist.size();j++){
@@ -504,6 +507,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				func.setImagingFunction(img);
 				Function function = new Function();
 				function.setDescription((String) funclist.get(j).get("description"));
+				function.setCreatedBy((String) funclist.get(j).get("createdBy"));
+				function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
 			//	function.setId((Long) nanoBean.getSimpleCompBean().getInherentFunction().get(0).get("id"));
 				hash.add(function);
 
@@ -531,7 +536,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			file.setCreatedDate(sBean.getCreatedDate());
 			file.setUriExternal(sBean.getUriExternal());
 			fileBean.setKeywordsStr(sBean.getKeywordsStr());
-			fileBean.setDomainFile(file);
+		//	fileBean.setDomainFile(file);
 		}
 		}
 		filecoll.add(file);
