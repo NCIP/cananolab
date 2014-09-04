@@ -142,6 +142,10 @@
 		</property>
 	</bean>
 	
+	<bean id="experimentConfigManager"
+		class="gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager">
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 
