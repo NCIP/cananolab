@@ -146,6 +146,10 @@
 		class="gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager">
 	</bean>
 	
+	<bean id="characterizationResultManager"
+		class="gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager">
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 
