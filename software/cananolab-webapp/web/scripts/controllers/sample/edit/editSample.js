@@ -55,6 +55,11 @@ var app = angular.module('angularApp')
             $location.path("/manageSamples").replace();
             $location.search('sampleId', null);
         }
+        else if($scope.updateButton=='Update' && $routeParams.fromMyWorkspace=='true') {
+            $location.path("/myWorkspace").replace();
+            $location.search('sampleId', null);
+            $location.search('fromMyWorkspace', null);
+        }        
         else {
             $location.path("/sampleResults").replace();
             $location.search('sampleId', null);
