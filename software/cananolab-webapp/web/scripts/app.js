@@ -187,6 +187,14 @@ app.config(function ($routeProvider, $httpProvider) {
             templateUrl: 'views/sample/composition/functionalizingentity/editFunctionalizingEntity.html',
             controller: 'EditFuncEntityCtrl'
         })
+        .when('/editChemicalAssociation', {
+            templateUrl: 'views/sample/composition/editChemicalAssociation.html',
+            controller: 'EditChemAssociationCtrl'
+        })
+        .when('/editCompositionFile', {
+            templateUrl: 'views/sample/composition/editCompositionFile.html',
+            controller: 'EditCompositionFileCtrl'
+        })        
       .otherwise({
         redirectTo: '/'
       });
