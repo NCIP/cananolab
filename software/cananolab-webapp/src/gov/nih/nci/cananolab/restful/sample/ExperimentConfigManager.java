@@ -19,6 +19,8 @@ import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -85,21 +87,21 @@ public class ExperimentConfigManager {
 		return abbreviation;
 	}
 
-	public String[] getInstrumentTypesByTechniqueType(String techniqueType)
+	public List<String> getInstrumentTypesByTechniqueType(HttpServletRequest request, String techniqueType)
 			throws ExperimentConfigException, BaseException {
-		WebContext wctx = WebContextFactory.get();
 		SortedSet<String> types = InitSetup.getInstance()
-				.getDefaultAndOtherTypesByLookup(wctx.getHttpServletRequest(),
+				.getDefaultAndOtherTypesByLookup(request,
 						"techniqueInstruments", techniqueType, "instrument",
 						"otherInstrument", true);
+		
+		List<String> instTypes = new ArrayList<String>();
 
 		if (types != null && types.size() > 0) {
-			String[] typeArray = new String[types.size()];
-			types.toArray(typeArray);
-			return typeArray;
-		} else {
-			return null;
-		}
+			instTypes.addAll(types); 
+		} 
+		
+		instTypes.add("[other]");
+		return instTypes;
 	}
 
 	public String[] getInstrumentTypesByConfigId(String configId)

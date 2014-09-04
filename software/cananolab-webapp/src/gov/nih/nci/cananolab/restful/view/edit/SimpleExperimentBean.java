@@ -22,12 +22,14 @@ public class SimpleExperimentBean {
 			expConfigBean.getDomain().setId(id);
 		
 		expConfigBean.getDomain().setDescription(description);
+		//expConfigBean
 		Technique tech = expConfigBean.getDomain().getTechnique();
 		if (tech == null) {
 			tech = new Technique();
 			expConfigBean.getDomain().setTechnique(new Technique());
 		}
 		tech.setType(this.displayName);
+		tech.setAbbreviation(this.abbreviation);
 		
 		List<Instrument> instListInDomainBean = expConfigBean.getInstruments();
 		instListInDomainBean.clear();
