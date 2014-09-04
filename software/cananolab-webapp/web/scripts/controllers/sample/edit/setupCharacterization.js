@@ -145,6 +145,8 @@ var app = angular.module('angularApp')
     $scope.reset = function() {
         $scope.data = angular.copy($scope.dataCopy);
         $scope.domainFileUri = "";
+        $scope.newExperimentConfig = 0;
+        
     };    
 
     // cancel save //
