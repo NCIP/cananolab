@@ -1,10 +1,10 @@
 <div ng-class="{formFocus:loader}">
-	<div class="modal-header"><!-- {{data}} -->
-		<h3 class="modal-title pull-left">Add Characterization</h3>
+	<div class="modal-header">{{data}}
+		<h3 class="modal-title pull-left">{{title}} Characterization</h3>
 		<div class="pull-right">
 			<a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
 			<a href="" ng-click="cancel()" class="help">Hide</a>
-		</div>{{techniqueInstrument}}
+		</div>
 		<div style="clear:both"></div>
 </div>
 <div class="modal-body">
@@ -116,14 +116,55 @@
 			Technique and Instrument<!-- {{data.techniqueInstruments.techniquesLookup}} -->
 		</td>
 		<td>
-<button ng-click="openNewExperimentConfig(sampleId.data, {},'add')" class="btn btn-primary btn-xxs">Add</button>		
+<button ng-click="openNewExperimentConfig()" class="btn btn-primary btn-xxs">Add</button>		
 <!-- 			
 			<a style="display:block" id="addExperimentConfig" href="javascript:clearExperimentConfig();openSubmissionForm('ExperimentConfig');"><img src="images/btn_add.gif" alt="add experiment config" align="top" border="0"></a> -->
 		</td>
 	</tr>
-	<tr>
+	<tr ng-if="data.techniqueInstruments.experiments.length">
 		<td colspan="2">
-			
+			<table class="editTableWithGrid" align="center" width="95%">
+				<tbody>
+					<tr>
+						<th width="20%">
+							Technique
+						</th>
+						<th width="40%">
+							Instruments
+						</th>
+						<th>
+							Description
+						</th>
+						<th>
+						</th>
+					</tr>
+	
+					<tr ng-repeat="item in data.techniqueInstruments.experiments">
+						<td>
+							{{item.displayName}}
+						</td>
+						<td>
+							<div ng-repeat="instrument in item.instruments">
+								{{instrument.type}} ({{instrument.manufacturer}}, {{instrument.modelName}})
+							</div>
+								
+									
+									<br>
+								
+							
+						</td>
+						<td>
+							{{item.description}}
+						</td>
+						
+							<td><button ng-click="openUpdateExperimentConfig(item.id)" class="btn btn-primary btn-xxs">Edit</button>	
+
+							</td>
+						
+					</tr>
+	
+				</tbody>
+			</table>			
 		</td>
 	</tr>
 	<tr>
