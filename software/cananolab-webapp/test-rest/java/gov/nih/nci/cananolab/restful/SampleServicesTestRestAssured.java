@@ -26,6 +26,8 @@ public class SampleServicesTestRestAssured {
 						"BB_SH_KCI_DFCI_WCMC_BWH_MIT")).when().get("http://localhost:8080/caNanoLab/rest/sample/submissionSetup");
 
 		System.out.println(res.getBody().asString());
+		
+		
 
 	}
 

@@ -58,6 +58,8 @@ public class SimpleCharacterizationSummaryViewBean {
 				for (CharacterizationBean charBean : charBeans) {
 					logger.debug("Proccessing char bean: " + charBean.getCharacterizationName());
 					
+					//TODO: need to add id
+					
 					List<SimpleCharacterizationUnitBean> aBeanUnitList = tranferCharacterizationBeanData(charBean);
 					charBeansByCharName.add(aBeanUnitList);
 					logger.info("End Proccessing char bean: " + charBean.getCharacterizationName());
@@ -192,7 +194,12 @@ public class SimpleCharacterizationSummaryViewBean {
 		}
 		
 		
-		//return charBeanMap;
+		aUnit = new SimpleCharacterizationUnitBean("charId", charBean.getDomainChar().getId());
+		charBeanUnits.add(aUnit);
+		
+		aUnit = new SimpleCharacterizationUnitBean("charClassName", charBean.getClassName());
+		charBeanUnits.add(aUnit);
+		
 		return charBeanUnits;
 	}
 	

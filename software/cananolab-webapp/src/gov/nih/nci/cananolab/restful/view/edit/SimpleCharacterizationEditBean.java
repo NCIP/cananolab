@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
@@ -95,12 +96,25 @@ public class SimpleCharacterizationEditBean {
 		if (expConfigs == null) return;
 	
 		for (ExperimentConfigBean expConfig : expConfigs) {
-			//SimpleExperiment
-			expConfig.getDescription();
-			expConfig.getTechniqueDisplayName();
-			expConfig.getDomain().getId();
+			SimpleExperimentBean simpleExp = new SimpleExperimentBean();
+			simpleExp.setDescription(expConfig.getDescription());
+			simpleExp.setDisplayName(expConfig.getTechniqueDisplayName());
+			if (expConfig.getDomain().getId() != null)
+				simpleExp.setId(expConfig.getDomain().getId());
 			
-			expConfig.getInstruments();
+			List<Instrument> domainInsts = expConfig.getInstruments();
+			if (domainInsts != null) {
+				for (Instrument inst : domainInsts) {
+					SimpleInstrumentBean simpleInst = new SimpleInstrumentBean();
+					simpleInst.setManufacturer(inst.getManufacturer());
+					simpleInst.setModelName(inst.getModelName());
+					simpleInst.setType(inst.getType());
+					
+					simpleExp.getInstruments().add(simpleInst);
+				}
+			}
+			
+			this.techniqueInstruments.getExperiments().add(simpleExp);
 		}
 	}
 	
