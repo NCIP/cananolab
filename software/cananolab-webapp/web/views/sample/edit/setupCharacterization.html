@@ -1,10 +1,10 @@
 <div ng-class="{formFocus:loader}">
-	<div class="modal-header">
+	<div class="modal-header"><!-- {{data}} -->
 		<h3 class="modal-title pull-left">Add Characterization</h3>
 		<div class="pull-right">
 			<a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
 			<a href="" ng-click="cancel()" class="help">Hide</a>
-		</div>
+		</div>{{techniqueInstrument}}
 		<div style="clear:both"></div>
 </div>
 <div class="modal-body">
@@ -108,12 +108,12 @@
 			<label for="charDescription">Design and Methods Description</label>
 		</td>
 		<td>
-			<textarea name="achar.description" cols="120" rows="3" id="charDescription"></textarea>
+			<textarea ng-model="data.designMethodsDescription" name="charDescription" cols="120" rows="3" id="charDescription"></textarea>
 		</td>
 	</tr>
 	<tr>
 		<td class="cellLabel" width="20%">
-			Technique and Instrument
+			Technique and Instrument<!-- {{data.techniqueInstruments.techniquesLookup}} -->
 		</td>
 		<td>
 <button ng-click="openNewExperimentConfig(sampleId.data, {},'add')" class="btn btn-primary btn-xxs">Add</button>		
@@ -144,94 +144,8 @@
 						</td>
 						<td>
 							<div id="techniqueTypePrompt">
-								<select name="achar.theExperimentConfig.domain.technique.type" onchange="javascript:callPrompt('Technique Type', 'techniqueType', 'techniqueTypePrompt');retrieveTechniqueAbbreviation();" id="techniqueType"><option value=""></option>
-									<option value="acoustic microscopy">acoustic microscopy</option>
-									<option value="asymmetrical flow field-flow fractionation with multi-angle laser light scattering">asymmetrical flow field-flow fractionation with multi-angle laser light scattering</option>
-									<option value="atomic absorption spectroscopy">atomic absorption spectroscopy</option>
-									<option value="atomic force microscopy">atomic force microscopy</option>
-									<option value="biochemical quantitation">biochemical quantitation</option>
-									<option value="capillary electrophoresis">capillary electrophoresis</option>
-									<option value="cell counting">cell counting</option>
-									<option value="centrifugal filtration">centrifugal filtration</option>
-									<option value="coagulation detection">coagulation detection</option>
-									<option value="colony counting">colony counting</option>
-									<option value="confocal laser scanning microscopy">confocal laser scanning microscopy</option>
-									<option value="coulter principle">coulter principle</option>
-									<option value="dark field microscopy">dark field microscopy</option>
-									<option value="deconvolution fluorescence microscopy">deconvolution fluorescence microscopy</option>
-									<option value="differential centrifugal sedimentation">differential centrifugal sedimentation</option>
-									<option value="dynamic light scattering">dynamic light scattering</option>
-									<option value="electron microprobe analysis">electron microprobe analysis</option>
-									<option value="electron spin resonance">electron spin resonance</option>
-									<option value="electron spin resonance spectroscopy">electron spin resonance spectroscopy</option>
-									<option value="electrophoretic light scattering">electrophoretic light scattering</option>
-									<option value="elemental analysis">elemental analysis</option>
-									<option value="energy dispersive spectroscopy">energy dispersive spectroscopy</option>
-									<option value="environmental transmission electron microscopy">environmental transmission electron microscopy</option>
-									<option value="fast protein liquid chromatography">fast protein liquid chromatography</option>
-									<option value="flow cytometry">flow cytometry</option>
-									<option value="fluorescence microscopy">fluorescence microscopy</option>
-									<option value="fluorometry">fluorometry</option>
-									<option value="focused ion beam - scanning electron microscopy">focused ion beam - scanning electron microscopy</option>
-									<option value="fourier transform infrared spectrophotometry">fourier transform infrared spectrophotometry</option>
-									<option value="gas chromatography">gas chromatography</option>
-									<option value="gas sorption">gas sorption</option>
-									<option value="gel electrophoresis">gel electrophoresis</option>
-									<option value="gel filtration chromatography">gel filtration chromatography</option>
-									<option value="gel permeation chromatography">gel permeation chromatography</option>
-									<option value="high performance liquid chromatography">high performance liquid chromatography</option>
-									<option value="high performance liquid chromatography - evaporative light scattering detection">high performance liquid chromatography - evaporative light scattering detection</option>
-									<option value="high resolution scanning electron microscopy">high resolution scanning electron microscopy</option>
-									<option value="high resolution transmission electron microscopy">high resolution transmission electron microscopy</option>
-									<option value="illumination">illumination</option>
-									<option value="imaging">imaging</option>
-									<option value="inductively coupled plasma atomic emission spectroscopy">inductively coupled plasma atomic emission spectroscopy</option>
-									<option value="inductively coupled plasma mass spectrometry">inductively coupled plasma mass spectrometry</option>
-									<option value="infrared imaging">infrared imaging</option>
-									<option value="laser diffraction">laser diffraction</option>
-									<option value="liight microscopy">liight microscopy</option>
-									<option value="liquid chromatography - mass spectrometry">liquid chromatography - mass spectrometry</option>
-									<option value="liquid scintillation counting">liquid scintillation counting</option>
-									<option value="magnetic property measurement">magnetic property measurement</option>
-									<option value="mass quantitation">mass quantitation</option>
-									<option value="matrix assisted laser desorption ionisation - time of flight">matrix assisted laser desorption ionisation - time of flight</option>
-									<option value="microfluidics">microfluidics</option>
-									<option value="multi photon confocal laser scanning microscopy">multi photon confocal laser scanning microscopy</option>
-									<option value="multiphoton laser scanning microscopy">multiphoton laser scanning microscopy</option>
-									<option value="nuclear magnetic resonance">nuclear magnetic resonance</option>
-									<option value="particle quantitation">particle quantitation</option>
-									<option value="photoacoustic imaging">photoacoustic imaging</option>
-									<option value="photoacoustic spectrometry">photoacoustic spectrometry</option>
-									<option value="polymerase chain reaction">polymerase chain reaction</option>
-									<option value="positron emission tomography">positron emission tomography</option>
-									<option value="powder diffraction">powder diffraction</option>
-									<option value="protein quantitation">protein quantitation</option>
-									<option value="radioactivity quantiation">radioactivity quantiation</option>
-									<option value="Raman spectroscopy">Raman spectroscopy</option>
-									<option value="refractometry">refractometry</option>
-									<option value="scanning auger spectrometry">scanning auger spectrometry</option>
-									<option value="scanning electron microscopy">scanning electron microscopy</option>
-									<option value="scanning probe microscopy">scanning probe microscopy</option>
-									<option value="scanning transmission electron microscopy">scanning transmission electron microscopy</option>
-									<option value="scanning tunneling  microscopy">scanning tunneling  microscopy</option>
-									<option value="sfaer927034wqw34">sfaer927034wqw34</option>
-									<option value="size exclusion chromatography with multi-angle laser light scattering">size exclusion chromatography with multi-angle laser light scattering</option>
-									<option value="spectrofluorometry">spectrofluorometry</option>
-									<option value="spectrophotometry">spectrophotometry</option>
-									<option value="surface plasmon resonance">surface plasmon resonance</option>
-									<option value="temperature measurement">temperature measurement</option>
-									<option value="thermogravimetric analysis">thermogravimetric analysis</option>
-									<option value="time-resolved fluorescence microscopy ">time-resolved fluorescence microscopy </option>
-									<option value="transmission electron microscopy">transmission electron microscopy</option>
-									<option value="wavelength dispersive spectroscopy">wavelength dispersive spectroscopy</option>
-									<option value="weight">weight</option>
-									<option value="X-ray diffraction">X-ray diffraction</option>
-									<option value="X-ray photoelectron spectroscopy">X-ray photoelectron spectroscopy</option>
-									<option value="zeta potential analysis">zeta potential analysis</option>
-
-									<option value="other">
-										[other]
-									</option></select>
+		<select data-ng-model="techniqueInstrument.displayName"
+		data-ng-options="option for option in data.techniqueInstruments.techniqueTypeLookup" id="techniqueType" ng-change="techniqueTypeInstrumentDropdownChanged()">							
 								</div>
 							</td>
 						</tr>
@@ -240,7 +154,7 @@
 								<label for="techniqueAbbr">Abbreviation</label>
 							</td>
 							<td>
-								<input name="achar.theExperimentConfig.domain.technique.abbreviation" size="30" value="" id="techniqueAbbr" type="text">
+								<input ng-model="techniqueInstrument.abbreviation" size="30" value="" id="techniqueAbbr" type="text">
 							</td>
 						</tr>
 						<tr>
@@ -443,7 +357,7 @@
 										<label for="configDescription">Description</label>
 									</td>
 									<td>
-										<textarea name="achar.theExperimentConfig.domain.description" cols="70" rows="5" id="configDescription"></textarea>
+										<textarea ng-model="techniqueInstrument.description" name="description" cols="70" rows="5" id="configDescription"></textarea>
 									</td>
 								</tr>
 								<tr>
