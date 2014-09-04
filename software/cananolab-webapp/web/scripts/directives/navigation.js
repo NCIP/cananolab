@@ -9,8 +9,7 @@ var app = angular.module('angularApp')
         $scope.url = $location.path();
         $scope.isEdit = 0;
         $scope.buttons = [];
-        // $scope.edit = ['/editSample','/editComposition','/editCharacterization','/updatePublication'];
-        $scope.edit = [{'url':'/editSample','name':'GENERAL INFO'},{'url':'/editComposition','name':'COMPOSITION'},{'url':'/editCharacterization','name':'CHARACTERIZATION'},{'url':'/updatePublication','name':'PUBLICATION'}];
+        $scope.edit = [{'url':'/editSample','name':'GENERAL INFO'},{'url':'/editComposition','name':'COMPOSITION'},{'url':'/editCharacterization','name':'CHARACTERIZATION'},{'url':'/updatePublication','name':'PUBLICATION'},{'url':'/setupCharacterization','alternativeurl':'/editCharacterization','name':'CHARACTERIZATION'}];
         $scope.view = [{'url':'/sample','name':'GENERAL INFO'},{'url':'/composition','name':'COMPOSITION'},{'url':'/characterization','name':'CHARACTERIZATION'},{'url':'/publication','name':'PUBLICATION'}];
         $scope.testClick = function(uri) {
             $location.path(uri).replace();
@@ -28,7 +27,10 @@ var app = angular.module('angularApp')
                 $scope.buttons = $scope.edit;
                 $scope.url = newValue;
                 $scope.navTree = 1;
-
+              }
+              if ($scope.edit[x].alternativeurl) {
+                $scope.url = $scope.edit[x].alternativeurl;
+                $scope.buttons.splice(x,1);
               }
             };
             for (var x=0;x<$scope.view.length;x++) {
