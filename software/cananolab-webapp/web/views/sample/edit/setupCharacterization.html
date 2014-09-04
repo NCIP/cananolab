@@ -1,7 +1,6 @@
-<div ng-class="{formFocus:loader}"><span style="font-size:45%">{{data}}</span>
+<div ng-class="{formFocus:loader}">
     <div class="modal-header">
         <h3 class="modal-title pull-left">Add Characterization</h3>
-        {{characterizationData}}
         <div class="pull-right">
             <a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
             <a href="" ng-click="cancel()" class="help">Hide</a>
@@ -87,17 +86,20 @@
     <label for="charDate">Characterization Date</label>
 </td>
 <td>
-                <div class="input-group" style="width:350px;">
-              <input type="text" readonly class="form-control" datepicker-popup="{{format}}" ng-model="data.characterizationDate" is-open="$parent.opened" min-date="minDate" max-date="'2050-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+            <div class="input-group" style="width:350px;">
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="data.characterizationDate" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" readonly />
               <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
               </span>
             </div>
 
+
 </td>
 </tr>
 </tbody></table>
+
 </div>
+<span style="font-size:105%">{{data}}</span>
 <div style="padding-top:20px;margin-left:38px;width:300px" ng-show="deleteBlock" class="message">
     Are you sure you wish to delete this contact?<br /><br />
     <div>
