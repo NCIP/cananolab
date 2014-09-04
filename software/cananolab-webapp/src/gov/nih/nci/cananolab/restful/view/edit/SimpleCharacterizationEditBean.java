@@ -38,10 +38,9 @@ public class SimpleCharacterizationEditBean {
 	
 	String designMethodsDescription;
 	
-	
-	//for Edit
-	
 	SimpleTechniqueAndInstrument techniqueInstruments = new SimpleTechniqueAndInstrument();
+	
+	List<SimpleFindingBean> finding = new ArrayList<SimpleFindingBean>();
 	
 	
 	//When saving, could propagate to other samples
@@ -177,6 +176,14 @@ public class SimpleCharacterizationEditBean {
 	}
 	
 	
+	public List<SimpleFindingBean> getFinding() {
+		return finding;
+	}
+
+	public void setFinding(List<SimpleFindingBean> finding) {
+		this.finding = finding;
+	}
+
 	public long getProtocolId() {
 		return protocolId;
 	}

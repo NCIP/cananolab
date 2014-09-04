@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
 import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
@@ -10,6 +11,7 @@ import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationSummaryEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
 
 import java.util.List;
 
@@ -285,6 +287,58 @@ public class CharacterizationServices {
 			List<String> types = experimentMgr.getInstrumentTypesByTechniqueType(httpRequest, techniqueType);
 
 		return Response.ok(types).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	
+	@POST
+	@Path("/updateDataConditionTable")
+	@Produces ("application/json")
+    public Response updateDataConditionTable(@Context HttpServletRequest httpRequest, 
+    		SimpleFindingBean simpleFinding) {
+		logger.debug("In updateDataConditionTable");	
+		
+//		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+//			return Response.status(Response.Status.UNAUTHORIZED)
+//					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			
+			SimpleFindingBean simpleFindingBean = characterizationBO.drawMatrix(httpRequest, simpleFinding);
+
+		return Response.ok(simpleFinding).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	
+	@GET
+	@Path("/getDatumNameOptions")
+	@Produces ("application/json")
+    public Response getDatumNameOptions(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("charType") String charType,
+    		@DefaultValue("") @QueryParam("charName") String charName, 
+    		@DefaultValue("") @QueryParam("assayType")String assayType) {
+		logger.debug("In getDatumNames");		
+		
+		try {
+			CharacterizationResultManager characterizationResultManager = 
+				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+
+			List<String> names = characterizationResultManager.getDatumNameOptions(httpRequest, charType, charName, assayType);
+
+		return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {

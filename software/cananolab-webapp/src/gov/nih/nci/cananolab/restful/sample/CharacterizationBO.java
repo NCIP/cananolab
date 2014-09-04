@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
@@ -760,16 +761,24 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return mapping.findForward("inputForm");
 	}
 
-	public ActionForward drawMatrix(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	/**
+	 * 
+	 * @param request
+	 * @param simpleFinding
+	 * @return
+	 * @throws Exception
+	 */
+	public SimpleFindingBean drawMatrix(HttpServletRequest request, SimpleFindingBean simpleFinding)
 			throws Exception {
 		
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		CharacterizationBean achar = (CharacterizationBean) theForm
-//				.get("achar");
-//		request.setAttribute("anchor", "result");
-//		FindingBean findingBean = achar.getTheFinding();
-//
+		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
+		SimpleCharacterizationEditBean editBean = 
+				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+		request.setAttribute("anchor", "result");
+		
+		FindingBean findingBean = achar.getTheFinding();
+		simpleFinding.transferToFindingBean(findingBean);
+
 //		if (request.getParameter("removeColumn") != null) {
 //			int columnToRemove = Integer.parseInt(request
 //					.getParameter("removeColumn"));
@@ -783,19 +792,22 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //			this.checkOpenForms(achar, theForm, request);
 //			return mapping.findForward("inputForm");
 //		}
-//		int existingNumberOfColumns = findingBean.getColumnHeaders().size();
-//		int existingNumberOfRows = findingBean.getRows().size();
-//		if (existingNumberOfColumns > findingBean.getNumberOfColumns()) {
+		int existingNumberOfColumns = findingBean.getColumnHeaders().size();
+		int existingNumberOfRows = findingBean.getRows().size();
+		
+		if (existingNumberOfColumns > findingBean.getNumberOfColumns()) {
 //			ActionMessages msgs = new ActionMessages();
 //			ActionMessage msg = new ActionMessage(
 //					"message.addCharacterization.removeMatrixColumn");
 //			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //			saveMessages(request, msgs);
+//			
+			
 //			findingBean.setNumberOfColumns(existingNumberOfColumns);
-//			this.checkOpenForms(achar, theForm, request);
+//			//this.checkOpenForms(achar, theForm, request);
 //			return mapping.getInputForward();
-//		}
-//		if (existingNumberOfRows > findingBean.getNumberOfRows()) {
+		}
+		if (existingNumberOfRows > findingBean.getNumberOfRows()) {
 //			ActionMessages msgs = new ActionMessages();
 //			ActionMessage msg = new ActionMessage(
 //					"message.addCharacterization.removeMatrixRow");
@@ -804,17 +816,23 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //			findingBean.setNumberOfRows(existingNumberOfRows);
 //			this.checkOpenForms(achar, theForm, request);
 //			return mapping.getInputForward();
-//		}
-//		findingBean.updateMatrix(findingBean.getNumberOfColumns(),
-//				findingBean.getNumberOfRows());
-//		request.setAttribute("anchor", "submitFinding");
-//		this.checkOpenForms(achar, theForm, request);
-//		// set columnHeaders in the session so jsp can check duplicate columns
-//		request.getSession().setAttribute("columnHeaders",
-//				findingBean.getColumnHeaders());
-//		return mapping.findForward("inputForm");
+		}
 		
-		return null;
+		findingBean.updateMatrix(findingBean.getNumberOfColumns(),
+				findingBean.getNumberOfRows());
+		
+		simpleFinding.setRows(findingBean.getRows());
+		simpleFinding.setColumnHeaders(findingBean.getColumnHeaders());
+		
+		request.setAttribute("anchor", "submitFinding");
+		
+		//this.checkOpenForms(achar, theForm, request);
+		// set columnHeaders in the session so jsp can check duplicate columns
+		request.getSession().setAttribute("columnHeaders",
+				findingBean.getColumnHeaders());
+		//return mapping.findForward("inputForm");
+		
+		return simpleFinding;
 	}
 
 	public ActionForward deleteFinding(ActionMapping mapping, ActionForm form,
