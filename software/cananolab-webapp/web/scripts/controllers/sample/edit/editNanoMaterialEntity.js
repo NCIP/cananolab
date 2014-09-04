@@ -3,8 +3,8 @@ var app = angular.module('angularApp')
 
     .controller('EditNanoEntityCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams,$upload) {
         $scope.nanoEntityForm = {};
-        //$rootScope.tabs = navigationService.query();
-        //$rootScope.groups = groupService.getGroups.data.get();
+        $rootScope.tabs = navigationService.get();
+        $rootScope.groups = groupService.getGroups.data.get();
 
         $scope.nanoEntityId = '';
         $scope.localForm = {};
@@ -35,7 +35,7 @@ var app = angular.module('angularApp')
 
 
         $scope.$on('$viewContentLoaded', function(){
-            $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/nanomaterialEntity/setup?sampleId=' + $scope.sampleId}).
+            $http({method: 'GET', url: '/caNanoLab/rest/nanomaterialEntity/setup?sampleId=' + $scope.sampleId}).
                 success(function(data, status, headers, config) {
                     $scope.data = data;
                     //$scope.data = {"pubChemDataSources":["Compound","Substance","BioAssay"],"modalityTypes":["beta radiation","bioluminescence","fluorescence","gamma ray","infrared","MRI","neutron scattering","NMR","PET","photoluminescence","Raman spectroscopy","SPECT","ultrasound","X-ray"],"fileTypes":["document","graph","image","movie","spread sheet"],"otherSampleNames":["Demo123","NCL-20-1","NCL-21-1","NCL-22-1","NCL-24-1","NCL-24-1-Copy","NCL-25-1","QA"],"emulsionComposingElementTypes":["bulk phase","coat","core","dispersed phase","emulsifier","excipient","modifier","coat","core","excipient","Internal buffer","lipid","modifier","monomer","polymer","repeat unit","RNA","shell","terminal group"],"nanomaterialEntityTypes":["biopolymer","carbon","carbon black","carbon nanotube","dendrimer","emulsion","fullerene","liposome","metal oxide","metal particle","metalloid","nanohorn","nanolipogel","nanorod","nanoshell","polymer","quantum dot","silica"],"functionTypes":["endosomolysis","imaging function","other","targeting function","therapeutic function","transfection"],"molecularFormulaTypes":["Hill","SMARTS","SMILES"],"composingElementTypes":["coat","core","excipient","Internal buffer","lipid","modifier","monomer","polymer","repeat unit","RNA","shell","terminal group"],"composingElementUnits":["%","%mole","%vol","%w","%wt","%wt/vol","%wt/wt","Da","g","M","MBq","mCi","mg","mg/mL","mL","mM","mmol","nM","nmol","pmol","uCi/mg","ug","ug/mL","ug/uL","uL","uM","umol","wt%","wt/wt"]};
@@ -91,7 +91,7 @@ var app = angular.module('angularApp')
         $scope.loadNanoEntityData = function() {
             if( $scope.nanoEntityId != null ) {
                     $scope.loader = true;
-                    $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/nanomaterialEntity/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.nanoEntityId}).
+                    $http({method: 'GET', url: '/caNanoLab/rest/nanomaterialEntity/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.nanoEntityId}).
                         success(function(data, status, headers, config) {
                             $scope.nanoEntityForm = data;
                             //$scope.nanoEntityForm = {"simpleCompBean":{"type":"coat","name":"coat","pubChemDataSourceName":"Compound","pubChemId":12,"value":null,"valueUnit":"%vol","molecularFormulaType":"Hill","molecularFormula":"","description":"Test","id":59637770,"functionId":"","functionType":"imaging function","imagingModality":"fluorescence","functionDescription":"Test img function","sampleId":"","modality":""},"fileBean":{"uriExternal":false,"uri":"","type":"movie","title":"movie","description":"","keywordsStr":"","id":null},"type":"dendrimer","id":0,"description":"Test Nano Entity","sampleId":"","userDeletable":false,"userUpdatable":false,"createdBy":"jonnalah","createdDate":1408630200000,"domainEntity":{"id":60260353,"createdBy":"jonnalah","fileCollection":[{"uriExternal":false,"uri":"","type":"movie","title":"movie","description":"","keywordsStr":"","id":null}],"composingElementCollection":[{"type":"coat","name":"coat","pubChemDataSourceName":"Compound","pubChemId":12,"value":null,"valueUnit":"%vol","molecularFormulaType":"Hill","molecularFormula":"","description":"Test","id":59637770,"functionId":"","functionType":"imaging function","imagingModality":"fluorescence","functionDescription":"Test img function","sampleId":"","modality":""}],"branch":null,"createdDate":"jonnalah","generation":null},"withProperties":true,"detailsPage":"/caNanoLab/views/sample/composition/nanomaterialEntity/PolymerInfoEdit.html","isPolymerized":null,"isCrossLinked":null};
