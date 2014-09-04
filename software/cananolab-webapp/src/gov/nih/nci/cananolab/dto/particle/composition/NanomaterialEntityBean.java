@@ -191,6 +191,10 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	public List<ComposingElementBean> getComposingElements() {
 		return composingElements;
 	}
+	
+	public void setComposingElements(List<ComposingElementBean> composingElements) {
+		this.composingElements= composingElements;
+	}
 
 	public Emulsion getEmulsion() {
 		return emulsion;

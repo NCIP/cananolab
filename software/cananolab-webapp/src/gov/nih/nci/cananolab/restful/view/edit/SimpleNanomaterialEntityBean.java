@@ -253,6 +253,8 @@ public class SimpleNanomaterialEntityBean {
 			fileBean.setUriExternal(file.getDomainFile().getUriExternal());
 			fileBean.setKeywordsStr(file.getKeywordsStr());
 			fileBean.setId(file.getDomainFile().getId());
+			fileBean.setCreatedBy(file.getDomainFile().getCreatedBy());
+			fileBean.setCreatedDate(file.getDomainFile().getCreatedDate());
 			files.add(fileBean);
 		}
 		setFiles(files);

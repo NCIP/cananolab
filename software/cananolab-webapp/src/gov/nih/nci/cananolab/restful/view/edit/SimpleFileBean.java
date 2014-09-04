@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import java.util.Date;
+
 public class SimpleFileBean {
 
 	boolean uriExternal =false;
@@ -9,7 +11,21 @@ public class SimpleFileBean {
 	String description = "";
 	String keywordsStr = "";
 	Long id;
+	String createdBy = "";
+	Date createdDate;
 	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 	public boolean getUriExternal() {
 		return uriExternal;
 	}
