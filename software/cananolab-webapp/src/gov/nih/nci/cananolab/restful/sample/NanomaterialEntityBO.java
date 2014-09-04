@@ -1,12 +1,5 @@
 package gov.nih.nci.cananolab.restful.sample;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
@@ -30,6 +23,8 @@ import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.util.CompositionUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -41,12 +36,17 @@ import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.hibernate.collection.PersistentSet;
 
 
 public class NanomaterialEntityBO extends BaseAnnotationBO{
@@ -399,6 +399,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		form.setOtherSamples(new String[0]);
 		this.setLookups(request);
 		this.checkOpenForms(entityBean, request);
+		request.getSession().setAttribute("sampleId", sampleId);
 		SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
 		nano.transferNanoMaterialEntityBeanToSimple(entityBean, request);
 		return nano;
@@ -424,7 +425,6 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	}
 
 	public SimpleNanomaterialEntityBean saveComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean);//form
 			//	.getNanomaterialEntity();//("nanomaterialEntity");
 		String sampleId = nanoBean.getSampleId();
@@ -461,64 +461,181 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			SimpleNanomaterialEntityBean nanoBean) {
 		NanomaterialEntityBean bean = new NanomaterialEntityBean();
 		NanomaterialEntity nanoEntity = null;
-		if(nanoBean.getType().equalsIgnoreCase("fullerene"))
-			nanoEntity = new Fullerene();
-		if(nanoBean.getType().equalsIgnoreCase("dendrimer"))
-			nanoEntity = new Dendrimer();
-		if(nanoBean.getType().equalsIgnoreCase("biopolymer"))
-			nanoEntity = new Biopolymer();
-		if(nanoBean.getType().equalsIgnoreCase("Liposome"))
-			nanoEntity = new Liposome();
-		if(nanoBean.getType().equalsIgnoreCase("Emulsion"))
-			nanoEntity = new Emulsion();
-		if(nanoBean.getType().equalsIgnoreCase("Polymer"))
-			nanoEntity = new Polymer();
-		if(nanoBean.getType().equalsIgnoreCase("CarbonNanotube"))
-			nanoEntity = new CarbonNanotube();
+		
 		ComposingElementBean compBean = new ComposingElementBean();
-		Collection<ComposingElement> coll = new HashSet<ComposingElement>();
+		Collection<ComposingElement> coll = new ArrayList<ComposingElement>();
 		Collection<File> filecoll = new ArrayList<File>();
 		SampleComposition sampleComp = new SampleComposition();//(SampleComposition) nanoBean.getDomainEntity().get("sampleComposition");
+		
+		//setting up composing element
 		ComposingElement comp = new ComposingElement();
-		comp.setDescription(nanoBean.getSimpleCompBean().getDescription());
-		comp.setType(nanoBean.getSimpleCompBean().getType());
-		comp.setName(nanoBean.getSimpleCompBean().getName());
-		comp.setPubChemDataSourceName(nanoBean.getSimpleCompBean().getPubChemDataSourceName());
-		comp.setPubChemId(nanoBean.getSimpleCompBean().getPubChemId());
-		FileBean fileBean = new FileBean();
-		File file = new File();
-
-		if(nanoBean.getFileBean()!= null){
-		file.setType(nanoBean.getFileBean().getType());
-		file.setTitle(nanoBean.getFileBean().getTitle());
-		file.setDescription(nanoBean.getFileBean().getDescription());
-		file.setUri(nanoBean.getFileBean().getUri());
-		file.setUriExternal(nanoBean.getFileBean().getUriExternal());
-		fileBean.setKeywordsStr(nanoBean.getFileBean().getKeywordsStr());
-		fileBean.setDomainFile(file);
-		}
-		Function domainFunc = new Function();
-		domainFunc.setCreatedBy(nanoBean.getSimpleCompBean().getCreatedBy());
-		domainFunc.setId((Long) nanoBean.getSimpleCompBean().getInherentFunction().get(0).get("id"));
-		Collection<Function> hash = new HashSet<Function>();
+		List<SimpleComposingElementBean> list = nanoBean.getComposingElements();
+//		Collection list = (Collection) nanoBean.getDomainEntity().get("composingElementCollection");
+//		
+//		Iterator ite = list.iterator();
+//		
+//		while (ite.hasNext()) {
+//			Object o = ite.next();
+//			
+//			SimpleComposingElementBean b = (SimpleComposingElementBean)o;
+//			int i = 0;
+//		}
+		
 		FunctionBean func = new FunctionBean();
 		ImagingFunction img = new ImagingFunction();
-		img.setModality(nanoBean.getSimpleCompBean().getModality());
+		Collection<Function> hash = new HashSet<Function>();
+
+		for(SimpleComposingElementBean simpleComp : list){
+			
+			comp.setDescription(simpleComp.getDescription());
+			comp.setType(simpleComp.getType());
+			comp.setName(simpleComp.getName());
+			comp.setPubChemDataSourceName(simpleComp.getPubChemDataSourceName());
+			comp.setPubChemId(simpleComp.getPubChemId());
+			List<Map<String, Object>> funclist = simpleComp.getInherentFunction();
+			if(funclist!= null){
+			for(int j=0;j<funclist.size();j++){
+				img.setModality((String) funclist.get(j).get("modality"));
+				func.setType((String) funclist.get(j).get("type"));
+				func.setDescription((String) funclist.get(j).get("description"));
+				func.setImagingFunction(img);
+				Function function = new Function();
+				function.setDescription((String) funclist.get(j).get("description"));
+			//	function.setId((Long) nanoBean.getSimpleCompBean().getInherentFunction().get(0).get("id"));
+				hash.add(function);
+
+			}
+			}
+			comp.setInherentFunctionCollection(hash);
+			compBean.setTheFunction(func);
+			compBean.setDomain(comp);
+			coll.add(comp);
+			
+		}
 		
-		func.setDescription((String) nanoBean.getSimpleCompBean().getInherentFunction().get(0).get("description"));
-	//	func.setId(nanoBean.getSimpleCompBean().getFunctionId());
-		func.setImagingFunction(img);
-		func.setType(nanoBean.getSimpleCompBean().getType());
-		hash.add(domainFunc);
-		comp.setInherentFunctionCollection(hash);
-		compBean.setTheFunction(func);
-		compBean.setDomain(comp);
-		coll.add(comp);
+		//setting up files
+		List<SimpleFileBean> filelist =  nanoBean.getFiles();
+		FileBean fileBean = new FileBean();
+		File file = new File();
+		if(filelist!=null){
+		for(SimpleFileBean sBean : filelist){
+			file.setType(sBean.getType());
+			file.setTitle(sBean.getTitle());
+			file.setDescription(sBean.getDescription());
+			file.setUri(sBean.getUri());
+			file.setUriExternal(sBean.getUriExternal());
+			fileBean.setKeywordsStr(sBean.getKeywordsStr());
+			fileBean.setDomainFile(file);
+		}
+		}
 		filecoll.add(file);
+
+		if(nanoBean.getType().equalsIgnoreCase("fullerene")){
+			Fullerene fullerene = new Fullerene();
+			fullerene.setAverageDiameter((Float) nanoBean.getDomainEntity().get("AverageDiameter"));
+			fullerene.setAverageDiameterUnit((String) nanoBean.getDomainEntity().get("AverageDiameterUnit"));
+			fullerene.setNumberOfCarbon((Integer) nanoBean.getDomainEntity().get("NoOfCarbons"));
+			if((Long) nanoBean.getDomainEntity().get("id")!=null)
+			fullerene.setId((Long) nanoBean.getDomainEntity().get("id"));
+			fullerene.setComposingElementCollection(coll);
+			fullerene.setFileCollection(filecoll);
+			fullerene.setSampleComposition(new SampleComposition());
+			nanoEntity = fullerene;
+		}
+			
+		if(nanoBean.getType().equalsIgnoreCase("dendrimer")){
+			Dendrimer den = new Dendrimer();
+			
+			den.setBranch((String) nanoBean.getDomainEntity().get("branch"));
+			den.setGeneration((Float) nanoBean.getDomainEntity().get("generation"));
+			if((Long) nanoBean.getDomainEntity().get("id")!=null)
+				den.setId((Long) nanoBean.getDomainEntity().get("id"));
+			den.setComposingElementCollection(coll);
+			den.setFileCollection(filecoll);
+			den.setSampleComposition(new SampleComposition());
+			nanoEntity = den;
+		}
+			
+		if(nanoBean.getType().equalsIgnoreCase("biopolymer")){
+			Biopolymer bio = new Biopolymer();
+			bio.setType((String) nanoBean.getDomainEntity().get("type"));
+			bio.setName((String) nanoBean.getDomainEntity().get("name"));
+			bio.setSequence((String) nanoBean.getDomainEntity().get("sequence"));
+			if((Long) nanoBean.getDomainEntity().get("id")!=null)
+				bio.setId((Long) nanoBean.getDomainEntity().get("id"));
+			bio.setComposingElementCollection(coll);
+			bio.setFileCollection(filecoll);
+			bio.setSampleComposition(new SampleComposition());
+			nanoEntity = bio;
+		}
+		if(nanoBean.getType().equalsIgnoreCase("Liposome")){
+			Liposome lipo = new Liposome();
+			lipo.setPolymerized((Boolean) nanoBean.getDomainEntity().get("IsPolymarized"));
+			lipo.setPolymerName((String) nanoBean.getDomainEntity().get("PolymerName"));
+			if((Long) nanoBean.getDomainEntity().get("id")!=null)
+				lipo.setId((Long) nanoBean.getDomainEntity().get("id"));
+			
+			lipo.setComposingElementCollection(coll);
+			lipo.setFileCollection(filecoll);
+			lipo.setSampleComposition(new SampleComposition());
+			nanoEntity = lipo;
+		}
+		if(nanoBean.getType().equalsIgnoreCase("Emulsion")){
+			Emulsion em = new Emulsion();
+			em.setPolymerized((Boolean) nanoBean.getDomainEntity().get("IsPolymarized"));
+			em.setPolymerName((String) nanoBean.getDomainEntity().get("PolymerName"));
+			if((Long) nanoBean.getDomainEntity().get("id")!=null)
+				em.setId((Long) nanoBean.getDomainEntity().get("id"));
+			
+			em.setComposingElementCollection(coll);
+			em.setFileCollection(filecoll);
+			em.setSampleComposition(new SampleComposition());
+			nanoEntity = em;
+		}
+		if(nanoBean.getType().equalsIgnoreCase("Polymer")){
+			Polymer poly = new Polymer();
+			poly.setCrossLinked((Boolean) nanoBean.getDomainEntity().get("crossLinked"));
+			poly.setCrossLinkDegree((Float) nanoBean.getDomainEntity().get("crossLinkDegree"));
+			poly.setInitiator((String) nanoBean.getDomainEntity().get("initiator"));
+			if((Long) nanoBean.getDomainEntity().get("id")!=null)
+				poly.setId((Long) nanoBean.getDomainEntity().get("id"));
+
+			poly.setComposingElementCollection(coll);
+			poly.setFileCollection(filecoll);
+			poly.setSampleComposition(new SampleComposition());
+			nanoEntity = poly;
+		}
+			
+		if(nanoBean.getType().equalsIgnoreCase("CarbonNanotube")){
+			CarbonNanotube ctube = new CarbonNanotube();
+			ctube.setAverageLength((Float) nanoBean.getDomainEntity().get("averageLength"));
+			ctube.setAverageLengthUnit((String) nanoBean.getDomainEntity().get("averageLengthUnit"));
+			ctube.setChirality((String) nanoBean.getDomainEntity().get("chirality"));
+			ctube.setDiameter((Float) nanoBean.getDomainEntity().get("diameter"));
+			ctube.setDiameterUnit((String) nanoBean.getDomainEntity().get("diameterUnit"));
+			ctube.setWallType((String) nanoBean.getDomainEntity().get("wallType"));
+			if((Long) nanoBean.getDomainEntity().get("id")!=null)
+				ctube.setId((Long) nanoBean.getDomainEntity().get("id"));
+			
+			ctube.setComposingElementCollection(coll);
+			ctube.setFileCollection(filecoll);
+			ctube.setSampleComposition(new SampleComposition());
+			nanoEntity = ctube;
+			
+		}
+		Function domainFunc = new Function();
+	//	domainFunc.setCreatedBy(nanoBean.getSimpleCompBean().getCreatedBy());
+	//	domainFunc.setId((Long) nanoBean.getSimpleCompBean().getInherentFunction().get(0).get("id"));
+		
+		
+	//	func.setId(nanoBean.getSimpleCompBean().getFunctionId());
+		
+		
+		
 	//	nanoEntity.setId((Long) nanoBean.getDomainEntity().get("id"));
-		nanoEntity.setComposingElementCollection(coll);
-		nanoEntity.setFileCollection(filecoll);
-		nanoEntity.setSampleComposition(sampleComp);
+//		nanoEntity.setComposingElementCollection(coll);
+//		nanoEntity.setFileCollection(filecoll);
+//		nanoEntity.setSampleComposition(sampleComp);
 		bean.setTheComposingElement(compBean);
 		bean.setTheFile(fileBean);
 		bean.setType(nanoBean.getType());

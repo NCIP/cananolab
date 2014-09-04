@@ -1,9 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
-import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
@@ -87,7 +85,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
-		 		 
+			
 			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.saveComposingElement(nanoBean, httpRequest);
 			
 			List<String> errors = nano.getErrors();
