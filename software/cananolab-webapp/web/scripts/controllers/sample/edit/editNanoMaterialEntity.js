@@ -14,7 +14,7 @@ var app = angular.module('angularApp')
         $scope.sampleName = $routeParams.sampleName;
         //$scope.sampleId = 20917506;
         //$scope.nanoEntityId = 60260353;
-        $scope.nanoEntityForm.otherSampleNames = [];
+        $scope.otherSampleNames = [];
 
 
         /* File Variables */
@@ -35,6 +35,7 @@ var app = angular.module('angularApp')
 
 
         $scope.$on('$viewContentLoaded', function(){
+        	 $scope.loader = true;
             $http({method: 'GET', url: '/caNanoLab/rest/nanomaterialEntity/setup?sampleId=' + $scope.sampleId}).
                 success(function(data, status, headers, config) {
                     $scope.data = data;
@@ -53,11 +54,14 @@ var app = angular.module('angularApp')
                     $scope.carbonNanoTubeDiameterUnits = $scope.data.dimensionUnits;
                     $scope.carbonNanoTubeWallTypes = $scope.data.wallTypes;
                     $scope.fullereneDiameterUnits = $scope.data.dimensionUnits;
+                    
+                    $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     $scope.message = data;
+                    $scope.loader = false;
                 });
         });
         
@@ -114,6 +118,8 @@ var app = angular.module('angularApp')
         }
         else {
             $scope.addNewComposingElement=true;
+            $scope.composingElements = [];
+            $scope.files = [];
         }
 
         $scope.doSubmit = function() {
@@ -248,6 +254,10 @@ var app = angular.module('angularApp')
             }
             
             $scope.nanoEntityForm.composingElements = $scope.composingElements;
+            
+            if( $scope.sampleId != null ) {
+            	$scope.nanoEntityForm.sampleId = $scope.sampleId;
+            }            
             
             $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveComposingElement',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
@@ -476,6 +486,10 @@ var app = angular.module('angularApp')
             }
 
             $scope.nanoEntityForm.files = $scope.files;
+            
+            if( $scope.sampleId != null ) {
+            	$scope.nanoEntityForm.sampleId = $scope.sampleId;
+            }            
 
             $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveFile',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
