@@ -200,7 +200,7 @@ public class CharacterizationServices {
 	@GET
 	@Path("/getAbbreviationByTechnique")
 	@Produces ("application/json")
-    public Response getAbbreviationByTechnique(@Context HttpServletRequest httpRequest, 
+    public Response getAbbreviationByTechniqueType(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("techniqueType") String techniqueType) {
 		logger.debug("In getAbbreviationByTechnique");		
 		
