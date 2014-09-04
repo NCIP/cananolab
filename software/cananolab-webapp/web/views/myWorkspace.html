@@ -30,7 +30,7 @@
         <tr ng-repeat="data in samples">
             <td class="columnOne">
             	<a href="/caNanoLab/#/sample?sampleId={{data.id}}">View</a>&nbsp;
-            	<a href="/caNanoLab/#/editSample?sampleId={{data.id}}" ng-if="data.editable">Edit</a>
+            	<a href="/caNanoLab/#/editSample?sampleId={{data.id}}&amp;fromMyWorkspace=true" ng-if="data.editable">Edit</a>
             </td>
             <td>
                 <div>{{data.name}}</div>

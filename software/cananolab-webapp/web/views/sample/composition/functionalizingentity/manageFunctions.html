@@ -1,4 +1,4 @@
-<table width="100%" align="center" class="submissionView" summary="layout" ng-show="getAddNewInherentFunction();">
+<table width="100%" align="center" class="submissionView" summary="layout">
     <tbody>
     <tr>
         <td class="cellLabel">
@@ -9,7 +9,7 @@
                 <!-- <a style="display: block" id="addInherentFunction" href="javascript:confirmAddNew(null, 'InherentFunction', 'Inherent Function', 'clearInherentFunction()');">Add</a> -->
                 <button type="button" class="btn btn-primary" ng-click="openAddNewInherentFunction();" id="addInherentFunction">Add</button>
                 <br>
-                <table id="functionTable" class="editTableWithGrid" width="85%" ng-show="showInherentFunctionTable">
+                <table id="functionTable" class="editTableWithGrid" width="85%" ng-show="getShowInherentFunctionTable()">
                     <tbody id="functionRows">
                     <tr id="patternHeader">
                         <td width="30%" class="cellLabel" scope="col">

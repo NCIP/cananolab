@@ -83,11 +83,15 @@ var app = angular.module('angularApp')
                 $http({method: 'GET', url: '/caNanoLab/rest/functionalizingEntity/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.funcEntityId}).
                     success(function(data, status, headers, config) {
                         $scope.funcEntityForm = data;
-                        //$scope.funcEntityForm = {"simpleCompBean":{"type":"coat","name":"coat","pubChemDataSourceName":"Compound","pubChemId":12,"value":null,"valueUnit":"%vol","molecularFormulaType":"Hill","molecularFormula":"","description":"Test","id":59637770,"functionId":"","functionType":"imaging function","imagingModality":"fluorescence","functionDescription":"Test img function","sampleId":"","modality":""},"fileBean":{"uriExternal":false,"uri":"","type":"movie","title":"movie","description":"","keywordsStr":"","id":null},"type":"dendrimer","id":0,"description":"Test Nano Entity","sampleId":"","userDeletable":false,"userUpdatable":false,"createdBy":"jonnalah","createdDate":1408630200000,"domainEntity":{"id":60260353,"createdBy":"jonnalah","fileCollection":[{"uriExternal":false,"uri":"","type":"movie","title":"movie","description":"","keywordsStr":"","id":null}],"composingElementCollection":[{"type":"coat","name":"coat","pubChemDataSourceName":"Compound","pubChemId":12,"value":null,"valueUnit":"%vol","molecularFormulaType":"Hill","molecularFormula":"","description":"Test","id":59637770,"functionId":"","functionType":"imaging function","imagingModality":"fluorescence","functionDescription":"Test img function","sampleId":"","modality":""}],"branch":null,"createdDate":"jonnalah","generation":null},"withProperties":true,"detailsPage":"/caNanoLab/views/sample/composition/nanomaterialEntity/PolymerInfoEdit.html","isPolymerized":null,"isCrossLinked":null};
-                        $scope.composingElements = $scope.funcEntityForm.domainEntity.composingElementCollection;
-                        $scope.files = $scope.funcEntityForm.domainEntity.fileCollection;
+                        //$scope.funcEntityForm = {"fileBean":null,"simpleFunctionBean":{"type":null,"modality":null,"description":null,"id":null,"targetId":null,"targetType":null,"speciesType":"","targetName":null,"targetDescription":null},"type":"small molecule","name":"Magnevist","pubChemDataSourceName":"","pubChemId":"","value":"","valueUnit":"","molecularFormulaType":"","molecularFormula":"","activationMethodType":"","activationEffect":"","description":"","domainEntity":{"functionCollection":[{"type":null,"modality":null,"description":null,"id":null,"targetId":null,"targetType":null,"speciesType":"","targetName":null,"targetDescription":null},{"type":null,"modality":null,"description":null,"id":null,"targetId":null,"targetType":null,"speciesType":"","targetName":null,"targetDescription":null}],"fileCollection":[]},"errors":null};
+                        $scope.composingElementForm.inherentFunction = $scope.funcEntityForm.domainEntity.functionCollection;
+                        $scope.files = $scope.funcEntityForm.files;
 
                         $scope.showProperties();
+                        
+                        if( $scope.composingElementForm.inherentFunction != null && $scope.composingElementForm.inherentFunction.length > 0 ) {
+                        	$scope.showInherentFunctionTable = true;
+                        }
 
                         $scope.loader = false;
                     }).
@@ -267,6 +271,10 @@ var app = angular.module('angularApp')
         $scope.openAddNewInherentFunction = function() {
             $scope.addNewInherentFunction = true;
         }
+        
+        $scope.getShowInherentFunctionTable = function() {
+            return $scope.showInherentFunctionTable;
+        }        
 
 
         /* Inherent Function End */

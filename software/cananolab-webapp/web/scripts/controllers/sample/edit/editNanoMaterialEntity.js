@@ -264,6 +264,7 @@ var app = angular.module('angularApp')
                 	$scope.nanoEntityForm = data;
                 	$scope.composingElements = $scope.nanoEntityForm.composingElements;
                     $scope.loader = false;
+                    $scope.addNewComposingElement=false;
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
