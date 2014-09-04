@@ -10,8 +10,8 @@
                               NAVIGATION TREE
                            </th>
                         </tr>   
-                        <tr ng-repeat="button in buttons">
-                           <td ng-class="{'subMenuSecondaryTitleSelectedSample': url==button.url, 'subMenuSecondaryTitleSample':url!=button.url}"
+                        <tr ng-repeat="button in buttons" ng-if="!button.alternativeUrl">
+                           <td ng-class="{'subMenuSecondaryTitleSelectedSample': url==button.url||url==button.alternativeUrl, 'subMenuSecondaryTitleSample':url!=button.url}"
                             ng-click="testClick(button.url)">
                               {{button.name}}
                            </td>

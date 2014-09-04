@@ -81,7 +81,11 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/editCharacterization', {
        templateUrl: 'views/sample/edit/editCharacterization.html',
        controller: 'EditCharacterizationCtrl'
-      })       
+      })     
+      .when('/setupCharacterization', {
+       templateUrl: 'views/sample/edit/setupCharacterization.html',
+       controller: 'SetupCharacterizationCtrl'
+      })             
       .when('/publication', {
        templateUrl: 'views/sample/view/publication.html',
        controller: 'PublicationCtrl'

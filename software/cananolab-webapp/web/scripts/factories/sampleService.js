@@ -5,6 +5,8 @@ app.factory("sampleService", function(){
 	return {
 		sampleData: {data: null },
 		sampleId: {data: null },
+		type: {data: null },
+		isEdit: {data: null },
 		scratchPad: {data: null },
 		pocData: {data: null},
 		simpleDialog: function() {}

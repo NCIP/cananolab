@@ -9,7 +9,8 @@ var app = angular.module('angularApp')
         $scope.url = $location.path();
         $scope.isEdit = 0;
         $scope.buttons = [];
-        $scope.edit = [{'url':'/editSample','name':'GENERAL INFO'},{'url':'/editComposition','name':'COMPOSITION'},{'url':'/editCharacterization','name':'CHARACTERIZATION'},{'url':'/updatePublication','name':'PUBLICATION'},{'url':'/setupCharacterization','alternativeurl':'/editCharacterization','name':'CHARACTERIZATION'}];
+        // $scope.edit = ['/editSample','/editComposition','/editCharacterization','/updatePublication'];
+        $scope.edit = [{'url':'/editSample','name':'GENERAL INFO'},{'url':'/editComposition','name':'COMPOSITION'},{'url':'/editCharacterization','name':'CHARACTERIZATION'},{'url':'/updatePublication','name':'PUBLICATION'},{'url':'/setupCharacterization','alternativeUrl':'/editCharacterization','name':'CHARACTERIZATION'}];
         $scope.view = [{'url':'/sample','name':'GENERAL INFO'},{'url':'/composition','name':'COMPOSITION'},{'url':'/characterization','name':'CHARACTERIZATION'},{'url':'/publication','name':'PUBLICATION'}];
         $scope.testClick = function(uri) {
             $location.path(uri).replace();
@@ -26,11 +27,12 @@ var app = angular.module('angularApp')
                 $scope.isEdit=1;
                 $scope.buttons = $scope.edit;
                 $scope.url = newValue;
+                // check if alternative url. this will highlight the alternative url as opposed to current url. //
+                if ($scope.edit[x].alternativeUrl) {
+                    $scope.url = $scope.edit[x].alternativeUrl;
+                }
                 $scope.navTree = 1;
-              }
-              if ($scope.edit[x].alternativeurl) {
-                $scope.url = $scope.edit[x].alternativeurl;
-                $scope.buttons.splice(x,1);
+
               }
             };
             for (var x=0;x<$scope.view.length;x++) {
@@ -38,8 +40,11 @@ var app = angular.module('angularApp')
                 $scope.isEdit=0;
                 $scope.buttons = $scope.view;  
                 $scope.url = newValue;
+                // check if alternative url. this will highlight the alternative url as opposed to current url. //
+                if ($scope.view[x].alternativeUrl) {
+                    $scope.url = $scope.view[x].alternativeUrl;
+                }                
                 $scope.navTree = 1;
-
               }
             }; 
         });
