@@ -245,6 +245,32 @@ public class CharacterizationServices {
 		}
 	}
 	
+	@POST
+	@Path("/removeExperimentConfig")
+	@Produces ("application/json")
+    public Response removeExperimentConfig(@Context HttpServletRequest httpRequest, 
+    		SimpleExperimentBean simpleExpConfig) {
+		logger.debug("In removeExperimentConfig");	
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			
+			SimpleCharacterizationEditBean editBean = characterizationBO.deleteExperimentConfig(httpRequest, simpleExpConfig);
+
+		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
 	@GET
 	@Path("/getInstrumentTypesByTechniqueType")
 	@Produces ("application/json")

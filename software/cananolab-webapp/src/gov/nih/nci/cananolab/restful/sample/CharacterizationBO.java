@@ -567,7 +567,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		//DynaValidatorForm theForm = (DynaValidatorForm) form;
 		
 		logger.debug("Start saving experiment confg");
-		
 		logger.debug("Getting theChar in session: " + request.getSession().getId());;
 		
 		//editBean's charId could be null, indicating new char
@@ -834,33 +833,33 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return mapping.findForward("inputForm");
 	}
 
-	public ActionForward deleteExperimentConfig(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
+	public SimpleCharacterizationEditBean deleteExperimentConfig(HttpServletRequest request,
+			SimpleExperimentBean simpleExpConfig) throws Exception {
+		
+		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
+		SimpleCharacterizationEditBean editBean = 
+				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+		
+		
+		
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
+		simpleExpConfig.transferToExperimentConfigBean(configBean);
+		
 		CharacterizationService service = this.setServicesInSession(request);
 		service.deleteExperimentConfig(configBean.getDomain());
-		// TODO remove accessibility
-
+		logger.debug("Experiment config deleted");
 		achar.removeExperimentConfig(configBean);
-		// also save characterization
 		
+		if (validateInputs(request, achar, editBean.getMessages())) {
+			logger.debug("char validated");
+			this.saveCharacterization(request, achar, editBean);
+			logger.debug("Char saved");
+		}	
 		
-		//TODO
-//		if (!validateInputs(request, achar)) {
-//			return mapping.getInputForward();
-//		}
-//		
-		
-		//TODO
-		//this.saveCharacterization(request, theForm, achar);
-
 		service.removeAccesses(achar.getDomainChar(), configBean.getDomain());
-		this.checkOpenForms(achar, theForm, request);
-		return mapping.findForward("inputForm");
+		logger.debug("Access removed");
+		//this.checkOpenForms(achar, theForm, request);
+		return editBean;
 	}
 
 	// FR# [26194], matrix column order.
