@@ -313,7 +313,7 @@ public class CharacterizationServices {
 			
 			SimpleFindingBean simpleFindingBean = characterizationBO.drawMatrix(httpRequest, simpleFinding);
 
-		return Response.ok(simpleFinding).header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(simpleFindingBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {

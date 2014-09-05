@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful.view.edit;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -69,6 +70,7 @@ public class SimpleCharacterizationEditBean {
 		//TODO: handle type=other than in the list
 		this.type = charBean.getCharacterizationType();
 		this.parentSampleId = Long.parseLong(sampleId);
+		this.name = charBean.getCharacterizationName();
 		
 		
 		transferCharBeanData(charBean);
@@ -87,10 +89,19 @@ public class SimpleCharacterizationEditBean {
 		}
 		
 		transferExperimentConfigs(charBean.getExperimentConfigs());
-			
+		//transferFinding(charBean.getFindings())	;
 		
 	}
 	
+	protected void transferFinding(List<FindingBean> findingBeans) {
+		if (findingBeans == null) return;
+		
+		for (FindingBean findingBean : findingBeans) {
+			SimpleFindingBean simpleBean = new SimpleFindingBean();
+			simpleBean.transferFromFindingBean(findingBean);
+			this.finding.add(simpleBean);
+		}
+	}
 	protected void transferExperimentConfigs(List<ExperimentConfigBean> expConfigs) {
 		if (expConfigs == null) return;
 	

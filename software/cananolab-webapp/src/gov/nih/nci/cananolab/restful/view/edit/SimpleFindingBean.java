@@ -11,6 +11,8 @@ import java.util.List;
 
 public class SimpleFindingBean {
 	
+	long findingId;
+	
 	private int numberOfColumns;
 	private int numberOfRows;
 	
@@ -28,6 +30,23 @@ public class SimpleFindingBean {
 	
 	List<String> errors = new ArrayList<String>();
 	
+	public void transferFromFindingBean(FindingBean findingBean) {
+		columnHeaders =  findingBean.getColumnHeaders();
+		//findingBean.getDomain();
+		//findingBean.getFiles();
+		numberOfColumns = findingBean.getNumberOfColumns();
+		numberOfRows = findingBean.getNumberOfRows();
+		
+		rows = findingBean.getRows();
+		
+		Finding domain = findingBean.getDomain();
+		if (domain == null)
+			return;
+		
+		if (domain.getId() != null)
+			findingId = domain.getId();
+		
+	}
 	public void transferToFindingBean(FindingBean findingBean) {
 		
 		findingBean.setNumberOfColumns(this.numberOfColumns);
@@ -37,6 +56,12 @@ public class SimpleFindingBean {
 	
 	
 
+	public long getFindingId() {
+		return findingId;
+	}
+	public void setFindingId(long findingId) {
+		this.findingId = findingId;
+	}
 	public int getNumberOfColumns() {
 		return numberOfColumns;
 	}
