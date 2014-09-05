@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class SimpleFunctionBean {
 
@@ -15,7 +17,14 @@ public class SimpleFunctionBean {
 	String targetDescription ="";
 	String createdBy ="";
 	Date createdDate;
+	List<Map<String, String>> targets;
 	
+	public List<Map<String, String>> getTargets() {
+		return targets;
+	}
+	public void setTargets(List<Map<String, String>> targets) {
+		this.targets = targets;
+	}
 	public String getCreatedBy() {
 		return createdBy;
 	}
