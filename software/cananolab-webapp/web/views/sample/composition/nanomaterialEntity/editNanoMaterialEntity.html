@@ -1,4 +1,4 @@
-<div class="nanoPageContainer">
+<div class="nanoPageContainer" ng-class="{formFocus:loader}">
     <div class="spacer">
         <form novalidate>
             <table class="contentTitle" width="100%" border="0" summary="layout">
@@ -95,7 +95,7 @@
                     </td>
                     <td width="20%">
                         <select ng-disabled="loader" id="otherSamples" ng-model="otherSampleNames" multiple="true" size="10">
-                            <option ng-repeat="option in otherSampleNames" value="{{option}}">
+                            <option ng-repeat="option in otherSampleNames" value="{{option}}" ng-selected="{{option == otherSampleNames}}">
                                 {{option}}
                             </option>
                         </select>
@@ -124,11 +124,11 @@
                 </tbody>
             </table>
         </form>
-        <div id="loader" ng-show="loader">
-            <div id="loaderText">
-                Loading
-            </div>
-            <div id="loaderGraphic"></div>
-        </div>
+      </div>
+</div>
+<div id="loader" ng-show="loader">
+    <div id="loaderText">
+        Loading
     </div>
+    <div id="loaderGraphic"></div>
 </div>

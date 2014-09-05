@@ -20,7 +20,7 @@
                 <select ng-model="nanoEntityForm.domainEntity.averageDiameterUnit"
                         id="averageDiameterUnit">
                     <option value=""></option>
-                    <option ng-repeat="unit in $parent.fullereneDiameterUnits track by $index" value="{{unit}}">
+                    <option ng-repeat="unit in $parent.fullereneDiameterUnits track by $index" value="{{unit}}" ng-selected="unit == nanoEntityForm.domainEntity.averageDiameterUnit}}">
                         {{unit}}
                     </option>
                     <option value="other">

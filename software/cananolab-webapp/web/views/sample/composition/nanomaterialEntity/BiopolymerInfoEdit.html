@@ -18,7 +18,7 @@
             <div id="biopolymerTypePrompt">
                 <select ng-model="nanoEntityForm.domainEntity.type"  id="biopolymerType">
                     <option value=""></option>
-                    <option ng-repeat="type in $parent.biopolymerTypes track by $index" value="{{type}}">
+                    <option ng-repeat="type in $parent.biopolymerTypes track by $index" value="{{type}}" ng-selected="{{type==nanoEntityForm.domainEntity.type}}">
                         {{type}}
                     </option>
                     <option value="other">

@@ -84,7 +84,7 @@
                         <div id="pubChemDataSourcePrompt">
                             <select ng-model="funcEntityForm.pubChemDataSourceName" id="pubChemDataSource">
                             <option value="">
-                                <option ng-repeat="dataSource in pubChemDataSources track by $index" value="{{dataSource}}">
+                                <option ng-repeat="dataSource in pubChemDataSources track by $index" value="{{dataSource}}" ng-selected="{{dataSource == funcEntityForm.pubChemDataSourceName}}">
                                     {{dataSource}}
                                 </option>
                             </select>
@@ -112,7 +112,7 @@
                         <div id="feUnitPrompt">
                             <select ng-model="funcEntityForm.valueUnit" id="feUnit">
                                 <option value=""></option>
-                                <option ng-repeat="unit in functionalizingEntityUnits track by $index" value="{{unit}}">
+                                <option ng-repeat="unit in functionalizingEntityUnits track by $index" value="{{unit}}" ng-selected="{{unit == funcEntityForm.valueUnit}}">
                                     {{unit}}
                                 </option>
 
@@ -130,7 +130,7 @@
                         <div id="mfTypePrompt">
                             <select ng-model="funcEntityForm.molecularFormulaType" id="mfType">
                                 <option value=""></option>
-                                <option ng-repeat="type in molecularFormulaTypes track by $index" value="{{type}}">
+                                <option ng-repeat="type in molecularFormulaTypes track by $index" value="{{type}}" ng-selected="{{type == funcEntityForm.molecularFormulaType}}">
                                     {{type}}
                                 </option>
 
@@ -156,7 +156,7 @@
                         <div id="feaMethodPrompt">
                             <select ng-model="funcEntityForm.activationMethod.type" id="feaMethod">
                                 <option value=""></option>
-                                <option ng-repeat="aMethod in activationMethods track by $index" value="{{aMethod}}">
+                                <option ng-repeat="aMethod in activationMethods track by $index" value="{{aMethod}}" ng-selected="{{aMethod == funcEntityForm.activationMethod.type}}">
                                     {{aMethod}}
                                 </option>
 
@@ -198,8 +198,8 @@
                         <strong><label for="otherSamples">Copy to other samples with the same primary organization?</label></strong>
                     </td>
                     <td width="20%">
-                        <select ng-disabled="loader" id="otherSamples" ng-model="funcEntityForm.otherSampleNames" multiple="true" size="10">
-                            <option ng-repeat="option in otherSampleNames" value="{{option}}">
+                        <select ng-disabled="loader" id="otherSamples" ng-model="otherSampleNames" multiple="true" size="10">
+                            <option ng-repeat="option in otherSampleNames" value="{{option}}" ng-selected="{{option == otherSampleNames}}">
                                 {{option}}
                             </option>
                         </select>

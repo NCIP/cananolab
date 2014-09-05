@@ -21,7 +21,7 @@
                 <select ng-model="nanoEntityForm.domainEntity.averageLengthUnit"
                         id="averageLengthUnit">
                     <option value=""></option>
-                    <option ng-repeat="unit in $parent.carbonNanoTubeaverageLengthUnits track by $index" value="{{unit}}">
+                    <option ng-repeat="unit in $parent.carbonNanoTubeaverageLengthUnits track by $index" value="{{unit}}" ng-selected="{{unit==nanoEntityForm.domainEntity.averageLengthUnit}}">
                         {{unit}}
                     </option>
                     <option value="other">
@@ -55,7 +55,7 @@
                 <select ng-model="nanoEntityForm.domainEntity.diameterUnit"
                         id="diameterUnit">
                     <option value=""></option>
-                    <option ng-repeat="unit in $parent.carbonNanoTubeDiameterUnits track by $index" value="{{unit}}">
+                    <option ng-repeat="unit in $parent.carbonNanoTubeDiameterUnits track by $index" value="{{unit}}" ng-selected="{{unit==nanoEntityForm.domainEntity.diameterUnit}}">
                         {{unit}}
                     </option>
                     <option value="other">
@@ -71,7 +71,7 @@
             <select ng-model="nanoEntityForm.domainEntity.wallType"
                     id="wallType">
                 <option value=""></option>
-                <option ng-repeat="type in $parent.carbonNanoTubeWallTypes track by $index" value="{{type}}">
+                <option ng-repeat="type in $parent.carbonNanoTubeWallTypes track by $index" value="{{type}}" ng-selected="{{type == nanoEntityForm.domainEntity.wallType}}">
                     {{type}}
                 </option>
             </select>

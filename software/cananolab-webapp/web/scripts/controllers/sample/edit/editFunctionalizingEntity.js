@@ -15,7 +15,7 @@ var app = angular.module('angularApp')
         $scope.sampleId = 20917506;
         $scope.sampleName='Test Sample';
         //$scope.funcEntityId = 60260353;
-        $scope.funcEntityForm.otherSampleNames = [];
+        $scope.otherSampleNames = [];
 
 
         /* File Variables */
