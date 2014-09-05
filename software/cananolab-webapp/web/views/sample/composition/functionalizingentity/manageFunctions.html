@@ -91,6 +91,121 @@
                             <textarea ng-model="theInherentFunction.description" cols="50" rows="3" id="functionDescription"></textarea>
                         </td>
                     </tr>
+                    <tr ng-show="showTargetFunction">
+                        <td class="cellLabel">
+                            <div id="targetLabel" style="display: block;">
+                                Target
+                            </div>
+                        </td>
+                        <td colspan="3">
+                            <div id="targetSection" style="position: relative; display: block;">
+                                <a style="display: block;" id="addTarget" href ng-click="openAddNewTargetFunction();">Add</a>
+                                <br>
+                                <table id="targetTable" class="editTableWithGrid" width="85%" ng-show="getShowTargetFunctionTable();">
+                                    <tbody id="targetRows"><tr id="targetPatternHeader">
+                                        <th width="25%" class="cellLabel" scope="col">
+                                            Type
+                                        </th>
+                                        <th width="25%" class="cellLabel" scope="col">
+                                            <span id="antigenSpeciesHeader">Species</span>
+                                        </th>
+                                        <th width="25%" class="cellLabel" scope="col">
+                                            Name
+                                        </th>
+                                        <th class="cellLabel" scope="col">
+                                            Description
+                                        </th>
+                                        <th>
+                                        </th>
+                                    </tr><tr id="pattern" ng-repeat="targetFunction in theInherentFunction.targets">
+                                        <td>
+                                            <span id="targetTypeValue">{{targetFunction.type}}</span>
+                                        </td>
+                                        <td>
+                                            <span id="antigenSpeciesValue">{{targetFunction.species}}</span>
+                                        </td>
+                                        <td>
+                                            <span id="targetNameValue">{{targetFunction.name}}</span>
+                                        </td>
+                                        <td>
+                                            <span id="targetDescriptionValue">{{targetFunction.description}}</span>
+                                        </td>
+                                        <td>
+                                            <input class="noBorderButton" id="edit" type="button" value="Edit" ng-click="editTargetFunction('{{targetFunction.id}}');">
+                                        </td>
+                                    </tr></tbody>
+                                </table>
+                                <br>
+                                <input type="hidden" name="functionalizingEntity.theFunction.theTarget.id" value="" id="targetId">
+                                <table id="newTarget" class="promptbox" width="85%" ng-show="getAddNewTargetFunction()">
+                                    <tbody>
+                                    <tr>
+                                        <td class="cellLabel" width="15%">
+                                            <label for="targetType">Type *</label>
+                                        </td>
+                                        <td>
+                                            <div id="targetTypePrompt">
+                                                <select ng-model="theTargetFunction.type" id="targetType" ng-click="checkTargetFunctionType()">
+                                                    <option value=""></option>
+                                                    <option ng-repeat="type in $parent.targetTypes track by $index" value="{{type}}">
+                                                        {{type}}
+                                                    </option>
+
+                                                    <option value="other">
+                                                        [other]
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="showSpecies">
+                                        <td class="cellLabel" width="15%">
+                                            <div id="antigenSpeciesLabel">
+                                                <label for="antigenSpecies">Species</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div id="antigenSpeciesPrompt">
+                                                <select ng-model="theTargetFunction.species" id="antigenSpecies"><option value=""></option>
+                                                    <option ng-repeat="type in $parent.speciesTypes track by $index" value="{{type}}">
+                                                        {{type}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cellLabel" width="15%">
+                                            <label for="targetName">Name</label>
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="theTargetFunction.name" value="" id="targetName">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cellLabel" width="15%">
+                                            <label for="targetDescription">Description</label>
+                                        </td>
+                                        <td>
+                                            <textarea ng-model="theTargetFunction.description" cols="50" rows="3" id="targetDescription"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="15%" ng-show="theTargetFunction.id != null || theTargetFunction.id != ''">
+                                            <input class="promptButton" id="deleteTarget" type="button" value="Remove" ng-click="deleteTargetFunction()">
+                                        </td>
+                                        <td>
+                                            <div align="right">
+                                                <input class="promptButton" type="button" value="Save" ng-click="closeAddNewTargetFunction();addTargetFunction();">
+                                                <input class="promptButton" type="button" value="Cancel" ng-click="closeAddNewTargetFunction();">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
                     <tr>
                         <td ng-show="theInherentFunction.id != null || theInherentFunction.id != ''">
                             <input class="promptButton"

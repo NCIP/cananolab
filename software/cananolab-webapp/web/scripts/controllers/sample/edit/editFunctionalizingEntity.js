@@ -12,8 +12,8 @@ var app = angular.module('angularApp')
         $scope.sampleId = $routeParams.sampleId;
         $scope.funcEntityId = $routeParams.funcEntityId;
         $scope.sampleName = $routeParams.sampleName;
-        $scope.sampleId = 20917506;
-        $scope.sampleName='Test Sample';
+        //$scope.sampleId = 20917506;
+        //$scope.sampleName='Test Sample';
         //$scope.funcEntityId = 60260353;
         $scope.otherSampleNames = [];
 
@@ -33,6 +33,12 @@ var app = angular.module('angularApp')
         $scope.composingElementForm.inherentFunction = [];
         $scope.theInherentFunction = {};
         $scope.showModality = false;
+        $scope.theInherentFunction.targets = [];
+        $scope.theTargetFunction = {};
+        $scope.showTargetFunction = false;
+        $scope.showSpecies = false;
+        $scope.showTargetFunctionTable = false;
+        $scope.addNewTargetFunction = false;
 
 
         $scope.$on('$viewContentLoaded', function(){
@@ -64,33 +70,34 @@ var app = angular.module('angularApp')
 
         $scope.showProperties = function() {
             if( $scope.funcEntityForm.type == 'biopolymer') {
-                $scope.funcEntityForm.withProperties = true;
+                $scope.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/functionalizingentity/BiopolymerInfoEdit.html';
             }else if( $scope.funcEntityForm.type == 'antibody') {
-                $scope.funcEntityForm.withProperties = true;
+                $scope.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/functionalizingentity/AntibodyInfoEdit.html';
             }else if( $scope.funcEntityForm.type == 'small molecule') {
-                $scope.funcEntityForm.withProperties = true;
+                $scope.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/functionalizingentity/SmallMoleculeInfoEdit.html';
             } else {
-                $scope.funcEntityForm.withProperties = false;
+                $scope.withProperties = false;
             }
         };
 
         $scope.loadFuncEntityData = function() {
             if( $scope.funcEntityId != null ) {
                 $scope.loader = true;
+
                 $http({method: 'GET', url: '/caNanoLab/rest/functionalizingEntity/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.funcEntityId}).
                     success(function(data, status, headers, config) {
                         $scope.funcEntityForm = data;
-                        //$scope.funcEntityForm = {"fileBean":null,"simpleFunctionBean":{"type":null,"modality":null,"description":null,"id":null,"targetId":null,"targetType":null,"speciesType":"","targetName":null,"targetDescription":null},"type":"small molecule","name":"Magnevist","pubChemDataSourceName":"","pubChemId":"","value":"","valueUnit":"","molecularFormulaType":"","molecularFormula":"","activationMethodType":"","activationEffect":"","description":"","domainEntity":{"functionCollection":[{"type":null,"modality":null,"description":null,"id":null,"targetId":null,"targetType":null,"speciesType":"","targetName":null,"targetDescription":null},{"type":null,"modality":null,"description":null,"id":null,"targetId":null,"targetType":null,"speciesType":"","targetName":null,"targetDescription":null}],"fileCollection":[]},"errors":null};
-                        $scope.composingElementForm.inherentFunction = $scope.funcEntityForm.domainEntity.functionCollection;
-                        $scope.files = $scope.funcEntityForm.files;
+                        //$scope.funcEntityForm = {"fileBean":null,"simpleFunctionBean":{"type":"targeting function","modality":null,"description":"Test","id":"72712192","targetId":null,"targetType":null,"speciesType":"","targetName":null,"targetDescription":null,"createdBy":"","createdDate":null},"type":"small molecule","name":"Magnevist","pubChemDataSourceName":"","pubChemId":"","value":"","valueUnit":"","molecularFormulaType":"SMARTS","molecularFormula":"we","activationMethodType":"","activationEffect":"","description":"Test","sampleId":"","domainEntity":{},"errors":null,"functionList":[{"type":"imaging function","modality":null,"description":null,"id":"22031616","targetId":null,"targetType":null,"speciesType":"","targetName":null,"targetDescription":null,"createdBy":"","createdDate":null},{"type":"endosomolysis","modality":null,"description":"tesgt","id":"69730309","targetId":null,"targetType":null,"speciesType":"","targetName":null,"targetDescription":null,"createdBy":"","createdDate":null},{"type":"targeting function","modality":null,"description":"Test","id":"72712192","targetId":null,"targetType":null,"speciesType":"","targetName":null,"targetDescription":null,"createdBy":"","createdDate":null}],"fileList":[]};
+                        $scope.composingElementForm.inherentFunction = $scope.funcEntityForm.functionList;
+                        $scope.files = $scope.funcEntityForm.fileList;
 
                         $scope.showProperties();
-                        
+
                         if( $scope.composingElementForm.inherentFunction != null && $scope.composingElementForm.inherentFunction.length > 0 ) {
-                        	$scope.showInherentFunctionTable = true;
+                            $scope.showInherentFunctionTable = true;
                         }
 
                         $scope.loader = false;
@@ -172,51 +179,49 @@ var app = angular.module('angularApp')
             else {
                 $scope.showModality = false;
             }
+
+            if( $scope.theInherentFunction.type == 'targeting function') {
+                $scope.showTargetFunction = true;
+            }
+            else {
+                $scope.showTargetFunction = false;
+            }
         };
 
         $scope.addInherentFunction = function() {
-            var inherentFunction = {
-                id : null,
-                type : null,
-                modality : null,
-                description : null
-            };
-            var newInherentFunction = false
-            inherentFunction.id = $scope.theInherentFunction.id;
-            if (inherentFunction.id == null || inherentFunction.id.length == 0) {
-                inherentFunction.id = -1000 - $scope.composingElementForm.inherentFunction.length;
-                newInherentFunction = true;
-            }
-            inherentFunction.type = $scope.theInherentFunction.type;
-            inherentFunction.modality = $scope.theInherentFunction.modality;
-            inherentFunction.description = $scope.theInherentFunction.description;
-            if (inherentFunction.type.length > 0 && inherentFunction.description.length > 0) {
-                if (newInherentFunction) {
-                    $scope.composingElementForm.inherentFunction.push(inherentFunction);
-                }
-                else {
-                    var k;
-                    for (k = 0; k < $scope.composingElementForm.inherentFunction.length; ++k)
-                    {
-                        var inherentFunctionL = $scope.composingElementForm.inherentFunction[k];
-                        if (inherentFunction.id == inherentFunctionL.id ) {
-                            $scope.composingElementForm.inherentFunction[k].type = inherentFunction.type;
-                            $scope.composingElementForm.inherentFunction[k].modality = inherentFunction.modality;
-                            $scope.composingElementForm.inherentFunction[k].description = inherentFunction.description;
-                        }
-                    }
-                }
-                $scope.addNewInherentFunction=false;
-                $scope.showInherentFunctionTable = true;
-
-                $scope.theInherentFunction.type = '';
-                $scope.theInherentFunction.modality = '';
-                $scope.theInherentFunction.description = '';
-                $scope.theInherentFunction.id = '';
-            } else {
-                alert("Please fill in values");
-            }
-
+        	if ($scope.theInherentFunction.type != null && $scope.theInherentFunction.description != null) {
+	            if ( $scope.theInherentFunction.id != null && $scope.theInherentFunction.id != '' ) {
+	                for (var k = 0; k < $scope.composingElementForm.inherentFunction.length; ++k) {
+	                    var inherentFunctionL = $scope.composingElementForm.inherentFunction[k];
+	                    if ($scope.theInherentFunction.id == inherentFunctionL.id ) {
+	                        $scope.composingElementForm.inherentFunction[k] = $scope.theInherentFunction;
+	                    }
+	                }
+	            }
+	            else {
+	                $scope.composingElementForm.inherentFunction.push($scope.theInherentFunction);
+	            }
+	            
+	            $scope.funcEntityForm.functionList = $scope.composingElementForm.inherentFunction;
+	            
+	            $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/saveFunction',data: $scope.funcEntityForm}).
+                success(function(data, status, headers, config) {
+                	$scope.funcEntityForm = data;
+                    $scope.composingElementForm.inherentFunction = $scope.funcEntityForm.functionList;
+                    $scope.loader = false;
+                    $scope.addNewInherentFunction=false;
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    // $rootScope.sampleData = data;
+                    $scope.loader = false;
+                    $scope.messages = data;
+                });
+        	}
+        	else {
+        		alert("Please fill in values");
+        	}
         }
 
         $scope.editInherentFunction = function(id) {
@@ -229,11 +234,19 @@ var app = angular.module('angularApp')
                     $scope.theInherentFunction.modality = inherentFunction.modality;
                     $scope.theInherentFunction.description = inherentFunction.description;
                     $scope.theInherentFunction.id = inherentFunction.id;
+                    $scope.theInherentFunction.targets = inherentFunction.targets;
                     $scope.addNewInherentFunction=true;
 
-                    console.log($scope.addNewInherentFunction);
+                    if( $scope.theInherentFunction.targets != null && $scope.theInherentFunction.targets.length > 0 ) {
+                        $scope.showTargetFunctionTable = true;
+                    }
+                    else {
+                        $scope.showTargetFunctionTable = false;
+                    }
                 }
             }
+
+            $scope.checkFunctionType();
         }
 
         $scope.deleteInherentFunction = function() {
@@ -271,11 +284,137 @@ var app = angular.module('angularApp')
         $scope.openAddNewInherentFunction = function() {
             $scope.addNewInherentFunction = true;
         }
-        
+
         $scope.getShowInherentFunctionTable = function() {
             return $scope.showInherentFunctionTable;
-        }        
+        }
 
+        /* Target Function start */
+        $scope.checkTargetFunctionType = function() {
+            if( $scope.theTargetFunction.type == 'antigen') {
+                $scope.showSpecies = true;
+            }
+            else {
+                $scope.showSpecies = false;
+            }
+        };
+
+        $scope.getAddNewTargetFunction = function() {
+            return $scope.addNewTargetFunction;
+        }
+
+        $scope.closeAddNewTargetFunction = function() {
+            $scope.addNewTargetFunction = false;
+        }
+
+
+        $scope.openAddNewTargetFunction = function() {
+            $scope.addNewTargetFunction = true;
+        }
+
+        $scope.getShowTargetFunctionTable = function() {
+            return $scope.showTargetFunctionTable;
+        }
+
+        $scope.addTargetFunction = function() {
+            var targetFunction = {
+                id : null,
+                type : null,
+                species : null,
+                name : null,
+                description : null
+            };
+            var newTargetFunction = false
+            targetFunction.id = $scope.theTargetFunction.id;
+            if (targetFunction.id == null || targetFunction.id.length == 0) {
+                targetFunction.id = -1000 - $scope.theInherentFunction.targets.length;
+                newTargetFunction = true;
+            }
+            targetFunction.type = $scope.theTargetFunction.type;
+            targetFunction.species = $scope.theTargetFunction.species;
+            targetFunction.name = $scope.theTargetFunction.name;
+            targetFunction.description = $scope.theTargetFunction.description;
+            if (targetFunction.type != null ) {
+                if (newTargetFunction) {
+                    $scope.theInherentFunction.targets.push(targetFunction);
+                }
+                else {
+                    var k;
+                    for (k = 0; k < $scope.theInherentFunction.targets.length; ++k)
+                    {
+                        var targetFunctionL = $scope.theInherentFunction.targets[k];
+                        if (targetFunction.id == targetFunctionL.id ) {
+                            $scope.theInherentFunction.targets[k].type = targetFunction.type;
+                            $scope.theInherentFunction.targets[k].species = targetFunction.species;
+                            $scope.theInherentFunction.targets[k].name = targetFunction.name;
+                            $scope.theInherentFunction.targets[k].description = targetFunction.description;
+                        }
+                    }
+                }
+                $scope.addNewTargetFunction=false;
+                $scope.showTargetFunctionTable = true;
+
+                $scope.theTargetFunction.type = '';
+                $scope.theTargetFunction.species = '';
+                $scope.theTargetFunction.name = '';
+                $scope.theTargetFunction.description = '';
+                $scope.theTargetFunction.id = '';
+            } else {
+                alert("Please fill in values");
+            }
+
+        }
+
+        $scope.editTargetFunction = function(id) {
+            var k;
+            for (k = 0; k < $scope.theInherentFunction.targets.length; ++k)
+            {
+                var targetFunction = $scope.theInherentFunction.targets[k];
+                if (id == targetFunction.id ) {
+                    $scope.theTargetFunction.type = targetFunction.type;
+                    $scope.theTargetFunction.species = targetFunction.species;
+                    $scope.theTargetFunction.name = targetFunction.name;
+                    $scope.theTargetFunction.description = targetFunction.description;
+                    $scope.theTargetFunction.id = targetFunction.id;
+                    $scope.addNewTargetFunction=true;
+
+                    console.log($scope.addNewTargetFunction);
+                }
+            }
+            console.log($scope.addNewTargetFunction);
+            if( $scope.theTargetFunction.type == 'antigen') {
+                $scope.showSpecies = true;
+            }
+            else {
+                $scope.showSpecies = false;
+            }
+        }
+
+        $scope.deleteTargetFunction = function() {
+            var k;
+            for (k = 0; k < $scope.theInherentFunction.targets.length; ++k)
+            {
+                var targetFunction = $scope.theInherentFunction.targets[k];
+                if ($scope.theTargetFunction.id == targetFunction.id ) {
+                    $scope.theInherentFunction.targets.splice(k,1);
+                }
+            }
+            $scope.addNewTargetFunction=false;
+            if( $scope.theInherentFunction.targets.length > 0 ) {
+                $scope.showTargetFunctionTable = true;
+            }
+            else {
+                $scope.showTargetFunctionTable = false;
+            }
+
+            $scope.theTargetFunction.type = '';
+            $scope.theTargetFunction.species = '';
+            $scope.theTargetFunction.name = '';
+            $scope.theTargetFunction.description = '';
+            $scope.theTargetFunction.id = '';
+        }
+
+        /* Target Function End */
 
         /* Inherent Function End */
 
@@ -298,6 +437,8 @@ var app = angular.module('angularApp')
                     $scope.fileForm.keywordsStr = element.keywordsStr;
                     $scope.fileForm.description = element.description;
                     $scope.fileForm.id = element.id;
+
+                    $scope.addNewFile = true;
 
                     break;
                 }
