@@ -331,15 +331,16 @@ public class CharacterizationServices {
     		@DefaultValue("") @QueryParam("charType") String charType,
     		@DefaultValue("") @QueryParam("charName") String charName, 
     		@DefaultValue("") @QueryParam("assayType")String assayType) {
-		logger.debug("In getDatumNames");		
+		logger.debug("In getColumnNameOptionsByType");		
 		
 		try {
 			CharacterizationResultManager characterizationResultManager = 
 				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
 
-			List<String> names = characterizationResultManager.getDatumNameOptions(httpRequest, charType, charName, assayType);
+			List<String> names = characterizationResultManager
+					.getColumnNameOptionsByType(httpRequest, columnType, charType, charName, assayType);
 
-		return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {

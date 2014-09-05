@@ -83,7 +83,7 @@ public class CharacterizationResultManager {
 		
 		if (columnType.equals("datum"))
 			return getDatumNameOptions(request, charType, charName, assayType);
-		else if (columnType.equals("datum"))
+		else if (columnType.equals("condition"))
 			return getConditionOptions(request);
 		
 		return new ArrayList<String>();
