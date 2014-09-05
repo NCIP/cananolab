@@ -406,6 +406,8 @@ var app = angular.module('angularApp')
                     $scope.fileForm.keywordsStr = element.keywordsStr;
                     $scope.fileForm.description = element.description;
                     $scope.fileForm.id = element.id;
+                    
+                    $scope.addNewFile = true;
 
                     break;
                 }
