@@ -37,7 +37,14 @@ public class SimpleFindingBean {
 		numberOfColumns = findingBean.getNumberOfColumns();
 		numberOfRows = findingBean.getNumberOfRows();
 		
-		rows = findingBean.getRows();
+		
+		List<Row> beanRows = findingBean.getRows();
+//		if (beanRows != null) {
+//			for (Row beanRow : beanRows) {
+//				beanRow.
+//			}
+//		}
+		
 		
 		Finding domain = findingBean.getDomain();
 		if (domain == null)

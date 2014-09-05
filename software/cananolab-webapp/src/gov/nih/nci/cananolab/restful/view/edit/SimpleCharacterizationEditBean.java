@@ -90,11 +90,12 @@ public class SimpleCharacterizationEditBean {
 	
 	protected void setProtocolId(CharacterizationBean charBean) {
 		if (charBean == null || 
-				charBean.getDomainChar() == null || 
-				charBean.getDomainChar().getId() == null)
+				charBean.getProtocolBean() == null || 
+				charBean.getProtocolBean().getDomain() == null ||
+				charBean.getProtocolBean().getDomain().getId() == null)
 			return;
 		
-		this.protocolId = charBean.getDomainChar().getId();
+		this.protocolId = charBean.getProtocolBean().getDomain().getId();
 	}
 	
 	protected void transferCharBeanData(CharacterizationBean charBean) {

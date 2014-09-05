@@ -1,6 +1,10 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.Datum;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SimpleTableBean {
@@ -46,6 +50,40 @@ public class SimpleTableBean {
 
 		public void setCells(List<String> cells) {
 			this.cells = cells;
+		}
+		
+		
+		
+	}
+	
+	private class SimpleCellBean {
+		private String value;
+		private String datumOrCondition;
+		
+		private Integer columnOrder;
+
+		public String getValue() {
+			return value;
+		}
+
+		public void setValue(String value) {
+			this.value = value;
+		}
+
+		public String getDatumOrCondition() {
+			return datumOrCondition;
+		}
+
+		public void setDatumOrCondition(String datumOrCondition) {
+			this.datumOrCondition = datumOrCondition;
+		}
+
+		public Integer getColumnOrder() {
+			return columnOrder;
+		}
+
+		public void setColumnOrder(Integer columnOrder) {
+			this.columnOrder = columnOrder;
 		}
 		
 		
