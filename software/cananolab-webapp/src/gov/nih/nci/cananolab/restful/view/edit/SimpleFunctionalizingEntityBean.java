@@ -158,27 +158,27 @@ public class SimpleFunctionalizingEntityBean {
 		
 		List<SimpleFileBean> fileList = new ArrayList<SimpleFileBean>();
 		for(FileBean files : bean.getFiles()){
-			fileBean = new SimpleFileBean();
+			SimpleFileBean fBean = new SimpleFileBean();
 
-			fileBean.setDescription(files.getDescription());
-			fileBean.setId(files.getDomainFile().getId());
-			fileBean.setKeywordsStr(files.getKeywordsStr());
-			fileBean.setTitle(files.getDomainFile().getTitle());
-			fileBean.setType(files.getDomainFile().getType());
-			fileBean.setUri(files.getDomainFile().getUri());
-			fileBean.setUriExternal(files.getDomainFile().getUriExternal());
-			fileList.add(fileBean);
+			fBean.setDescription(files.getDescription());
+			fBean.setId(files.getDomainFile().getId());
+			fBean.setKeywordsStr(files.getKeywordsStr());
+			fBean.setTitle(files.getDomainFile().getTitle());
+			fBean.setType(files.getDomainFile().getType());
+			fBean.setUri(files.getDomainFile().getUri());
+			fBean.setUriExternal(files.getDomainFile().getUriExternal());
+			fileList.add(fBean);
 		}
 		setFileList(fileList);
 		
 		List<SimpleFunctionBean> funcList = new ArrayList<SimpleFunctionBean>();
 		for(FunctionBean funcBean : bean.getFunctions()){
-			simpleFunctionBean = new SimpleFunctionBean();
+			SimpleFunctionBean simpleBean = new SimpleFunctionBean();
 			
-			simpleFunctionBean.setDescription(funcBean.getDescription());
-			simpleFunctionBean.setId(funcBean.getId());
-			simpleFunctionBean.setType(funcBean.getType());
-			simpleFunctionBean.setModality(funcBean.getImagingFunction().getModality());
+			simpleBean.setDescription(funcBean.getDescription());
+			simpleBean.setId(funcBean.getId());
+			simpleBean.setType(funcBean.getType());
+			simpleBean.setModality(funcBean.getImagingFunction().getModality());
 
 			targets = new ArrayList<Map<String, String>>();
 			for(TargetBean targetBean : funcBean.getTargets()){
@@ -191,8 +191,8 @@ public class SimpleFunctionalizingEntityBean {
 				targets.add(target);
 			}
 			
-			simpleFunctionBean.setTargets(targets);
-			funcList.add(simpleFunctionBean);
+			simpleBean.setTargets(targets);
+			funcList.add(simpleBean);
 		}
 		setFunctionList(funcList);
 		

@@ -139,4 +139,31 @@ public class CompositionUtil {
 			typeMap.put("pubChemDataSources", pubChemSources);
 		return typeMap;
 	}
+
+	public static Map<String, Object> reformatLocalSearchDropdownsInSessionForChemicalAssociation(
+			HttpSession session) {
+		ServletContext appContext = session.getServletContext();
+		Map<String, Object> typeMap = new HashMap<String, Object>();
+		
+		SortedSet<String> types = (SortedSet<String>) session.getAttribute("chemicalAssociationTypes");
+					
+		if (types != null) 
+			typeMap.put("chemicalAssociationTypes", new ArrayList<String>(types));
+		
+		types = (SortedSet<String>) session.getAttribute("bondTypes");
+		
+		if (types != null) 
+			typeMap.put("bondTypes", new ArrayList<String>(types));
+		
+		List<String> assoTypes = (List<String>) session.getAttribute("associationCompositionTypes");
+		
+		if (types != null) 
+			typeMap.put("associationCompositionTypes", assoTypes);
+		
+		types = (SortedSet<String>) session.getAttribute("fileTypes");
+		
+		if (types != null) 
+			typeMap.put("fileTypes", new ArrayList<String>(types));
+		return typeMap;
+	}
 }

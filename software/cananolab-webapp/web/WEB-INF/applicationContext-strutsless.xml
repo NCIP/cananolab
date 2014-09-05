@@ -142,6 +142,13 @@
 		</property>
 	</bean>
 	
+	<bean id="chemicalAssociationBO"
+		class="gov.nih.nci.cananolab.restful.sample.ChemicalAssociationBO">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+	
 	<bean id="experimentConfigManager"
 		class="gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager">
 	</bean>

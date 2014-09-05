@@ -211,19 +211,19 @@ public class SimpleNanomaterialEntityBean {
 		if(bean.getDomainEntity().getComposingElementCollection()!=null){
 			composingElements = new ArrayList<SimpleComposingElementBean>();
 			for(ComposingElement comp : bean.getDomainEntity().getComposingElementCollection()){
-				simpleCompBean = new SimpleComposingElementBean();
-				simpleCompBean.setDescription(comp.getDescription());
-				simpleCompBean.setId(comp.getId());
-				simpleCompBean.setMolecularFormula(comp.getMolecularFormula());
-				simpleCompBean.setMolecularFormulaType(comp.getMolecularFormulaType());
-				simpleCompBean.setName(comp.getName());
-				simpleCompBean.setPubChemDataSourceName(comp.getPubChemDataSourceName());
-				simpleCompBean.setPubChemId(comp.getPubChemId());
-				simpleCompBean.setType(comp.getType());
-				simpleCompBean.setValue(comp.getValue());
-				simpleCompBean.setValueUnit(comp.getValueUnit());
-				simpleCompBean.setCreatedBy(comp.getCreatedBy());
-				simpleCompBean.setCreatedDate(comp.getCreatedDate());
+				SimpleComposingElementBean sCompBean = new SimpleComposingElementBean();
+				sCompBean.setDescription(comp.getDescription());
+				sCompBean.setId(comp.getId());
+				sCompBean.setMolecularFormula(comp.getMolecularFormula());
+				sCompBean.setMolecularFormulaType(comp.getMolecularFormulaType());
+				sCompBean.setName(comp.getName());
+				sCompBean.setPubChemDataSourceName(comp.getPubChemDataSourceName());
+				sCompBean.setPubChemId(comp.getPubChemId());
+				sCompBean.setType(comp.getType());
+				sCompBean.setValue(comp.getValue());
+				sCompBean.setValueUnit(comp.getValueUnit());
+				sCompBean.setCreatedBy(comp.getCreatedBy());
+				sCompBean.setCreatedDate(comp.getCreatedDate());
 				
 				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				if(comp.getInherentFunctionCollection().size()>0){
@@ -238,9 +238,9 @@ public class SimpleNanomaterialEntityBean {
 						function.put("createdDate", func.getCreatedDate());
 						list.add(function);
 					}
-					simpleCompBean.setInherentFunction(list);
+					sCompBean.setInherentFunction(list);
 				}
-				composingElements.add(simpleCompBean);
+				composingElements.add(sCompBean);
 			}
 			//domainEntity.put("composingElementCollection", composingElements);
 			
@@ -249,17 +249,17 @@ public class SimpleNanomaterialEntityBean {
 		if(bean.getFiles()!=null){
 			files = new ArrayList<SimpleFileBean>();
 		for(FileBean file : bean.getFiles()){
-			fileBean = new SimpleFileBean();
-			fileBean.setDescription(file.getDescription());
-			fileBean.setType(file.getDomainFile().getType());
-			fileBean.setTitle(file.getDomainFile().getTitle());
-			fileBean.setUri(file.getDomainFile().getUri());
-			fileBean.setUriExternal(file.getDomainFile().getUriExternal());
-			fileBean.setKeywordsStr(file.getKeywordsStr());
-			fileBean.setId(file.getDomainFile().getId());
-			fileBean.setCreatedBy(file.getDomainFile().getCreatedBy());
-			fileBean.setCreatedDate(file.getDomainFile().getCreatedDate());
-			files.add(fileBean);
+			SimpleFileBean fBean = new SimpleFileBean();
+			fBean.setDescription(file.getDescription());
+			fBean.setType(file.getDomainFile().getType());
+			fBean.setTitle(file.getDomainFile().getTitle());
+			fBean.setUri(file.getDomainFile().getUri());
+			fBean.setUriExternal(file.getDomainFile().getUriExternal());
+			fBean.setKeywordsStr(file.getKeywordsStr());
+			fBean.setId(file.getDomainFile().getId());
+			fBean.setCreatedBy(file.getDomainFile().getCreatedBy());
+			fBean.setCreatedDate(file.getDomainFile().getCreatedDate());
+			files.add(fBean);
 		}
 		setFiles(files);
 	}

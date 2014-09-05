@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.util.CompositionUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -22,6 +23,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -169,25 +171,24 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public Map<String, Object> setupNew(String sampleId,
+			HttpServletRequest request)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ChemicalAssociationBean assocBean = new ChemicalAssociationBean();
-		theForm.set("assoc", assocBean);
-		String sampleId = theForm.getString("sampleId");
+		//theForm.set("assoc", assocBean);
+		//String sampleId = theForm.getString("sampleId");
 		CompositionService compService = this.setServicesInSession(request);
 		CompositionBean compositionBean = compService
 				.findCompositionBySampleId(sampleId);
 		// if composition doesn't have required information, return to summary
 		// view page
-		if (!validateComposition(compositionBean, request)) {
-			return mapping.findForward("success");
-		}
+//		if (!validateComposition(compositionBean, request)) {
+//			return mapping.findForward("success");
+//		}
 		request.getSession().removeAttribute("compositionForm");
 		setLookups(request, compositionBean);
 		this.checkOpenForms(assocBean, request);
-		return mapping.findForward("inputForm");
+		return CompositionUtil.reformatLocalSearchDropdownsInSessionForChemicalAssociation(request.getSession());
 	}
 
 	public boolean validateComposition(CompositionBean compositionBean,
