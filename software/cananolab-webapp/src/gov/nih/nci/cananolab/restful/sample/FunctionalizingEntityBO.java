@@ -1,9 +1,19 @@
 package gov.nih.nci.cananolab.restful.sample;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import gov.nih.nci.cananolab.domain.agentmaterial.Antibody;
+import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer;
+import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
+import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
@@ -12,6 +22,9 @@ import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.CompositionUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionalizingEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
@@ -28,22 +41,20 @@ import javax.servlet.http.HttpSession;
 
 
 public class FunctionalizingEntityBO extends BaseAnnotationBO{
-	public List<String> create(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public List<String> create(SimpleFunctionalizingEntityBean bean,
+			HttpServletRequest request)
 			throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entityBean = form
-				.getFunctionalizingEntity();
+		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(bean);
 		List<String> msgs = new ArrayList<String>();
 		msgs = validateInputs(request, entityBean);
 		if (msgs.size()>0) {
 			return msgs;
 		}
-		this.saveEntity(request, form, entityBean);
+		this.saveEntity(request, bean.getSampleId(), entityBean);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entityBean);
 
-//		msgs.add(PropertyUtil.getProperty("sample", "message.addFunctionalizingEntity"));
+		msgs.add(PropertyUtil.getProperty("sample", "message.addFunctionalizingEntity"));
 //		// save action messages in the session so composition.do know about them
 //		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		// to preselect functionalizing entity after returning to the summary
@@ -93,12 +104,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	}
 
 	private List<String> saveEntity(HttpServletRequest request,
-			CompositionForm theForm, FunctionalizingEntityBean entityBean)
+			String sampleId, FunctionalizingEntityBean entityBean)
 			throws Exception {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		String sampleId = theForm.getSampleId();
 		List<String> msgs = new ArrayList<String>();
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -203,7 +213,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	//	return mapping.findForward("singleSummaryView");
 	}
 
-	public FunctionalizingEntityBean setupUpdate(String sampleId, String dataId,
+	public SimpleFunctionalizingEntityBean setupUpdate(String sampleId, String dataId,
 			HttpServletRequest request)
 			throws Exception {
 		CompositionService compService = this.setServicesInSession(request);
@@ -217,15 +227,16 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	//	form.setOtherSamples(new String[0]);
 		checkOpenForms(entityBean, request);
 //		return mapping.findForward("inputForm");
-		return entityBean;
+		SimpleFunctionalizingEntityBean bean = new SimpleFunctionalizingEntityBean();
+		bean.tranferSimpleFunctionalizingBean(entityBean);
+		return bean;
 	}
 
-	public void saveFunction(CompositionForm form,
+	public SimpleFunctionalizingEntityBean saveFunction(SimpleFunctionalizingEntityBean bean,
 			HttpServletRequest request)
 			throws Exception {
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entity = form
-				.getFunctionalizingEntity();
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean);
 		List<String> msgs = new ArrayList<String>();
 		FunctionBean function = entity.getTheFunction();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -235,7 +246,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		if (msgs.size()>0) {
 		//	return mapping.getInputForward();
 		}
-		this.saveEntity(request, form, entity);
+		this.saveEntity(request, bean.getSampleId(), entity);
 
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
@@ -245,7 +256,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
 				.toString());
 		// return to setupUpdate to get the correct entity from database
-	//	return setupUpdate(mapping, form, request, response);
+		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId()
+				.toString(), request);
 	}
 
 	public void removeFunction(CompositionForm form,
@@ -260,7 +272,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		if (msgs.size()>0) {
 			//return mapping.getInputForward();
 		}
-		this.saveEntity(request, form, entity);
+		this.saveEntity(request, form.getSampleId(), entity);
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
@@ -270,14 +282,13 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	//	return mapping.findForward("inputForm");
 	}
 
-	public void saveFile(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SimpleFunctionalizingEntityBean saveFile(SimpleFunctionalizingEntityBean bean,
+			HttpServletRequest request)
 			throws Exception {
-		FunctionalizingEntityBean entity = form
-				.getFunctionalizingEntity();
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean);
 		this.setServicesInSession(request);
 		FileBean theFile = entity.getTheFile();
-		String sampleId = form.getSampleId();
+		String sampleId = bean.getSampleId();
 		List<String> msgs = new ArrayList<String>();
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -296,7 +307,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		if (msgs.size()>0) {
 		//	return mapping.getInputForward();
 		}
-		this.saveEntity(request, form, entity);
+		this.saveEntity(request, sampleId, entity);
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
@@ -307,6 +318,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		this.checkOpenForms(entity, request);
 
 	//	return mapping.findForward("inputForm");
+		return setupUpdate(sampleId, entity.getDomainEntity().getId().toString(), request);
 	}
 
 	public void removeFile(CompositionForm form,
@@ -323,7 +335,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		if (msgs.size()>0) {
 			//return mapping.getInputForward();
 		}
-		this.saveEntity(request, form, entity);
+		this.saveEntity(request, form.getSampleId(), entity);
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
@@ -497,4 +509,112 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		request.getSession().setAttribute("sampleService", sampleService);
 		return compService;
 	}
+	
+	public FunctionalizingEntityBean transferSimpleFunctionalizingEntity(
+			SimpleFunctionalizingEntityBean bean) {
+		
+		FunctionalizingEntityBean funcBean = new FunctionalizingEntityBean();
+		Collection<Function> funCollection = new HashSet<Function>();
+		FunctionalizingEntity domainEntity = null;
+		if(bean.getFunctionList()!=null){
+			for(SimpleFunctionBean fuBean : bean.getFunctionList()){
+				TargetBean target = new TargetBean();
+				FunctionBean functionBean = new FunctionBean();
+				Function theFunction = new Function();
+				List<TargetBean> targets = new ArrayList<TargetBean>();
+				theFunction.setDescription(fuBean.getDescription());
+				theFunction.setCreatedBy(fuBean.getCreatedBy());
+				theFunction.setCreatedDate(fuBean.getCreatedDate());
+				
+				functionBean.setType(fuBean.getType());
+				functionBean.setDescription(fuBean.getDescription());
+				target.setDescription(fuBean.getTargetDescription());
+				target.setName(fuBean.getTargetName());
+				target.setType(fuBean.getTargetType());
+				functionBean.setTargets(targets);
+				funCollection.add(theFunction);
+			}
+			
+		}
+		Collection<File> filecoll = new HashSet<File>();
+		List<SimpleFileBean> filelist =  bean.getFileList();
+		
+		if(filelist!=null){
+		for(SimpleFileBean sBean : filelist){
+			FileBean fileBean = new FileBean();
+			File file = new File();
+			file.setType(sBean.getType());
+			file.setTitle(sBean.getTitle());
+			file.setDescription(sBean.getDescription());
+			file.setUri(sBean.getUri());
+			file.setCreatedBy(sBean.getCreatedBy());
+			file.setCreatedDate(sBean.getCreatedDate());
+			file.setUriExternal(sBean.getUriExternal());
+			fileBean.setKeywordsStr(sBean.getKeywordsStr());
+		//	fileBean.setDomainFile(file);
+			filecoll.add(file);
+		}
+		}
+		
+		if(bean.getType().equalsIgnoreCase("smallMolecule")){
+			SmallMolecule mol = new SmallMolecule();
+			ActivationMethod act = new ActivationMethod();
+			act.setType(bean.getActivationMethodType());
+			act.setActivationEffect(bean.getActivationEffect());
+			mol.setAlternateName((String) bean.getDomainEntity().get("alternateName"));
+			mol.setFunctionCollection(funCollection);
+			mol.setFileCollection(filecoll);
+			mol.setActivationMethod(act);
+
+			mol.setSampleComposition(new SampleComposition());
+			domainEntity = mol;
+		}
+		
+		if(bean.getType().equalsIgnoreCase("Biopolymer")){
+			
+			Biopolymer bio = new Biopolymer();
+			ActivationMethod act = new ActivationMethod();
+			act.setType(bean.getActivationMethodType());
+			act.setActivationEffect(bean.getActivationEffect());
+			bio.setType((String) bean.getDomainEntity().get("type"));
+			bio.setSequence((String) bean.getDomainEntity().get("sequence"));
+			bio.setFunctionCollection(funCollection);
+			bio.setActivationMethod(act);
+
+			bio.setFileCollection(filecoll);
+			bio.setSampleComposition(new SampleComposition());
+		//	domainEntity = bio;
+		}
+		
+		if(bean.getType().equalsIgnoreCase("Antibody")){
+			Antibody body = new Antibody();
+			ActivationMethod act = new ActivationMethod();
+			act.setType(bean.getActivationMethodType());
+			act.setActivationEffect(bean.getActivationEffect());
+			body.setType((String) bean.getDomainEntity().get("type"));
+			body.setIsotype((String) bean.getDomainEntity().get("isoType"));
+			body.setSpecies((String) bean.getDomainEntity().get("species"));
+			body.setFunctionCollection(funCollection);
+			body.setFileCollection(filecoll);
+			body.setActivationMethod(act);
+			body.setSampleComposition(new SampleComposition());
+			domainEntity = body;
+		}
+		
+		domainEntity.setFunctionCollection(funCollection);
+		domainEntity.setFileCollection(filecoll);
+		domainEntity.setSampleComposition(new SampleComposition());
+		funcBean.setType(bean.getType());
+		funcBean.setName(bean.getName());
+		funcBean.setPubChemDataSourceName(bean.getPubChemDataSourceName());
+		funcBean.setPubChemId(bean.getPubChemId());
+		funcBean.setValue(bean.getValue());
+		funcBean.setValueUnit(bean.getValueUnit());
+		funcBean.setMolecularFormula(bean.getMolecularFormula());
+		funcBean.setMolecularFormulaType(bean.getMolecularFormulaType());
+		funcBean.setDescription(bean.getDescription());
+		funcBean.setDomainEntity(domainEntity);
+		return funcBean;
+	}
+	
 }

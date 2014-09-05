@@ -496,5 +496,11 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 			domainEntity.setPubChemId(null);
 		}
 	}
+//Added for setting up domainEntity using rest
+	public void setDomainEntity(FunctionalizingEntity domainEntity2) {
+		// TODO Auto-generated method stub
+		this.domainEntity = domainEntity2;
+		
+	}
 
 }

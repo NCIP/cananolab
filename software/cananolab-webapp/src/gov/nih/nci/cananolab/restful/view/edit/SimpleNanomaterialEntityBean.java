@@ -210,32 +210,34 @@ public class SimpleNanomaterialEntityBean {
 		setCreatedDate(nanoEntity.getCreatedDate());
 		if(bean.getDomainEntity().getComposingElementCollection()!=null){
 			composingElements = new ArrayList<SimpleComposingElementBean>();
-			for(ComposingElementBean comp : bean.getComposingElements()){
+			List<ComposingElement> complist = new ArrayList<ComposingElement>(bean.getDomainEntity().getComposingElementCollection());
+			System.out.println("list size =="+ complist.size());
+			for(ComposingElement comp : complist){
 				simpleCompBean = new SimpleComposingElementBean();
 				simpleCompBean.setDescription(comp.getDescription());
-				simpleCompBean.setId(comp.getDomain().getId());
-				simpleCompBean.setMolecularFormula(comp.getDomain().getMolecularFormula());
-				simpleCompBean.setMolecularFormulaType(comp.getDomain().getMolecularFormulaType());
-				simpleCompBean.setName(comp.getDomain().getName());
-				simpleCompBean.setPubChemDataSourceName(comp.getDomain().getPubChemDataSourceName());
-				simpleCompBean.setPubChemId(comp.getDomain().getPubChemId());
-				simpleCompBean.setType(comp.getDomain().getType());
-				simpleCompBean.setValue(comp.getDomain().getValue());
-				simpleCompBean.setValueUnit(comp.getDomain().getValueUnit());
-				simpleCompBean.setCreatedBy(comp.getDomain().getCreatedBy());
-				simpleCompBean.setCreatedDate(comp.getDomain().getCreatedDate());
+				simpleCompBean.setId(comp.getId());
+				simpleCompBean.setMolecularFormula(comp.getMolecularFormula());
+				simpleCompBean.setMolecularFormulaType(comp.getMolecularFormulaType());
+				simpleCompBean.setName(comp.getName());
+				simpleCompBean.setPubChemDataSourceName(comp.getPubChemDataSourceName());
+				simpleCompBean.setPubChemId(comp.getPubChemId());
+				simpleCompBean.setType(comp.getType());
+				simpleCompBean.setValue(comp.getValue());
+				simpleCompBean.setValueUnit(comp.getValueUnit());
+				simpleCompBean.setCreatedBy(comp.getCreatedBy());
+				simpleCompBean.setCreatedDate(comp.getCreatedDate());
 				
 				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-				if(comp.getInherentFunctions().size()>0){
-					for(FunctionBean func : comp.getInherentFunctions()){
+				if(comp.getInherentFunctionCollection().size()>0){
+					for(Function func : comp.getInherentFunctionCollection()){
 						Map<String, Object> function = new HashMap<String, Object>();
 						
 						function.put("description", func.getDescription());
-						function.put("type", func.getType());
-						function.put("modality",func.getImagingFunction().getModality());
-						function.put("id", func.getDomainFunction().getId());
-						function.put("createdBy", func.getDomainFunction().getCreatedBy());
-						function.put("createdDate", func.getDomainFunction().getCreatedDate());
+//						function.put("type", func.getType());
+//						function.put("modality",func.getImagingFunction().getModality());
+						function.put("id", func.getId());
+						function.put("createdBy", func.getCreatedBy());
+						function.put("createdDate", func.getCreatedDate());
 						list.add(function);
 					}
 					simpleCompBean.setInherentFunction(list);

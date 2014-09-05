@@ -24,9 +24,30 @@ public class SimpleFunctionalizingEntityBean {
 	String activationMethodType = "";
 	String activationEffect = "";
 	String description = "";
+	String sampleId = "";
 	Map<Object, Object> domainEntity;
 	List<String> errors;
+	List<SimpleFunctionBean> functionList;
+	List<SimpleFileBean> fileList;
 	
+	public String getSampleId() {
+		return sampleId;
+	}
+	public void setSampleId(String sampleId) {
+		this.sampleId = sampleId;
+	}
+	public List<SimpleFunctionBean> getFunctionList() {
+		return functionList;
+	}
+	public void setFunctionList(List<SimpleFunctionBean> functionList) {
+		this.functionList = functionList;
+	}
+	public List<SimpleFileBean> getFileList() {
+		return fileList;
+	}
+	public void setFileList(List<SimpleFileBean> fileList) {
+		this.fileList = fileList;
+	}
 	public Map<Object, Object> getDomainEntity() {
 		return domainEntity;
 	}
@@ -127,6 +148,38 @@ public class SimpleFunctionalizingEntityBean {
 		this.setType(bean.getType());
 		this.setMolecularFormulaType(bean.getMolecularFormulaType());
 		
+		List<SimpleFileBean> fileList = new ArrayList<SimpleFileBean>();
+		for(FileBean files : bean.getFiles()){
+			fileBean = new SimpleFileBean();
+
+			fileBean.setDescription(files.getDescription());
+			fileBean.setId(files.getDomainFile().getId());
+			fileBean.setKeywordsStr(files.getKeywordsStr());
+			fileBean.setTitle(files.getDomainFile().getTitle());
+			fileBean.setType(files.getDomainFile().getType());
+			fileBean.setUri(files.getDomainFile().getUri());
+			fileBean.setUriExternal(files.getDomainFile().getUriExternal());
+			fileList.add(fileBean);
+		}
+		setFileList(fileList);
+		
+		List<SimpleFunctionBean> funcList = new ArrayList<SimpleFunctionBean>();
+		for(FunctionBean funcBean : bean.getFunctions()){
+			simpleFunctionBean = new SimpleFunctionBean();
+			
+			simpleFunctionBean.setDescription(funcBean.getDescription());
+			simpleFunctionBean.setId(funcBean.getId());
+			simpleFunctionBean.setType(funcBean.getType());
+			simpleFunctionBean.setTargetDescription(funcBean.getTheTarget().getDescription());
+			simpleFunctionBean.setTargetId(funcBean.getTheTarget().getId());
+			simpleFunctionBean.setTargetName(funcBean.getTheTarget().getName());
+			simpleFunctionBean.setTargetType(funcBean.getTheTarget().getType());
+			simpleFunctionBean.setModality(funcBean.getImagingFunction().getModality());
+			funcList.add(simpleFunctionBean);
+		}
+		setFunctionList(funcList);
+		
+		
 		if(bean.getType().equalsIgnoreCase("SmallMolecule")){
 			domainEntity.put("alternateName", bean.getSmallMolecule().getAlternateName());
 		}
@@ -141,36 +194,6 @@ public class SimpleFunctionalizingEntityBean {
 			domainEntity.put("isoType", bean.getAntibody().getIsotype());
 			domainEntity.put("species", bean.getAntibody().getSpecies());
 		}
-		List<SimpleFileBean> fileList = new ArrayList<SimpleFileBean>();
-		for(FileBean files : bean.getFiles()){
-			fileBean = new SimpleFileBean();
-
-			fileBean.setDescription(files.getDescription());
-			fileBean.setId(files.getDomainFile().getId());
-			fileBean.setKeywordsStr(files.getKeywordsStr());
-			fileBean.setTitle(files.getDomainFile().getTitle());
-			fileBean.setType(files.getDomainFile().getType());
-			fileBean.setUri(files.getDomainFile().getUri());
-			fileBean.setUriExternal(files.getDomainFile().getUriExternal());
-			fileList.add(fileBean);
-		}
-		domainEntity.put("fileCollection", fileList);
-		
-		List<SimpleFunctionBean> funcList = new ArrayList<SimpleFunctionBean>();
-		for(FunctionBean funcBean : bean.getFunctions()){
-			simpleFunctionBean = new SimpleFunctionBean();
-			
-			simpleFunctionBean.setDescription(bean.getTheFunction().getDescription());
-			simpleFunctionBean.setId(bean.getTheFunction().getId());
-			simpleFunctionBean.setType(bean.getTheFunction().getType());
-			simpleFunctionBean.setTargetDescription(bean.getTheFunction().getTheTarget().getDescription());
-			simpleFunctionBean.setTargetId(bean.getTheFunction().getTheTarget().getId());
-			simpleFunctionBean.setTargetName(bean.getTheFunction().getTheTarget().getName());
-			simpleFunctionBean.setTargetType(bean.getTheFunction().getTheTarget().getType());
-			simpleFunctionBean.setModality(bean.getTheFunction().getImagingFunction().getModality());
-			funcList.add(simpleFunctionBean);
-		}
-		domainEntity.put("functionCollection", funcList);
 		
 	}
 	
