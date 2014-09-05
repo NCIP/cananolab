@@ -221,8 +221,16 @@ var app = angular.module('angularApp')
         $scope.removeComposingElement = function(composingElementId) {
             if (confirm("Are you sure you want to delete the Composing Element?")) {
                 $scope.loader = true;
+                
+                for (var k = 0; k < $scope.composingElements.length; ++k) {
+                    var element = $scope.composingElements[k];
+                    if (element.id == $scope.composingElementForm.id) {
+                        $scope.composingElements.splice(k,1);
+                    }
+                }
+                $scope.nanoEntityForm.composingElements = $scope.composingElements;
 
-                $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeComposingElement',data: $scope.composingElementForm}).
+                $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeComposingElement',data: $scope.nanoEntityForm}).
                     success(function(data, status, headers, config) {
                     	$scope.nanoEntityForm = data;
                     	$scope.composingElements = $scope.nanoEntityForm.composingElements;
@@ -417,8 +425,16 @@ var app = angular.module('angularApp')
         $scope.removeFile = function(fileId) {
             if (confirm("Are you sure you want to delete the File?")) {
                 $scope.loader = true;
-
-                $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeFile',data: $scope.fileForm}).
+                
+                for (var k = 0; k < $scope.files.length; ++k) {
+                    var element = $scope.files[k];
+                    if (element.id == $scope.fileForm.id) {
+                        $scope.files.splice(k,1);
+                    }
+                }
+                $scope.nanoEntityForm.files = $scope.files;
+                
+                $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeFile',data: $scope.nanoEntityForm}).
                     success(function(data, status, headers, config) {
                     	$scope.nanoEntityForm = data;
                         $scope.files = $scope.nanoEntityForm.files;

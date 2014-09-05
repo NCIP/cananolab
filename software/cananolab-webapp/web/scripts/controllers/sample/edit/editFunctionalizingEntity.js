@@ -448,11 +448,19 @@ var app = angular.module('angularApp')
         $scope.removeFile = function(fileId) {
             if (confirm("Are you sure you want to delete the File?")) {
                 $scope.loader = true;
+                
+                for (var k = 0; k < $scope.files.length; ++k) {
+                    var element = $scope.files[k];
+                    if (element.id == $scope.fileForm.id) {
+                        $scope.composingElements.splice(k,1);
+                    }
+                }
+                $scope.funcEntityForm.fileList = $scope.files;                
 
                 $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeFile',data: $scope.fileForm}).
                     success(function(data, status, headers, config) {
                         $scope.funcEntityForm = data;
-                        $scope.files = $scope.funcEntityForm.domainEntity.fileCollection;
+                        $scope.files = $scope.funcEntityForm.fileList;
                         $scope.loader = false;
                     }).
                     error(function(data, status, headers, config) {
