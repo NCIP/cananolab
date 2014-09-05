@@ -459,7 +459,7 @@ var app = angular.module('angularApp')
                     url: '/caNanoLab/rest/core/uploadFile',
                     method: 'POST',
                     headers: {'my-header': 'my-header-value'},
-                    data : $scope.protocolForm,
+                    data : $scope.fileForm,
                     file: $scope.selectedFiles[index],
                     fileFormDataName: 'myFile'
                 });

@@ -258,18 +258,31 @@ var app = angular.module('angularApp')
                     $scope.composingElementForm.inherentFunction.splice(k,1);
                 }
             }
-            $scope.addNewInherentFunction=false;
-            if( $scope.composingElementForm.inherentFunction.length > 0 ) {
-                $scope.showInherentFunctionTable = true;
-            }
-            else {
-                $scope.showInherentFunctionTable = false;
-            }
-
-            $scope.theInherentFunction.type = '';
-            $scope.theInherentFunction.modality = '';
-            $scope.theInherentFunction.description = '';
-            $scope.theInherentFunction.id = '';
+            $scope.funcEntityForm.functionList = $scope.composingElementForm.inherentFunction;
+            
+            $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/removeFunction',data: $scope.funcEntityForm}).
+            success(function(data, status, headers, config) {
+            	$scope.funcEntityForm = data;
+            	$scope.composingElementForm.inherentFunction = $scope.funcEntityForm.functionList;
+            	
+            	$scope.addNewInherentFunction=false;
+                $scope.theInherentFunction = {};
+            	if( $scope.composingElementForm.inherentFunction.length > 0 ) {
+                    $scope.showInherentFunctionTable = true;
+                }
+                else {
+                    $scope.showInherentFunctionTable = false;
+                }
+                $scope.loader = false;
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                // $rootScope.sampleData = data;
+                $scope.loader = false;
+                $scope.messages = data;
+            });
+            
         }
 
         $scope.getAddNewInherentFunction = function() {
@@ -457,7 +470,7 @@ var app = angular.module('angularApp')
                 }
                 $scope.funcEntityForm.fileList = $scope.files;                
 
-                $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeFile',data: $scope.fileForm}).
+                $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/removeFile',data: $scope.funcEntityForm}).
                     success(function(data, status, headers, config) {
                         $scope.funcEntityForm = data;
                         $scope.files = $scope.funcEntityForm.fileList;
@@ -482,7 +495,7 @@ var app = angular.module('angularApp')
                     url: '/caNanoLab/rest/core/uploadFile',
                     method: 'POST',
                     headers: {'my-header': 'my-header-value'},
-                    data : $scope.protocolForm,
+                    data : $scope.fileForm,
                     file: $scope.selectedFiles[index],
                     fileFormDataName: 'myFile'
                 });
@@ -527,12 +540,12 @@ var app = angular.module('angularApp')
                 $scope.files.push($scope.fileForm);
             }
 
-            $scope.funcEntityForm.domainEntity.fileCollection = $scope.files;
+            $scope.funcEntityForm.fileList = $scope.files;
 
-            $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveFile',data: $scope.funcEntityForm}).
+            $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/saveFile',data: $scope.funcEntityForm}).
                 success(function(data, status, headers, config) {
                     $scope.funcEntityForm = data;
-                    $scope.files = $scope.funcEntityForm.domainEntity.fileCollection;
+                    $scope.files = $scope.funcEntityForm.fileList;
                     $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {
