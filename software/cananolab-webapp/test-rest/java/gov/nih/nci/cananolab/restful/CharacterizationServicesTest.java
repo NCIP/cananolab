@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.QueryParam;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -168,12 +171,10 @@ String jsessionId = RestTestLoginUtil.loginTest();
 				"ex vivo"))
 		.when().post("http://localhost:8080/caNanoLab/rest/characterization/saveExperimentConfig");
 		
-		
-		
 		System.out.println(res.getBody().asString());
 	}
 	
-	@Test
+	//@Test
 	public void testRemoveExperimentConfig() {
 		
 		String jsessionId = RestTestLoginUtil.loginTest();
@@ -252,5 +253,48 @@ String jsessionId = RestTestLoginUtil.loginTest();
 				.when().get("http://localhost:8080/caNanoLab/rest/characterization/getInstrumentTypesByTechniqueType");
 
 		System.out.println(res.getBody().asString());
+	}
+	
+	@Test
+	public void testGetColumnNameOptionsDatum() {
+		
+		//String jsessionId = RestTestLoginUtil.loginTest();
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("columnType", "datum");
+		params.put("charType", "physico-chemical characterization");
+		params.put("charName", "molecular weight");
+		params.put("assayType", "molecular weight");
+		
+		//doesn't work for now
+		Response res =
+				given()//.contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+				.parameters(params)
+				.expect()
+				.body("", hasItems("PDI", "[other]"))
+						.when().get("http://localhost:8080/caNanoLab/rest/characterization/getColumnNameOptionsByType");	
+		
+		System.out.println(res.getBody().asString());
+	}
+	
+	@Test
+	public void testGetColumnNameOptionsCondition() {
+		
+		//String jsessionId = RestTestLoginUtil.loginTest();
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("columnType", "condition");
+		params.put("charType", "physico-chemical characterization");
+		params.put("charName", "molecular weight");
+		params.put("assayType", "molecular weight");
+		
+		//doesn't work for now
+		Response res =
+				given()//.contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+				.parameters(params)
+				.expect()
+				.body("", hasItems("photoacoustic excitation intensity", "[other]"))
+						.when().get("http://localhost:8080/caNanoLab/rest/characterization/getColumnNameOptionsByType");	
+		
+		System.out.println(res.getBody().asString());
+
 	}
 }
