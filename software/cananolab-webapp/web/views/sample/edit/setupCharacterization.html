@@ -60,7 +60,7 @@
 	<!--         <input name="achar.protocolBean.fileBean.domainFile.uri" value="" id="updatedUri" type="hidden"> -->
 	<td colspan="3">
 
-		<select data-ng-model="data.protocolNameVersion"
+		<select data-ng-model="data.protocolId"
 		data-ng-options="option.domainId as option.displayName for option in data.protocolLookup" id="protocolId" ng-change="getDomainFileUri()">
 	</select>  <br />
 
@@ -76,8 +76,8 @@
 		<label for="charSource">Characterization Source</label>
 	</td>
 	<td>
-		<select data-ng-model="data.characterizationSource"
-		data-ng-options="option.id as option.displayName for option in data.charSourceLookup" id="characterizationSource">
+		<select data-ng-model="data.characterizationSourceId"
+		data-ng-options="option.id as option.displayName for option in data.charSourceLookup" id="characterizationSourceId">
 	</select>
 </td>
 <td class="cellLabel">
