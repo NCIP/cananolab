@@ -1,13 +1,13 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
@@ -56,7 +56,7 @@ public class SimpleCharacterizationEditBean {
 	List<SimplePOC> charSourceLookup;
 	List<String> otherSampleNameLookup;
 	
-	Map<String, List<String>> assayTypesByCharNameLookup = new HashMap<String, List<String>>();
+	List<String> assayTypesByCharNameLookup = new ArrayList<String>();
 	
 	List<String> errors = new ArrayList<String>();
 	List<String> messages;
@@ -109,7 +109,7 @@ public class SimpleCharacterizationEditBean {
 		}
 		
 		transferExperimentConfigs(charBean.getExperimentConfigs());
-		//transferFinding(charBean.getFindings())	;
+		transferFinding(charBean.getFindings())	;
 		
 	}
 	
@@ -122,6 +122,7 @@ public class SimpleCharacterizationEditBean {
 			this.finding.add(simpleBean);
 		}
 	}
+	
 	protected void transferExperimentConfigs(List<ExperimentConfigBean> expConfigs) {
 		if (expConfigs == null) return;
 	
@@ -168,6 +169,13 @@ public class SimpleCharacterizationEditBean {
 		otherSampleNameLookup = InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		
 		this.techniqueInstruments.setupLookups(request);
+		
+		SortedSet<String> assayTypes = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(
+						request, "charNameAssays",
+						this.name, "assayType", "otherAssayType", true);
+			
+		this.assayTypesByCharNameLookup.addAll(assayTypes);
+		this.assayTypesByCharNameLookup.add("[other]");
 	}
 	
 	protected void setPOCLookup(HttpServletRequest request, String sampleId) 
@@ -261,15 +269,6 @@ public class SimpleCharacterizationEditBean {
 
 	public void setErrors(List<String> errors) {
 		this.errors = errors;
-	}
-
-	public Map<String, List<String>> getAssayTypesByCharNameLookup() {
-		return assayTypesByCharNameLookup;
-	}
-
-	public void setAssayTypesByCharNameLookup(
-			Map<String, List<String>> assayTypesByCharNameLookup) {
-		this.assayTypesByCharNameLookup = assayTypesByCharNameLookup;
 	}
 
 	public long getCharId() {
@@ -382,6 +381,17 @@ public class SimpleCharacterizationEditBean {
 			SimpleTechniqueAndInstrument techniqueInstruments) {
 		this.techniqueInstruments = techniqueInstruments;
 	}
+
+	public List<String> getAssayTypesByCharNameLookup() {
+		return assayTypesByCharNameLookup;
+	}
+
+	public void setAssayTypesByCharNameLookup(
+			List<String> assayTypesByCharNameLookup) {
+		this.assayTypesByCharNameLookup = assayTypesByCharNameLookup;
+	}
+
+
 
 	public class SimpleProtocol {
 		//Proto needs:

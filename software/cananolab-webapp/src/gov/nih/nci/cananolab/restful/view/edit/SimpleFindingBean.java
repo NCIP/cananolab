@@ -38,7 +38,7 @@ public class SimpleFindingBean {
 		numberOfRows = findingBean.getNumberOfRows();
 		
 		
-		List<Row> beanRows = findingBean.getRows();
+		//List<Row> beanRows = findingBean.getRows();
 //		if (beanRows != null) {
 //			for (Row beanRow : beanRows) {
 //				beanRow.

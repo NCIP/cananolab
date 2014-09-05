@@ -1,10 +1,6 @@
 package gov.nih.nci.cananolab.restful.view;
 
-import gov.nih.nci.cananolab.domain.common.Condition;
-import gov.nih.nci.cananolab.domain.common.Datum;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SimpleTableBean {
