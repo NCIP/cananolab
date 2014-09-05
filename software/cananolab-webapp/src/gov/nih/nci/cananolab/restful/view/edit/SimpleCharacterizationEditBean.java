@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
@@ -31,6 +32,9 @@ public class SimpleCharacterizationEditBean {
 	
 	String assayType;
 	String protocolNameVersion;
+	
+	SimpleProtocol protocol;
+	
 	long protocolId;
 	String characterizationSource;
 	Date characterizationDate;
@@ -71,7 +75,16 @@ public class SimpleCharacterizationEditBean {
 		this.type = charBean.getCharacterizationType();
 		this.parentSampleId = Long.parseLong(sampleId);
 		this.name = charBean.getCharacterizationName();
+		this.designMethodsDescription = charBean.getDomainChar().getDesignMethodsDescription();
+		this.characterizationDate = charBean.getDomainChar().getCreatedDate();
 		
+		if (charBean.getProtocolBean() != null) {
+			this.protocol = new SimpleProtocol();
+			protocol.transferFromProtocolBean(charBean.getProtocolBean());
+		}
+		
+		if (charBean.getPocBean() != null) 
+			this.characterizationSource = charBean.getPocBean().getDisplayName();
 		
 		transferCharBeanData(charBean);
 		
@@ -339,7 +352,6 @@ public class SimpleCharacterizationEditBean {
 	}
 
 
-
 	public void setCharNamesForCurrentType(List<String> charNamesForCurrentType) {
 		this.charNamesForCurrentType = charNamesForCurrentType;
 	}
@@ -350,7 +362,13 @@ public class SimpleCharacterizationEditBean {
 		this.designMethodsDescription = designMethodsDescription;
 	}
 
+	public SimpleProtocol getProtocol() {
+		return protocol;
+	}
 
+	public void setProtocol(SimpleProtocol protocol) {
+		this.protocol = protocol;
+	}
 
 	public List<SimplePOC> getCharSourceLookup() {
 		return charSourceLookup;
@@ -418,7 +436,8 @@ public class SimpleCharacterizationEditBean {
 		public void transferFromProtocolBean(ProtocolBean protoBean) {
 			if (protoBean == null) return;
 			
-			domainId = protoBean.getDomain().getId();
+			if (protoBean.getDomain().getId() != null)
+				domainId = protoBean.getDomain().getId();
 			FileBean domainFile = protoBean.getFileBean();
 			if (domainFile != null && domainFile.getDomainFile() != null) {
 				if (domainFile.getDomainFile().getId() != null)
