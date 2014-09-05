@@ -1,5 +1,5 @@
-<div ng-class="{formFocus:loader}">
-	<div class="modal-header">{{data}}
+<div ng-class="{formFocus:loader}">{{data}}
+	<div class="modal-header"><h1>On edit run rest calls to get dropdowns based on values</h1>
 		<h3 class="modal-title pull-left">{{title}} Characterization</h3>
 		<div class="pull-right">
 			<a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
@@ -22,7 +22,7 @@
 					<label for="charType">Characterization Type *</label>
 				</td>
 				<td>
-					<div id="charTypePrompt">
+					<div id="charTypePrompt">{{data.charTypesLookup}}
 						<select data-ng-model="data.type" ng-init="data.type=type"
 						data-ng-options="option for option in data.charTypesLookup" ng-change="characterizationTypeDropdownChanged()" id="charType">
 					</select>                        

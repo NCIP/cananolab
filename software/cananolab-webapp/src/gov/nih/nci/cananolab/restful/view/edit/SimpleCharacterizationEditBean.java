@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
@@ -28,11 +29,10 @@ public class SimpleCharacterizationEditBean {
 	long parentSampleId;
 	
 	long charId;	
-	
 	String assayType;
-	String protocolNameVersion;
+	
 	long protocolId;
-	String characterizationSource;
+	long characterizationSourceId;
 	Date characterizationDate;
 	
 	List<String> charNamesForCurrentType;
@@ -47,9 +47,6 @@ public class SimpleCharacterizationEditBean {
 	//When saving, could propagate to other samples
 	List<String> selectedOtherSampleNames;
 	boolean copyToOtherSamples;
-	
-	///
-
 	
 	
 	List<String> charTypesLookup;
@@ -71,11 +68,33 @@ public class SimpleCharacterizationEditBean {
 		this.type = charBean.getCharacterizationType();
 		this.parentSampleId = Long.parseLong(sampleId);
 		this.name = charBean.getCharacterizationName();
+		this.designMethodsDescription = charBean.getDomainChar().getDesignMethodsDescription();
+		this.characterizationDate = charBean.getDomainChar().getCreatedDate();
 		
+		setProtocolId(charBean);
+		setCharacterizationSourceId(charBean.getPocBean());
 		
 		transferCharBeanData(charBean);
 		
 		setupLookups(request, charBean, sampleId);
+	}
+	
+	protected void setCharacterizationSourceId(PointOfContactBean pocBean) {
+		if (pocBean == null || 
+				pocBean.getDomain() == null || 
+				pocBean.getDomain().getId() == null)
+			return;
+		
+		this.characterizationSourceId = pocBean.getDomain().getId();
+	}
+	
+	protected void setProtocolId(CharacterizationBean charBean) {
+		if (charBean == null || 
+				charBean.getDomainChar() == null || 
+				charBean.getDomainChar().getId() == null)
+			return;
+		
+		this.protocolId = charBean.getDomainChar().getId();
 	}
 	
 	protected void transferCharBeanData(CharacterizationBean charBean) {
@@ -187,6 +206,14 @@ public class SimpleCharacterizationEditBean {
 	}
 	
 	
+	public long getCharacterizationSourceId() {
+		return characterizationSourceId;
+	}
+
+	public void setCharacterizationSourceId(long characterizationSourceId) {
+		this.characterizationSourceId = characterizationSourceId;
+	}
+
 	public List<SimpleFindingBean> getFinding() {
 		return finding;
 	}
@@ -286,18 +313,7 @@ public class SimpleCharacterizationEditBean {
 	public void setAssayType(String assayType) {
 		this.assayType = assayType;
 	}
-	public String getProtocolNameVersion() {
-		return protocolNameVersion;
-	}
-	public void setProtocolNameVersion(String protocolNameVersion) {
-		this.protocolNameVersion = protocolNameVersion;
-	}
-	public String getCharacterizationSource() {
-		return characterizationSource;
-	}
-	public void setCharacterizationSource(String characterizationSource) {
-		this.characterizationSource = characterizationSource;
-	}
+	
 	public Date getCharacterizationDate() {
 		return characterizationDate;
 	}
@@ -339,7 +355,6 @@ public class SimpleCharacterizationEditBean {
 	}
 
 
-
 	public void setCharNamesForCurrentType(List<String> charNamesForCurrentType) {
 		this.charNamesForCurrentType = charNamesForCurrentType;
 	}
@@ -349,8 +364,6 @@ public class SimpleCharacterizationEditBean {
 	public void setDesignMethodsDescription(String designMethodsDescription) {
 		this.designMethodsDescription = designMethodsDescription;
 	}
-
-
 
 	public List<SimplePOC> getCharSourceLookup() {
 		return charSourceLookup;
@@ -418,7 +431,8 @@ public class SimpleCharacterizationEditBean {
 		public void transferFromProtocolBean(ProtocolBean protoBean) {
 			if (protoBean == null) return;
 			
-			domainId = protoBean.getDomain().getId();
+			if (protoBean.getDomain().getId() != null)
+				domainId = protoBean.getDomain().getId();
 			FileBean domainFile = protoBean.getFileBean();
 			if (domainFile != null && domainFile.getDomainFile() != null) {
 				if (domainFile.getDomainFile().getId() != null)
