@@ -81,6 +81,7 @@ public class SimpleCharacterizationEditBean {
 		if (charBean.getProtocolBean() != null) {
 			this.protocol = new SimpleProtocol();
 			protocol.transferFromProtocolBean(charBean.getProtocolBean());
+			this.protocolId = protocol.getDomainId();
 		}
 		
 		if (charBean.getPocBean() != null) 
