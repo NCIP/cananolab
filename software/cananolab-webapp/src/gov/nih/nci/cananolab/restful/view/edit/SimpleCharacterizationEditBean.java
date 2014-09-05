@@ -69,7 +69,7 @@ public class SimpleCharacterizationEditBean {
 		this.parentSampleId = Long.parseLong(sampleId);
 		this.name = charBean.getCharacterizationName();
 		this.designMethodsDescription = charBean.getDomainChar().getDesignMethodsDescription();
-		this.characterizationDate = charBean.getDomainChar().getCreatedDate();
+		this.characterizationDate = charBean.getDomainChar().getDate();
 		
 		setProtocolId(charBean);
 		setCharacterizationSourceId(charBean.getPocBean());
