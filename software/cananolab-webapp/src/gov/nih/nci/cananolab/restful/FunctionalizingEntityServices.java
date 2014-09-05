@@ -152,4 +152,82 @@ private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
 
 		}
 	}
+	
+		
+	@POST
+	@Path("/removeFile")
+	@Produces ("application/json")
+    public Response removeFile(@Context HttpServletRequest httpRequest, SimpleFunctionalizingEntityBean funcBean) {
+				
+		try { 
+			FunctionalizingEntityBO functionalizingEntity = 
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			SimpleFunctionalizingEntityBean bean = functionalizingEntity.removeFile(funcBean, httpRequest);
+			
+			List<String> errors = funcBean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(bean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the file" + e.getMessage())).build();
+
+		}
+	}
+	
+	@POST
+	@Path("/removeFunction")
+	@Produces ("application/json")
+    public Response removeFunction(@Context HttpServletRequest httpRequest, SimpleFunctionalizingEntityBean funcBean) {
+				
+		try { 
+			FunctionalizingEntityBO functionalizingEntity = 
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			SimpleFunctionalizingEntityBean bean = functionalizingEntity.removeFunction(funcBean, httpRequest);
+			
+			List<String> errors = funcBean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(bean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the file" + e.getMessage())).build();
+
+		}
+	}
+	
+	@POST
+	@Path("/delete")
+	@Produces ("application/json")
+    public Response delete(@Context HttpServletRequest httpRequest, SimpleFunctionalizingEntityBean funcBean) {
+				
+		try { 
+			FunctionalizingEntityBO functionalizingEntity = 
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			List<String> msgs = functionalizingEntity.delete(funcBean, httpRequest);
+			
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+			
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the Functionalizing Entity" + e.getMessage())).build();
+
+		}
+	}
 }

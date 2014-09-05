@@ -463,11 +463,11 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	private NanomaterialEntityBean transferNanoMateriaEntityBean(
 			SimpleNanomaterialEntityBean nanoBean) {
 		NanomaterialEntityBean bean = new NanomaterialEntityBean();
-		NanomaterialEntity nanoEntity = null;
+		NanomaterialEntity nanoEntity = new NanomaterialEntity();
 		
 		ComposingElementBean compBean = new ComposingElementBean();
 		Collection<ComposingElement> coll = new HashSet<ComposingElement>();
-		Collection<File> filecoll = new ArrayList<File>();
+		Collection<File> filecoll = new HashSet<File>();
 		SampleComposition sampleComp = new SampleComposition();//(SampleComposition) nanoBean.getDomainEntity().get("sampleComposition");
 		
 		//setting up composing element
@@ -513,12 +513,14 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				hash.add(function);
 
 			}
-			}
-			comp.setInherentFunctionCollection(hash);
 			compBean.setTheFunction(func);
 			compBean.setDomain(comp);
 			compList.add(compBean);
+			comp.setInherentFunctionCollection(hash);
+			
 			coll.add(comp);
+			
+			}
 			
 		}
 		
@@ -526,6 +528,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		List<SimpleFileBean> filelist =  nanoBean.getFiles();
 		FileBean fileBean = new FileBean();
 		File file = new File();
+		List<FileBean> fileBeanList = new ArrayList<FileBean>();
 		if(filelist!=null){
 		for(SimpleFileBean sBean : filelist){
 			file.setType(sBean.getType());
@@ -536,10 +539,13 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			file.setCreatedDate(sBean.getCreatedDate());
 			file.setUriExternal(sBean.getUriExternal());
 			fileBean.setKeywordsStr(sBean.getKeywordsStr());
+			fileBean.setDomainFile(file);
 		//	fileBean.setDomainFile(file);
+			filecoll.add(file);
+			fileBeanList.add(fileBean);
 		}
 		}
-		filecoll.add(file);
+		
 
 		if(nanoBean.getType().equalsIgnoreCase("fullerene")){
 			Fullerene fullerene = new Fullerene();
@@ -644,11 +650,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		
 		
 	//	nanoEntity.setId((Long) nanoBean.getDomainEntity().get("id"));
-//		nanoEntity.setComposingElementCollection(coll);
-//		nanoEntity.setFileCollection(filecoll);
-//		nanoEntity.setSampleComposition(sampleComp);
+		nanoEntity.setComposingElementCollection(coll);
+		nanoEntity.setFileCollection(filecoll);
+		nanoEntity.setSampleComposition(sampleComp);
 		bean.setTheComposingElement(compBean);
 		bean.setComposingElements(compList);
+		bean.setFiles(fileBeanList);
 		bean.setTheFile(fileBean);
 		bean.setType(nanoBean.getType());
 		bean.setDescription(nanoBean.getDescription());
@@ -769,7 +776,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		CompositionService compositionService = this
 				.setServicesInSession(request);
 		NanomaterialEntityBean entityBean = transferNanoMateriaEntityBean(nanoBean);
-		entityBean.getDomainEntity().setId((Long) nanoBean.getDomainEntity().get("id"));
+		System.out.println((Integer)nanoBean.getDomainEntity().get("id"));
+		entityBean.getDomainEntity().setId(new Long((Integer)nanoBean.getDomainEntity().get("id")));
 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		entityBean.setupDomainEntity(user.getLoginName());

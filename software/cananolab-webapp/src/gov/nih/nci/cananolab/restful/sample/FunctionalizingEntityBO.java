@@ -260,19 +260,18 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				.toString(), request);
 	}
 
-	public void removeFunction(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SimpleFunctionalizingEntityBean removeFunction(SimpleFunctionalizingEntityBean bean,
+			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
-		FunctionalizingEntityBean entity = form
-				.getFunctionalizingEntity();
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean);
 		FunctionBean function = entity.getTheFunction();
 		entity.removeFunction(function);
 		msgs = validateInputs(request, entity);
 		if (msgs.size()>0) {
 			//return mapping.getInputForward();
 		}
-		this.saveEntity(request, form.getSampleId(), entity);
+		this.saveEntity(request, bean.getSampleId(), entity);
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
@@ -280,6 +279,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				function.getDomainFunction());
 		checkOpenForms(entity, request);
 	//	return mapping.findForward("inputForm");
+		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
 	}
 
 	public SimpleFunctionalizingEntityBean saveFile(SimpleFunctionalizingEntityBean bean,
@@ -321,11 +321,10 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		return setupUpdate(sampleId, entity.getDomainEntity().getId().toString(), request);
 	}
 
-	public void removeFile(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SimpleFunctionalizingEntityBean removeFile(SimpleFunctionalizingEntityBean bean,
+			HttpServletRequest request)
 			throws Exception {
-		FunctionalizingEntityBean entity = form
-				.getFunctionalizingEntity();
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean);
 		FileBean theFile = entity.getTheFile();
 		List<String> msgs = new ArrayList<String>();
 		entity.removeFile(theFile);
@@ -335,7 +334,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		if (msgs.size()>0) {
 			//return mapping.getInputForward();
 		}
-		this.saveEntity(request, form.getSampleId(), entity);
+		this.saveEntity(request, bean.getSampleId(), entity);
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
@@ -344,6 +343,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 
 		checkOpenForms(entity, request);
 	//	return mapping.findForward("inputForm");
+		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
 	}
 
 	// per app scan, can not easily validate in the validation.xml
@@ -430,26 +430,20 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 //		return mapping.findForward("inputForm");
 	}
 
-	public List<String> delete(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public List<String> delete(SimpleFunctionalizingEntityBean bean,
+			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
 		CompositionService compositionService = this
 				.setServicesInSession(request);
-		FunctionalizingEntityBean entityBean = form
-				.getFunctionalizingEntity();
+		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(bean);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		entityBean.setupDomainEntity(user.getLoginName());
 		compositionService.deleteFunctionalizingEntity(entityBean
 				.getDomainEntity());
 		compositionService.removeAccesses(entityBean.getDomainEntity());
 
-//		ActionMessage msg = new ActionMessage(
-//				"message.deleteFunctionalizingEntity");
-//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		// save action messages in the session so composition.do know about
-		// them
-//		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+		msgs.add(PropertyUtil.getProperty("sample", "message.deleteFunctionalizingEntity"));
 		return msgs;
 	}
 

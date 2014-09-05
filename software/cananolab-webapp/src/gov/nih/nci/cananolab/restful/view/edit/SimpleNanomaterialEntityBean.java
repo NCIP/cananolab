@@ -210,9 +210,7 @@ public class SimpleNanomaterialEntityBean {
 		setCreatedDate(nanoEntity.getCreatedDate());
 		if(bean.getDomainEntity().getComposingElementCollection()!=null){
 			composingElements = new ArrayList<SimpleComposingElementBean>();
-			List<ComposingElement> complist = new ArrayList<ComposingElement>(bean.getDomainEntity().getComposingElementCollection());
-			System.out.println("list size =="+ complist.size());
-			for(ComposingElement comp : complist){
+			for(ComposingElement comp : bean.getDomainEntity().getComposingElementCollection()){
 				simpleCompBean = new SimpleComposingElementBean();
 				simpleCompBean.setDescription(comp.getDescription());
 				simpleCompBean.setId(comp.getId());
@@ -248,7 +246,7 @@ public class SimpleNanomaterialEntityBean {
 			
 		}
 		
-		if(bean.getDomainEntity().getFileCollection()!=null){
+		if(bean.getFiles()!=null){
 			files = new ArrayList<SimpleFileBean>();
 		for(FileBean file : bean.getFiles()){
 			fileBean = new SimpleFileBean();
