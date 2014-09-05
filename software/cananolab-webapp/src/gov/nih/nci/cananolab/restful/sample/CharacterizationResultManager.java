@@ -27,6 +27,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.util.LabelValueBean;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
@@ -39,19 +40,25 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class CharacterizationResultManager {
-	public String[] getConditionOptions() throws Exception {
-		WebContext wctx = WebContextFactory.get();
+	
+	private Logger logger = Logger.getLogger(CharacterizationResultManager.class);
+	
+	public List<String> getConditionOptions(HttpServletRequest request) throws Exception {
 		SortedSet<String> conditions = InitSetup.getInstance()
-				.getDefaultAndOtherTypesByLookup(wctx.getHttpServletRequest(),
+				.getDefaultAndOtherTypesByLookup(request,
 						"datumConditions", "condition", "name", "otherName",
 						true);
 		// add other condition names stored in the session for the char
-		SortedSet<String> otherCharConditionNames = (SortedSet<String>) wctx
+		SortedSet<String> otherCharConditionNames = (SortedSet<String>) request
 				.getSession().getAttribute("otherCharConditionNames");
 		if (otherCharConditionNames != null) {
 			conditions.addAll(otherCharConditionNames);
 		}
-		return conditions.toArray(new String[conditions.size()]);
+		
+		List<String> nms = new ArrayList<String>();
+		nms.addAll(conditions);
+		nms.add("[other]");
+		return nms;
 	}
 
 	public String[] getConditionPropertyOptions(String conditionName)
@@ -70,6 +77,18 @@ public class CharacterizationResultManager {
 		return properties.toArray(new String[properties.size()]);
 	}
 
+	public List<String> getColumnNameOptionsByType(HttpServletRequest request, String columnType, String charType,
+			String charName, String assayType)
+			throws Exception {
+		
+		if (columnType.equals("datum"))
+			return getDatumNameOptions(request, charType, charName, assayType);
+		else if (columnType.equals("datum"))
+			return getConditionOptions(request);
+		
+		return new ArrayList<String>();
+		
+	}
 	public List<String> getDatumNameOptions(HttpServletRequest request, String characterizationType,
 			String characterizationName, String assayType) throws Exception {
 		SortedSet<String> names = InitCharacterizationSetup.getInstance()

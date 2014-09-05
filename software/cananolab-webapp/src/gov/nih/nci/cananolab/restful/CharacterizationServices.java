@@ -324,9 +324,10 @@ public class CharacterizationServices {
 	
 	
 	@GET
-	@Path("/getDatumNameOptions")
+	@Path("/getColumnNameOptionsByType")
 	@Produces ("application/json")
-    public Response getDatumNameOptions(@Context HttpServletRequest httpRequest, 
+    public Response getColumnNameOptionsByType(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("columnType") String columnType,
     		@DefaultValue("") @QueryParam("charType") String charType,
     		@DefaultValue("") @QueryParam("charName") String charName, 
     		@DefaultValue("") @QueryParam("assayType")String assayType) {

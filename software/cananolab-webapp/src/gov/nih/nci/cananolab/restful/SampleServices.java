@@ -182,7 +182,7 @@ public class SampleServices {
 			CharacterizationSummaryViewBean charView = characterizationBO.summaryView(sampleId,httpRequest);
 			SimpleCharacterizationSummaryViewBean viewBean = new SimpleCharacterizationSummaryViewBean();
 			
-			List<SimpleCharacterizationsByTypeBean> finalBean = viewBean.transferData(charView);
+			List<SimpleCharacterizationsByTypeBean> finalBean = viewBean.transferData(charView, sampleId);
 			
 			logger.debug("Found " + finalBean.size() + " characterizations for sample: " + sampleId);
 			

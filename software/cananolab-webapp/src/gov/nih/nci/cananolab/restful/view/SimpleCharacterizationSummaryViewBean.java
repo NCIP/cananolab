@@ -25,12 +25,21 @@ import org.apache.log4j.Logger;
 
 public class SimpleCharacterizationSummaryViewBean {
 	
+	long parentSampleId;
+	
 	private Logger logger = Logger.getLogger(SimpleCharacterizationSummaryViewBean.class);
 	
 	List<SimpleCharacterizationsByTypeBean> charByTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>();
-		
 	
-	public List<SimpleCharacterizationsByTypeBean> transferData(CharacterizationSummaryViewBean viewBean) 
+	public long getParentSampleId() {
+		return parentSampleId;
+	}
+
+	public void setParentSampleId(long parentSampleId) {
+		this.parentSampleId = parentSampleId;
+	}
+
+	public List<SimpleCharacterizationsByTypeBean> transferData(CharacterizationSummaryViewBean viewBean, String sampleId) 
 	throws Exception {
 		
 		logger.info("============ SimpleCharacterizationSummaryViewBean.transferData ==================");
@@ -53,15 +62,17 @@ public class SimpleCharacterizationSummaryViewBean {
 				logger.info("Char Name for type: " + charname + " | " + type);
 				
 				SortedSet<CharacterizationBean> charBeans = name2CharBeans.get(charname);
-				List<List<SimpleCharacterizationUnitBean>> charBeansByCharName = new ArrayList<List<SimpleCharacterizationUnitBean>>();
+				List<SimpleCharacterizationViewBean> charBeansByCharName = new ArrayList<SimpleCharacterizationViewBean>();
 				
 				for (CharacterizationBean charBean : charBeans) {
 					logger.debug("Proccessing char bean: " + charBean.getCharacterizationName());
 					
-					//TODO: need to add id
-					
+					SimpleCharacterizationViewBean aView = new SimpleCharacterizationViewBean();
+		
 					List<SimpleCharacterizationUnitBean> aBeanUnitList = tranferCharacterizationBeanData(charBean);
-					charBeansByCharName.add(aBeanUnitList);
+					aView.transferData(charBean, aBeanUnitList, sampleId, type);
+										
+					charBeansByCharName.add(aView);
 					logger.info("End Proccessing char bean: " + charBean.getCharacterizationName());
 				}
 				charsByAssayType.put(charname, charBeansByCharName);
@@ -192,13 +203,6 @@ public class SimpleCharacterizationSummaryViewBean {
 			aUnit = new SimpleCharacterizationUnitBean("Analysis and Conclusion", charBean.getConclusion());
 			charBeanUnits.add(aUnit);
 		}
-		
-		
-		aUnit = new SimpleCharacterizationUnitBean("charId", charBean.getDomainChar().getId());
-		charBeanUnits.add(aUnit);
-		
-		aUnit = new SimpleCharacterizationUnitBean("charClassName", charBean.getClassName());
-		charBeanUnits.add(aUnit);
 		
 		return charBeanUnits;
 	}
@@ -371,5 +375,48 @@ public class SimpleCharacterizationSummaryViewBean {
 		this.charByTypeBeans = charByTypeBeans;
 	}
 
+	public class SimpleCharacterizationViewBean {
+		
+		long charId;
+		String charClassName;
+		
+		List<SimpleCharacterizationUnitBean> displayableItems;
+
+		public long getCharId() {
+			return charId;
+		}
+
+		public void setCharId(long charId) {
+			this.charId = charId;
+		}
+
+		public String getCharClassName() {
+			return charClassName;
+		}
+
+		public void setCharClassName(String charClassName) {
+			this.charClassName = charClassName;
+		}
+
+		public List<SimpleCharacterizationUnitBean> getDisplayableItems() {
+			return displayableItems;
+		}
+
+		public void setDisplayableItems(
+				List<SimpleCharacterizationUnitBean> displayableItems) {
+			this.displayableItems = displayableItems;
+		}
+		
+
+		public void transferData(CharacterizationBean charBean, List<SimpleCharacterizationUnitBean> displayableItems,
+				String sampleId, String charType) {
+			if (charBean.getDomainChar().getId() != null)
+				charId = charBean.getDomainChar().getId();
+			
+			charClassName = charBean.getClassName();
+			
+			setDisplayableItems(displayableItems);
+		}
+	}
 	
 }

@@ -26,7 +26,7 @@ public class SimpleCharacterizationSummaryEditBean extends SimpleCharacterizatio
 		List<String> allCharacterizationTypes = InitCharacterizationSetup
 				.getInstance().getCharacterizationTypes(request);
 		
-		List<SimpleCharacterizationsByTypeBean> charByTypeBeans = super.transferData(viewBean);
+		List<SimpleCharacterizationsByTypeBean> charByTypeBeans = super.transferData(viewBean, sampleId);
 		
 		List<SimpleCharacterizationsByTypeBean> allCharByTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>(); 
 		
