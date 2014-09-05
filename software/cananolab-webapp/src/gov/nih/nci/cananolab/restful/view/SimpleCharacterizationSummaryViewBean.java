@@ -378,7 +378,11 @@ public class SimpleCharacterizationSummaryViewBean {
 	public class SimpleCharacterizationViewBean {
 		
 		long charId;
+		String charType;
 		String charClassName;
+		
+		long parentSampleId;
+		
 		
 		List<SimpleCharacterizationUnitBean> displayableItems;
 
@@ -406,7 +410,22 @@ public class SimpleCharacterizationSummaryViewBean {
 				List<SimpleCharacterizationUnitBean> displayableItems) {
 			this.displayableItems = displayableItems;
 		}
-		
+
+		public String getCharType() {
+			return charType;
+		}
+
+		public void setCharType(String charType) {
+			this.charType = charType;
+		}
+
+		public long getParentSampleId() {
+			return parentSampleId;
+		}
+
+		public void setParentSampleId(long parentSampleId) {
+			this.parentSampleId = parentSampleId;
+		}
 
 		public void transferData(CharacterizationBean charBean, List<SimpleCharacterizationUnitBean> displayableItems,
 				String sampleId, String charType) {
@@ -414,6 +433,11 @@ public class SimpleCharacterizationSummaryViewBean {
 				charId = charBean.getDomainChar().getId();
 			
 			charClassName = charBean.getClassName();
+			
+			if (sampleId != null)
+				parentSampleId = Long.valueOf(sampleId);
+			
+			this.charType = charType;
 			
 			setDisplayableItems(displayableItems);
 		}
