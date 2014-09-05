@@ -13,8 +13,8 @@ var app = angular.module('angularApp')
         $scope.sampleId = $routeParams.sampleId;
         $scope.compositionFileId = $routeParams.compositionFileId;
         $scope.sampleName = $routeParams.sampleName;
-        $scope.sampleId = 20917506;
-        $scope.sampleName='Test Sample';
+        //$scope.sampleId = 20917506;
+        //$scope.sampleName='Test Sample';
         //$scope.compositionFileId = 60260353;
 
 
@@ -27,24 +27,11 @@ var app = angular.module('angularApp')
         $scope.addNewFile = false;
 
         $scope.$on('$viewContentLoaded', function(){
-            $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/compositionFile/setup?sampleId=' + $scope.sampleId}).
+            $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/nanomaterialEntity/setup?sampleId=' + $scope.sampleId}).
                 success(function(data, status, headers, config) {
                     $scope.data = data;
                     //$scope.data = {"pubChemDataSources":["Compound","Substance","BioAssay"],"activationMethods":["does not require activation","enzymatic cleavage","infrared","MRI","NMR","pH","ultrasound","ultraviolet"],"modalityTypes":["beta radiation","bioluminescence","fluorescence","gamma ray","infrared","MRI","neutron scattering","NMR","PET","photoluminescence","Raman spectroscopy","SPECT","ultrasound","X-ray"],"antibodyIsotypes":["IgA","IgD","IgE","IgG","IgM"],"otherSampleNames":["Demo123","NCL-20-1","NCL-21-1","NCL-24-1","NCL-24-1-Copy","NCL-25-1","NCL-26-1","QA"],"functionTypes":["endosomolysis","imaging function","other","targeting function","therapeutic function","transfection"],"functionalizingEntityTypes":["Magnetic Particle","Monomer","Polymer","Quantum Dot","antibody","biopolymer","radioisotope","small molecule"],"fileTypes":["document","graph","image","movie","spread sheet"],"biopolymerTypes":["DNA","peptide","protein","RNA","siRNA"],"targetTypes":["antigen","gene","other","receptor"],"antibodyTypes":["Fab","ScFv","whole"],"molecularFormulaTypes":["Hill","SMARTS","SMILES"],"functionalizingEntityUnits":["%","%mole","%vol","%wt/vol","%wt/wt","g","Gy","M","mCi","mg","mg/mL","mL","mM","mmol","nM","nmol","pmol","uCi/mg","ug","ug/uL","uL","uL/mL","uM","wt%"],"speciesTypes":["cat","cattle","dog","goat","guinea pig","hamster","horse","human","mouse","pig","rat","sheep","yeast","zebrafish"]};
-                    $scope.funcEntityTypes = $scope.data.functionalizingEntityTypes;
-                    $scope.activationMethods = $scope.data.activationMethods;
-                    $scope.pubChemDataSources = $scope.data.pubChemDataSources;
-                    $scope.antibodyIsotypes = $scope.data.antibodyIsotypes;
-                    $scope.molecularFormulaTypes = $scope.data.molecularFormulaTypes;
-                    $scope.functionTypes = $scope.data.functionTypes;
-                    $scope.functionalizingEntityUnits = $scope.data.functionalizingEntityUnits;
-                    $scope.modalityTypes = $scope.data.modalityTypes;
-                    $scope.otherSampleNames = $scope.data.otherSampleNames;
                     $scope.fileTypes = $scope.data.fileTypes;
-                    $scope.biopolymerTypes = $scope.data.biopolymerTypes;
-                    $scope.targetTypes = $scope.data.targetTypes;
-                    $scope.antibodyTypes = $scope.data.antibodyTypes;
-                    $scope.speciesTypes = $scope.data.speciesTypes;
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs

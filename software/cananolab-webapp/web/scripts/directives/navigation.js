@@ -10,7 +10,7 @@ var app = angular.module('angularApp')
         $scope.isEdit = 0;
         $scope.buttons = [];
         // $scope.edit = ['/editSample','/editComposition','/editCharacterization','/updatePublication'];
-        $scope.edit = [{'url':'/editSample','name':'GENERAL INFO'},{'url':'/editComposition','name':'COMPOSITION'},{'url':'/editCharacterization','name':'CHARACTERIZATION'},{'url':'/updatePublication','name':'PUBLICATION'},{'url':'/setupCharacterization','alternativeUrl':'/editCharacterization','name':'CHARACTERIZATION'}];
+        $scope.edit = [{'url':'/editSample','name':'GENERAL INFO'},{'url':'/editComposition','name':'COMPOSITION'},{'url':'/editCharacterization','name':'CHARACTERIZATION'},{'url':'/updatePublication','name':'PUBLICATION'},{'url':'/setupCharacterization','alternativeUrl':'/editCharacterization','name':'CHARACTERIZATION'},{'url':'/editNanoMaterialEntity','alternativeUrl':'/editComposition','name':'COMPOSITION'},{'url':'/editFunctionalizingEntity','alternativeUrl':'/editComposition','name':'COMPOSITION'},{'url':'/editChemicalAssociation','alternativeUrl':'/editComposition','name':'COMPOSITION'},{'url':'/editCompositionFile','alternativeUrl':'/editComposition','name':'COMPOSITION'}];
         $scope.view = [{'url':'/sample','name':'GENERAL INFO'},{'url':'/composition','name':'COMPOSITION'},{'url':'/characterization','name':'CHARACTERIZATION'},{'url':'/publication','name':'PUBLICATION'}];
         $scope.testClick = function(uri) {
             $location.path(uri).replace();

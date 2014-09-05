@@ -1,4 +1,4 @@
-<div class="nanoPageContainer">
+<div class="nanoPageContainer" ng-class="{formFocus:loader}">
     <div class="spacer">
         <form novalidate>
             <table class="contentTitle" width="100%" border="0" summary="layout">
@@ -228,11 +228,11 @@
                 </tbody>
             </table>
         </form>
-        <div id="loader" ng-show="loader">
-            <div id="loaderText">
-                Loading
-            </div>
-            <div id="loaderGraphic"></div>
-        </div>
     </div>
+</div>
+<div id="loader" ng-show="loader">
+    <div id="loaderText">
+        Loading
+    </div>
+    <div id="loaderGraphic"></div>
 </div>

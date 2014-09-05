@@ -5,8 +5,8 @@
             composition file
         </th>
     </tr>
-    <tr>
-        <td ng-repeat="(key, fileTypes) in $parent.compositionfile">
+    <tr ng-repeat="(key, fileTypes) in $parent.compositionfile">
+        <td>
                 <a href="{{key}}"></a>
                 <table width="99%" align="center" class="summaryViewNoGrid"
                        style="background-color:#dbdbdb;">
@@ -15,8 +15,8 @@
                             {{key}}
                         </th>
                     </tr>
-                    <tr>
-                        <td ng-repeat="indFile in fileTypes">
+                    <tr ng-repeat="indFile in fileTypes">
+                        <td>
                                 <table class="summaryViewNoGrid" width="99%" align="center"
                                        style="background-color:#F5F5f5;">
                                     <tr>
@@ -62,7 +62,9 @@
                                             </td>
                                         </tr>
                                 </table>
-                                    <br ng-if="$index < fileTypes.length"/>
+                                
+                                <br ng-if="$index < fileTypes.length"/>
+                                <br ng-if="$index < fileTypes.length"/>
                         </td>
                     </tr>
                     <tr>
@@ -70,7 +72,6 @@
                         </th>
                     </tr>
                 </table>
-                <br />
         </td>
     </tr>
 </table>
