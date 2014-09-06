@@ -62,11 +62,11 @@
                                                 <th scope="row" width="250">
                                                     {{entityType.AssocitedElements.CompositiontypeA}}
                                                     {{entityType.AssocitedElements.EntityDisplayNameA}}
-                                                    <span ng-if="entityType.AssocitedElements.ComposingElemetIdA != ''">
+                                                    <span ng-if="entityType.AssocitedElements.ComposingElemetIdA != null">
                                                         composing element of type {{entityType.AssocitedElements.ComposingElementTypeA}}
                                                             <br>(name: {{entityType.AssocitedElements.ComposingElementNameA}})
                                                     </span>
-                                                    <span ng-if="entityType.AssocitedElements.ComposingElemetIdA == ''">
+                                                    <span ng-if="entityType.AssocitedElements.ComposingElemetIdA == null">
                                                         <br>(name: {{entityType.AssocitedElements.DomainElementNameA}})
                                                     </span>
                                                 </th>
@@ -78,11 +78,11 @@
                                                 <td>
                                                     {{entityType.AssocitedElements.CompositiontypeB}}
                                                     {{entityType.AssocitedElements.EntityDisplayNameB}}
-                                                    <span ng-if="entityType.AssocitedElements.ComposingElemetIdB != ''">
+                                                    <span ng-if="entityType.AssocitedElements.ComposingElemetIdB != null">
                                                         composing element of type {{entityType.AssocitedElements.ComposingElementTypeB}}
                                                             <br>(name: {{entityType.AssocitedElements.ComposingElementNameB}})
                                                     </span>
-                                                    <span ng-if="entityType.AssocitedElements.ComposingElemetIdB == ''">
+                                                    <span ng-if="entityType.AssocitedElements.ComposingElemetIdB == null">
                                                         <br>(name: {{entityType.AssocitedElements.DomainElementNameB}})
                                                     </span>
                                                 </td>
