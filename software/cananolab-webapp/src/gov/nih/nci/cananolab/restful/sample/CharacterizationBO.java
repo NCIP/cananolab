@@ -918,9 +918,11 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());
 		
 		for (FindingBean finding : findingBeans) {
-			if (finding.getDomain().getId() != null 
-					&& finding.getDomain().getId().longValue() == simpleFinding.getFindingId())
-				return finding;
+			if (finding.getDomain() != null && finding.getDomain().getId() != null) {
+				Long id = finding.getDomain().getId(); 
+				if (id.longValue() == simpleFinding.getFindingId())
+					return finding;
+			}
 		}
 		
 		throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());

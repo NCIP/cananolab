@@ -399,4 +399,27 @@ public class CharacterizationServices {
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
+	
+	
+	@GET
+	@Path("/getConditionPropertyOptions")
+	@Produces ("application/json")
+    public Response getConditionPropertyOptions(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("columnName") String columnName) {
+		logger.debug("In getColumnNameOptionsByType");		
+		
+		try {
+			CharacterizationResultManager characterizationResultManager = 
+				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+			
+			List<String> names = characterizationResultManager.getConditionPropertyOptions(httpRequest, columnName);
+					
+			return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
 }

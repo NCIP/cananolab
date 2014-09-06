@@ -62,20 +62,27 @@ public class CharacterizationResultManager {
 		return nms;
 	}
 
-	public String[] getConditionPropertyOptions(String conditionName)
+	/**
+	 * conditionName == column name == char name ?
+	 */
+	public List<String> getConditionPropertyOptions(HttpServletRequest request, String conditionName)
 			throws Exception {
-		WebContext wctx = WebContextFactory.get();
 		SortedSet<String> properties = InitSetup.getInstance()
-				.getDefaultAndOtherTypesByLookup(wctx.getHttpServletRequest(),
+				.getDefaultAndOtherTypesByLookup(request,
 						"conditionProperties", conditionName, "property",
 						"otherProperty", true);
 		// add other condition properties stored in the session for the char
-		SortedSet<String> otherConditionProperties = (SortedSet<String>) wctx
+		SortedSet<String> otherConditionProperties = (SortedSet<String>) request
 				.getSession().getAttribute("otherCharConditionProperties");
 		if (otherConditionProperties != null) {
 			properties.addAll(otherConditionProperties);
 		}
-		return properties.toArray(new String[properties.size()]);
+		
+		List<String> props = new ArrayList<String>();
+		props.addAll(properties);
+		CommonUtil.addOtherToList(props);
+		
+		return props;
 	}
 
 	public List<String> getColumnNameOptionsByType(HttpServletRequest request, String columnType, String charType,

@@ -179,72 +179,7 @@ public class SimpleFindingBean {
 		this.errors = errors;
 	}
 	
-	protected class SimpleRowBean {
-		List<SimpleCell> cells = new ArrayList<SimpleCell>();
-
-		public List<SimpleCell> getCells() {
-			return cells;
-		}
-
-		public void setCells(List<SimpleCell> cells) {
-			this.cells = cells;
-		}
-		
-		public void transferFromRow(Row beanRow) {
-			if (beanRow == null) return;
-			
-			List<TableCell> cells = beanRow.getCells();
-			if (cells == null) return;
-			
-			for (TableCell cell : cells) {
-				SimpleCell simpleCell = new SimpleCell();
-				simpleCell.transferFromTableCell(cell);
-				this.cells.add(simpleCell);
-			}
-		}
-	}
 	
-	protected class SimpleCell {
-		String value;
-		String datumOrCondition;
-		//private Datum datum = new Datum();
-		//private Condition condition = new Condition();
-		Integer columnOrder;
-		Date createdDate;
-		
-		public void transferFromTableCell(TableCell cell) {
-			if (cell == null) return;
-			value = cell.getValue();
-			datumOrCondition = cell.getDatumOrCondition();
-			columnOrder = cell.getColumnOrder();
-		}
-		
-		public String getValue() {
-			return value;
-		}
-		public void setValue(String value) {
-			this.value = value;
-		}
-		public String getDatumOrCondition() {
-			return datumOrCondition;
-		}
-		public void setDatumOrCondition(String datumOrCondition) {
-			this.datumOrCondition = datumOrCondition;
-		}
-		public Integer getColumnOrder() {
-			return columnOrder;
-		}
-		public void setColumnOrder(Integer columnOrder) {
-			this.columnOrder = columnOrder;
-		}
-		public Date getCreatedDate() {
-			return createdDate;
-		}
-		public void setCreatedDate(Date createdDate) {
-			this.createdDate = createdDate;
-		}
-		
-		
-	}
+	
 	
 }
