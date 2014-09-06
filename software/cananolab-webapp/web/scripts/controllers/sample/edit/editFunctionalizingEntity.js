@@ -208,13 +208,12 @@ var app = angular.module('angularApp')
 	            	$scope.funcEntityForm.simpleFunctionBean = {};
 	            }
 	            
-	            if ( $scope.theInherentFunction.id == null || $scope.theInherentFunction.id == '' ) {
-	            	$scope.funcEntityForm.simpleFunctionBean.type = $scope.theInherentFunction.type;
-	            	$scope.funcEntityForm.simpleFunctionBean.modality = $scope.theInherentFunction.modality;
-	            	$scope.funcEntityForm.simpleFunctionBean.description = $scope.theInherentFunction.description;
-	            	$scope.funcEntityForm.simpleFunctionBean.id = $scope.theInherentFunction.id;
-	            	$scope.funcEntityForm.simpleFunctionBean.targets = $scope.theInherentFunction.targets;
-	            }
+            	$scope.funcEntityForm.simpleFunctionBean.type = $scope.theInherentFunction.type;
+            	$scope.funcEntityForm.simpleFunctionBean.modality = $scope.theInherentFunction.modality;
+            	$scope.funcEntityForm.simpleFunctionBean.description = $scope.theInherentFunction.description;
+            	$scope.funcEntityForm.simpleFunctionBean.id = $scope.theInherentFunction.id;
+            	$scope.funcEntityForm.simpleFunctionBean.targets = $scope.theInherentFunction.targets;
+
 	            
 	            $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/saveFunction',data: $scope.funcEntityForm}).
                 success(function(data, status, headers, config) {
@@ -560,16 +559,14 @@ var app = angular.module('angularApp')
             }
             
             
-            if( $scope.fileForm.id == null || $scope.fileForm.id == '' ) {
-	            $scope.funcEntityForm.fileBean.externalUrl = $scope.fileForm.externalUrl;
-	            $scope.funcEntityForm.fileBean.uri = $scope.fileForm.uri;
-	            $scope.funcEntityForm.fileBean.uriExternal = $scope.fileForm.uriExternal;
-	            $scope.funcEntityForm.fileBean.type = $scope.fileForm.type;
-	            $scope.funcEntityForm.fileBean.title = $scope.fileForm.title;
-	            $scope.funcEntityForm.fileBean.keywordsStr = $scope.fileForm.keywordsStr;
-	            $scope.funcEntityForm.fileBean.description = $scope.fileForm.description;
-	            $scope.funcEntityForm.fileBean.id = $scope.fileForm.id;
-            }
+            $scope.funcEntityForm.fileBean.externalUrl = $scope.fileForm.externalUrl;
+            $scope.funcEntityForm.fileBean.uri = $scope.fileForm.uri;
+            $scope.funcEntityForm.fileBean.uriExternal = $scope.fileForm.uriExternal;
+            $scope.funcEntityForm.fileBean.type = $scope.fileForm.type;
+            $scope.funcEntityForm.fileBean.title = $scope.fileForm.title;
+            $scope.funcEntityForm.fileBean.keywordsStr = $scope.fileForm.keywordsStr;
+            $scope.funcEntityForm.fileBean.description = $scope.fileForm.description;
+            $scope.funcEntityForm.fileBean.id = $scope.fileForm.id;
             
 
             $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/saveFile',data: $scope.funcEntityForm}).
