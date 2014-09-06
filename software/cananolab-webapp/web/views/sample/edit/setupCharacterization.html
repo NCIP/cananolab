@@ -329,7 +329,7 @@
 			<label for="charConclusion">Analysis and Conclusion</label>
 		</td>
 		<td>
-			<textarea name="achar.conclusion" cols="120" rows="3" id="charConclusion"></textarea>
+			<textarea ng-model="data.analysisConclusion" name="analysisConclusion" cols="120" rows="3" id="analysisConclusion"></textarea>
 			&nbsp;
 		</td>
 	</tr>
@@ -345,17 +345,15 @@
 						<strong><label for="otherSamples">Copy to other samples with the same primary organization?</label></strong>
 					</td>
 					<td width="20%">
-						<select name="otherSamples" multiple="multiple" size="10" id="otherSamples"><option value="Demo-1234">Demo-1234</option>
-<option value="NCL-23-1-SY-CharTest">NCL-23-1-SY-CharTest</option>
-<option value="NCL-23-1-SY-Test-CharDate">NCL-23-1-SY-Test-CharDate</option>
-<option value="NCL-23-112312321778">NCL-23-112312321778</option>
-<option value="SY-NCL-23-1">SY-NCL-23-1</option>
-<option value="Test2_Harika">Test2_Harika</option>
-<option value="dasdas343434">dasdas343434</option></select>
+
+
+						<select data-ng-model="data.selectedOtherSampleNames" 
+						data-ng-options="option for option in data.otherSampleNameLookup" id="selectedOtherSampleNames" ng-multiple="true" multiple>
+					</select>  
 					</td>
-					<td>
+					<td><input type="checkbox" ng-model="data.copyToOtherSamples" ng-true-value="true" ng-false-value="false">
 						
-							<input name="copyData" value="on" id="copyData" type="checkbox">
+						<!-- 	<input name="copyData" value="on" id="copyData" type="checkbox"> -->
 							<strong><label for="copyData">Also copy finding data and conditions ?</label></strong>
 						
 						&nbsp;
