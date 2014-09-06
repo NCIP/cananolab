@@ -123,6 +123,12 @@ public class SimpleCharacterizationEditBean {
 		for (FindingBean findingBean : findingBeans) {
 			SimpleFindingBean simpleBean = new SimpleFindingBean();
 			simpleBean.transferFromFindingBean(findingBean);
+			
+			
+			//List<FileBean> files = findingBean.getFiles();
+			
+			
+			
 			this.finding.add(simpleBean);
 		}
 	}
