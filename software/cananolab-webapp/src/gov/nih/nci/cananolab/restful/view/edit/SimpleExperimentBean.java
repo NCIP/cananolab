@@ -11,6 +11,7 @@ public class SimpleExperimentBean {
 	
 	long id;
 	String displayName;
+	String techniqueType;
 	String abbreviation;
 	String description;
 	
@@ -28,7 +29,7 @@ public class SimpleExperimentBean {
 			tech = new Technique();
 			expConfigBean.getDomain().setTechnique(new Technique());
 		}
-		tech.setType(this.displayName);
+		tech.setType(this.techniqueType);
 		tech.setAbbreviation(this.abbreviation);
 		
 		List<Instrument> instListInDomainBean = expConfigBean.getInstruments();
@@ -44,6 +45,16 @@ public class SimpleExperimentBean {
 		}
 	}
 	
+	public String getTechniqueType() {
+		return techniqueType;
+	}
+
+
+	public void setTechniqueType(String techniqueType) {
+		this.techniqueType = techniqueType;
+	}
+
+
 	public long getId() {
 		return id;
 	}

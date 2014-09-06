@@ -132,7 +132,12 @@ public class SimpleCharacterizationEditBean {
 			SimpleExperimentBean simpleExp = new SimpleExperimentBean();
 			simpleExp.setDescription(expConfig.getDescription());
 			simpleExp.setDisplayName(expConfig.getTechniqueDisplayName());
-			if (expConfig.getDomain().getId() != null)
+			
+			if (expConfig.getDomain() != null && expConfig.getDomain().getTechnique() != null) {
+				simpleExp.setTechniqueType(expConfig.getDomain().getTechnique().getType());
+				simpleExp.setAbbreviation(expConfig.getDomain().getTechnique().getAbbreviation());
+			}
+			if (expConfig.getDomain() != null && expConfig.getDomain().getId() != null)
 				simpleExp.setId(expConfig.getDomain().getId());
 			
 			List<Instrument> domainInsts = expConfig.getInstruments();
