@@ -43,6 +43,7 @@ public class SimpleCharacterizationEditBean {
 	
 	List<SimpleFindingBean> finding = new ArrayList<SimpleFindingBean>();
 	
+	String analysisConclusion;
 	
 	//When saving, could propagate to other samples
 	List<String> selectedOtherSampleNames;
@@ -69,6 +70,7 @@ public class SimpleCharacterizationEditBean {
 		this.type = charBean.getCharacterizationType();
 		this.parentSampleId = Long.parseLong(sampleId);
 		this.name = charBean.getCharacterizationName();
+		this.analysisConclusion = charBean.getConclusion();
 		
 		setProtocolId(charBean);
 		setCharacterizationSourceId(charBean.getPocBean());
@@ -224,6 +226,14 @@ public class SimpleCharacterizationEditBean {
 	}
 	
 	
+	public String getAnalysisConclusion() {
+		return analysisConclusion;
+	}
+
+	public void setAnalysisConclusion(String analysisConclusion) {
+		this.analysisConclusion = analysisConclusion;
+	}
+
 	public long getCharacterizationSourceId() {
 		return characterizationSourceId;
 	}
