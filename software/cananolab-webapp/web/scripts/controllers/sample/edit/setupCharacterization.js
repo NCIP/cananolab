@@ -1,6 +1,6 @@
 'use strict';
 var app = angular.module('angularApp')
-	.controller('SetupCharacterizationCtrl', function ($scope,$http,$modal,sampleService,$location,$anchorScroll) {
+	.controller('SetupCharacterizationCtrl', function ($scope,$http,$modal,sampleService,$location,$anchorScroll,$filter) {
 
     // define variables //
     $scope.sampleData = sampleService.sampleData;
@@ -94,6 +94,9 @@ var app = angular.module('angularApp')
             $scope.loader = false;        
         });         
     };
+    if($scope.data.characterizationDate) { 
+        $scope.data.characterizationDate = new Date($scope.data.characterizationDate);
+    };    
 
     // gets characterization names when characterization type dropdown is changed //
     $scope.characterizationTypeDropdownChanged = function() {
@@ -289,6 +292,12 @@ var app = angular.module('angularApp')
         error(function(data, status, headers, config) {
             $scope.loader = false;
         });        
+    };
+
+    // opens column form to change properties for column //
+    $scope.openColumnForm = function(cell) {
+        $scope.findingsColumn = cell;
+
     };
 
     // saves finding info //
