@@ -257,9 +257,10 @@ var app = angular.module('angularApp')
                     }
                 }
             }
-            else {
+ /*           else {
                 $scope.composingElements.push($scope.composingElementForm);
             }
+*/            
             
             $scope.nanoEntityForm.composingElements = $scope.composingElements;
             
@@ -267,17 +268,19 @@ var app = angular.module('angularApp')
             	$scope.nanoEntityForm.simpleCompBean = {};
             }
             
-            $scope.nanoEntityForm.simpleCompBean.id = $scope.composingElementForm.id;
-            $scope.nanoEntityForm.simpleCompBean.type = $scope.composingElementForm.type;
-            $scope.nanoEntityForm.simpleCompBean.name = $scope.composingElementForm.name;
-            $scope.nanoEntityForm.simpleCompBean.pubChemDataSourceName = $scope.composingElementForm.pubChemDataSourceName;
-            $scope.nanoEntityForm.simpleCompBean.pubChemId = $scope.composingElementForm.pubChemId;
-            $scope.nanoEntityForm.simpleCompBean.value = $scope.composingElementForm.value;
-            $scope.nanoEntityForm.simpleCompBean.valueUnit = $scope.composingElementForm.valueUnit;
-            $scope.nanoEntityForm.simpleCompBean.molecularFormulaType = $scope.composingElementForm.molecularFormulaType;
-            $scope.nanoEntityForm.simpleCompBean.molecularFormula = $scope.composingElementForm.molecularFormula;
-            $scope.nanoEntityForm.simpleCompBean.description = $scope.composingElementForm.description;
-            $scope.nanoEntityForm.simpleCompBean.inherentFunction = $scope.composingElementForm.inherentFunction;
+            if( $scope.composingElementForm.id == null || $scope.composingElementForm.id == '') {
+	            $scope.nanoEntityForm.simpleCompBean.id = $scope.composingElementForm.id;
+	            $scope.nanoEntityForm.simpleCompBean.type = $scope.composingElementForm.type;
+	            $scope.nanoEntityForm.simpleCompBean.name = $scope.composingElementForm.name;
+	            $scope.nanoEntityForm.simpleCompBean.pubChemDataSourceName = $scope.composingElementForm.pubChemDataSourceName;
+	            $scope.nanoEntityForm.simpleCompBean.pubChemId = $scope.composingElementForm.pubChemId;
+	            $scope.nanoEntityForm.simpleCompBean.value = $scope.composingElementForm.value;
+	            $scope.nanoEntityForm.simpleCompBean.valueUnit = $scope.composingElementForm.valueUnit;
+	            $scope.nanoEntityForm.simpleCompBean.molecularFormulaType = $scope.composingElementForm.molecularFormulaType;
+	            $scope.nanoEntityForm.simpleCompBean.molecularFormula = $scope.composingElementForm.molecularFormula;
+	            $scope.nanoEntityForm.simpleCompBean.description = $scope.composingElementForm.description;
+	            $scope.nanoEntityForm.simpleCompBean.inherentFunction = $scope.composingElementForm.inherentFunction;
+            }
             
             if( $scope.sampleId != null ) {
             	$scope.nanoEntityForm.sampleId = $scope.sampleId;
@@ -516,24 +519,27 @@ var app = angular.module('angularApp')
                     }
                 }
             }
-            else {
+/*            else {
                 $scope.files.push($scope.fileForm);
             }
-
+*/
             $scope.nanoEntityForm.files = $scope.files;
             
             if( $scope.nanoEntityForm.fileBean == null ) {
             	$scope.nanoEntityForm.fileBean = {};
             }
             
-            $scope.nanoEntityForm.fileBean.externalUrl = $scope.fileForm.externalUrl;
-            $scope.nanoEntityForm.fileBean.uri = $scope.fileForm.uri;
-            $scope.nanoEntityForm.fileBean.uriExternal = $scope.fileForm.uriExternal;
-            $scope.nanoEntityForm.fileBean.type = $scope.fileForm.type;
-            $scope.nanoEntityForm.fileBean.title = $scope.fileForm.title;
-            $scope.nanoEntityForm.fileBean.keywordsStr = $scope.fileForm.keywordsStr;
-            $scope.nanoEntityForm.fileBean.description = $scope.fileForm.description;
-            $scope.nanoEntityForm.fileBean.id = $scope.fileForm.id;
+            
+            if( $scope.fileForm.id == null || $scope.fileForm.id == '' ) {
+	            $scope.nanoEntityForm.fileBean.externalUrl = $scope.fileForm.externalUrl;
+	            $scope.nanoEntityForm.fileBean.uri = $scope.fileForm.uri;
+	            $scope.nanoEntityForm.fileBean.uriExternal = $scope.fileForm.uriExternal;
+	            $scope.nanoEntityForm.fileBean.type = $scope.fileForm.type;
+	            $scope.nanoEntityForm.fileBean.title = $scope.fileForm.title;
+	            $scope.nanoEntityForm.fileBean.keywordsStr = $scope.fileForm.keywordsStr;
+	            $scope.nanoEntityForm.fileBean.description = $scope.fileForm.description;
+	            $scope.nanoEntityForm.fileBean.id = $scope.fileForm.id;
+            }
             
             if( $scope.sampleId != null ) {
             	$scope.nanoEntityForm.sampleId = $scope.sampleId;
