@@ -1,4 +1,4 @@
-<div ng-class="{formFocus:loader}">
+<div ng-class="{formFocus:loader}">asdas{{techniqueInstrument}}saddsa
 	<div class="modal-header">
 		<h3 class="modal-title pull-left">{{title}} Characterization</h3>
 		<div class="pull-right">
@@ -113,10 +113,10 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="20%">
-			Technique and Instrument<!-- {{data.techniqueInstruments.techniquesLookup}} -->
+			Technique and Instrument
 		</td>
 		<td>
-<button ng-click="openNewExperimentConfig()" class="btn btn-primary btn-xxs">Add</button>		
+<button ng-click="openNewExperimentConfig()" ng-disabled="updateExperimentConfig" class="btn btn-primary btn-xxs">Add</button>		
 		</td>
 	</tr>
 	<tr ng-if="data.techniqueInstruments.experiments.length">
@@ -155,7 +155,7 @@
 							{{item.description}}
 						</td>
 						
-							<td><button ng-click="openUpdateExperimentConfig(item)" class="btn btn-primary btn-xxs">Edit</button>	
+							<td><button ng-disabled="updateExperimentConfig" ng-click="openUpdateExperimentConfig(item)" class="btn btn-primary btn-xxs">Edit</button>	
 
 							</td>
 						
@@ -168,14 +168,14 @@
 	<tr>
 		<td colspan="2">
 			
-			<div ng-show="newExperimentConfig" id="newExperimentConfig">
+			<div ng-show="updateExperimentConfig" id="newExperimentConfig">
 				<link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 				<script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 				<table class="subSubmissionView" summary="layout" align="center" width="85%">
 					<tbody><tr>
 						<th colspan="2">
 							Technique and Instrument Info
-						</th>
+						</th>{{techniqueInstrument}}
 					</tr>
 					<tr>
 						<td class="cellLabel" width="15%">
@@ -183,8 +183,8 @@
 						</td>
 						<td>
 							<div id="techniqueTypePrompt">
-		<select data-ng-model="techniqueInstrument.displayName"
-		data-ng-options="option for option in data.techniqueInstruments.techniqueTypeLookup" id="techniqueType" ng-change="techniqueTypeInstrumentDropdownChanged()">							
+		<select data-ng-model="techniqueInstrument.techniqueType"
+		data-ng-options="option for option in data.techniqueInstruments.techniqueTypeLookup" id="techniqueType" ng-change="techniqueTypeInstrumentDropdownChanged()"></select>							
 								</div>
 							</td>
 						</tr>
@@ -202,7 +202,7 @@
 							</td>
 							<td>
 								<div id="instrumentSection">
-									<button ng-click="openNewInstrument()" class="btn btn-primary btn-xxs">Add</button>	<br />	
+									<button ng-disabled="updateInstrument||!techniqueInstrument.techniqueType" ng-click="openNewInstrument()" class="btn btn-primary btn-xxs">Add</button>	<br />	
 									<table style="margin-top:15px;" ng-if="techniqueInstrument.instruments.length" id="instrumentTable" class="editTableWithGrid" width="85%">
 										<tbody id="instrumentRows">
 											<tr id="patternHeader">
@@ -218,18 +218,18 @@
 												<td>
 												</td>
 											</tr>
-											<tr id="pattern" style="display: none;">
+											<tr id="pattern" ng-repeat="instrument in techniqueInstrument.instruments">
 												<td>
-													<span id="instrumentManufacturer">Manufacturer</span>
+													<span id="instrumentManufacturer">{{instrument.manufacturer}}</span>
 												</td>
 												<td>
-													<span id="instrumentModelName">ModelName</span>
+													<span id="instrumentModelName">{{instrument.modelName}}</span>
 												</td>
 												<td>
-													<span id="instrumentType">Type</span>
+													<span id="instrumentType">{{instrument.type}}</span>
 												</td>
 												<td>
-													<input class="noBorderButton" id="edit" value="Edit" onclick="editInstrument(this.id);" type="button">
+													<button ng-disabled="updateInstrument"  ng-click="openExistingInstrument(instrument)" class="btn btn-primary btn-xxs">Edit</button>
 												</td>
 											</tr>
 										</tbody>
@@ -241,116 +241,16 @@
 							<td class="cellLabel" width="15%">
 							</td>
 							<td>
-								<div id="newInstrument" style="display:none">
+								<div id="newInstrument" ng-show="updateInstrument">
 									<table class="promptbox" width="85%">
 										<tbody><tr>
 											<td class="cellLabel" width="15%">
 												<label for="manufacturer">Manufacturer</label>
-											</td>
-											<td>
+											</td>											<td>
 												<div id="manufacturerPrompt">
-													<input name="achar.theInstrument.id" value="" id="id" type="hidden">
-													<select name="achar.theInstrument.manufacturer" onchange="javascript:callPrompt('Manufacturer', 'manufacturer', 'manufacturerPrompt');" id="manufacturer"><option value=""></option>
-														<option value="ACT GmbH">ACT GmbH</option>
-														<option value="Aerotech">Aerotech</option>
-														<option value="Affymetrix">Affymetrix</option>
-														<option value="Agilent">Agilent</option>
-														<option value="Alltech">Alltech</option>
-														<option value="Amersham">Amersham</option>
-														<option value="Amersham Pharmacia Biotech">Amersham Pharmacia Biotech</option>
-														<option value="Applied Biosystems">Applied Biosystems</option>
-														<option value="Applied Precision">Applied Precision</option>
-														<option value="Asylum Research">Asylum Research</option>
-														<option value="B&amp;W Tek">B&amp;W Tek</option>
-														<option value="BD Biosciences">BD Biosciences</option>
-														<option value="Beckman/Coulter">Beckman/Coulter</option>
-														<option value="Becton Dickinson">Becton Dickinson</option>
-														<option value="Biacore">Biacore</option>
-														<option value="BioLogics">BioLogics</option>
-														<option value="Biorad">Biorad</option>
-														<option value="BioTek">BioTek</option>
-														<option value="Brookhaven Instruments">Brookhaven Instruments</option>
-														<option value="Bruker">Bruker</option>
-														<option value="Budget Sensors">Budget Sensors</option>
-														<option value="Caliper Life Sciences">Caliper Life Sciences</option>
-														<option value="Carl Zeiss">Carl Zeiss</option>
-														<option value="ChemoMetec">ChemoMetec</option>
-														<option value="CPS Instruments">CPS Instruments</option>
-														<option value="CTI Concorde Microsystems">CTI Concorde Microsystems</option>
-														<option value="Dako">Dako</option>
-														<option value="Diagnostica Stago">Diagnostica Stago</option>
-														<option value="Dynatech">Dynatech</option>
-														<option value="EDAX">EDAX</option>
-														<option value="Endra">Endra</option>
-														<option value="Eppendorf">Eppendorf</option>
-														<option value="FEI">FEI</option>
-														<option value="FLIR">FLIR</option>
-														<option value="Gatan">Gatan</option>
-														<option value="GE Healthcare">GE Healthcare</option>
-														<option value="Guava Technologies/Millipore">Guava Technologies/Millipore</option>
-														<option value="Hamamatsu">Hamamatsu</option>
-														<option value="Hewlett-Packard">Hewlett-Packard</option>
-														<option value="Hitachi">Hitachi</option>
-														<option value="Horiba">Horiba</option>
-														<option value="Invitrogen">Invitrogen</option>
-														<option value="JEOL">JEOL</option>
-														<option value="Jobin Yvon">Jobin Yvon</option>
-														<option value="Kodak">Kodak</option>
-														<option value="Kratos Analytical">Kratos Analytical</option>
-														<option value="Labsystems">Labsystems</option>
-														<option value="Lakeshore">Lakeshore</option>
-														<option value="LaVision BioTec">LaVision BioTec</option>
-														<option value="LECO">LECO</option>
-														<option value="Leica">Leica</option>
-														<option value="Luxtron">Luxtron</option>
-														<option value="Malvern">Malvern</option>
-														<option value="Micromass">Micromass</option>
-														<option value="Micromeritics">Micromeritics</option>
-														<option value="Millipore">Millipore</option>
-														<option value="Molecular Devices">Molecular Devices</option>
-														<option value="Molecular Imaging">Molecular Imaging</option>
-														<option value="Nikon">Nikon</option>
-														<option value="OBB Corp">OBB Corp</option>
-														<option value="Ocean Optics">Ocean Optics</option>
-														<option value="Olympus">Olympus</option>
-														<option value="Packard">Packard</option>
-														<option value="Panametrics">Panametrics</option>
-														<option value="Park Systems">Park Systems</option>
-														<option value="PerkinElmer">PerkinElmer</option>
-														<option value="Phenomenex">Phenomenex</option>
-														<option value="Philips">Philips</option>
-														<option value="Photal Otsuka">Photal Otsuka</option>
-														<option value="Photometrics">Photometrics</option>
-														<option value="Photon Technology International">Photon Technology International</option>
-														<option value="Picoquant">Picoquant</option>
-														<option value="Point Electronic GmBh">Point Electronic GmBh</option>
-														<option value="Princeton Instruments">Princeton Instruments</option>
-														<option value="PSS">PSS</option>
-														<option value="Quantachrome Instruments">Quantachrome Instruments</option>
-														<option value="Quantum Design">Quantum Design</option>
-														<option value="Renishaw">Renishaw</option>
-														<option value="Rigaku">Rigaku</option>
-														<option value="Roche Applied Science">Roche Applied Science</option>
-														<option value="RPMC Lasers">RPMC Lasers</option>
-														<option value="Sartorius">Sartorius</option>
-														<option value="Shimadzu">Shimadzu</option>
-														<option value="Siemens Medical">Siemens Medical</option>
-														<option value="Soft Imaging Systems">Soft Imaging Systems</option>
-														<option value="TA Instruments">TA Instruments</option>
-														<option value="Tecan">Tecan</option>
-														<option value="Test">Test</option>
-														<option value="Thermo Electron">Thermo Electron</option>
-														<option value="Thermo Scientific">Thermo Scientific</option>
-														<option value="TosoHaas">TosoHaas</option>
-														<option value="Varian">Varian</option>
-														<option value="Visualsonics">Visualsonics</option>
-														<option value="Waters">Waters</option>
-														<option value="Wyatt Technologies">Wyatt Technologies</option>
-														<option value="Zeiss">Zeiss</option>
-
-														<option value="other">
-															[other]
-														</option></select>
+												<select data-ng-model="instrument.manufacturer"
+		data-ng-options="option for option in data.techniqueInstruments.manufacturerLookup" id="techniqueType"></select>
+													
 													</div>
 												</td>
 											</tr>
@@ -359,7 +259,7 @@
 													<label for="modelName">Model Name</label>
 												</td>
 												<td>
-													<input name="achar.theInstrument.modelName" size="30" value="" id="modelName" type="text">
+													<input name="modelName" size="30" value="" ng-model="instrument.modelName" id="modelName" type="text">
 												</td>
 											</tr>
 											<tr>
@@ -368,21 +268,19 @@
 												</td>
 												<td>
 													<div id="instrumentTypePrompt">
-														<select name="achar.theInstrument.type" onchange="javascript:callPrompt('Instrument Type', 'type', 'instrumentTypePrompt');" id="type"><option value=""></option>
-															<option value="other">
-																[other]
-															</option></select>
+														<select data-ng-model="instrument.type"
+		data-ng-options="option for option in instrumentTypesLookup" id="techniqueType"></select>
 														</div>
 													</td>
 												</tr>
 												<tr>
 													<td>
-														<input style="display: none;" class="promptButton" id="deleteInstrument" value="Remove" onclick="deleteTheInstrument()" type="button">
+														<button ng-show="!isNewInstrument" ng-click="removeInstrument(instrument)" class="btn btn-danger btn-xxs">Remove</button>	
 													</td>
 													<td>
 														<div align="right">
-															<input class="promptButton" value="Save" onclick="addInstrument();show('instrumentTable');closeSubmissionForm('Instrument');" type="button">
-															<input class="promptButton" value="Cancel" onclick="clearInstrument();closeSubmissionForm('Instrument');" type="button">
+															<button ng-click="saveInstrument(instrument)" class="btn btn-primary btn-xxs" ng-disabled="!instrument.manufacturer&&!instrument.modelName&&!instrument.type">Save</button>		
+															<button ng-click="cancelInstrument(instrument)" class="btn btn-warning btn-xxs">Cancel</button>	
 														</div>
 													</td>
 												</tr>
@@ -400,16 +298,16 @@
 								</tr>
 								<tr>
 									<td>
-
+<button ng-show="!isNewExperimentConfig" ng-click="removeExperimentConfig()" class="btn btn-danger btn-xxs">Remove</button>
 										<input style="display: none;" id="deleteExperimentConfig" value="Remove" onclick="javascript:deleteTheExperimentConfig('false')" type="button">
 
 									</td>
 									<td align="right">
 										<div align="right">
-											<button value="Cancel" ng-click="saveExperimentConfig()" class="btn btn-primary btn-xs">Save</button>												
+											<button value="Save" ng-disabled="!techniqueInstrument.techniqueType" ng-click="saveExperimentConfig()" class="btn btn-primary btn-xs">Save</button>												
 <!-- 											<input value="Save" onclick="javascript:validateSaveConfig('false', 'characterization');" type="button"> -->
 <!-- 											<input value="Cancel" onclick="javascript:clearExperimentConfig();closeSubmissionForm('ExperimentConfig');" type="reset"> -->
-											<button value="Cancel" ng-click="newExperimentConfig=0" class="btn btn-warning btn-xs">Cancel</button>											
+											<button value="Cancel" ng-click="cancelExperimentConfig()" class="btn btn-warning btn-xs">Cancel</button>											
 										</div>
 									</td>
 								</tr>

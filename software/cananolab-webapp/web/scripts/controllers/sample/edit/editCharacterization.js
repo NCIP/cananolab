@@ -61,7 +61,6 @@ app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,
 		$scope.charId.data = charId;
 		$scope.charClassName.data = charClassName;
 		$scope.isEdit.data = 1;
-		alert("Need to somehow add charId and charClassName and pass to setupCharacterization")
 		$location.path('/setupCharacterization');
 	}; 
 
