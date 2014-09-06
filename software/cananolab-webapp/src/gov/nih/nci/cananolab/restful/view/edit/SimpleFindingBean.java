@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.Row;
 import gov.nih.nci.cananolab.dto.common.TableCell;
@@ -50,7 +52,30 @@ public class SimpleFindingBean {
 		if (domain.getId() != null)
 			findingId = domain.getId();
 		
+		transferFilesFromFindingBean(findingBean.getFiles());
 	}
+	
+	protected void transferFilesFromFindingBean(List<FileBean> files) {
+		if (files == null) return;
+		
+		for (FileBean file : files) {
+			SimpleFileBean simpleFile = new SimpleFileBean();
+			simpleFile.setDescription(file.getDescription());
+			File domainFile = file.getDomainFile();
+			if (domainFile != null) {
+				if (domainFile.getId() != null)
+					simpleFile.setId(domainFile.getId());
+				simpleFile.setTitle(domainFile.getTitle());
+				simpleFile.setType(domainFile.getType());
+				simpleFile.setUri(domainFile.getUri());
+				simpleFile.setUriExternal(domainFile.getUriExternal());
+				
+			}
+			
+			this.files.add(simpleFile);
+		}
+	}
+	
 	public void transferTableNumbersToFindingBean(FindingBean findingBean) {
 		if (findingBean == null) return;
 		

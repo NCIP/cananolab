@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -148,23 +149,27 @@ public class CharacterizationResultManager {
 		return allDatumNames;
 	}
 
-	public String[] getColumnValueUnitOptions(String name, String property)
+	public List<String> getColumnValueUnitOptions(HttpServletRequest request, String name, String property)
 			throws Exception {
-		WebContext wctx = WebContextFactory.get();
 		String valueName = name;
 		if (!StringUtils.isEmpty(property)) {
 			valueName = property;
 		}
+		
 		SortedSet<String> units = InitSetup.getInstance()
-				.getDefaultAndOtherTypesByLookup(wctx.getHttpServletRequest(),
+				.getDefaultAndOtherTypesByLookup(request,
 						"valueUnits", valueName, "unit", "otherUnit", true);
 		// add other value unit stored in the session for the char
-		SortedSet<String> otherValueUnits = (SortedSet<String>) wctx
+		SortedSet<String> otherValueUnits = (SortedSet<String>) request
 				.getSession().getAttribute("otherCharValueUnits");
 		if (otherValueUnits != null) {
 			units.addAll(otherValueUnits);
 		}
-		return units.toArray(new String[units.size()]);
+		
+		List<String> unitList = new ArrayList<String>();
+		unitList.addAll(units);
+		CommonUtil.addOtherToList(unitList);
+		return unitList;
 	}
 
 	public FileBean getFileFromList(int index) {
