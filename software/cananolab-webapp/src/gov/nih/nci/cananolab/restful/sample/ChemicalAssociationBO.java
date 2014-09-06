@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.CompositionUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleChemicalAssociationBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
@@ -50,17 +51,13 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		}
 
 		if (!validateAssociatedElements(assocBean)) {
-			ActionMessage msg = new ActionMessage(
-					"error.duplicateAssociatedElementsInAssociation");
 			msgs.add(PropertyUtil.getProperty("sample", "error.duplicateAssociatedElementsInAssociation"));
 			return msgs;
 		}
 		this.setServicesInSession(request);
 		saveAssociation(request, form, assocBean);
-		ActionMessage msg = new ActionMessage("message.addChemicalAssociation");
 		msgs.add(PropertyUtil.getProperty("sample", "message.addChemicalAssociation"));
 		// save action messages in the session so composition.do know about them
-		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		// to preselect chemical association after returning to the summary page
 		request.getSession().setAttribute("tab", "3");
 		return msgs;
@@ -342,11 +339,10 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		session.setAttribute("entityListB", entityListB);
 	}
 
-	public ChemicalAssociationBean setupUpdate(CompositionForm form,
+	public SimpleChemicalAssociationBean setupUpdate(String sampleId, String dataId,
 			HttpServletRequest request)
 			throws Exception {
 		// set up compositionBean required to set up drop-down
-		String sampleId = form.getSampleId();
 		CompositionService compService = this.setServicesInSession(request);
 		CompositionBean compositionBean = compService
 				.findCompositionBySampleId(sampleId);
@@ -358,7 +354,9 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		//theForm.set("assoc", assocBean);
 		this.checkOpenForms(assocBean, request);
 	//	return mapping.findForward("inputForm");
-		return assocBean;
+		SimpleChemicalAssociationBean chemBean = new SimpleChemicalAssociationBean();
+		chemBean.trasferToSimpleChemicalAssociation(assocBean, request);
+		return chemBean;
 	}
 
 	public void saveFile(CompositionForm form,

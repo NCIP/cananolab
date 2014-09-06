@@ -508,7 +508,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		
 		bean.setTheComposingElement(compBean);
 
-		//setting up composing elements
+		//setting up composing elements if there exists composingElements
 		List<SimpleComposingElementBean> list = nanoBean.getComposingElements();
 
 		func = new FunctionBean();
@@ -555,17 +555,18 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		SimpleFileBean fBean = nanoBean.getFileBean();
 		FileBean fileBean = new FileBean();
 		File file = new File();
-		
-		file.setType(fBean.getType());
-		file.setTitle(fBean.getTitle());
-		file.setDescription(fBean.getDescription());
-		file.setUri(fBean.getUri());
-		file.setCreatedBy(fBean.getCreatedBy());
-		file.setCreatedDate(fBean.getCreatedDate());
-		file.setUriExternal(fBean.getUriExternal());
-		fileBean.setKeywordsStr(fBean.getKeywordsStr());
-		fileBean.setDomainFile(file);
-		
+		if(fBean!=null){
+			
+			file.setType(fBean.getType());
+			file.setTitle(fBean.getTitle());
+			file.setDescription(fBean.getDescription());
+			file.setUri(fBean.getUri());
+			file.setCreatedBy(fBean.getCreatedBy());
+			file.setCreatedDate(fBean.getCreatedDate());
+			file.setUriExternal(fBean.getUriExternal());
+			fileBean.setKeywordsStr(fBean.getKeywordsStr());
+			fileBean.setDomainFile(file);
+		}
 		bean.setTheFile(fileBean);
 		
 		//setting up files

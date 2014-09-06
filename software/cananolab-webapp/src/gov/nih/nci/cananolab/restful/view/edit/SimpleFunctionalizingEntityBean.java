@@ -30,14 +30,7 @@ public class SimpleFunctionalizingEntityBean {
 	List<String> errors;
 	List<SimpleFunctionBean> functionList;
 	List<SimpleFileBean> fileList;
-	List<Map<String, String>> targets;
 	
-	public List<Map<String, String>> getTargets() {
-		return targets;
-	}
-	public void setTargets(List<Map<String, String>> targets) {
-		this.targets = targets;
-	}
 	public String getSampleId() {
 		return sampleId;
 	}
@@ -180,7 +173,7 @@ public class SimpleFunctionalizingEntityBean {
 			simpleBean.setType(funcBean.getType());
 			simpleBean.setModality(funcBean.getImagingFunction().getModality());
 
-			targets = new ArrayList<Map<String, String>>();
+			List<Map<String, String>> targets = new ArrayList<Map<String, String>>();
 			for(TargetBean targetBean : funcBean.getTargets()){
 				Map<String, String> target = new HashMap<String, String>();
 

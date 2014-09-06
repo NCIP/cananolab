@@ -507,15 +507,37 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	public FunctionalizingEntityBean transferSimpleFunctionalizingEntity(
 			SimpleFunctionalizingEntityBean bean) {
 		
+		//setting up theFunction
 		FunctionalizingEntityBean funcBean = new FunctionalizingEntityBean();
+
+		SimpleFunctionBean sFunction = bean.getSimpleFunctionBean();
+		
+		TargetBean target = new TargetBean();
+		FunctionBean functionBean = new FunctionBean();
+		Function theFunction = new Function();
+		List<TargetBean> targets = new ArrayList<TargetBean>();
+		theFunction.setDescription(sFunction.getDescription());
+		theFunction.setCreatedBy(sFunction.getCreatedBy());
+		theFunction.setCreatedDate(sFunction.getCreatedDate());
+		
+		functionBean.setType(sFunction.getType());
+		functionBean.setDescription(sFunction.getDescription());
+		target.setDescription(sFunction.getTargetDescription());
+		target.setName(sFunction.getTargetName());
+		target.setType(sFunction.getTargetType());
+		functionBean.setTargets(targets);
+		
+		funcBean.setTheFunction(functionBean);
+		
+		//setting up functions if ther exists
 		Collection<Function> funCollection = new HashSet<Function>();
-		FunctionalizingEntity domainEntity = null;
+		FunctionalizingEntity domainEntity = new FunctionalizingEntity();
 		if(bean.getFunctionList()!=null){
 			for(SimpleFunctionBean fuBean : bean.getFunctionList()){
-				TargetBean target = new TargetBean();
-				FunctionBean functionBean = new FunctionBean();
-				Function theFunction = new Function();
-				List<TargetBean> targets = new ArrayList<TargetBean>();
+				target = new TargetBean();
+				functionBean = new FunctionBean();
+				theFunction = new Function();
+				targets = new ArrayList<TargetBean>();
 				theFunction.setDescription(fuBean.getDescription());
 				theFunction.setCreatedBy(fuBean.getCreatedBy());
 				theFunction.setCreatedDate(fuBean.getCreatedDate());
@@ -530,13 +552,32 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			}
 			
 		}
+		//setting up theFile
+		
+		SimpleFileBean sFBean = bean.getFileBean();
+		
+		FileBean fileBean = new FileBean();
+		File file = new File();
+		file.setType(sFBean.getType());
+		file.setTitle(sFBean.getTitle());
+		file.setDescription(sFBean.getDescription());
+		file.setUri(sFBean.getUri());
+		file.setCreatedBy(sFBean.getCreatedBy());
+		file.setCreatedDate(sFBean.getCreatedDate());
+		file.setUriExternal(sFBean.getUriExternal());
+		fileBean.setKeywordsStr(sFBean.getKeywordsStr());
+		fileBean.setDomainFile(file);
+		
+		funcBean.setTheFile(fileBean);
+		
+		//setting up files if there exists
 		Collection<File> filecoll = new HashSet<File>();
 		List<SimpleFileBean> filelist =  bean.getFileList();
 		
 		if(filelist!=null){
 		for(SimpleFileBean sBean : filelist){
-			FileBean fileBean = new FileBean();
-			File file = new File();
+			fileBean = new FileBean();
+			file = new File();
 			file.setType(sBean.getType());
 			file.setTitle(sBean.getTitle());
 			file.setDescription(sBean.getDescription());
@@ -545,7 +586,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			file.setCreatedDate(sBean.getCreatedDate());
 			file.setUriExternal(sBean.getUriExternal());
 			fileBean.setKeywordsStr(sBean.getKeywordsStr());
-		//	fileBean.setDomainFile(file);
+			fileBean.setDomainFile(file);
 			filecoll.add(file);
 		}
 		}
@@ -577,7 +618,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 
 			bio.setFileCollection(filecoll);
 			bio.setSampleComposition(new SampleComposition());
-		//	domainEntity = bio;
+			domainEntity = bio;
 		}
 		
 		if(bean.getType().equalsIgnoreCase("Antibody")){
