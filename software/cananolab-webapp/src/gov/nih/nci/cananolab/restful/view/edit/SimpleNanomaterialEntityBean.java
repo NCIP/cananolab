@@ -210,32 +210,32 @@ public class SimpleNanomaterialEntityBean {
 		setCreatedDate(nanoEntity.getCreatedDate());
 		if(bean.getDomainEntity().getComposingElementCollection()!=null){
 			composingElements = new ArrayList<SimpleComposingElementBean>();
-			for(ComposingElement comp : bean.getDomainEntity().getComposingElementCollection()){
+			for(ComposingElementBean comp : bean.getComposingElements()){
 				SimpleComposingElementBean sCompBean = new SimpleComposingElementBean();
 				sCompBean.setDescription(comp.getDescription());
-				sCompBean.setId(comp.getId());
-				sCompBean.setMolecularFormula(comp.getMolecularFormula());
-				sCompBean.setMolecularFormulaType(comp.getMolecularFormulaType());
-				sCompBean.setName(comp.getName());
-				sCompBean.setPubChemDataSourceName(comp.getPubChemDataSourceName());
-				sCompBean.setPubChemId(comp.getPubChemId());
-				sCompBean.setType(comp.getType());
-				sCompBean.setValue(comp.getValue());
-				sCompBean.setValueUnit(comp.getValueUnit());
-				sCompBean.setCreatedBy(comp.getCreatedBy());
-				sCompBean.setCreatedDate(comp.getCreatedDate());
+				sCompBean.setId(comp.getDomain().getId());
+				sCompBean.setMolecularFormula(comp.getDomain().getMolecularFormula());
+				sCompBean.setMolecularFormulaType(comp.getDomain().getMolecularFormulaType());
+				sCompBean.setName(comp.getDomain().getName());
+				sCompBean.setPubChemDataSourceName(comp.getDomain().getPubChemDataSourceName());
+				sCompBean.setPubChemId(comp.getDomain().getPubChemId());
+				sCompBean.setType(comp.getDomain().getType());
+				sCompBean.setValue(comp.getDomain().getValue());
+				sCompBean.setValueUnit(comp.getDomain().getValueUnit());
+				sCompBean.setCreatedBy(comp.getDomain().getCreatedBy());
+				sCompBean.setCreatedDate(comp.getDomain().getCreatedDate());
 				
 				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-				if(comp.getInherentFunctionCollection().size()>0){
-					for(Function func : comp.getInherentFunctionCollection()){
+				if(comp.getInherentFunctions().size()>0){
+					for(FunctionBean func : comp.getInherentFunctions()){
 						Map<String, Object> function = new HashMap<String, Object>();
 						
 						function.put("description", func.getDescription());
-//						function.put("type", func.getType());
-//						function.put("modality",func.getImagingFunction().getModality());
+						function.put("type", func.getType());
+						function.put("modality",func.getImagingFunction().getModality());
 						function.put("id", func.getId());
-						function.put("createdBy", func.getCreatedBy());
-						function.put("createdDate", func.getCreatedDate());
+						function.put("createdBy", func.getDomainFunction().getCreatedBy());
+						function.put("createdDate", func.getDomainFunction().getCreatedDate());
 						list.add(function);
 					}
 					sCompBean.setInherentFunction(list);
@@ -276,7 +276,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity = new HashMap<String, Object>();
 			domainEntity.put("branch", bean.getDendrimer().getBranch());
 			domainEntity.put("generation", bean.getDendrimer().getGeneration());
-			domainEntity.put("createdDate", bean.getDendrimer().getCreatedBy());
+			domainEntity.put("createdDate", bean.getDendrimer().getCreatedDate());
 			domainEntity.put("createdBy", bean.getDendrimer().getCreatedBy());
 			domainEntity.put("id", bean.getDendrimer().getId());
 		}
@@ -285,7 +285,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("crossLinked", bean.getPolymer().getCrossLinked());
 			domainEntity.put("crossLinkDegree", bean.getPolymer().getCrossLinkDegree());
 			domainEntity.put("initiator", bean.getPolymer().getInitiator());
-			domainEntity.put("createdDate", bean.getPolymer().getCreatedBy());
+			domainEntity.put("createdDate", bean.getPolymer().getCreatedDate());
 			domainEntity.put("createdBy", bean.getPolymer().getCreatedBy());
 			domainEntity.put("id", bean.getPolymer().getId());
 
@@ -296,7 +296,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("name", bean.getBiopolymer().getName());
 			domainEntity.put("type", bean.getBiopolymer().getType());
 			domainEntity.put("sequence", bean.getBiopolymer().getSequence());
-			domainEntity.put("createdDate", bean.getBiopolymer().getCreatedBy());
+			domainEntity.put("createdDate", bean.getBiopolymer().getCreatedDate());
 			domainEntity.put("createdBy", bean.getBiopolymer().getCreatedBy());
 			domainEntity.put("id", bean.getBiopolymer().getId());
 
@@ -310,7 +310,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("diameter", bean.getCarbonNanotube().getDiameter());
 			domainEntity.put("diameterUnit",bean.getCarbonNanotube().getDiameterUnit());
 			domainEntity.put("wallType", bean.getCarbonNanotube().getWallType());
-			domainEntity.put("createdDate", bean.getCarbonNanotube().getCreatedBy());
+			domainEntity.put("createdDate", bean.getCarbonNanotube().getCreatedDate());
 			domainEntity.put("createdBy", bean.getCarbonNanotube().getCreatedBy());
 			domainEntity.put("id", bean.getCarbonNanotube().getId());
 
@@ -320,7 +320,7 @@ public class SimpleNanomaterialEntityBean {
 
 			domainEntity.put("IsPolymarized",bean.getLiposome().getPolymerized());
 			domainEntity.put("PolymerName",	bean.getLiposome().getPolymerName());
-			domainEntity.put("createdDate", bean.getLiposome().getCreatedBy());
+			domainEntity.put("createdDate", bean.getLiposome().getCreatedDate());
 			domainEntity.put("createdBy", bean.getLiposome().getCreatedBy());
 			domainEntity.put("id", bean.getLiposome().getId());
 
@@ -330,7 +330,7 @@ public class SimpleNanomaterialEntityBean {
 
 			domainEntity.put("IsPolymarized",bean.getEmulsion().getPolymerized());
 			domainEntity.put("PolymerName",	bean.getEmulsion().getPolymerName());
-			domainEntity.put("createdDate", bean.getEmulsion().getCreatedBy());
+			domainEntity.put("createdDate", bean.getEmulsion().getCreatedDate());
 			domainEntity.put("createdBy", bean.getEmulsion().getCreatedBy());
 			domainEntity.put("id", bean.getEmulsion().getId());
 
@@ -342,7 +342,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("AverageDiameter",	bean.getFullerene().getAverageDiameter());
 			domainEntity.put("AverageDiameterUnit",bean.getFullerene().getAverageDiameterUnit());
 			domainEntity.put("NoOfCarbons",	bean.getFullerene().getNumberOfCarbon());
-			domainEntity.put("createdDate", bean.getFullerene().getCreatedBy());
+			domainEntity.put("createdDate", bean.getFullerene().getCreatedDate());
 			domainEntity.put("createdBy", bean.getFullerene().getCreatedBy());
 			domainEntity.put("id", bean.getFullerene().getId());
 

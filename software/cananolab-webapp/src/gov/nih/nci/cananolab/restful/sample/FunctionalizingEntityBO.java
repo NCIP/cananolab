@@ -54,12 +54,12 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entityBean);
 
-		msgs.add(PropertyUtil.getProperty("sample", "message.addFunctionalizingEntity"));
-//		// save action messages in the session so composition.do know about them
-//		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+//		msgs.add(PropertyUtil.getProperty("sample", "message.addFunctionalizingEntity"));
+
 		// to preselect functionalizing entity after returning to the summary
 		// page
 		request.getSession().setAttribute("tab", "2");
+		msgs.add("success");
 //		return mapping.findForward("success");
 		return msgs;
 	}

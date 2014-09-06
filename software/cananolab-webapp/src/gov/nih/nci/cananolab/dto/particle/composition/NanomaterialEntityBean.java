@@ -258,6 +258,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 				&& domainEntity.getCreatedBy().contains(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainEntity.setCreatedBy(createdBy);
+			domainEntity.setCreatedDate(Calendar.getInstance().getTime());
 		}
 		domainEntity.setDescription(description);
 		if (domainEntity.getComposingElementCollection() != null) {
