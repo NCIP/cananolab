@@ -1,4 +1,4 @@
-<div ng-class="{formFocus:loader}"><!-- {{data}} -->
+<div ng-class="{formFocus:loader}">
 	<div class="modal-header">
 		<h3 class="modal-title pull-left">{{title}} Characterization</h3>
 		<div class="pull-right">
@@ -22,8 +22,8 @@
 					<label for="charType">Characterization Type *</label>
 				</td>
 				<td>
-					<div id="charTypePrompt">{{data.charTypesLookup}}
-						<select data-ng-model="data.type" ng-init="data.type=type"
+					<div id="charTypePrompt">
+						<select data-ng-model="data.type" 
 						data-ng-options="option for option in data.charTypesLookup" ng-change="characterizationTypeDropdownChanged()" id="charType">
 					</select>                        
 				</div>
@@ -181,7 +181,7 @@
 						<td class="cellLabel" width="15%">
 							<label for="techniqueType">Technique*</label>
 						</td>
-						<td>{{tempDelete}}
+						<td>
 							<div id="techniqueTypePrompt">
 		<select data-ng-model="techniqueInstrument.displayName"
 		data-ng-options="option for option in data.techniqueInstruments.techniqueTypeLookup" id="techniqueType" ng-change="techniqueTypeInstrumentDropdownChanged()">							
@@ -202,9 +202,8 @@
 							</td>
 							<td>
 								<div id="instrumentSection">
-									<a style="display:block" id="addInstrument" href="javascript:confirmAddNew('Instrument', 'Instrument', 'clearInstrument()');">Add</a>
-									<br>
-									<table id="instrumentTable" class="editTableWithGrid" style="display: none;" width="85%">
+									<button ng-click="openNewInstrument()" class="btn btn-primary btn-xxs">Add</button>	<br />	
+									<table style="margin-top:15px;" ng-if="techniqueInstrument.instruments.length" id="instrumentTable" class="editTableWithGrid" width="85%">
 										<tbody id="instrumentRows">
 											<tr id="patternHeader">
 												<td class="cellLabel" width="30%">
