@@ -281,7 +281,14 @@ var app = angular.module('angularApp')
 
     // updates rows and columns and runs rest call update //
     $scope.updateRowsColsForFinding = function() {
-        alert("update rows/cols");
+        $http({method: 'POST', url: '/caNanoLab/rest/characterization/updateDataConditionTable',data: $scope.currentFinding}).
+        success(function(data, status, headers, config) {            
+            $scope.loader = false;
+            $scope.currentFinding=data;
+        }).
+        error(function(data, status, headers, config) {
+            $scope.loader = false;
+        });        
     };
 
     // saves finding info //
