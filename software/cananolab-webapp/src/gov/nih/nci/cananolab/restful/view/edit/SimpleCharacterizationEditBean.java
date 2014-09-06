@@ -61,15 +61,14 @@ public class SimpleCharacterizationEditBean {
 	List<String> errors = new ArrayList<String>();
 	List<String> messages;
 	
-	public void transferCharacterizationEditData(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
+	public void transferCharacterizationEditData(HttpServletRequest request, 
+			CharacterizationBean charBean, String sampleId) 
 	throws Exception {
 		
 		//TODO: handle type=other than in the list
 		this.type = charBean.getCharacterizationType();
 		this.parentSampleId = Long.parseLong(sampleId);
 		this.name = charBean.getCharacterizationName();
-		this.designMethodsDescription = charBean.getDomainChar().getDesignMethodsDescription();
-		this.characterizationDate = charBean.getDomainChar().getDate();
 		
 		setProtocolId(charBean);
 		setCharacterizationSourceId(charBean.getPocBean());
@@ -101,6 +100,9 @@ public class SimpleCharacterizationEditBean {
 	protected void transferCharBeanData(CharacterizationBean charBean) {
 		if (charBean.getDomainChar() == null) 
 			return;
+		
+		this.designMethodsDescription = charBean.getDomainChar().getDesignMethodsDescription();
+		this.characterizationDate = charBean.getDomainChar().getDate();
 
 		Long id = charBean.getDomainChar().getId();
 		if (id != null) {
@@ -156,13 +158,13 @@ public class SimpleCharacterizationEditBean {
 		
 		charTypesLookup = InitCharacterizationSetup
 				.getInstance().getCharacterizationTypes(request);
-		charTypesLookup.add("[other]");
+		charTypesLookup.add("other");
 
 		charNamesForCurrentType = new ArrayList<String>();
 		SortedSet<String> charNames = InitCharacterizationSetup
 				.getInstance().getCharNamesByCharType(request, charType);
 		charNamesForCurrentType.addAll(charNames);
-		charNamesForCurrentType.add("[other]");
+		charNamesForCurrentType.add("other");
 		
 		setProtocolLookup(request, charType);
 		setPOCLookup(request, sampleId);
@@ -170,12 +172,14 @@ public class SimpleCharacterizationEditBean {
 		
 		this.techniqueInstruments.setupLookups(request);
 		
-		SortedSet<String> assayTypes = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(
-						request, "charNameAssays",
-						this.name, "assayType", "otherAssayType", true);
-			
-		this.assayTypesByCharNameLookup.addAll(assayTypes);
-		this.assayTypesByCharNameLookup.add("[other]");
+		if (this.name != null && this.name.length() > 0) {
+			SortedSet<String> assayTypes = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(
+					request, "charNameAssays",
+					this.name, "assayType", "otherAssayType", true);
+
+			this.assayTypesByCharNameLookup.addAll(assayTypes);
+			this.assayTypesByCharNameLookup.add("other");
+		}
 	}
 	
 	protected void setPOCLookup(HttpServletRequest request, String sampleId) 
@@ -194,7 +198,7 @@ public class SimpleCharacterizationEditBean {
 		}
 		
 		SimplePOC other = new SimplePOC();
-		other.setDisplayName("[other]");
+		other.setDisplayName("other");
 		charSourceLookup.add(other);
 	}
 

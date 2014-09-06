@@ -24,16 +24,16 @@ public class SimpleTechniqueAndInstrument {
 				"manufacturers", "instrument", "manufacturer",
 				"otherManufacturer", true);
 		manufacturerLookup.addAll(values);
-		manufacturerLookup.add("[other]");
+		manufacturerLookup.add("other");
 
 		values = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"techniqueTypes", "technique", "type", "otherType", true);
 
 		techniqueTypeLookup.addAll(values);
-		techniqueTypeLookup.add("[other]");
+		techniqueTypeLookup.add("other");
 		
 		instrumentTypeLookup.add("TestType1");
-		instrumentTypeLookup.add("[other]");
+		instrumentTypeLookup.add("other");
 	}
 	
 	

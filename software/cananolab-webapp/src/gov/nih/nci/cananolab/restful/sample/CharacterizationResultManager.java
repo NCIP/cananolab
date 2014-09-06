@@ -57,7 +57,7 @@ public class CharacterizationResultManager {
 		
 		List<String> nms = new ArrayList<String>();
 		nms.addAll(conditions);
-		nms.add("[other]");
+		nms.add("other");
 		return nms;
 	}
 
@@ -103,7 +103,7 @@ public class CharacterizationResultManager {
 		
 		List<String> nms = new ArrayList<String>();
 		nms.addAll(names);
-		nms.add("[other]");
+		nms.add("other");
 		return nms;
 	}
 

@@ -776,8 +776,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
 		request.setAttribute("anchor", "result");
 		
-		FindingBean findingBean = achar.getTheFinding();
-		simpleFinding.transferToFindingBean(findingBean);
+		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
+		simpleFinding.transferTableNumbersToFindingBean(findingBean);
 
 //		if (request.getParameter("removeColumn") != null) {
 //			int columnToRemove = Integer.parseInt(request
@@ -821,7 +821,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		findingBean.updateMatrix(findingBean.getNumberOfColumns(),
 				findingBean.getNumberOfRows());
 		
-		simpleFinding.setRows(findingBean.getRows());
+		simpleFinding.transferFromFindingBean(findingBean);
 		simpleFinding.setColumnHeaders(findingBean.getColumnHeaders());
 		
 		request.setAttribute("anchor", "submitFinding");
@@ -880,21 +880,50 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return editBean;
 	}
 
-	// FR# [26194], matrix column order.
-	public ActionForward updateColumnOrder(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
+	/**
+	 * Method to support setColumnOrder rest service
+	 * @param request
+	 * @param simpleFinding
+	 * @return
+	 * @throws Exception
+	 */
+	public SimpleFindingBean updateColumnOrder(HttpServletRequest request,
+			SimpleFindingBean simpleFinding) throws Exception {
+		
+		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
+//		SimpleCharacterizationEditBean editBean = 
+//				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+		
+		FindingBean findingBean = findMatchFindingBean(achar, simpleFinding);
+		simpleFinding.transferColumnOrderToFindingBean(findingBean);
 
-		FindingBean findingBean = achar.getTheFinding();
 		findingBean.updateColumnOrder();
+		
+		simpleFinding.transferFromFindingBean(findingBean);
 
 		request.setAttribute("anchor", "submitFinding");
-		this.checkOpenForms(achar, theForm, request);
+		//this.checkOpenForms(achar, theForm, request);
 
-		return mapping.findForward("inputForm");
+		return simpleFinding;
+	}
+	
+	protected FindingBean findMatchFindingBean(CharacterizationBean achar, 
+			SimpleFindingBean simpleFinding) 
+	throws Exception {
+		if (simpleFinding.getFindingId() <= 0) //new finding
+			return achar.getTheFinding();
+		
+		List<FindingBean> findingBeans = achar.getFindings();
+		if (findingBeans == null)
+			throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());
+		
+		for (FindingBean finding : findingBeans) {
+			if (finding.getDomain().getId() != null 
+					&& finding.getDomain().getId().longValue() == simpleFinding.getFindingId())
+				return finding;
+		}
+		
+		throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());
 	}
 
 	private void checkOpenForms(CharacterizationBean achar,

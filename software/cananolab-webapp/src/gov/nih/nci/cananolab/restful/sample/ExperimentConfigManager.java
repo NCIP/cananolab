@@ -100,7 +100,7 @@ public class ExperimentConfigManager {
 			instTypes.addAll(types); 
 		} 
 		
-		instTypes.add("[other]");
+		instTypes.add("other");
 		return instTypes;
 	}
 

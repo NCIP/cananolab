@@ -2,11 +2,12 @@ package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
-import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.Row;
+import gov.nih.nci.cananolab.dto.common.TableCell;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SimpleFindingBean {
@@ -16,7 +17,9 @@ public class SimpleFindingBean {
 	private int numberOfColumns;
 	private int numberOfRows;
 	
-	private List<Row> rows = new ArrayList<Row>();
+	private List<SimpleRowBean> rows = new ArrayList<SimpleRowBean>();
+	
+	
 	private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
 	
 	private List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
@@ -38,13 +41,7 @@ public class SimpleFindingBean {
 		numberOfRows = findingBean.getNumberOfRows();
 		
 		
-		//List<Row> beanRows = findingBean.getRows();
-//		if (beanRows != null) {
-//			for (Row beanRow : beanRows) {
-//				beanRow.
-//			}
-//		}
-		
+		transferRowsFromFindingBean(findingBean);
 		
 		Finding domain = findingBean.getDomain();
 		if (domain == null)
@@ -54,14 +51,33 @@ public class SimpleFindingBean {
 			findingId = domain.getId();
 		
 	}
-	public void transferToFindingBean(FindingBean findingBean) {
+	public void transferTableNumbersToFindingBean(FindingBean findingBean) {
+		if (findingBean == null) return;
 		
 		findingBean.setNumberOfColumns(this.numberOfColumns);
 		findingBean.setNumberOfRows(this.numberOfRows);
-		
 	}
 	
+	public void transferColumnOrderToFindingBean(FindingBean findingBean) {
+		if (findingBean == null) return;
+		
+		findingBean.setColumnHeaders(this.columnHeaders);
+	}
 	
+	public void transferRowsFromFindingBean(FindingBean findingBean) {
+		if (findingBean == null) return;
+		
+		List<Row> beanRows = findingBean.getRows();
+	
+		if (beanRows != null) {
+			for (Row beanRow : beanRows) {
+				SimpleRowBean aRow = new SimpleRowBean();
+				aRow.transferFromRow(beanRow);
+				
+				this.rows.add(aRow);
+			}
+		}
+	}
 
 	public long getFindingId() {
 		return findingId;
@@ -79,37 +95,26 @@ public class SimpleFindingBean {
 		this.numberOfColumns = numberOfColumns;
 	}
 
-
-
+	public List<SimpleRowBean> getRows() {
+		return rows;
+	}
+	public void setRows(List<SimpleRowBean> rows) {
+		this.rows = rows;
+	}
+	
+	
 	public int getNumberOfRows() {
 		return numberOfRows;
 	}
-
 
 
 	public void setNumberOfRows(int numberOfRows) {
 		this.numberOfRows = numberOfRows;
 	}
 
-
-
-	public List<Row> getRows() {
-		return rows;
-	}
-
-
-
-	public void setRows(List<Row> rows) {
-		this.rows = rows;
-	}
-
-
-
 	public List<ColumnHeader> getColumnHeaders() {
 		return columnHeaders;
 	}
-
-
 
 	public void setColumnHeaders(List<ColumnHeader> columnHeaders) {
 		this.columnHeaders = columnHeaders;
@@ -149,6 +154,72 @@ public class SimpleFindingBean {
 		this.errors = errors;
 	}
 	
+	protected class SimpleRowBean {
+		List<SimpleCell> cells = new ArrayList<SimpleCell>();
+
+		public List<SimpleCell> getCells() {
+			return cells;
+		}
+
+		public void setCells(List<SimpleCell> cells) {
+			this.cells = cells;
+		}
+		
+		public void transferFromRow(Row beanRow) {
+			if (beanRow == null) return;
+			
+			List<TableCell> cells = beanRow.getCells();
+			if (cells == null) return;
+			
+			for (TableCell cell : cells) {
+				SimpleCell simpleCell = new SimpleCell();
+				simpleCell.transferFromTableCell(cell);
+				this.cells.add(simpleCell);
+			}
+		}
+	}
 	
+	protected class SimpleCell {
+		String value;
+		String datumOrCondition;
+		//private Datum datum = new Datum();
+		//private Condition condition = new Condition();
+		Integer columnOrder;
+		Date createdDate;
+		
+		public void transferFromTableCell(TableCell cell) {
+			if (cell == null) return;
+			value = cell.getValue();
+			datumOrCondition = cell.getDatumOrCondition();
+			columnOrder = cell.getColumnOrder();
+		}
+		
+		public String getValue() {
+			return value;
+		}
+		public void setValue(String value) {
+			this.value = value;
+		}
+		public String getDatumOrCondition() {
+			return datumOrCondition;
+		}
+		public void setDatumOrCondition(String datumOrCondition) {
+			this.datumOrCondition = datumOrCondition;
+		}
+		public Integer getColumnOrder() {
+			return columnOrder;
+		}
+		public void setColumnOrder(Integer columnOrder) {
+			this.columnOrder = columnOrder;
+		}
+		public Date getCreatedDate() {
+			return createdDate;
+		}
+		public void setCreatedDate(Date createdDate) {
+			this.createdDate = createdDate;
+		}
+		
+		
+	}
 	
 }

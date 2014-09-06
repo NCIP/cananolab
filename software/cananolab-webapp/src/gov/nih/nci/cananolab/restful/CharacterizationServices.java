@@ -322,6 +322,32 @@ public class CharacterizationServices {
 		}
 	}
 	
+	@POST
+	@Path("/setColumnOrder")
+	@Produces ("application/json")
+    public Response setColumnOrder(@Context HttpServletRequest httpRequest, 
+    		SimpleFindingBean simpleFinding) {
+		logger.debug("In updateDataConditionTable");	
+		
+//		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+//			return Response.status(Response.Status.UNAUTHORIZED)
+//					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			
+			SimpleFindingBean simpleFindingBean = characterizationBO.updateColumnOrder(httpRequest, simpleFinding);
+
+			return Response.ok(simpleFindingBean).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
 	
 	@GET
 	@Path("/getColumnNameOptionsByType")
@@ -348,4 +374,6 @@ public class CharacterizationServices {
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
+	
+	
 }
