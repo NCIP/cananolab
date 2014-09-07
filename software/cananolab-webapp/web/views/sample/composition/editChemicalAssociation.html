@@ -127,7 +127,7 @@
                 </tr>
                 <tr>
                     <td><label for="compositionTypeA">&nbsp;</label>
-                        <select ng-model="chemAssociationForm.associatedElementA.compositionType" id="compositionTypeA">
+                        <select ng-model="chemAssociationForm.associatedElementA.compositionType" id="compositionTypeA" ng-click="loadAssociatedElements('A', chemAssociationForm.associatedElementA.compositionType);">
                             <option value=""></option>
                             <option ng-repeat="option in associationCompositionTypes" value="{{option}}" ng-selected="{{option==chemAssociationForm.associatedElementA.compositionType}}">
                                 {{option}}
@@ -136,15 +136,15 @@
                         <div id="entitySelectA" ng-show="chemAssociationForm.associatedElementA.compositionType != null">
                             <br>
                             <label for="entityIdA">&nbsp;</label>
-                            <select ng-model="chemAssociationForm.associatedElementA.entityId" onchange="getComposingElementOptions('A');" id="entityIdA">
+                            <select ng-model="chemAssociationForm.associatedElementA.entityId" ng-click="loadComposingElements('A', chemAssociationForm.associatedElementA.entityId);" id="entityIdA"
+                                    ng-options="element.domainId as element.type for element in associatedElementsA">
                                 <option value=""></option>
-                                <option value="21867783">dendrimer</option>
                             </select>
                         </div>
                         <div id="composingElementSelectA" ng-show="chemAssociationForm.associatedElementA.entityId != null">
                             <br>
                             <label for="composingElementIdA">&nbsp;</label>
-                            <select ng-model="chemAssociationForm.associatedElementA.composingElement.id" id="composingElementIdA">
+                            <select ng-model="chemAssociationForm.associatedElementA.composingElement.id" id="composingElementIdA" ng-options="element.pubChemId as element.type + ' (name: ' + element.name + ')' for element in composingElementsA">
                                 <option value=""></option>
                             </select>
                             <input type="hidden" name="chemAssociationForm.associatedElementA.entityDisplayName" value="" id="entityDisplayA">
@@ -168,7 +168,7 @@
                 </tr>
                 <tr>
                     <td><label for="compositionTypeB">&nbsp;</label>
-                        <select ng-model="chemAssociationForm.associatedElementB.compositionType" onchange="getAssociatedElementOptions('B');" id="compositionTypeB">
+                        <select ng-model="chemAssociationForm.associatedElementB.compositionType" ng-click="loadAssociatedElements('B', chemAssociationForm.associatedElementB.compositionType);" id="compositionTypeB">
                             <option value=""></option>
                             <option ng-repeat="option in associationCompositionTypes" value="{{option}}" ng-selected="{{option==chemAssociationForm.associatedElementB.compositionType}}">
                                 {{option}}
@@ -177,15 +177,15 @@
                         <div id="entitySelectB" ng-show="chemAssociationForm.associatedElementB.compositionType != null">
                             <br>
                             <label for="entityIdB">&nbsp;</label>
-                            <select ng-model="chemAssociationForm.associatedElementB.entityId" onchange="getComposingElementOptions('B');" id="entityIdB">
+                            <select ng-model="chemAssociationForm.associatedElementB.entityId" ng-click="loadComposingElements('B', chemAssociationForm.associatedElementB.entityId);" id="entityIdB"
+                                    ng-options="element.domainId as element.type for element in associatedElementsB">
                                 <option value=""></option>
-                                <option value="21867783">dendrimer</option>
                             </select>
                         </div>
                         <div id="composingElementSelectB" ng-show="chemAssociationForm.associatedElementB.entityId != null">
                             <br>
                             <label for="composingElementIdB">&nbsp;</label>
-                            <select ng-model="chemAssociationForm.associatedElementB.composingElement.id" id="composingElementIdB">
+                            <select ng-model="chemAssociationForm.associatedElementB.composingElement.id" id="composingElementIdB" ng-options="element.pubChemId as element.type + ' (name: ' + element.name + ')' for element in composingElementsB">
                                 <option value=""></option>
                             </select>
                             <input type="hidden" name="chemAssociationForm.associatedElementB.entityDisplayName" value="" id="entityDisplayB">
