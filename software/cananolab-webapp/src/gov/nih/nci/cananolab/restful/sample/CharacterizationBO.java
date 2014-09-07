@@ -153,6 +153,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		setServicesInSession(request);
 		
+		//This method sets tons of lookups. Need to see what's needed and what's not
 		setupInputForm(request, sampleId, charType);
 		
 		CharacterizationBean charBean = new CharacterizationBean();		
@@ -229,8 +230,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //
 //		request.setAttribute("achar", charBean);
 //		//theForm.set("achar", charBean);
-//		this.setupInputForm(request, sampleId, charType);
-//		
+		
+		//This method sets tons of lookups. Need to see what's needed and what's not
+		this.setupInputForm(request, sampleId, charType);	
 		
 		//What is this?
 		this.setupIsSoluble(charBean); // setup "isSoluble" property.

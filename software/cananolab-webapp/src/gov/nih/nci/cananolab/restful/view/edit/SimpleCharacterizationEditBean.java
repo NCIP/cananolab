@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class SimpleCharacterizationEditBean {
 	List<SimpleProtocol> protocolLookup;
 	List<SimplePOC> charSourceLookup;
 	List<String> otherSampleNameLookup;
+	List<String> datumConditionValueTypeLookup = new ArrayList<String>();
 	
 	List<String> assayTypesByCharNameLookup = new ArrayList<String>();
 	
@@ -182,6 +184,10 @@ public class SimpleCharacterizationEditBean {
 		setProtocolLookup(request, charType);
 		setPOCLookup(request, sampleId);
 		otherSampleNameLookup = InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+		
+		SortedSet<String> valueTypes = (SortedSet<String>)request.getSession().getAttribute("datumConditionValueTypes");
+		this.datumConditionValueTypeLookup.addAll(valueTypes);
+		CommonUtil.addOtherToList(this.datumConditionValueTypeLookup);
 		
 		this.techniqueInstruments.setupLookups(request);
 		
@@ -417,6 +423,14 @@ public class SimpleCharacterizationEditBean {
 	}
 
 
+	public List<String> getDatumConditionValueTypeLookup() {
+		return datumConditionValueTypeLookup;
+	}
+
+	public void setDatumConditionValueTypeLookup(
+			List<String> datumConditionValueTypeLookup) {
+		this.datumConditionValueTypeLookup = datumConditionValueTypeLookup;
+	}
 
 	public class SimpleProtocol {
 		//Proto needs:
