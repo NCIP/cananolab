@@ -69,7 +69,7 @@
                                             <select ng-model="fileForm.type" id="fileType">
                                                 <option value="">
                                                 </option>
-                                                <option ng-repeat="type in fileTypes track by $index" value="{{type}}">
+                                                <option ng-repeat="type in fileTypes track by $index" value="{{type}}" ng-selected="{{type==fileForm.type}}">
                                                     {{type}}
                                                 </option>
 
