@@ -118,7 +118,31 @@
 
                     <option value="other">
                         [other]
-                    </option></select>
+                    </option>
+                </select>
+                <div ng-if="funcEntityForm.valueUnit=='other'">
+                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                        <tbody>
+                        <tr>
+                            <td class="cellLabel">
+                                <label for="textFile" category="">New Amount Unit:</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" id="textFile" ng-model='localForm.otherCategoryText' class="promptbox">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <input type="button" class="promptButton" value="Add" ng-click="funcEntityForm.valueUnit=localForm.otherCategoryText; functionalizingEntityUnits.push(localForm.otherCategoryText);">
+                                <input type="button" class="promptButton" value="Cancel" ng-click="funcEntityForm.valueUnit='';">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
             </div>
         </td>
     </tr>
@@ -136,7 +160,31 @@
 
                     <option value="other">
                         [other]
-                    </option></select>
+                    </option>
+                 </select>
+                <div ng-if="funcEntityForm.molecularFormulaType=='other'">
+                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                        <tbody>
+                        <tr>
+                            <td class="cellLabel">
+                                <label for="textFile" category="">New Molecular Formula Type:</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" id="textFile" ng-model='localForm.otherCategoryText' class="promptbox">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <input type="button" class="promptButton" value="Add" ng-click="funcEntityForm.molecularFormulaType=localForm.otherCategoryText; molecularFormulaTypes.push(localForm.otherCategoryText);">
+                                <input type="button" class="promptButton" value="Cancel" ng-click="funcEntityForm.molecularFormulaType='';">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 
             </div>
             &nbsp;
         </td>
@@ -162,7 +210,30 @@
 
                     <option value="other">
                         [other]
-                    </option></select>
+                    </option>
+                 </select>
+                <div ng-if="funcEntityForm.activationMethod.type=='other'">
+                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                        <tbody>
+                        <tr>
+                            <td class="cellLabel">
+                                <label for="textFile" category="">New Activation Method:</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" id="textFile" ng-model='localForm.otherCategoryText' class="promptbox">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <input type="button" class="promptButton" value="Add" ng-click="funcEntityForm.activationMethod.type=localForm.otherCategoryText; activationMethods.push(localForm.otherCategoryText);">
+                                <input type="button" class="promptButton" value="Cancel" ng-click="funcEntityForm.activationMethod.type='';">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </td>
         <td class="cellLabel">

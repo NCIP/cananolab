@@ -89,7 +89,7 @@
                                 <select  ng-model="fileForm.type" id="fileType">
                                     <option value="">
                                     </option>
-                                    <option ng-repeat="type in $parent.fileTypes track by $index" value="{{type}}">
+                                    <option ng-repeat="type in $parent.fileTypes track by $index" value="{{type}}" ng-selected="{{type==fileForm.type}}">
                                         {{type}}
                                     </option>
 
@@ -97,6 +97,28 @@
                                         [other]
                                     </option>
                                 </select>
+                                <div ng-if="fileForm.type=='other'">
+                                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                        <tbody>
+                                        <tr>
+                                            <td class="cellLabel">
+                                                <label for="textFile" category="">New File Type:</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="text" id="textFile" ng-model='localForm.otherCategoryText' class="promptbox">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">
+                                                <input type="button" class="promptButton" value="Add" ng-click="fileForm.type=localForm.otherCategoryText; fileTypes.push(localForm.otherCategoryText);">
+                                                <input type="button" class="promptButton" value="Cancel" ng-click="fileForm.type='';">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </td>
                     </tr>
