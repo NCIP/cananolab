@@ -54,7 +54,7 @@ var app = angular.module('angularApp')
                     $scope.carbonNanoTubeDiameterUnits = $scope.data.dimensionUnits;
                     $scope.carbonNanoTubeWallTypes = $scope.data.wallTypes;
                     $scope.fullereneDiameterUnits = $scope.data.dimensionUnits;
-                    
+
                     $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {
@@ -64,7 +64,7 @@ var app = angular.module('angularApp')
                     $scope.loader = false;
                 });
         });
-        
+
         $scope.showProperties = function() {
             if( $scope.nanoEntityForm.type == 'biopolymer') {
                 $scope.nanoEntityForm.withProperties = true;
@@ -90,7 +90,7 @@ var app = angular.module('angularApp')
             } else {
                 $scope.nanoEntityForm.withProperties = false;
             }
-        };        
+        };
 
         $scope.loadNanoEntityData = function() {
             if( $scope.nanoEntityId != null ) {
@@ -101,7 +101,7 @@ var app = angular.module('angularApp')
                             //$scope.nanoEntityForm = {"simpleCompBean":{"type":"core","name":"Test Chem","pubChemDataSourceName":"Compound","pubChemId":100,"value":200.0,"valueUnit":"mg","molecularFormulaType":"Hill","molecularFormula":"Test Formula","description":"Test Desc","id":22064384,"sampleId":"","modality":"","createdBy":"","inherentFunction":[{"id":70090753,"description":"Test endo","modality":null,"type":"endosomolysis"},{"id":70090752,"description":"test image","modality":"bioluminescence","type":"imaging function"}]},"fileBean":{"uriExternal":false,"uri":null,"type":"document","title":"File Doc 1","description":"File Doc Desc","keywordsStr":"FILE DOC KEYWORD","id":69992448},"type":"dendrimer","id":0,"description":"free MagnevistÃ???Ã??Ã?Â®","sampleId":"20917508","userDeletable":false,"userUpdatable":false,"createdBy":"prakasht","createdDate":1165872924000,"domainEntity":{"id":21867783,"sampleComposition":{"id":null,"nanomaterialEntityCollection":null,"sample":null,"chemicalAssociationCollection":null,"fileCollection":null,"functionalizingEntityCollection":null},"createdBy":"prakasht","branch":"1.0","createdDate":"prakasht","generation":2.0},"composingElements":[{"type":"core","name":"Test Chem","pubChemDataSourceName":"Compound","pubChemId":100,"value":200.0,"valueUnit":"mg","molecularFormulaType":"Hill","molecularFormula":"Test Formula","description":"Test Desc","id":22064384,"sampleId":"","modality":"","createdBy":"","inherentFunction":[{"id":70090753,"description":"Test endo","modality":null,"type":"endosomolysis"},{"id":70090752,"description":"test image","modality":"bioluminescence","type":"imaging function"}]}],"files":[{"uriExternal":false,"uri":null,"type":"document","title":"File Doc 1","description":"File Doc Desc","keywordsStr":"FILE DOC KEYWORD","id":69992448}],"withProperties":false,"isPolymerized":null,"isCrossLinked":null,"errors":null};
                             $scope.composingElements = $scope.nanoEntityForm.composingElements;
                             $scope.files = $scope.nanoEntityForm.files;
-                            
+
                             $scope.showProperties();
 
                             $scope.loader = false;
@@ -109,7 +109,7 @@ var app = angular.module('angularApp')
                         error(function(data, status, headers, config) {
                             $scope.message = data;
                             $scope.loader = false;
-                        }); 
+                        });
             }
         }
 
@@ -124,7 +124,7 @@ var app = angular.module('angularApp')
 
         $scope.doSubmit = function() {
             $scope.loader = true;
-            
+
             if( $scope.sampleId != null ) {
             	$scope.nanoEntityForm.sampleId = $scope.sampleId;
             }
@@ -191,7 +191,7 @@ var app = angular.module('angularApp')
         $scope.getAddComposingElement = function() {
             return $scope.addNewComposingElement;
         };
-        
+
         $scope.editComposingElement = function(composingElementId) {
             for (var k = 0; k < $scope.composingElements.length; ++k) {
                 var element = $scope.composingElements[k];
@@ -207,13 +207,15 @@ var app = angular.module('angularApp')
                     $scope.composingElementForm.description = element.description;
                     $scope.composingElementForm.id = element.id;
                     $scope.composingElementForm.inherentFunction = element.inherentFunction;
+                    $scope.composingElementForm.createdBy = element.createdBy;
+                    $scope.composingElementForm.createdDate = element.createdDate;
 
                     if ( $scope.composingElementForm.inherentFunction != null && $scope.composingElementForm.inherentFunction.length > 0)
                         $scope.showInherentFunctionTable = true;
                     else
                         $scope.showInherentFunctionTable = false;
 
-                    break;                    
+                    break;
                 }
             }
         }
@@ -221,7 +223,7 @@ var app = angular.module('angularApp')
         $scope.removeComposingElement = function(composingElementId) {
             if (confirm("Are you sure you want to delete the Composing Element?")) {
                 $scope.loader = true;
-                
+
                 for (var k = 0; k < $scope.composingElements.length; ++k) {
                     var element = $scope.composingElements[k];
                     if (element.id == $scope.composingElementForm.id) {
@@ -245,10 +247,10 @@ var app = angular.module('angularApp')
                     });
             }
         };
-        
+
         $scope.saveComposingElement = function() {
             $scope.loader = true;
-            
+
             if ( $scope.composingElementForm.id != null && $scope.composingElementForm.id != '' ) {
                 for (var k = 0; k < $scope.composingElements.length; ++k) {
                     var element = $scope.composingElements[k];
@@ -260,14 +262,14 @@ var app = angular.module('angularApp')
  /*           else {
                 $scope.composingElements.push($scope.composingElementForm);
             }
-*/            
-            
+*/
+
             $scope.nanoEntityForm.composingElements = $scope.composingElements;
-            
+
             if( $scope.nanoEntityForm.simpleCompBean == null ) {
             	$scope.nanoEntityForm.simpleCompBean = {};
             }
-            
+
             $scope.nanoEntityForm.simpleCompBean.id = $scope.composingElementForm.id;
             $scope.nanoEntityForm.simpleCompBean.type = $scope.composingElementForm.type;
             $scope.nanoEntityForm.simpleCompBean.name = $scope.composingElementForm.name;
@@ -279,11 +281,11 @@ var app = angular.module('angularApp')
             $scope.nanoEntityForm.simpleCompBean.molecularFormula = $scope.composingElementForm.molecularFormula;
             $scope.nanoEntityForm.simpleCompBean.description = $scope.composingElementForm.description;
             $scope.nanoEntityForm.simpleCompBean.inherentFunction = $scope.composingElementForm.inherentFunction;
-            
+
             if( $scope.sampleId != null ) {
             	$scope.nanoEntityForm.sampleId = $scope.sampleId;
-            }            
-            
+            }
+
             $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveComposingElement',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
                 	$scope.nanoEntityForm = data;
@@ -298,9 +300,9 @@ var app = angular.module('angularApp')
                     $scope.loader = false;
                     $scope.messages = data;
                 });
-        };        
-        
-        
+        };
+
+
         $scope.checkFunctionType = function() {
             if( $scope.theInherentFunction.type == 'imaging function') {
                 $scope.showModality = true;
@@ -308,7 +310,7 @@ var app = angular.module('angularApp')
             else {
                 $scope.showModality = false;
             }
-        };       
+        };
 
         /* Inherent Function Start */
         $scope.addInherentFunction = function() {
@@ -395,7 +397,7 @@ var app = angular.module('angularApp')
             $scope.theInherentFunction.description = '';
             $scope.theInherentFunction.id = '';
         }
-        
+
         $scope.getAddNewInherentFunction = function() {
             return $scope.addNewInherentFunction;
         }
@@ -418,7 +420,7 @@ var app = angular.module('angularApp')
             $scope.selectedFiles = [];
             $scope.selectedFiles = $files;
         };
-        
+
         $scope.editFile = function(fileId) {
             for (var k = 0; k < $scope.files.length; ++k) {
                 var element = $scope.files[k];
@@ -431,7 +433,7 @@ var app = angular.module('angularApp')
                     $scope.fileForm.keywordsStr = element.keywordsStr;
                     $scope.fileForm.description = element.description;
                     $scope.fileForm.id = element.id;
-                    
+
                     $scope.addNewFile = true;
 
                     break;
@@ -442,7 +444,7 @@ var app = angular.module('angularApp')
         $scope.removeFile = function(fileId) {
             if (confirm("Are you sure you want to delete the File?")) {
                 $scope.loader = true;
-                
+
                 for (var k = 0; k < $scope.files.length; ++k) {
                     var element = $scope.files[k];
                     if (element.id == $scope.fileForm.id) {
@@ -450,7 +452,7 @@ var app = angular.module('angularApp')
                     }
                 }
                 $scope.nanoEntityForm.files = $scope.files;
-                
+
                 $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeFile',data: $scope.nanoEntityForm}).
                     success(function(data, status, headers, config) {
                     	$scope.nanoEntityForm = data;
@@ -505,10 +507,10 @@ var app = angular.module('angularApp')
                 $scope.saveFileData();
             }
         };
-        
+
         $scope.saveFileData = function() {
             $scope.loader = true;
-            
+
             if ( $scope.fileForm.id != null && $scope.fileForm.id != '' ) {
                 for (var k = 0; k < $scope.files.length; ++k) {
                     var element = $scope.files[k];
@@ -522,12 +524,12 @@ var app = angular.module('angularApp')
             }
 */
             $scope.nanoEntityForm.files = $scope.files;
-            
+
             if( $scope.nanoEntityForm.fileBean == null ) {
             	$scope.nanoEntityForm.fileBean = {};
             }
-            
-            
+
+
             $scope.nanoEntityForm.fileBean.externalUrl = $scope.fileForm.externalUrl;
             $scope.nanoEntityForm.fileBean.uri = $scope.fileForm.uri;
             $scope.nanoEntityForm.fileBean.uriExternal = $scope.fileForm.uriExternal;
@@ -536,10 +538,10 @@ var app = angular.module('angularApp')
             $scope.nanoEntityForm.fileBean.keywordsStr = $scope.fileForm.keywordsStr;
             $scope.nanoEntityForm.fileBean.description = $scope.fileForm.description;
             $scope.nanoEntityForm.fileBean.id = $scope.fileForm.id;
-            
+
             if( $scope.sampleId != null ) {
             	$scope.nanoEntityForm.sampleId = $scope.sampleId;
-            }            
+            }
 
             $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveFile',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
@@ -554,8 +556,8 @@ var app = angular.module('angularApp')
                     $scope.loader = false;
                     $scope.messages = data;
                 });
-        };  
-        
+        };
+
         $scope.getAddNewFile = function() {
             return $scope.addNewFile;
         }
