@@ -216,6 +216,8 @@ var app = angular.module('angularApp')
             	$scope.funcEntityForm.simpleFunctionBean.modality = $scope.theInherentFunction.modality;
             	$scope.funcEntityForm.simpleFunctionBean.description = $scope.theInherentFunction.description;
             	$scope.funcEntityForm.simpleFunctionBean.id = $scope.theInherentFunction.id;
+            	$scope.funcEntityForm.simpleFunctionBean.createdBy = $scope.theInherentFunction.createdBy;
+            	$scope.funcEntityForm.simpleFunctionBean.createdDate = $scope.theInherentFunction.createdDate;
             	$scope.funcEntityForm.simpleFunctionBean.targets = $scope.theInherentFunction.targets;
             	
                 if( $scope.sampleId != null ) {
@@ -252,6 +254,8 @@ var app = angular.module('angularApp')
                     $scope.theInherentFunction.modality = inherentFunction.modality;
                     $scope.theInherentFunction.description = inherentFunction.description;
                     $scope.theInherentFunction.id = inherentFunction.id;
+                    $scope.theInherentFunction.createdBy = inherentFunction.createdBy;
+                    $scope.theInherentFunction.createdDate = inherentFunction.createdDate;
                     $scope.theInherentFunction.targets = inherentFunction.targets;
                     $scope.addNewInherentFunction=true;
 
@@ -277,6 +281,23 @@ var app = angular.module('angularApp')
                 }
             }
             $scope.funcEntityForm.functionList = $scope.composingElementForm.inherentFunction;
+            
+            if( $scope.funcEntityForm.simpleFunctionBean == null ) {
+            	$scope.funcEntityForm.simpleFunctionBean = {};
+            }
+            
+        	$scope.funcEntityForm.simpleFunctionBean.type = $scope.theInherentFunction.type;
+        	$scope.funcEntityForm.simpleFunctionBean.modality = $scope.theInherentFunction.modality;
+        	$scope.funcEntityForm.simpleFunctionBean.description = $scope.theInherentFunction.description;
+        	$scope.funcEntityForm.simpleFunctionBean.id = $scope.theInherentFunction.id;
+        	$scope.funcEntityForm.simpleFunctionBean.createdBy = $scope.theInherentFunction.createdBy;
+        	$scope.funcEntityForm.simpleFunctionBean.createdDate = $scope.theInherentFunction.createdDate;
+        	$scope.funcEntityForm.simpleFunctionBean.targets = $scope.theInherentFunction.targets;
+        	
+            if( $scope.sampleId != null ) {
+            	$scope.funcEntityForm.sampleId = $scope.sampleId;
+            }
+            
             
             $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/removeFunction',data: $scope.funcEntityForm}).
             success(function(data, status, headers, config) {
@@ -486,7 +507,25 @@ var app = angular.module('angularApp')
                         $scope.composingElements.splice(k,1);
                     }
                 }
-                $scope.funcEntityForm.fileList = $scope.files;                
+                $scope.funcEntityForm.fileList = $scope.files;          
+                
+                if( $scope.funcEntityForm.fileBean == null ) {
+                	$scope.funcEntityForm.fileBean = {};
+                }
+                
+                $scope.funcEntityForm.fileBean.externalUrl = $scope.fileForm.externalUrl;
+                $scope.funcEntityForm.fileBean.uri = $scope.fileForm.uri;
+                $scope.funcEntityForm.fileBean.uriExternal = $scope.fileForm.uriExternal;
+                $scope.funcEntityForm.fileBean.type = $scope.fileForm.type;
+                $scope.funcEntityForm.fileBean.title = $scope.fileForm.title;
+                $scope.funcEntityForm.fileBean.keywordsStr = $scope.fileForm.keywordsStr;
+                $scope.funcEntityForm.fileBean.description = $scope.fileForm.description;
+                $scope.funcEntityForm.fileBean.id = $scope.fileForm.id;
+                
+                if( $scope.sampleId != null ) {
+                	$scope.funcEntityForm.sampleId = $scope.sampleId;
+                }
+                
 
                 $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/removeFile',data: $scope.funcEntityForm}).
                     success(function(data, status, headers, config) {
