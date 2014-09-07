@@ -202,9 +202,9 @@
         </td>
         <td>
             <div id="feaMethodPrompt">
-                <select ng-model="funcEntityForm.activationMethod.type" id="feaMethod">
+                <select ng-model="funcEntityForm.activationMethodType" id="feaMethod">
                     <option value=""></option>
-                    <option ng-repeat="aMethod in activationMethods track by $index" value="{{aMethod}}" ng-selected="{{aMethod == funcEntityForm.activationMethod.type}}">
+                    <option ng-repeat="aMethod in activationMethods track by $index" value="{{aMethod}}" ng-selected="{{aMethod == funcEntityForm.activationMethodType}}">
                         {{aMethod}}
                     </option>
 
@@ -212,7 +212,7 @@
                         [other]
                     </option>
                  </select>
-                <div ng-if="funcEntityForm.activationMethod.type=='other'">
+                <div ng-if="funcEntityForm.activationMethodType=='other'">
                     <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
                         <tbody>
                         <tr>
@@ -227,8 +227,8 @@
                         </tr>
                         <tr>
                             <td style="text-align: right">
-                                <input type="button" class="promptButton" value="Add" ng-click="funcEntityForm.activationMethod.type=localForm.otherCategoryText; activationMethods.push(localForm.otherCategoryText);">
-                                <input type="button" class="promptButton" value="Cancel" ng-click="funcEntityForm.activationMethod.type='';">
+                                <input type="button" class="promptButton" value="Add" ng-click="funcEntityForm.activationMethodType=localForm.otherCategoryText; activationMethods.push(localForm.otherCategoryText);">
+                                <input type="button" class="promptButton" value="Cancel" ng-click="funcEntityForm.activationMethodType='';">
                             </td>
                         </tr>
                         </tbody>
