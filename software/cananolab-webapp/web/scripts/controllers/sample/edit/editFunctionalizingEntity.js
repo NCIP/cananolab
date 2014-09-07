@@ -118,6 +118,10 @@ var app = angular.module('angularApp')
 
         $scope.doSubmit = function() {
             $scope.loader = true;
+            
+            if( $scope.sampleId != null ) {
+            	$scope.funcEntityForm.sampleId = $scope.sampleId;
+            }
 
             $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/submit',data: $scope.funcEntityForm}).
                 success(function(data, status, headers, config) {
@@ -213,7 +217,10 @@ var app = angular.module('angularApp')
             	$scope.funcEntityForm.simpleFunctionBean.description = $scope.theInherentFunction.description;
             	$scope.funcEntityForm.simpleFunctionBean.id = $scope.theInherentFunction.id;
             	$scope.funcEntityForm.simpleFunctionBean.targets = $scope.theInherentFunction.targets;
-
+            	
+                if( $scope.sampleId != null ) {
+                	$scope.funcEntityForm.sampleId = $scope.sampleId;
+                }
 	            
 	            $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/saveFunction',data: $scope.funcEntityForm}).
                 success(function(data, status, headers, config) {
@@ -568,6 +575,9 @@ var app = angular.module('angularApp')
             $scope.funcEntityForm.fileBean.description = $scope.fileForm.description;
             $scope.funcEntityForm.fileBean.id = $scope.fileForm.id;
             
+            if( $scope.sampleId != null ) {
+            	$scope.funcEntityForm.sampleId = $scope.sampleId;
+            }
 
             $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/saveFile',data: $scope.funcEntityForm}).
                 success(function(data, status, headers, config) {
