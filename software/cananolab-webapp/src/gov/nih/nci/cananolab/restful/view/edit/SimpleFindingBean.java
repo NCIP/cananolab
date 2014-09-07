@@ -6,10 +6,9 @@ import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.Row;
-import gov.nih.nci.cananolab.dto.common.TableCell;
+import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SimpleFindingBean {
@@ -53,6 +52,20 @@ public class SimpleFindingBean {
 			findingId = domain.getId();
 		
 		transferFilesFromFindingBean(findingBean.getFiles());
+	}
+	
+	public void transferToFindingBean(FindingBean findingBean, UserBean user) 
+	throws Exception {
+		findingBean.setColumnHeaders(columnHeaders);
+		findingBean.setNumberOfColumns(numberOfColumns);
+		findingBean.setNumberOfRows(numberOfRows);
+		findingBean.setupColumnOrder();
+		
+		//TODO: set files
+		List<FileBean> fileBeans = findingBean.getFiles();
+		if (fileBeans == null) return;
+		
+		
 	}
 	
 	protected void transferFilesFromFindingBean(List<FileBean> files) {
@@ -102,6 +115,18 @@ public class SimpleFindingBean {
 				
 				this.rows.add(aRow);
 			}
+		}
+	}
+	
+	protected void transferRowsToFindingBean(FindingBean findingBean) {
+		if (this.rows == null) return;
+		if (findingBean == null) return;
+		
+		findingBean.getRows().clear();
+		for (SimpleRowBean simpleRow : this.rows) {
+			Row rowBean = new Row();
+			simpleRow.transferToRow(rowBean);
+			findingBean.getRows().add(rowBean);
 		}
 	}
 

@@ -30,5 +30,18 @@ public class SimpleRowBean {
 			this.cells.add(simpleCell);
 		}
 	}
+	
+	public void transferToRow(Row rowBean) {
+		if (this.cells == null) return;
+		if (rowBean == null) return;
+		
+		rowBean.getCells().clear();
+		
+		for (SimpleCell cell : cells) {
+			TableCell cellBean = new TableCell();
+			cell.transferToTableCell(cellBean);
+			rowBean.getCells().add(cellBean);
+		}
+	}
 }
 

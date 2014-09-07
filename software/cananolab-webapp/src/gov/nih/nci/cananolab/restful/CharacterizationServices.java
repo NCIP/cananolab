@@ -107,7 +107,7 @@ public class CharacterizationServices {
     		@DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("charId") String charId,
     		@DefaultValue("") @QueryParam("charClassName") String charClassName,
     		@DefaultValue("") @QueryParam("charType") String charType) {
-		logger.debug("In setupAdd");	
+		logger.debug("In setupUpdate");	
 		
 //		if (! SecurityUtil.isUserLoggedIn(httpRequest))
 //			return Response.status(Response.Status.UNAUTHORIZED)
@@ -173,32 +173,6 @@ public class CharacterizationServices {
 		}
 	}
 	
-//	@GET
-//	@Path("/setupAddTechnique")
-//	@Produces ("application/json")
-//    public Response setupAddTechnique(@Context HttpServletRequest httpRequest, 
-//    		@DefaultValue("") @QueryParam("charName") String charName) {
-//		logger.debug("In setupAddTechnique");	
-//		
-////		if (! SecurityUtil.isUserLoggedIn(httpRequest))
-////			return Response.status(Response.Status.UNAUTHORIZED)
-////					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
-//		
-//		try {
-//			CharacterizationManager characterizationMgr = 
-//				(CharacterizationManager) applicationContext.getBean("characterizationManager");
-//
-//		List<String> assayTypes = characterizationMgr.getAssayTypes(httpRequest, charName);
-//
-//		return Response.ok(assayTypes).header("Access-Control-Allow-Credentials", "true")
-//						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-//						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-//		} catch (Exception e) {
-//			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-//					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
-//		}
-//	}
-	
 	@GET
 	@Path("/getAbbreviationByTechniqueType")
 	@Produces ("application/json")
@@ -226,7 +200,7 @@ public class CharacterizationServices {
 	@Produces ("application/json")
     public Response saveExperimentConfig(@Context HttpServletRequest httpRequest, 
     		SimpleExperimentBean simpleExpConfig) {
-		logger.debug("In getAbbreviationByTechnique");	
+		logger.debug("In saveExperimentConfig");	
 		
 		if (! SecurityUtil.isUserLoggedIn(httpRequest))
 			return Response.status(Response.Status.UNAUTHORIZED)
@@ -327,7 +301,7 @@ public class CharacterizationServices {
 	@Produces ("application/json")
     public Response setColumnOrder(@Context HttpServletRequest httpRequest, 
     		SimpleFindingBean simpleFinding) {
-		logger.debug("In updateDataConditionTable");	
+		logger.debug("In setColumnOrder");	
 		
 //		if (! SecurityUtil.isUserLoggedIn(httpRequest))
 //			return Response.status(Response.Status.UNAUTHORIZED)
@@ -382,7 +356,7 @@ public class CharacterizationServices {
     public Response getColumnValueUnitOptions(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("columnName") String columnName,
     		@DefaultValue("") @QueryParam("conditionProperty") String conditionProperty) {
-		logger.debug("In getColumnNameOptionsByType");		
+		logger.debug("In getColumnValueUnitOptions");		
 		
 		try {
 			CharacterizationResultManager characterizationResultManager = 
@@ -406,7 +380,7 @@ public class CharacterizationServices {
 	@Produces ("application/json")
     public Response getConditionPropertyOptions(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("columnName") String columnName) {
-		logger.debug("In getColumnNameOptionsByType");		
+		logger.debug("In getConditionPropertyOptions");		
 		
 		try {
 			CharacterizationResultManager characterizationResultManager = 
@@ -415,6 +389,59 @@ public class CharacterizationServices {
 			List<String> names = characterizationResultManager.getConditionPropertyOptions(httpRequest, columnName);
 					
 			return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	
+	@POST
+	@Path("/removeFinding")
+	@Produces ("application/json")
+    public Response removeFinding(@Context HttpServletRequest httpRequest, 
+    		SimpleFindingBean simpleFinding) {
+		logger.debug("In removeFinding");	
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			logger.debug("Finding id to delete: " + simpleFinding.getFindingId());
+			SimpleCharacterizationEditBean editBean = characterizationBO.deleteFinding(httpRequest, simpleFinding);
+
+		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	@POST
+	@Path("/saveFinding")
+	@Produces ("application/json")
+    public Response saveFinding(@Context HttpServletRequest httpRequest, 
+    		SimpleFindingBean simpleFinding) {
+		logger.debug("In saveFinding");	
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			logger.debug("Finding id to delete: " + simpleFinding.getFindingId());
+			SimpleCharacterizationEditBean editBean = characterizationBO.saveFinding(httpRequest, simpleFinding);
+
+		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {

@@ -665,53 +665,63 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return mapping.findForward("inputForm");
 	}
 
-	public ActionForward saveFinding(SampleForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SimpleCharacterizationEditBean saveFinding(HttpServletRequest request, 
+			SimpleFindingBean simpleFinding)
 			throws Exception {
 		
+		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
+		SimpleCharacterizationEditBean editBean = 
+				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
 		
-		//DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		CharacterizationService service = this.setServicesInSession(request);
-//		SampleBean sampleBean = setupSampleById(form.getSampleId(), request);
-//		CharacterizationBean achar = (CharacterizationBean) theForm
-//				.get("achar");
-//		FindingBean findingBean = achar.getTheFinding();
-//		String theFindingId = (String) request.getAttribute("theFindingId");
-//		if (!StringUtils.isEmpty(theFindingId)) {
-//			findingBean.getDomain().setId(Long.valueOf(theFindingId));
-//		}
-//		if (!validateEmptyFinding(request, findingBean)) {
-//			return mapping.getInputForward();
-//		}
-//		UserBean user = (UserBean) request.getSession().getAttribute("user");
-//		// setup domainFile uri for fileBeans
-//		String internalUriPath = Constants.FOLDER_PARTICLE
-//				+ '/'
-//				+ sampleBean.getDomain().getName()
-//				+ '/'
-//				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
-//						.getCharacterizationName());
-//
-//		findingBean.setupDomain(internalUriPath, user.getLoginName());
-//		service.saveFinding(findingBean);
-//		achar.addFinding(findingBean);
-//
-//		// also save characterization
-//		if (!validateInputs(request, achar)) {
-//			return mapping.getInputForward();
-//		}
-//		this.saveCharacterization(request, theForm, achar);
-//		service.assignAccesses(achar.getDomainChar(), findingBean.getDomain());
-//		this.checkOpenForms(achar, theForm, request);
-//		request.setAttribute("anchor", "result");
-//		// return to setupUpdate to retrieve the data matrix in the correct
-//		// form from database
-//		// after saving to database.
-//		request.setAttribute("charId", achar.getDomainChar().getId().toString());
-//		request.setAttribute("charType", achar.getCharacterizationType());
-//		return setupUpdate(mapping, form, request, response);
+		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
 		
-		return null;
+		CharacterizationService service = this.setServicesInSession(request);
+		
+		SampleBean sampleBean = setupSampleById(String.valueOf(editBean.getParentSampleId()), request);
+				
+		//FindingBean findingBean = achar.getTheFinding();
+		String theFindingId = String.valueOf(editBean.getParentSampleId());
+		
+		//This is not needed. To delete...
+		if (!StringUtils.isEmpty(theFindingId)) {
+			findingBean.getDomain().setId(Long.valueOf(theFindingId));
+		}
+		
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		simpleFinding.transferToFindingBean(findingBean, user);
+		
+		if (!validateEmptyFinding(request, findingBean, editBean.getErrors())) {
+			return editBean;
+		}
+		
+		// setup domainFile uri for fileBeans
+		String internalUriPath = Constants.FOLDER_PARTICLE
+				+ '/'
+				+ sampleBean.getDomain().getName()
+				+ '/'
+				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
+						.getCharacterizationName());
+
+		findingBean.setupDomain(internalUriPath, user.getLoginName());
+		service.saveFinding(findingBean);
+		achar.addFinding(findingBean);
+
+		// also save characterization
+		if (!validateInputs(request, achar, editBean.getErrors())) {
+			return editBean;
+		}
+		this.saveCharacterization(request, achar, editBean);
+		service.assignAccesses(achar.getDomainChar(), findingBean.getDomain());
+		//this.checkOpenForms(achar, theForm, request);
+		request.setAttribute("anchor", "result");
+		// return to setupUpdate to retrieve the data matrix in the correct
+		// form from database
+		// after saving to database.
+		request.setAttribute("charId", achar.getDomainChar().getId().toString());
+		request.setAttribute("charType", achar.getCharacterizationType());
+		
+		return setupUpdate(request, String.valueOf(editBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
+				achar.getClassName(), achar.getCharacterizationType());
 	}
 
 	public ActionForward addFile(ActionMapping mapping, ActionForm form,
@@ -837,20 +847,39 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return simpleFinding;
 	}
 
-	public ActionForward deleteFinding(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SimpleCharacterizationEditBean deleteFinding(HttpServletRequest request,
+			SimpleFindingBean simpleFinding)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
-		FindingBean dataSetBean = achar.getTheFinding();
+		
+		logger.debug("achar is not null yet");
+		
+		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
+		SimpleCharacterizationEditBean editBean = 
+				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+		logger.debug("editBean is not null yet");
+		if (achar == null)
+			logger.debug("achar is null");
+		if (editBean == null)
+			logger.debug("editBean is null");
+		
+		FindingBean dataSetBean = this.findMatchFindingBean(achar, simpleFinding);
+		
+		logger.debug("1");
+		
 		CharacterizationService service = this.setServicesInSession(request);
+		
 		service.deleteFinding(dataSetBean.getDomain());
+		logger.debug("2");
 		service.removeAccesses(achar.getDomainChar(), dataSetBean.getDomain());
+		logger.debug("3");
 		achar.removeFinding(dataSetBean);
 		request.setAttribute("anchor", "result");
-		this.checkOpenForms(achar, theForm, request);
-		return mapping.findForward("inputForm");
+		logger.debug("4");
+		//this.checkOpenForms(achar, theForm, request);
+		
+		
+		return setupUpdate(request, String.valueOf(editBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
+				achar.getClassName(), achar.getCharacterizationType());
 	}
 
 	public SimpleCharacterizationEditBean deleteExperimentConfig(HttpServletRequest request,
@@ -912,6 +941,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	protected FindingBean findMatchFindingBean(CharacterizationBean achar, 
 			SimpleFindingBean simpleFinding) 
 	throws Exception {
+		
 		if (simpleFinding.getFindingId() <= 0) //new finding
 			return achar.getTheFinding();
 		
@@ -1100,20 +1130,15 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	}
 
 	private boolean validateEmptyFinding(HttpServletRequest request,
-			FindingBean finding) {
+			FindingBean finding, List<String> errors) {
 		
-		return true;
-//		if (finding.getFiles().isEmpty()
-//				&& finding.getColumnHeaders().isEmpty()) {
-//			ActionMessages msgs = new ActionMessages();
-//			ActionMessage msg = new ActionMessage(
-//					"achar.theFinding.emptyFinding");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			saveErrors(request, msgs);
-//			return false;
-//		} else {
-//			return true;
-//		}
+		if (finding.getFiles().isEmpty()
+				&& finding.getColumnHeaders().isEmpty()) {
+			errors.add(PropertyUtil.getProperty("sample", "achar.theFinding.emptyFinding"));
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/**

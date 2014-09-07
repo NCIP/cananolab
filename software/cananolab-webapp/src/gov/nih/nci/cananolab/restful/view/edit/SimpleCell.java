@@ -19,6 +19,12 @@ public class SimpleCell {
 		columnOrder = cell.getColumnOrder();
 	}
 	
+	public void transferToTableCell(TableCell cell) {
+		cell.setColumnOrder(columnOrder);
+		cell.setDatumOrCondition(datumOrCondition);
+		cell.setValue(value);
+	}
+	
 	public String getValue() {
 		return value;
 	}
