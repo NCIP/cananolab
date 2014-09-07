@@ -136,12 +136,12 @@
                         <div id="entitySelectA" ng-show="chemAssociationForm.associatedElementA.compositionType != null">
                             <br>
                             <label for="entityIdA">&nbsp;</label>
-                            <select ng-model="chemAssociationForm.associatedElementA.entityId" ng-click="loadComposingElements('A', chemAssociationForm.associatedElementA.entityId);" id="entityIdA"
+                            <select ng-model="chemAssociationForm.associatedElementA.entityId" ng-click="loadComposingElements('A', chemAssociationForm.associatedElementA.compositionType, chemAssociationForm.associatedElementA.entityId);" id="entityIdA"
                                     ng-options="element.domainId as element.type for element in associatedElementsA">
                                 <option value=""></option>
                             </select>
                         </div>
-                        <div id="composingElementSelectA" ng-show="chemAssociationForm.associatedElementA.entityId != null">
+                        <div id="composingElementSelectA" ng-show="chemAssociationForm.associatedElementA.entityId != null && chemAssociationForm.associatedElementA.compositionType == 'nanomaterial entity'">
                             <br>
                             <label for="composingElementIdA">&nbsp;</label>
                             <select ng-model="chemAssociationForm.associatedElementA.composingElement.id" id="composingElementIdA" ng-options="element.pubChemId as element.type + ' (name: ' + element.name + ')' for element in composingElementsA">
@@ -177,12 +177,12 @@
                         <div id="entitySelectB" ng-show="chemAssociationForm.associatedElementB.compositionType != null">
                             <br>
                             <label for="entityIdB">&nbsp;</label>
-                            <select ng-model="chemAssociationForm.associatedElementB.entityId" ng-click="loadComposingElements('B', chemAssociationForm.associatedElementB.entityId);" id="entityIdB"
+                            <select ng-model="chemAssociationForm.associatedElementB.entityId" ng-click="loadComposingElements('B', chemAssociationForm.associatedElementB.compositionType, chemAssociationForm.associatedElementB.entityId);" id="entityIdB"
                                     ng-options="element.domainId as element.type for element in associatedElementsB">
                                 <option value=""></option>
                             </select>
                         </div>
-                        <div id="composingElementSelectB" ng-show="chemAssociationForm.associatedElementB.entityId != null">
+                        <div id="composingElementSelectB" ng-show="chemAssociationForm.associatedElementB.entityId != null && chemAssociationForm.associatedElementB.compositionType == 'nanomaterial entity'">
                             <br>
                             <label for="composingElementIdB">&nbsp;</label>
                             <select ng-model="chemAssociationForm.associatedElementB.composingElement.id" id="composingElementIdB" ng-options="element.pubChemId as element.type + ' (name: ' + element.name + ')' for element in composingElementsB">

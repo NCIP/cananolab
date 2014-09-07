@@ -100,28 +100,28 @@ var app = angular.module('angularApp')
 
         };
 
-        $scope.loadComposingElements = function(type, associatedElementId) {
+        $scope.loadComposingElements = function(type, compositionType, associatedElementId) {
             if (associatedElementId != null) {
-                $scope.loader = true;
+               
+                if (compositionType == 'nanomaterial entity') {
+                    $scope.loader = true;
 
-                console.log(associatedElementId);
-
-                $http({method: 'POST', url: 'http://localhost:8080/caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId?id=' + associatedElementId}).
-                    success(function (data, status, headers, config) {
-                        if( type == 'A') {
-                            $scope.composingElementsA = data;
-                        } else {
-                            $scope.composingElementsB = data;
-                        }
-                        $scope.loader = false;
-                    }).
-                    error(function (data, status, headers, config) {
-                        $scope.loader = false;
-                        $scope.messages = data;
-                    });
-
-                //$scope.composingElementsA = [{"type":"modifier","name":"chem Test","pubChemDataSourceName":"Compound","pubChemId":2312,"value":null,"valueUnit":"","molecularFormulaType":"","molecularFormula":"","description":"Test Compsing Element","id":0,"sampleId":"","modality":"","createdBy":"jonnalah","createdDate":1410006671000,"inherentFunction":[]},{"type":"coat","name":"Test Coat","pubChemDataSourceName":"Substance","pubChemId":345,"value":null,"valueUnit":"","molecularFormulaType":"","molecularFormula":"","description":"Test","id":0,"sampleId":"","modality":"","createdBy":"jonnalah","createdDate":1410007056000,"inherentFunction":[{"createdBy":"jonnalah","description":"Test","modality":null,"type":"targeting function","createdDate":1410007056000},{"createdBy":"jonnalah","description":"Test2","modality":null,"type":"therapeutic function","createdDate":1410007057000}]}];
-
+	                $http({method: 'POST', url: 'http://localhost:8080/caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId?id=' + associatedElementId}).
+	                    success(function (data, status, headers, config) {
+	                        if( type == 'A') {
+	                            $scope.composingElementsA = data;
+	                        } else {
+	                            $scope.composingElementsB = data;
+	                        }
+	                        $scope.loader = false;
+	                    }).
+	                    error(function (data, status, headers, config) {
+	                        $scope.loader = false;
+	                        $scope.messages = data;
+	                    });
+	
+	                //$scope.composingElementsA = [{"type":"modifier","name":"chem Test","pubChemDataSourceName":"Compound","pubChemId":2312,"value":null,"valueUnit":"","molecularFormulaType":"","molecularFormula":"","description":"Test Compsing Element","id":0,"sampleId":"","modality":"","createdBy":"jonnalah","createdDate":1410006671000,"inherentFunction":[]},{"type":"coat","name":"Test Coat","pubChemDataSourceName":"Substance","pubChemId":345,"value":null,"valueUnit":"","molecularFormulaType":"","molecularFormula":"","description":"Test","id":0,"sampleId":"","modality":"","createdBy":"jonnalah","createdDate":1410007056000,"inherentFunction":[{"createdBy":"jonnalah","description":"Test","modality":null,"type":"targeting function","createdDate":1410007056000},{"createdBy":"jonnalah","description":"Test2","modality":null,"type":"therapeutic function","createdDate":1410007057000}]}];
+                }	
             }
 
         };
