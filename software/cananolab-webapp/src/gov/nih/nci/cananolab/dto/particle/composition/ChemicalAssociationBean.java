@@ -112,6 +112,14 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 		return associatedElementB;
 	}
 
+	public void setAssociatedElementA(AssociatedElementBean associatedElementA) {
+		this.associatedElementA = associatedElementA;
+	}
+
+	public void setAssociatedElementB(AssociatedElementBean associatedElementB) {
+		this.associatedElementB = associatedElementB;
+	}
+
 	private void updateType() {
 		if (domainAssociation instanceof OtherChemicalAssociation) {
 			type = ((OtherChemicalAssociation) domainAssociation).getType();

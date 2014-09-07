@@ -446,6 +446,7 @@ public class SimpleCompositionBean {
 					// chemicalassociation = new HashMap<String, Object>();
 					for (ChemicalAssociationBean chemBean : compBean
 							.getType2Assocs().get(entityType)) {
+						chemicalassociation.put("dataId", chemBean.getDomainAssociation().getId());
 						association = new HashMap<String, Object>();
 
 						association.put("AttachmentId", chemBean

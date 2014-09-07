@@ -490,8 +490,11 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			comp.setName(sBean.getName());
 			comp.setPubChemDataSourceName(sBean.getPubChemDataSourceName());
 			comp.setPubChemId(sBean.getPubChemId());
-			comp.setCreatedBy(sBean.getCreatedBy());
-			comp.setCreatedDate(sBean.getCreatedDate());
+			if(sBean.getId()!=null){
+				comp.setId(sBean.getId());
+				comp.setCreatedBy(sBean.getCreatedBy());
+				comp.setCreatedDate(sBean.getCreatedDate());
+			}
 			funclist = sBean.getInherentFunction();
 			if(funclist!= null){
 			for(int j=0;j<funclist.size();j++){
@@ -501,8 +504,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				func.setImagingFunction(img);
 				Function function = new Function();
 				function.setDescription((String) funclist.get(j).get("description"));
-				function.setCreatedBy((String) funclist.get(j).get("createdBy"));
-				function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
+				if((Integer) funclist.get(j).get("id")>0){
+					function.setCreatedBy((String) funclist.get(j).get("createdBy"));
+					function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
+				}
 			//	function.setId((Long) nanoBean.getSimpleCompBean().getInherentFunction().get(0).get("id"));
 				hash.add(function);
 
@@ -548,10 +553,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				hash.add(function);
 			}
 			}
+			comp.setInherentFunctionCollection(hash);
 			compBean.setTheFunction(func);
 			compBean.setDomain(comp);
 			compList.add(compBean);
-			comp.setInherentFunctionCollection(hash);
 			
 			coll.add(comp);
 	
@@ -610,6 +615,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			fullerene.setComposingElementCollection(coll);
 			fullerene.setFileCollection(filecoll);
 			fullerene.setSampleComposition(new SampleComposition());
+			bean.setFullerene(fullerene);
 			nanoEntity = fullerene;
 		}
 			
@@ -617,7 +623,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			Dendrimer den = new Dendrimer();
 			
 			den.setBranch((String) nanoBean.getDomainEntity().get("branch"));
-			den.setGeneration(new Float((Integer) nanoBean.getDomainEntity().get("generation")));
+			den.setGeneration(new Float((String) nanoBean.getDomainEntity().get("generation")));
 			if(nanoBean.getDomainEntity().get("id")!=null){
 				den.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
 				den.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
@@ -627,6 +633,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			den.setFileCollection(filecoll);
 			den.setSampleComposition(new SampleComposition());
 			nanoEntity = den;
+			bean.setDendrimer(den);
 		}
 			
 		else if(nanoBean.getType().equalsIgnoreCase("biopolymer")){
@@ -710,12 +717,13 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			
 		}else{
 			nanoEntity = new OtherNanomaterialEntity();
-			
+			if(nanoBean.getDomainEntity()!=null){
 			if(nanoBean.getDomainEntity().get("id")!=null){
 				nanoEntity.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
 				nanoEntity.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
 				nanoEntity.setCreatedDate((Date) nanoBean.getDomainEntity().get("createdDate"));
 			}
+		}
 		}
 	//	domainFunc.setCreatedBy(nanoBean.getSimpleCompBean().getCreatedBy());
 	//	domainFunc.setId((Long) nanoBean.getSimpleCompBean().getInherentFunction().get(0).get("id"));

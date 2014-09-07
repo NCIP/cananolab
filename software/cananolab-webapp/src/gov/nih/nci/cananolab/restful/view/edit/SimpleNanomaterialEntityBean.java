@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,8 @@ import javax.servlet.http.HttpServletRequest;
 public class SimpleNanomaterialEntityBean {
 
 	SimpleComposingElementBean simpleCompBean;
+	
+	SimpleSampleComposition sampleComposition;
 	
 	SimpleFileBean fileBean;
 	
@@ -63,6 +66,14 @@ public class SimpleNanomaterialEntityBean {
 	
 	List<String> errors;
 	
+	public SimpleSampleComposition getSampleComposition() {
+		return sampleComposition;
+	}
+
+	public void setSampleComposition(SimpleSampleComposition sampleComposition) {
+		this.sampleComposition = sampleComposition;
+	}
+
 	public List<SimpleComposingElementBean> getComposingElements() {
 		return composingElements;
 	}
@@ -263,6 +274,22 @@ public class SimpleNanomaterialEntityBean {
 		}
 		setFiles(files);
 	}
+		
+//		//setting up sample composition
+//		sampleComposition = new SimpleSampleComposition();
+//		Collection<SimpleNanomaterialEntityBean> nanoCollection = new HashSet<SimpleNanomaterialEntityBean>();
+//		SimpleNanomaterialEntityBean simpleNano = new SimpleNanomaterialEntityBean();
+//		SampleComposition sampleComp = bean.getDomainEntity().getSampleComposition();
+//		sampleComposition.setId(sampleComp.getId());
+////		for(NanomaterialEntity nano : sampleComp.getNanomaterialEntityCollection()){
+////			simpleNano.setCreatedBy(nano.getCreatedBy());
+////			simpleNano.setCreatedDate(nano.getCreatedDate());
+////			simpleNano.setDescription(nano.getDescription());
+////			nanoCollection.add(simpleNano);
+////		}
+////		sampleComposition.setNanomaterialEntityCollection(nanoCollection);
+//		
+//		this.setSampleComposition(sampleComposition);
 		setDomainEntityInfo(bean);
 }
 
@@ -279,8 +306,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("createdDate", bean.getDendrimer().getCreatedDate());
 			domainEntity.put("createdBy", bean.getDendrimer().getCreatedBy());
 			domainEntity.put("id", bean.getDendrimer().getId());
-		}
-		if(bean.getType().equalsIgnoreCase("polymer")){
+		}else if(bean.getType().equalsIgnoreCase("polymer")){
 			domainEntity = new HashMap<String, Object>();
 			domainEntity.put("crossLinked", bean.getPolymer().getCrossLinked());
 			domainEntity.put("crossLinkDegree", bean.getPolymer().getCrossLinkDegree());
@@ -289,8 +315,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("createdBy", bean.getPolymer().getCreatedBy());
 			domainEntity.put("id", bean.getPolymer().getId());
 
-		}
-		if(bean.getType().equalsIgnoreCase("biopolymer")){
+		}else if(bean.getType().equalsIgnoreCase("biopolymer")){
 			domainEntity = new HashMap<String, Object>();
 
 			domainEntity.put("name", bean.getBiopolymer().getName());
@@ -300,8 +325,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("createdBy", bean.getBiopolymer().getCreatedBy());
 			domainEntity.put("id", bean.getBiopolymer().getId());
 
-		}
-		if(bean.getType().equalsIgnoreCase("CarbonNanotube")){
+		}else if(bean.getType().equalsIgnoreCase("CarbonNanotube")){
 			domainEntity = new HashMap<String, Object>();
 
 			domainEntity.put("averageLength", bean.getCarbonNanotube().getAverageLength());
@@ -314,8 +338,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("createdBy", bean.getCarbonNanotube().getCreatedBy());
 			domainEntity.put("id", bean.getCarbonNanotube().getId());
 
-		}
-		if(bean.getType().equalsIgnoreCase("Liposome")){
+		}else if(bean.getType().equalsIgnoreCase("Liposome")){
 			domainEntity = new HashMap<String, Object>();
 
 			domainEntity.put("IsPolymarized",bean.getLiposome().getPolymerized());
@@ -324,8 +347,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("createdBy", bean.getLiposome().getCreatedBy());
 			domainEntity.put("id", bean.getLiposome().getId());
 
-		}
-		if(bean.getType().equalsIgnoreCase("Emulsion")){
+		}else if(bean.getType().equalsIgnoreCase("Emulsion")){
 			domainEntity = new HashMap<String, Object>();
 
 			domainEntity.put("IsPolymarized",bean.getEmulsion().getPolymerized());
@@ -335,8 +357,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("id", bean.getEmulsion().getId());
 
 
-		}
-		if(bean.getType().equalsIgnoreCase("Fullerene")){
+		}else if(bean.getType().equalsIgnoreCase("Fullerene")){
 			domainEntity = new HashMap<String, Object>();
 
 			domainEntity.put("AverageDiameter",	bean.getFullerene().getAverageDiameter());
@@ -346,11 +367,11 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("createdBy", bean.getFullerene().getCreatedBy());
 			domainEntity.put("id", bean.getFullerene().getId());
 
-		}
+		}else{
 		
 		domainEntity.put("id", bean.getDomainEntity().getId());
 
-		
+		}
 			
 			domainEntity.put("sampleComposition", new SampleComposition());
 			setDomainEntity(domainEntity);

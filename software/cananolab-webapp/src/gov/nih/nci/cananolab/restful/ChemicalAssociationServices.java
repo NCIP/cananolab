@@ -32,7 +32,7 @@ import org.springframework.context.ApplicationContext;
 @Path("/chemicalAssociation")
 public class ChemicalAssociationServices {
 
-private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
+private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 	
 	@Inject
 	ApplicationContext applicationContext;
@@ -75,7 +75,7 @@ private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 			
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the NanoMaterial Entity" + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the chemical association " + e.getMessage())).build();
 
 		}
 	}
@@ -103,7 +103,7 @@ private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
 			return Response.ok(simpleBeans).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the NanoMaterial Entity" + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while getting AssociatedElementOptions " + e.getMessage())).build();
 
 		}
 	}
@@ -131,7 +131,110 @@ private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
 			return Response.ok(simpleBeans).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the NanoMaterial Entity" + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while getting ComposingElementsByNanomaterialEntityId" + e.getMessage())).build();
+
+		}
+	}
+	
+	@POST
+	@Path("/saveFile")
+	@Produces ("application/json")
+    public Response saveFile(@Context HttpServletRequest httpRequest, SimpleChemicalAssociationBean chemBean) {
+				
+		try { 
+			ChemicalAssociationBO chem = 
+					(ChemicalAssociationBO) applicationContext.getBean("chemicalAssociationBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			SimpleChemicalAssociationBean bean = chem.saveFile(chemBean, httpRequest);
+			
+			List<String> errors = bean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(bean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the File" + e.getMessage())).build();
+
+		}
+	}
+	
+	@POST
+	@Path("/submit")
+	@Produces ("application/json")
+    public Response submit(@Context HttpServletRequest httpRequest, SimpleChemicalAssociationBean chemBean) {
+				
+		try { 
+			ChemicalAssociationBO chem = 
+					(ChemicalAssociationBO) applicationContext.getBean("chemicalAssociationBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			List<String> msgs = chem.create(chemBean, httpRequest);
+			
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+			
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the chemical association" + e.getMessage())).build();
+
+		}
+	}
+	
+		
+	@POST
+	@Path("/removeFile")
+	@Produces ("application/json")
+    public Response removeFile(@Context HttpServletRequest httpRequest, SimpleChemicalAssociationBean chemBean) {
+				
+		try { 
+			ChemicalAssociationBO chem = 
+					(ChemicalAssociationBO) applicationContext.getBean("chemicalAssociationBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			SimpleChemicalAssociationBean bean = chem.removeFile(chemBean, httpRequest);
+			
+			List<String> errors = bean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(bean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the file" + e.getMessage())).build();
+
+		}
+	}
+	
+	@POST
+	@Path("/delete")
+	@Produces ("application/json")
+    public Response delete(@Context HttpServletRequest httpRequest, SimpleChemicalAssociationBean chemBean) {
+				
+		try { 
+			ChemicalAssociationBO chem = 
+					(ChemicalAssociationBO) applicationContext.getBean("chemicalAssociationBO");
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			List<String> msgs = chem.delete(chemBean, httpRequest);
+			
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+			
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the Chemical Association" + e.getMessage())).build();
 
 		}
 	}

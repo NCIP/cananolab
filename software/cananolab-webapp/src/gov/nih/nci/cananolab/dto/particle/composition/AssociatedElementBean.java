@@ -59,6 +59,10 @@ public class AssociatedElementBean {
 	public ComposingElement getComposingElement() {
 		return composingElement;
 	}
+	
+	public void setComposingElement(ComposingElement composingElement) {
+		this.composingElement = composingElement;
+	}
 
 	public AssociatedElement getDomainElement() {
 		return domainElement;
