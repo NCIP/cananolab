@@ -2,12 +2,17 @@ package gov.nih.nci.cananolab.restful.sample;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.util.CompositionUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
@@ -29,19 +34,18 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 public class CompositionFileBO extends BaseAnnotationBO{
 	
-	public List<String> create(CompositionForm form,
+	public List<String> create(SimpleFileBean bean,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
-		CompositionBean comp = form.getComp();
-		FileBean theFile = comp.getTheFile();
+		FileBean theFile = transferFileBean(bean);
 		Boolean newFile = true;
 
 		CompositionService service = this.setServicesInSession(request);
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);
 
-		SampleBean sampleBean = setupSampleById(form.getSampleId(), request);
+		SampleBean sampleBean = setupSampleById(bean.getSampleId(), request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
 				+ sampleBean.getDomain().getName() + "/" + "compositionFile";
@@ -60,15 +64,31 @@ public class CompositionFileBO extends BaseAnnotationBO{
 //			msg = new ActionMessage("message.updateSample.retractFromPublic");
 //			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //			saveMessages(request, msgs);
-		}
-		ActionMessage msg = new ActionMessage("message.addCompositionFile",
-				theFile.getDomainFile().getTitle());
-		msgs.add(PropertyUtil.getProperty("sample", "message.addCompositionFile"));
-		// save action messages in the session so composition.do know about them
-		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+			
+			}
+		msgs.add("success");
 		// to preselect composition file after returning to the summary page
 		request.getSession().setAttribute("tab", "4");
 		return msgs;
+	}
+
+	private FileBean transferFileBean(SimpleFileBean bean) {
+		// TODO Auto-generated method stub
+		FileBean fileBean = new FileBean();
+		File file = new File();
+		file.setCreatedBy(bean.getCreatedBy());
+		file.setCreatedDate(bean.getCreatedDate());
+		file.setDescription(bean.getDescription());
+		if(bean.getId()!=null)
+		file.setId(bean.getId());
+		file.setType(bean.getType());
+		file.setTitle(bean.getTitle());
+		file.setUri(bean.getUri());
+		file.setUriExternal(bean.getUriExternal());
+		fileBean.setExternalUrl(bean.getExternalUrl());
+		fileBean.setKeywordsStr(bean.getKeywordsStr());
+		fileBean.setDomainFile(file);
+		return fileBean;
 	}
 
 	public List<String> delete(CompositionForm form,
@@ -103,25 +123,27 @@ public class CompositionFileBO extends BaseAnnotationBO{
 		return msgs;
 	}
 
-	public void setupNew(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public Map<String, Object> setupNew(HttpServletRequest request)
 			throws Exception {
 		this.setServicesInSession(request);
-		CompositionBean compBean = new CompositionBean();
-		//theForm.set("comp", compBean);
-		//return mapping.getInputForward();
+		setLookups(request);
+		return CompositionUtil.reformatLocalSearchDropdownsInSessionForCompositionFile(request.getSession());
+
 	}
 
-	public FileBean setupUpdate(CompositionForm form,
+	public SimpleFileBean setupUpdate(String sampleId, String fileId,
 			HttpServletRequest request)
 			throws Exception {
-		String fileId = super.validateId(request, "dataId");
+		fileId = super.validateId(request, "dataId");
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
 		FileBean fileBean = compService.findFileById(fileId);
-		CompositionBean compBean = form.getComp();
-		compBean.setTheFile(fileBean);
-		return fileBean;
+//		CompositionBean compBean = form.getComp();
+//		compBean.setTheFile(fileBean);
+		request.getSession().setAttribute("sampleId", sampleId);
+		SimpleFileBean simpleBean = new SimpleFileBean();
+		simpleBean.transferSimpleFileBean(fileBean, request);
+		return simpleBean;
 	}
 
 	/**

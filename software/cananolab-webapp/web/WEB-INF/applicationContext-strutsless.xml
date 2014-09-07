@@ -149,6 +149,13 @@
 		</property>
 	</bean>
 	
+	<bean id="compositionFileBO"
+		class="gov.nih.nci.cananolab.restful.sample.CompositionFileBO">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+	
 	<bean id="experimentConfigManager"
 		class="gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager">
 	</bean>

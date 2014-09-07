@@ -83,6 +83,7 @@ public class SimpleChemicalAssociationBean {
 		setType(chemBean.getType());
 		setDescription(chemBean.getDescription());
 		setBondType(chemBean.getAttachment().getBondType());
+		setSampleId((String) request.getSession().getAttribute("sampleId"));
 		associatedElementA = new SimpleAssociatedElement();
 		
 		associatedElementA.setClassName(chemBean.getAssociatedElementA().getClassName());

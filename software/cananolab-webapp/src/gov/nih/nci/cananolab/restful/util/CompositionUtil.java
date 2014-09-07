@@ -166,4 +166,16 @@ public class CompositionUtil {
 			typeMap.put("fileTypes", new ArrayList<String>(types));
 		return typeMap;
 	}
-}
+
+	public static Map<String, Object> reformatLocalSearchDropdownsInSessionForCompositionFile(
+			HttpSession session) {
+		Map<String, Object> typeMap = new HashMap<String, Object>();
+		
+		SortedSet<String> types = (SortedSet<String>) session.getAttribute("fileTypes");
+		
+		if (types != null) 
+			typeMap.put("fileTypes", new ArrayList<String>(types));
+		return typeMap;
+	}
+	}
+

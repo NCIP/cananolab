@@ -754,7 +754,6 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		List<String> msgs = new ArrayList<String>();
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean);//form
 				//.getNanomaterialEntity(); //("nanomaterialEntity");
-		entity.getDomainEntity().setId((Long) nanoBean.getDomainEntity().get("id"));
 		ComposingElementBean composingElement = entity.getTheComposingElement();
 		// check if composing element is associated with an association
 		CompositionServiceLocalImpl compService = (CompositionServiceLocalImpl) (this
@@ -828,7 +827,6 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean); //form
 				//.getNanomaterialEntity(); //("nanomaterialEntity");
-		entity.getDomainEntity().setId((Long) nanoBean.getDomainEntity().get("id"));
 
 		FileBean theFile = entity.getTheFile();
 		entity.removeFile(theFile);
@@ -861,9 +859,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		CompositionService compositionService = this
 				.setServicesInSession(request);
 		NanomaterialEntityBean entityBean = transferNanoMateriaEntityBean(nanoBean);
-		System.out.println((Integer)nanoBean.getDomainEntity().get("id"));
-		entityBean.getDomainEntity().setId(new Long((Integer)nanoBean.getDomainEntity().get("id")));
-
+		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		entityBean.setupDomainEntity(user.getLoginName());
 		compositionService.deleteNanomaterialEntity(entityBean
