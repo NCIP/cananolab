@@ -130,7 +130,7 @@ var app = angular.module('angularApp')
         $scope.doSubmit = function() {
             $scope.loader = true;
 
-            $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/submit',data: $scope.chemAssociationForm}).
+            $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/submit',data: $scope.chemAssociationForm}).
                 success(function(data, status, headers, config) {
                     if (data == "success") {
                         //$location.search('message', 'Nanomaterial Entity successfully saved "').path('/message').replace();
@@ -156,7 +156,7 @@ var app = angular.module('angularApp')
             if (confirm("Are you sure you want to delete the Chemical Association?")) {
                 $scope.loader = true;
 
-                $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/delete',data: $scope.chemAssociationForm}).
+                $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/delete',data: $scope.chemAssociationForm}).
                     success(function(data, status, headers, config) {
                         if (data == "success") {
                             $location.search('message', 'Chemical Association successfully deleted."').path('/editComposition').replace();
@@ -209,7 +209,7 @@ var app = angular.module('angularApp')
             if (confirm("Are you sure you want to delete the File?")) {
                 $scope.loader = true;
 
-                $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeFile',data: $scope.fileForm}).
+                $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/removeFile',data: $scope.fileForm}).
                     success(function(data, status, headers, config) {
                         $scope.chemAssociationForm = data;
                         $scope.files = $scope.chemAssociationForm.domainEntity.fileCollection;
@@ -281,7 +281,7 @@ var app = angular.module('angularApp')
 
             $scope.chemAssociationForm.domainEntity.fileCollection = $scope.files;
 
-            $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveFile',data: $scope.chemAssociationForm}).
+            $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/saveFile',data: $scope.chemAssociationForm}).
                 success(function(data, status, headers, config) {
                     $scope.chemAssociationForm = data;
                     $scope.files = $scope.chemAssociationForm.domainEntity.fileCollection;
