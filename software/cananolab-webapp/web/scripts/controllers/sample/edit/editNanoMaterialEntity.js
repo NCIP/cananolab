@@ -24,6 +24,7 @@ var app = angular.module('angularApp')
         $scope.fileForm.uriExternal = false;
         $scope.externalUrlEnabled = false;
         $scope.addNewFile = false;
+        $scope.selectedFileName = '';
 
         /* Composing Element Variables */
         $scope.composingElementForm = {};
@@ -518,6 +519,7 @@ var app = angular.module('angularApp')
             var index = 0;
             $scope.upload = [];
             if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) {
+            	$scope.selectedFileName = $scope.selectedFiles[0].name;
                 $scope.upload[index] = $upload.upload({
                     url: '/caNanoLab/rest/core/uploadFile',
                     method: 'POST',
@@ -575,7 +577,7 @@ var app = angular.module('angularApp')
 
 
             $scope.nanoEntityForm.fileBean.externalUrl = $scope.fileForm.externalUrl;
-            $scope.nanoEntityForm.fileBean.uri = $scope.fileForm.uri;
+            $scope.nanoEntityForm.fileBean.uri = $scope.selectedFileName;
             $scope.nanoEntityForm.fileBean.uriExternal = $scope.fileForm.uriExternal;
             $scope.nanoEntityForm.fileBean.type = $scope.fileForm.type;
             $scope.nanoEntityForm.fileBean.title = $scope.fileForm.title;
