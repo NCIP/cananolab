@@ -93,6 +93,7 @@ public class SimpleFindingBean {
 		if (findingBean == null) return;
 		
 		List<Row> beanRows = findingBean.getRows();
+		this.rows.clear();
 	
 		if (beanRows != null) {
 			for (Row beanRow : beanRows) {

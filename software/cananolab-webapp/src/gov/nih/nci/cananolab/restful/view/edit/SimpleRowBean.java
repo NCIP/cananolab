@@ -21,6 +21,7 @@ public class SimpleRowBean {
 		if (beanRow == null) return;
 		
 		List<TableCell> cells = beanRow.getCells();
+		this.cells.clear();
 		if (cells == null) return;
 		
 		for (TableCell cell : cells) {
