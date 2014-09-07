@@ -283,7 +283,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 //						"external url");
 		//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		//		this.saveErrors(request, msgs);
-				msgs.add(PropertyUtil.getProperty("sample", "external url"));
+		//		msgs.add(PropertyUtil.getProperty("sample", "external url"));
 
 				noErrors = false;
 			}
@@ -300,7 +300,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		//		this.saveErrors(request, msgs);
 				noErrors = false;
-				msgs.add(PropertyUtil.getProperty("sample", "uploaded file"));
+		//		msgs.add(PropertyUtil.getProperty("sample", "uploaded file"));
 
 				// the case that user switch from url to upload file, but no
 				// file is selected
@@ -311,7 +311,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 //						"uploaded file");
 			//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			//	this.saveErrors(request, msgs);
-				msgs.add(PropertyUtil.getProperty("sample", "uploaded file"));
+	//			msgs.add(PropertyUtil.getProperty("sample", "uploaded file"));
 
 				noErrors = false;
 			}

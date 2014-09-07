@@ -19,8 +19,22 @@ public class SimpleChemicalAssociationBean {
 	String description = "";
 	SimpleAssociatedElement associatedElementA;
 	SimpleAssociatedElement associatedElementB;
+	String sampleId = "";
 	List<String> errors;
+	List<SimpleFileBean> files;
 	
+	public List<SimpleFileBean> getFiles() {
+		return files;
+	}
+	public void setFiles(List<SimpleFileBean> files) {
+		this.files = files;
+	}
+	public String getSampleId() {
+		return sampleId;
+	}
+	public void setSampleId(String sampleId) {
+		this.sampleId = sampleId;
+	}
 	public List<String> getErrors() {
 		return errors;
 	}

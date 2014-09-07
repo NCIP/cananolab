@@ -219,6 +219,34 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		this.domainEntity = nanoEntity;
 	}
 
+	public void setPolymer(Polymer polymer) {
+		this.polymer = polymer;
+	}
+
+	public void setBiopolymer(Biopolymer biopolymer) {
+		this.biopolymer = biopolymer;
+	}
+
+	public void setDendrimer(Dendrimer dendrimer) {
+		this.dendrimer = dendrimer;
+	}
+
+	public void setCarbonNanotube(CarbonNanotube carbonNanotube) {
+		this.carbonNanotube = carbonNanotube;
+	}
+
+	public void setLiposome(Liposome liposome) {
+		this.liposome = liposome;
+	}
+
+	public void setEmulsion(Emulsion emulsion) {
+		this.emulsion = emulsion;
+	}
+
+	public void setFullerene(Fullerene fullerene) {
+		this.fullerene = fullerene;
+	}
+
 	public void setupDomainEntity(String createdBy) throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = ClassUtils.getFullClass("nanomaterial." + className);

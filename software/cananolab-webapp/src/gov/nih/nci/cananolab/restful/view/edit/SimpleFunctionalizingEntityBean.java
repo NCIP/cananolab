@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class SimpleFunctionalizingEntityBean {
 
 	SimpleFileBean fileBean;
@@ -140,7 +142,7 @@ public class SimpleFunctionalizingEntityBean {
 		this.description = description;
 	}
 	
-	public void tranferSimpleFunctionalizingBean(FunctionalizingEntityBean bean) {
+	public void tranferSimpleFunctionalizingBean(FunctionalizingEntityBean bean, HttpServletRequest request) {
 		domainEntity = new HashMap<Object, Object>();
 		this.setDescription(bean.getDescription());
 		this.setName(bean.getName());
@@ -148,6 +150,7 @@ public class SimpleFunctionalizingEntityBean {
 		
 		this.setType(bean.getType());
 		this.setMolecularFormulaType(bean.getMolecularFormulaType());
+		this.setSampleId((String) request.getSession().getAttribute("sampleId"));
 		
 		List<SimpleFileBean> fileList = new ArrayList<SimpleFileBean>();
 		for(FileBean files : bean.getFiles()){

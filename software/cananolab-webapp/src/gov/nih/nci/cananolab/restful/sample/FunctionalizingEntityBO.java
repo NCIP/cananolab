@@ -227,8 +227,9 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	//	form.setOtherSamples(new String[0]);
 		checkOpenForms(entityBean, request);
 //		return mapping.findForward("inputForm");
+		request.getSession().setAttribute("sampleId", sampleId);
 		SimpleFunctionalizingEntityBean bean = new SimpleFunctionalizingEntityBean();
-		bean.tranferSimpleFunctionalizingBean(entityBean);
+		bean.tranferSimpleFunctionalizingBean(entityBean, request);
 		return bean;
 	}
 
@@ -516,17 +517,18 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		FunctionBean functionBean = new FunctionBean();
 		Function theFunction = new Function();
 		List<TargetBean> targets = new ArrayList<TargetBean>();
-		theFunction.setDescription(sFunction.getDescription());
-		theFunction.setCreatedBy(sFunction.getCreatedBy());
-		theFunction.setCreatedDate(sFunction.getCreatedDate());
-		
-		functionBean.setType(sFunction.getType());
-		functionBean.setDescription(sFunction.getDescription());
-		target.setDescription(sFunction.getTargetDescription());
-		target.setName(sFunction.getTargetName());
-		target.setType(sFunction.getTargetType());
-		functionBean.setTargets(targets);
-		
+		if(sFunction!=null){
+			theFunction.setDescription(sFunction.getDescription());
+			theFunction.setCreatedBy(sFunction.getCreatedBy());
+			theFunction.setCreatedDate(sFunction.getCreatedDate());
+			
+			functionBean.setType(sFunction.getType());
+			functionBean.setDescription(sFunction.getDescription());
+			target.setDescription(sFunction.getTargetDescription());
+			target.setName(sFunction.getTargetName());
+			target.setType(sFunction.getTargetType());
+			functionBean.setTargets(targets);
+		}
 		funcBean.setTheFunction(functionBean);
 		
 		//setting up functions if ther exists
@@ -558,16 +560,17 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		
 		FileBean fileBean = new FileBean();
 		File file = new File();
-		file.setType(sFBean.getType());
-		file.setTitle(sFBean.getTitle());
-		file.setDescription(sFBean.getDescription());
-		file.setUri(sFBean.getUri());
-		file.setCreatedBy(sFBean.getCreatedBy());
-		file.setCreatedDate(sFBean.getCreatedDate());
-		file.setUriExternal(sFBean.getUriExternal());
-		fileBean.setKeywordsStr(sFBean.getKeywordsStr());
-		fileBean.setDomainFile(file);
-		
+		if(sFBean!=null){
+			file.setType(sFBean.getType());
+			file.setTitle(sFBean.getTitle());
+			file.setDescription(sFBean.getDescription());
+			file.setUri(sFBean.getUri());
+			file.setCreatedBy(sFBean.getCreatedBy());
+			file.setCreatedDate(sFBean.getCreatedDate());
+			file.setUriExternal(sFBean.getUriExternal());
+			fileBean.setKeywordsStr(sFBean.getKeywordsStr());
+			fileBean.setDomainFile(file);
+		}
 		funcBean.setTheFile(fileBean);
 		
 		//setting up files if there exists
