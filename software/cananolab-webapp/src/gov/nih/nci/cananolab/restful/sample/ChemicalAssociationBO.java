@@ -24,9 +24,11 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -470,6 +472,17 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 				+ sampleBean.getDomain().getName() + "/"
 				+ "chemicalAssociation";
 		theFile.setupDomainFile(internalUriPath, user.getLoginName());
+		
+		String timestamp = DateUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS");
+		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
+		if(newFileData!=null){
+			theFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
+			theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
+					+ sampleBean.getDomain().getName() + '/' + "chemicalAssociation"+ "/" + timestamp + "_"
+					+ theFile.getDomainFile().getName());
+		}
+		
 		assoc.addFile(theFile);
 
 		// restore previously uploaded file from session.

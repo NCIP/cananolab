@@ -35,6 +35,7 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -794,8 +795,18 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				+ sampleBean.getDomain().getName() + '/' + "nanomaterialEntity";
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		theFile.setupDomainFile(internalUriPath, user.getLoginName());
+		
+		String timestamp = DateUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS");
+		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
+		if(newFileData!=null){
+			theFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
+			theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
+					+ sampleBean.getDomain().getName() + '/' + "nanomaterialEntity"+ "/" + timestamp + "_"
+					+ theFile.getDomainFile().getName());
+		}
 		entity.addFile(theFile);
-
+		
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);
 

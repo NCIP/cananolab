@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful.sample;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,21 +22,15 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorForm;
-
 public class CompositionFileBO extends BaseAnnotationBO{
 	
 	public List<String> create(SimpleFileBean bean,
-			HttpServletRequest request, HttpServletResponse response)
+			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
 		FileBean theFile = transferFileBean(bean);
@@ -54,6 +49,17 @@ public class CompositionFileBO extends BaseAnnotationBO{
 		if (theFile.getDomainFile().getId() != null) {
 			newFile = true;
 		}
+		
+		String timestamp = DateUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS");
+		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
+		if(newFileData!=null){
+			theFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
+			theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
+					+ sampleBean.getDomain().getName() + '/' + "compositionFile"+ "/" + timestamp + "_"
+					+ theFile.getDomainFile().getName());
+		}
+		
 		service.saveCompositionFile(sampleBean, theFile);
 		// retract from public if updating an existing public record and not
 		// curator
@@ -76,11 +82,13 @@ public class CompositionFileBO extends BaseAnnotationBO{
 		// TODO Auto-generated method stub
 		FileBean fileBean = new FileBean();
 		File file = new File();
-		file.setCreatedBy(bean.getCreatedBy());
-		file.setCreatedDate(bean.getCreatedDate());
+		
 		file.setDescription(bean.getDescription());
-		if(bean.getId()!=null)
-		file.setId(bean.getId());
+		if(bean.getId()!=null){
+			file.setId(bean.getId());
+			file.setCreatedBy(bean.getCreatedBy());
+			file.setCreatedDate(bean.getCreatedDate());
+		}
 		file.setType(bean.getType());
 		file.setTitle(bean.getTitle());
 		file.setUri(bean.getUri());
@@ -91,14 +99,14 @@ public class CompositionFileBO extends BaseAnnotationBO{
 		return fileBean;
 	}
 
-	public List<String> delete(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public List<String> delete(SimpleFileBean bean,
+			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
-		CompositionBean comp = form.getComp();
-		FileBean fileBean = comp.getTheFile();
+		CompositionBean comp = new CompositionBean();
+		FileBean fileBean = transferFileBean(bean);
 		CompositionService compService = this.setServicesInSession(request);
-		SampleBean sampleBean = setupSampleById(form.getSampleId(), request);
+		SampleBean sampleBean = setupSampleById(bean.getSampleId(), request);
 		compService.deleteCompositionFile(sampleBean.getDomain()
 				.getSampleComposition(), fileBean.getDomainFile());
 		compService.removeAccesses(comp.getDomain(), fileBean
@@ -116,9 +124,6 @@ public class CompositionFileBO extends BaseAnnotationBO{
 		}
 
 		msgs.add(PropertyUtil.getProperty("sample","message.deleteCompositionFile"));
-
-		// save action messages in the session so composition.do know about them
-		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 
 		return msgs;
 	}

@@ -2,11 +2,13 @@ package gov.nih.nci.cananolab.restful.sample;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import gov.nih.nci.cananolab.domain.agentmaterial.Antibody;
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer;
@@ -33,6 +35,7 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -298,6 +301,16 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				+ sampleBean.getDomain().getName() + "/"
 				+ "functionalizingEntity";
 		theFile.setupDomainFile(internalUriPath, user.getLoginName());
+		
+		String timestamp = DateUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS");
+		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
+		if(newFileData!=null){
+			theFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
+			theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
+					+ sampleBean.getDomain().getName() + '/' + "functionalizingEntity"+ "/" + timestamp + "_"
+					+ theFile.getDomainFile().getName());
+		}
 		entity.addFile(theFile);
 
 		// restore previously uploaded file from session.
@@ -511,6 +524,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		//setting up theFunction
 		FunctionalizingEntityBean funcBean = new FunctionalizingEntityBean();
 
+		FunctionalizingEntity domainEntity = null;
+
 		SimpleFunctionBean sFunction = bean.getSimpleFunctionBean();
 		
 		TargetBean target = new TargetBean();
@@ -533,7 +548,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		
 		//setting up functions if ther exists
 		Collection<Function> funCollection = new HashSet<Function>();
-		FunctionalizingEntity domainEntity = new FunctionalizingEntity();
 		if(bean.getFunctionList()!=null){
 			for(SimpleFunctionBean fuBean : bean.getFunctionList()){
 				target = new TargetBean();
@@ -600,20 +614,28 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			act.setType(bean.getActivationMethodType());
 			act.setActivationEffect(bean.getActivationEffect());
 			mol.setAlternateName((String) bean.getDomainEntity().get("alternateName"));
+			if(bean.getDomainEntity().get("id")!=null){
+				mol.setId(new Long((Integer)bean.getDomainEntity().get("id")));
+				mol.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
+				mol.setCreatedDate(new Date((Long) bean.getDomainEntity().get("createdDate")));
+			}
 			mol.setFunctionCollection(funCollection);
 			mol.setFileCollection(filecoll);
 			mol.setActivationMethod(act);
 
 			mol.setSampleComposition(new SampleComposition());
 			domainEntity = mol;
-		}
-		
-		if(bean.getType().equalsIgnoreCase("Biopolymer")){
+		}else if(bean.getType().equalsIgnoreCase("Biopolymer")){
 			
 			Biopolymer bio = new Biopolymer();
 			ActivationMethod act = new ActivationMethod();
 			act.setType(bean.getActivationMethodType());
 			act.setActivationEffect(bean.getActivationEffect());
+			if(bean.getDomainEntity().get("id")!=null){
+				bio.setId(new Long((Integer)bean.getDomainEntity().get("id")));
+				bio.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
+				bio.setCreatedDate(new Date((Long) bean.getDomainEntity().get("createdDate")));
+			}
 			bio.setType((String) bean.getDomainEntity().get("type"));
 			bio.setSequence((String) bean.getDomainEntity().get("sequence"));
 			bio.setFunctionCollection(funCollection);
@@ -622,13 +644,16 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			bio.setFileCollection(filecoll);
 			bio.setSampleComposition(new SampleComposition());
 			domainEntity = bio;
-		}
-		
-		if(bean.getType().equalsIgnoreCase("Antibody")){
+		}else if(bean.getType().equalsIgnoreCase("Antibody")){
 			Antibody body = new Antibody();
 			ActivationMethod act = new ActivationMethod();
 			act.setType(bean.getActivationMethodType());
 			act.setActivationEffect(bean.getActivationEffect());
+			if(bean.getDomainEntity().get("id")!=null){
+				body.setId(new Long((Integer)bean.getDomainEntity().get("id")));
+				body.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
+				body.setCreatedDate(new Date((Long) bean.getDomainEntity().get("createdDate")));
+			}
 			body.setType((String) bean.getDomainEntity().get("type"));
 			body.setIsotype((String) bean.getDomainEntity().get("isoType"));
 			body.setSpecies((String) bean.getDomainEntity().get("species"));
@@ -637,6 +662,15 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			body.setActivationMethod(act);
 			body.setSampleComposition(new SampleComposition());
 			domainEntity = body;
+		} else{
+			domainEntity = new OtherFunctionalizingEntity();
+			if(bean.getDomainEntity()!=null){
+				if(bean.getDomainEntity().get("id")!=null){
+					domainEntity.setId(new Long((Integer)bean.getDomainEntity().get("id")));
+					domainEntity.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
+					domainEntity.setCreatedDate(new Date((Long) bean.getDomainEntity().get("createdDate")));
+				}
+			}
 		}
 		
 		domainEntity.setFunctionCollection(funCollection);

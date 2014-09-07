@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,11 +29,25 @@ public class SimpleFunctionalizingEntityBean {
 	String activationEffect = "";
 	String description = "";
 	String sampleId = "";
+	String createdBy = "";
+	Date createdDate;
 	Map<Object, Object> domainEntity;
 	List<String> errors;
 	List<SimpleFunctionBean> functionList;
 	List<SimpleFileBean> fileList;
 	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 	public String getSampleId() {
 		return sampleId;
 	}
@@ -195,17 +210,28 @@ public class SimpleFunctionalizingEntityBean {
 		
 		if(bean.getType().equalsIgnoreCase("SmallMolecule")){
 			domainEntity.put("alternateName", bean.getSmallMolecule().getAlternateName());
-		}
-		
-		if(bean.getType().equalsIgnoreCase("Biopolymer")){
+			domainEntity.put("createdDate", bean.getSmallMolecule().getCreatedDate());
+			domainEntity.put("createdBy", bean.getSmallMolecule().getCreatedBy());
+			domainEntity.put("id", bean.getSmallMolecule().getId());
+		}else if(bean.getType().equalsIgnoreCase("Biopolymer")){
 			domainEntity.put("type", bean.getBiopolymer().getType());
 			domainEntity.put("sequence", bean.getBiopolymer().getSequence());
-		}
-		
-		if(bean.getType().equalsIgnoreCase("Antibody")){
+			domainEntity.put("createdDate", bean.getBiopolymer().getCreatedDate());
+			domainEntity.put("createdBy", bean.getBiopolymer().getCreatedBy());
+			domainEntity.put("id", bean.getBiopolymer().getId());
+
+		}else if(bean.getType().equalsIgnoreCase("Antibody")){
 			domainEntity.put("type", bean.getAntibody().getType());
 			domainEntity.put("isoType", bean.getAntibody().getIsotype());
 			domainEntity.put("species", bean.getAntibody().getSpecies());
+			domainEntity.put("createdDate", bean.getAntibody().getCreatedDate());
+			domainEntity.put("createdBy", bean.getAntibody().getCreatedBy());
+			domainEntity.put("id", bean.getAntibody().getId());
+
+		}else{
+			domainEntity.put("createdDate", bean.getDomainEntity().getCreatedDate());
+			domainEntity.put("createdBy", bean.getDomainEntity().getCreatedBy());
+			domainEntity.put("id", bean.getDomainEntity().getId());
 		}
 		
 	}
