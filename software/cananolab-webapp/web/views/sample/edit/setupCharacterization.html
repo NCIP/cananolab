@@ -1,4 +1,4 @@
-<div ng-class="{formFocus:loader}">
+<div ng-class="{formFocus:loader}">{{columnTypeLookup}}
 	<div class="spacer">
 <table border="0" class="contentTitle" summary="layout" width="100%">
   <tr>
@@ -14,8 +14,8 @@
 </table>		
 <Br />
 	<div>
-		<div class="message" ng-if="data.message.length">
-			<div ng-repeat="i in data.message track by $index">{{i}}</div><br />
+		<div class="message" ng-if="data.messages.length">
+			<div ng-repeat="i in data.messages track by $index">{{i}}</div><br />
 		</div>
 		<div class="message" ng-if="data.errors.length">
 			<div ng-repeat="i in data.errors track by $index">{{i}}</div><br />
@@ -465,10 +465,65 @@
 								<table class="promptbox" width="85%" align="center" id="matrix" ng-if="currentFinding.columnHeaders.length">
 									<tbody>
 										<tr>
-											<td><h3 style="margin:0px;padding:0px;">Column Data</h3></td>
+											<td colspan="{{currentFinding.columnHeaders.length}}"><h3 style="margin:0px;padding:0px;">Column Data</h3></td>
 										</tr>										
 										<tr>
-											<td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel"><a ng-click="openColumnForm(cell)" href="" ng-bind-html="cell.displayName">{{cell.displayName}}</a>{{findingsColumn.columnName}}</td>
+											<td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel"><a ng-click="openColumnForm(cell)" href="" ng-bind-html="cell.displayName">{{cell.displayName}}</a></td>
+										</tr>
+										<tr ng-if="columnForm">
+											<td colspan="{{currentFinding.columnHeaders.length}}">
+												<table class="subSubmissionView" width="100%" align="center" id="matrix" ng-if="currentFinding.columnHeaders.length">
+													<tr>
+														<td colspan="2"><h3 style="margin:0px;padding:0px;">Column Definitions</h3></td>
+													</tr>	
+													<tr>
+														<td width="30%">
+															<label for="columnType">Column Type *</label>
+														</td>
+														<td>
+															<select ng-model="findingsColumn.columnType" ng-change="onColumnTypeDropdownChange()">
+																<option>datum</option>
+																<option>condition</option>		
+															</select>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<label for="columnName">Column Name *</label>
+														</td>
+														<td>
+															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()">
+
+																
+															</select>
+														</td>
+													</tr>
+													<tr>
+														<td><label for="valueType">Column Value Type</label></td>
+														<td><select ng-model="findingsColumn.valueType" data-ng-options="option for option in data.datumConditionValueTypeLookup"></td></td>
+													</tr>
+													<tr ng-if="findingsColumn.columnType=='condition'">
+														<td><label for="conditionProperty">Column Condition</label></td>
+														<td><select ng-model="findingsColumn.conditionProperty" data-ng-options="option for option in conditionTypeLookup"></td>
+													</tr>
+													<tr>
+														<td><label for="valueUnit">Column Value Unit</label></td>
+														<td><select ng-model="findingsColumn.valueUnit" data-ng-options="option for option in valueUnitsLookup"></td>
+													</tr>
+													<tr>
+														<td><label for="constantValue">Constant Value</label></td>
+														<td><input type="text" name="constantValue" ng-model="findingsColumn.constantValue"></td>
+													</tr>
+													<tr>
+														<td>
+															<button ng-click="removeColumnForm()" class="btn btn-danger btn-xxs">Remove</button>
+														</td>
+														<td>
+															<button ng-click="saveColumnForm()" class="btn btn-primary btn-xxs">Save</button>&nbsp;<button ng-click="closeColumnForm()" class="btn btn-warning btn-xxs">Cancel</button>
+														</td>
+													</tr>
+												</table>
+											</td>
 										</tr>
 										<tr ng-repeat="row in currentFinding.rows">
 											<td ng-repeat="cell in row.cells">
