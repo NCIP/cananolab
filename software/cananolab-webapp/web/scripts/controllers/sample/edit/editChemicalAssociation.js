@@ -25,10 +25,12 @@ var app = angular.module('angularApp')
         $scope.fileForm.uriExternal = false;
         $scope.externalUrlEnabled = false;
         $scope.addNewFile = false;
+        $scope.selectedFileName = '';
+        
 
         $scope.$on('$viewContentLoaded', function(){
             $scope.loader = true;
-            $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/chemicalAssociation/setup?sampleId=' + $scope.sampleId}).
+            $http({method: 'GET', url: '/caNanoLab/rest/chemicalAssociation/setup?sampleId=' + $scope.sampleId}).
                 success(function(data, status, headers, config) {
                     $scope.data = data;
                     //$scope.data = {"pubChemDataSources":["Compound","Substance","BioAssay"],"activationMethods":["does not require activation","enzymatic cleavage","infrared","MRI","NMR","pH","ultrasound","ultraviolet"],"modalityTypes":["beta radiation","bioluminescence","fluorescence","gamma ray","infrared","MRI","neutron scattering","NMR","PET","photoluminescence","Raman spectroscopy","SPECT","ultrasound","X-ray"],"antibodyIsotypes":["IgA","IgD","IgE","IgG","IgM"],"otherSampleNames":["Demo123","NCL-20-1","NCL-21-1","NCL-24-1","NCL-24-1-Copy","NCL-25-1","NCL-26-1","QA"],"functionTypes":["endosomolysis","imaging function","other","targeting function","therapeutic function","transfection"],"functionalizingEntityTypes":["Magnetic Particle","Monomer","Polymer","Quantum Dot","antibody","biopolymer","radioisotope","small molecule"],"fileTypes":["document","graph","image","movie","spread sheet"],"biopolymerTypes":["DNA","peptide","protein","RNA","siRNA"],"targetTypes":["antigen","gene","other","receptor"],"antibodyTypes":["Fab","ScFv","whole"],"molecularFormulaTypes":["Hill","SMARTS","SMILES"],"functionalizingEntityUnits":["%","%mole","%vol","%wt/vol","%wt/wt","g","Gy","M","mCi","mg","mg/mL","mL","mM","mmol","nM","nmol","pmol","uCi/mg","ug","ug/uL","uL","uL/mL","uM","wt%"],"speciesTypes":["cat","cattle","dog","goat","guinea pig","hamster","horse","human","mouse","pig","rat","sheep","yeast","zebrafish"]};
@@ -49,26 +51,24 @@ var app = angular.module('angularApp')
         $scope.loadChemAssociationData = function() {
             if( $scope.chemAssociationId != null ) {
                 $scope.loader = true;
-                /*
-                 $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/chemicalAssociation/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.chemAssociationId}).
+                
+                 $http({method: 'GET', url: '/caNanoLab/rest/chemicalAssociation/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.chemAssociationId}).
                  success(function(data, status, headers, config) {
-                 $scope.chemAssociationForm = data;
-                 //$scope.chemAssociationForm = {"simpleFile":null,"type":"attachment","bondType":"covalent","description":"Test","associatedElementA":{"compositionType":"nanomaterial entity","entityId":"72056840","entityDisplayName":"fullerene","className":"ComposingElement","composingElement":{"type":"repeat unit","name":"test","pubChemDataSourceName":"","pubChemId":null,"value":null,"valueUnit":null,"molecularFormulaType":null,"molecularFormula":null,"description":"","id":72089608,"sampleId":"","modality":"","createdBy":"prakasht","createdDate":null,"inherentFunction":null}},"associatedElementB":{"compositionType":"functionalizing entity","entityId":"22719746","entityDisplayName":"small molecule","className":"SmallMolecule","composingElement":{"type":null,"name":null,"pubChemDataSourceName":null,"pubChemId":null,"value":null,"valueUnit":null,"molecularFormulaType":null,"molecularFormula":null,"description":null,"id":null,"sampleId":"","modality":"","createdBy":null,"createdDate":null,"inherentFunction":null}},"errors":null};
-                 $scope.files = $scope.chemAssociationForm.domainEntity.fileCollection;
-
-                 $scope.loader = false;
+	                 $scope.chemAssociationForm = data;
+	                 //$scope.chemAssociationForm = {"simpleFile":null,"type":"attachment","bondType":"covalent","description":"Test","associatedElementA":{"compositionType":"nanomaterial entity","entityId":"72056840","entityDisplayName":"fullerene","className":"ComposingElement","composingElement":{"type":"repeat unit","name":"test","pubChemDataSourceName":"","pubChemId":null,"value":null,"valueUnit":null,"molecularFormulaType":null,"molecularFormula":null,"description":"","id":72089608,"sampleId":"","modality":"","createdBy":"prakasht","createdDate":null,"inherentFunction":null}},"associatedElementB":{"compositionType":"functionalizing entity","entityId":"22719746","entityDisplayName":"small molecule","className":"SmallMolecule","composingElement":{"type":null,"name":null,"pubChemDataSourceName":null,"pubChemId":null,"value":null,"valueUnit":null,"molecularFormulaType":null,"molecularFormula":null,"description":null,"id":null,"sampleId":"","modality":"","createdBy":null,"createdDate":null,"inherentFunction":null}},"errors":null};
+	                 $scope.files = $scope.chemAssociationForm.files;
+	
+	                 $scope.loader = false;
                  }).
                  error(function(data, status, headers, config) {
-                 $scope.message = data;
-                 $scope.loader = false;
+	                 $scope.message = data;
+	                 $scope.loader = false;
                  });
-                 */
+                 
 
-                $scope.chemAssociationForm = {"simpleFile":null,"type":"attachment","bondType":"covalent","description":"Test","associatedElementA":{"compositionType":"nanomaterial entity","entityId":"72056840","entityDisplayName":"fullerene","className":"ComposingElement","composingElement":{"type":"repeat unit","name":"test","pubChemDataSourceName":"","pubChemId":null,"value":null,"valueUnit":null,"molecularFormulaType":null,"molecularFormula":null,"description":"","id":72089608,"sampleId":"","modality":"","createdBy":"prakasht","createdDate":null,"inherentFunction":null}},"associatedElementB":{"compositionType":"functionalizing entity","entityId":"22719746","entityDisplayName":"small molecule","className":"SmallMolecule","composingElement":{"type":null,"name":null,"pubChemDataSourceName":null,"pubChemId":null,"value":null,"valueUnit":null,"molecularFormulaType":null,"molecularFormula":null,"description":null,"id":null,"sampleId":"","modality":"","createdBy":null,"createdDate":null,"inherentFunction":null}},"errors":null};
+                //$scope.chemAssociationForm = {"simpleFile":null,"type":"attachment","bondType":"covalent","description":"Test","associatedElementA":{"compositionType":"nanomaterial entity","domainId":"72056840","entityId":"72056840","entityDisplayName":"fullerene","className":"ComposingElement","composingElement":{"type":"repeat unit","name":"test","pubChemDataSourceName":"","pubChemId":null,"value":null,"valueUnit":null,"molecularFormulaType":null,"molecularFormula":null,"description":"","id":72089608,"sampleId":"","modality":"","createdBy":"prakasht","createdDate":null,"inherentFunction":null}},"associatedElementB":{"compositionType":"functionalizing entity","entityId":"22719746","entityDisplayName":"small molecule","className":"SmallMolecule","composingElement":{"type":null,"name":null,"pubChemDataSourceName":null,"pubChemId":null,"value":null,"valueUnit":null,"molecularFormulaType":null,"molecularFormula":null,"description":null,"id":null,"sampleId":"","modality":"","createdBy":null,"createdDate":null,"inherentFunction":null}},"errors":null};
             }
         }
-        console.log('33');
-
 
 
         if( $scope.chemAssociationId != null ) {
@@ -79,7 +79,7 @@ var app = angular.module('angularApp')
             if (compositionType != null) {
                 $scope.loader = true;
 
-                $http({method: 'POST', url: 'http://localhost:8080/caNanoLab/rest/chemicalAssociation/getAssociatedElementOptions?compositionType=' + compositionType}).
+                $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/getAssociatedElementOptions?compositionType=' + compositionType}).
                     success(function (data, status, headers, config) {
                         if( type == 'A') {
                             $scope.associatedElementsA = data;
@@ -106,7 +106,7 @@ var app = angular.module('angularApp')
                 if (compositionType == 'nanomaterial entity') {
                     $scope.loader = true;
 
-	                $http({method: 'POST', url: 'http://localhost:8080/caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId?id=' + associatedElementId}).
+	                $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId?id=' + associatedElementId}).
 	                    success(function (data, status, headers, config) {
 	                        if( type == 'A') {
 	                            $scope.composingElementsA = data;
@@ -230,6 +230,7 @@ var app = angular.module('angularApp')
             var index = 0;
             $scope.upload = [];
             if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) {
+            	$scope.selectedFileName = $scope.selectedFiles[0].name;
                 $scope.upload[index] = $upload.upload({
                     url: '/caNanoLab/rest/core/uploadFile',
                     method: 'POST',
@@ -279,12 +280,31 @@ var app = angular.module('angularApp')
                 $scope.files.push($scope.fileForm);
             }
 
-            $scope.chemAssociationForm.domainEntity.fileCollection = $scope.files;
+            $scope.chemAssociationForm.files = $scope.files;
+            
+            if( $scope.chemAssociationForm.simpleFile == null ) {
+            	$scope.chemAssociationForm.simpleFile = {};
+            }
+
+
+            $scope.chemAssociationForm.simpleFile.externalUrl = $scope.fileForm.externalUrl;
+            $scope.chemAssociationForm.simpleFile.uri = $scope.selectedFileName;
+            $scope.chemAssociationForm.simpleFile.uriExternal = $scope.fileForm.uriExternal;
+            $scope.chemAssociationForm.simpleFile.type = $scope.fileForm.type;
+            $scope.chemAssociationForm.simpleFile.title = $scope.fileForm.title;
+            $scope.chemAssociationForm.simpleFile.keywordsStr = $scope.fileForm.keywordsStr;
+            $scope.chemAssociationForm.simpleFile.description = $scope.fileForm.description;
+            $scope.chemAssociationForm.simpleFile.id = $scope.fileForm.id;
+
+            if( $scope.sampleId != null ) {
+            	$scope.chemAssociationForm.sampleId = $scope.sampleId;
+            }
+            
 
             $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/saveFile',data: $scope.chemAssociationForm}).
                 success(function(data, status, headers, config) {
                     $scope.chemAssociationForm = data;
-                    $scope.files = $scope.chemAssociationForm.domainEntity.fileCollection;
+                    $scope.files = $scope.chemAssociationForm.files;
                     $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {

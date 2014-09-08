@@ -25,6 +25,7 @@ var app = angular.module('angularApp')
         $scope.fileForm.uriExternal = false;
         $scope.externalUrlEnabled = false;
         $scope.addNewFile = false;
+        $scope.selectedFileName = '';
 
         $scope.$on('$viewContentLoaded', function(){
             $http({method: 'GET', url: '/caNanoLab/rest/compositionFile/setup?sampleId=' + $scope.sampleId}).
@@ -112,6 +113,7 @@ var app = angular.module('angularApp')
             var index = 0;
             $scope.upload = [];
             if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) {
+            	$scope.selectedFileName = $scope.selectedFiles[0].name;
                 $scope.upload[index] = $upload.upload({
                     url: '/caNanoLab/rest/core/uploadFile',
                     method: 'POST',
@@ -151,8 +153,10 @@ var app = angular.module('angularApp')
             
             if( $scope.sampleId != null ) {
             	$scope.fileForm.sampleId = $scope.sampleId;
-            }            
-
+            }      
+            
+            $scope.fileForm.uri = $scope.selectedFileName;
+            
             $http({method: 'POST', url: '/caNanoLab/rest/compositionFile/submit',data: $scope.fileForm}).
                 success(function(data, status, headers, config) {
                     $location.search('message', 'Composition File successfully saved."').path('/editComposition').replace();
