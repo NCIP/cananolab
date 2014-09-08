@@ -130,6 +130,7 @@ public class SimpleComposingElementBean {
 		this.setPubChemId(sBean.getDomain().getPubChemId());
 		this.setCreatedBy(sBean.getDomain().getCreatedBy());
 		this.setCreatedDate(sBean.getDomain().getCreatedDate());
+		this.setId(sBean.getDomain().getId());
 		List<FunctionBean> funclist = sBean.getInherentFunctions();
 		inherentFunction = new ArrayList<Map<String,Object>>();
 		if(funclist!= null){

@@ -59,6 +59,10 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 		return domainAssociation;
 	}
 
+	public void setDomainAssociation(ChemicalAssociation domainAssociation) {
+		this.domainAssociation = domainAssociation;
+	}
+
 	public void setupDomainAssociation(String createdBy) throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = ClassUtils.getFullClass(className);

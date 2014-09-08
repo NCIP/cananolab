@@ -48,7 +48,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 			return Response.ok(view).build();
 			
 		} catch (Exception e) {
-			return Response.ok("Error while viewing the composition results").build();
+			return Response.ok("Error while viewing the composition results" +e).build();
 		}
 	}
 	@GET

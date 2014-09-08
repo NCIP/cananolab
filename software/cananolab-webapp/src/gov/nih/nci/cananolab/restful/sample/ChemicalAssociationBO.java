@@ -1,7 +1,11 @@
 package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.linkage.Attachment;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
+import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.AssociatedElementBean;
@@ -26,9 +30,13 @@ import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
+import gov.nih.nci.cananolab.domain.linkage.Attachment;
+import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +51,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 			throws Exception {
 
 		List<String> msgs = new ArrayList<String>();
-		ChemicalAssociationBean assocBean = transferChemicalAssociationBean(bean);
+		ChemicalAssociationBean assocBean = transferChemicalAssociationBean(bean, request);
 
 		 msgs = validateAssociationFile(request, assocBean);
 		if (msgs.size()>0) {
@@ -64,27 +72,32 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 	}
 
 	private ChemicalAssociationBean transferChemicalAssociationBean(
-			SimpleChemicalAssociationBean bean) {
+			SimpleChemicalAssociationBean bean, HttpServletRequest request) {
 		
+		CompositionBean compositionBean = new CompositionBean();
 		ChemicalAssociationBean chemBean = new ChemicalAssociationBean();
+		ChemicalAssociation chemAssociation = null;
 		AssociatedElementBean associatedElementA = new AssociatedElementBean();
 		AssociatedElementBean associatedElementB = new AssociatedElementBean();
 		ComposingElement comp = new ComposingElement();
+		Collection<File> filecoll = new HashSet<File>();		
 		
-		comp.setCreatedBy(bean.getAssociatedElementA().getComposingElement().getCreatedBy());
-		comp.setCreatedDate(bean.getAssociatedElementA().getComposingElement().getCreatedDate());
-		comp.setDescription(bean.getAssociatedElementA().getComposingElement().getDescription());
-		if(bean.getAssociatedElementA().getComposingElement().getId()!=null)
-		comp.setId(bean.getAssociatedElementA().getComposingElement().getId());
-		comp.setMolecularFormula(bean.getAssociatedElementA().getComposingElement().getMolecularFormula());
-		comp.setMolecularFormulaType(bean.getAssociatedElementA().getComposingElement().getMolecularFormulaType());
-		comp.setName(bean.getAssociatedElementA().getComposingElement().getName());
-		comp.setPubChemDataSourceName(bean.getAssociatedElementA().getComposingElement().getPubChemDataSourceName());
-		comp.setPubChemId(bean.getAssociatedElementA().getComposingElement().getPubChemId());
-		comp.setType(bean.getAssociatedElementA().getComposingElement().getType());
-		comp.setValue(bean.getAssociatedElementA().getComposingElement().getValue());
-		comp.setValueUnit(bean.getAssociatedElementA().getComposingElement().getValueUnit());
-		
+		//setting up associatedElementA
+		if(bean.getAssociatedElementA().getComposingElement()!=null){
+//			comp.setCreatedBy(bean.getAssociatedElementA().getComposingElement().getCreatedBy());
+//			comp.setCreatedDate(bean.getAssociatedElementA().getComposingElement().getCreatedDate());
+//			comp.setDescription(bean.getAssociatedElementA().getComposingElement().getDescription());
+//			if(bean.getAssociatedElementA().getComposingElement().getId()!=null)
+//			comp.setId(bean.getAssociatedElementA().getComposingElement().getId());
+//			comp.setMolecularFormula(bean.getAssociatedElementA().getComposingElement().getMolecularFormula());
+//			comp.setMolecularFormulaType(bean.getAssociatedElementA().getComposingElement().getMolecularFormulaType());
+//			comp.setName(bean.getAssociatedElementA().getComposingElement().getName());
+//			comp.setPubChemDataSourceName(bean.getAssociatedElementA().getComposingElement().getPubChemDataSourceName());
+//			comp.setPubChemId(bean.getAssociatedElementA().getComposingElement().getPubChemId());
+//			comp.setType(bean.getAssociatedElementA().getComposingElement().getType());
+//			comp.setValue(bean.getAssociatedElementA().getComposingElement().getValue());
+//			comp.setValueUnit(bean.getAssociatedElementA().getComposingElement().getValueUnit());
+		}
 		chemBean.setType(bean.getType());
 		chemBean.setDescription(bean.getDescription());
 		associatedElementA.setCompositionType(bean.getAssociatedElementA().getCompositionType());
@@ -95,22 +108,25 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		
 		associatedElementA.setComposingElement(comp);
 		chemBean.setAssociatedElementA(associatedElementA);
-		comp = new ComposingElement();
 		
-		comp.setCreatedBy(bean.getAssociatedElementB().getComposingElement().getCreatedBy());
-		comp.setCreatedDate(bean.getAssociatedElementB().getComposingElement().getCreatedDate());
-		comp.setDescription(bean.getAssociatedElementB().getComposingElement().getDescription());
-		if(bean.getAssociatedElementB().getComposingElement().getId()!=null)
-		comp.setId(bean.getAssociatedElementB().getComposingElement().getId());
-		comp.setMolecularFormula(bean.getAssociatedElementB().getComposingElement().getMolecularFormula());
-		comp.setMolecularFormulaType(bean.getAssociatedElementB().getComposingElement().getMolecularFormulaType());
-		comp.setName(bean.getAssociatedElementB().getComposingElement().getName());
-		comp.setPubChemDataSourceName(bean.getAssociatedElementB().getComposingElement().getPubChemDataSourceName());
-		comp.setPubChemId(bean.getAssociatedElementB().getComposingElement().getPubChemId());
-		comp.setType(bean.getAssociatedElementB().getComposingElement().getType());
-		comp.setValue(bean.getAssociatedElementB().getComposingElement().getValue());
-		comp.setValueUnit(bean.getAssociatedElementB().getComposingElement().getValueUnit());
-		
+		//setting up AssociatedElementB
+		if(bean.getAssociatedElementB().getComposingElement()!=null){
+			comp = new ComposingElement();
+			
+//			comp.setCreatedBy(bean.getAssociatedElementB().getComposingElement().getCreatedBy());
+//			comp.setCreatedDate(bean.getAssociatedElementB().getComposingElement().getCreatedDate());
+//			comp.setDescription(bean.getAssociatedElementB().getComposingElement().getDescription());
+//			if(bean.getAssociatedElementB().getComposingElement().getId()!=null)
+//			comp.setId(bean.getAssociatedElementB().getComposingElement().getId());
+//			comp.setMolecularFormula(bean.getAssociatedElementB().getComposingElement().getMolecularFormula());
+//			comp.setMolecularFormulaType(bean.getAssociatedElementB().getComposingElement().getMolecularFormulaType());
+//			comp.setName(bean.getAssociatedElementB().getComposingElement().getName());
+//			comp.setPubChemDataSourceName(bean.getAssociatedElementB().getComposingElement().getPubChemDataSourceName());
+//			comp.setPubChemId(bean.getAssociatedElementB().getComposingElement().getPubChemId());
+//			comp.setType(bean.getAssociatedElementB().getComposingElement().getType());
+//			comp.setValue(bean.getAssociatedElementB().getComposingElement().getValue());
+//			comp.setValueUnit(bean.getAssociatedElementB().getComposingElement().getValueUnit());
+		}
 		associatedElementB.setCompositionType(bean.getAssociatedElementB().getCompositionType());
 		associatedElementB.setEntityDisplayName(bean.getAssociatedElementB().getEntityDisplayName());
 		if(bean.getAssociatedElementB().getEntityId()!=null)
@@ -153,13 +169,72 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 					file.setUriExternal(sFBean.getUriExternal());
 					fileBean.setKeywordsStr(sFBean.getKeywordsStr());
 					fileBean.setDomainFile(file);
-				//	fileBean.setDomainFile(file);
-				//	filecoll.add(file);
+					filecoll.add(file);
 					fileBeanList.add(fileBean);
 				}
 				}
 				chemBean.setFiles(fileBeanList);
 				
+				//setting up chemical association
+				
+				AssociatedElement assoA = new AssociatedElement();
+				if(bean.getAssociatedElementA().getComposingElement()!=null){
+					assoA.setCreatedBy(bean.getAssociatedElementA().getComposingElement().getCreatedBy());
+					assoA.setCreatedDate(bean.getAssociatedElementA().getComposingElement().getCreatedDate());
+					assoA.setDescription(bean.getAssociatedElementA().getComposingElement().getDescription());
+					if(bean.getAssociatedElementA().getComposingElement().getId()!=null)
+						assoA.setId(bean.getAssociatedElementA().getComposingElement().getId());
+					assoA.setMolecularFormula(bean.getAssociatedElementA().getComposingElement().getMolecularFormula());
+					assoA.setMolecularFormulaType(bean.getAssociatedElementA().getComposingElement().getMolecularFormulaType());
+					assoA.setName(bean.getAssociatedElementA().getComposingElement().getName());
+					assoA.setPubChemDataSourceName(bean.getAssociatedElementA().getComposingElement().getPubChemDataSourceName());
+					assoA.setPubChemId(bean.getAssociatedElementA().getComposingElement().getPubChemId());
+					assoA.setValue(bean.getAssociatedElementA().getComposingElement().getValue());
+					assoA.setValueUnit(bean.getAssociatedElementA().getComposingElement().getValueUnit());
+				}
+				
+				if(bean.getType().equalsIgnoreCase("Attachement")){
+					Attachment att = new Attachment();
+					att.setBondType(bean.getBondType());
+					chemAssociation = att;
+				}else{
+					chemAssociation = new OtherChemicalAssociation();
+				}
+				chemAssociation.setAssociatedElementA(assoA);
+				
+				AssociatedElement assoB = new AssociatedElement();
+				if(bean.getAssociatedElementB().getComposingElement()!=null){
+					assoB.setCreatedBy(bean.getAssociatedElementB().getComposingElement().getCreatedBy());
+					assoB.setCreatedDate(bean.getAssociatedElementB().getComposingElement().getCreatedDate());
+					assoB.setDescription(bean.getAssociatedElementB().getComposingElement().getDescription());
+					if(bean.getAssociatedElementB().getComposingElement().getId()!=null)
+						assoB.setId(bean.getAssociatedElementB().getComposingElement().getId());
+					assoB.setMolecularFormula(bean.getAssociatedElementB().getComposingElement().getMolecularFormula());
+					assoB.setMolecularFormulaType(bean.getAssociatedElementB().getComposingElement().getMolecularFormulaType());
+					assoB.setName(bean.getAssociatedElementB().getComposingElement().getName());
+					assoB.setPubChemDataSourceName(bean.getAssociatedElementB().getComposingElement().getPubChemDataSourceName());
+					assoB.setPubChemId(bean.getAssociatedElementB().getComposingElement().getPubChemId());
+					assoB.setValue(bean.getAssociatedElementB().getComposingElement().getValue());
+					assoB.setValueUnit(bean.getAssociatedElementB().getComposingElement().getValueUnit());
+				}
+				chemAssociation.setAssociatedElementA(assoB);
+				chemAssociation.setFileCollection(filecoll);
+				
+				//setting up sampleComposition 
+				//Managed to get the sampleComposition in the backend to avoid lazy loading things
+				
+				CompositionBO compBO = new CompositionBO();
+				CompositionForm form = new CompositionForm();
+				form.setSampleId(bean.getSampleId());
+				try {
+					compositionBean = compBO.summaryView(form, request);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				SampleComposition sampleComp = compositionBean.getDomain();
+				chemAssociation.setSampleComposition(sampleComp);
+				chemBean.setDomainAssociation(chemAssociation);
 		return chemBean;
 	}
 
@@ -462,7 +537,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 	public SimpleChemicalAssociationBean saveFile(SimpleChemicalAssociationBean bean,
 			HttpServletRequest request)
 			throws Exception {
-		ChemicalAssociationBean assoc = transferChemicalAssociationBean(bean);
+		ChemicalAssociationBean assoc = transferChemicalAssociationBean(bean, request);
 		FileBean theFile = assoc.getTheFile();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		this.setServicesInSession(request);
@@ -508,7 +583,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 	public SimpleChemicalAssociationBean removeFile(SimpleChemicalAssociationBean bean,
 			HttpServletRequest request)
 			throws Exception {
-		ChemicalAssociationBean assoc = transferChemicalAssociationBean(bean);
+		ChemicalAssociationBean assoc = transferChemicalAssociationBean(bean, request);
 		FileBean theFile = assoc.getTheFile();
 		assoc.removeFile(theFile);
 		assoc.setTheFile(new FileBean());
@@ -532,7 +607,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 			throws Exception {
 		
 		List<String> msgs = new ArrayList<String>();
-		ChemicalAssociationBean assocBean = transferChemicalAssociationBean(bean);
+		ChemicalAssociationBean assocBean = transferChemicalAssociationBean(bean, request);
 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		assocBean.setupDomainAssociation(user.getLoginName());

@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +23,27 @@ public class SimpleFileBean {
 	String sampleId = "";
 	List<String> errors;
 	String externalUrl = "";
+	
+	List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
+	
+	List<AccessibilityBean> userAccesses =  new ArrayList<AccessibilityBean>();
+	
+	public List<AccessibilityBean> getGroupAccesses() {
+		return groupAccesses;
+	}
+
+	public void setGroupAccesses(List<AccessibilityBean> groupAccesses) {
+		this.groupAccesses = groupAccesses;
+	}
+
+	public List<AccessibilityBean> getUserAccesses() {
+		return userAccesses;
+	}
+
+	public void setUserAccesses(List<AccessibilityBean> userAccesses) {
+		this.userAccesses = userAccesses;
+	}
+
 	
 	public String getExternalUrl() {
 		return externalUrl;
@@ -108,7 +131,8 @@ public class SimpleFileBean {
 		this.setSampleId((String) request.getSession().getAttribute("sampleId"));
 		this.setCreatedBy(simpleBean.getDomainFile().getCreatedBy());
 		this.setCreatedDate(simpleBean.getDomainFile().getCreatedDate());
-		
+		this.setGroupAccesses(simpleBean.getGroupAccesses());
+		this.setUserAccesses(simpleBean.getUserAccesses());
 	}
 	
 	

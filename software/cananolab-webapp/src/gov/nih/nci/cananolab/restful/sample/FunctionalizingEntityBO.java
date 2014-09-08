@@ -541,10 +541,17 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			
 			functionBean.setType(sFunction.getType());
 			functionBean.setDescription(sFunction.getDescription());
-			target.setDescription(sFunction.getTargetDescription());
-			target.setName(sFunction.getTargetName());
-			target.setType(sFunction.getTargetType());
+			for(int i=0; i<sFunction.getTargets().size();i++){
+				target = new TargetBean();
+				if(sFunction.getTargets().get(i).get("id")!=null)
+					target.setId(sFunction.getTargets().get(i).get("id"));
+				target.setDescription(sFunction.getTargets().get(i).get("description"));
+				target.setName(sFunction.getTargets().get(i).get("name"));
+				target.setType(sFunction.getTargets().get(i).get("type"));
+				targets.add(target);
+			}
 			functionBean.setTargets(targets);
+			functionBean.setDomainFunction(theFunction);
 		}
 		funcBean.setTheFunction(functionBean);
 		
@@ -552,7 +559,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		Collection<Function> funCollection = new HashSet<Function>();
 		if(bean.getFunctionList()!=null){
 			for(SimpleFunctionBean fuBean : bean.getFunctionList()){
-				target = new TargetBean();
 				functionBean = new FunctionBean();
 				theFunction = new Function();
 				targets = new ArrayList<TargetBean>();
@@ -562,9 +568,16 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				
 				functionBean.setType(fuBean.getType());
 				functionBean.setDescription(fuBean.getDescription());
-				target.setDescription(fuBean.getTargetDescription());
-				target.setName(fuBean.getTargetName());
-				target.setType(fuBean.getTargetType());
+				for(int i=0; i<fuBean.getTargets().size();i++){
+					target = new TargetBean();
+					if(fuBean.getTargets().get(i).get("id")!=null)
+						target.setId(fuBean.getTargets().get(i).get("id"));
+					target.setDescription(fuBean.getTargets().get(i).get("description"));
+					target.setName(fuBean.getTargets().get(i).get("name"));
+					target.setType(fuBean.getTargets().get(i).get("type"));
+					targets.add(target);
+				}
+				functionBean.setDomainFunction(theFunction);
 				functionBean.setTargets(targets);
 				funCollection.add(theFunction);
 				funcList.add(functionBean);

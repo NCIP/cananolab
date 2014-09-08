@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
@@ -68,7 +69,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
 		String sampleId = nanoBean.getSampleId();
-		NanomaterialEntityBean entityBean = transferNanoMateriaEntityBean(nanoBean);  //form.getNanomaterialEntity();
+		NanomaterialEntityBean entityBean = transferNanoMateriaEntityBean(nanoBean, request);  //form.getNanomaterialEntity();
 		this.setServicesInSession(request);
 		msgs = validateInputs(request, entityBean);
 		if (msgs.size()>0) {
@@ -393,7 +394,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		entityId = super.validateId(request, "dataId");
+	//	entityId = super.validateId(request, "dataId");
 		CompositionForm form = new CompositionForm();
 		//String sampleId = form.getSampleId();
 		// set up other particles with the same primary point of contact
@@ -432,7 +433,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	}
 
 	public SimpleNanomaterialEntityBean saveComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
-		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean);//form
+		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);//form
 			//	.getNanomaterialEntity();//("nanomaterialEntity");
 		String sampleId = nanoBean.getSampleId();
 		List<String> msgs =new ArrayList<String>();
@@ -466,13 +467,27 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	}
 
 	private NanomaterialEntityBean transferNanoMateriaEntityBean(
-			SimpleNanomaterialEntityBean nanoBean) {
+			SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) {
 		NanomaterialEntityBean bean = new NanomaterialEntityBean();
 		NanomaterialEntity nanoEntity = null;
 		
+		CompositionBean compositionBean = new CompositionBean();
+		
 		Collection<ComposingElement> coll = new HashSet<ComposingElement>();
 		Collection<File> filecoll = new HashSet<File>();
-		SampleComposition sampleComp = new SampleComposition();//(SampleComposition) nanoBean.getDomainEntity().get("sampleComposition");
+		//setting up sampleComposition 
+		//Managed to get the sampleComposition in the backend to avoid lazy loading things
+		
+		CompositionBO compBO = new CompositionBO();
+		CompositionForm form = new CompositionForm();
+		form.setSampleId(nanoBean.getSampleId());
+		try {
+			compositionBean = compBO.summaryView(form, request);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		SampleComposition sampleComp = compositionBean.getDomain();
 		//Setting up the ComposingElement
 		ComposingElementBean compBean = new ComposingElementBean();
 		
@@ -516,7 +531,6 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		}
 		compBean.setTheFunction(func);
 		compBean.setDomain(comp);
-		
 		
 		bean.setTheComposingElement(compBean);
 		}
@@ -615,7 +629,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			}
 			fullerene.setComposingElementCollection(coll);
 			fullerene.setFileCollection(filecoll);
-			fullerene.setSampleComposition(new SampleComposition());
+			fullerene.setSampleComposition(sampleComp);
 			bean.setFullerene(fullerene);
 			nanoEntity = fullerene;
 		}
@@ -632,7 +646,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			}
 			den.setComposingElementCollection(coll);
 			den.setFileCollection(filecoll);
-			den.setSampleComposition(new SampleComposition());
+			den.setSampleComposition(sampleComp);
 			nanoEntity = den;
 			bean.setDendrimer(den);
 		}
@@ -649,7 +663,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			}
 			bio.setComposingElementCollection(coll);
 			bio.setFileCollection(filecoll);
-			bio.setSampleComposition(new SampleComposition());
+			bio.setSampleComposition(sampleComp);
 			nanoEntity = bio;
 		}
 		else if(nanoBean.getType().equalsIgnoreCase("Liposome")){
@@ -664,7 +678,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			
 			lipo.setComposingElementCollection(coll);
 			lipo.setFileCollection(filecoll);
-			lipo.setSampleComposition(new SampleComposition());
+			lipo.setSampleComposition(sampleComp);
 			nanoEntity = lipo;
 		}
 		else if(nanoBean.getType().equalsIgnoreCase("Emulsion")){
@@ -678,7 +692,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			}
 			em.setComposingElementCollection(coll);
 			em.setFileCollection(filecoll);
-			em.setSampleComposition(new SampleComposition());
+			em.setSampleComposition(sampleComp);
 			nanoEntity = em;
 		}
 		else if(nanoBean.getType().equalsIgnoreCase("Polymer")){
@@ -693,7 +707,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			}
 			poly.setComposingElementCollection(coll);
 			poly.setFileCollection(filecoll);
-			poly.setSampleComposition(new SampleComposition());
+			poly.setSampleComposition(sampleComp);
 			nanoEntity = poly;
 		}
 			
@@ -713,7 +727,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			
 			ctube.setComposingElementCollection(coll);
 			ctube.setFileCollection(filecoll);
-			ctube.setSampleComposition(new SampleComposition());
+			ctube.setSampleComposition(sampleComp);
 			nanoEntity = ctube;
 			
 		}else{
@@ -753,7 +767,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	public SimpleNanomaterialEntityBean removeComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
 		List<String> msgs = new ArrayList<String>();
-		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean);//form
+		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);//form
 				//.getNanomaterialEntity(); //("nanomaterialEntity");
 		ComposingElementBean composingElement = entity.getTheComposingElement();
 		// check if composing element is associated with an association
@@ -785,7 +799,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean);//form
+		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);//form
 				//.getNanomaterialEntity(); //("nanomaterialEntity");
 		FileBean theFile = entity.getTheFile();
 		this.setServicesInSession(request);
@@ -836,7 +850,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean); //form
+		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request); //form
 				//.getNanomaterialEntity(); //("nanomaterialEntity");
 
 		FileBean theFile = entity.getTheFile();
@@ -869,7 +883,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		List<String> msgs = new ArrayList<String>();
 		CompositionService compositionService = this
 				.setServicesInSession(request);
-		NanomaterialEntityBean entityBean = transferNanoMateriaEntityBean(nanoBean);
+		NanomaterialEntityBean entityBean = transferNanoMateriaEntityBean(nanoBean, request);
 		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		entityBean.setupDomainEntity(user.getLoginName());

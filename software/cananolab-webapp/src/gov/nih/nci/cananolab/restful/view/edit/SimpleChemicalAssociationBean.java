@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,28 @@ public class SimpleChemicalAssociationBean {
 	String sampleId = "";
 	List<String> errors;
 	List<SimpleFileBean> files;
+	Long associationId = 0L;
+	String createdBy = "";
+	Date createdDate;
 	
+	public Long getAssociationId() {
+		return associationId;
+	}
+	public void setAssociationId(Long associationId) {
+		this.associationId = associationId;
+	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 	public List<SimpleFileBean> getFiles() {
 		return files;
 	}
@@ -84,6 +106,9 @@ public class SimpleChemicalAssociationBean {
 		setDescription(chemBean.getDescription());
 		setBondType(chemBean.getAttachment().getBondType());
 		setSampleId((String) request.getSession().getAttribute("sampleId"));
+		setCreatedBy(chemBean.getDomainAssociation().getCreatedBy());
+		setCreatedDate(chemBean.getDomainAssociation().getCreatedDate());
+		setAssociationId(chemBean.getDomainAssociation().getId());
 		associatedElementA = new SimpleAssociatedElement();
 		
 		associatedElementA.setClassName(chemBean.getAssociatedElementA().getClassName());
