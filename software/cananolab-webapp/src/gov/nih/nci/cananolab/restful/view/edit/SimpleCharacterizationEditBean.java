@@ -260,6 +260,9 @@ public class SimpleCharacterizationEditBean {
 		transferToProtocolBean(charBean, this.protocolId);
 		
 		//POC
+		charBean.getPocBean();
+		
+		
 		//char date
 		
 		charBean.setDescription(this.designMethodsDescription);
@@ -286,8 +289,11 @@ public class SimpleCharacterizationEditBean {
 		}
 			
 		ProtocolBean protoBean = new ProtocolBean();
-		//prtoBean.
+		protoBean.getDomain().setId(selected.domainId);
 		
+		FileBean fileBean = protoBean.getFileBean();
+		fileBean.getDomainFile().setId(selected.domainFileId);
+		fileBean.getDomainFile().setUri(selected.domainFileUri);
 	}
 	
 	

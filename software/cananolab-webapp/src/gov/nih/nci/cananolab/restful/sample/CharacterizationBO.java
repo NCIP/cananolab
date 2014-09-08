@@ -64,12 +64,12 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	private Logger logger = Logger.getLogger(CharacterizationBO.class);
 
 	/**
-	 * Add or update the data to database
+	 * Add or update a characterization to database
 	 * 
-	 * @param mapping
-	 * @param form
+	 * Upon success, go back to characterizaiton summary edit page
+	 * 
 	 * @param request
-	 * @param response
+	 * @param simpleEdit
 	 * @return
 	 * @throws Exception
 	 */
@@ -686,12 +686,11 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		SampleBean sampleBean = setupSampleById(String.valueOf(editBean.getParentSampleId()), request);
 				
 		//FindingBean findingBean = achar.getTheFinding();
-		String theFindingId = String.valueOf(editBean.getParentSampleId());
+		String theFindingId = String.valueOf(simpleFinding.getFindingId());
 		
-		//This is not needed. To delete...
-		if (!StringUtils.isEmpty(theFindingId)) {
-			findingBean.getDomain().setId(Long.valueOf(theFindingId));
-		}
+//		if (!StringUtils.isEmpty(theFindingId)) {
+//			findingBean.getDomain().setId(Long.valueOf(theFindingId));
+//		}
 		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		simpleFinding.transferToFindingBean(findingBean, user);
