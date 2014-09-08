@@ -30,6 +30,7 @@ public class SimpleCharacterizationSummaryViewBean {
 	private Logger logger = Logger.getLogger(SimpleCharacterizationSummaryViewBean.class);
 	
 	List<SimpleCharacterizationsByTypeBean> charByTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>();
+	List<String> errors = new ArrayList<String>();
 	
 	public long getParentSampleId() {
 		return parentSampleId;
@@ -374,6 +375,16 @@ public class SimpleCharacterizationSummaryViewBean {
 			List<SimpleCharacterizationsByTypeBean> charByTypeBeans) {
 		this.charByTypeBeans = charByTypeBeans;
 	}
+
+	public List<String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
+	}
+
+
 
 	public class SimpleCharacterizationViewBean {
 		

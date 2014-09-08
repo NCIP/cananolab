@@ -65,7 +65,6 @@ public class SimpleFindingBean {
 		List<FileBean> fileBeans = findingBean.getFiles();
 		if (fileBeans == null) return;
 		
-		
 	}
 	
 	protected void transferFilesFromFindingBean(List<FileBean> files) {
@@ -127,6 +126,16 @@ public class SimpleFindingBean {
 			Row rowBean = new Row();
 			simpleRow.transferToRow(rowBean);
 			findingBean.getRows().add(rowBean);
+		}
+	}
+	
+	public void setDefaultColumnNameForNullHeaders() {
+		int headerIdx = 1;
+		for (ColumnHeader header : this.columnHeaders) {
+			if (header.getColumnName() == null || header.getColumnName().length() == 0)
+				header.setColumnName("Column "  + headerIdx);
+			
+			headerIdx++;
 		}
 	}
 

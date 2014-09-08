@@ -20,7 +20,9 @@ import gov.nih.nci.cananolab.restful.CharacterizationServices;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationSummaryEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
@@ -71,12 +73,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public SimpleCharacterizationEditBean create(HttpServletRequest request, SimpleCharacterizationEditBean simpleEdit)
+	public CharacterizationSummaryViewBean create(HttpServletRequest request, SimpleCharacterizationEditBean simpleEdit)
 			throws Exception {
-		//DynaValidatorForm theForm = (DynaValidatorForm) form;
-		
-//		CharacterizationBean charBean = (CharacterizationBean) form
-//				.get("achar");
 		
 		CharacterizationBean charBean = (CharacterizationBean)request.getSession().getAttribute("theChar");
 		
@@ -84,17 +82,21 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		simpleEdit.getMessages().clear();
 		
 		//TODO: 
-		//transfer from simpleEdit to charBean
+		simpleEdit.transferToCharacterizationBean(charBean);
 		
 		this.setServicesInSession(request);
+		
 		// Copy "isSoluble" property from char bean to mapping bean.
 		this.copyIsSoluble(charBean);
 
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, charBean);
 		
-		if (!validateInputs(request, charBean, simpleEdit.getErrors())) {
-			return simpleEdit;
+		List<String> errs = new ArrayList<String>();
+		if (!validateInputs(request, charBean, errs)) {
+			CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(new ArrayList<CharacterizationBean>());
+			summaryView.setErrors(errs);
+			return summaryView;
 		}
 		
 		this.saveCharacterization(request, charBean, simpleEdit);
@@ -164,7 +166,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //		clearCopy(theForm);
 //		return mapping.findForward("inputForm");
 		SimpleCharacterizationEditBean editBean = new SimpleCharacterizationEditBean();
-		editBean.transferCharacterizationEditData(request, charBean, sampleId);
+		editBean.transferFromCharacterizationBean(request, charBean, sampleId);
 		
 		request.getSession().setAttribute("theEditChar", editBean);
 		return editBean;
@@ -242,7 +244,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		logger.debug("Setting theChar in session: " + request.getSession().getId());;
 		
 		SimpleCharacterizationEditBean editBean = new SimpleCharacterizationEditBean();
-		editBean.transferCharacterizationEditData(request, charBean, sampleId);
+		editBean.transferFromCharacterizationBean(request, charBean, sampleId);
 		request.getSession().setAttribute("theEditChar", editBean);
 		return editBean;
 	}
@@ -310,7 +312,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	}
 
 	private void deleteCharacterization(HttpServletRequest request,
-			DynaValidatorForm theForm, CharacterizationBean charBean,
+			CharacterizationBean charBean,
 			String createdBy) throws Exception {
 		charBean.setupDomain(createdBy);
 		CharacterizationService service = this.setServicesInSession(request);
@@ -318,22 +320,23 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		service.removeAccesses(charBean.getDomainChar());
 	}
 
-	public ActionForward delete(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public CharacterizationSummaryViewBean delete(HttpServletRequest request, 
+			SimpleCharacterizationEditBean editBean)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = (CharacterizationBean) theForm
-				.get("achar");
+		
+		CharacterizationBean charBean = (CharacterizationBean)request.getSession().getAttribute("theChar");
+		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		deleteCharacterization(request, theForm, charBean, user.getLoginName());
+		
+		deleteCharacterization(request, charBean, user.getLoginName());
 		
 		//TODO
 //		ActionMessages msgs = new ActionMessages();
 //		ActionMessage msg = new ActionMessage("message.deleteCharacterization");
 //		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //		saveMessages(request, msgs);
-		ActionForward forward = mapping.findForward("success");
-		return forward;
+		//ActionForward forward = mapping.findForward("success");
+		return null;
 	}
 
 	/**
@@ -346,20 +349,16 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	public CharacterizationSummaryViewBean summaryEdit(String sampleId,
+	public SimpleCharacterizationSummaryEditBean summaryEdit(String sampleId,
 			HttpServletRequest request)
 			throws Exception {
 		// Prepare data.
 		CharacterizationSummaryViewBean sumBean = this.prepareSummary(sampleId, request);
 		
-		// prepare characterization tabs and forward to appropriate tab
-//		List<String> allCharacterizationTypes = InitCharacterizationSetup
-//				.getInstance().getCharacterizationTypes(request);
-		
-		
-		//setSummaryTab(request, allCharacterizationTypes.size());
-		
-		return sumBean;
+		SimpleCharacterizationSummaryEditBean editBean = new SimpleCharacterizationSummaryEditBean();
+		List<SimpleCharacterizationsByTypeBean> finalBeans = editBean.transferData(request, sumBean, sampleId);
+		//List<Object> finalBeans = editBean.transferData(request, sumBean, sampleId);
+		return editBean;
 	}
 
 	/**
@@ -835,6 +834,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		simpleFinding.transferFromFindingBean(findingBean);
 		simpleFinding.setColumnHeaders(findingBean.getColumnHeaders());
+		simpleFinding.setDefaultColumnNameForNullHeaders();
 		
 		request.setAttribute("anchor", "submitFinding");
 		

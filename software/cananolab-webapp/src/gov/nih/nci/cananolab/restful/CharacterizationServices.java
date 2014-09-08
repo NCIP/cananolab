@@ -52,10 +52,10 @@ public class CharacterizationServices {
 		CharacterizationBO characterizationBO = 
 				(CharacterizationBO) applicationContext.getBean("characterizationBO");
 
-		CharacterizationSummaryViewBean charView = characterizationBO.summaryEdit(sampleId, httpRequest);
-		SimpleCharacterizationSummaryEditBean editBean = new SimpleCharacterizationSummaryEditBean();
+		SimpleCharacterizationSummaryEditBean editBean = characterizationBO.summaryEdit(sampleId, httpRequest);
+		//SimpleCharacterizationSummaryEditBean editBean = new SimpleCharacterizationSummaryEditBean();
 		
-		List<SimpleCharacterizationsByTypeBean> finalBean = editBean.transferData(httpRequest, charView, sampleId);
+		List<SimpleCharacterizationsByTypeBean> finalBean = editBean.getCharByTypeBeans(); //editBean.transferData(httpRequest, charView, sampleId);
 		
 		logger.debug("Set up " + finalBean.size() + " characterization types for sample: " + sampleId);
 		
@@ -442,6 +442,80 @@ public class CharacterizationServices {
 			SimpleCharacterizationEditBean editBean = characterizationBO.saveFinding(httpRequest, simpleFinding);
 
 		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	@POST
+	@Path("/saveCharacterization")
+	@Produces ("application/json")
+    public Response saveCharacterization(@Context HttpServletRequest httpRequest, 
+    		SimpleCharacterizationEditBean editBean) {
+		logger.debug("In saveCharacterization");	
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			
+			CharacterizationSummaryViewBean charView = characterizationBO.create(httpRequest, editBean);
+			
+			List<String> errors = charView.getErrors();
+			if (errors != null && errors.size() > 0) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(errors).build();
+			}
+			
+			SimpleCharacterizationSummaryEditBean editBeanAfter = new SimpleCharacterizationSummaryEditBean();
+			List<SimpleCharacterizationsByTypeBean> finalBeans = editBeanAfter
+					.transferData(httpRequest, charView, String.valueOf(editBean.getParentSampleId()));
+			
+
+			return Response.ok(finalBeans).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	@POST
+	@Path("/removedCharacterization")
+	@Produces ("application/json")
+    public Response removedCharacterization(@Context HttpServletRequest httpRequest, 
+    		SimpleCharacterizationEditBean editBean) {
+		logger.debug("In removedCharacterization");	
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			
+			CharacterizationSummaryViewBean charView = characterizationBO.create(httpRequest, editBean);
+			
+			List<String> errors = charView.getErrors();
+			if (errors != null && errors.size() > 0) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(errors).build();
+			}
+			
+			SimpleCharacterizationSummaryEditBean editBeanAfter = new SimpleCharacterizationSummaryEditBean();
+			List<SimpleCharacterizationsByTypeBean> finalBeans = editBeanAfter
+					.transferData(httpRequest, charView, String.valueOf(editBean.getParentSampleId()));
+			
+
+			return Response.ok(finalBeans).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {

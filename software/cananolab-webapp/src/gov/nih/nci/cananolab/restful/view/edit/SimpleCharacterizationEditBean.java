@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
@@ -23,7 +24,11 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+
 public class SimpleCharacterizationEditBean {
+	
+	private Logger logger = Logger.getLogger(SimpleCharacterizationEditBean.class);
 	
 	String type;
 	String name;
@@ -64,7 +69,7 @@ public class SimpleCharacterizationEditBean {
 	List<String> errors = new ArrayList<String>();
 	List<String> messages;
 	
-	public void transferCharacterizationEditData(HttpServletRequest request, 
+	public void transferFromCharacterizationBean(HttpServletRequest request, 
 			CharacterizationBean charBean, String sampleId) 
 	throws Exception {
 		
@@ -235,6 +240,54 @@ public class SimpleCharacterizationEditBean {
 			simpleProto.transferFromProtocolBean(protoBean);
 			protocolLookup.add(simpleProto);
 		}
+	}
+	
+	/**
+	 * Currently it only transfter what's needed in "submit" / "update"
+	 * @param charBean
+	 */
+	public void transferToCharacterizationBean(CharacterizationBean charBean) {
+		if (charBean == null) return;
+		
+		charBean.setCharacterizationName(this.name);
+		charBean.setCharacterizationType(this.type);
+		
+		charBean.setAssayType(assayType);
+		
+		//Protocol
+		//Use id to find matching one in lookup list
+		//then transfer to a bean
+		transferToProtocolBean(charBean, this.protocolId);
+		
+		//POC
+		//char date
+		
+		charBean.setDescription(this.designMethodsDescription);
+		charBean.setConclusion(this.analysisConclusion);
+		
+		
+		//this.characterizationSourceId
+	}
+	
+	protected void transferToProtocolBean(CharacterizationBean charBean, long selectedProtoId) {
+		if (selectedProtoId == 0) return; //user didn't select one, which is ok
+		
+		SimpleProtocol selected = null;
+		for (SimpleProtocol simpleProto : this.protocolLookup) {
+			if (selectedProtoId == simpleProto.getDomainId()) {
+				selected = simpleProto;
+				break;
+			}
+		}
+		
+		if (selected == null) {
+			logger.error("User selected protocol doesn't have a match in lookup list. This should not happen");
+			return;
+		}
+			
+		ProtocolBean protoBean = new ProtocolBean();
+		//prtoBean.
+		
 	}
 	
 	
