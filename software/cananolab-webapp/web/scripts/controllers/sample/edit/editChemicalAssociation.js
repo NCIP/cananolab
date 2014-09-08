@@ -105,6 +105,27 @@ var app = angular.module('angularApp')
 
         $scope.loadComposingElements = function(type, compositionType, associatedElementId) {
             if (associatedElementId != null) {
+            	
+                var assocList = [];
+                if( type == 'A') {
+                    assocList = $scope.associatedElementsA;
+                } else {
+                    assocList = $scope.associatedElementsB;
+                }
+                
+                for (var k = 0; k < assocList.length; ++k) {
+                    var element = assocList[k];
+                    if (element.domainId == associatedElementId ) {
+                        $scope.entityDisplayName = element.type;
+                        break;
+                    }
+                }
+                
+                if ( type == 'A') {
+                    $scope.chemAssociationForm.associatedElementA.entityDisplayName = $scope.entityDisplayName;
+                } else {
+                    $scope.chemAssociationForm.associatedElementB.entityDisplayName = $scope.entityDisplayName;
+                }
                
                 if (compositionType == 'nanomaterial entity') {
                     $scope.loader = true;
