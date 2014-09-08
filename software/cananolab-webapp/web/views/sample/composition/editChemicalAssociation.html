@@ -144,7 +144,7 @@
                         <div id="composingElementSelectA" ng-show="chemAssociationForm.associatedElementA.entityId != null && chemAssociationForm.associatedElementA.compositionType == 'nanomaterial entity'">
                             <br>
                             <label for="composingElementIdA">&nbsp;</label>
-                            <select ng-model="chemAssociationForm.associatedElementA.composingElement.id" id="composingElementIdA" ng-options="element.pubChemId as element.type + ' (name: ' + element.name + ')' for element in composingElementsA">
+                            <select ng-model="chemAssociationForm.associatedElementA.composingElement.id" id="composingElementIdA" ng-options="element.id as element.type + ' (name: ' + element.name + ')' for element in composingElementsA">
                                 <option value=""></option>
                             </select>
                             <input type="hidden" name="chemAssociationForm.associatedElementA.entityDisplayName" value="" id="entityDisplayA">
@@ -185,7 +185,7 @@
                         <div id="composingElementSelectB" ng-show="chemAssociationForm.associatedElementB.entityId != null && chemAssociationForm.associatedElementB.compositionType == 'nanomaterial entity'">
                             <br>
                             <label for="composingElementIdB">&nbsp;</label>
-                            <select ng-model="chemAssociationForm.associatedElementB.composingElement.id" id="composingElementIdB" ng-options="element.pubChemId as element.type + ' (name: ' + element.name + ')' for element in composingElementsB">
+                            <select ng-model="chemAssociationForm.associatedElementB.composingElement.id" id="composingElementIdB" ng-options="element.id as element.type + ' (name: ' + element.name + ')' for element in composingElementsB">
                                 <option value=""></option>
                             </select>
                             <input type="hidden" name="chemAssociationForm.associatedElementB.entityDisplayName" value="" id="entityDisplayB">
@@ -206,6 +206,9 @@
             <input type="button" value="Delete" ng-click="doDelete()" ng-if="chemAssociationId != null">
         </td>
         <td align="right" width="300">
+           	<input type="hidden" name="chemAssociationForm.associationId">
+           	<input type="hidden" name="chemAssociationForm.createdBy">
+           	<input type="hidden" name="chemAssociationForm.createdDate">
             <input type="reset" value="Reset" ng-click="resetForm()">
             <input type="submit" value="Submit" ng-click="doSubmit()" ng-if="chemAssociationId == null">
             <input type="submit" value="Update" ng-click="doSubmit()" ng-if="chemAssociationId != null">

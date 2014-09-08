@@ -57,6 +57,13 @@ var app = angular.module('angularApp')
 	                 $scope.chemAssociationForm = data;
 	                 //$scope.chemAssociationForm = {"simpleFile":null,"type":"attachment","bondType":"covalent","description":"Test","associatedElementA":{"compositionType":"nanomaterial entity","entityId":"72056840","entityDisplayName":"fullerene","className":"ComposingElement","composingElement":{"type":"repeat unit","name":"test","pubChemDataSourceName":"","pubChemId":null,"value":null,"valueUnit":null,"molecularFormulaType":null,"molecularFormula":null,"description":"","id":72089608,"sampleId":"","modality":"","createdBy":"prakasht","createdDate":null,"inherentFunction":null}},"associatedElementB":{"compositionType":"functionalizing entity","entityId":"22719746","entityDisplayName":"small molecule","className":"SmallMolecule","composingElement":{"type":null,"name":null,"pubChemDataSourceName":null,"pubChemId":null,"value":null,"valueUnit":null,"molecularFormulaType":null,"molecularFormula":null,"description":null,"id":null,"sampleId":"","modality":"","createdBy":null,"createdDate":null,"inherentFunction":null}},"errors":null};
 	                 $scope.files = $scope.chemAssociationForm.files;
+	                 
+	                 $scope.loadAssociatedElements('A', $scope.chemAssociationForm.associatedElementA.compositionType);
+	                 $scope.loadComposingElements('A', $scope.chemAssociationForm.associatedElementA.compositionType, $scope.chemAssociationForm.associatedElementA.entityId);
+	                 
+	                 $scope.loadAssociatedElements('B', $scope.chemAssociationForm.associatedElementB.compositionType);
+	                 $scope.loadComposingElements('B', $scope.chemAssociationForm.associatedElementB.compositionType, $scope.chemAssociationForm.associatedElementB.entityId);
+	                 
 	
 	                 $scope.loader = false;
                  }).
@@ -113,18 +120,20 @@ var app = angular.module('angularApp')
                     assocList = $scope.associatedElementsB;
                 }
                 
-                for (var k = 0; k < assocList.length; ++k) {
-                    var element = assocList[k];
-                    if (element.domainId == associatedElementId ) {
-                        $scope.entityDisplayName = element.type;
-                        break;
-                    }
-                }
-                
-                if ( type == 'A') {
-                    $scope.chemAssociationForm.associatedElementA.entityDisplayName = $scope.entityDisplayName;
-                } else {
-                    $scope.chemAssociationForm.associatedElementB.entityDisplayName = $scope.entityDisplayName;
+                if( assocList != null ) {
+	                for (var k = 0; k < assocList.length; ++k) {
+	                    var element = assocList[k];
+	                    if (element.domainId == associatedElementId ) {
+	                        $scope.entityDisplayName = element.type;
+	                        break;
+	                    }
+	                }
+	                
+	                if ( type == 'A') {
+	                    $scope.chemAssociationForm.associatedElementA.entityDisplayName = $scope.entityDisplayName;
+	                } else {
+	                    $scope.chemAssociationForm.associatedElementB.entityDisplayName = $scope.entityDisplayName;
+	                }
                 }
                
                 if (compositionType == 'nanomaterial entity') {
@@ -156,7 +165,11 @@ var app = angular.module('angularApp')
             
             if( $scope.sampleId != null ) {
             	$scope.chemAssociationForm.sampleId = $scope.sampleId;
-            }            
+            }  
+            
+            if( $scope.chemAssociationId != null ) {
+            	$scope.chemAssociationForm.associationId = $scope.chemAssociationId;
+            }             
 
             $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/submit',data: $scope.chemAssociationForm}).
                 success(function(data, status, headers, config) {
@@ -260,6 +273,10 @@ var app = angular.module('angularApp')
 
                 if( $scope.sampleId != null ) {
                 	$scope.chemAssociationForm.sampleId = $scope.sampleId;
+                }       
+                
+                if( $scope.chemAssociationId != null ) {
+                	$scope.chemAssociationForm.associationId = $scope.chemAssociationId;
                 }                
 
                 $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/removeFile',data: $scope.fileForm}).
@@ -352,6 +369,10 @@ var app = angular.module('angularApp')
             if( $scope.sampleId != null ) {
             	$scope.chemAssociationForm.sampleId = $scope.sampleId;
             }
+            
+            if( $scope.chemAssociationId != null ) {
+            	$scope.chemAssociationForm.associationId = $scope.chemAssociationId;
+            }            
             
 
             $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/saveFile',data: $scope.chemAssociationForm}).
