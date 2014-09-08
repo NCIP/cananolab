@@ -13,8 +13,8 @@ var app = angular.module('angularApp')
         $scope.sampleId = $routeParams.sampleId;
         $scope.chemAssociationId = $routeParams.chemAssociationId;
         $scope.sampleName = $routeParams.sampleName;
-        $scope.sampleId = 20917506;
-        $scope.sampleName='Test Sample';
+        //$scope.sampleId = 20917506;
+        //$scope.sampleName='Test Sample';
         //$scope.chemAssociationId = 60260353;
 
 
@@ -153,6 +153,10 @@ var app = angular.module('angularApp')
 
         $scope.doSubmit = function() {
             $scope.loader = true;
+            
+            if( $scope.sampleId != null ) {
+            	$scope.chemAssociationForm.sampleId = $scope.sampleId;
+            }            
 
             $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/submit',data: $scope.chemAssociationForm}).
                 success(function(data, status, headers, config) {

@@ -93,6 +93,10 @@ var app = angular.module('angularApp')
         $scope.removeFile = function(fileId) {
             if (confirm("Are you sure you want to delete the Composition File?")) {
                 $scope.loader = true;
+                
+                if( $scope.sampleId != null ) {
+                	$scope.fileForm.sampleId = $scope.sampleId;
+                }                
 
                 $http({method: 'POST', url: '/caNanoLab/rest/compositionFile/delete',data: $scope.fileForm}).
                     success(function(data, status, headers, config) {
