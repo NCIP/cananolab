@@ -1,4 +1,4 @@
-<div ng-class="{formFocus:loader}">{{columnTypeLookup}}
+<div ng-class="{formFocus:loader}">
 	<div class="spacer">
 <table border="0" class="contentTitle" summary="layout" width="100%">
   <tr>
@@ -426,7 +426,7 @@
 					<tbody>
 						<tr>
 							<th colspan="2">
-								Finding Info {{currentFinding}}
+								Finding Info
 							</th>
 						</tr>
 						<tr>
@@ -602,7 +602,8 @@
 	</div>
 	<div style="clear:both;"></div>
 	<div class="modal-footer">
-		<button ng-click="reset()" class="btn btn-warning btn-danger" ng-disabled="loader">Reset</button>    
+		<button ng-click="remove()" class="btn btn-warning btn-danger" ng-disabled="loader">Delete</button>  
+		<button ng-click="reset()" class="btn btn-warning btn-danger" ng-disabled="loader">Reset</button>  		  
 		<button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="loader">Submit</button>
 	</div>
 </div>
