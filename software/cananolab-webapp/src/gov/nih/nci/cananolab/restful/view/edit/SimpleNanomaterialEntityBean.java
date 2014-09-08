@@ -236,7 +236,6 @@ public class SimpleNanomaterialEntityBean {
 				sCompBean.setValueUnit(comp.getDomain().getValueUnit());
 				sCompBean.setCreatedBy(comp.getDomain().getCreatedBy());
 				sCompBean.setCreatedDate(comp.getDomain().getCreatedDate());
-				
 				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				if(comp.getInherentFunctions().size()>0){
 					for(FunctionBean func : comp.getInherentFunctions()){
@@ -271,6 +270,8 @@ public class SimpleNanomaterialEntityBean {
 			fBean.setId(file.getDomainFile().getId());
 			fBean.setCreatedBy(file.getDomainFile().getCreatedBy());
 			fBean.setCreatedDate(file.getDomainFile().getCreatedDate());
+			fBean.setTheAccess(file.getTheAccess());
+			fBean.setIsPublic(file.getPublicStatus());
 			files.add(fBean);
 		}
 		setFiles(files);

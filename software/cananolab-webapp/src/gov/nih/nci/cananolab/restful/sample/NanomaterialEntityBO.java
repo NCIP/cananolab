@@ -590,6 +590,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			file.setCreatedDate(fBean.getCreatedDate());
 			file.setUriExternal(fBean.getUriExternal());
 			fileBean.setKeywordsStr(fBean.getKeywordsStr());
+			fileBean.setTheAccess(fBean.getTheAccess());
+
 			fileBean.setDomainFile(file);
 		}
 		bean.setTheFile(fileBean);
@@ -609,8 +611,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			file.setCreatedDate(sFBean.getCreatedDate());
 			file.setUriExternal(sFBean.getUriExternal());
 			fileBean.setKeywordsStr(sFBean.getKeywordsStr());
+			fileBean.setTheAccess(sFBean.getTheAccess());
 			fileBean.setDomainFile(file);
-		//	fileBean.setDomainFile(file);
 			filecoll.add(file);
 			fileBeanList.add(fileBean);
 		}

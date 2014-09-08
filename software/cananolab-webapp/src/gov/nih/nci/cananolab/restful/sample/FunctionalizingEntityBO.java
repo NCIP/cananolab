@@ -599,6 +599,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			file.setCreatedDate(sFBean.getCreatedDate());
 			file.setUriExternal(sFBean.getUriExternal());
 			fileBean.setKeywordsStr(sFBean.getKeywordsStr());
+			fileBean.setTheAccess(sFBean.getTheAccess());
+
 			fileBean.setDomainFile(file);
 		}
 		funcBean.setTheFile(fileBean);
@@ -619,6 +621,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			file.setCreatedDate(sBean.getCreatedDate());
 			file.setUriExternal(sBean.getUriExternal());
 			fileBean.setKeywordsStr(sBean.getKeywordsStr());
+			fileBean.setTheAccess(sBean.getTheAccess());
+
 			fileBean.setDomainFile(file);
 			filecoll.add(file);
 			fileList.add(fileBean);

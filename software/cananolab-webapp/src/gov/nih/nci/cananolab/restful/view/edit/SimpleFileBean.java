@@ -23,28 +23,22 @@ public class SimpleFileBean {
 	String sampleId = "";
 	List<String> errors;
 	String externalUrl = "";
+	AccessibilityBean theAccess;
+	Boolean isPublic = false;
 	
-	List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
 	
-	List<AccessibilityBean> userAccesses =  new ArrayList<AccessibilityBean>();
-	
-	public List<AccessibilityBean> getGroupAccesses() {
-		return groupAccesses;
+	public Boolean getIsPublic() {
+		return isPublic;
 	}
-
-	public void setGroupAccesses(List<AccessibilityBean> groupAccesses) {
-		this.groupAccesses = groupAccesses;
+	public void setIsPublic(Boolean isPublic) {
+		this.isPublic = isPublic;
 	}
-
-	public List<AccessibilityBean> getUserAccesses() {
-		return userAccesses;
+	public AccessibilityBean getTheAccess() {
+		return theAccess;
 	}
-
-	public void setUserAccesses(List<AccessibilityBean> userAccesses) {
-		this.userAccesses = userAccesses;
+	public void setTheAccess(AccessibilityBean theAccess) {
+		this.theAccess = theAccess;
 	}
-
-	
 	public String getExternalUrl() {
 		return externalUrl;
 	}
@@ -131,8 +125,8 @@ public class SimpleFileBean {
 		this.setSampleId((String) request.getSession().getAttribute("sampleId"));
 		this.setCreatedBy(simpleBean.getDomainFile().getCreatedBy());
 		this.setCreatedDate(simpleBean.getDomainFile().getCreatedDate());
-		this.setGroupAccesses(simpleBean.getGroupAccesses());
-		this.setUserAccesses(simpleBean.getUserAccesses());
+		this.setTheAccess(simpleBean.getTheAccess());
+		this.setIsPublic(simpleBean.getPublicStatus());
 	}
 	
 	

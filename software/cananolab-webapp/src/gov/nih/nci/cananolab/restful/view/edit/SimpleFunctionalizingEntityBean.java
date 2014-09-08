@@ -178,6 +178,8 @@ public class SimpleFunctionalizingEntityBean {
 			fBean.setType(files.getDomainFile().getType());
 			fBean.setUri(files.getDomainFile().getUri());
 			fBean.setUriExternal(files.getDomainFile().getUriExternal());
+			fBean.setTheAccess(files.getTheAccess());
+			fBean.setIsPublic(files.getPublicStatus());
 			fileList.add(fBean);
 		}
 		setFileList(fileList);
