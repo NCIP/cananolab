@@ -31,7 +31,16 @@ public class SimpleCharacterizationSummaryViewBean {
 	
 	List<SimpleCharacterizationsByTypeBean> charByTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>();
 	List<String> errors = new ArrayList<String>();
+	List<String> messages = new ArrayList<String>();
 	
+	public List<String> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<String> messages) {
+		this.messages = messages;
+	}
+
 	public long getParentSampleId() {
 		return parentSampleId;
 	}

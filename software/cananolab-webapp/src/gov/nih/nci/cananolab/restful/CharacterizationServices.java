@@ -52,8 +52,8 @@ public class CharacterizationServices {
 		CharacterizationBO characterizationBO = 
 				(CharacterizationBO) applicationContext.getBean("characterizationBO");
 
-		SimpleCharacterizationSummaryEditBean editBean = characterizationBO.summaryEdit(sampleId, httpRequest);
-		//SimpleCharacterizationSummaryEditBean editBean = new SimpleCharacterizationSummaryEditBean();
+		SimpleCharacterizationSummaryEditBean editBean = characterizationBO.summaryEdit(sampleId, httpRequest, 
+				null);
 		
 		List<SimpleCharacterizationsByTypeBean> finalBean = editBean.getCharByTypeBeans(); //editBean.transferData(httpRequest, charView, sampleId);
 		
@@ -502,19 +502,9 @@ public class CharacterizationServices {
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) applicationContext.getBean("characterizationBO");
 			
-			CharacterizationSummaryViewBean charView = characterizationBO.create(httpRequest, editBean);
-			
-			List<String> errors = charView.getErrors();
-			if (errors != null && errors.size() > 0) {
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-						.entity(errors).build();
-			}
-			
-			SimpleCharacterizationSummaryEditBean editBeanAfter = new SimpleCharacterizationSummaryEditBean();
-			List<SimpleCharacterizationsByTypeBean> finalBeans = editBeanAfter
-					.transferData(httpRequest, charView, String.valueOf(editBean.getParentSampleId()));
-			
-
+			SimpleCharacterizationSummaryEditBean summaryView = characterizationBO.delete(httpRequest, editBean);
+			List<SimpleCharacterizationsByTypeBean> finalBeans = summaryView.getCharByTypeBeans();
+				
 			return Response.ok(finalBeans).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();

@@ -67,7 +67,7 @@ public class SimpleCharacterizationEditBean {
 	List<String> assayTypesByCharNameLookup = new ArrayList<String>();
 	
 	List<String> errors = new ArrayList<String>();
-	List<String> messages;
+	List<String> messages = new ArrayList<String>();
 	
 	public void transferFromCharacterizationBean(HttpServletRequest request, 
 			CharacterizationBean charBean, String sampleId) 
@@ -79,15 +79,15 @@ public class SimpleCharacterizationEditBean {
 		this.name = charBean.getCharacterizationName();
 		this.analysisConclusion = charBean.getConclusion();
 		
-		setProtocolId(charBean);
-		setCharacterizationSourceId(charBean.getPocBean());
+		setProtocolIdFromProtocolBean(charBean);
+		setCharacterizationSourceIdFromPOCBean(charBean.getPocBean());
 		
 		transferCharBeanData(charBean);
 		
 		setupLookups(request, charBean, sampleId);
 	}
 	
-	protected void setCharacterizationSourceId(PointOfContactBean pocBean) {
+	protected void setCharacterizationSourceIdFromPOCBean(PointOfContactBean pocBean) {
 		if (pocBean == null || 
 				pocBean.getDomain() == null || 
 				pocBean.getDomain().getId() == null)
@@ -96,7 +96,7 @@ public class SimpleCharacterizationEditBean {
 		this.characterizationSourceId = pocBean.getDomain().getId();
 	}
 	
-	protected void setProtocolId(CharacterizationBean charBean) {
+	protected void setProtocolIdFromProtocolBean(CharacterizationBean charBean) {
 		if (charBean == null || 
 				charBean.getProtocolBean() == null || 
 				charBean.getProtocolBean().getDomain() == null ||

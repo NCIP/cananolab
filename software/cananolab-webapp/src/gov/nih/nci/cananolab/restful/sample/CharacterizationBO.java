@@ -320,23 +320,29 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		service.removeAccesses(charBean.getDomainChar());
 	}
 
-	public CharacterizationSummaryViewBean delete(HttpServletRequest request, 
+	public SimpleCharacterizationSummaryEditBean delete(HttpServletRequest request, 
 			SimpleCharacterizationEditBean editBean)
 			throws Exception {
 		
 		CharacterizationBean charBean = (CharacterizationBean)request.getSession().getAttribute("theChar");
+		if (charBean == null)
+			throw new Exception("No characterization bean in session. Unable to proceed with delete");
+		
+		Long charId = charBean.getDomainChar().getId();
+		if (charId == null)
+			throw new Exception("Characterization bean in session has null id. Unable to proceed with delete");
+		
+		if (charId.longValue() != editBean.getCharId())
+			throw new Exception("Characterization id in session doesn't match input char id. Unable to proceed with delete");
+		
 		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		
 		deleteCharacterization(request, charBean, user.getLoginName());
 		
-		//TODO
-//		ActionMessages msgs = new ActionMessages();
-//		ActionMessage msg = new ActionMessage("message.deleteCharacterization");
-//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//		saveMessages(request, msgs);
-		//ActionForward forward = mapping.findForward("success");
-		return null;
+		SimpleCharacterizationSummaryEditBean summaryEdit = new SimpleCharacterizationSummaryEditBean();
+		summaryEdit.getMessages().add(PropertyUtil.getProperty("sample", "message.deleteCharacterization"));
+		
+		return this.summaryEdit(String.valueOf(editBean.getParentSampleId()), request, summaryEdit);
 	}
 
 	/**
@@ -350,14 +356,15 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @throws Exception
 	 */
 	public SimpleCharacterizationSummaryEditBean summaryEdit(String sampleId,
-			HttpServletRequest request)
+			HttpServletRequest request, SimpleCharacterizationSummaryEditBean editBean)
 			throws Exception {
 		// Prepare data.
 		CharacterizationSummaryViewBean sumBean = this.prepareSummary(sampleId, request);
 		
-		SimpleCharacterizationSummaryEditBean editBean = new SimpleCharacterizationSummaryEditBean();
+		if (editBean == null)
+			editBean = new SimpleCharacterizationSummaryEditBean();
+		
 		List<SimpleCharacterizationsByTypeBean> finalBeans = editBean.transferData(request, sumBean, sampleId);
-		//List<Object> finalBeans = editBean.transferData(request, sumBean, sampleId);
 		return editBean;
 	}
 
