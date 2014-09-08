@@ -433,20 +433,42 @@
 							<td class="cellLabel">
 								Data and Conditions
 							</td>
-							<td class="cellLabel" width="850px">
-								<input type="text" ng-model="currentFinding.numberOfColumns" name="numberOfRows">
+							<td class="cellLabel">
+								<input type="text" ng-model="currentFinding.numberOfColumns" name="numberOfRows" size="4">
 								<label for="colNum">columns</label>
-								<input type="text" ng-model="currentFinding.numberOfRows" name="numberOfRows">
+								<input type="text" ng-model="currentFinding.numberOfRows" name="numberOfRows" size="4">
 								<label for="colNum">rows</label>			
 								<button ng-click="updateRowsColsForFinding()" class="btn btn-primary btn-xxs">Update</button>
-							</td>
+								<button ng-click="openColumnOrderForm()" class="btn btn-primary btn-xxs">Set Column Order</button>							</td>
 						</tr>
+						<tr ng-show="columnOrder">
+							<td colspan="2">
+								<table class="promptbox" width="85%" align="center" id="matrix" ng-if="currentFinding.columnHeaders.length">
+									<tbody>
+										<tr>
+											<td><h3 style="margin:0px;padding:0px;">Column Order</h3></td>
+										</tr>
+										<tr>
+											<td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel" ng-bind-html="cell.displayName"></td>
+										</tr>
+										<tr>
+											<td ng-repeat="cell in currentFinding.columnHeaders">
+												<input type="text" name="cellRow" ng-model="cell.columnOrder"></td>
+											<td><button ng-click="updateColumnOrder()" class="btn btn-primary btn-xxs">Update Order</button></td>
+										</tr>										
+									</tbody>
+								</table>
+							</td>
+						</tr>						
 						<tr>
 							<td colspan="2">
 								<table class="promptbox" width="85%" align="center" id="matrix" ng-if="currentFinding.columnHeaders.length">
 									<tbody>
 										<tr>
-											<td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel"><a ng-click="openColumnForm(cell)" href="" ng-bind-html="cell.displayName">{{cell.displayName}}</a>{{findingsColumn}}</td>
+											<td><h3 style="margin:0px;padding:0px;">Column Data</h3></td>
+										</tr>										
+										<tr>
+											<td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel"><a ng-click="openColumnForm(cell)" href="" ng-bind-html="cell.displayName">{{cell.displayName}}</a>{{findingsColumn.columnName}}</td>
 										</tr>
 										<tr ng-repeat="row in currentFinding.rows">
 											<td ng-repeat="cell in row.cells">
@@ -455,150 +477,6 @@
 										</tr>										
 									</tbody>
 								</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-								<table class="promptbox" width="85%" align="center" id="matrix">
-	<tbody><tr>
-		
-			<td class="cellLabel">
-				<div id="column0" style="position: relative">
-					<a href="javascript:openColumnForm('physico-chemical characterization', 'molecular weight', 0);"><span id="columnHeaderDisplayName0"> 
-								
-								molecular weight<br>(observed,kDa)
-								
-								
-							 </span> </a>
-					<input type="hidden" name="achar.theFinding.columnHeaders[0].columnType" value="datum" id="theColumnType0">
-					<input type="hidden" name="achar.theFinding.columnHeaders[0].columnName" value="molecular weight" id="theColumnName0">
-					<input type="hidden" name="achar.theFinding.columnHeaders[0].valueType" value="observed" id="theValueType0">
-					<input type="hidden" name="achar.theFinding.columnHeaders[0].valueUnit" value="kDa" id="theValueUnit0">
-					<input type="hidden" name="achar.theFinding.columnHeaders[0].conditionProperty" value="" id="theConditionProperty0">
-					<input type="hidden" name="achar.theFinding.columnHeaders[0].constantValue" value="" id="theConstantValue0">
-				</div>
-			</td>
-		
-			<td class="cellLabel">
-				<div id="column1" style="position: relative">
-					<a href="javascript:openColumnForm('physico-chemical characterization', 'molecular weight', 1);"><span id="columnHeaderDisplayName1"> 
-								
-								molecular weight<br>(observed)
-								
-								
-							 </span> </a>
-					<input type="hidden" name="achar.theFinding.columnHeaders[1].columnType" value="datum" id="theColumnType1">
-					<input type="hidden" name="achar.theFinding.columnHeaders[1].columnName" value="molecular weight" id="theColumnName1">
-					<input type="hidden" name="achar.theFinding.columnHeaders[1].valueType" value="observed" id="theValueType1">
-					<input type="hidden" name="achar.theFinding.columnHeaders[1].valueUnit" value="" id="theValueUnit1">
-					<input type="hidden" name="achar.theFinding.columnHeaders[1].conditionProperty" value="" id="theConditionProperty1">
-					<input type="hidden" name="achar.theFinding.columnHeaders[1].constantValue" value="" id="theConstantValue1">
-				</div>
-			</td>
-		
-			<td class="cellLabel">
-				<div id="column2" style="position: relative">
-					<a href="javascript:openColumnForm('physico-chemical characterization', 'molecular weight', 2);"><span id="columnHeaderDisplayName2"> 
-								
-								ASODN concentration
-								
-								
-							 </span> </a>
-					<input type="hidden" name="achar.theFinding.columnHeaders[2].columnType" value="condition" id="theColumnType2">
-					<input type="hidden" name="achar.theFinding.columnHeaders[2].columnName" value="ASODN concentration" id="theColumnName2">
-					<input type="hidden" name="achar.theFinding.columnHeaders[2].valueType" value="" id="theValueType2">
-					<input type="hidden" name="achar.theFinding.columnHeaders[2].valueUnit" value="" id="theValueUnit2">
-					<input type="hidden" name="achar.theFinding.columnHeaders[2].conditionProperty" value="" id="theConditionProperty2">
-					<input type="hidden" name="achar.theFinding.columnHeaders[2].constantValue" value="" id="theConstantValue2">
-				</div>
-			</td>
-		
-		<td></td>
-	</tr>
-	
-		<tr>
-			
-				<td><label for="cellValue0:0">&nbsp;</label>
-					<input type="text" name="achar.theFinding.rows[0].cells[0].value" size="15" value="24.62" id="cellValue0:0">
-						
-				</td>
-			
-				<td><label for="cellValue0:1">&nbsp;</label>
-					<input type="text" name="achar.theFinding.rows[0].cells[1].value" size="15" value="1.032" id="cellValue0:1">
-						
-				</td>
-			
-				<td><label for="cellValue0:2">&nbsp;</label>
-					<input type="text" name="achar.theFinding.rows[0].cells[2].value" size="15" value="1.9" id="cellValue0:2">
-						
-				</td>
-			
-			<td>
-				<a href="javascript:reduceMatrix('Row', 0)">Delete</a>
-			</td>
-		</tr>
-	
-		<tr>
-			
-				<td><label for="cellValue1:0">&nbsp;</label>
-					<input type="text" name="achar.theFinding.rows[1].cells[0].value" size="15" value="1.2" id="cellValue1:0">
-						
-				</td>
-			
-				<td><label for="cellValue1:1">&nbsp;</label>
-					<input type="text" name="achar.theFinding.rows[1].cells[1].value" size="15" value="1.2" id="cellValue1:1">
-						
-				</td>
-			
-				<td><label for="cellValue1:2">&nbsp;</label>
-					<input type="text" name="achar.theFinding.rows[1].cells[2].value" size="15" value="1.8" id="cellValue1:2">
-						
-				</td>
-			
-			<td>
-				<a href="javascript:reduceMatrix('Row', 1)">Delete</a>
-			</td>
-		</tr>
-	
-		<tr>
-			
-				<td><label for="cellValue2:0">&nbsp;</label>
-					<input type="text" name="achar.theFinding.rows[2].cells[0].value" size="15" value="1.1" id="cellValue2:0">
-						
-				</td>
-			
-				<td><label for="cellValue2:1">&nbsp;</label>
-					<input type="text" name="achar.theFinding.rows[2].cells[1].value" size="15" value="1.1" id="cellValue2:1">
-						
-				</td>
-			
-				<td><label for="cellValue2:2">&nbsp;</label>
-					<input type="text" name="achar.theFinding.rows[2].cells[2].value" size="15" value="1.4" id="cellValue2:2">
-						
-				</td>
-			
-			<td>
-				<a href="javascript:reduceMatrix('Row', 2)">Delete</a>
-			</td>
-		</tr>
-	
-</tbody></table>
-
-
-
-
-
-
 							</td>
 						</tr>
 						<tr>

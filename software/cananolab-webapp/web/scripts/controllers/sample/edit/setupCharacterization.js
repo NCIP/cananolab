@@ -271,7 +271,6 @@ var app = angular.module('angularApp')
 
     };
 
-
     // open finding dialog with existing finding //
     $scope.updateExistingFinding = function(finding) {
         var old = $location.hash();
@@ -295,10 +294,29 @@ var app = angular.module('angularApp')
     };
 
     // opens column form to change properties for column //
-    $scope.openColumnForm = function(cell) {
+    $scope.openColumnForm = function() {
         $scope.findingsColumn = cell;
 
     };
+
+    // opens column form to change order for columns. Does not actually order columns //
+    $scope.openColumnOrderForm = function() {
+        $scope.columnOrder = 1;
+    }; 
+
+    // 
+    $scope.updateColumnOrder = function() {
+        $http({method: 'POST', url: '/caNanoLab/rest/characterization/setColumnOrder',data: $scope.currentFinding}).
+        success(function(data, status, headers, config) {            
+            $scope.loader = false;
+            $scope.currentFinding=data;
+            $scope.columnOrder = 0;
+        }).
+        error(function(data, status, headers, config) {
+            $scope.loader = false;
+            $scope.columnOrder = 0;
+        });         
+    }; 
 
     // saves finding info //
     $scope.saveFindingInfo = function() {
