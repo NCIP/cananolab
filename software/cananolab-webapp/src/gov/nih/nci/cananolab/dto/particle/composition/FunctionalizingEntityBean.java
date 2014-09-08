@@ -192,6 +192,10 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		return functions;
 	}
 
+	public void setFunctions(List<FunctionBean> functions) {
+		this.functions = functions;
+	}
+
 	public String getMolecularFormula() {
 		return molecularFormula;
 	}

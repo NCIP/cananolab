@@ -446,7 +446,7 @@ public class SimpleCompositionBean {
 					// chemicalassociation = new HashMap<String, Object>();
 					for (ChemicalAssociationBean chemBean : compBean
 							.getType2Assocs().get(entityType)) {
-						chemicalassociation.put("dataId", chemBean.getDomainAssociation().getId());
+						
 						association = new HashMap<String, Object>();
 
 						association.put("AttachmentId", chemBean
@@ -477,7 +477,8 @@ public class SimpleCompositionBean {
 								.getName());
 						AssociatedElements.put("DomainAssociationId", chemBean
 								.getDomainAssociation().getId());
-
+						association.put("dataId", chemBean
+								.getDomainAssociation().getId());
 						// Associated with
 
 						AssociatedElements.put("CompositiontypeB", chemBean
@@ -546,7 +547,7 @@ public class SimpleCompositionBean {
 
 					for (FileBean file : compBean.getType2Files().get(
 							entityType)) {
-
+						comFile.put("dataId", file.getDomainFile().getId());
 						comFile.put("fileId", file.getDomainFile().getId());
 						comFile.put("isImage", file.isImage());
 						comFile.put("ExternalURI", file.getDomainFile()

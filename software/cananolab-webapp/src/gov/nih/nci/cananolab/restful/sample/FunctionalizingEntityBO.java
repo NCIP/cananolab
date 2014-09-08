@@ -222,9 +222,9 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		CompositionService compService = this.setServicesInSession(request);
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
-		String entityId = super.validateId(request, "dataId");
+		//dataId = super.validateId(request, "dataId");
 		FunctionalizingEntityBean entityBean = compService
-				.findFunctionalizingEntityById(entityId);
+				.findFunctionalizingEntityById(dataId);
 		this.setLookups(request);
 		// clear copy to otherSamples
 	//	form.setOtherSamples(new String[0]);
@@ -523,6 +523,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		
 		//setting up theFunction
 		FunctionalizingEntityBean funcBean = new FunctionalizingEntityBean();
+		List<FunctionBean> funcList = new ArrayList<FunctionBean>();
+		List<FileBean> fileList = new ArrayList<FileBean>();
 
 		FunctionalizingEntity domainEntity = null;
 
@@ -565,6 +567,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				target.setType(fuBean.getTargetType());
 				functionBean.setTargets(targets);
 				funCollection.add(theFunction);
+				funcList.add(functionBean);
 			}
 			
 		}
@@ -605,6 +608,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			fileBean.setKeywordsStr(sBean.getKeywordsStr());
 			fileBean.setDomainFile(file);
 			filecoll.add(file);
+			fileList.add(fileBean);
 		}
 		}
 		
@@ -685,6 +689,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		funcBean.setMolecularFormula(bean.getMolecularFormula());
 		funcBean.setMolecularFormulaType(bean.getMolecularFormulaType());
 		funcBean.setDescription(bean.getDescription());
+		funcBean.setFiles(fileList);
+		funcBean.setFunctions(funcList);
 		funcBean.setDomainEntity(domainEntity);
 		return funcBean;
 	}
