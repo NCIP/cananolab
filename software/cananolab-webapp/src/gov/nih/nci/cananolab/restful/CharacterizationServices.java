@@ -488,11 +488,11 @@ public class CharacterizationServices {
 	}
 	
 	@POST
-	@Path("/removedCharacterization")
+	@Path("/removeCharacterization")
 	@Produces ("application/json")
-    public Response removedCharacterization(@Context HttpServletRequest httpRequest, 
+    public Response removeCharacterization(@Context HttpServletRequest httpRequest, 
     		SimpleCharacterizationEditBean editBean) {
-		logger.debug("In removedCharacterization");	
+		logger.debug("In removeCharacterization");	
 		
 		if (! SecurityUtil.isUserLoggedIn(httpRequest))
 			return Response.status(Response.Status.UNAUTHORIZED)
