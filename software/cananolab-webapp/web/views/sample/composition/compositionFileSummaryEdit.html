@@ -19,20 +19,20 @@
                             {{key}}
                         </th>
                     </tr>
-                    <tr>
-                        <td>
-                            <div style="margin-left:auto; margin-right:auto;text-align:right;width:99%;">
-                                <a href="/caNanoLab/#/editCompositionFile?sampleId={{sampleId.data}}&&sampleName={{sampleData.data[0].sampleName}}&&compositionFileId={{entityType.dataId}}" class="btn btn-primary btn-xxs" style="color:white;text-decoration: none;">
-                                    Edit
-                                </a>
-
-                            </div>
-                        </td>
-                    </tr>
                     <tr ng-repeat="indFile in fileTypes">
                         <td>
                                 <table class="summaryViewNoGrid" width="99%" align="center"
                                        style="background-color:#F5F5f5;">
+				                    <tr>
+				                        <td colspan="2">
+				                            <div style="margin-left:auto; margin-right:auto;text-align:right;width:99%;">
+				                                <a href="/caNanoLab/#/editCompositionFile?sampleId={{sampleId.data}}&&sampleName={{sampleData.data[0].sampleName}}&&compositionFileId={{indFile.dataId}}" class="btn btn-primary btn-xxs" style="color:white;text-decoration: none;">
+				                                    Edit
+				                                </a>
+				
+				                            </div>
+				                        </td>
+				                    </tr>                                       
                                     <tr>
                                         <td class="cellLabel" width="20%">
                                             Title and Download Link

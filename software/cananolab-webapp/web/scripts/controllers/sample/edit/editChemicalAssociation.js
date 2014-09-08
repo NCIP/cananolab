@@ -74,6 +74,9 @@ var app = angular.module('angularApp')
         if( $scope.chemAssociationId != null ) {
             $scope.loadChemAssociationData();
         }
+        else {
+            $scope.files = [];
+        }
 
         $scope.loadAssociatedElements = function(type, compositionType) {
             if (compositionType != null) {
@@ -208,11 +211,36 @@ var app = angular.module('angularApp')
         $scope.removeFile = function(fileId) {
             if (confirm("Are you sure you want to delete the File?")) {
                 $scope.loader = true;
+                
+                for (var k = 0; k < $scope.files.length; ++k) {
+                    var element = $scope.files[k];
+                    if (element.id == $scope.fileForm.id) {
+                        $scope.files.splice(k,1);
+                    }
+                }
+                $scope.chemAssociationForm.files = $scope.files;
+                
+                if( $scope.chemAssociationForm.simpleFile == null ) {
+                	$scope.chemAssociationForm.simpleFile = {};
+                }
+
+                $scope.chemAssociationForm.simpleFile.externalUrl = $scope.fileForm.externalUrl;
+                $scope.chemAssociationForm.simpleFile.uri = $scope.fileForm.uri;
+                $scope.chemAssociationForm.simpleFile.uriExternal = $scope.fileForm.uriExternal;
+                $scope.chemAssociationForm.simpleFile.type = $scope.fileForm.type;
+                $scope.chemAssociationForm.simpleFile.title = $scope.fileForm.title;
+                $scope.chemAssociationForm.simpleFile.keywordsStr = $scope.fileForm.keywordsStr;
+                $scope.chemAssociationForm.simpleFile.description = $scope.fileForm.description;
+                $scope.chemAssociationForm.simpleFile.id = $scope.fileForm.id;
+
+                if( $scope.sampleId != null ) {
+                	$scope.chemAssociationForm.sampleId = $scope.sampleId;
+                }                
 
                 $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/removeFile',data: $scope.fileForm}).
                     success(function(data, status, headers, config) {
                         $scope.chemAssociationForm = data;
-                        $scope.files = $scope.chemAssociationForm.domainEntity.fileCollection;
+                        $scope.files = $scope.chemAssociationForm.files;
                         $scope.loader = false;
                     }).
                     error(function(data, status, headers, config) {
