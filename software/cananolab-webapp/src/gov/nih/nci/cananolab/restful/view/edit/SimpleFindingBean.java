@@ -56,10 +56,15 @@ public class SimpleFindingBean {
 	
 	public void transferToFindingBean(FindingBean findingBean, UserBean user) 
 	throws Exception {
+		Long domainId = findingBean.getDomain().getId();
+		 //TODO: do things differently for new or update?
+		
 		findingBean.setColumnHeaders(columnHeaders);
 		findingBean.setNumberOfColumns(numberOfColumns);
 		findingBean.setNumberOfRows(numberOfRows);
-		findingBean.setupColumnOrder();
+		//findingBean.setupColumnOrder();
+		
+		transferRowsToFindingBean(findingBean);
 		
 		//TODO: set files
 		List<FileBean> fileBeans = findingBean.getFiles();
