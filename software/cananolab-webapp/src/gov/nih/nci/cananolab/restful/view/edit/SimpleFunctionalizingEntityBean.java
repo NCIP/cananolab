@@ -197,7 +197,7 @@ public class SimpleFunctionalizingEntityBean {
 			SimpleFunctionBean simpleBean = new SimpleFunctionBean();
 			
 			simpleBean.setDescription(funcBean.getDescription());
-			simpleBean.setId(funcBean.getId());
+			simpleBean.setId(funcBean.getDomainFunction().getId());
 			simpleBean.setType(funcBean.getType());
 			simpleBean.setModality(funcBean.getImagingFunction().getModality());
 			simpleBean.setCreatedBy(funcBean.getDomainFunction().getCreatedBy());

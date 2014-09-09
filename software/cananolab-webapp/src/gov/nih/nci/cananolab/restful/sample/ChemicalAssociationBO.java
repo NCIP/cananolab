@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleChemicalAssociationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -232,16 +233,17 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 				
 				//setting up sampleComposition 
 				//Managed to get the sampleComposition in the backend to avoid lazy loading things
-				if(bean.getAssociationId()!=null){
-					CompositionBO compBO = new CompositionBO();
-					CompositionForm form = new CompositionForm();
-					form.setSampleId(bean.getSampleId());
-					try {
-						compositionBean = compBO.summaryView(form, request);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					SampleComposition sampleComp = compositionBean.getDomain();
+				if(bean.getAssociationId()>0){
+					SampleComposition sampleComp = null;
+					SecurityService securityService = (SecurityService) request
+							.getSession().getAttribute("securityService");
+						CompositionServiceHelper helper = new CompositionServiceHelper(securityService);
+						try {
+							sampleComp = helper.findCompositionBySampleId(bean.getSampleId()
+									.toString());
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 					
 					chemAssociation.setSampleComposition(sampleComp);
 				}else{

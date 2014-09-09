@@ -103,7 +103,10 @@ public class CompositionFileBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
-		CompositionBean comp = new CompositionBean();
+		CompositionBO compBO = new CompositionBO();
+		CompositionForm form = new CompositionForm();
+		form.setSampleId(bean.getSampleId());
+		CompositionBean comp = compBO.summaryView(form, request);
 		FileBean fileBean = transferFileBean(bean);
 		CompositionService compService = this.setServicesInSession(request);
 		SampleBean sampleBean = setupSampleById(bean.getSampleId(), request);

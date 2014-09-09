@@ -9,7 +9,7 @@ public class SimpleFunctionBean {
 	String type = "";
 	String modality = "";
 	String description = "";
-	String id = "";
+	Long id = 0L;
 	String targetId = "";
 	String targetType = "";
 	String speciesType = "";
@@ -55,10 +55,10 @@ public class SimpleFunctionBean {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getTargetId() {

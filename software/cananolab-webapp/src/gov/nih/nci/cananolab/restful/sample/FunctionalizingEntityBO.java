@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.domain.agentmaterial.Antibody;
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer;
 import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.Function;
@@ -30,6 +31,7 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionalizingEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -243,6 +245,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean, request);
 		List<String> msgs = new ArrayList<String>();
+		this.setServicesInSession(request);
 		FunctionBean function = entity.getTheFunction();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		function.setupDomainFunction(user.getLoginName(), 0);
@@ -538,20 +541,27 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		List<TargetBean> targets = new ArrayList<TargetBean>();
 		if(sFunction!=null){
 			theFunction.setDescription(sFunction.getDescription());
-			theFunction.setCreatedBy(sFunction.getCreatedBy());
-			theFunction.setCreatedDate(sFunction.getCreatedDate());
-			
+			if(sFunction.getId()!=null){
+				theFunction.setId(sFunction.getId());
+				theFunction.setCreatedBy(sFunction.getCreatedBy());
+				theFunction.setCreatedDate(sFunction.getCreatedDate());
+			}
+			ImagingFunction img = new ImagingFunction();
+			img.setModality(sFunction.getModality());
 			functionBean.setType(sFunction.getType());
 			functionBean.setDescription(sFunction.getDescription());
-			for(int i=0; i<sFunction.getTargets().size();i++){
-				target = new TargetBean();
-				if(sFunction.getTargets().get(i).get("id")!=null)
-					target.setId(sFunction.getTargets().get(i).get("id"));
-				target.setDescription(sFunction.getTargets().get(i).get("description"));
-				target.setName(sFunction.getTargets().get(i).get("name"));
-				target.setType(sFunction.getTargets().get(i).get("type"));
-				targets.add(target);
+			if(sFunction.getTargets()!=null){
+				for(int i=0; i<sFunction.getTargets().size();i++){
+					target = new TargetBean();
+					if(sFunction.getTargets().get(i).get("id")!=null)
+						target.setId(sFunction.getTargets().get(i).get("id"));
+					target.setDescription(sFunction.getTargets().get(i).get("description"));
+					target.setName(sFunction.getTargets().get(i).get("name"));
+					target.setType(sFunction.getTargets().get(i).get("type"));
+					targets.add(target);
+				}
 			}
+			functionBean.setImagingFunction(img);
 			functionBean.setTargets(targets);
 			functionBean.setDomainFunction(theFunction);
 		}
@@ -563,13 +573,16 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			for(SimpleFunctionBean fuBean : bean.getFunctionList()){
 				functionBean = new FunctionBean();
 				theFunction = new Function();
+				ImagingFunction img = new ImagingFunction();
+				img.setModality(fuBean.getModality());
 				targets = new ArrayList<TargetBean>();
 				theFunction.setDescription(fuBean.getDescription());
 				theFunction.setCreatedBy(fuBean.getCreatedBy());
 				theFunction.setCreatedDate(fuBean.getCreatedDate());
-				
+				theFunction.setId(fuBean.getId());
 				functionBean.setType(fuBean.getType());
 				functionBean.setDescription(fuBean.getDescription());
+				functionBean.setImagingFunction(img);
 				for(int i=0; i<fuBean.getTargets().size();i++){
 					target = new TargetBean();
 					if(fuBean.getTargets().get(i).get("id")!=null)
@@ -637,17 +650,17 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		
 		//setting up sampleComposition 
 				//Managed to get the sampleComposition in the backend to avoid lazy loading things
-			CompositionBean compositionBean=new CompositionBean();
-				CompositionBO compBO = new CompositionBO();
-				CompositionForm form = new CompositionForm();
-				form.setSampleId(bean.getSampleId());
-				try {
-					compositionBean = compBO.summaryView(form, request);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				SampleComposition sampleComp = compositionBean.getDomain();
+		SampleComposition sampleComp = null;
+		SecurityService securityService = (SecurityService) request
+				.getSession().getAttribute("securityService");
+			CompositionServiceHelper helper = new CompositionServiceHelper(securityService);
+			try {
+				sampleComp = helper.findCompositionBySampleId(bean.getSampleId()
+						.toString());
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 				
 		if(bean.getType().equalsIgnoreCase("smallMolecule")){
 			SmallMolecule mol = new SmallMolecule();
