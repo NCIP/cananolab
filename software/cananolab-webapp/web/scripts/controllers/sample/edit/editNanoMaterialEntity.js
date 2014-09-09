@@ -460,6 +460,8 @@ var app = angular.module('angularApp')
                     $scope.fileForm.keywordsStr = element.keywordsStr;
                     $scope.fileForm.description = element.description;
                     $scope.fileForm.id = element.id;
+                    $scope.fileForm.createdBy = element.createdBy;
+                    $scope.fileForm.createdDate = element.createdDate;
 
                     $scope.addNewFile = true;
 
@@ -494,6 +496,8 @@ var app = angular.module('angularApp')
                 $scope.nanoEntityForm.fileBean.id = $scope.fileForm.id;
                 $scope.nanoEntityForm.fileBean.theAccess = $scope.fileForm.theAccess;
                 $scope.nanoEntityForm.fileBean.isPublic = $scope.fileForm.isPublic;
+                $scope.nanoEntityForm.fileBean.createdBy = $scope.fileForm.createdBy;
+                $scope.nanoEntityForm.fileBean.createdDate = $scope.fileForm.createdDate;                  
 
                 if( $scope.sampleId != null ) {
                 	$scope.nanoEntityForm.sampleId = $scope.sampleId;
@@ -588,6 +592,8 @@ var app = angular.module('angularApp')
             $scope.nanoEntityForm.fileBean.id = $scope.fileForm.id;
             $scope.nanoEntityForm.fileBean.theAccess = $scope.fileForm.theAccess;
             $scope.nanoEntityForm.fileBean.isPublic = $scope.fileForm.isPublic;
+            $scope.nanoEntityForm.fileBean.createdBy = $scope.fileForm.createdBy;
+            $scope.nanoEntityForm.fileBean.createdDate = $scope.fileForm.createdDate;            
 
             if( $scope.sampleId != null ) {
             	$scope.nanoEntityForm.sampleId = $scope.sampleId;

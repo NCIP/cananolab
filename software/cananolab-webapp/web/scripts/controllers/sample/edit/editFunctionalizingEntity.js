@@ -499,6 +499,8 @@ var app = angular.module('angularApp')
                     $scope.fileForm.keywordsStr = element.keywordsStr;
                     $scope.fileForm.description = element.description;
                     $scope.fileForm.id = element.id;
+                    $scope.fileForm.createdBy = element.createdBy;
+                    $scope.fileForm.createdDate = element.createdDate;
 
                     $scope.addNewFile = true;
 
@@ -531,8 +533,10 @@ var app = angular.module('angularApp')
                 $scope.funcEntityForm.fileBean.keywordsStr = $scope.fileForm.keywordsStr;
                 $scope.funcEntityForm.fileBean.description = $scope.fileForm.description;
                 $scope.funcEntityForm.fileBean.id = $scope.fileForm.id;
-                $scope.nanoEntityForm.fileBean.theAccess = $scope.fileForm.theAccess;
-                $scope.nanoEntityForm.fileBean.isPublic = $scope.fileForm.isPublic;
+                $scope.funcEntityForm.fileBean.theAccess = $scope.fileForm.theAccess;
+                $scope.funcEntityForm.fileBean.isPublic = $scope.fileForm.isPublic;
+                $scope.funcEntityForm.fileBean.createdBy = $scope.fileForm.createdBy;
+                $scope.funcEntityForm.fileBean.createdDate = $scope.fileForm.createdDate;                  
                 
                 if( $scope.sampleId != null ) {
                 	$scope.funcEntityForm.sampleId = $scope.sampleId;
@@ -626,8 +630,10 @@ var app = angular.module('angularApp')
             $scope.funcEntityForm.fileBean.keywordsStr = $scope.fileForm.keywordsStr;
             $scope.funcEntityForm.fileBean.description = $scope.fileForm.description;
             $scope.funcEntityForm.fileBean.id = $scope.fileForm.id;
-            $scope.nanoEntityForm.fileBean.theAccess = $scope.fileForm.theAccess;
-            $scope.nanoEntityForm.fileBean.isPublic = $scope.fileForm.isPublic;
+            $scope.funcEntityForm.fileBean.theAccess = $scope.fileForm.theAccess;
+            $scope.funcEntityForm.fileBean.isPublic = $scope.fileForm.isPublic;
+            $scope.funcEntityForm.fileBean.createdBy = $scope.fileForm.createdBy;
+            $scope.funcEntityForm.fileBean.createdDate = $scope.fileForm.createdDate;              
             
             
             if( $scope.sampleId != null ) {

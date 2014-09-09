@@ -240,6 +240,8 @@ var app = angular.module('angularApp')
                     $scope.fileForm.keywordsStr = element.keywordsStr;
                     $scope.fileForm.description = element.description;
                     $scope.fileForm.id = element.id;
+                    $scope.fileForm.createdBy = element.createdBy;
+                    $scope.fileForm.createdDate = element.createdDate;                    
 
                     break;
                 }
@@ -271,7 +273,9 @@ var app = angular.module('angularApp')
                 $scope.chemAssociationForm.simpleFile.description = $scope.fileForm.description;
                 $scope.chemAssociationForm.simpleFile.id = $scope.fileForm.id;
                 $scope.chemAssociationForm.simpleFile.theAccess = $scope.fileForm.theAccess;
-                $scope.chemAssociationForm.simpleFile.isPublic = $scope.fileForm.isPublic;                
+                $scope.chemAssociationForm.simpleFile.isPublic = $scope.fileForm.isPublic;
+                $scope.chemAssociationForm.simpleFile.createdBy = $scope.fileForm.createdBy;
+                $scope.chemAssociationForm.simpleFile.createdDate = $scope.fileForm.createdDate;                  
 
                 if( $scope.sampleId != null ) {
                 	$scope.chemAssociationForm.sampleId = $scope.sampleId;
@@ -369,6 +373,8 @@ var app = angular.module('angularApp')
             $scope.chemAssociationForm.simpleFile.id = $scope.fileForm.id;
             $scope.chemAssociationForm.simpleFile.theAccess = $scope.fileForm.theAccess;
             $scope.chemAssociationForm.simpleFile.isPublic = $scope.fileForm.isPublic;
+            $scope.chemAssociationForm.simpleFile.createdBy = $scope.fileForm.createdBy;
+            $scope.chemAssociationForm.simpleFile.createdDate = $scope.fileForm.createdDate;             
             
 
             if( $scope.sampleId != null ) {
