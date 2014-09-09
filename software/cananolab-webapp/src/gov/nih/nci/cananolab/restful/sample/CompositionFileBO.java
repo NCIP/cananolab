@@ -36,6 +36,10 @@ public class CompositionFileBO extends BaseAnnotationBO{
 		FileBean theFile = transferFileBean(bean);
 		Boolean newFile = true;
 
+		msgs = validateFileBean(request, theFile);
+		if(msgs.size()>0){
+			return msgs;
+		}
 		CompositionService service = this.setServicesInSession(request);
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);

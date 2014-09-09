@@ -258,62 +258,36 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		}
 		File File = fileBean.getDomainFile();
 		if (File.getTitle().length() == 0) {
-	//		ActionMessage msg = new ActionMessage("errors.required",
-	//				"file title");
-	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	//		this.saveErrors(request, msgs);
-			msgs.add(PropertyUtil.getProperty("sample", "file title"));
-	//		noErrors = false;
+			msgs.add("File Title is required.");
 		}
 
 		if (File.getType().length() == 0) {
-//			ActionMessage msg = new ActionMessage("errors.required",
-//					"file type");
-		//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//	this.saveErrors(request, msgs);
-			msgs.add(PropertyUtil.getProperty("sample", "file type"));
-
-			noErrors = false;
+			msgs.add("File Type is required.");
 		}
 
 		if (File.getUriExternal()) {
 			if (fileBean.getExternalUrl() == null
 					|| fileBean.getExternalUrl().trim().length() == 0) {
-//				ActionMessage msg = new ActionMessage("errors.required",
-//						"external url");
-		//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//		this.saveErrors(request, msgs);
-		//		msgs.add(PropertyUtil.getProperty("sample", "external url"));
-
-				noErrors = false;
+				msgs.add("External URL is required.");
 			}
 		} else {
 			// all empty
-			if ((fileBean.getUploadedFile() == null || fileBean
-					.getUploadedFile().toString().trim().length() == 0)
+			if ((fileBean.getDomainFile().getUri() == null) 
 					&& (fileBean.getExternalUrl() == null || fileBean
 							.getExternalUrl().trim().length() == 0)
 					&& (fileBean.getDomainFile() == null || fileBean
 							.getDomainFile().getTitle() == null)) {
-		//		ActionMessage msg = new ActionMessage("errors.required",
-		//				"uploaded file");
-		//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//		this.saveErrors(request, msgs);
-				noErrors = false;
-		//		msgs.add(PropertyUtil.getProperty("sample", "uploaded file"));
+				
+						msgs.add("Uploading a file is required.");
 
 				// the case that user switch from url to upload file, but no
 				// file is selected
-			} else if ((fileBean.getUploadedFile() == null || StringUtils
-					.isEmpty(fileBean.getUploadedFile().getFileName()))
+			} else if ((fileBean.getDomainFile().getUri() == null || StringUtils
+					.isEmpty(fileBean.getDomainFile().getUri()))
 					&& !StringUtils.isEmpty(fileBean.getExternalUrl())) {
-//				ActionMessage msg = new ActionMessage("errors.required",
-//						"uploaded file");
-			//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			//	this.saveErrors(request, msgs);
-	//			msgs.add(PropertyUtil.getProperty("sample", "uploaded file"));
 
-				noErrors = false;
+				msgs.add("Uploading a file is required.");
+
 			}
 		}
 		return msgs;
