@@ -4,11 +4,11 @@
 <table class="contentTitle" width="100%" border="0" summary="layout">
     <tbody>
     <tr>
-        <th scope="col" align="left" ng-if="funcEntityId!=''">
+        <th scope="col" align="left" ng-if="funcEntityId!=null && funcEntityId!=''">
             {{sampleName}} Sample Composition - Functionalizing Entity - {{funcEntityForm.type}}
         </th>
 
-        <th scope="col" align="left" ng-if="funcEntityId==null">
+        <th scope="col" align="left" ng-if="funcEntityId==null || funcEntityId==''">
             {{sampleName}} Sample Composition - Functionalizing Entity
         </th>
 
@@ -291,6 +291,8 @@
             <input type="button" value="Delete" ng-click="doDelete()" ng-if="funcEntityId != null">
         </td>
         <td align="right" width="300">
+           	<input type="hidden" name="funcEntityForm.createdBy">
+           	<input type="hidden" name="funcEntityForm.createdDate">
             <input type="reset" value="Reset" ng-click="resetForm()">
             <input type="submit" value="Submit" ng-click="doSubmit()" ng-if="funcEntityId == null" ng-show="!addNewInherentFunction">
             <input type="submit" value="Update" ng-click="doSubmit()" ng-if="funcEntityId != null" ng-show="!addNewInherentFunction">

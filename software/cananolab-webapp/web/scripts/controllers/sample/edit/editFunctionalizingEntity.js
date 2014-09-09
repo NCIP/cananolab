@@ -43,6 +43,8 @@ var app = angular.module('angularApp')
 
 
         $scope.$on('$viewContentLoaded', function(){
+            $scope.loader = true;
+
             $http({method: 'GET', url: '/caNanoLab/rest/functionalizingEntity/setup?sampleId=' + $scope.sampleId}).
                 success(function(data, status, headers, config) {
                     $scope.data = data;
@@ -61,11 +63,13 @@ var app = angular.module('angularApp')
                     $scope.targetTypes = $scope.data.targetTypes;
                     $scope.antibodyTypes = $scope.data.antibodyTypes;
                     $scope.speciesTypes = $scope.data.speciesTypes;
+                    $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     $scope.message = data;
+                    $scope.loader = false;
                 });
         });
 
@@ -224,13 +228,18 @@ var app = angular.module('angularApp')
                 if( $scope.sampleId != null ) {
                 	$scope.funcEntityForm.sampleId = $scope.sampleId;
                 }
-	            
+
+                $scope.loader = true;
 	            $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/saveFunction',data: $scope.funcEntityForm}).
                 success(function(data, status, headers, config) {
                 	$scope.funcEntityForm = data;
                     $scope.composingElementForm.inherentFunction = $scope.funcEntityForm.functionList;
                     $scope.loader = false;
                     $scope.addNewInherentFunction=false;
+                    
+                    if( $scope.composingElementForm.inherentFunction != null && $scope.composingElementForm.inherentFunction.length > 0 ) {
+                        $scope.showInherentFunctionTable = true;
+                    }
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
@@ -522,6 +531,8 @@ var app = angular.module('angularApp')
                 $scope.funcEntityForm.fileBean.keywordsStr = $scope.fileForm.keywordsStr;
                 $scope.funcEntityForm.fileBean.description = $scope.fileForm.description;
                 $scope.funcEntityForm.fileBean.id = $scope.fileForm.id;
+                $scope.nanoEntityForm.fileBean.theAccess = $scope.fileForm.theAccess;
+                $scope.nanoEntityForm.fileBean.isPublic = $scope.fileForm.isPublic;
                 
                 if( $scope.sampleId != null ) {
                 	$scope.funcEntityForm.sampleId = $scope.sampleId;
@@ -615,6 +626,9 @@ var app = angular.module('angularApp')
             $scope.funcEntityForm.fileBean.keywordsStr = $scope.fileForm.keywordsStr;
             $scope.funcEntityForm.fileBean.description = $scope.fileForm.description;
             $scope.funcEntityForm.fileBean.id = $scope.fileForm.id;
+            $scope.nanoEntityForm.fileBean.theAccess = $scope.fileForm.theAccess;
+            $scope.nanoEntityForm.fileBean.isPublic = $scope.fileForm.isPublic;
+            
             
             if( $scope.sampleId != null ) {
             	$scope.funcEntityForm.sampleId = $scope.sampleId;
