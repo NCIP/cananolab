@@ -206,9 +206,9 @@
             <input type="button" value="Delete" ng-click="doDelete()" ng-if="chemAssociationId != null">
         </td>
         <td align="right" width="300">
-           	<input type="hidden" name="chemAssociationForm.associationId">
-           	<input type="hidden" name="chemAssociationForm.createdBy">
-           	<input type="hidden" name="chemAssociationForm.createdDate">
+           	<input type="hidden" ng-model="chemAssociationForm.associationId">
+           	<input type="hidden" ng-model="chemAssociationForm.createdBy">
+           	<input type="hidden" ng-model="chemAssociationForm.createdDate">
             <input type="reset" value="Reset" ng-click="resetForm()">
             <input type="submit" value="Submit" ng-click="doSubmit()" ng-if="chemAssociationId == null">
             <input type="submit" value="Update" ng-click="doSubmit()" ng-if="chemAssociationId != null">

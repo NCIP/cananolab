@@ -33,7 +33,7 @@
                         {{file.type}}
                     </td>
                     <td>
-                        <a style="white-space: normal;" href="composition.do?dispatch=download&amp;fileId=69304320">
+                        <a style="white-space: normal;" href="/caNanoLab/rest/composition/download?fileId={{file.id}}">
                             {{file.title}} </a>
                     </td>
                     <td>
@@ -156,10 +156,10 @@
                         </td>
                         <td colspan="3">
                             <div align="right">
-                                 <input type="hidden" name="fileForm.isPublic">
-            					 <input type="hidden" name="fileForm.theAccess">
-								 <input type="hidden" name="fileForm.createdBy">
-            					 <input type="hidden" name="fileForm.createdDate">            					 
+                                 <input type="hidden" ng-model="fileForm.isPublic">
+            					 <input type="hidden" ng-model="fileForm.theAccess">
+								 <input type="hidden" ng-model="fileForm.createdBy">
+            					 <input type="hidden" ng-model="fileForm.createdDate">            					 
                                 <input class="promptButton" type="button" value="Save"
                                        ng-click="closeAddNewFile();saveFile();" />
                                 <input class="promptButton" type="button" value="Cancel"

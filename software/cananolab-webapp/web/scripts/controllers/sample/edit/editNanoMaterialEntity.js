@@ -509,6 +509,7 @@ var app = angular.module('angularApp')
                     success(function(data, status, headers, config) {
                     	$scope.nanoEntityForm = data;
                         $scope.files = $scope.nanoEntityForm.files;
+                        $scope.addNewFile = false;
                     	$scope.loader = false;
                     }).
                     error(function(data, status, headers, config) {
@@ -604,6 +605,7 @@ var app = angular.module('angularApp')
                 success(function(data, status, headers, config) {
                 	$scope.nanoEntityForm = data;
                     $scope.files = $scope.nanoEntityForm.files;
+                    $scope.addNewFile = false;
                     $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {

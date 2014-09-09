@@ -163,7 +163,12 @@ var app = angular.module('angularApp')
             
             $http({method: 'POST', url: '/caNanoLab/rest/compositionFile/submit',data: $scope.fileForm}).
                 success(function(data, status, headers, config) {
-                    $location.search('message', 'Composition File successfully saved."').path('/editComposition').replace();
+                	if (data == "success") {
+                		$location.search('message', 'Composition File successfully saved."').path('/editComposition').replace();
+                	}
+                	else {
+                        $scope.messages = data;
+                	}
                     $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {

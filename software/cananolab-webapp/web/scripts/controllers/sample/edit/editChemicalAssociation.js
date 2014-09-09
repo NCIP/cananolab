@@ -58,6 +58,10 @@ var app = angular.module('angularApp')
 	                 //$scope.chemAssociationForm = {"simpleFile":null,"type":"attachment","bondType":"covalent","description":"Test","associatedElementA":{"compositionType":"nanomaterial entity","entityId":"72056840","entityDisplayName":"fullerene","className":"ComposingElement","composingElement":{"type":"repeat unit","name":"test","pubChemDataSourceName":"","pubChemId":null,"value":null,"valueUnit":null,"molecularFormulaType":null,"molecularFormula":null,"description":"","id":72089608,"sampleId":"","modality":"","createdBy":"prakasht","createdDate":null,"inherentFunction":null}},"associatedElementB":{"compositionType":"functionalizing entity","entityId":"22719746","entityDisplayName":"small molecule","className":"SmallMolecule","composingElement":{"type":null,"name":null,"pubChemDataSourceName":null,"pubChemId":null,"value":null,"valueUnit":null,"molecularFormulaType":null,"molecularFormula":null,"description":null,"id":null,"sampleId":"","modality":"","createdBy":null,"createdDate":null,"inherentFunction":null}},"errors":null};
 	                 $scope.files = $scope.chemAssociationForm.files;
 	                 
+	                 if( $scope.files == null ) {
+	                	 $scope.files = [];
+	                 }
+	                 
 	                 $scope.loadAssociatedElements('A', $scope.chemAssociationForm.associatedElementA.compositionType);
 	                 $scope.loadComposingElements('A', $scope.chemAssociationForm.associatedElementA.compositionType, $scope.chemAssociationForm.associatedElementA.entityId);
 	                 
@@ -289,6 +293,7 @@ var app = angular.module('angularApp')
                     success(function(data, status, headers, config) {
                         $scope.chemAssociationForm = data;
                         $scope.files = $scope.chemAssociationForm.files;
+                        $scope.addNewFile = false;
                         $scope.loader = false;
                     }).
                     error(function(data, status, headers, config) {
@@ -390,6 +395,7 @@ var app = angular.module('angularApp')
                 success(function(data, status, headers, config) {
                     $scope.chemAssociationForm = data;
                     $scope.files = $scope.chemAssociationForm.files;
+                    $scope.addNewFile = false;
                     $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {

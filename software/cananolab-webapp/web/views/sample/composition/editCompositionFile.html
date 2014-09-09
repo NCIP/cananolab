@@ -118,10 +118,10 @@
                         <input type="button" value="Delete" ng-click="removeFile('{{fileForm.id}}');" id="deleteFile" ng-show="fileForm.id != null">
                     </td>
                     <td align="right" width="300">
-                        <input type="hidden" name="fileForm.isPublic">
-            			<input type="hidden" name="fileForm.theAccess">
-			           	<input type="hidden" name="fileForm.createdBy">
-			           	<input type="hidden" name="fileForm.createdDate">            			
+                        <input type="hidden" ng-model="fileForm.isPublic">
+            			<input type="hidden" ng-model="fileForm.theAccess">
+			           	<input type="hidden" ng-model="fileForm.createdBy">
+			           	<input type="hidden" ng-model="fileForm.createdDate">            			
                         <input type="reset" value="Reset" ng-click="resetForm()">
                         <input type="submit" value="Submit" ng-click="saveFile()" ng-if="compositionFileId == null">
                         <input type="submit" value="Update" ng-click="saveFile()" ng-if="compositionFileId != null">
