@@ -60,7 +60,6 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		}
 		 msgs = validateAssociatedElements(assocBean);
 		if (msgs.size()>0) {
-			msgs.add(PropertyUtil.getProperty("sample", "error.duplicateAssociatedElementsInAssociation"));
 			return msgs;
 		}
 		this.setServicesInSession(request);
@@ -85,19 +84,8 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		
 		//setting up associatedElementA
 		if(bean.getAssociatedElementA().getComposingElement()!=null){
-//			comp.setCreatedBy(bean.getAssociatedElementA().getComposingElement().getCreatedBy());
-//			comp.setCreatedDate(bean.getAssociatedElementA().getComposingElement().getCreatedDate());
-//			comp.setDescription(bean.getAssociatedElementA().getComposingElement().getDescription());
-//			if(bean.getAssociatedElementA().getComposingElement().getId()!=null)
-//			comp.setId(bean.getAssociatedElementA().getComposingElement().getId());
-//			comp.setMolecularFormula(bean.getAssociatedElementA().getComposingElement().getMolecularFormula());
-//			comp.setMolecularFormulaType(bean.getAssociatedElementA().getComposingElement().getMolecularFormulaType());
-//			comp.setName(bean.getAssociatedElementA().getComposingElement().getName());
-//			comp.setPubChemDataSourceName(bean.getAssociatedElementA().getComposingElement().getPubChemDataSourceName());
-//			comp.setPubChemId(bean.getAssociatedElementA().getComposingElement().getPubChemId());
-//			comp.setType(bean.getAssociatedElementA().getComposingElement().getType());
-//			comp.setValue(bean.getAssociatedElementA().getComposingElement().getValue());
-//			comp.setValueUnit(bean.getAssociatedElementA().getComposingElement().getValueUnit());
+			if(bean.getAssociatedElementA().getComposingElement().getId()!=null)
+			comp.setId(bean.getAssociatedElementA().getComposingElement().getId());
 		}
 		chemBean.setType(bean.getType());
 		chemBean.setDescription(bean.getDescription());
@@ -106,27 +94,14 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		if(bean.getAssociatedElementA().getEntityId()!=null)
 		associatedElementA.setEntityId(bean.getAssociatedElementA().getEntityId());
 		
-		
 		associatedElementA.setComposingElement(comp);
 		chemBean.setAssociatedElementA(associatedElementA);
 		
 		//setting up AssociatedElementB
 		if(bean.getAssociatedElementB().getComposingElement()!=null){
 			comp = new ComposingElement();
-			
-//			comp.setCreatedBy(bean.getAssociatedElementB().getComposingElement().getCreatedBy());
-//			comp.setCreatedDate(bean.getAssociatedElementB().getComposingElement().getCreatedDate());
-//			comp.setDescription(bean.getAssociatedElementB().getComposingElement().getDescription());
-//			if(bean.getAssociatedElementB().getComposingElement().getId()!=null)
-//			comp.setId(bean.getAssociatedElementB().getComposingElement().getId());
-//			comp.setMolecularFormula(bean.getAssociatedElementB().getComposingElement().getMolecularFormula());
-//			comp.setMolecularFormulaType(bean.getAssociatedElementB().getComposingElement().getMolecularFormulaType());
-//			comp.setName(bean.getAssociatedElementB().getComposingElement().getName());
-//			comp.setPubChemDataSourceName(bean.getAssociatedElementB().getComposingElement().getPubChemDataSourceName());
-//			comp.setPubChemId(bean.getAssociatedElementB().getComposingElement().getPubChemId());
-//			comp.setType(bean.getAssociatedElementB().getComposingElement().getType());
-//			comp.setValue(bean.getAssociatedElementB().getComposingElement().getValue());
-//			comp.setValueUnit(bean.getAssociatedElementB().getComposingElement().getValueUnit());
+			if(bean.getAssociatedElementB().getComposingElement().getId()!=null)
+				comp.setId(bean.getAssociatedElementB().getComposingElement().getId());
 		}
 		associatedElementB.setCompositionType(bean.getAssociatedElementB().getCompositionType());
 		associatedElementB.setEntityDisplayName(bean.getAssociatedElementB().getEntityDisplayName());
@@ -180,7 +155,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 				
 				AssociatedElement assoA = new AssociatedElement();
 				if(bean.getAssociatedElementA().getComposingElement()!=null){
-					if(bean.getAssociationId()!=null){
+					if(bean.getAssociationId()>0){
 						assoA.setCreatedBy(bean.getAssociatedElementA().getComposingElement().getCreatedBy());
 						assoA.setCreatedDate(bean.getAssociatedElementA().getComposingElement().getCreatedDate());
 						assoA.setDescription(bean.getAssociatedElementA().getComposingElement().getDescription());
@@ -210,7 +185,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 				
 				AssociatedElement assoB = new AssociatedElement();
 				if(bean.getAssociatedElementB().getComposingElement()!=null){
-					if(bean.getAssociationId()!=null){
+					if(bean.getAssociationId()>0){
 						assoB.setCreatedBy(bean.getAssociatedElementB().getComposingElement().getCreatedBy());
 						assoB.setCreatedDate(bean.getAssociatedElementB().getComposingElement().getCreatedDate());
 						assoB.setDescription(bean.getAssociatedElementB().getComposingElement().getDescription());
@@ -300,7 +275,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		String entityIdB = assocBean.getAssociatedElementB().getEntityId();
 		if (entityTypeA.equals(entityTypeB) && entityIdA.equals(entityIdB)) {
 			//noErrors = false;
-			msgs = new ArrayList<String>();
+			msgs.add(PropertyUtil.getProperty("sample", "error.duplicateAssociatedElementsInAssociation"));
 		}
 		return msgs;
 	}
