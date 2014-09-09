@@ -505,14 +505,15 @@
 															</select>
 														</td>
 													</tr>
+													<tr ng-if="findingsColumn.columnType=='condition'">
+														<td><label for="conditionProperty">Condition Property</label></td>
+														<td><select ng-model="findingsColumn.conditionProperty" data-ng-options="option for option in conditionTypeLookup"></td>
+													</tr>
 													<tr>
 														<td><label for="valueType">Column Value Type</label></td>
 														<td><select ng-model="findingsColumn.valueType" data-ng-options="option for option in data.datumConditionValueTypeLookup"></td></td>
 													</tr>
-													<tr ng-if="findingsColumn.columnType=='condition'">
-														<td><label for="conditionProperty">Column Condition</label></td>
-														<td><select ng-model="findingsColumn.conditionProperty" data-ng-options="option for option in conditionTypeLookup"></td>
-													</tr>
+													
 													<tr>
 														<td><label for="valueUnit">Column Value Unit</label></td>
 														<td><select ng-model="findingsColumn.valueUnit" data-ng-options="option for option in valueUnitsLookup"></td>
