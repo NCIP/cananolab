@@ -357,7 +357,7 @@ var app = angular.module('angularApp')
 
     // gets column value unit options based on  name and condition //
     $scope.getColumnValueUnitOptions = function() {
-       $http({method: 'GET', url: '/caNanoLab/rest/characterization/getColumnValueUnitOptions?columnName'+$scope.findingsColumn.columnName+'&conditionProperty='+$scope.findingsColumn.conditionProperty}).
+       $http({method: 'GET', url: '/caNanoLab/rest/characterization/getColumnValueUnitOptions?columnName='+$scope.findingsColumn.columnName+'&conditionProperty='+$scope.findingsColumn.conditionProperty}).
             success(function(data, status, headers, config) {
             $scope.valueUnitsLookup = data;
             $scope.loader = false;
@@ -370,7 +370,7 @@ var app = angular.module('angularApp')
     // called when columnType dropdown is changed on column form //
     $scope.onColumnNameDropdownChange = function() {
         $scope.getColumnValueUnitOptions();
-        $http({method: 'GET', url: '/caNanoLab/rest/characterization/getConditionPropertyOptions?columnName'+$scope.findingsColumn.columnName}).
+        $http({method: 'GET', url: '/caNanoLab/rest/characterization/getConditionPropertyOptions?columnName='+$scope.findingsColumn.columnName}).
             success(function(data, status, headers, config) {
             $scope.conditionTypeLookup = data;
             $scope.loader = false;
