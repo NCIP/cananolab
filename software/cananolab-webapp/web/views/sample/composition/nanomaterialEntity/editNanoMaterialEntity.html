@@ -4,7 +4,7 @@
             <table class="contentTitle" width="100%" border="0" summary="layout">
                 <tbody>
                 <tr>
-                    <th scope="col" align="left" ng-if="nanoEntityId!=''">
+                    <th scope="col" align="left" ng-if="nanoEntityId!=null && nanoEntityId!=''">
                         {{sampleName}} Sample Composition - Nanomaterial Entity - {{entityName}}
                     </th>
 
@@ -116,6 +116,8 @@
                         <input type="button" value="Delete" ng-click="doDelete()" ng-if="nanoEntityId != null">
                     </td>
                     <td align="right" width="300">
+			           	<input type="hidden" name="nanoEntityForm.createdBy">
+			           	<input type="hidden" name="nanoEntityForm.createdDate">
                         <input type="reset" value="Reset" ng-click="resetForm()">
                         <input type="submit" value="Submit" ng-click="doSubmit()" ng-if="nanoEntityId == null" ng-show="!addNewComposingElement">
                         <input type="submit" value="Update" ng-click="doSubmit()" ng-if="nanoEntityId != null" ng-show="!addNewComposingElement">

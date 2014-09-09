@@ -949,7 +949,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	throws Exception {
 		
 		if (simpleFinding.getFindingId() <= 0) //new finding
-			return achar.getTheFinding();
+			return new FindingBean();
+			//return achar.getTheFinding();
 		
 		List<FindingBean> findingBeans = achar.getFindings();
 		if (findingBeans == null)

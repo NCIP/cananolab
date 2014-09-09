@@ -492,6 +492,8 @@ var app = angular.module('angularApp')
                 $scope.nanoEntityForm.fileBean.keywordsStr = $scope.fileForm.keywordsStr;
                 $scope.nanoEntityForm.fileBean.description = $scope.fileForm.description;
                 $scope.nanoEntityForm.fileBean.id = $scope.fileForm.id;
+                $scope.nanoEntityForm.fileBean.theAccess = $scope.fileForm.theAccess;
+                $scope.nanoEntityForm.fileBean.isPublic = $scope.fileForm.isPublic;
 
                 if( $scope.sampleId != null ) {
                 	$scope.nanoEntityForm.sampleId = $scope.sampleId;
@@ -584,6 +586,8 @@ var app = angular.module('angularApp')
             $scope.nanoEntityForm.fileBean.keywordsStr = $scope.fileForm.keywordsStr;
             $scope.nanoEntityForm.fileBean.description = $scope.fileForm.description;
             $scope.nanoEntityForm.fileBean.id = $scope.fileForm.id;
+            $scope.nanoEntityForm.fileBean.theAccess = $scope.fileForm.theAccess;
+            $scope.nanoEntityForm.fileBean.isPublic = $scope.fileForm.isPublic;
 
             if( $scope.sampleId != null ) {
             	$scope.nanoEntityForm.sampleId = $scope.sampleId;
