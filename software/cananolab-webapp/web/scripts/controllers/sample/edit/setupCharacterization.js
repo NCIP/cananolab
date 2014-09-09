@@ -313,6 +313,18 @@ var app = angular.module('angularApp')
     // close column form with saving //
     $scope.saveColumnForm = function() {
         $scope.columnForm = 0;
+        
+        var columnIndex = 0;
+        if( $scope.findingsColumn.columnOrder != null ) {
+            columnIndex = parseInt($scope.findingsColumn.columnOrder) - 1;
+            var headerName = $scope.findingsColumn.columnName;
+
+            if( $scope.findingsColumn.valueType != null ) {
+                headerName = headerName + ' (' + $scope.findingsColumn.valueType + ')';
+            }
+            $scope.currentFinding.columnHeaders[columnIndex].displayName = headerName;
+
+        }
     };    
 
     // remove column data //
@@ -399,7 +411,18 @@ var app = angular.module('angularApp')
 
     // removes finding info //
     $scope.removeFindingInfo = function() {
-        $scope.updateFinding = 0;        
+    	if (confirm("Delete the Finding?")) {
+    		$scope.loader = true;
+            $http({method: 'POST', url: '/caNanoLab/rest/characterization/removeFinding',data: $scope.currentFinding}).
+            success(function(data, status, headers, config) {            
+                $scope.loader = false;
+                $scope.data=data;
+            }).
+            error(function(data, status, headers, config) {
+                $scope.loader = false;
+            }); 
+    		$scope.updateFinding = 0;        
+    	}
     };    
 
     $scope.cancelFindingInfo = function() {
