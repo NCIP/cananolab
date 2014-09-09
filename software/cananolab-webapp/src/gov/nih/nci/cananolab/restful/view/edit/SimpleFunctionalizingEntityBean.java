@@ -166,6 +166,12 @@ public class SimpleFunctionalizingEntityBean {
 		this.setType(bean.getType());
 		this.setMolecularFormulaType(bean.getMolecularFormulaType());
 		this.setSampleId((String) request.getSession().getAttribute("sampleId"));
+		this.setPubChemDataSourceName(bean.getPubChemDataSourceName());
+		this.setPubChemId(bean.getPubChemId());
+		this.setValue(bean.getValue());
+		this.setValueUnit(bean.getValueUnit());
+		this.setActivationEffect(bean.getActivationMethod().getActivationEffect());
+		this.setActivationMethodType(bean.getActivationMethod().getType());
 		
 		List<SimpleFileBean> fileList = new ArrayList<SimpleFileBean>();
 		for(FileBean files : bean.getFiles()){
@@ -178,6 +184,8 @@ public class SimpleFunctionalizingEntityBean {
 			fBean.setType(files.getDomainFile().getType());
 			fBean.setUri(files.getDomainFile().getUri());
 			fBean.setUriExternal(files.getDomainFile().getUriExternal());
+			fBean.setCreatedBy(files.getDomainFile().getCreatedBy());
+			fBean.setCreatedDate(files.getDomainFile().getCreatedDate());
 			fBean.setTheAccess(files.getTheAccess());
 			fBean.setIsPublic(files.getPublicStatus());
 			fileList.add(fBean);
@@ -192,7 +200,8 @@ public class SimpleFunctionalizingEntityBean {
 			simpleBean.setId(funcBean.getId());
 			simpleBean.setType(funcBean.getType());
 			simpleBean.setModality(funcBean.getImagingFunction().getModality());
-
+			simpleBean.setCreatedBy(funcBean.getDomainFunction().getCreatedBy());
+			simpleBean.setCreatedDate(funcBean.getDomainFunction().getCreatedDate());
 			List<Map<String, String>> targets = new ArrayList<Map<String, String>>();
 			for(TargetBean targetBean : funcBean.getTargets()){
 				Map<String, String> target = new HashMap<String, String>();

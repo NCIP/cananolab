@@ -157,7 +157,6 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		System.out.println("size ===+++"+entityBean.getDomainEntity().getComposingElementCollection().size());
 		compService.saveNanomaterialEntity(sampleBean, entityBean);
 		// save to other samples (only when user click [Submit] button.)
 //		String dispatch = form.getDispatch();//("dispatch");
@@ -551,6 +550,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			comp.setName(simpleComp.getName());
 			comp.setPubChemDataSourceName(simpleComp.getPubChemDataSourceName());
 			comp.setPubChemId(simpleComp.getPubChemId());
+			comp.setId(simpleComp.getId());
 			comp.setCreatedBy(simpleComp.getCreatedBy());
 			comp.setCreatedDate(simpleComp.getCreatedDate());
 			funclist = simpleComp.getInherentFunction();
@@ -586,8 +586,11 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			file.setTitle(fBean.getTitle());
 			file.setDescription(fBean.getDescription());
 			file.setUri(fBean.getUri());
-			file.setCreatedBy(fBean.getCreatedBy());
-			file.setCreatedDate(fBean.getCreatedDate());
+			if(fBean.getId()!=null){
+				file.setId(fBean.getId());
+				file.setCreatedBy(fBean.getCreatedBy());
+				file.setCreatedDate(fBean.getCreatedDate());
+			}
 			file.setUriExternal(fBean.getUriExternal());
 			fileBean.setKeywordsStr(fBean.getKeywordsStr());
 			fileBean.setTheAccess(fBean.getTheAccess());
@@ -607,6 +610,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			file.setTitle(sFBean.getTitle());
 			file.setDescription(sFBean.getDescription());
 			file.setUri(sFBean.getUri());
+			file.setId(sFBean.getId());
 			file.setCreatedBy(sFBean.getCreatedBy());
 			file.setCreatedDate(sFBean.getCreatedDate());
 			file.setUriExternal(sFBean.getUriExternal());
@@ -628,27 +632,31 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				fullerene.setId(new Long((Integer)nanoBean.getDomainEntity().get("id")));
 				fullerene.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
 				fullerene.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
-			}
+				fullerene.setSampleComposition(sampleComp);
+			}else{
+				fullerene.setSampleComposition(null);
+			}	
 			fullerene.setComposingElementCollection(coll);
 			fullerene.setFileCollection(filecoll);
-			fullerene.setSampleComposition(sampleComp);
 			bean.setFullerene(fullerene);
-			nanoEntity = fullerene;
+		//	nanoEntity = fullerene;
 		}
 			
 		else if(nanoBean.getType().equalsIgnoreCase("dendrimer")){
 			Dendrimer den = new Dendrimer();
 			
 			den.setBranch((String) nanoBean.getDomainEntity().get("branch"));
-			den.setGeneration(new Float((String) nanoBean.getDomainEntity().get("generation")));
+			den.setGeneration(new Float((Integer) nanoBean.getDomainEntity().get("generation")));
 			if(nanoBean.getDomainEntity().get("id")!=null){
 				den.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
 				den.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
 				den.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
-			}
+				den.setSampleComposition(sampleComp);
+			}else{
+				den.setSampleComposition(null);
+    		}
 			den.setComposingElementCollection(coll);
 			den.setFileCollection(filecoll);
-			den.setSampleComposition(sampleComp);
 			nanoEntity = den;
 			bean.setDendrimer(den);
 		}
@@ -662,10 +670,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				bio.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
 				bio.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
 				bio.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
+				bio.setSampleComposition(sampleComp);
+
 			}
 			bio.setComposingElementCollection(coll);
 			bio.setFileCollection(filecoll);
-			bio.setSampleComposition(sampleComp);
+			bio.setSampleComposition(null);
 			nanoEntity = bio;
 		}
 		else if(nanoBean.getType().equalsIgnoreCase("Liposome")){
@@ -676,11 +686,13 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				lipo.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
 				lipo.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
 				lipo.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
+				lipo.setSampleComposition(sampleComp);
+
 			}
 			
 			lipo.setComposingElementCollection(coll);
 			lipo.setFileCollection(filecoll);
-			lipo.setSampleComposition(sampleComp);
+			lipo.setSampleComposition(null);
 			nanoEntity = lipo;
 		}
 		else if(nanoBean.getType().equalsIgnoreCase("Emulsion")){
@@ -691,10 +703,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				em.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
 				em.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
 				em.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
+				em.setSampleComposition(sampleComp);
+
 			}
 			em.setComposingElementCollection(coll);
 			em.setFileCollection(filecoll);
-			em.setSampleComposition(sampleComp);
+			em.setSampleComposition(null);
 			nanoEntity = em;
 		}
 		else if(nanoBean.getType().equalsIgnoreCase("Polymer")){
@@ -706,10 +720,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				poly.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
 				poly.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
 				poly.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
+				poly.setSampleComposition(sampleComp);
+
 			}
 			poly.setComposingElementCollection(coll);
 			poly.setFileCollection(filecoll);
-			poly.setSampleComposition(sampleComp);
+			poly.setSampleComposition(null);
 			nanoEntity = poly;
 		}
 			
@@ -725,11 +741,13 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				ctube.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
 				ctube.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
 				ctube.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
+				ctube.setSampleComposition(sampleComp);
+
 			}
 			
 			ctube.setComposingElementCollection(coll);
 			ctube.setFileCollection(filecoll);
-			ctube.setSampleComposition(sampleComp);
+			ctube.setSampleComposition(null);
 			nanoEntity = ctube;
 			
 		}else{
@@ -739,8 +757,14 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				nanoEntity.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
 				nanoEntity.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
 				nanoEntity.setCreatedDate((Date) nanoBean.getDomainEntity().get("createdDate"));
-			}
+				nanoEntity.setSampleComposition(sampleComp);
+
+			}else
+				nanoEntity.setSampleComposition(null);
 		}
+			nanoEntity.setComposingElementCollection(coll);
+			
+			nanoEntity.setFileCollection(filecoll);
 		}
 	//	domainFunc.setCreatedBy(nanoBean.getSimpleCompBean().getCreatedBy());
 	//	domainFunc.setId((Long) nanoBean.getSimpleCompBean().getInherentFunction().get(0).get("id"));
@@ -752,10 +776,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		
 	//	nanoEntity.setId((Long) nanoBean.getDomainEntity().get("id"));
 		
-		nanoEntity.setComposingElementCollection(coll);
 		
-		nanoEntity.setFileCollection(filecoll);
-		nanoEntity.setSampleComposition(sampleComp);
 		bean.setComposingElements(compList);
 		bean.setFiles(fileBeanList);
 		bean.setType(nanoBean.getType());
@@ -811,7 +832,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				+ sampleBean.getDomain().getName() + '/' + "nanomaterialEntity";
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		theFile.setupDomainFile(internalUriPath, user.getLoginName());
-		
+		for(int i=0;i<entity.getFiles().size();i++){
+			System.out.println("createdDate ==="+entity.getFiles().get(i).getDomainFile().getCreatedDate());
+		}
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
 		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
@@ -967,6 +990,25 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		CompositionService service = (CompositionService) (request.getSession()
 				.getAttribute("compositionService"));
 		return downloadFile(service, fileId, request, response);
+	}
+	
+	public void addComposingElement(ComposingElementBean element,List<ComposingElementBean> composingElements) {
+		// if an old one exists, remove it first
+		int index = 0;//composingElements.indexOf(element);
+		
+		for(int i=0;i<composingElements.size();i++){
+			if(element.getDomain().getId()==composingElements.get(i).getDomain().getId());
+				index=i;
+				index=-1;
+		}
+		System.out.println("index ==="+index);
+		if (index != -1) {
+			composingElements.remove(element);
+			// retain the original order
+			composingElements.add(index, element);
+		} else {
+			composingElements.add(element);
+		}
 	}
 	
 }

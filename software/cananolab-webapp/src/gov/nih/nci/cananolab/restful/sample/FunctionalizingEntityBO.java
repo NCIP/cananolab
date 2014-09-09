@@ -18,6 +18,7 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
@@ -47,7 +48,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	public List<String> create(SimpleFunctionalizingEntityBean bean,
 			HttpServletRequest request)
 			throws Exception {
-		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(bean);
+		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(bean, request);
 		List<String> msgs = new ArrayList<String>();
 		msgs = validateInputs(request, entityBean);
 		if (msgs.size()>0) {
@@ -240,7 +241,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean);
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean, request);
 		List<String> msgs = new ArrayList<String>();
 		FunctionBean function = entity.getTheFunction();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -268,7 +269,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
-		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean);
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean, request);
 		FunctionBean function = entity.getTheFunction();
 		entity.removeFunction(function);
 		msgs = validateInputs(request, entity);
@@ -289,7 +290,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	public SimpleFunctionalizingEntityBean saveFile(SimpleFunctionalizingEntityBean bean,
 			HttpServletRequest request)
 			throws Exception {
-		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean);
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean, request);
 		this.setServicesInSession(request);
 		FileBean theFile = entity.getTheFile();
 		String sampleId = bean.getSampleId();
@@ -338,7 +339,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	public SimpleFunctionalizingEntityBean removeFile(SimpleFunctionalizingEntityBean bean,
 			HttpServletRequest request)
 			throws Exception {
-		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean);
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean, request);
 		FileBean theFile = entity.getTheFile();
 		List<String> msgs = new ArrayList<String>();
 		entity.removeFile(theFile);
@@ -450,14 +451,15 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		List<String> msgs = new ArrayList<String>();
 		CompositionService compositionService = this
 				.setServicesInSession(request);
-		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(bean);
+		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(bean, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		entityBean.setupDomainEntity(user.getLoginName());
 		compositionService.deleteFunctionalizingEntity(entityBean
 				.getDomainEntity());
 		compositionService.removeAccesses(entityBean.getDomainEntity());
 
-		msgs.add(PropertyUtil.getProperty("sample", "message.deleteFunctionalizingEntity"));
+		//msgs.add(PropertyUtil.getProperty("sample", "message.deleteFunctionalizingEntity"));
+		msgs.add("success");
 		return msgs;
 	}
 
@@ -519,7 +521,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	}
 	
 	public FunctionalizingEntityBean transferSimpleFunctionalizingEntity(
-			SimpleFunctionalizingEntityBean bean) {
+			SimpleFunctionalizingEntityBean bean, HttpServletRequest request) {
 		
 		//setting up theFunction
 		FunctionalizingEntityBean funcBean = new FunctionalizingEntityBean();
@@ -595,8 +597,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			file.setTitle(sFBean.getTitle());
 			file.setDescription(sFBean.getDescription());
 			file.setUri(sFBean.getUri());
-			file.setCreatedBy(sFBean.getCreatedBy());
-			file.setCreatedDate(sFBean.getCreatedDate());
+			if(sFBean.getId()!=null){
+				file.setId(sFBean.getId());
+				file.setCreatedBy(sFBean.getCreatedBy());
+				file.setCreatedDate(sFBean.getCreatedDate());
+			}
 			file.setUriExternal(sFBean.getUriExternal());
 			fileBean.setKeywordsStr(sFBean.getKeywordsStr());
 			fileBean.setTheAccess(sFBean.getTheAccess());
@@ -617,6 +622,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			file.setTitle(sBean.getTitle());
 			file.setDescription(sBean.getDescription());
 			file.setUri(sBean.getUri());
+			file.setId(sBean.getId());
 			file.setCreatedBy(sBean.getCreatedBy());
 			file.setCreatedDate(sBean.getCreatedDate());
 			file.setUriExternal(sBean.getUriExternal());
@@ -629,6 +635,20 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		}
 		}
 		
+		//setting up sampleComposition 
+				//Managed to get the sampleComposition in the backend to avoid lazy loading things
+			CompositionBean compositionBean=new CompositionBean();
+				CompositionBO compBO = new CompositionBO();
+				CompositionForm form = new CompositionForm();
+				form.setSampleId(bean.getSampleId());
+				try {
+					compositionBean = compBO.summaryView(form, request);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				SampleComposition sampleComp = compositionBean.getDomain();
+				
 		if(bean.getType().equalsIgnoreCase("smallMolecule")){
 			SmallMolecule mol = new SmallMolecule();
 			ActivationMethod act = new ActivationMethod();
@@ -639,12 +659,16 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				mol.setId(new Long((Integer)bean.getDomainEntity().get("id")));
 				mol.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
 				mol.setCreatedDate(new Date((Long) bean.getDomainEntity().get("createdDate")));
+				mol.setSampleComposition(sampleComp);
+
+			}else{
+				mol.setSampleComposition(null);
+
 			}
 			mol.setFunctionCollection(funCollection);
 			mol.setFileCollection(filecoll);
 			mol.setActivationMethod(act);
-
-			mol.setSampleComposition(new SampleComposition());
+			funcBean.setSmallMolecule(mol);
 			domainEntity = mol;
 		}else if(bean.getType().equalsIgnoreCase("Biopolymer")){
 			
@@ -656,6 +680,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				bio.setId(new Long((Integer)bean.getDomainEntity().get("id")));
 				bio.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
 				bio.setCreatedDate(new Date((Long) bean.getDomainEntity().get("createdDate")));
+				bio.setSampleComposition(sampleComp);
+
+			}else{
+				bio.setSampleComposition(null);
+
 			}
 			bio.setType((String) bean.getDomainEntity().get("type"));
 			bio.setSequence((String) bean.getDomainEntity().get("sequence"));
@@ -663,7 +692,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			bio.setActivationMethod(act);
 
 			bio.setFileCollection(filecoll);
-			bio.setSampleComposition(new SampleComposition());
+			funcBean.setBiopolymer(bio);
 			domainEntity = bio;
 		}else if(bean.getType().equalsIgnoreCase("Antibody")){
 			Antibody body = new Antibody();
@@ -674,14 +703,18 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				body.setId(new Long((Integer)bean.getDomainEntity().get("id")));
 				body.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
 				body.setCreatedDate(new Date((Long) bean.getDomainEntity().get("createdDate")));
-			}
+				body.setSampleComposition(sampleComp);
+
+			}else
+				body.setSampleComposition(null);
+
 			body.setType((String) bean.getDomainEntity().get("type"));
 			body.setIsotype((String) bean.getDomainEntity().get("isoType"));
 			body.setSpecies((String) bean.getDomainEntity().get("species"));
 			body.setFunctionCollection(funCollection);
 			body.setFileCollection(filecoll);
 			body.setActivationMethod(act);
-			body.setSampleComposition(new SampleComposition());
+			funcBean.setAntibody(body);
 			domainEntity = body;
 		} else{
 			domainEntity = new OtherFunctionalizingEntity();
@@ -690,13 +723,16 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 					domainEntity.setId(new Long((Integer)bean.getDomainEntity().get("id")));
 					domainEntity.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
 					domainEntity.setCreatedDate(new Date((Long) bean.getDomainEntity().get("createdDate")));
+					domainEntity.setSampleComposition(sampleComp);
+
+				}else{
+					domainEntity.setSampleComposition(null);
 				}
+				domainEntity.setFunctionCollection(funCollection);
+				domainEntity.setFileCollection(filecoll);
 			}
 		}
 		
-		domainEntity.setFunctionCollection(funCollection);
-		domainEntity.setFileCollection(filecoll);
-		domainEntity.setSampleComposition(new SampleComposition());
 		funcBean.setType(bean.getType());
 		funcBean.setName(bean.getName());
 		funcBean.setPubChemDataSourceName(bean.getPubChemDataSourceName());

@@ -277,21 +277,6 @@ public class SimpleNanomaterialEntityBean {
 		setFiles(files);
 	}
 		
-//		//setting up sample composition
-//		sampleComposition = new SimpleSampleComposition();
-//		Collection<SimpleNanomaterialEntityBean> nanoCollection = new HashSet<SimpleNanomaterialEntityBean>();
-//		SimpleNanomaterialEntityBean simpleNano = new SimpleNanomaterialEntityBean();
-//		SampleComposition sampleComp = bean.getDomainEntity().getSampleComposition();
-//		sampleComposition.setId(sampleComp.getId());
-////		for(NanomaterialEntity nano : sampleComp.getNanomaterialEntityCollection()){
-////			simpleNano.setCreatedBy(nano.getCreatedBy());
-////			simpleNano.setCreatedDate(nano.getCreatedDate());
-////			simpleNano.setDescription(nano.getDescription());
-////			nanoCollection.add(simpleNano);
-////		}
-////		sampleComposition.setNanomaterialEntityCollection(nanoCollection);
-//		
-//		this.setSampleComposition(sampleComposition);
 		setDomainEntityInfo(bean);
 }
 

@@ -541,12 +541,13 @@ public class SimpleCompositionBean {
 			if (compBean.getFiles() != null) {
 				compositionfile = new HashMap<String, Object>();
 				fileList = new ArrayList<Map<String, Object>>();
-				Map<String, Object> comFile = new HashMap<String, Object>();
 
 				for (String entityType : compBean.getFileTypes()) {
 
 					for (FileBean file : compBean.getType2Files().get(
 							entityType)) {
+						Map<String, Object> comFile = new HashMap<String, Object>();
+
 						comFile.put("dataId", file.getDomainFile().getId());
 						comFile.put("fileId", file.getDomainFile().getId());
 						comFile.put("isImage", file.isImage());

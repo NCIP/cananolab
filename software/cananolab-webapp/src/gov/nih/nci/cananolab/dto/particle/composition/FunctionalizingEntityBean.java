@@ -176,6 +176,18 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		return domainEntity;
 	}
 
+	public void setSmallMolecule(SmallMolecule smallMolecule) {
+		this.smallMolecule = smallMolecule;
+	}
+
+	public void setAntibody(Antibody antibody) {
+		this.antibody = antibody;
+	}
+
+	public void setBiopolymer(Biopolymer biopolymer) {
+		this.biopolymer = biopolymer;
+	}
+
 	public Antibody getAntibody() {
 		return antibody;
 	}
