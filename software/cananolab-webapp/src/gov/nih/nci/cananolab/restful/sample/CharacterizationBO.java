@@ -840,7 +840,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		simpleFinding.transferFromFindingBean(findingBean);
 		simpleFinding.setColumnHeaders(findingBean.getColumnHeaders());
-		simpleFinding.setDefaultColumnNameForNullHeaders();
+		simpleFinding.setDefaultValuesForNullHeaders();
 		
 		request.setAttribute("anchor", "submitFinding");
 		

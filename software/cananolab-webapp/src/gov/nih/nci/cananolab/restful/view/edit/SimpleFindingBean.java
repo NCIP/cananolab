@@ -134,11 +134,13 @@ public class SimpleFindingBean {
 		}
 	}
 	
-	public void setDefaultColumnNameForNullHeaders() {
+	public void setDefaultValuesForNullHeaders() {
 		int headerIdx = 1;
 		for (ColumnHeader header : this.columnHeaders) {
-			if (header.getColumnName() == null || header.getColumnName().length() == 0)
+			if (header.getColumnName() == null || header.getColumnName().length() == 0) {
 				header.setColumnName("Column "  + headerIdx);
+				header.setColumnOrder(headerIdx);
+			}
 			
 			headerIdx++;
 		}

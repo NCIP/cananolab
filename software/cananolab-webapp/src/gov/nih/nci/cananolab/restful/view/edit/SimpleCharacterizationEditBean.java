@@ -259,7 +259,7 @@ public class SimpleCharacterizationEditBean {
 		transferToPOCBean(charBean, this.characterizationSourceId);
 		
 		//char date
-		//charBean.getd
+		charBean.getDomainChar().setDate(characterizationDate);
 		
 		charBean.setDescription(this.designMethodsDescription);
 		charBean.setConclusion(this.analysisConclusion);
