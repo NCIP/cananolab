@@ -574,4 +574,10 @@ public class CharacterizationBean {
 			}
 		}
 	}
+
+	public void setProtocolBean(ProtocolBean protocolBean) {
+		this.protocolBean = protocolBean;
+	}
+	
+	
 }

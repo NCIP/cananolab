@@ -220,10 +220,6 @@ public class SimpleCharacterizationEditBean {
 			simplePOC.transferFromPointOfContactBean(poc);
 			charSourceLookup.add(simplePOC);
 		}
-		
-		SimplePOC other = new SimplePOC();
-		other.setDisplayName("other");
-		charSourceLookup.add(other);
 	}
 
 	protected void setProtocolLookup(HttpServletRequest request, String charType) 
@@ -260,20 +256,43 @@ public class SimpleCharacterizationEditBean {
 		transferToProtocolBean(charBean, this.protocolId);
 		
 		//POC
-		charBean.getPocBean();
-		
+		transferToPOCBean(charBean, this.characterizationSourceId);
 		
 		//char date
+		//charBean.getd
 		
 		charBean.setDescription(this.designMethodsDescription);
 		charBean.setConclusion(this.analysisConclusion);
 		
 		
-		//this.characterizationSourceId
+	}
+	
+	protected void transferToPOCBean(CharacterizationBean charBean, long selectedId) {
+		if (selectedId == 0) return;
+		
+		SimplePOC selected = null;
+		for (SimplePOC simplepoc : this.charSourceLookup) {
+			if (selectedId == simplepoc.getId()) {
+				selected = simplepoc;
+				break;
+			}
+		}
+		
+		if (selected == null) { 
+			logger.error("User selected Characterization Source doesn't have a match in lookup list. This should not happen");
+			return;
+		}
+		
+		PointOfContactBean pocBean = new PointOfContactBean();
+		//pocBean.s
 	}
 	
 	protected void transferToProtocolBean(CharacterizationBean charBean, long selectedProtoId) {
-		if (selectedProtoId == 0) return; //user didn't select one, which is ok
+		//ProtocolBean protoBean = charBean.getProtocolBean();
+		if (selectedProtoId == 0) {
+			//charBean.setp
+			return; //user didn't select one or selected empty, which is ok
+		}
 		
 		SimpleProtocol selected = null;
 		for (SimpleProtocol simpleProto : this.protocolLookup) {
