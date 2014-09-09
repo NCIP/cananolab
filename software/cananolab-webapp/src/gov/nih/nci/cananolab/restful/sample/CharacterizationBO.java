@@ -73,7 +73,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public CharacterizationSummaryViewBean create(HttpServletRequest request, SimpleCharacterizationEditBean simpleEdit)
+	public CharacterizationSummaryViewBean submitOrUpdate(HttpServletRequest request, 
+			SimpleCharacterizationEditBean simpleEdit)
 			throws Exception {
 		
 		CharacterizationBean charBean = (CharacterizationBean)request.getSession().getAttribute("theChar");
@@ -81,7 +82,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		simpleEdit.getErrors().clear();
 		simpleEdit.getMessages().clear();
 		
-		//TODO: 
 		simpleEdit.transferToCharacterizationBean(charBean);
 		
 		this.setServicesInSession(request);

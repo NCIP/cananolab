@@ -465,7 +465,7 @@ public class CharacterizationServices {
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) applicationContext.getBean("characterizationBO");
 			
-			CharacterizationSummaryViewBean charView = characterizationBO.create(httpRequest, editBean);
+			CharacterizationSummaryViewBean charView = characterizationBO.submitOrUpdate(httpRequest, editBean);
 			
 			List<String> errors = charView.getErrors();
 			if (errors != null && errors.size() > 0) {
