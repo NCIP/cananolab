@@ -268,7 +268,10 @@ public class SimpleCharacterizationEditBean {
 	}
 	
 	protected void transferToPOCBean(CharacterizationBean charBean, long selectedId) {
-		if (selectedId == 0) return;
+		if (selectedId == 0) {//user didn't select one or selected empty, which is ok
+			charBean.setPocBean(new PointOfContactBean());
+			return;
+		}
 		
 		SimplePOC selected = null;
 		for (SimplePOC simplepoc : this.charSourceLookup) {
@@ -283,15 +286,21 @@ public class SimpleCharacterizationEditBean {
 			return;
 		}
 		
-		PointOfContactBean pocBean = new PointOfContactBean();
-		//pocBean.s
+		PointOfContactBean pocBean = charBean.getPocBean();
+		Long id = pocBean.getDomain().getId();
+		if (id != null && selectedId == id.longValue())
+			return; //nothing changed. 
+				
+		pocBean	= new PointOfContactBean();
+		pocBean.getDomain().setId(selectedId);
+		charBean.setPocBean(pocBean);
 	}
 	
 	protected void transferToProtocolBean(CharacterizationBean charBean, long selectedProtoId) {
-		//ProtocolBean protoBean = charBean.getProtocolBean();
-		if (selectedProtoId == 0) {
-			//charBean.setp
-			return; //user didn't select one or selected empty, which is ok
+		
+		if (selectedProtoId == 0) { //user didn't select one or selected empty, which is ok
+			charBean.setProtocolBean(new ProtocolBean());
+			return; 
 		}
 		
 		SimpleProtocol selected = null;
@@ -307,12 +316,19 @@ public class SimpleCharacterizationEditBean {
 			return;
 		}
 			
-		ProtocolBean protoBean = new ProtocolBean();
-		protoBean.getDomain().setId(selected.domainId);
+		ProtocolBean protoBean = charBean.getProtocolBean();
+		Long id = protoBean.getDomain().getId();
+		if (id != null && selectedProtoId == id.longValue()) {
+			return; //proto didn't change. nothing to do
+		} 
 		
+		protoBean = new ProtocolBean(); //user selected a different one
+		protoBean.getDomain().setId(selected.domainId);
 		FileBean fileBean = protoBean.getFileBean();
 		fileBean.getDomainFile().setId(selected.domainFileId);
 		fileBean.getDomainFile().setUri(selected.domainFileUri);
+		
+		charBean.setProtocolBean(protoBean);
 	}
 	
 	
@@ -442,8 +458,6 @@ public class SimpleCharacterizationEditBean {
 		this.charTypesLookup = charTypesLookup;
 	}
 	
-	
-
 //	public List<String> getAssayTypeLookup() {
 //		return AssayTypeLookup;
 //	}
@@ -510,86 +524,6 @@ public class SimpleCharacterizationEditBean {
 		this.datumConditionValueTypeLookup = datumConditionValueTypeLookup;
 	}
 
-	public class SimpleProtocol {
-		//Proto needs:
-				//property="achar.protocolBean.fileBean.domainFile.uri" 
-				//property="achar.protocolBean.domain.id"
-				//characterizationForm.map.achar.protocolBean.fileBean.domainFile.id
-				//characterizationForm.map.achar.protocolBean.fileBean.domainFile.uri
-		
-		long domainId;
-		long domainFileId;
-		String domainFileUri;
-		String displayName;
-		
-		public long getDomainId() {
-			return domainId;
-		}
-
-		public void setDomainId(long domainId) {
-			this.domainId = domainId;
-		}
-
-		public long getDomainFileId() {
-			return domainFileId;
-		}
-
-		public void setDomainFileId(long domainFileId) {
-			this.domainFileId = domainFileId;
-		}
-
-		public String getDomainFileUri() {
-			return domainFileUri;
-		}
-
-		public void setDomainFileUri(String domainFileUri) {
-			this.domainFileUri = domainFileUri;
-		}
-
-		public String getDisplayName() {
-			return displayName;
-		}
-
-		public void setDisplayName(String displayName) {
-			this.displayName = displayName;
-		}
-
-		
-		
-		public void transferFromProtocolBean(ProtocolBean protoBean) {
-			if (protoBean == null) return;
-			
-			if (protoBean.getDomain().getId() != null)
-				domainId = protoBean.getDomain().getId();
-			FileBean domainFile = protoBean.getFileBean();
-			if (domainFile != null && domainFile.getDomainFile() != null) {
-				if (domainFile.getDomainFile().getId() != null)
-					domainFileId = domainFile.getDomainFile().getId();
-				domainFileUri = domainFile.getDomainFile().getUri();
-			}
-			displayName = protoBean.getDisplayName();
-		}
-	}
 	
-	public class SimplePOC {
-		long id;
-		String displayName;
-		public long getId() {
-			return id;
-		}
-		public void setId(long id) {
-			this.id = id;
-		}
-		public String getDisplayName() {
-			return displayName;
-		}
-		public void setDisplayName(String displayName) {
-			this.displayName = displayName;
-		}
-		
-		public void transferFromPointOfContactBean(PointOfContactBean pocBean) {
-			id = pocBean.getDomain().getId();
-			displayName = pocBean.getDisplayName();
-		}
-	}
+	
 }
