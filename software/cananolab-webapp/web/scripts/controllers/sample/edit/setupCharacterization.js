@@ -283,6 +283,7 @@ var app = angular.module('angularApp')
 
     // updates rows and columns and runs rest call update //
     $scope.updateRowsColsForFinding = function() {
+        $scope.loader = true;        
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/updateDataConditionTable',data: $scope.currentFinding}).
         success(function(data, status, headers, config) {            
             $scope.loader = false;
@@ -369,6 +370,7 @@ var app = angular.module('angularApp')
 
     // sets the column order //
     $scope.updateColumnOrder = function() {
+        $scope.loader = true;        
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/setColumnOrder',data: $scope.currentFinding}).
         success(function(data, status, headers, config) {            
             $scope.loader = false;
@@ -383,6 +385,7 @@ var app = angular.module('angularApp')
 
     // saves finding info //
     $scope.saveFindingInfo = function() {
+        $scope.loader = true;
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveFinding',data: $scope.currentFinding}).
         success(function(data, status, headers, config) {            
             $scope.loader = false;
@@ -396,7 +399,6 @@ var app = angular.module('angularApp')
 
     // removes finding info //
     $scope.removeFindingInfo = function() {
-        alert("remove");
         $scope.updateFinding = 0;        
     };    
 
@@ -412,24 +414,26 @@ var app = angular.module('angularApp')
 
     // save characterization record. //
     $scope.save = function() {
-            $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveCharacterization',data: $scope.data}).
-            success(function(data, status, headers, config) {            
-                $scope.loader = true;
-            }).
-            error(function(data, status, headers, config) {
-                $scope.loader = false;
-            }); 
+        $scope.loader = true;    
+        $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveCharacterization',data: $scope.data}).
+        success(function(data, status, headers, config) {            
+            $scope.loader = true;
+        }).
+        error(function(data, status, headers, config) {
+            $scope.loader = false;
+        }); 
     };
 
     // remove characterization record. //
     $scope.remove = function() {
-            $http({method: 'POST', url: '/caNanoLab/rest/characterization/removeCharacterization',data: $scope.data}).
-            success(function(data, status, headers, config) {            
-                $scope.loader = true;
-            }).
-            error(function(data, status, headers, config) {
-                $scope.loader = false;
-            }); 
+        $scope.loader = true;
+        $http({method: 'POST', url: '/caNanoLab/rest/characterization/removeCharacterization',data: $scope.data}).
+        success(function(data, status, headers, config) {            
+            $scope.loader = true;
+        }).
+        error(function(data, status, headers, config) {
+            $scope.loader = false;
+        }); 
     };    
 
     // reset form //
