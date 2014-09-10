@@ -245,7 +245,9 @@ var app = angular.module('angularApp')
                     $scope.fileForm.description = element.description;
                     $scope.fileForm.id = element.id;
                     $scope.fileForm.createdBy = element.createdBy;
-                    $scope.fileForm.createdDate = element.createdDate;                    
+                    $scope.fileForm.createdDate = element.createdDate;  
+                    
+                    $scope.addNewFile = true;
 
                     break;
                 }
