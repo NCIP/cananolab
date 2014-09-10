@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 
 public class SimpleChemicalAssociationBean {
@@ -102,13 +103,13 @@ public class SimpleChemicalAssociationBean {
 	
 	public void trasferToSimpleChemicalAssociation(ChemicalAssociationBean chemBean, HttpServletRequest request){
 		
-		setType(chemBean.getType());
-		setDescription(chemBean.getDescription());
-		setBondType(chemBean.getAttachment().getBondType());
-		setSampleId((String) request.getSession().getAttribute("sampleId"));
-		setCreatedBy(chemBean.getDomainAssociation().getCreatedBy());
-		setCreatedDate(chemBean.getDomainAssociation().getCreatedDate());
-		setAssociationId(chemBean.getDomainAssociation().getId());
+		this.setType(chemBean.getType());
+		this.setDescription(chemBean.getDescription());
+		this.setBondType(chemBean.getAttachment().getBondType());
+		this.setSampleId((String) request.getSession().getAttribute("sampleId"));
+		this.setCreatedBy(chemBean.getDomainAssociation().getCreatedBy());
+		this.setCreatedDate(chemBean.getDomainAssociation().getCreatedDate());
+		this.setAssociationId(chemBean.getDomainAssociation().getId());
 		associatedElementA = new SimpleAssociatedElement();
 		
 		associatedElementA.setClassName(chemBean.getAssociatedElementA().getClassName());
@@ -130,16 +131,8 @@ public class SimpleChemicalAssociationBean {
 		comp.setValueUnit(chemBean.getAssociatedElementA().getComposingElement().getValueUnit());
 		comp.setId(chemBean.getAssociatedElementA().getComposingElement().getId());
 		
-//		Map<String, Object> inherentFunction = new HashMap<String, Object>();
-//		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
-//		for(Function fun : chemBean.getAssociatedElementA().getComposingElement().getInherentFunctionCollection()){
-//			inherentFunction.put("description", fun.getDescription());
-//			inherentFunction.put("id", fun.getId());
-//			list.add(inherentFunction);
-//		}
-//		comp.setInherentFunction(list);
 		associatedElementA.setComposingElement(comp);
-		setAssociatedElementA(associatedElementA);
+		this.setAssociatedElementA(associatedElementA);
 		
 		associatedElementB = new SimpleAssociatedElement();
 		
@@ -162,16 +155,27 @@ public class SimpleChemicalAssociationBean {
 		comp.setValueUnit(chemBean.getAssociatedElementB().getComposingElement().getValueUnit());
 		comp.setId(chemBean.getAssociatedElementB().getComposingElement().getId());
 		
-//		inherentFunction = new HashMap<String, Object>();
-//		list = new ArrayList<Map<String,Object>>();
-//		for(Function fun : chemBean.getAssociatedElementB().getComposingElement().getInherentFunctionCollection()){
-//			inherentFunction.put("description", fun.getDescription());
-//			inherentFunction.put("id", fun.getId());
-//			list.add(inherentFunction);
-//		}
-//		comp.setInherentFunction(list);
+		this.setAssociatedElementB(associatedElementB);
+
+		files = new ArrayList<SimpleFileBean>();
 		associatedElementB.setComposingElement(comp);
-		
-		setAssociatedElementB(associatedElementB);
+		for(FileBean fileBean : chemBean.getFiles()){
+			SimpleFileBean simpleBean = new SimpleFileBean();
+			simpleBean.setDescription(fileBean.getDescription());
+			simpleBean.setId(fileBean.getDomainFile().getId());
+			simpleBean.setKeywordsStr(fileBean.getKeywordsStr());
+			simpleBean.setTitle(fileBean.getDomainFile().getTitle());
+			simpleBean.setType(fileBean.getDomainFile().getType());
+			simpleBean.setUri(fileBean.getDomainFile().getUri());
+			simpleBean.setUriExternal(fileBean.getDomainFile().getUriExternal());
+			simpleBean.setExternalUrl(fileBean.getExternalUrl());
+			simpleBean.setSampleId((String) request.getSession().getAttribute("sampleId"));
+			simpleBean.setCreatedBy(fileBean.getDomainFile().getCreatedBy());
+			simpleBean.setCreatedDate(fileBean.getDomainFile().getCreatedDate());
+			simpleBean.setTheAccess(fileBean.getTheAccess());
+			simpleBean.setIsPublic(fileBean.getPublicStatus());
+			files.add(simpleBean);
+		}
+		this.setFiles(files);
 	}
 }

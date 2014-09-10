@@ -328,8 +328,8 @@ public class SimpleNanomaterialEntityBean {
 		}else if(bean.getType().equalsIgnoreCase("Liposome")){
 			domainEntity = new HashMap<String, Object>();
 
-			domainEntity.put("IsPolymarized",bean.getLiposome().getPolymerized());
-			domainEntity.put("PolymerName",	bean.getLiposome().getPolymerName());
+			domainEntity.put("isPolymerized",bean.getLiposome().getPolymerized());
+			domainEntity.put("polymerName",	bean.getLiposome().getPolymerName());
 			domainEntity.put("createdDate", bean.getLiposome().getCreatedDate());
 			domainEntity.put("createdBy", bean.getLiposome().getCreatedBy());
 			domainEntity.put("id", bean.getLiposome().getId());
@@ -337,8 +337,8 @@ public class SimpleNanomaterialEntityBean {
 		}else if(bean.getType().equalsIgnoreCase("Emulsion")){
 			domainEntity = new HashMap<String, Object>();
 
-			domainEntity.put("IsPolymarized",bean.getEmulsion().getPolymerized());
-			domainEntity.put("PolymerName",	bean.getEmulsion().getPolymerName());
+			domainEntity.put("isPolymerized",bean.getEmulsion().getPolymerized());
+			domainEntity.put("polymerName",	bean.getEmulsion().getPolymerName());
 			domainEntity.put("createdDate", bean.getEmulsion().getCreatedDate());
 			domainEntity.put("createdBy", bean.getEmulsion().getCreatedBy());
 			domainEntity.put("id", bean.getEmulsion().getId());

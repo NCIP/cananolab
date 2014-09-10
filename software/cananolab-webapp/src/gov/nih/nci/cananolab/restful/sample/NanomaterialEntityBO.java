@@ -80,7 +80,6 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entityBean);
 
-	//	msgs.add(PropertyUtil.getProperty("sample", "message.addNanomaterialEntity"));
 		// save action messages in the session so composition.do know about them
 		// to preselect nanomaterial entity after returning to the summary page
 		msgs.add("success");
@@ -127,12 +126,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		List<String> msgs = new ArrayList<String>();
 		this.setServicesInSession(request);
 
-	//	String sampleId = entityBean.getDomainId();
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Boolean newEntity = true;
-//		NanomaterialEntity domain = entityBean.getDomainEntity();
-//		NanomaterialEntityBean bean = new NanomaterialEntityBean(domain);
+
 		try {
 			entityBean.setupDomainEntity(user.getLoginName());
 			if (entityBean.getDomainEntity().getId() != null) {
@@ -141,18 +138,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		} catch (ClassCastException ex) {
 			if (!StringUtils.isEmpty(ex.getMessage())
 					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
-//				msg = new ActionMessage("errors.invalidOtherType",
-//						entityBean.getType(), "nanomaterial entity");
 				msgs.add(entityBean.getType()+" is an invalid nanomaterial entity type. It is a pre-defined composition type.");
 			} else {
-//				msg = new ActionMessage("errors.invalidOtherType",
-//						entityBean.getType(), "nanomaterial entity");
 				msgs.add(entityBean.getType()+" is an invalid nanomaterial entity type. It is a pre-defined composition type.");
 
 				entityBean.setType(null);
 			}
-		//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//	this.saveErrors(request, msgs);
 			entityBean.setType(null);
 		}
 		// comp service has already been created
@@ -174,13 +165,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		if (!newEntity && !user.isCurator() && sampleBean.getPublicStatus()) {
 //			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
 //					.toString(), sampleBean.getDomain().getName(), "sample");
-//			ActionMessages messages = new ActionMessages();
-//			ActionMessage msg = null;
-//			msg = new ActionMessage("message.updateSample.retractFromPublic");
 			msgs.add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
 			return msgs;
-		//	messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//	saveMessages(request, messages);
 		}
 		return msgs;
 	}
@@ -194,22 +180,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			for (FunctionBean functionBean : composingElementBean
 					.getInherentFunctions()) {
 				if (StringUtils.isEmpty(functionBean.getType())) {
-//					ActionMessages msgs = new ActionMessages();
-//					ActionMessage msg = new ActionMessage("errors.required",
-//							"Inherent function type");
-//					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//					this.saveErrors(request, msgs);
-					msgs.add(PropertyUtil.getProperty("sample", "Inherent function type"));
-				//	return msgs;
+					msgs.add("Inherent function type is required.");
 				} else if (!StringUtils.xssValidate(functionBean.getType())) {
-//					ActionMessages msgs = new ActionMessages();
-//					ActionMessage msg = new ActionMessage(
-//							"function.type.invalid");
-//					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//					this.saveErrors(request, msgs);
 					msgs.add(PropertyUtil.getProperty("sample", "function.type.invalid"));
-
-			//		return false;
 				}
 			}
 		}
@@ -219,125 +192,63 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	// per app scan, can not easily validate in the validation.xml
 	private List<String> validateEntity(HttpServletRequest request,
 			NanomaterialEntityBean entityBean) {
-//		ActionMessages msgs = new ActionMessages();
 		List<String> msgs = new ArrayList<String>();
-		boolean status = true;
 		if (entityBean.getType().equalsIgnoreCase("biopolymer")) {
 			if (entityBean.getBiopolymer().getName() != null
 					&& !StringUtils.xssValidate(entityBean.getBiopolymer()
 							.getName())) {
-//				ActionMessage msg = new ActionMessage(
-//						"nanomaterialEntityForm.biopolymer.name.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
 				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.biopolymer.name.invalid"));
-				return msgs;
-//				status = false;
 			}
 			if (entityBean.getBiopolymer().getType() != null
 					&& !StringUtils.xssValidate(entityBean.getBiopolymer()
 							.getType())) {
-//				ActionMessage msg = new ActionMessage(
-//						"nanomaterialEntityForm.biopolymer.type.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
 				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.biopolymer.type.invalid"));
-
-				status = false;
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("liposome")) {
 			if (entityBean.getLiposome().getPolymerName() != null
 					&& !StringUtils.xssValidate(entityBean.getLiposome()
 							.getPolymerName())) {
-//				ActionMessage msg = new ActionMessage(
-//						"nanomaterialEntityForm.liposome.polymerName.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
 				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.liposome.polymerName.invalid"));
-
-				status = false;
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("emulsion")) {
 			if (entityBean.getEmulsion().getPolymerName() != null
 					&& !StringUtils.xssValidate(entityBean.getEmulsion()
 							.getPolymerName())) {
-//				ActionMessage msg = new ActionMessage(
-//						"nanomaterialEntityForm.emulsion.polymerName.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-				status = false;
 				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.emulsion.polymerName.invalid"));
-
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("polymer")) {
 			if (entityBean.getPolymer().getInitiator() != null
 					&& !StringUtils.xssValidate(entityBean.getPolymer()
 							.getInitiator())) {
-//				ActionMessage msg = new ActionMessage(
-//						"nanomaterialEntityForm.polymer.initiator.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-				status = false;
 				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.polymer.initiator.invalid"));
-
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("dendrimer")) {
 			if (entityBean.getDendrimer().getBranch() != null
 					&& !StringUtils.xssValidate(entityBean.getDendrimer()
 							.getBranch())) {
-//				ActionMessage msg = new ActionMessage(
-//						"nanomaterialEntityForm.dendrimer.branch.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
 				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.dendrimer.branch.invalid"));
-
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("carbon nanotube")) {
 			if (entityBean.getCarbonNanotube().getAverageLengthUnit() != null
 					&& !entityBean.getCarbonNanotube().getAverageLengthUnit()
 							.matches(Constants.UNIT_PATTERN)) {
-//				ActionMessage msg = new ActionMessage(
-//						"nanomaterialEntityForm.carbonNanotube.averageLengthUnit.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
 				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.carbonNanotube.averageLengthUnit.invalid"));
-
 			}
 			if (entityBean.getCarbonNanotube().getChirality() != null
 					&& !StringUtils.xssValidate(entityBean.getCarbonNanotube()
 							.getChirality())) {
-//				ActionMessage msg = new ActionMessage(
-//						"nanomaterialEntityForm.carbonNanotube.chirality.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
 				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.carbonNanotube.chirality.invalid"));
-
 			}
 			if (entityBean.getCarbonNanotube().getDiameterUnit() != null
 					&& !entityBean.getCarbonNanotube().getDiameterUnit()
 							.matches(Constants.UNIT_PATTERN)) {
-//				ActionMessage msg = new ActionMessage(
-//						"nanomaterialEntityForm.carbonNanotube.diameterUnit.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
 				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.carbonNanotube.diameterUnit.invalid"));
-
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("fullerene")) {
 			if (entityBean.getFullerene().getAverageDiameterUnit() != null
 					&& !entityBean.getFullerene().getAverageDiameterUnit()
 							.matches(Constants.UNIT_PATTERN)) {
-//				ActionMessage msg = new ActionMessage(
-//						"nanomaterialEntityForm.fullerene.averageDiameterUnit.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
 				msgs.add(PropertyUtil.getProperty("sample", "nanomaterialEntityForm.fullerene.averageDiameterUnit.invalid"));
-				
 			}
 		}
 		return msgs;
@@ -651,7 +562,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			Dendrimer den = new Dendrimer();
 			
 			den.setBranch((String) nanoBean.getDomainEntity().get("branch"));
-			den.setGeneration(new Float((Integer) nanoBean.getDomainEntity().get("generation")));
+			den.setGeneration(new Float((String) nanoBean.getDomainEntity().get("generation")));
 			if(nanoBean.getDomainEntity().get("id")!=null){
 				den.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
 				den.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
@@ -687,8 +598,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		}
 		else if(nanoBean.getType().equalsIgnoreCase("Liposome")){
 			Liposome lipo = new Liposome();
-			lipo.setPolymerized((Boolean) nanoBean.getDomainEntity().get("IsPolymarized"));
-			lipo.setPolymerName((String) nanoBean.getDomainEntity().get("PolymerName"));
+			lipo.setPolymerized(Boolean.valueOf((String) nanoBean.getDomainEntity().get("isPolymerized")));
+			lipo.setPolymerName((String) nanoBean.getDomainEntity().get("polymerName"));
 			if(nanoBean.getDomainEntity().get("id")!=null){
 				lipo.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
 				lipo.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
@@ -704,8 +615,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		}
 		else if(nanoBean.getType().equalsIgnoreCase("Emulsion")){
 			Emulsion em = new Emulsion();
-			em.setPolymerized((Boolean) nanoBean.getDomainEntity().get("IsPolymarized"));
-			em.setPolymerName((String) nanoBean.getDomainEntity().get("PolymerName"));
+			em.setPolymerized(Boolean.valueOf((String) nanoBean.getDomainEntity().get("isPolymerized")));
+			em.setPolymerName((String) nanoBean.getDomainEntity().get("polymerName"));
 			if(nanoBean.getDomainEntity().get("id")!=null){
 				em.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
 				em.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));

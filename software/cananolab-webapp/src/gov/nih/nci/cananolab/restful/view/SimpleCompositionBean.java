@@ -183,10 +183,10 @@ public class SimpleCompositionBean {
 							if (detailPage.contains("Liposome")) {
 								properties = new HashMap<String, Object>();
 
-								properties.put("IsPolymarized",
+								properties.put("isPolymerized",
 										nanoMaterialEntity.getLiposome()
 												.getPolymerized());
-								properties.put("PolymerName",
+								properties.put("polymerName",
 										nanoMaterialEntity.getLiposome()
 												.getPolymerName());
 
@@ -194,19 +194,10 @@ public class SimpleCompositionBean {
 							if (detailPage.contains("Emulsion")) {
 								properties = new HashMap<String, Object>();
 
-								// Characterization achar =
-								// compBean.getDomain().getSample().getCharacterizationCollection().iterator().next();
-								// CharacterizationBean charBean = new
-								// CharacterizationBean(achar);
-								// Boolean is =
-								// charBean.getSurface().getIsHydrophobic();
-
-								// properties.put("isHydrophobic", is);
-
-								properties.put("IsPolymarized",
+								properties.put("isPolymerized",
 										nanoMaterialEntity.getEmulsion()
 												.getPolymerized());
-								properties.put("PolymerName",
+								properties.put("polymerName",
 										nanoMaterialEntity.getEmulsion()
 												.getPolymerName());
 

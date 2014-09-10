@@ -121,8 +121,11 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 					file.setTitle(fBean.getTitle());
 					file.setDescription(fBean.getDescription());
 					file.setUri(fBean.getUri());
-					file.setCreatedBy(fBean.getCreatedBy());
-					file.setCreatedDate(fBean.getCreatedDate());
+					if(fBean.getId()!=null){
+						file.setId(fBean.getId());
+						file.setCreatedBy(fBean.getCreatedBy());
+						file.setCreatedDate(fBean.getCreatedDate());
+					}
 					file.setUriExternal(fBean.getUriExternal());
 					fileBean.setKeywordsStr(fBean.getKeywordsStr());
 					fileBean.setDomainFile(file);
@@ -140,6 +143,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 					file.setTitle(sFBean.getTitle());
 					file.setDescription(sFBean.getDescription());
 					file.setUri(sFBean.getUri());
+					file.setId(sFBean.getId());
 					file.setCreatedBy(sFBean.getCreatedBy());
 					file.setCreatedDate(sFBean.getCreatedDate());
 					file.setUriExternal(sFBean.getUriExternal());
