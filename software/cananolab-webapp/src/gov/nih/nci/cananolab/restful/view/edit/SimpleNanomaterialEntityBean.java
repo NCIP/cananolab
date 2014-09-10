@@ -312,7 +312,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("createdBy", bean.getBiopolymer().getCreatedBy());
 			domainEntity.put("id", bean.getBiopolymer().getId());
 
-		}else if(bean.getType().equalsIgnoreCase("CarbonNanotube")){
+		}else if(bean.getType().equalsIgnoreCase("carbon nanotube")){
 			domainEntity = new HashMap<String, Object>();
 
 			domainEntity.put("averageLength", bean.getCarbonNanotube().getAverageLength());
@@ -347,9 +347,9 @@ public class SimpleNanomaterialEntityBean {
 		}else if(bean.getType().equalsIgnoreCase("Fullerene")){
 			domainEntity = new HashMap<String, Object>();
 
-			domainEntity.put("AverageDiameter",	bean.getFullerene().getAverageDiameter());
-			domainEntity.put("AverageDiameterUnit",bean.getFullerene().getAverageDiameterUnit());
-			domainEntity.put("NoOfCarbons",	bean.getFullerene().getNumberOfCarbon());
+			domainEntity.put("averageDiameter",	bean.getFullerene().getAverageDiameter());
+			domainEntity.put("averageDiameterUnit",bean.getFullerene().getAverageDiameterUnit());
+			domainEntity.put("numberOfCarbon",	bean.getFullerene().getNumberOfCarbon());
 			domainEntity.put("createdDate", bean.getFullerene().getCreatedDate());
 			domainEntity.put("createdBy", bean.getFullerene().getCreatedBy());
 			domainEntity.put("id", bean.getFullerene().getId());

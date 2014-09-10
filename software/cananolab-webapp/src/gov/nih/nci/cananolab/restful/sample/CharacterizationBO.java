@@ -16,7 +16,6 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.restful.CharacterizationServices;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
@@ -24,6 +23,7 @@ import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationSummaryEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
@@ -34,7 +34,6 @@ import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImp
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.ui.form.SampleForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -51,7 +50,6 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -73,7 +71,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public CharacterizationSummaryViewBean submitOrUpdate(HttpServletRequest request, 
+	public SimpleCharacterizationSummaryEditBean submitOrUpdate(HttpServletRequest request, 
 			SimpleCharacterizationEditBean simpleEdit)
 			throws Exception {
 		
@@ -97,8 +95,10 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		List<String> errs = new ArrayList<String>();
 		if (!validateInputs(request, charBean, errs)) {
 			CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(new ArrayList<CharacterizationBean>());
-			summaryView.setErrors(errs);
-			return summaryView;
+			
+			SimpleCharacterizationSummaryEditBean emptyView = new SimpleCharacterizationSummaryEditBean();
+			emptyView.setErrors(errs);
+			return emptyView;
 		}
 		
 		this.saveCharacterization(request, charBean, simpleEdit);
@@ -113,10 +113,13 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		
 		//request.getSession().setAttribute("tab", String.valueOf(ind));
-
-		//return summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request);
 		
-		return null;
+		
+//		SimpleCharacterizationSummaryEditBean summaryEdit = 
+//				summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request, null);
+//		summaryEdit.t
+		return summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request, null);
+		
 
 	}
 
@@ -294,12 +297,12 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		
 		// save to other samples (only when user click [Submit] button.)
-		if (simpleEdit.isSubmitNewChar() && simpleEdit.isCopyToOtherSamples()) {
+		if (simpleEdit.isSubmitNewChar()) {
 			SampleBean[] otherSampleBeans = prepareCopy(request, simpleEdit,
 					sampleBean);
 			if (otherSampleBeans != null) {
 				charService.copyAndSaveCharacterization(charBean, sampleBean,
-						otherSampleBeans, simpleEdit.isCopyToOtherSamples());
+						otherSampleBeans, simpleEdit.isCopyToOtherSamples()); //field should be renamed to copyDeepData
 			}
 			
 			simpleEdit.setSubmitNewChar(false);
@@ -718,24 +721,29 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				achar.getClassName(), achar.getCharacterizationType());
 	}
 
-	public ActionForward addFile(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public ActionForward saveFile(HttpServletRequest request, SimpleFindingBean simpleFinding)
 			throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		CharacterizationBean achar = (CharacterizationBean) theForm
-//				.get("achar");
-//		FindingBean findingBean = achar.getTheFinding();
-//		FileBean theFile = findingBean.getTheFile();
-//		int theFileIndex = findingBean.getTheFileIndex();
-//
-//		// restore previously uploaded file from session.
-//		restoreUploadedFile(request, theFile);
-//		this.setServicesInSession(request);
-//
-//		// create a new copy before adding to finding
-//		FileBean newFile = theFile.copy();
-//		SampleBean sampleBean = setupSample(theForm, request);
-//		// setup domainFile uri for fileBeans
+		
+		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
+		SimpleCharacterizationEditBean editBean = 
+				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+		
+		//FindingBean findingBean = achar.getTheFinding();
+		//FileBean theFile = findingBean.getTheFile();
+		
+//		int theFileIndex = simpleFinding.getTheFileIndex();
+//		SimpleFileBean simpleFile = simpleFinding.getFiles().get(theFileIndex);
+		
+		FileBean theFile = simpleFinding.transferToNewFileBean();
+
+		// restore previously uploaded file from session.
+		restoreUploadedFile(request, theFile);
+		this.setServicesInSession(request);
+
+		// create a new copy before adding to finding
+		FileBean newFile = theFile.copy();
+		SampleBean sampleBean = setupSampleById(String.valueOf(editBean.getParentSampleId()), request);
+		// setup domainFile uri for fileBeans
 //		String internalUriPath = Constants.FOLDER_PARTICLE
 //				+ '/'
 //				+ sampleBean.getDomain().getName()
@@ -744,6 +752,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //						.getCharacterizationName());
 //		UserBean user = (UserBean) request.getSession().getAttribute("user");
 //		newFile.setupDomainFile(internalUriPath, user.getLoginName());
+//		
 //		findingBean.addFile(newFile, theFileIndex);
 //		request.setAttribute("anchor", "submitFinding");
 //		this.checkOpenForms(achar, theForm, request);
@@ -846,32 +855,21 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			SimpleFindingBean simpleFinding)
 			throws Exception {
 		
-		logger.debug("achar is not null yet");
-		
 		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
 		SimpleCharacterizationEditBean editBean = 
 				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
-		logger.debug("editBean is not null yet");
-		if (achar == null)
-			logger.debug("achar is null");
-		if (editBean == null)
-			logger.debug("editBean is null");
 		
 		FindingBean dataSetBean = this.findMatchFindingBean(achar, simpleFinding);
-		
-		logger.debug("1");
 		
 		CharacterizationService service = this.setServicesInSession(request);
 		
 		service.deleteFinding(dataSetBean.getDomain());
-		logger.debug("2");
 		service.removeAccesses(achar.getDomainChar(), dataSetBean.getDomain());
-		logger.debug("3");
+		
 		achar.removeFinding(dataSetBean);
 		request.setAttribute("anchor", "result");
-		logger.debug("4");
-		//this.checkOpenForms(achar, theForm, request);
 		
+		//this.checkOpenForms(achar, theForm, request);
 		
 		return setupUpdate(request, String.valueOf(editBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
 				achar.getClassName(), achar.getCharacterizationType());

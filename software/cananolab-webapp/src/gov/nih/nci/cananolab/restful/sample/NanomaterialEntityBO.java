@@ -424,6 +424,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				comp.setCreatedBy(sBean.getCreatedBy());
 				comp.setCreatedDate(sBean.getCreatedDate());
 			}
+			comp.setMolecularFormula(sBean.getMolecularFormula());
+			comp.setMolecularFormulaType(sBean.getMolecularFormulaType());
+			comp.setValue(sBean.getValue());
+			comp.setValueUnit(sBean.getValueUnit());
 			funclist = sBean.getInherentFunction();
 			if(funclist!= null){
 			for(int j=0;j<funclist.size();j++){
@@ -468,6 +472,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			comp.setId(simpleComp.getId());
 			comp.setCreatedBy(simpleComp.getCreatedBy());
 			comp.setCreatedDate(simpleComp.getCreatedDate());
+			comp.setMolecularFormula(simpleComp.getMolecularFormula());
+			comp.setMolecularFormulaType(simpleComp.getMolecularFormulaType());
+			comp.setValue(simpleComp.getValue());
+			comp.setValueUnit(simpleComp.getValueUnit());
 			funclist = simpleComp.getInherentFunction();
 			if(funclist!= null){
 			for(int j=0;j<funclist.size();j++){
@@ -541,9 +549,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 
 		if(nanoBean.getType().equalsIgnoreCase("fullerene")){
 			Fullerene fullerene = new Fullerene();
-			fullerene.setAverageDiameter((Float) nanoBean.getDomainEntity().get("AverageDiameter"));
-			fullerene.setAverageDiameterUnit((String) nanoBean.getDomainEntity().get("AverageDiameterUnit"));
-			fullerene.setNumberOfCarbon((Integer) nanoBean.getDomainEntity().get("NoOfCarbons"));
+			fullerene.setAverageDiameter((Float) nanoBean.getDomainEntity().get("averageDiameter"));
+			fullerene.setAverageDiameterUnit((String) nanoBean.getDomainEntity().get("averageDiameterUnit"));
+			fullerene.setNumberOfCarbon(new Integer((String) nanoBean.getDomainEntity().get("numberOfCarbon")));
 			if(nanoBean.getDomainEntity().get("id")!=null){
 				fullerene.setId(new Long((Integer)nanoBean.getDomainEntity().get("id")));
 				fullerene.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
@@ -632,7 +640,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		}
 		else if(nanoBean.getType().equalsIgnoreCase("Polymer")){
 			Polymer poly = new Polymer();
-			poly.setCrossLinked((Boolean) nanoBean.getDomainEntity().get("crossLinked"));
+			poly.setCrossLinked(Boolean.valueOf((String) nanoBean.getDomainEntity().get("crossLinked")));
 			poly.setCrossLinkDegree((Float) nanoBean.getDomainEntity().get("crossLinkDegree"));
 			poly.setInitiator((String) nanoBean.getDomainEntity().get("initiator"));
 			if(nanoBean.getDomainEntity().get("id")!=null){
@@ -649,12 +657,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			nanoEntity = poly;
 		}
 			
-		else if(nanoBean.getType().equalsIgnoreCase("CarbonNanotube")){
+		else if(nanoBean.getType().equalsIgnoreCase("carbon nanotube")){
 			CarbonNanotube ctube = new CarbonNanotube();
-			ctube.setAverageLength((Float) nanoBean.getDomainEntity().get("averageLength"));
+			ctube.setAverageLength(new Float((String) nanoBean.getDomainEntity().get("averageLength")));
 			ctube.setAverageLengthUnit((String) nanoBean.getDomainEntity().get("averageLengthUnit"));
 			ctube.setChirality((String) nanoBean.getDomainEntity().get("chirality"));
-			ctube.setDiameter((Float) nanoBean.getDomainEntity().get("diameter"));
+			ctube.setDiameter(new Float((String) nanoBean.getDomainEntity().get("diameter")));
 			ctube.setDiameterUnit((String) nanoBean.getDomainEntity().get("diameterUnit"));
 			ctube.setWallType((String) nanoBean.getDomainEntity().get("wallType"));
 			if(nanoBean.getDomainEntity().get("id")!=null){

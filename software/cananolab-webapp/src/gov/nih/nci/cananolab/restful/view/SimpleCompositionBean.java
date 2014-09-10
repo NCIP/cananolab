@@ -205,13 +205,13 @@ public class SimpleCompositionBean {
 							if (detailPage.contains("Fullerene")) {
 								properties = new HashMap<String, Object>();
 
-								properties.put("AverageDiameter",
+								properties.put("averageDiameter",
 										nanoMaterialEntity.getFullerene()
 												.getAverageDiameter());
-								properties.put("AverageDiameterUnit",
+								properties.put("averageDiameterUnit",
 										nanoMaterialEntity.getFullerene()
 												.getAverageDiameterUnit());
-								properties.put("NoOfCarbons",
+								properties.put("numberOfCarbon",
 										nanoMaterialEntity.getFullerene()
 												.getNumberOfCarbon());
 							}
