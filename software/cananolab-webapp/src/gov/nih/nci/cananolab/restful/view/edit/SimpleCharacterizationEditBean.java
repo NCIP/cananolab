@@ -53,8 +53,8 @@ public class SimpleCharacterizationEditBean {
 	
 	//When saving, could propagate to other samples
 	List<String> selectedOtherSampleNames;
-	boolean copyToOtherSamples;
-	
+	boolean copyToOtherSamples;	
+	boolean submitNewChar;
 	
 	List<String> charTypesLookup;
 	//List<String> characterizationNameLookup;
@@ -525,6 +525,12 @@ public class SimpleCharacterizationEditBean {
 		this.datumConditionValueTypeLookup = datumConditionValueTypeLookup;
 	}
 
-	
+	public boolean isSubmitNewChar() {
+		return submitNewChar;
+	}
+
+	public void setSubmitNewChar(boolean submitNewChar) {
+		this.submitNewChar = submitNewChar;
+	}
 	
 }

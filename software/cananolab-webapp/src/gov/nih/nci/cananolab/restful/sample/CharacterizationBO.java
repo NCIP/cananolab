@@ -83,6 +83,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		simpleEdit.getMessages().clear();
 		
 		simpleEdit.transferToCharacterizationBean(charBean);
+		if (simpleEdit.getCharId() == 0)
+			simpleEdit.setSubmitNewChar(true);
 		
 		this.setServicesInSession(request);
 		
@@ -108,7 +110,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				.getInstance().getCharacterizationTypes(request);
 		int ind = allCharacterizationTypes.indexOf(charBean
 				.getCharacterizationType()) + 1;
-		request.getSession().setAttribute("tab", String.valueOf(ind));
+		
+		
+		//request.getSession().setAttribute("tab", String.valueOf(ind));
 
 		//return summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request);
 		
@@ -290,19 +294,15 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		
 		// save to other samples (only when user click [Submit] button.)
-		
-		
-		//String dispatch = (String) theForm.get("dispatch");
-		
-		//TODO: need a way to know if we're clicking submit
-		boolean clickSumit = false;
-		if (clickSumit) {
+		if (simpleEdit.isSubmitNewChar() && simpleEdit.isCopyToOtherSamples()) {
 			SampleBean[] otherSampleBeans = prepareCopy(request, simpleEdit,
 					sampleBean);
 			if (otherSampleBeans != null) {
 				charService.copyAndSaveCharacterization(charBean, sampleBean,
 						otherSampleBeans, simpleEdit.isCopyToOtherSamples());
 			}
+			
+			simpleEdit.setSubmitNewChar(false);
 		}
 		
 		sampleBean = setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
@@ -573,28 +573,17 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			SimpleExperimentBean simpleExpConfig) 
 			throws Exception {
 		
-		//DynaValidatorForm theForm = (DynaValidatorForm) form;
-		
 		logger.debug("Start saving experiment confg");
-		logger.debug("Getting theChar in session: " + request.getSession().getId());;
 		
 		//editBean's charId could be null, indicating new char
 		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
 		SimpleCharacterizationEditBean editBean = 
 				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
-		
-		if (achar == null)
-			logger.debug("theChar is null");
-		
-		if (editBean == null)
-			logger.debug("theEditChar is null");
-		
 				
 		//TODO: get the exp config object from "theChar" based on id
 		// if id is null, it's a new exp config
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
 		simpleExpConfig.transferToExperimentConfigBean(configBean);
-		
 		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		configBean.setupDomain(user.getLoginName());
@@ -895,7 +884,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		SimpleCharacterizationEditBean editBean = 
 				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
 		
-		
+		editBean.getErrors().clear();
+		editBean.getMessages().clear();
 		
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
 		simpleExpConfig.transferToExperimentConfigBean(configBean);
@@ -914,7 +904,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		service.removeAccesses(achar.getDomainChar(), configBean.getDomain());
 		logger.debug("Access removed");
 		//this.checkOpenForms(achar, theForm, request);
-		return editBean;
+		
+		return setupUpdate(request, String.valueOf(editBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
+				achar.getClassName(), achar.getCharacterizationType());
 	}
 
 	/**
@@ -1068,9 +1060,22 @@ public class CharacterizationBO extends BaseAnnotationBO {
 
 	private boolean validateCharacterization(HttpServletRequest request,
 			CharacterizationBean achar, List<String> errors) {
-		ActionMessages msgs = new ActionMessages();
+		
+		String charName = achar.getCharacterizationName();
+		String charType = achar.getCharacterizationType();
+		
+		if (charType == null || charName.length() == 0) {
+			errors.add("Characterization type can't be empty.");
+			return false;
+		}
+		
+		if (charName == null || charName.length() == 0) {
+			errors.add("Characterization name can't be empty.");
+			return false;
+		}
+		
 		boolean status = true;
-		if (achar.getCharacterizationName().equalsIgnoreCase("shape")) {
+		if (charName.equalsIgnoreCase("shape")) {
 			if (achar.getShape().getType() != null
 					&& !StringUtils.xssValidate(achar.getShape().getType())) {
 				
@@ -1091,7 +1096,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				errors.add(PropertyUtil.getProperty("sample", "achar.shape.minDimensionUnit.invalid"));
 				status = false;
 			}
-		} else if (achar.getCharacterizationName().equalsIgnoreCase(
+		} else if (charName.equalsIgnoreCase(
 				"physical state")) {
 			if (achar.getPhysicalState().getType() != null
 					&& !StringUtils.xssValidate(achar.getPhysicalState()
@@ -1100,7 +1105,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				errors.add(PropertyUtil.getProperty("sample", "achar.physicalState.type.invalid"));
 				status = false;
 			}
-		} else if (achar.getCharacterizationName().equalsIgnoreCase(
+		} else if (charName.equalsIgnoreCase(
 				"solubility")) {
 			if (achar.getSolubility().getSolvent() != null
 					&& !StringUtils.xssValidate(achar.getSolubility()
@@ -1116,7 +1121,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				errors.add(PropertyUtil.getProperty("sample", "achar.solubility.criticalConcentrationUnit.invalid"));
 				status = false;
 			}
-		} else if (achar.getCharacterizationName().equalsIgnoreCase(
+		} else if (charName.equalsIgnoreCase(
 				"enzyme induction")) {
 			if (achar.getEnzymeInduction().getEnzyme() != null
 					&& !StringUtils.xssValidate(achar.getSolubility()

@@ -211,6 +211,11 @@ public class CharacterizationServices {
 					(CharacterizationBO) applicationContext.getBean("characterizationBO");
 			
 			SimpleCharacterizationEditBean editBean = characterizationBO.saveExperimentConfig(httpRequest, simpleExpConfig);
+			List<String> errors = editBean.getErrors();
+			if (errors != null && errors.size() > 0) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(errors).build();
+			}
 
 		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
@@ -414,6 +419,11 @@ public class CharacterizationServices {
 					(CharacterizationBO) applicationContext.getBean("characterizationBO");
 			logger.debug("Finding id to delete: " + simpleFinding.getFindingId());
 			SimpleCharacterizationEditBean editBean = characterizationBO.deleteFinding(httpRequest, simpleFinding);
+			List<String> errors = editBean.getErrors();
+			if (errors != null && errors.size() > 0) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(errors).build();
+			}
 
 		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
@@ -438,8 +448,13 @@ public class CharacterizationServices {
 		try {
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) applicationContext.getBean("characterizationBO");
-			logger.debug("Finding id to delete: " + simpleFinding.getFindingId());
+			
 			SimpleCharacterizationEditBean editBean = characterizationBO.saveFinding(httpRequest, simpleFinding);
+			List<String> errors = editBean.getErrors();
+			if (errors != null && errors.size() > 0) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(errors).build();
+			}
 
 		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
