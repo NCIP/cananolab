@@ -116,24 +116,24 @@ public class CharacterizationBO extends BaseAnnotationBO {
 
 	}
 
-	public ActionForward input(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = (CharacterizationBean) theForm
-				.get("achar");
-		charBean.updateEmptyFieldsToNull();
-		this.checkOpenForms(charBean, theForm, request);
-
-		// Save uploaded data in session to avoid asking user to upload again.
-		FileBean theFile = charBean.getTheFinding().getTheFile();
-		escapeXmlForFileUri(theFile);
-		String charName = StringUtils.getOneWordLowerCaseFirstLetter(charBean
-				.getCharacterizationName());
-		preserveUploadedFile(request, theFile, charName);
-
-		return mapping.findForward("inputForm");
-	}
+//	public ActionForward input(ActionMapping mapping, ActionForm form,
+//			HttpServletRequest request, HttpServletResponse response)
+//			throws Exception {
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		CharacterizationBean charBean = (CharacterizationBean) theForm
+//				.get("achar");
+//		charBean.updateEmptyFieldsToNull();
+//		this.checkOpenForms(charBean, theForm, request);
+//
+//		// Save uploaded data in session to avoid asking user to upload again.
+//		FileBean theFile = charBean.getTheFinding().getTheFile();
+//		escapeXmlForFileUri(theFile);
+//		String charName = StringUtils.getOneWordLowerCaseFirstLetter(charBean
+//				.getCharacterizationName());
+//		preserveUploadedFile(request, theFile, charName);
+//
+//		return mapping.findForward("inputForm");
+//	}
 
 	/**
 	 * Set up the input form for adding new characterization
@@ -733,7 +733,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 
 		// restore previously uploaded file from session.
-		restoreUploadedFile(request, theFile);
+		//restoreUploadedFile(request, theFile);/
 		this.setServicesInSession(request);
 
 		// create a new copy before adding to finding
