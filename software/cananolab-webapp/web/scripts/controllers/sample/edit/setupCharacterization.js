@@ -45,7 +45,7 @@ var app = angular.module('angularApp')
         $scope.toggleMin = function() {
             $scope.minDate = $scope.minDate ? null : new Date();
         };
-        $scope.toggleMin();
+        // $scope.toggleMin();
         $scope.open = function($event) {
             $event.preventDefault();
             $event.stopPropagation();
@@ -439,8 +439,9 @@ var app = angular.module('angularApp')
     $scope.save = function() {
         $scope.loader = true;    
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveCharacterization',data: $scope.data}).
-        success(function(data, status, headers, config) {            
-            $scope.loader = true;
+        success(function(data, status, headers, config) {  
+            $location.path("/editCharacterization").search({'sampleId':$scope.sampleId}).replace();
+            $scope.loader = false;
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
@@ -452,7 +453,8 @@ var app = angular.module('angularApp')
         $scope.loader = true;
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/removeCharacterization',data: $scope.data}).
         success(function(data, status, headers, config) {            
-            $scope.loader = true;
+            $scope.loader = false;
+            $location.path("/editCharacterization").search({'sampleId':$scope.sampleId}).replace();
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
