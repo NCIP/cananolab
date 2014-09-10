@@ -192,6 +192,7 @@ var app = angular.module('angularApp')
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveExperimentConfig',data: $scope.techniqueInstrument}).
         success(function(data, status, headers, config) {            
             $scope.loader = false;
+            $scope.data=data;
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
@@ -205,6 +206,7 @@ var app = angular.module('angularApp')
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/removeExperimentConfig',data: $scope.techniqueInstrument}).
         success(function(data, status, headers, config) {            
             $scope.loader = false;
+            $scope.data=data;
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
