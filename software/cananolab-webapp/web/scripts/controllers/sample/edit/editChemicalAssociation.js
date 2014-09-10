@@ -357,9 +357,9 @@ var app = angular.module('angularApp')
                     }
                 }
             }
-            else {
-                $scope.files.push($scope.fileForm);
-            }
+//            else {
+//                $scope.files.push($scope.fileForm);
+//            }
 
             $scope.chemAssociationForm.files = $scope.files;
             
