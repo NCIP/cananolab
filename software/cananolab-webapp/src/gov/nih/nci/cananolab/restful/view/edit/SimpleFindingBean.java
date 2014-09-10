@@ -6,12 +6,16 @@ import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.Row;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class SimpleFindingBean {
+	private Logger logger = Logger.getLogger(SimpleFindingBean.class);
 	
 	long findingId;
 	
@@ -19,18 +23,12 @@ public class SimpleFindingBean {
 	private int numberOfRows;
 	
 	private List<SimpleRowBean> rows = new ArrayList<SimpleRowBean>();
-	
-	
 	private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
 	
 	private List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
 
-	private int theFileIndex;
-	
-	//private Finding domain = new Finding();
-	//private FileBean theFile = new FileBean();
-	
-	
+	SimpleFileBean theFile = new SimpleFileBean();
+	int theFileIndex = -1;
 	
 	List<String> errors = new ArrayList<String>();
 	
@@ -91,6 +89,35 @@ public class SimpleFindingBean {
 			
 			this.files.add(simpleFile);
 		}
+	}
+	
+	public FileBean transferToNewFileBean() {
+		
+		SimpleFileBean simpleFile = this.theFile;
+//		if (this.theFileIndex >= 0 && this.theFileIndex < this.files.size()) {
+//			SimpleFileBean simpleFile = files.get(theFileIndex);
+//		} else { //new file
+//			
+//		}
+		
+		FileBean fileBean = new FileBean();
+		File file = new File();
+	
+		file.setType(simpleFile.getType());
+		file.setTitle(simpleFile.getTitle());
+		file.setDescription(simpleFile.getDescription());
+		file.setUri(simpleFile.getUri());
+		if(simpleFile.getId() != null){
+			file.setId(simpleFile.getId());
+			file.setCreatedBy(simpleFile.getCreatedBy());
+			file.setCreatedDate(simpleFile.getCreatedDate());
+		}
+		file.setUriExternal(simpleFile.getUriExternal());
+		fileBean.setKeywordsStr(simpleFile.getKeywordsStr());
+		fileBean.setTheAccess(simpleFile.getTheAccess());
+
+		fileBean.setDomainFile(file);
+		return fileBean;
 	}
 	
 	public void transferTableNumbersToFindingBean(FindingBean findingBean) {
