@@ -1,0 +1,178 @@
+<table width="85%" class="subSubmissionView" align="center">
+    <tbody><tr>
+        <td class="cellLabel" width="15%">
+            Files
+        </td>
+        <td>
+            <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanomaterialEntity'); openSubmissionForm('File');"><img align="top" src="images/btn_add.gif" border="0" alt="add a nanomaterial entity file"></a> -->
+            <button type="button" class="btn btn-primary btn-xxs" ng-click="openAddNewFile()" id="addFile" ng-show="updateFinding">Add</button>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <table class="editTableWithGrid" align="center" width="95%">
+                <tbody>
+                <tr>
+                    <th class="cellLabel" width="20%" scope="col">
+                        File Type
+                    </th>
+                    <th width="33%" class="cellLabel" scope="col">
+                        Title and Download Link
+                    </th>
+                    <th class="cellLabel" scope="col">
+                        Keywords
+                    </th>
+                    <th class="cellLabel" scope="col">
+                        Description
+                    </th>
+                    <th></th>
+                </tr>
+
+                <tr ng-repeat="file in $parent.currentFinding.files track by $index">
+                    <td>
+                        {{file.type}}
+                    </td>
+                    <td>
+                        <a style="white-space: normal;" href="/caNanoLab/rest/composition/download?fileId={{file.id}}">
+                            {{file.title}} </a>
+                    </td>
+                    <td>
+                        {{file.keywordsStr}}
+                    </td>
+                    <td>
+                        {{file.description}}
+                    </td>
+                    <td align="right">
+                        <button ng-click="editFile('{{file.id}}');" class="btn btn-primary btn-xxs" ng-show="updateFinding">Edit</button>&nbsp;
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div id="newFile" ng-show="addNewFile">
+                <table class="subSubmissionView" width="85%" align="center">
+                    <tbody>
+                    <tr>
+                        <td class="cellLabel" width="40%">
+                            <input type="radio" ng-model="fileForm.uriExternal" value="false" ng-checked="externalUrlEnabled==false" id="external0">
+                            <label for="external0">Upload</label>
+                        </td>
+                        <td class="cellLabel">
+                            <input type="radio" ng-model="fileForm.uriExternal" value="true" ng-checked="externalUrlEnabled==true" id="external1">
+                            <label for="external1">Enter File URL</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span id="load" style="display: block;" ng-show="fileForm.uriExternal=='false'">
+        						<input type="file" ng-model="fileForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
+				            </span>
+                            <span id="uploadedUri" ng-show="fileForm.uriExternal=='false' && fileForm.id != null">
+			                    <a href="rest/composition/download?fileId={{fileForm.id}}">{{fileForm.title}}</a>
+                            </span>
+                            <label for="uploadedFile">&nbsp;&nbsp;</label>
+			                <span id="link" ng-show="fileForm.uriExternal=='true'">
+                                <input type="text" ng-model="fileForm.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
+					        </span>
+                            <label for="externalUrl">&nbsp;</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cellLabel">
+                            <label for="fileType">File Type*</label>
+                        </td>
+                        <td>
+                            <div id="fileTypePrompt">
+                                <select  ng-model="fileForm.type" id="fileType">
+                                    <option value="">
+                                    </option>
+                                    <option ng-repeat="type in $parent.fileTypes track by $index" value="{{type}}" ng-selected="{{type==fileForm.type}}">
+                                        {{type}}
+                                    </option>
+
+                                    <option value="other">
+                                        [other]
+                                    </option>
+                                </select>
+                                <div ng-if="fileForm.type=='other'">
+                                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                        <tbody>
+                                        <tr>
+                                            <td class="cellLabel">
+                                                <label for="textFile" category="">New File Type:</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="text" id="textFile" ng-model='localForm.otherCategoryText' class="promptbox">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">
+                                                <input type="button" class="promptButton" value="Add" ng-click="fileForm.type=localForm.otherCategoryText; fileTypes.push(localForm.otherCategoryText);">
+                                                <input type="button" class="promptButton" value="Cancel" ng-click="fileForm.type='';">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cellLabel">
+                            <label for="fileTitle">File Title*</label>
+                        </td>
+                        <td>
+                            <input type="text"  ng-model="fileForm.title" size="60" value="" id="fileTitle">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cellLabel" valign="top">
+                            <label for="fileKeywords">Keywords</label>
+                        </td>
+                        <td>
+                            <textarea  ng-model="fileForm.keywordsStr" cols="60" rows="3" id="fileKeywords"></textarea>
+                            <br>
+                            <em>(one word per line)</em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cellLabel" valign="top">
+                            <label for="fileDescription">Description</label>
+                        </td>
+                        <td>
+                            <textarea  ng-model="fileForm.description" cols="60" rows="3" id="fileDescription"></textarea>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <input type="button" value="Remove" ng-click="removeFile('{{fileForm.id}}');" id="deleteFile" ng-show="fileForm.id != null">
+                        </td>
+                        <td colspan="3">
+                            <div align="right">
+                                 <input type="hidden" ng-model="fileForm.isPublic">
+            					 <input type="hidden" ng-model="fileForm.theAccess">
+								 <input type="hidden" ng-model="fileForm.createdBy">
+            					 <input type="hidden" ng-model="fileForm.createdDate">            					 
+                                <input class="promptButton" type="button" value="Save"
+                                       ng-click="closeAddNewFile();saveFile();" />
+                                <input class="promptButton" type="button" value="Cancel"
+                                       ng-click="closeAddNewFile();" />
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

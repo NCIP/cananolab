@@ -400,49 +400,10 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="cellLabel">
-								Files
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<table class="editTableWithGrid" width="95%" align="center">
-									<tbody>
-										<tr>
-											<th class="cellLabel" scope="col" width="20%">
-												File Type
-											</th>
-											<th class="cellLabel" scope="col" width="33%">
-												Title and Download Link
-											</th>
-											<th class="cellLabel" scope="col">
-												Keywords
-											</th>
-											<th class="cellLabel" scope="col">
-												Description
-											</th>
-											<th></th>
-										</tr>
-										<tr>
-											<td>
-												txt
-											</td>
-											<td>
-												<a style="white-space: normal;" href="characterization.do?dispatch=download&amp;fileId=74219520">
-												findings.rdf </a>
-											</td>
-											<td>
-												KEYWORD
-											</td>
-											<td>
-												description
-											</td>
-											<td align="right"></td>
-										</tr>
-									</tbody>
-								</table>	
-							</td>
-						</tr>
+			                <td>
+			                    <ng-include src="'/caNanoLab/views/sample/view/manageFileView.html'"></ng-include>
+			                </td>
+			            </tr>
 					</tbody>
 				</table>
 				<br>
@@ -567,6 +528,11 @@
 								</table>
 							</td>
 						</tr>
+			            <tr>
+			                <td colspan="{{currentFinding.columnHeaders.length}}">
+			                    <ng-include src="'/caNanoLab/views/sample/edit/manageFileEdit.html'"></ng-include>
+			                </td>
+			            </tr>						
 						<tr>
 							<td>
 								<button ng-if="!isNewFinding" ng-click="removeFindingInfo()" class="btn btn-danger btn-xxs">Remove</button>								
