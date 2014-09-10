@@ -714,20 +714,23 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				achar.getClassName(), achar.getCharacterizationType());
 	}
 
-	public ActionForward saveFile(HttpServletRequest request, SimpleFindingBean simpleFinding)
+	public SimpleCharacterizationEditBean saveFile(HttpServletRequest request, SimpleFindingBean simpleFinding)
 			throws Exception {
 		
 		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
 		SimpleCharacterizationEditBean editBean = 
 				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
 		
-		//FindingBean findingBean = achar.getTheFinding();
+		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
+		
 		//FileBean theFile = findingBean.getTheFile();
 		
-//		int theFileIndex = simpleFinding.getTheFileIndex();
+		int theFileIndex = simpleFinding.getTheFileIndex();
 //		SimpleFileBean simpleFile = simpleFinding.getFiles().get(theFileIndex);
 		
 		FileBean theFile = simpleFinding.transferToNewFileBean();
+		if (theFile.getDomainFile().getId() != null) //existing
+		
 
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);
@@ -746,12 +749,13 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		newFile.setupDomainFile(internalUriPath, user.getLoginName());
 		
-//		findingBean.addFile(newFile, theFileIndex);
-//		request.setAttribute("anchor", "submitFinding");
+		findingBean.addFile(newFile, theFileIndex);
+		
+		request.setAttribute("anchor", "submitFinding");
 //		this.checkOpenForms(achar, theForm, request);
 //		return mapping.findForward("inputForm");
 		
-		return null;
+		return editBean;
 	}
 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,

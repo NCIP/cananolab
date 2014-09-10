@@ -537,4 +537,66 @@ public class CharacterizationServices {
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
+	
+	@POST
+	@Path("/saveFile")
+	@Produces ("application/json")
+    public Response saveFile(@Context HttpServletRequest httpRequest, 
+    		SimpleFindingBean simpleFinding) {
+		logger.debug("In saveFile");	
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			
+			SimpleCharacterizationEditBean editBean = characterizationBO.saveFile(httpRequest, simpleFinding);
+			List<String> errors = editBean.getErrors();
+			if (errors != null && errors.size() > 0) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(errors).build();
+			}
+
+		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	@POST
+	@Path("/removeFile")
+	@Produces ("application/json")
+    public Response removeFile(@Context HttpServletRequest httpRequest, 
+    		SimpleFindingBean simpleFinding) {
+		logger.debug("In removeFile");	
+		
+		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			
+			SimpleCharacterizationEditBean editBean = characterizationBO.saveFile(httpRequest, simpleFinding);
+			List<String> errors = editBean.getErrors();
+			if (errors != null && errors.size() > 0) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(errors).build();
+			}
+
+		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
 }
