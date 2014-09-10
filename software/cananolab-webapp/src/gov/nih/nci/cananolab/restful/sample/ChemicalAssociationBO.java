@@ -236,7 +236,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 			ChemicalAssociationBean entityBean) throws Exception {
 		List<String> msgs = new ArrayList<String>();
 		for (FileBean filebean : entityBean.getFiles()) {
-			msgs = validateFileBean(request, filebean);
+			msgs = validateFileBean(request, msgs, filebean);
 			if (msgs.size()>0) {
 				return msgs;
 			}
@@ -555,7 +555,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		assoc.addFile(theFile);
 
 		// restore previously uploaded file from session.
-		this.restoreUploadedFile(request, theFile);
+		//this.restoreUploadedFile(request, theFile);
 
 		// save the association
 		saveAssociation(request, bean.getSampleId(), assoc);

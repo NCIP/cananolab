@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.service.BaseService;
@@ -249,10 +250,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		return sampleBeans;
 	}
 
-	protected List<String> validateFileBean(HttpServletRequest request, FileBean fileBean) {
+	protected List<String> validateFileBean(HttpServletRequest request, List<String> msgs, FileBean fileBean) {
 
-		List<String> msgs = new ArrayList<String>();
-		boolean noErrors = true;
 		if (fileBean == null) {
 			return msgs;
 		}
@@ -269,6 +268,10 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 			if (fileBean.getExternalUrl() == null
 					|| fileBean.getExternalUrl().trim().length() == 0) {
 				msgs.add("External URL is required.");
+			}else{
+				if(!InputValidationUtil.isUrlValid(fileBean.getExternalUrl())){
+					msgs.add("External URL is invalid");
+				}
 			}
 		} else {
 			// all empty
@@ -282,7 +285,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 
 				// the case that user switch from url to upload file, but no
 				// file is selected
-			} else if ((fileBean.getDomainFile().getUri() == null || StringUtils
+			} else if ((fileBean.getNewFileData() == null || StringUtils
 					.isEmpty(fileBean.getDomainFile().getUri()))
 					&& !StringUtils.isEmpty(fileBean.getExternalUrl())) {
 

@@ -101,7 +101,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			FunctionalizingEntityBean entityBean) {
 		List<String> msg = new ArrayList<String>();
 		for (FileBean filebean : entityBean.getFiles()) {
-			msg = validateFileBean(request, filebean);
+			msg = validateFileBean(request, msg, filebean);
 			if (msg.size()>0) {
 				return msg;
 			}
@@ -318,7 +318,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		entity.addFile(theFile);
 
 		// restore previously uploaded file from session.
-		restoreUploadedFile(request, theFile);
+		//restoreUploadedFile(request, theFile);
 
 		// save the functionalizing entity
 		msgs = validateInputs(request, entity);
@@ -616,6 +616,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				file.setCreatedDate(sFBean.getCreatedDate());
 			}
 			file.setUriExternal(sFBean.getUriExternal());
+			fileBean.setExternalUrl(sFBean.getExternalUrl());
 			fileBean.setKeywordsStr(sFBean.getKeywordsStr());
 			fileBean.setTheAccess(sFBean.getTheAccess());
 
@@ -639,6 +640,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			file.setCreatedBy(sBean.getCreatedBy());
 			file.setCreatedDate(sBean.getCreatedDate());
 			file.setUriExternal(sBean.getUriExternal());
+			fileBean.setExternalUrl(sBean.getExternalUrl());
 			fileBean.setKeywordsStr(sBean.getKeywordsStr());
 			fileBean.setTheAccess(sBean.getTheAccess());
 
