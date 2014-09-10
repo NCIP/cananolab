@@ -106,13 +106,14 @@ public class SimpleCompositionBean {
 		setSampleName(compBean.getDomain().getSample().getName());
 		nanomaterialentity = new HashMap<String, Object>();
 
-		nanoentitiy = new HashMap<String, Object>();
 		if (compBean.getNanomaterialEntities() != null) {
 
 			for (String entityType : compBean.getNanoEntityTypes()) {
 				nanoentitiy = new HashMap<String, Object>();
 				for (NanomaterialEntityBean nanoMaterialEntity : compBean
 						.getType2NanoEntities().get(entityType)) {
+					nanoentitiy = new HashMap<String, Object>();
+
 					nanoentitiy.put("Description",
 							nanoMaterialEntity.getDescriptionDisplayName());
 					nanoentitiy.put("dataId", nanoMaterialEntity.getDomainEntity().getId());

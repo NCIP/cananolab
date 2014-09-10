@@ -157,8 +157,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newEntity && !user.isCurator() && sampleBean.getPublicStatus()) {
-//			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
-//					.toString(), sampleBean.getDomain().getName(), "sample");
+			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
+					.toString(), sampleBean.getDomain().getName(), "sample");
 			msgs.add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
 			return msgs;
 		}
@@ -429,7 +429,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 					function.setCreatedBy((String) funclist.get(j).get("createdBy"));
 					function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
 				}
-			//	function.setId((Long) nanoBean.getSimpleCompBean().getInherentFunction().get(0).get("id"));
+				if(funclist.get(j).get("id")!=null)
+					function.setId(new Long((Integer) funclist.get(j).get("id")));
 				func.setDomainFunction(function);
 				hash.add(function);
 
@@ -467,29 +468,28 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			comp.setValueUnit(simpleComp.getValueUnit());
 			funclist = simpleComp.getInherentFunction();
 			if(funclist!= null){
-			for(int j=0;j<funclist.size();j++){
-				img.setModality((String) funclist.get(j).get("modality"));
-				func.setType((String) funclist.get(j).get("type"));
-				func.setDescription((String) funclist.get(j).get("description"));
-				func.setImagingFunction(img);
-				Function function = new Function();
-				function.setDescription((String) funclist.get(j).get("description"));
-				function.setCreatedBy((String) funclist.get(j).get("createdBy"));
-				function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
-			//	function.setId((Long) nanoBean.getSimpleCompBean().getInherentFunction().get(0).get("id"));
-				hash.add(function);
-				func.setDomainFunction(function);
+				for(int j=0;j<funclist.size();j++){
+					img.setModality((String) funclist.get(j).get("modality"));
+					func.setType((String) funclist.get(j).get("type"));
+					func.setDescription((String) funclist.get(j).get("description"));
+					func.setImagingFunction(img);
+					Function function = new Function();
+					function.setDescription((String) funclist.get(j).get("description"));
+					function.setCreatedBy((String) funclist.get(j).get("createdBy"));
+					function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
+					if(funclist.get(j).get("id")!=null)
+					function.setId(new Long((Integer) funclist.get(j).get("id")));
+					hash.add(function);
+					func.setDomainFunction(function);
+				}
 			}
-			}
-		}
 			comp.setInherentFunctionCollection(hash);
+			coll.add(comp);
 			compBean.setTheFunction(func);
 			compBean.setDomain(comp);
 			compList.add(compBean);
-			
-			coll.add(comp);
-	
 		}
+	}
 		//setting up theFile
 		SimpleFileBean fBean = nanoBean.getFileBean();
 		FileBean fileBean = new FileBean();
@@ -538,10 +538,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		}
 		}
 		
-
 		if(nanoBean.getType().equalsIgnoreCase("fullerene")){
 			Fullerene fullerene = new Fullerene();
-			fullerene.setAverageDiameter((Float) nanoBean.getDomainEntity().get("averageDiameter"));
+			fullerene.setAverageDiameter(new Float((String) nanoBean.getDomainEntity().get("averageDiameter")));
 			fullerene.setAverageDiameterUnit((String) nanoBean.getDomainEntity().get("averageDiameterUnit"));
 			fullerene.setNumberOfCarbon(new Integer((String) nanoBean.getDomainEntity().get("numberOfCarbon")));
 			if(nanoBean.getDomainEntity().get("id")!=null){
@@ -633,7 +632,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		else if(nanoBean.getType().equalsIgnoreCase("Polymer")){
 			Polymer poly = new Polymer();
 			poly.setCrossLinked(Boolean.valueOf((String) nanoBean.getDomainEntity().get("crossLinked")));
-			poly.setCrossLinkDegree((Float) nanoBean.getDomainEntity().get("crossLinkDegree"));
+			poly.setCrossLinkDegree(new Float((String) nanoBean.getDomainEntity().get("crossLinkDegree")));
 			poly.setInitiator((String) nanoBean.getDomainEntity().get("initiator"));
 			if(nanoBean.getDomainEntity().get("id")!=null){
 				poly.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));

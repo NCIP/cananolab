@@ -45,6 +45,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.jvnet.hk2.config.Changed.TYPE;
+
 
 public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	public List<String> create(SimpleFunctionalizingEntityBean bean,
@@ -60,13 +62,10 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entityBean);
 
-//		msgs.add(PropertyUtil.getProperty("sample", "message.addFunctionalizingEntity"));
-
 		// to preselect functionalizing entity after returning to the summary
 		// page
 		request.getSession().setAttribute("tab", "2");
 		msgs.add("success");
-//		return mapping.findForward("success");
 		return msgs;
 	}
 
@@ -77,19 +76,9 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			if ("TargetingFunction".equals(funcBean.getClassName())) {
 				for (TargetBean targetBean : funcBean.getTargets()) {
 					if (StringUtils.isEmpty(targetBean.getType())) {
-//						ActionMessages msgs = new ActionMessages();
-//						ActionMessage msg = new ActionMessage(
-//								"errors.required", "Target type");
-//						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//						this.saveErrors(request, msgs);
-//						return false;
+						msgs.add("Target Type is required.");
 					} else if (!StringUtils.xssValidate(targetBean.getType())) {
-//						ActionMessages msgs = new ActionMessages();
-//						ActionMessage msg = new ActionMessage(
-//								"functionalizingEntity.target.type.invalid");
-//						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//						this.saveErrors(request, msgs);
-//						return false;
+						msgs.add("Target Type is invalid.");
 					}
 				}
 			}
@@ -128,18 +117,12 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			
 			if (!StringUtils.isEmpty(ex.getMessage())
 					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
-//				msg = new ActionMessage("errors.invalidOtherType",
-//						ex.getMessage(), "Function");
-				msgs.add(PropertyUtil.getProperty("sample", "errors.invalidOtherType"));
+				msgs.add(ex.getMessage() +"is an invalid Function type. It is a pre-defined composition type.");
 			} else {
-//				msg = new ActionMessage("errors.invalidOtherType",
-//						entityBean.getType(), "functionalizing entity");
-				msgs.add(PropertyUtil.getProperty("sample", "errors.invalidOtherType"));
+				msgs.add(ex.getMessage() +"is an invalid functionalizing entity type. It is a pre-defined composition type.");
 
 				entityBean.setType(null);
 			}
-		//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//	this.saveErrors(request, msgs);
 			return msgs;
 		}
 
@@ -147,13 +130,9 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newEntity && !user.isCurator() && sampleBean.getPublicStatus()) {
-//			retractFromPublic(theForm, request, sampleBean.getDomain().getId()
-//					.toString(), sampleBean.getDomain().getName(), "sample");
-//			ActionMessages messages = new ActionMessages();
-//			ActionMessage msg = null;
-//			msg = new ActionMessage("message.updateSample.retractFromPublic");
-//			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			saveMessages(request, messages);
+			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
+					.toString(), sampleBean.getDomain().getName(), "sample");
+			msgs.add(PropertyUtil.getProperty("sample","message.updateSample.retractFromPublic"));
 		}
 		// save to other samples (only when user click [Submit] button.)
 //		String dispatch = (String) theForm.get("dispatch");
@@ -182,8 +161,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 		FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean();
-//		form.setFunctionalizingEntity(entityBean);
-//		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		this.setLookups(request);
@@ -216,7 +193,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 					entityBean.getClassName(), "functionalizingEntity");
 		}
 		request.setAttribute("entityDetailPage", detailPage);
-	//	return mapping.findForward("singleSummaryView");
 	}
 
 	public SimpleFunctionalizingEntityBean setupUpdate(String sampleId, String dataId,
@@ -232,7 +208,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		// clear copy to otherSamples
 	//	form.setOtherSamples(new String[0]);
 		checkOpenForms(entityBean, request);
-//		return mapping.findForward("inputForm");
 		request.getSession().setAttribute("sampleId", sampleId);
 		SimpleFunctionalizingEntityBean bean = new SimpleFunctionalizingEntityBean();
 		bean.tranferSimpleFunctionalizingBean(entityBean, request);
@@ -242,7 +217,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	public SimpleFunctionalizingEntityBean saveFunction(SimpleFunctionalizingEntityBean bean,
 			HttpServletRequest request)
 			throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean, request);
 		List<String> msgs = new ArrayList<String>();
 		this.setServicesInSession(request);
@@ -252,7 +226,9 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		entity.addFunction(function);
 		msgs = validateInputs(request, entity);
 		if (msgs.size()>0) {
-		//	return mapping.getInputForward();
+			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
+			funcBean.setErrors(msgs);
+			return funcBean;
 		}
 		this.saveEntity(request, bean.getSampleId(), entity);
 
@@ -277,7 +253,9 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		entity.removeFunction(function);
 		msgs = validateInputs(request, entity);
 		if (msgs.size()>0) {
-			//return mapping.getInputForward();
+			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
+			funcBean.setErrors(msgs);
+			return funcBean;
 		}
 		this.saveEntity(request, bean.getSampleId(), entity);
 		// comp service has already been created
@@ -286,7 +264,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		compService.removeAccesses(entity.getDomainEntity(),
 				function.getDomainFunction());
 		checkOpenForms(entity, request);
-	//	return mapping.findForward("inputForm");
 		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
 	}
 
@@ -317,13 +294,12 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		}
 		entity.addFile(theFile);
 
-		// restore previously uploaded file from session.
-		//restoreUploadedFile(request, theFile);
-
 		// save the functionalizing entity
 		msgs = validateInputs(request, entity);
 		if (msgs.size()>0) {
-		//	return mapping.getInputForward();
+			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
+			funcBean.setErrors(msgs);
+			return funcBean;
 		}
 		this.saveEntity(request, sampleId, entity);
 		// comp service has already been created
@@ -335,7 +311,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		request.setAttribute("anchor", "file");
 		this.checkOpenForms(entity, request);
 
-	//	return mapping.findForward("inputForm");
 		return setupUpdate(sampleId, entity.getDomainEntity().getId().toString(), request);
 	}
 
@@ -350,7 +325,9 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		// save the functionalizing entity;
 		msgs = validateInputs(request, entity);
 		if (msgs.size()>0) {
-			//return mapping.getInputForward();
+			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
+			funcBean.setErrors(msgs);
+			return funcBean;
 		}
 		this.saveEntity(request, bean.getSampleId(), entity);
 		// comp service has already been created
@@ -360,7 +337,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				.getSampleComposition(), theFile.getDomainFile());
 
 		checkOpenForms(entity, request);
-	//	return mapping.findForward("inputForm");
 		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
 	}
 
@@ -373,42 +349,28 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			if (entityBean.getBiopolymer().getType() != null
 					&& !StringUtils.xssValidate(entityBean.getBiopolymer()
 							.getType())) {
-//				ActionMessage msg = new ActionMessage(
-//						"functionalizingEntity.biopolymer.type.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
+				msgs.add(PropertyUtil.getProperty("sample","functionalizingEntity.biopolymer.type.invalid"));
 			}
 		}
 		if (entityBean.getType().equalsIgnoreCase("antibody")) {
 			if (entityBean.getAntibody().getType() != null
 					&& !StringUtils.xssValidate(entityBean.getAntibody()
 							.getType())) {
-//				ActionMessage msg = new ActionMessage(
-//						"functionalizingEntity.antibody.type.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
+				msgs.add(PropertyUtil.getProperty("sample","functionalizingEntity.antibody.type.invalid"));
+
 			}
 			if (entityBean.getAntibody().getIsotype() != null
 					&& !StringUtils.xssValidate(entityBean.getAntibody()
 							.getIsotype())) {
-//				ActionMessage msg = new ActionMessage(
-//						"functionalizingEntity.antibody.isotype.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
+				msgs.add(PropertyUtil.getProperty("sample","functionalizingEntity.antibody.isotype.invalid"));
 			}
 		}
 		if (entityBean.getType().equalsIgnoreCase("small molecule")) {
 			if (entityBean.getSmallMolecule().getAlternateName() != null
 					&& !StringUtils.xssValidate(entityBean.getSmallMolecule()
 							.getAlternateName())) {
-//				ActionMessage msg = new ActionMessage(
-//						"functionalizingEntity.smallMolecule.alternateName.invalid");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveErrors(request, msgs);
-//				status = false;
+				msgs.add(PropertyUtil.getProperty("sample","functionalizingEntity.smallMolecule.alternateName.invalid"));
+
 			}
 		}
 		return msgs;
@@ -461,7 +423,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				.getDomainEntity());
 		compositionService.removeAccesses(entityBean.getDomainEntity());
 
-		//msgs.add(PropertyUtil.getProperty("sample", "message.deleteFunctionalizingEntity"));
 		msgs.add("success");
 		return msgs;
 	}
