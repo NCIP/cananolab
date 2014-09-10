@@ -52,7 +52,7 @@ public class SimpleCharacterizationEditBean {
 	String analysisConclusion;
 	
 	//When saving, could propagate to other samples
-	List<String> selectedOtherSampleNames;
+	List<String> selectedOtherSampleNames = new ArrayList<String>();
 	boolean copyToOtherSamples;	
 	boolean submitNewChar;
 	
@@ -242,8 +242,10 @@ public class SimpleCharacterizationEditBean {
 	 * Currently it only transfter what's needed in "submit" / "update"
 	 * @param charBean
 	 */
-	public void transferToCharacterizationBean(CharacterizationBean charBean) {
-		if (charBean == null) return;
+	public CharacterizationBean transferToCharacterizationBean(CharacterizationBean achar) {
+		CharacterizationBean charBean = achar;
+		if (charBean == null || this.charId == 0) 
+			charBean = new CharacterizationBean();
 		
 		charBean.setCharacterizationName(this.name);
 		charBean.setCharacterizationType(this.type);
@@ -259,13 +261,14 @@ public class SimpleCharacterizationEditBean {
 		transferToPOCBean(charBean, this.characterizationSourceId);
 		
 		//char date
-		Date dDate = charBean.getDomainChar().getDate();
-		charBean.getDomainChar().setDate(characterizationDate);
+		if (charBean.getDomainChar() != null) {
+			charBean.getDomainChar().setDate(characterizationDate);
+		}
 		
 		charBean.setDescription(this.designMethodsDescription);
 		charBean.setConclusion(this.analysisConclusion);
 		
-		
+		return charBean;
 	}
 	
 	protected void transferToPOCBean(CharacterizationBean charBean, long selectedId) {

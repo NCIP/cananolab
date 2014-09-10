@@ -80,7 +80,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		simpleEdit.getErrors().clear();
 		simpleEdit.getMessages().clear();
 		
-		simpleEdit.transferToCharacterizationBean(charBean);
+		charBean = simpleEdit.transferToCharacterizationBean(charBean);
 		if (simpleEdit.getCharId() == 0)
 			simpleEdit.setSubmitNewChar(true);
 		
@@ -89,8 +89,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		// Copy "isSoluble" property from char bean to mapping bean.
 		this.copyIsSoluble(charBean);
 
-		InitCharacterizationSetup.getInstance()
-				.persistCharacterizationDropdowns(request, charBean);
+//		InitCharacterizationSetup.getInstance()
+//				.persistCharacterizationDropdowns(request, charBean);
 		
 		List<String> errs = new ArrayList<String>();
 		if (!validateInputs(request, charBean, errs)) {
@@ -106,18 +106,11 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				charBean.getCharacterizationName()));
 		// to preselect the same characterization type after returning to the
 		// summary page
-		List<String> allCharacterizationTypes = InitCharacterizationSetup
-				.getInstance().getCharacterizationTypes(request);
-		int ind = allCharacterizationTypes.indexOf(charBean
-				.getCharacterizationType()) + 1;
+//		List<String> allCharacterizationTypes = InitCharacterizationSetup
+//				.getInstance().getCharacterizationTypes(request);
+//		int ind = allCharacterizationTypes.indexOf(charBean
+//				.getCharacterizationType()) + 1;
 		
-		
-		//request.getSession().setAttribute("tab", String.valueOf(ind));
-		
-		
-//		SimpleCharacterizationSummaryEditBean summaryEdit = 
-//				summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request, null);
-//		summaryEdit.t
 		return summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request, null);
 		
 
@@ -744,15 +737,15 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		FileBean newFile = theFile.copy();
 		SampleBean sampleBean = setupSampleById(String.valueOf(editBean.getParentSampleId()), request);
 		// setup domainFile uri for fileBeans
-//		String internalUriPath = Constants.FOLDER_PARTICLE
-//				+ '/'
-//				+ sampleBean.getDomain().getName()
-//				+ '/'
-//				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
-//						.getCharacterizationName());
-//		UserBean user = (UserBean) request.getSession().getAttribute("user");
-//		newFile.setupDomainFile(internalUriPath, user.getLoginName());
-//		
+		String internalUriPath = Constants.FOLDER_PARTICLE
+				+ '/'
+				+ sampleBean.getDomain().getName()
+				+ '/'
+				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
+						.getCharacterizationName());
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		newFile.setupDomainFile(internalUriPath, user.getLoginName());
+		
 //		findingBean.addFile(newFile, theFileIndex);
 //		request.setAttribute("anchor", "submitFinding");
 //		this.checkOpenForms(achar, theForm, request);

@@ -190,8 +190,8 @@ public class SimpleCharacterizationSummaryViewBean {
 		}
 		
 		//Design Description
-		String desigMethodsDesc = charObj.getDesignMethodsDescription().trim();
-		if (desigMethodsDesc.length() > 0) {
+		String desigMethodsDesc = charObj.getDesignMethodsDescription();
+		if (desigMethodsDesc != null && desigMethodsDesc.length() > 0) {
 			logger.info("Design Description: " + desigMethodsDesc);
 			charBeanMap.put("Design Description", desigMethodsDesc);
 			
