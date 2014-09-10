@@ -20,17 +20,8 @@ import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceBean;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceItem;
-import gov.nih.nci.cananolab.service.BaseService;
-import gov.nih.nci.cananolab.service.admin.OwnershipTransferService;
-import gov.nih.nci.cananolab.service.admin.impl.BatchOwnershipTransferProcess;
-import gov.nih.nci.cananolab.service.admin.impl.OwnershipTransferServiceImpl;
-import gov.nih.nci.cananolab.service.common.LongRunningProcess;
-import gov.nih.nci.cananolab.service.community.CommunityService;
-import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
@@ -40,7 +31,6 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -48,16 +38,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorForm;
 
 public class WorkspaceManager {
 	
