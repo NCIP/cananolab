@@ -46,8 +46,6 @@ public class FileBean extends SecuredDataBean {
 
 	private String externalUrl; // url as an external link
 
-	private FormFile uploadedFile;
-
 	private byte[] newFileData; // data from uploadedFile if upload happened
 
 	private String createdDateStr;
@@ -121,14 +119,6 @@ public class FileBean extends SecuredDataBean {
 		return "_self";
 	}
 
-	public FormFile getUploadedFile() {
-		return uploadedFile;
-	}
-
-	public void setUploadedFile(FormFile uploadedFile) {
-		this.uploadedFile = uploadedFile;
-	}
-
 	public void setupDomainFile(String internalUriPath, String createdBy)
 			throws Exception {
 		if (domainFile.getId() != null && domainFile.getId() == 0) {
@@ -147,14 +137,9 @@ public class FileBean extends SecuredDataBean {
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFile.setCreatedBy(createdBy);
 		}
-//		if (uploadedFile != null
-//				&& !StringUtils.isEmpty(uploadedFile.getFileName())) {
-//			domainFile.setName(uploadedFile.getFileName());
-//			newFileData = uploadedFile.getFileData();
-//		}
+
 		if(!StringUtils.isEmpty(domainFile.getUri())){
 			domainFile.setName(domainFile.getUri());
-			//newFileData =(byte[]) request.getSession().getAttribute("newFileData");
 
 		}
 		else {
@@ -212,7 +197,6 @@ public class FileBean extends SecuredDataBean {
 		copy.getDomainFile().setDescription(domainFile.getDescription());
 		copy.getDomainFile().setUriExternal(domainFile.getUriExternal());
 		copy.setKeywordsStr(keywordsStr);
-		copy.setUploadedFile(uploadedFile);
 		copy.setExternalUrl(externalUrl);
 		copy.getDomainFile().setId(domainFile.getId());
 		copy.getDomainFile().setUri(domainFile.getUri());

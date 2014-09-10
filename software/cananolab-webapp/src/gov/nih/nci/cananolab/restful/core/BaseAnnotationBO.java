@@ -341,27 +341,27 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	 * @param request
 	 * @param theFile
 	 */
-	protected void preserveUploadedFile(HttpServletRequest request,
-			FileBean theFile, String folder) {
-		FormFile uploadedFile = theFile.getUploadedFile();
-		if (uploadedFile != null && uploadedFile.getFileSize() > 0) {
-			// 1.save uploaded file in session for later use.
-			HttpSession session = request.getSession();
-			session.removeAttribute("uploadedFormFile");
-			session.setAttribute("uploadedFormFile", uploadedFile);
-
-			// 2.construct URI for File to show it on file upload page.
-			SampleBean sampleBean = (SampleBean) request.getSession()
-					.getAttribute("theSample");
-			String internalUriPath = Constants.FOLDER_PARTICLE + '/'
-					+ sampleBean.getDomain().getName() + '/' + folder;
-			String timestamp = DateUtils.convertDateToString(Calendar
-					.getInstance().getTime(), "yyyyMMdd_HH-mm-ss-SSS");
-			theFile.getDomainFile().setUri(
-					internalUriPath + '/' + timestamp + '_'
-							+ uploadedFile.getFileName());
-		}
-	}
+//	protected void preserveUploadedFile(HttpServletRequest request,
+//			FileBean theFile, String folder) {
+//		FormFile uploadedFile = theFile.getUploadedFile();
+//		if (uploadedFile != null && uploadedFile.getFileSize() > 0) {
+//			// 1.save uploaded file in session for later use.
+//			HttpSession session = request.getSession();
+//			session.removeAttribute("uploadedFormFile");
+//			session.setAttribute("uploadedFormFile", uploadedFile);
+//
+//			// 2.construct URI for File to show it on file upload page.
+//			SampleBean sampleBean = (SampleBean) request.getSession()
+//					.getAttribute("theSample");
+//			String internalUriPath = Constants.FOLDER_PARTICLE + '/'
+//					+ sampleBean.getDomain().getName() + '/' + folder;
+//			String timestamp = DateUtils.convertDateToString(Calendar
+//					.getInstance().getTime(), "yyyyMMdd_HH-mm-ss-SSS");
+//			theFile.getDomainFile().setUri(
+//					internalUriPath + '/' + timestamp + '_'
+//							+ uploadedFile.getFileName());
+//		}
+//	}
 
 	/**
 	 * If FileBean specified using a uploaded file but the file is empty, we
@@ -370,17 +370,17 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	 * @param request
 	 * @param theFile
 	 */
-	protected void restoreUploadedFile(HttpServletRequest request,
-			FileBean theFile) {
-		if (!theFile.getDomainFile().getUriExternal()
-				&& StringUtils.isEmpty(theFile.getExternalUrl())
-				&& (theFile.getUploadedFile() == null || theFile
-						.getUploadedFile().getFileSize() <= 0)) {
-			HttpSession session = request.getSession();
-			theFile.setUploadedFile((FormFile) session
-					.getAttribute("uploadedFormFile"));
-		}
-	}
+//	protected void restoreUploadedFile(HttpServletRequest request,
+//			FileBean theFile) {
+//		if (!theFile.getDomainFile().getUriExternal()
+//				&& StringUtils.isEmpty(theFile.getExternalUrl())
+//				&& (theFile.getUploadedFile() == null || theFile
+//						.getUploadedFile().getFileSize() <= 0)) {
+//			HttpSession session = request.getSession();
+//			theFile.setUploadedFile((FormFile) session
+//					.getAttribute("uploadedFormFile"));
+//		}
+//	}
 
 	public Boolean canUserExecutePrivateDispatch(HttpServletRequest request,
 			String protectedData) throws Exception {

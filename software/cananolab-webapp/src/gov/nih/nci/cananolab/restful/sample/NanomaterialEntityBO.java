@@ -109,7 +109,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		entityBean.updateEmptyFieldsToNull();
 		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = entityBean.getTheFile();
-		preserveUploadedFile(request, theFile, "nanomaterialEntity");
+		//preserveUploadedFile(request, theFile, "nanomaterialEntity");
 
 		this.checkOpenForms(entityBean, request);
 	}

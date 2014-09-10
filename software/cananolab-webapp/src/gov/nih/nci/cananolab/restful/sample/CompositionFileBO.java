@@ -182,7 +182,7 @@ public class CompositionFileBO extends BaseAnnotationBO{
 
 		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = comp.getTheFile();
-		preserveUploadedFile(request, theFile, "compositionFile");
+		//preserveUploadedFile(request, theFile, "compositionFile");
 
 		//return mapping.findForward("inputForm");
 	}

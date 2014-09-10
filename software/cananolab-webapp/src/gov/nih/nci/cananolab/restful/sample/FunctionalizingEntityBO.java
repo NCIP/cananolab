@@ -441,7 +441,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		escapeXmlForFileUri(entity.getTheFile());
 		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = entity.getTheFile();
-		preserveUploadedFile(request, theFile, "functionalizingEntity");
+		//preserveUploadedFile(request, theFile, "functionalizingEntity");
 
 		this.checkOpenForms(entity, request);
 

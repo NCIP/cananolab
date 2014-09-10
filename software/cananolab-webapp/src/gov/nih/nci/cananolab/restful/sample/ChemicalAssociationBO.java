@@ -429,7 +429,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 
 		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = assocBean.getTheFile();
-		preserveUploadedFile(request, theFile, "Chemical Association");
+		//preserveUploadedFile(request, theFile, "Chemical Association");
 
 		this.checkOpenForms(assocBean, request);
 		//return mapping.findForward("inputForm");
