@@ -82,7 +82,7 @@
 		<td>
 			<div style="" id="assayTypePrompt">
 				<select data-ng-model="data.assayType"
-				data-ng-options="option for option in data.assayTypesByCharNameLookup" id="assayType">
+				data-ng-options="option for option in data.assayTypesByCharNameLookup" id="assayType"><option value=""></option>	
 			</select>  
 
 		</div>
@@ -94,7 +94,7 @@
 	<td colspan="3">
 
 		<select data-ng-model="data.protocolId"
-		data-ng-options="option.domainId as option.displayName for option in data.protocolLookup" id="protocolId" ng-change="getDomainFileUri()">
+		data-ng-options="option.domainId as option.displayName for option in data.protocolLookup" id="protocolId" ng-change="getDomainFileUri()"><option value=""></option>
 	</select>  <br />
 
 	&nbsp;<span id="protocolFileUri"><a href="{{domainFileUri}}" target="_blank">{{domainFileUri}}</a>
@@ -110,7 +110,7 @@
 	</td>
 	<td>
 		<select data-ng-model="data.characterizationSourceId"
-		data-ng-options="option.id as option.displayName for option in data.charSourceLookup" id="characterizationSourceId">
+		data-ng-options="option.id as option.displayName for option in data.charSourceLookup" id="characterizationSourceId"><option value=""></option>
 	</select>
 </td>
 <td class="cellLabel">
@@ -218,7 +218,7 @@
 						<td>
 							<div id="techniqueTypePrompt">
 		<select data-ng-model="techniqueInstrument.techniqueType"
-		data-ng-options="option for option in data.techniqueInstruments.techniqueTypeLookup" id="techniqueType" ng-change="techniqueTypeInstrumentDropdownChanged()"></select>							
+		data-ng-options="option for option in data.techniqueInstruments.techniqueTypeLookup" id="techniqueType" ng-change="techniqueTypeInstrumentDropdownChanged()"><option value=""></option></select>							
 								</div>
 							</td>
 						</tr>
@@ -283,7 +283,7 @@
 											</td>											<td>
 												<div id="manufacturerPrompt">
 												<select data-ng-model="instrument.manufacturer"
-		data-ng-options="option for option in data.techniqueInstruments.manufacturerLookup" id="techniqueType"></select>
+		data-ng-options="option for option in data.techniqueInstruments.manufacturerLookup" id="techniqueType"><option value=""></option></select>
 													
 													</div>
 												</td>
@@ -303,7 +303,7 @@
 												<td>
 													<div id="instrumentTypePrompt">
 														<select data-ng-model="instrument.type"
-		data-ng-options="option for option in instrumentTypesLookup" id="techniqueType"></select>
+		data-ng-options="option for option in instrumentTypesLookup" id="techniqueType"><option value=""></option></select>
 														</div>
 													</td>
 												</tr>
@@ -511,6 +511,7 @@
 														</td>
 														<td>
 															<select ng-model="findingsColumn.columnType" ng-change="onColumnTypeDropdownChange()">
+																<option value=""></option>
 																<option>datum</option>
 																<option>condition</option>		
 															</select>
@@ -522,23 +523,23 @@
 														</td>
 														<td>
 															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()">
-
+															<option value=""></option>
 																
 															</select>
 														</td>
 													</tr>
 													<tr ng-if="findingsColumn.columnType=='condition'">
 														<td><label for="conditionProperty">Condition Property</label></td>
-														<td><select ng-model="findingsColumn.conditionProperty" data-ng-options="option for option in conditionTypeLookup"></td>
+														<td><select ng-model="findingsColumn.conditionProperty" data-ng-options="option for option in conditionTypeLookup"><option value=""></option></select></td>
 													</tr>
 													<tr>
 														<td><label for="valueType">Column Value Type</label></td>
-														<td><select ng-model="findingsColumn.valueType" data-ng-options="option for option in data.datumConditionValueTypeLookup"></td></td>
+														<td><select ng-model="findingsColumn.valueType" data-ng-options="option for option in data.datumConditionValueTypeLookup"><option value=""></option></select></td></td>
 													</tr>
 													
 													<tr>
 														<td><label for="valueUnit">Column Value Unit</label></td>
-														<td><select ng-model="findingsColumn.valueUnit" data-ng-options="option for option in valueUnitsLookup"></td>
+														<td><select ng-model="findingsColumn.valueUnit" data-ng-options="option for option in valueUnitsLookup"><option value=""></option></select></td>
 													</tr>
 													<tr>
 														<td><label for="constantValue">Constant Value</label></td>
