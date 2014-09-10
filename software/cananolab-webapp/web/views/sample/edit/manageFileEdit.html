@@ -1,11 +1,11 @@
-<table width="100%" align="center" class="submissionView">
+<table width="85%" class="subSubmissionView" align="center">
     <tbody><tr>
         <td class="cellLabel" width="15%">
-            File
+            Files
         </td>
         <td>
             <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanomaterialEntity'); openSubmissionForm('File');"><img align="top" src="images/btn_add.gif" border="0" alt="add a nanomaterial entity file"></a> -->
-            <button type="button" class="btn btn-primary btn-xxs" ng-click="openAddNewFile()" id="addFile">Add</button>
+            <button type="button" class="btn btn-primary btn-xxs" ng-click="openAddNewFile()" id="addFile" ng-show="updateFinding">Add</button>
         </td>
     </tr>
     <tr>
@@ -28,7 +28,7 @@
                     <th></th>
                 </tr>
 
-                <tr ng-repeat="file in $parent.files track by $index">
+                <tr ng-repeat="file in $parent.currentFinding.files track by $index">
                     <td>
                         {{file.type}}
                     </td>
@@ -43,7 +43,7 @@
                         {{file.description}}
                     </td>
                     <td align="right">
-                        <button ng-click="editFile('{{file.id}}');" class="btn btn-primary btn-xxs">Edit</button>&nbsp;
+                        <button ng-click="editFile('{{file.id}}');" class="btn btn-primary btn-xxs" ng-show="updateFinding">Edit</button>&nbsp;
                     </td>
                 </tr>
                 </tbody>

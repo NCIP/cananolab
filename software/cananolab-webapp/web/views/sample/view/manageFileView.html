@@ -1,0 +1,46 @@
+<table width="100%" align="center" class="submissionView">
+    <tbody><tr>
+        <td class="cellLabel" width="15%">
+            File
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <table class="editTableWithGrid" align="center" width="95%">
+                <tbody>
+                <tr>
+                    <th class="cellLabel" width="20%" scope="col">
+                        File Type
+                    </th>
+                    <th width="33%" class="cellLabel" scope="col">
+                        Title and Download Link
+                    </th>
+                    <th class="cellLabel" scope="col">
+                        Keywords
+                    </th>
+                    <th class="cellLabel" scope="col">
+                        Description
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="file in finding.files track by $index">
+                    <td>
+                        {{file.type}}
+                    </td>
+                    <td>
+                        <a style="white-space: normal;" href="/caNanoLab/rest/composition/download?fileId={{file.id}}">
+                            {{file.title}} </a>
+                    </td>
+                    <td>
+                        {{file.keywordsStr}}
+                    </td>
+                    <td>
+                        {{file.description}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -237,6 +237,8 @@ var app = angular.module('angularApp')
                     $scope.loader = false;
                     $scope.addNewInherentFunction=false;
                     
+                    $scope.showProperties();
+                    
                     if( $scope.composingElementForm.inherentFunction != null && $scope.composingElementForm.inherentFunction.length > 0 ) {
                         $scope.showInherentFunctionTable = true;
                     }
