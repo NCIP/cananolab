@@ -247,6 +247,14 @@ public class SimpleFindingBean {
 	public void setErrors(List<String> errors) {
 		this.errors = errors;
 	}
+
+	public SimpleFileBean getTheFile() {
+		return theFile;
+	}
+
+	public void setTheFile(SimpleFileBean theFile) {
+		this.theFile = theFile;
+	}
 	
 	
 	
