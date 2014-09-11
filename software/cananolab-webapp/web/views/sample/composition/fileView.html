@@ -22,7 +22,7 @@
                        	<img src="/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}" border="0" width="150" alt="uploaded image"> 
                      </a>                            
                  </span>
-                <span ng-if="!file.isImage">
+                <span ng-if="!file.isImage && file.ExternalURI == 'false'">
                     <a style="white-space: normal;"
                        ng-href="/caNanoLab/rest/sample/download?fileId={{file.fileId}}">
                         {{file.Title}}
