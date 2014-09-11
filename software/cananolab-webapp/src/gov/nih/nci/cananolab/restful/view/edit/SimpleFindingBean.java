@@ -32,6 +32,9 @@ public class SimpleFindingBean {
 	
 	List<String> errors = new ArrayList<String>();
 	
+	String parentCharType = "";
+	String parentCharName = "";
+	
 	public void transferFromFindingBean(FindingBean findingBean) {
 		columnHeaders =  findingBean.getColumnHeaders();
 		//findingBean.getDomain();
@@ -255,8 +258,21 @@ public class SimpleFindingBean {
 	public void setTheFile(SimpleFileBean theFile) {
 		this.theFile = theFile;
 	}
-	
-	
-	
+
+	public String getParentCharType() {
+		return parentCharType;
+	}
+
+	public void setParentCharType(String parentCharType) {
+		this.parentCharType = parentCharType;
+	}
+
+	public String getParentCharName() {
+		return parentCharName;
+	}
+
+	public void setParentCharName(String parentCharName) {
+		this.parentCharName = parentCharName;
+	}
 	
 }
