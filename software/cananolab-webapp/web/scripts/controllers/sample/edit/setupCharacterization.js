@@ -78,6 +78,7 @@ var app = angular.module('angularApp')
     if ($scope.isEdit) {
         // run initial rest call to setup characterization edit form //
         $scope.title = "Edit";
+        $scope.saveButton = "Update";
         $http({method: 'GET', url: '/caNanoLab/rest/characterization/setupUpdate?sampleId='+$scope.sampleId+'&charId='+$scope.charId+'&charClassName='+$scope.charClassName+'&charType='+$scope.type}).
             success(function(data, status, headers, config) {
             $scope.data = data;
@@ -94,6 +95,7 @@ var app = angular.module('angularApp')
     else {
         // run initial rest call to setup characterization add form //
         $scope.title = "Add";
+        $scope.saveButton = "Submit";        
         $http({method: 'GET', url: '/caNanoLab/rest/characterization/setupAdd?sampleId='+$scope.sampleId+'&charType='+$scope.type}).
             success(function(data, status, headers, config) {
             $scope.data = data;
