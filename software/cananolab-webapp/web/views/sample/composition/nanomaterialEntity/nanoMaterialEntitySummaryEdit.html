@@ -10,16 +10,12 @@
             </a>
         </th>
     </tr>
-    <tr ng-repeat="(key, entityType) in $parent.nanomaterialentity">
-        <td>
+    <tr ng-repeat="(key, entityTypes) in $parent.nanomaterialentity">
+        <td align="left">
             <a href="{{key}}"></a>
+            <div class="characterization" style="display: inline-block; overflow:hidden; width:97%">{{key}}</div>
             <table width="99%" align="center" class="summaryViewNoGrid"
-                   style="background-color:#dbdbdb;">
-                <tr>
-                    <th align="left" class="characterization">
-                        {{key}}
-                    </th>
-                </tr>
+                   style="background-color:#dbdbdb;" ng-repeat="entityType in entityTypes">
                 <tr>
                     <td>
                         <!-- <div style="margin-left:auto; margin-right:auto;text-align:right;width:99%;">
