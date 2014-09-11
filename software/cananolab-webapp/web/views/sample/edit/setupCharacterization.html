@@ -450,7 +450,7 @@
 									</td>
 									<td align="right">
 										<div align="right">
-											<button value="Save" ng-disabled="!techniqueInstrument.techniqueType" ng-click="saveExperimentConfig()" class="btn btn-primary btn-xs">Save</button>		
+											<button value="Save" ng-disabled="!techniqueInstrument.techniqueType||data.type==''||data.name==''" ng-click="saveExperimentConfig()" class="btn btn-primary btn-xs">Save</button>		
 											<button value="Cancel" ng-click="cancelExperimentConfig()" class="btn btn-warning btn-xs">Cancel</button>											
 										</div>
 									</td>
@@ -748,7 +748,7 @@
 								<button ng-if="!isNewFinding" ng-click="removeFindingInfo()" class="btn btn-danger btn-xxs">Remove</button>								
 							</td>
 							<td align="right" style="float:right;">
-								<button ng-click="saveFindingInfo()" class="btn btn-primary btn-xxs">Save</button>									
+								<button ng-click="saveFindingInfo()" ng-disabled="data.type==''||data.name==''" class="btn btn-primary btn-xxs">Save</button>									
 								<button ng-click="cancelFindingInfo()" class="btn btn-warning btn-xxs">Cancel</button>
 							</td>
 						</tr>
