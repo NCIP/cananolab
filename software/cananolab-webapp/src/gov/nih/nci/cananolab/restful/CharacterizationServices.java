@@ -553,7 +553,7 @@ public class CharacterizationServices {
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) applicationContext.getBean("characterizationBO");
 			
-			SimpleCharacterizationEditBean editBean = characterizationBO.saveFile(httpRequest, simpleFinding);
+			SimpleFindingBean editBean = characterizationBO.saveFile(httpRequest, simpleFinding);
 			List<String> errors = editBean.getErrors();
 			if (errors != null && errors.size() > 0) {
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -584,7 +584,7 @@ public class CharacterizationServices {
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) applicationContext.getBean("characterizationBO");
 			
-			SimpleCharacterizationEditBean editBean = characterizationBO.saveFile(httpRequest, simpleFinding);
+			SimpleFindingBean editBean = characterizationBO.removeFile(httpRequest, simpleFinding);
 			List<String> errors = editBean.getErrors();
 			if (errors != null && errors.size() > 0) {
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
