@@ -81,8 +81,11 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		this.saveEntity(request, sampleId, entityBean);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entityBean);
-		SampleBean[] otherSampleBeans = prepareCopy(request, otherSampleNames,
+		SampleBean[] otherSampleBeans = null;
+		if(otherSampleNames!=null){
+		otherSampleBeans = prepareCopy(request, otherSampleNames,
 				sampleBean);
+		}
 		if (otherSampleBeans != null) {
 			CompositionService compService = (CompositionService) request
 					.getSession().getAttribute("compositionService");

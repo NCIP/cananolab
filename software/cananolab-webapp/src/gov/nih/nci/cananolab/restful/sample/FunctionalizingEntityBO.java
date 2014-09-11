@@ -68,8 +68,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		// save to other samples (only when user click [Submit] button.)
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-					SampleBean[] otherSampleBeans = prepareCopy(request, otherSampleNames,
+		SampleBean[] otherSampleBeans = null;
+		if(otherSampleNames!=null){
+			otherSampleBeans = prepareCopy(request, otherSampleNames,
 					sampleBean);
+		}
 			if (otherSampleBeans != null) {
 				compService.copyAndSaveFunctionalizingEntity(entityBean,
 						sampleBean, otherSampleBeans);
