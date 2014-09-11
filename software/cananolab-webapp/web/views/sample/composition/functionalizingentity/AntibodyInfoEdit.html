@@ -28,7 +28,7 @@
     </td>
     <td>
         <div id="isotypePrompt">
-            <select ng-model="funcEntityForm.domainEntity.isotype" id="antibodyIsotype">
+            <select ng-model="funcEntityForm.domainEntity.isoType" id="antibodyIsotype">
                 <option value="">
                 </option>
                 <option ng-repeat="type in $parent.antibodyIsotypes track by $index" value="{{type}}" ng-selected="{{type==funcEntityForm.domainEntity.isotype}}">
