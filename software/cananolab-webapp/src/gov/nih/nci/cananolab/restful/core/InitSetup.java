@@ -31,9 +31,6 @@ import java.util.TreeSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.upload.FormFile;
-import org.apache.struts.util.LabelValueBean;
-
 /**
  * This class sets up information required for all forms.
  *
@@ -244,26 +241,26 @@ public class InitSetup {
 		return types;
 	}
 
-	public String getFileUriFromFormFile(FormFile file, String folderType,
-			String sampleName, String submitType) {
-		if (file != null && !StringUtils.isEmpty(file.getFileName())) {
-			String prefix = folderType;
-
-			if (!StringUtils.isEmpty(sampleName)
-					&& !StringUtils.isEmpty(submitType)
-					&& folderType.equals(Constants.FOLDER_PARTICLE)) {
-				prefix += "/" + sampleName + "/";
-				prefix += StringUtils
-						.getOneWordLowerCaseFirstLetter(submitType);
-			}
-			String timestamp = DateUtils.convertDateToString(new Date(),
-					"yyyyMMdd_HH-mm-ss-SSS");
-
-			return prefix + "/" + timestamp + "_" + file.getFileName();
-		} else {
-			return null;
-		}
-	}
+//	public String getFileUriFromFormFile(FormFile file, String folderType,
+//			String sampleName, String submitType) {
+//		if (file != null && !StringUtils.isEmpty(file.getFileName())) {
+//			String prefix = folderType;
+//
+//			if (!StringUtils.isEmpty(sampleName)
+//					&& !StringUtils.isEmpty(submitType)
+//					&& folderType.equals(Constants.FOLDER_PARTICLE)) {
+//				prefix += "/" + sampleName + "/";
+//				prefix += StringUtils
+//						.getOneWordLowerCaseFirstLetter(submitType);
+//			}
+//			String timestamp = DateUtils.convertDateToString(new Date(),
+//					"yyyyMMdd_HH-mm-ss-SSS");
+//
+//			return prefix + "/" + timestamp + "_" + file.getFileName();
+//		} else {
+//			return null;
+//		}
+//	}
 
 	// check whether the value is already stored in context
 	private Boolean isLookupInContext(HttpServletRequest request,
@@ -308,90 +305,92 @@ public class InitSetup {
 		}
 	}
 
-	public List<LabelValueBean> getDefaultAndOtherTypesByLookupAsOptions(
+	//public List<LabelValueBean> getDefaultAndOtherTypesByLookupAsOptions(
+	public void getDefaultAndOtherTypesByLookupAsOptions(
 			String lookupName, String lookupAttribute, String otherTypeAttribute)
 			throws Exception {
-		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
-		SortedSet<String> defaultValues = LookupService.findLookupValues(
-				lookupName, lookupAttribute);
-		// annotate the label of the default ones with *s.
-		for (String name : defaultValues) {
-			LabelValueBean lv = new LabelValueBean(name, name);
-			lvBeans.add(lv);
-		}
-		SortedSet<String> otherValues = LookupService.findLookupValues(
-				lookupName, otherTypeAttribute);
-		for (String name : otherValues) {
-			LabelValueBean lv = new LabelValueBean("[" + name + "]", name);
-			lvBeans.add(lv);
-		}
-		return lvBeans;
+//		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
+//		SortedSet<String> defaultValues = LookupService.findLookupValues(
+//				lookupName, lookupAttribute);
+//		// annotate the label of the default ones with *s.
+//		for (String name : defaultValues) {
+//			LabelValueBean lv = new LabelValueBean(name, name);
+//			lvBeans.add(lv);
+//		}
+//		SortedSet<String> otherValues = LookupService.findLookupValues(
+//				lookupName, otherTypeAttribute);
+//		for (String name : otherValues) {
+//			LabelValueBean lv = new LabelValueBean("[" + name + "]", name);
+//			lvBeans.add(lv);
+//		}
+//		return lvBeans;
 	}
 
-	public List<LabelValueBean> getDefaultAndOtherTypesByReflectionAsOptions(
+	//public List<LabelValueBean> getDefaultAndOtherTypesByReflectionAsOptions(
+			public void getDefaultAndOtherTypesByReflectionAsOptions(
 			ServletContext appContext, String contextAttributeForDefaults,
 			String fullParentClassName, String otherFullParentClassName)
 			throws Exception {
-		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
-		SortedSet<String> defaultTypes = getDefaultTypesByReflection(
-				appContext, contextAttributeForDefaults, fullParentClassName);
-		for (String type : defaultTypes) {
-			LabelValueBean lv = new LabelValueBean(type, type);
-			lvBeans.add(lv);
-		}
-
-		SortedSet<String> otherTypes = LookupService
-				.getAllOtherObjectTypes(otherFullParentClassName);
-		if (otherTypes != null) {
-			for (String type : otherTypes) {
-				LabelValueBean lv = new LabelValueBean("[" + type + "]", type);
-				lvBeans.add(lv);
-			}
-		}
-		return lvBeans;
+//		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
+//		SortedSet<String> defaultTypes = getDefaultTypesByReflection(
+//				appContext, contextAttributeForDefaults, fullParentClassName);
+//		for (String type : defaultTypes) {
+//			LabelValueBean lv = new LabelValueBean(type, type);
+//			lvBeans.add(lv);
+//		}
+//
+//		SortedSet<String> otherTypes = LookupService
+//				.getAllOtherObjectTypes(otherFullParentClassName);
+//		if (otherTypes != null) {
+//			for (String type : otherTypes) {
+//				LabelValueBean lv = new LabelValueBean("[" + type + "]", type);
+//				lvBeans.add(lv);
+//			}
+//		}
+//		return lvBeans;
 	}
 
 	public void setStaticOptions(ServletContext appContext) {
-		LabelValueBean[] booleanOptions = new LabelValueBean[] {
-				new LabelValueBean("true", "1"),
-				new LabelValueBean("false", "0") };
-		appContext.setAttribute("booleanOptions", booleanOptions);
-
-		LabelValueBean[] stringOperands = new LabelValueBean[] {
-				new LabelValueBean(Constants.STRING_OPERAND_CONTAINS,
-						Constants.STRING_OPERAND_CONTAINS),
-				new LabelValueBean(Constants.STRING_OPERAND_EQUALS,
-						Constants.STRING_OPERAND_EQUALS) };
-		appContext.setAttribute("stringOperands", stringOperands);
-
-		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean(
-				"equals", "is") };
-		appContext.setAttribute("booleanOperands", booleanOperands);
-
-		LabelValueBean[] numberOperands = new LabelValueBean[] {
-				new LabelValueBean("=", "="), new LabelValueBean(">", ">"),
-				new LabelValueBean(">=", ">="), new LabelValueBean("<", "<"),
-				new LabelValueBean("<=", "<=") };
-		appContext.setAttribute("numberOperands", numberOperands);
-
-		appContext.setAttribute("allCompositionSections",
-				CompositionBean.ALL_COMPOSITION_SECTIONS);
-
-		// register page
-		LabelValueBean[] titleOperands = new LabelValueBean[] {
-				new LabelValueBean(" ", " "), new LabelValueBean("Dr.", "Dr."),
-				new LabelValueBean("Mr.", "Mr."),
-				new LabelValueBean("Mrs.", "Mrs."),
-				new LabelValueBean("Miss", "Miss"),
-				new LabelValueBean("Ms.", "Ms.") };
-		appContext.setAttribute("titleOperands", titleOperands);
-
-		LabelValueBean[] csmRoleNames = new LabelValueBean[] {
-				new LabelValueBean(AccessibilityBean.R_ROLE_DISPLAY_NAME,
-						AccessibilityBean.CSM_READ_ROLE),
-				new LabelValueBean(AccessibilityBean.CURD_ROLE_DISPLAY_NAME,
-						AccessibilityBean.CSM_CURD_ROLE) };
-		appContext.setAttribute("csmRoleNames", csmRoleNames);
+//		LabelValueBean[] booleanOptions = new LabelValueBean[] {
+//				new LabelValueBean("true", "1"),
+//				new LabelValueBean("false", "0") };
+//		appContext.setAttribute("booleanOptions", booleanOptions);
+//
+//		LabelValueBean[] stringOperands = new LabelValueBean[] {
+//				new LabelValueBean(Constants.STRING_OPERAND_CONTAINS,
+//						Constants.STRING_OPERAND_CONTAINS),
+//				new LabelValueBean(Constants.STRING_OPERAND_EQUALS,
+//						Constants.STRING_OPERAND_EQUALS) };
+//		appContext.setAttribute("stringOperands", stringOperands);
+//
+//		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean(
+//				"equals", "is") };
+//		appContext.setAttribute("booleanOperands", booleanOperands);
+//
+//		LabelValueBean[] numberOperands = new LabelValueBean[] {
+//				new LabelValueBean("=", "="), new LabelValueBean(">", ">"),
+//				new LabelValueBean(">=", ">="), new LabelValueBean("<", "<"),
+//				new LabelValueBean("<=", "<=") };
+//		appContext.setAttribute("numberOperands", numberOperands);
+//
+//		appContext.setAttribute("allCompositionSections",
+//				CompositionBean.ALL_COMPOSITION_SECTIONS);
+//
+//		// register page
+//		LabelValueBean[] titleOperands = new LabelValueBean[] {
+//				new LabelValueBean(" ", " "), new LabelValueBean("Dr.", "Dr."),
+//				new LabelValueBean("Mr.", "Mr."),
+//				new LabelValueBean("Mrs.", "Mrs."),
+//				new LabelValueBean("Miss", "Miss"),
+//				new LabelValueBean("Ms.", "Ms.") };
+//		appContext.setAttribute("titleOperands", titleOperands);
+//
+//		LabelValueBean[] csmRoleNames = new LabelValueBean[] {
+//				new LabelValueBean(AccessibilityBean.R_ROLE_DISPLAY_NAME,
+//						AccessibilityBean.CSM_READ_ROLE),
+//				new LabelValueBean(AccessibilityBean.CURD_ROLE_DISPLAY_NAME,
+//						AccessibilityBean.CSM_CURD_ROLE) };
+//		appContext.setAttribute("csmRoleNames", csmRoleNames);
 	}
 	
 	public void setPublicCountInContext(ServletContext appContext) {

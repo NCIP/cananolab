@@ -48,7 +48,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.struts.upload.FormFile;
+//import org.apache.struts.upload.FormFile;
 
 /**
  * Base action for all annotation actions

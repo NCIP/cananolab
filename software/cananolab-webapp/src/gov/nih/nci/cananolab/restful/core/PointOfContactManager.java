@@ -18,7 +18,6 @@ import gov.nih.nci.cananolab.service.security.UserBean;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.impl.DefaultWebContextBuilder;
@@ -36,20 +35,22 @@ public class PointOfContactManager {
 
 	public PointOfContactBean getPointOfContactById(HttpServletRequest request, String id,
 			Boolean primaryStatus) throws Exception {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		//HttpServletRequest request = webContext.getHttpServletRequest();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user == null) {
-			return null;
-		}
-		PointOfContactBean poc = getService(request).findPointOfContactById(id);
-		poc.setPrimaryStatus(primaryStatus);
-		DynaValidatorForm sampleForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("sampleForm"));
-		SampleBean sample = (SampleBean) sampleForm.get("sampleBean");
-		sample.setThePOC(poc);
-		return poc;
+//		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+//		org.directwebremoting.WebContext webContext = dwcb.get();
+//		//HttpServletRequest request = webContext.getHttpServletRequest();
+//		UserBean user = (UserBean) request.getSession().getAttribute("user");
+//		if (user == null) {
+//			return null;
+//		}
+//		PointOfContactBean poc = getService(request).findPointOfContactById(id);
+//		poc.setPrimaryStatus(primaryStatus);
+//		DynaValidatorForm sampleForm = (DynaValidatorForm) (WebContextFactory
+//				.get().getSession().getAttribute("sampleForm"));
+//		SampleBean sample = (SampleBean) sampleForm.get("sampleBean");
+//		sample.setThePOC(poc);
+//		return poc;
+		
+		return null;
 	}
 
 //	public PointOfContactBean resetThePointOfContact(HttpServletRequest request) throws Exception {

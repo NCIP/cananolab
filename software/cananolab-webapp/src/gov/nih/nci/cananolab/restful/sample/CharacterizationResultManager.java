@@ -29,8 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.util.LabelValueBean;
-import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
@@ -115,45 +113,46 @@ public class CharacterizationResultManager {
 		return nms;
 	}
 
-	public List<LabelValueBean> getDecoratedDatumNameOptions(
+	//public List<LabelValueBean> getDecoratedDatumNameOptions(
+	public void getDecoratedDatumNameOptions(
 			String characterizationType, String characterizationName,
 			String assayType) throws Exception {
 		// extract assayType from characterizationName
-		if (characterizationName.contains(":")) {
-			int ind = characterizationName.indexOf(":");
-			assayType = characterizationName.substring(ind + 1);
-			characterizationName = characterizationName.substring(0, ind);
-		}
-		List<LabelValueBean> allDatumNames = InitSetup.getInstance()
-				.getDefaultAndOtherTypesByLookupAsOptions(characterizationName,
-						"datumName", "otherDatumName");
-		// if assayType is empty, use charName to look up datums, as well as
-		// look up all assay types and use assay type to look up datum
-		if (StringUtils.isEmpty(assayType)) {
-			List<LabelValueBean> assayTypeBeans = InitSetup
-					.getInstance()
-					.getDefaultAndOtherTypesByLookupAsOptions(
-							characterizationName, "assayType", "otherAssayType");
-			if (assayTypeBeans != null && !assayTypeBeans.isEmpty()) {
-				for (LabelValueBean bean : assayTypeBeans) {
-					List<LabelValueBean> datumNamesByAssayTypes = InitSetup
-							.getInstance()
-							.getDefaultAndOtherTypesByLookupAsOptions(
-									bean.getValue(), "datumName",
-									"otherDatumName");
-					for (LabelValueBean lv : datumNamesByAssayTypes) {
-						if (!allDatumNames.contains(lv)) {
-							allDatumNames.add(lv);
-						}
-					}
-				}
-			}
-		} else {
-			allDatumNames.addAll(InitSetup.getInstance()
-					.getDefaultAndOtherTypesByLookupAsOptions(assayType,
-							"datumName", "otherDatumName"));
-		}
-		return allDatumNames;
+//		if (characterizationName.contains(":")) {
+//			int ind = characterizationName.indexOf(":");
+//			assayType = characterizationName.substring(ind + 1);
+//			characterizationName = characterizationName.substring(0, ind);
+//		}
+//		List<LabelValueBean> allDatumNames = InitSetup.getInstance()
+//				.getDefaultAndOtherTypesByLookupAsOptions(characterizationName,
+//						"datumName", "otherDatumName");
+//		// if assayType is empty, use charName to look up datums, as well as
+//		// look up all assay types and use assay type to look up datum
+//		if (StringUtils.isEmpty(assayType)) {
+//			List<LabelValueBean> assayTypeBeans = InitSetup
+//					.getInstance()
+//					.getDefaultAndOtherTypesByLookupAsOptions(
+//							characterizationName, "assayType", "otherAssayType");
+//			if (assayTypeBeans != null && !assayTypeBeans.isEmpty()) {
+//				for (LabelValueBean bean : assayTypeBeans) {
+//					List<LabelValueBean> datumNamesByAssayTypes = InitSetup
+//							.getInstance()
+//							.getDefaultAndOtherTypesByLookupAsOptions(
+//									bean.getValue(), "datumName",
+//									"otherDatumName");
+//					for (LabelValueBean lv : datumNamesByAssayTypes) {
+//						if (!allDatumNames.contains(lv)) {
+//							allDatumNames.add(lv);
+//						}
+//					}
+//				}
+//			}
+//		} else {
+//			allDatumNames.addAll(InitSetup.getInstance()
+//					.getDefaultAndOtherTypesByLookupAsOptions(assayType,
+//							"datumName", "otherDatumName"));
+//		}
+//		return allDatumNames;
 	}
 
 	public List<String> getColumnValueUnitOptions(HttpServletRequest request, String name, String property)
@@ -180,30 +179,34 @@ public class CharacterizationResultManager {
 	}
 
 	public FileBean getFileFromList(int index) {
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		if (charForm == null) {
-			return null;
-		}
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		List<FileBean> files = charBean.getTheFinding().getFiles();
-		FileBean theFile = files.get(index);
-		return theFile;
+//		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+//				.get().getSession().getAttribute("characterizationForm"));
+//		if (charForm == null) {
+//			return null;
+//		}
+//		CharacterizationBean charBean = (CharacterizationBean) (charForm
+//				.get("achar"));
+//		List<FileBean> files = charBean.getTheFinding().getFiles();
+//		FileBean theFile = files.get(index);
+//		return theFile;
+		
+		return null;
 	}
 
 	public FileBean resetTheFile() throws Exception {
-		WebContext wctx = WebContextFactory.get();
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		if (charForm == null) {
-			return null;
-		}
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		FileBean fileBean = new FileBean();
-		charBean.getTheFinding().setTheFile(fileBean);
-		return fileBean;
+//		WebContext wctx = WebContextFactory.get();
+//		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+//				.get().getSession().getAttribute("characterizationForm"));
+//		if (charForm == null) {
+//			return null;
+//		}
+//		CharacterizationBean charBean = (CharacterizationBean) (charForm
+//				.get("achar"));
+//		FileBean fileBean = new FileBean();
+//		charBean.getTheFinding().setTheFile(fileBean);
+//		return fileBean;
+		
+		return null;
 	}
 
 	public String addColumnHeader(ColumnHeader header, int columnNumber) {

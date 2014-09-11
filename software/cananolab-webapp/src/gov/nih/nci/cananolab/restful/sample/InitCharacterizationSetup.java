@@ -33,7 +33,6 @@ import java.util.TreeSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.util.LabelValueBean;
 
 /**
  * This class sets up information required for characterization forms.
@@ -68,26 +67,27 @@ public class InitCharacterizationSetup {
 		return types;
 	}
 
-	public List<LabelValueBean> getDecoratedCharacterizationTypes(
+	//public List<LabelValueBean> getDecoratedCharacterizationTypes(
+	public void getDecoratedCharacterizationTypes(
 			HttpServletRequest request) throws Exception {
-		List<LabelValueBean> charTypes = new ArrayList<LabelValueBean>();
-		List<String> types = getDefaultCharacterizationTypes(request
-				.getSession().getServletContext());
-		for (String type : types) {
-			LabelValueBean bean = new LabelValueBean(type, type);
-			charTypes.add(bean);
-		}
-		SortedSet<String> otherTypes = LookupService
-				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.characterization.OtherCharacterization");
-		for (String type : otherTypes) {
-			if (!types.contains(type)) {
-				LabelValueBean bean = new LabelValueBean("[" + type + "]", type);
-				charTypes.add(bean);
-			}
-		}
-		request.getSession().setAttribute("decoratedCharacterizationTypes",
-				charTypes);
-		return charTypes;
+//		List<LabelValueBean> charTypes = new ArrayList<LabelValueBean>();
+//		List<String> types = getDefaultCharacterizationTypes(request
+//				.getSession().getServletContext());
+//		for (String type : types) {
+//			LabelValueBean bean = new LabelValueBean(type, type);
+//			charTypes.add(bean);
+//		}
+//		SortedSet<String> otherTypes = LookupService
+//				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.characterization.OtherCharacterization");
+//		for (String type : otherTypes) {
+//			if (!types.contains(type)) {
+//				LabelValueBean bean = new LabelValueBean("[" + type + "]", type);
+//				charTypes.add(bean);
+//			}
+//		}
+//		request.getSession().setAttribute("decoratedCharacterizationTypes",
+//				charTypes);
+//		return charTypes;
 	}
 
 	/**
@@ -233,43 +233,44 @@ public class InitCharacterizationSetup {
 		return charNames;
 	}
 
-	public List<LabelValueBean> getDecoratedCharNamesByCharType(
+	//public List<LabelValueBean> getDecoratedCharNamesByCharType(
+	public void getDecoratedCharNamesByCharType(
 			HttpServletRequest request, String charType) throws Exception {
-		if (StringUtils.isEmpty(charType)) {
-			return null;
-		}
-		SortedSet<String> charNames = new TreeSet<String>();
-		List<LabelValueBean> charNameBeans = new ArrayList<LabelValueBean>();
-		String shortClassNameForCharType = ClassUtils
-				.getShortClassNameFromDisplayName(charType);
-		Class clazz = ClassUtils.getFullClass(shortClassNameForCharType);
-		if (clazz != null) {
-			if (clazz != null) {
-				charNames = InitSetup.getInstance()
-						.getDefaultTypesByReflection(
-								request.getSession().getServletContext(),
-								"defaultCharTypeChars", clazz.getName());
-				for (String name : charNames) {
-					LabelValueBean bean = new LabelValueBean(name, name);
-					charNameBeans.add(bean);
-				}
-			}
-		}
-		CharacterizationService service = this
-				.getCharacterizationServiceFromSession(request);
-		List<String> otherCharNames = service
-				.findOtherCharacterizationByAssayCategory(charType);
-		if (!otherCharNames.isEmpty()) {
-			for (String name : otherCharNames) {
-				if (!charNames.contains(name)) {
-					LabelValueBean bean = new LabelValueBean("[" + name + "]",
-							name);
-					charNameBeans.add(bean);
-				}
-			}
-		}
-
-		return charNameBeans;
+//		if (StringUtils.isEmpty(charType)) {
+//			return null;
+//		}
+//		SortedSet<String> charNames = new TreeSet<String>();
+//		List<LabelValueBean> charNameBeans = new ArrayList<LabelValueBean>();
+//		String shortClassNameForCharType = ClassUtils
+//				.getShortClassNameFromDisplayName(charType);
+//		Class clazz = ClassUtils.getFullClass(shortClassNameForCharType);
+//		if (clazz != null) {
+//			if (clazz != null) {
+//				charNames = InitSetup.getInstance()
+//						.getDefaultTypesByReflection(
+//								request.getSession().getServletContext(),
+//								"defaultCharTypeChars", clazz.getName());
+//				for (String name : charNames) {
+//					LabelValueBean bean = new LabelValueBean(name, name);
+//					charNameBeans.add(bean);
+//				}
+//			}
+//		}
+//		CharacterizationService service = this
+//				.getCharacterizationServiceFromSession(request);
+//		List<String> otherCharNames = service
+//				.findOtherCharacterizationByAssayCategory(charType);
+//		if (!otherCharNames.isEmpty()) {
+//			for (String name : otherCharNames) {
+//				if (!charNames.contains(name)) {
+//					LabelValueBean bean = new LabelValueBean("[" + name + "]",
+//							name);
+//					charNameBeans.add(bean);
+//				}
+//			}
+//		}
+//
+//		return charNameBeans;
 	}
 
 	public SortedSet<String> getDatumNamesByCharName(

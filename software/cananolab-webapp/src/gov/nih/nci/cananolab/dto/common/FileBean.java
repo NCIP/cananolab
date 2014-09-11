@@ -29,8 +29,6 @@ import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.upload.FormFile;
-
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
  *

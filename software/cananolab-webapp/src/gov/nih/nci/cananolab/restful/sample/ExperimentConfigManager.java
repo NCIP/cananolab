@@ -25,7 +25,6 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
@@ -46,33 +45,35 @@ public class ExperimentConfigManager {
 	}
 
 	public ExperimentConfigBean resetTheExperimentConfig() {
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		if (charForm == null) {
-			return null;
-		}
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		ExperimentConfigBean newExperimentConfigBean = new ExperimentConfigBean();
-		charBean.setTheExperimentConfig(newExperimentConfigBean);
-		return newExperimentConfigBean;
+//		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+//				.get().getSession().getAttribute("characterizationForm"));
+//		if (charForm == null) {
+//			return null;
+//		}
+//		CharacterizationBean charBean = (CharacterizationBean) (charForm
+//				.get("achar"));
+//		ExperimentConfigBean newExperimentConfigBean = new ExperimentConfigBean();
+//		charBean.setTheExperimentConfig(newExperimentConfigBean);
+//		return newExperimentConfigBean;
+		return null;
 	}
 
 	public ExperimentConfigBean getExperimentConfigById(String id)
 			throws Exception {
-		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		if (user == null) {
-			return null;
-		}
-		ExperimentConfig config = getHelper().findExperimentConfigById(id);
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		ExperimentConfigBean configBean = new ExperimentConfigBean(config);
-		charBean.setTheExperimentConfig(configBean);
-		return configBean;
+//		WebContext wctx = WebContextFactory.get();
+//		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+//		if (user == null) {
+//			return null;
+//		}
+//		ExperimentConfig config = getHelper().findExperimentConfigById(id);
+//		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+//				.get().getSession().getAttribute("characterizationForm"));
+//		CharacterizationBean charBean = (CharacterizationBean) (charForm
+//				.get("achar"));
+//		ExperimentConfigBean configBean = new ExperimentConfigBean(config);
+//		charBean.setTheExperimentConfig(configBean);
+//		return configBean;
+		return null;
 	}
 
 	public String getTechniqueAbbreviation(HttpServletRequest request, String techniqueType)
@@ -131,31 +132,35 @@ public class ExperimentConfigManager {
 
 	public ExperimentConfigBean addInstrument(Instrument instrument)
 			throws ExperimentConfigException {
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		if (charForm == null) {
-			return null;
-		}
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		ExperimentConfigBean theExperimentConfig = charBean
-				.getTheExperimentConfig();
-		theExperimentConfig.addInstrument(instrument);
-		return theExperimentConfig;
+//		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+//				.get().getSession().getAttribute("characterizationForm"));
+//		if (charForm == null) {
+//			return null;
+//		}
+//		CharacterizationBean charBean = (CharacterizationBean) (charForm
+//				.get("achar"));
+//		ExperimentConfigBean theExperimentConfig = charBean
+//				.getTheExperimentConfig();
+//		theExperimentConfig.addInstrument(instrument);
+//		return theExperimentConfig;
+		
+		return null;
 	}
 
 	public ExperimentConfigBean deleteInstrument(Instrument instrument)
 			throws ExperimentConfigException {
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		if (charForm == null) {
-			return null;
-		}
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		ExperimentConfigBean theExperimentConfig = charBean
-				.getTheExperimentConfig();
-		theExperimentConfig.removeInstrument(instrument);
-		return theExperimentConfig;
+//		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+//				.get().getSession().getAttribute("characterizationForm"));
+//		if (charForm == null) {
+//			return null;
+//		}
+//		CharacterizationBean charBean = (CharacterizationBean) (charForm
+//				.get("achar"));
+//		ExperimentConfigBean theExperimentConfig = charBean
+//				.getTheExperimentConfig();
+//		theExperimentConfig.removeInstrument(instrument);
+//		return theExperimentConfig;
+		
+		return null;
 	}
 }

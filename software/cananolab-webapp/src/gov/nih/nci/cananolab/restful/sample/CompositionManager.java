@@ -20,7 +20,6 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
@@ -50,60 +49,63 @@ public class CompositionManager {
 	}
 
 	public FileBean getFileById(String type, String id) throws Exception {
-		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		if (user == null) {
-			return null;
-		}
-		FileBean fileBean = getService().findFileById(id);
-		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("compositionForm"));
-		if (type.equals("nanomaterialEntity")) {
-			NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
-					.get("nanomaterialEntity");
-			entity.setTheFile(fileBean);
-		} else if (type.equals("functionalizingEntity")) {
-			FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
-					.get("functionalizingEntity");
-			entity.setTheFile(fileBean);
-		} else if (type.equals("comp")) {
-			CompositionBean comp = (CompositionBean) compositionForm
-					.get("comp");
-			comp.setTheFile(fileBean);
-		} else {
-			ChemicalAssociationBean assoc = (ChemicalAssociationBean) compositionForm
-					.get("assoc");
-			assoc.setTheFile(fileBean);
-		}
-		return fileBean;
+//		WebContext wctx = WebContextFactory.get();
+//		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+//		if (user == null) {
+//			return null;
+//		}
+//		FileBean fileBean = getService().findFileById(id);
+//		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
+//				.get().getSession().getAttribute("compositionForm"));
+//		if (type.equals("nanomaterialEntity")) {
+//			NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
+//					.get("nanomaterialEntity");
+//			entity.setTheFile(fileBean);
+//		} else if (type.equals("functionalizingEntity")) {
+//			FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
+//					.get("functionalizingEntity");
+//			entity.setTheFile(fileBean);
+//		} else if (type.equals("comp")) {
+//			CompositionBean comp = (CompositionBean) compositionForm
+//					.get("comp");
+//			comp.setTheFile(fileBean);
+//		} else {
+//			ChemicalAssociationBean assoc = (ChemicalAssociationBean) compositionForm
+//					.get("assoc");
+//			assoc.setTheFile(fileBean);
+//		}
+//		return fileBean;
+		
+		return null;
 	}
 
 	public FileBean resetTheFile(String type) throws Exception {
-		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("compositionForm"));
-		if (compositionForm == null) {
-			return null;
-		}
-		FileBean fileBean = new FileBean();
-
-		if (type.equals("nanomaterialEntity")) {
-			NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
-					.get("nanomaterialEntity");
-			entity.setTheFile(fileBean);
-		} else if (type.equals("functionalizingEntity")) {
-			FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
-					.get("functionalizingEntity");
-			entity.setTheFile(fileBean);
-		} else if (type.equals("comp")) {
-			CompositionBean comp = (CompositionBean) compositionForm
-					.get("comp");
-			comp.setTheFile(fileBean);
-		} else {
-			ChemicalAssociationBean assoc = (ChemicalAssociationBean) compositionForm
-					.get("assoc");
-			assoc.setTheFile(fileBean);
-		}
-		return fileBean;
+//		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
+//				.get().getSession().getAttribute("compositionForm"));
+//		if (compositionForm == null) {
+//			return null;
+//		}
+//		FileBean fileBean = new FileBean();
+//
+//		if (type.equals("nanomaterialEntity")) {
+//			NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
+//					.get("nanomaterialEntity");
+//			entity.setTheFile(fileBean);
+//		} else if (type.equals("functionalizingEntity")) {
+//			FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
+//					.get("functionalizingEntity");
+//			entity.setTheFile(fileBean);
+//		} else if (type.equals("comp")) {
+//			CompositionBean comp = (CompositionBean) compositionForm
+//					.get("comp");
+//			comp.setTheFile(fileBean);
+//		} else {
+//			ChemicalAssociationBean assoc = (ChemicalAssociationBean) compositionForm
+//					.get("assoc");
+//			assoc.setTheFile(fileBean);
+//		}
+//		return fileBean;
+		return null;
 	}
 
 	public List<BaseCompositionEntityBean> getAssociatedElementOptions(

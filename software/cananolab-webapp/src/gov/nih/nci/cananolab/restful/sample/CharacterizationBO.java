@@ -47,10 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for characterization actions
@@ -249,10 +245,10 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return editBean;
 	}
 
-	private void clearCopy(DynaValidatorForm theForm) {
-		theForm.set("otherSamples", new String[0]);
-		theForm.set("copyData", false);
-	}
+//	private void clearCopy(DynaValidatorForm theForm) {
+//		theForm.set("otherSamples", new String[0]);
+//		theForm.set("copyData", false);
+//	}
 
 	/**
 	 * Setup, prepare and save characterization.
@@ -388,9 +384,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return viewBean;
 	}
 
-	public ActionForward setupView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+//	public ActionForward setupView(ActionMapping mapping, ActionForm form,
+//			HttpServletRequest request, HttpServletResponse response)
+//			throws Exception {
 		
 		//TODO
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -400,8 +396,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //		CharacterizationBean charBean = service
 //				.findCharacterizationById(charId);
 //		request.setAttribute("charBean", charBean);
-		return mapping.findForward("singleSummaryView");
-	}
+//		return mapping.findForward("singleSummaryView");
+//	}
 
 	/**
 	 * Shared function for summaryView(), summaryPrint() and summaryEdit().
@@ -613,48 +609,50 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 	}
 
-	public ActionForward getFinding(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String theFindingId = request.getParameter("findingId");
-		CharacterizationService service = this.setServicesInSession(request);
-		FindingBean findingBean = service.findFindingById(theFindingId);
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
-		achar.setTheFinding(findingBean);
+//	public ActionForward getFinding(ActionMapping mapping, ActionForm form,
+//			HttpServletRequest request, HttpServletResponse response)
+//			throws Exception {
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		String theFindingId = request.getParameter("findingId");
+//		CharacterizationService service = this.setServicesInSession(request);
+//		FindingBean findingBean = service.findFindingById(theFindingId);
+//		CharacterizationBean achar = (CharacterizationBean) theForm
+//				.get("achar");
+//		achar.setTheFinding(findingBean);
+//
+//		request.setAttribute("anchor", "submitFinding");
+//		this.checkOpenForms(achar, theForm, request);
+//
+//		// Feature request [26487] Deeper Edit Links.
+//		if (findingBean.getFiles().size() == 1) {
+//			request.setAttribute("onloadJavascript", "setTheFile(0)");
+//		}
+//		request.setAttribute("disableOuterButtons", true);
+//		// remove columnHeaders stored in the session;
+//		request.getSession().removeAttribute("columnHeaders");
+//		return mapping.findForward("inputForm");
+//	}
 
-		request.setAttribute("anchor", "submitFinding");
-		this.checkOpenForms(achar, theForm, request);
-
-		// Feature request [26487] Deeper Edit Links.
-		if (findingBean.getFiles().size() == 1) {
-			request.setAttribute("onloadJavascript", "setTheFile(0)");
-		}
-		request.setAttribute("disableOuterButtons", true);
-		// remove columnHeaders stored in the session;
-		request.getSession().removeAttribute("columnHeaders");
-		return mapping.findForward("inputForm");
-	}
-
-	public ActionForward resetFinding(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FindingBean theFinding = new FindingBean();
-		// theFinding.setNumberOfColumns(1);
-		// theFinding.setNumberOfRows(1);
-		// theFinding.updateMatrix(theFinding.getNumberOfColumns(), theFinding
-		// .getNumberOfRows());
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
-		achar.setTheFinding(theFinding);
-		request.setAttribute("anchor", "submitFinding");
-		this.checkOpenForms(achar, theForm, request);
-		request.setAttribute("disableOuterButtons", true);
-		request.getSession().removeAttribute("columnHeaders");
-		return mapping.findForward("inputForm");
-	}
+//	public ActionForward resetFinding(ActionMapping mapping, ActionForm form,
+//			HttpServletRequest request, HttpServletResponse response)
+//			throws Exception {
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		FindingBean theFinding = new FindingBean();
+//		// theFinding.setNumberOfColumns(1);
+//		// theFinding.setNumberOfRows(1);
+//		// theFinding.updateMatrix(theFinding.getNumberOfColumns(), theFinding
+//		// .getNumberOfRows());
+//		CharacterizationBean achar = (CharacterizationBean) theForm
+//				.get("achar");
+//		achar.setTheFinding(theFinding);
+//		request.setAttribute("anchor", "submitFinding");
+//		this.checkOpenForms(achar, theForm, request);
+//		request.setAttribute("disableOuterButtons", true);
+//		request.getSession().removeAttribute("columnHeaders");
+//		return mapping.findForward("inputForm");
+		
+//		return null;
+//	}
 
 	public SimpleCharacterizationEditBean saveFinding(HttpServletRequest request, 
 			SimpleFindingBean simpleFinding)
@@ -758,19 +756,18 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return editBean;
 	}
 
-	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public void removeFile(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
-		FindingBean findingBean = achar.getTheFinding();
-		int theFileIndex = findingBean.getTheFileIndex();
-		findingBean.removeFile(theFileIndex);
-		findingBean.setTheFile(new FileBean());
-		request.setAttribute("anchor", "submitFinding");
-		this.checkOpenForms(achar, theForm, request);
-		return mapping.findForward("inputForm");
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		CharacterizationBean achar = (CharacterizationBean) theForm
+//				.get("achar");
+//		FindingBean findingBean = achar.getTheFinding();
+//		int theFileIndex = findingBean.getTheFileIndex();
+//		findingBean.removeFile(theFileIndex);
+//		findingBean.setTheFile(new FileBean());
+//		request.setAttribute("anchor", "submitFinding");
+//		this.checkOpenForms(achar, theForm, request);
+//		return mapping.findForward("inputForm");
 	}
 
 	/**
@@ -954,73 +951,73 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());
 	}
 
-	private void checkOpenForms(CharacterizationBean achar,
-			DynaValidatorForm theForm, HttpServletRequest request)
-			throws Exception {
-		
-		achar.updateEmptyFieldsToNull();
-		String dispatch = request.getParameter("dispatch");
-		String browserDispatch = getBrowserDispatch(request);
-		
-		HttpSession session = request.getSession();
-		Boolean openFile = false, openExperimentConfig = false, openFinding = false;
-		if (dispatch.equals("input") && browserDispatch.equals("addFile")) {
-			openFile = true;
-		}
-		session.setAttribute("openFile", openFile);
-		if (dispatch.equals("input")
-				&& browserDispatch.equals("saveExperimentConfig")) {
-			openExperimentConfig = true;
-		}
-		session.setAttribute("openExperimentConfig", openExperimentConfig);
-		if (dispatch.equals("input")
-				&& (browserDispatch.equals("saveFinding") || browserDispatch
-						.equals("addFile")) || dispatch.equals("addFile")
-				|| dispatch.equals("removeFile")
-				|| dispatch.equals("drawMatrix")
-				|| dispatch.equals("getFinding")
-				|| dispatch.equals("resetFinding")
-				|| dispatch.equals("updateColumnOrder")) {
-			openFinding = true;
-		}
-		session.setAttribute("openFinding", openFinding);
-
-		InitCharacterizationSetup.getInstance()
-				.persistCharacterizationDropdowns(request, achar);
-
-		/**
-		 * If user entered customized Char Type/Name, Assay Type by selecting
-		 * [other], we should show and highlight the value on the edit page.
-		 */
-		String currentCharType = achar.getCharacterizationType();
-		setOtherValueOption(request, currentCharType, "characterizationTypes");
-
-		String currentCharName = achar.getCharacterizationName();
-		setOtherValueOption(request, currentCharName, "charTypeChars");
-
-		String currentAssayType = achar.getAssayType();
-		setOtherValueOption(request, currentAssayType, "charNameAssays");
-
-		// setup detail page
-		if (achar.isWithProperties()) {
-			String detailPage = null;
-			if (!StringUtils.isEmpty(achar.getCharacterizationType())
-					&& !StringUtils.isEmpty(achar.getCharacterizationName())) {
-				detailPage = InitCharacterizationSetup.getInstance()
-						.getDetailPage(achar.getCharacterizationType(),
-								achar.getCharacterizationName());
-			}
-			request.setAttribute("characterizationDetailPage", detailPage);
-		}
-		// if finding contains more than one column, set disableSetColumnOrder
-		// false
-		if (achar.getTheFinding().getNumberOfColumns() > 1
-				&& dataMatrixSaved(achar.getTheFinding())) {
-			request.setAttribute("setColumnOrder", true);
-		} else {
-			request.setAttribute("setColumnOrder", false);
-		}
-	}
+//	private void checkOpenForms(CharacterizationBean achar,
+//			DynaValidatorForm theForm, HttpServletRequest request)
+//			throws Exception {
+//		
+//		achar.updateEmptyFieldsToNull();
+//		String dispatch = request.getParameter("dispatch");
+//		String browserDispatch = getBrowserDispatch(request);
+//		
+//		HttpSession session = request.getSession();
+//		Boolean openFile = false, openExperimentConfig = false, openFinding = false;
+//		if (dispatch.equals("input") && browserDispatch.equals("addFile")) {
+//			openFile = true;
+//		}
+//		session.setAttribute("openFile", openFile);
+//		if (dispatch.equals("input")
+//				&& browserDispatch.equals("saveExperimentConfig")) {
+//			openExperimentConfig = true;
+//		}
+//		session.setAttribute("openExperimentConfig", openExperimentConfig);
+//		if (dispatch.equals("input")
+//				&& (browserDispatch.equals("saveFinding") || browserDispatch
+//						.equals("addFile")) || dispatch.equals("addFile")
+//				|| dispatch.equals("removeFile")
+//				|| dispatch.equals("drawMatrix")
+//				|| dispatch.equals("getFinding")
+//				|| dispatch.equals("resetFinding")
+//				|| dispatch.equals("updateColumnOrder")) {
+//			openFinding = true;
+//		}
+//		session.setAttribute("openFinding", openFinding);
+//
+//		InitCharacterizationSetup.getInstance()
+//				.persistCharacterizationDropdowns(request, achar);
+//
+//		/**
+//		 * If user entered customized Char Type/Name, Assay Type by selecting
+//		 * [other], we should show and highlight the value on the edit page.
+//		 */
+//		String currentCharType = achar.getCharacterizationType();
+//		setOtherValueOption(request, currentCharType, "characterizationTypes");
+//
+//		String currentCharName = achar.getCharacterizationName();
+//		setOtherValueOption(request, currentCharName, "charTypeChars");
+//
+//		String currentAssayType = achar.getAssayType();
+//		setOtherValueOption(request, currentAssayType, "charNameAssays");
+//
+//		// setup detail page
+//		if (achar.isWithProperties()) {
+//			String detailPage = null;
+//			if (!StringUtils.isEmpty(achar.getCharacterizationType())
+//					&& !StringUtils.isEmpty(achar.getCharacterizationName())) {
+//				detailPage = InitCharacterizationSetup.getInstance()
+//						.getDetailPage(achar.getCharacterizationType(),
+//								achar.getCharacterizationName());
+//			}
+//			request.setAttribute("characterizationDetailPage", detailPage);
+//		}
+//		// if finding contains more than one column, set disableSetColumnOrder
+//		// false
+//		if (achar.getTheFinding().getNumberOfColumns() > 1
+//				&& dataMatrixSaved(achar.getTheFinding())) {
+//			request.setAttribute("setColumnOrder", true);
+//		} else {
+//			request.setAttribute("setColumnOrder", false);
+//		}
+//	}
 
 	private Boolean dataMatrixSaved(FindingBean theFinding) {
 		if (theFinding.getColumnHeaders() != null) {
