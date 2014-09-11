@@ -195,9 +195,10 @@ var app = angular.module('angularApp')
         $scope.loader = true;
         $scope.techniqueInstrument.parentCharType = $scope.data.type;
         $scope.techniqueInstrument.parentCharName = $scope.data.name;
-        
+
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveExperimentConfig',data: $scope.techniqueInstrument}).
-        success(function(data, status, headers, config) {            
+        success(function(data, status, headers, config) {   
+            $scope.saveButton = "Update";        
             $scope.loader = false;
             $scope.data=data;
         }).
@@ -410,7 +411,8 @@ var app = angular.module('angularApp')
         $scope.currentFinding.parentCharType = $scope.data.type;
         $scope.currentFinding.parentCharName = $scope.data.name;
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveFinding',data: $scope.currentFinding}).
-        success(function(data, status, headers, config) {            
+        success(function(data, status, headers, config) { 
+            $scope.saveButton = "Update";                           
             $scope.loader = false;
             $scope.data=data;
         }).
