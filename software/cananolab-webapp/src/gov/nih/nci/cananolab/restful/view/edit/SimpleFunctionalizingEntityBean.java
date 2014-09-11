@@ -219,7 +219,7 @@ public class SimpleFunctionalizingEntityBean {
 		setFunctionList(funcList);
 		
 		
-		if(bean.getType().equalsIgnoreCase("SmallMolecule")){
+		if(bean.getType().equalsIgnoreCase("small molecule")){
 			domainEntity.put("alternateName", bean.getSmallMolecule().getAlternateName());
 			domainEntity.put("createdDate", bean.getSmallMolecule().getCreatedDate());
 			domainEntity.put("createdBy", bean.getSmallMolecule().getCreatedBy());

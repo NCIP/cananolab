@@ -54,7 +54,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			throws Exception {
 		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(bean, request);
 		List<String> msgs = new ArrayList<String>();
-		msgs = validateInputs(request, entityBean);
+		msgs = validateInputs(request, msgs, entityBean);
 		if (msgs.size()>0) {
 			return msgs;
 		}
@@ -69,10 +69,12 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		return msgs;
 	}
 
-	private List<String> validateTargets(HttpServletRequest request,
+	private List<String> validateTargets(HttpServletRequest request, List<String> msgs,
 			FunctionalizingEntityBean entityBean) {
-		List<String> msgs = new ArrayList<String>();
 		for (FunctionBean funcBean : entityBean.getFunctions()) {
+			if(funcBean.getType()==null||funcBean.getType().equals("")){
+				msgs.add("Function Type is required.");
+			}
 			if ("TargetingFunction".equals(funcBean.getClassName())) {
 				for (TargetBean targetBean : funcBean.getTargets()) {
 					if (StringUtils.isEmpty(targetBean.getType())) {
@@ -86,16 +88,15 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		return msgs;
 	}
 
-	private List<String> validateEntityFile(HttpServletRequest request,
+	private List<String> validateEntityFile(HttpServletRequest request, List<String> msgs,
 			FunctionalizingEntityBean entityBean) {
-		List<String> msg = new ArrayList<String>();
 		for (FileBean filebean : entityBean.getFiles()) {
-			msg = validateFileBean(request, msg, filebean);
-			if (msg.size()>0) {
-				return msg;
+			msgs = validateFileBean(request, msgs, filebean);
+			if (msgs.size()>0) {
+				return msgs;
 			}
 		}
-		return msg;
+		return msgs;
 	}
 
 	private List<String> saveEntity(HttpServletRequest request,
@@ -224,7 +225,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		function.setupDomainFunction(user.getLoginName(), 0);
 		entity.addFunction(function);
-		msgs = validateInputs(request, entity);
+		msgs = validateInputs(request, msgs, entity);
 		if (msgs.size()>0) {
 			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
 			funcBean.setErrors(msgs);
@@ -251,7 +252,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean, request);
 		FunctionBean function = entity.getTheFunction();
 		entity.removeFunction(function);
-		msgs = validateInputs(request, entity);
+		msgs = validateInputs(request, msgs, entity);
 		if (msgs.size()>0) {
 			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
 			funcBean.setErrors(msgs);
@@ -295,7 +296,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		entity.addFile(theFile);
 
 		// save the functionalizing entity
-		msgs = validateInputs(request, entity);
+		msgs = validateInputs(request, msgs, entity);
 		if (msgs.size()>0) {
 			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
 			funcBean.setErrors(msgs);
@@ -323,7 +324,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		entity.removeFile(theFile);
 		request.setAttribute("anchor", "file");
 		// save the functionalizing entity;
-		msgs = validateInputs(request, entity);
+		msgs = validateInputs(request, msgs, entity);
 		if (msgs.size()>0) {
 			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
 			funcBean.setErrors(msgs);
@@ -341,10 +342,15 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	}
 
 	// per app scan, can not easily validate in the validation.xml
-	private List<String> validateEntity(HttpServletRequest request,
+	private List<String> validateEntity(HttpServletRequest request, List<String> msgs,
 			FunctionalizingEntityBean entityBean) {
-		List<String> msgs = new ArrayList<String>();
 		boolean status = true;
+		if(entityBean.getType()==null||entityBean.getType().equals("")){
+			msgs.add("Functionalizing Entity Type is required.");
+		}
+		if(entityBean.getName()==null||entityBean.getName().equals("")){
+			msgs.add("Functionalizing Entity Chemical Name is required.");
+		}
 		if (entityBean.getType().equalsIgnoreCase("biopolymer")) {
 			if (entityBean.getBiopolymer().getType() != null
 					&& !StringUtils.xssValidate(entityBean.getBiopolymer()
@@ -376,21 +382,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		return msgs;
 	}
 
-	private List<String> validateInputs(HttpServletRequest request,
+	private List<String> validateInputs(HttpServletRequest request, List<String> msgs,
 			FunctionalizingEntityBean entityBean) {
-		List<String> msgs = new ArrayList<String>();
-		msgs = validateEntity(request, entityBean);
-		if (msgs.size()>0) {
-			return msgs;
-		}
-		msgs = validateTargets(request, entityBean);
-		if (msgs.size()>0) {
-			return msgs;
-		}
-		msgs = validateEntityFile(request, entityBean);
-		if (msgs.size()>0) {
-			return msgs;
-		}
+		msgs = validateEntity(request, msgs, entityBean);
+		msgs = validateTargets(request, msgs, entityBean);
+		msgs = validateEntityFile(request, msgs, entityBean);
 		return msgs;
 	}
 
@@ -625,11 +621,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				e1.printStackTrace();
 			}
 				
-		if(bean.getType().equalsIgnoreCase("smallMolecule")){
+		if(bean.getType().equalsIgnoreCase("small molecule")){
 			SmallMolecule mol = new SmallMolecule();
-			ActivationMethod act = new ActivationMethod();
-			act.setType(bean.getActivationMethodType());
-			act.setActivationEffect(bean.getActivationEffect());
 			mol.setAlternateName((String) bean.getDomainEntity().get("alternateName"));
 			if(bean.getDomainEntity().get("id")!=null){
 				mol.setId(new Long((Integer)bean.getDomainEntity().get("id")));
@@ -643,15 +636,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			}
 			mol.setFunctionCollection(funCollection);
 			mol.setFileCollection(filecoll);
-			mol.setActivationMethod(act);
 			funcBean.setSmallMolecule(mol);
 			domainEntity = mol;
 		}else if(bean.getType().equalsIgnoreCase("Biopolymer")){
 			
 			Biopolymer bio = new Biopolymer();
-			ActivationMethod act = new ActivationMethod();
-			act.setType(bean.getActivationMethodType());
-			act.setActivationEffect(bean.getActivationEffect());
 			if(bean.getDomainEntity().get("id")!=null){
 				bio.setId(new Long((Integer)bean.getDomainEntity().get("id")));
 				bio.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
@@ -665,16 +654,13 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			bio.setType((String) bean.getDomainEntity().get("type"));
 			bio.setSequence((String) bean.getDomainEntity().get("sequence"));
 			bio.setFunctionCollection(funCollection);
-			bio.setActivationMethod(act);
 
 			bio.setFileCollection(filecoll);
 			funcBean.setBiopolymer(bio);
 			domainEntity = bio;
 		}else if(bean.getType().equalsIgnoreCase("Antibody")){
 			Antibody body = new Antibody();
-			ActivationMethod act = new ActivationMethod();
-			act.setType(bean.getActivationMethodType());
-			act.setActivationEffect(bean.getActivationEffect());
+			
 			if(bean.getDomainEntity().get("id")!=null){
 				body.setId(new Long((Integer)bean.getDomainEntity().get("id")));
 				body.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
@@ -689,7 +675,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			body.setSpecies((String) bean.getDomainEntity().get("species"));
 			body.setFunctionCollection(funCollection);
 			body.setFileCollection(filecoll);
-			body.setActivationMethod(act);
 			funcBean.setAntibody(body);
 			domainEntity = body;
 		} else{
@@ -708,7 +693,10 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				domainEntity.setFileCollection(filecoll);
 			}
 		}
-		
+		ActivationMethod act = new ActivationMethod();
+		act.setType(bean.getActivationMethodType());
+		act.setActivationEffect(bean.getActivationEffect());
+		funcBean.setActivationMethod(act);
 		funcBean.setType(bean.getType());
 		funcBean.setName(bean.getName());
 		funcBean.setPubChemDataSourceName(bean.getPubChemDataSourceName());

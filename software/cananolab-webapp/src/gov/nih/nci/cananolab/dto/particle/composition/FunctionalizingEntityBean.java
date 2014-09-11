@@ -252,6 +252,10 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		return activationMethod;
 	}
 
+	public void setActivationMethod(ActivationMethod activationMethod) {
+		this.activationMethod = activationMethod;
+	}
+
 	public void setupDomainEntity(String createdBy) throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = ClassUtils.getFullClass("agentmaterial." + className);

@@ -45,4 +45,36 @@ public class ChemicalAssociationServicesTest {
 		RestTestLoginUtil.logoutTest();
 		
 	}
+	@Test
+	public void testGetAssociatedElementOptions() {
+		
+		String jsessionId = RestTestLoginUtil.loginTest();
+		
+		Response res =
+				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+				.parameters("compositionType", "nanomaterial entity").expect()
+				.body("type", equalToIgnoringCase("dendrimer"))
+						.when().post("http://localhost:8080/caNanoLab/rest/chemicalAssociation/getAssociatedElementOptions");
+
+		System.out.println(res.getBody().asString());
+		RestTestLoginUtil.logoutTest();
+		
+	}
+
+	@Test
+	public void testGetComposingElementsByNanomaterialEntityId() {
+		
+		String jsessionId = RestTestLoginUtil.loginTest();
+		
+		Response res =
+				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+				.parameters("id", "74022912").expect()
+				.body("name", equalToIgnoringCase("chem Test"))
+						.when().post("http://localhost:8080/caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId");
+
+		System.out.println(res.getBody().asString());
+		RestTestLoginUtil.logoutTest();
+		
+	}
+
 }

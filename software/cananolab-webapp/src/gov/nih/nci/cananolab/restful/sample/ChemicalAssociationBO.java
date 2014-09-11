@@ -53,15 +53,12 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 
 		List<String> msgs = new ArrayList<String>();
 		ChemicalAssociationBean assocBean = transferChemicalAssociationBean(bean, request);
-
-		 msgs = validateAssociationFile(request, assocBean);
-		if (msgs.size()>0) {
-			return msgs;
-		}
 		 msgs = validateAssociatedElements(assocBean);
+		 msgs = validateAssociationFile(request, msgs, assocBean);
 		if (msgs.size()>0) {
 			return msgs;
 		}
+		
 		this.setServicesInSession(request);
 		saveAssociation(request, bean.getSampleId(), assocBean);
 		msgs.add("success");
@@ -74,7 +71,6 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 	private ChemicalAssociationBean transferChemicalAssociationBean(
 			SimpleChemicalAssociationBean bean, HttpServletRequest request) {
 		
-		CompositionBean compositionBean = new CompositionBean();
 		ChemicalAssociationBean chemBean = new ChemicalAssociationBean();
 		ChemicalAssociation chemAssociation = null;
 		AssociatedElementBean associatedElementA = new AssociatedElementBean();
@@ -83,33 +79,35 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		Collection<File> filecoll = new HashSet<File>();		
 		
 		//setting up associatedElementA
-		if(bean.getAssociatedElementA().getComposingElement()!=null){
-			if(bean.getAssociatedElementA().getComposingElement().getId()!=null)
-			comp.setId(bean.getAssociatedElementA().getComposingElement().getId());
+		if(bean.getAssociatedElementA()!=null){
+			if(bean.getAssociatedElementA().getComposingElement()!=null){
+				if(bean.getAssociatedElementA().getComposingElement().getId()!=null)
+				comp.setId(bean.getAssociatedElementA().getComposingElement().getId());
+			}
+			chemBean.setType(bean.getType());
+			chemBean.setDescription(bean.getDescription());
+			associatedElementA.setCompositionType(bean.getAssociatedElementA().getCompositionType());
+			associatedElementA.setEntityDisplayName(bean.getAssociatedElementA().getEntityDisplayName());
+			if(bean.getAssociatedElementA().getEntityId()!=null)
+			associatedElementA.setEntityId(bean.getAssociatedElementA().getEntityId());
+			
+			associatedElementA.setComposingElement(comp);
+			chemBean.setAssociatedElementA(associatedElementA);
 		}
-		chemBean.setType(bean.getType());
-		chemBean.setDescription(bean.getDescription());
-		associatedElementA.setCompositionType(bean.getAssociatedElementA().getCompositionType());
-		associatedElementA.setEntityDisplayName(bean.getAssociatedElementA().getEntityDisplayName());
-		if(bean.getAssociatedElementA().getEntityId()!=null)
-		associatedElementA.setEntityId(bean.getAssociatedElementA().getEntityId());
-		
-		associatedElementA.setComposingElement(comp);
-		chemBean.setAssociatedElementA(associatedElementA);
-		
 		//setting up AssociatedElementB
-		if(bean.getAssociatedElementB().getComposingElement()!=null){
-			comp = new ComposingElement();
-			if(bean.getAssociatedElementB().getComposingElement().getId()!=null)
-				comp.setId(bean.getAssociatedElementB().getComposingElement().getId());
+		if(bean.getAssociatedElementB()!=null){
+			if(bean.getAssociatedElementB().getComposingElement()!=null){
+				comp = new ComposingElement();
+				if(bean.getAssociatedElementB().getComposingElement().getId()!=null)
+					comp.setId(bean.getAssociatedElementB().getComposingElement().getId());
+			}
+			associatedElementB.setCompositionType(bean.getAssociatedElementB().getCompositionType());
+			associatedElementB.setEntityDisplayName(bean.getAssociatedElementB().getEntityDisplayName());
+			if(bean.getAssociatedElementB().getEntityId()!=null)
+			associatedElementB.setEntityId(bean.getAssociatedElementB().getEntityId());
+			associatedElementB.setComposingElement(comp);
+			chemBean.setAssociatedElementB(associatedElementB);
 		}
-		associatedElementB.setCompositionType(bean.getAssociatedElementB().getCompositionType());
-		associatedElementB.setEntityDisplayName(bean.getAssociatedElementB().getEntityDisplayName());
-		if(bean.getAssociatedElementB().getEntityId()!=null)
-		associatedElementB.setEntityId(bean.getAssociatedElementB().getEntityId());
-		associatedElementB.setComposingElement(comp);
-		chemBean.setAssociatedElementB(associatedElementB);
-		
 		//Setting up theFile
 		//setting up theFile
 				SimpleFileBean fBean = bean.getSimpleFile();
@@ -158,6 +156,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 				//setting up chemical association
 				
 				AssociatedElement assoA = new AssociatedElement();
+				if(bean.getAssociatedElementA()!=null){
 				if(bean.getAssociatedElementA().getComposingElement()!=null){
 					if(bean.getAssociationId()>0){
 						assoA.setCreatedBy(bean.getAssociatedElementA().getComposingElement().getCreatedBy());
@@ -177,6 +176,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 							assoA.setId(bean.getAssociatedElementA().getComposingElement().getId());
 					}
 				}
+				}
 				
 				if(bean.getType().equalsIgnoreCase("Attachement")){
 					Attachment att = new Attachment();
@@ -188,6 +188,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 				chemAssociation.setAssociatedElementA(assoA);
 				
 				AssociatedElement assoB = new AssociatedElement();
+				if(bean.getAssociatedElementB()!=null){
 				if(bean.getAssociatedElementB().getComposingElement()!=null){
 					if(bean.getAssociationId()>0){
 						assoB.setCreatedBy(bean.getAssociatedElementB().getComposingElement().getCreatedBy());
@@ -206,6 +207,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 						if(bean.getAssociatedElementB().getComposingElement().getId()!=null)
 							assoB.setId(bean.getAssociatedElementB().getComposingElement().getId());
 					}
+				}
 				}
 				chemAssociation.setAssociatedElementA(assoB);
 				chemAssociation.setFileCollection(filecoll);
@@ -232,9 +234,8 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		return chemBean;
 	}
 
-	private List<String> validateAssociationFile(HttpServletRequest request,
+	private List<String> validateAssociationFile(HttpServletRequest request, List<String> msgs,
 			ChemicalAssociationBean entityBean) throws Exception {
-		List<String> msgs = new ArrayList<String>();
 		for (FileBean filebean : entityBean.getFiles()) {
 			msgs = validateFileBean(request, msgs, filebean);
 			if (msgs.size()>0) {
@@ -271,15 +272,29 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		// validate if the same associated elements are chosen on both sides
 		//boolean noErrors = true;
 		List<String> msgs = new ArrayList<String>();
+
+		if(assocBean.getType()==null||assocBean.getType().equals("")){
+			msgs.add("Chemical Association Type is required.");
+		}
 		String entityTypeA = assocBean.getAssociatedElementA()
 				.getEntityDisplayName();
 		String entityIdA = assocBean.getAssociatedElementA().getEntityId();
 		String entityTypeB = assocBean.getAssociatedElementB()
 				.getEntityDisplayName();
 		String entityIdB = assocBean.getAssociatedElementB().getEntityId();
+		
+		if((entityTypeA!=null)&&(entityIdA!=null)&&(entityTypeB!=null)&&(entityIdB!=null)){
 		if (entityTypeA.equals(entityTypeB) && entityIdA.equals(entityIdB)) {
 			//noErrors = false;
 			msgs.add(PropertyUtil.getProperty("sample", "error.duplicateAssociatedElementsInAssociation"));
+		}
+		}else {
+		if((entityTypeA==null||entityTypeA.equals(""))&&(entityIdA==null)){
+			msgs.add("Choosing an element on the left is required.");
+		}
+		if((entityTypeB==null||entityTypeB.equals(""))&&(entityIdB==null)){
+			msgs.add("Choosing an element on the right is required.");
+		}
 		}
 		return msgs;
 	}
@@ -299,11 +314,9 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		} catch (ClassCastException ex) {
 			if (!StringUtils.isEmpty(ex.getMessage())
 					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
-//				msg = new ActionMessage("errors.invalidOtherType", ex
-//						.getMessage(), "Chemical Association");
+				msgs.add(ex.getMessage()+ "is an invalid Chemical Association type. It is a pre-defined composition type.");
 			} else {
-//				msg = new ActionMessage("errors.invalidOtherType", assocBean
-//						.getType(), "Chemical Association");
+				msgs.add(assocBean.getType()+ "is an invalid Chemical Association type. It is a pre-defined composition type.");
 				assocBean.setType(null);
 			}
 		}
@@ -314,13 +327,9 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newAssoc && !user.isCurator() && sampleBean.getPublicStatus()) {
-//			retractFromPublic(theForm, request, sampleBean.getDomain().getId()
-//					.toString(), sampleBean.getDomain().getName(), "sample");
-//			ActionMessages messages = new ActionMessages();
-//			ActionMessage msg = null;
-//			msg = new ActionMessage("message.updateSample.retractFromPublic");
-//			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			saveMessages(request, messages);
+			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
+					.toString(), sampleBean.getDomain().getName(), "sample");
+			msgs.add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
 		}
 		Boolean hasFunctionalizingEntity = (Boolean) request.getSession()
 				.getAttribute("hasFunctionalizingEntity");
@@ -343,16 +352,9 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 		ChemicalAssociationBean assocBean = new ChemicalAssociationBean();
-		//theForm.set("assoc", assocBean);
-		//String sampleId = theForm.getString("sampleId");
 		CompositionService compService = this.setServicesInSession(request);
 		CompositionBean compositionBean = compService
 				.findCompositionBySampleId(sampleId);
-		// if composition doesn't have required information, return to summary
-		// view page
-//		if (!validateComposition(compositionBean, request)) {
-//			return mapping.findForward("success");
-//		}
 		request.getSession().removeAttribute("compositionForm");
 		setLookups(request, compositionBean);
 		this.checkOpenForms(assocBean, request);
@@ -361,19 +363,15 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 
 	public boolean validateComposition(CompositionBean compositionBean,
 			HttpServletRequest request) throws Exception {
-		// save action messages in the session so composition.do know about them
-
+		List<String> msgs = new ArrayList<String>();
 		// if no composition return to summary view page
 		if (compositionBean == null) {
-//			ActionMessage msg = new ActionMessage("message.nullComposition");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			msgs.add(PropertyUtil.getProperty("sample", "message.nullComposition"));
 			return false;
 		}
 		// check if sample has the required nanomaterial entities
 		if (compositionBean.getNanomaterialEntities().isEmpty()) {
-//			ActionMessage msg = new ActionMessage(
-//					"message.emptyMaterialsEntitiesInAssociation");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			msgs.add(PropertyUtil.getProperty("sample", "message.emptyMaterialsEntitiesInAssociation"));
 			return false;
 		}
 		// check whether nanomaterial entities has composing elements
@@ -385,9 +383,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 			}
 		}
 		if (numberOfCE == 0) {
-//			ActionMessage msg = new ActionMessage(
-//					"message.emptyComposingElementsInAssociation");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			msgs.add(PropertyUtil.getProperty("sample", "message.emptyComposingElementsInAssociation"));
 			return false;
 		}
 		// check whether it has a functionalizing entity
@@ -396,15 +392,11 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 			hasFunctionalizingEntity = true;
 		}
 		if (!hasFunctionalizingEntity && numberOfCE == 1) {
-//			ActionMessage msg = new ActionMessage(
-//					"message.oneComposingElementsInAssociation");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			msgs.add(PropertyUtil.getProperty("sample", "message.oneComposingElementsInAssociation"));
 			return false;
 		}
 		if (!hasFunctionalizingEntity) {
-//			ActionMessage msg = new ActionMessage(
-//					"message.emptyFunctionalizingEntityInAssociation");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			msgs.add(PropertyUtil.getProperty("sample", "message.emptyFunctionalizingEntityInAssociation"));
 			return false;
 		}
 		return true;
@@ -533,6 +525,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 			throws Exception {
 		ChemicalAssociationBean assoc = transferChemicalAssociationBean(bean, request);
 		FileBean theFile = assoc.getTheFile();
+		List<String> msgs = new ArrayList<String>();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		this.setServicesInSession(request);
 		SampleBean sampleBean = setupSampleById(bean.getSampleId(), request);
@@ -556,7 +549,14 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 
 		// restore previously uploaded file from session.
 		//this.restoreUploadedFile(request, theFile);
-
+		msgs = validateAssociatedElements(assoc);
+		msgs = validateAssociationFile(request, msgs, assoc);
+		
+		SimpleChemicalAssociationBean simpleAsso = new SimpleChemicalAssociationBean();
+			if (msgs.size()>0) {
+				simpleAsso.setErrors(msgs);
+				return simpleAsso;
+			}
 		// save the association
 		saveAssociation(request, bean.getSampleId(), assoc);
 		// comp service has already been created

@@ -50,26 +50,26 @@ public class NanomaterialEntityServiceTest {
 		RestTestLoginUtil.logoutTest();
 		
 	}
-//	@Test
-//	public void testSaveComposingElement() {
-//		
-//		String jsessionId = RestTestLoginUtil.loginTest();
-//		
-//		SimpleNanomaterialEntityBean simpleNano = new SimpleNanomaterialEntityBean();
-//		simpleNano.setSampleId("20917510");
-//		simpleNano.setType("carbon");
-//		SimpleComposingElementBean comp = new SimpleComposingElementBean();
-//		comp.setType("monomer");
-//		comp.setName("TestChem");
-//		simpleNano.setSimpleCompBean(comp);
-//		Response res =
-//				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-//				.body(simpleNano).expect()
-//				.body("createdBy", hasItems("jonnalah"))
-//						.when().get("http://localhost:8080/caNanoLab/rest/nanomaterialEntity/saveComposingElement");
-//
-//		System.out.println(res.getBody().asString());
-//		RestTestLoginUtil.logoutTest();
-//		
-//	}
+	@Test
+	public void testSaveComposingElement() {
+		
+		String jsessionId = RestTestLoginUtil.loginTest();
+		
+		SimpleNanomaterialEntityBean simpleNano = new SimpleNanomaterialEntityBean();
+		simpleNano.setSampleId("20917510");
+		simpleNano.setType("carbon");
+		SimpleComposingElementBean comp = new SimpleComposingElementBean();
+		comp.setType("monomer");
+		comp.setName("TestChem");
+		simpleNano.setSimpleCompBean(comp);
+		Response res =
+				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+				.body(simpleNano).expect()
+				.body("Type", equalToIgnoringCase("monomer"))
+						.when().post("http://localhost:8080/caNanoLab/rest/nanomaterialEntity/saveComposingElement");
+
+		System.out.println(res.getBody().asString());
+		RestTestLoginUtil.logoutTest();
+		
+	}
 }

@@ -563,10 +563,9 @@ public class SimpleCompositionBean {
 
 						comFile.put("Description", file.getDomainFile()
 								.getDescription());
-						fileList.add(comFile);
+						compositionfile.put(entityType, comFile);
 
 					}
-					compositionfile.put(entityType, fileList);
 				}
 
 			}
