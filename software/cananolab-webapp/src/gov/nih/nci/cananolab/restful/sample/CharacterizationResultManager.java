@@ -158,8 +158,10 @@ public class CharacterizationResultManager {
 	public List<String> getColumnValueUnitOptions(HttpServletRequest request, String name, String property)
 			throws Exception {
 		String valueName = name;
+		
 		if (!StringUtils.isEmpty(property)) {
-			valueName = property;
+			if (!property.equalsIgnoreCase("null")) //quick fix
+				valueName = property;
 		}
 		
 		SortedSet<String> units = InitSetup.getInstance()

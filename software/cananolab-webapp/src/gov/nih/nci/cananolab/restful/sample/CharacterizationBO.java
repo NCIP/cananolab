@@ -35,10 +35,12 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -742,7 +744,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		FileBean theFile = simpleFinding.transferToNewFileBean();
 		
-		if (theFile.getDomainFile().getId() != null) //existing
+		//if (theFile.getDomainFile().getId() != null) //existing
+			
+			
 		
 
 		// restore previously uploaded file from session.
@@ -761,6 +765,17 @@ public class CharacterizationBO extends BaseAnnotationBO {
 						.getCharacterizationName());
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		newFile.setupDomainFile(internalUriPath, user.getLoginName());
+		
+		
+		String timestamp = DateUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS");
+		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
+		if(newFileData!=null){
+			newFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
+//			newFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
+//					+ sampleBean.getDomain().getName() + '/' + "chemicalAssociation"+ "/" + timestamp + "_"
+//					+ theFile.getDomainFile().getName());
+		}
 		
 		findingBean.addFile(newFile, theFileIndex);
 		achar.addFinding(findingBean);
@@ -969,25 +984,27 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			SimpleFindingBean simpleFinding) 
 	throws Exception {
 		
-		if (simpleFinding.getFindingId() <= 0) {//new finding
-			FindingBean newBean = new FindingBean();
-			achar.setTheFinding(newBean);
-			return newBean;
-			//return achar.getTheFinding();
-		}
 		
 		List<FindingBean> findingBeans = achar.getFindings();
 		if (findingBeans == null)
 			throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());
 		
 		for (FindingBean finding : findingBeans) {
-			if (finding.getDomain() != null && finding.getDomain().getId() != null) {
+			if (finding.getDomain() != null) {
 				Long id = finding.getDomain().getId(); 
-				if (id.longValue() == simpleFinding.getFindingId()) {
+				if (id == null && simpleFinding.getFindingId() == 0 || //could be a new finding bean added when saving a file
+						id != null && id.longValue() == simpleFinding.getFindingId()) {
 					achar.setTheFinding(finding);
 					return finding;
 				}
 			}
+		}
+		
+		if (simpleFinding.getFindingId() <= 0) {//new finding
+			FindingBean newBean = new FindingBean();
+			achar.setTheFinding(newBean);
+			return newBean;
+			//return achar.getTheFinding();
 		}
 		
 		throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());

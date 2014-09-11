@@ -16,6 +16,7 @@ var app = angular.module('angularApp')
         //$scope.nanoEntityId = 60260353;
         $scope.otherSampleNames = [];
         $scope.localForm.otherSampleNames = [];
+        $scope.yesNoOptions = {"" : "", "true" : "Yes", "false" : "No" };
 
 
         /* File Variables */
