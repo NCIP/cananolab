@@ -67,6 +67,16 @@ public class SimpleNanomaterialEntityBean {
 	
 	List<String> errors;
 	
+	List<String> otherSampleNames;
+	
+	public List<String> getOtherSampleNames() {
+		return otherSampleNames;
+	}
+
+	public void setOtherSampleNames(List<String> otherSampleNames) {
+		this.otherSampleNames = otherSampleNames;
+	}
+
 	public SimpleSampleComposition getSampleComposition() {
 		return sampleComposition;
 	}
@@ -266,6 +276,7 @@ public class SimpleNanomaterialEntityBean {
 			fBean.setTitle(file.getDomainFile().getTitle());
 			fBean.setUri(file.getDomainFile().getUri());
 			fBean.setUriExternal(file.getDomainFile().getUriExternal());
+			fBean.setExternalUrl(file.getExternalUrl());
 			fBean.setKeywordsStr(file.getKeywordsStr());
 			fBean.setId(file.getDomainFile().getId());
 			fBean.setCreatedBy(file.getDomainFile().getCreatedBy());

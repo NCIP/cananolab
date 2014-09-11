@@ -35,6 +35,15 @@ public class SimpleFunctionalizingEntityBean {
 	List<String> errors;
 	List<SimpleFunctionBean> functionList;
 	List<SimpleFileBean> fileList;
+	List<String> otherSampleNames;
+	
+	public List<String> getOtherSampleNames() {
+		return otherSampleNames;
+	}
+
+	public void setOtherSampleNames(List<String> otherSampleNames) {
+		this.otherSampleNames = otherSampleNames;
+	}
 	
 	public String getCreatedBy() {
 		return createdBy;
@@ -183,6 +192,7 @@ public class SimpleFunctionalizingEntityBean {
 			fBean.setTitle(files.getDomainFile().getTitle());
 			fBean.setType(files.getDomainFile().getType());
 			fBean.setUri(files.getDomainFile().getUri());
+			fBean.setExternalUrl(files.getExternalUrl());
 			fBean.setUriExternal(files.getDomainFile().getUriExternal());
 			fBean.setCreatedBy(files.getDomainFile().getCreatedBy());
 			fBean.setCreatedDate(files.getDomainFile().getCreatedDate());

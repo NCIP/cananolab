@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.*;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
@@ -12,6 +13,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.jayway.restassured.response.Response;
+import com.jayway.restassured.response.ValidatableResponse;
 
 public class ChemicalAssociationServicesTest {
 
@@ -49,14 +51,15 @@ public class ChemicalAssociationServicesTest {
 	public void testGetAssociatedElementOptions() {
 		
 		String jsessionId = RestTestLoginUtil.loginTest();
-		
-		Response res =
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("compositionType", "nanomaterial entity");
+		this.testSetup();
+		ValidatableResponse res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters("compositionType", "nanomaterial entity").expect()
-				.body("type", equalToIgnoringCase("dendrimer"))
-						.when().post("http://localhost:8080/caNanoLab/rest/chemicalAssociation/getAssociatedElementOptions");
+				.param("compositionType", "nanomaterial entity")
+						.when().post("http://localhost:8080/caNanoLab/rest/chemicalAssociation/getAssociatedElementOptions")
+						.then().body(containsString("[]"));
 
-		System.out.println(res.getBody().asString());
 		RestTestLoginUtil.logoutTest();
 		
 	}
@@ -65,14 +68,13 @@ public class ChemicalAssociationServicesTest {
 	public void testGetComposingElementsByNanomaterialEntityId() {
 		
 		String jsessionId = RestTestLoginUtil.loginTest();
-		
-		Response res =
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("id", "84377600");
+		ValidatableResponse res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters("id", "74022912").expect()
-				.body("name", equalToIgnoringCase("chem Test"))
-						.when().post("http://localhost:8080/caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId");
-
-		System.out.println(res.getBody().asString());
+				.queryParam("id", "74022912")
+						.when().post("http://localhost:8080/caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId")
+		.then().body(containsString("modifier"));
 		RestTestLoginUtil.logoutTest();
 		
 	}
