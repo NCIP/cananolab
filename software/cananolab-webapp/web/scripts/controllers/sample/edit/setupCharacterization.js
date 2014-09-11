@@ -1,6 +1,6 @@
 'use strict';
 var app = angular.module('angularApp')
-	.controller('SetupCharacterizationCtrl', function ($scope,$http,$modal,sampleService,$location,$anchorScroll,$filter) {
+	.controller('SetupCharacterizationCtrl', function ($scope,$http,$modal,sampleService,$location,$anchorScroll,$filter,$upload,$timeout) {
 
     // define variables //
     $scope.sampleData = sampleService.sampleData;
@@ -616,7 +616,7 @@ var app = angular.module('angularApp')
         }
 
         $scope.currentFinding.theFile.externalUrl = $scope.fileForm.externalUrl;
-        $scope.currentFinding.theFile.uri = $scope.fileForm.uri;
+        $scope.currentFinding.theFile.uri = $scope.selectedFileName;
         $scope.currentFinding.theFile.uriExternal = $scope.fileForm.uriExternal;
         $scope.currentFinding.theFile.type = $scope.fileForm.type;
         $scope.currentFinding.theFile.title = $scope.fileForm.title;
@@ -642,8 +642,7 @@ var app = angular.module('angularApp')
 
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveFile',data: $scope.currentFinding}).
             success(function(data, status, headers, config) {
-                $scope.nanoEntityForm = data;
-                $scope.files = $scope.nanoEntityForm.files;
+                $scope.currentFinding = data;
                 $scope.addNewFile = false;
                 $scope.loader = false;
             }).
