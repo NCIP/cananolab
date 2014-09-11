@@ -85,8 +85,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		// Copy "isSoluble" property from char bean to mapping bean.
 		this.copyIsSoluble(charBean);
 
-//		InitCharacterizationSetup.getInstance()
-//				.persistCharacterizationDropdowns(request, charBean);
+		InitCharacterizationSetup.getInstance() //save "others" to db
+				.persistCharacterizationDropdowns(request, charBean);
 		
 		List<String> errs = new ArrayList<String>();
 		if (!validateInputs(request, charBean, errs)) {
@@ -211,20 +211,11 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		CharacterizationBean charBean = charService
 				.findCharacterizationById(charId);
 		
-		
-//		// setup Characterization Name drop down.
-//		InitCharacterizationSetup.getInstance().getCharNamesByCharType(request,
-//				charBean.getCharacterizationType());
-//
-//		// setup Assay Type drop down.
-//		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
-//				"charNameAssays", charBean.getCharacterizationName(),
-//				"assayType", "otherAssayType", true);
 //
 //		// TODO: Find out usage of "charNameDatumNames", not used in any JSPs.
-//		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
-//				request, charBean.getCharacterizationType(),
-//				charBean.getCharacterizationName(), charBean.getAssayType());
+		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
+				request, charBean.getCharacterizationType(),
+				charBean.getCharacterizationName(), charBean.getAssayType());
 //
 //		request.setAttribute("achar", charBean);
 //		//theForm.set("achar", charBean);
@@ -596,6 +587,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		//TODO:
 		//this.checkOpenForms(achar, theForm, request);
+		InitCharacterizationSetup.getInstance()
+			.persistCharacterizationDropdowns(request, achar);
 		
 		// return to setupUpdate to retrieve the data matrix in the correct
 		// form from database
@@ -701,6 +694,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		this.saveCharacterization(request, achar, editBean);
 		service.assignAccesses(achar.getDomainChar(), findingBean.getDomain());
 		//this.checkOpenForms(achar, theForm, request);
+		InitCharacterizationSetup.getInstance()
+			.persistCharacterizationDropdowns(request, achar);
+		
 		request.setAttribute("anchor", "result");
 		// return to setupUpdate to retrieve the data matrix in the correct
 		// form from database
@@ -751,6 +747,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		request.setAttribute("anchor", "submitFinding");
 //		this.checkOpenForms(achar, theForm, request);
+		InitCharacterizationSetup.getInstance()
+			.persistCharacterizationDropdowns(request, achar);
+		
 //		return mapping.findForward("inputForm");
 		
 		return editBean;
@@ -830,6 +829,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		findingBean.updateMatrix(findingBean.getNumberOfColumns(),
 				findingBean.getNumberOfRows());
 		
+		InitCharacterizationSetup.getInstance()
+			.persistCharacterizationDropdowns(request, achar);
+		
 		simpleFinding.transferFromFindingBean(findingBean);
 		simpleFinding.setColumnHeaders(findingBean.getColumnHeaders());
 		simpleFinding.setDefaultValuesForNullHeaders();
@@ -864,6 +866,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		request.setAttribute("anchor", "result");
 		
 		//this.checkOpenForms(achar, theForm, request);
+		InitCharacterizationSetup.getInstance()
+			.persistCharacterizationDropdowns(request, achar);
 		
 		return setupUpdate(request, String.valueOf(editBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
 				achar.getClassName(), achar.getCharacterizationType());
@@ -896,6 +900,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		service.removeAccesses(achar.getDomainChar(), configBean.getDomain());
 		logger.debug("Access removed");
 		//this.checkOpenForms(achar, theForm, request);
+		InitCharacterizationSetup.getInstance()
+			.persistCharacterizationDropdowns(request, achar);
 		
 		return setupUpdate(request, String.valueOf(editBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
 				achar.getClassName(), achar.getCharacterizationType());
@@ -924,6 +930,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 
 		request.setAttribute("anchor", "submitFinding");
 		//this.checkOpenForms(achar, theForm, request);
+		InitCharacterizationSetup.getInstance()
+			.persistCharacterizationDropdowns(request, achar);
 
 		return simpleFinding;
 	}
@@ -932,9 +940,12 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			SimpleFindingBean simpleFinding) 
 	throws Exception {
 		
-		if (simpleFinding.getFindingId() <= 0) //new finding
-			return new FindingBean();
+		if (simpleFinding.getFindingId() <= 0) {//new finding
+			FindingBean newBean = new FindingBean();
+			achar.setTheFinding(newBean);
+			return newBean;
 			//return achar.getTheFinding();
+		}
 		
 		List<FindingBean> findingBeans = achar.getFindings();
 		if (findingBeans == null)
@@ -943,8 +954,10 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		for (FindingBean finding : findingBeans) {
 			if (finding.getDomain() != null && finding.getDomain().getId() != null) {
 				Long id = finding.getDomain().getId(); 
-				if (id.longValue() == simpleFinding.getFindingId())
+				if (id.longValue() == simpleFinding.getFindingId()) {
+					achar.setTheFinding(finding);
 					return finding;
+				}
 			}
 		}
 		

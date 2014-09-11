@@ -202,7 +202,7 @@ public class SimpleCharacterizationEditBean {
 					this.name, "assayType", "otherAssayType", true);
 
 			this.assayTypesByCharNameLookup.addAll(assayTypes);
-			this.assayTypesByCharNameLookup.add("other");
+			CommonUtil.addOtherToList(this.assayTypesByCharNameLookup);
 		}
 	}
 	
