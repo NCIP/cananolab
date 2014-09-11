@@ -17,6 +17,9 @@ public class SimpleExperimentBean {
 	
 	List<SimpleInstrumentBean> instruments = new ArrayList<SimpleInstrumentBean>();
 	
+	String parentCharType = "";
+	String parentCharName = "";
+	
 	
 	public void transferToExperimentConfigBean(ExperimentConfigBean expConfigBean) {
 		if (id > 0)
@@ -84,6 +87,22 @@ public class SimpleExperimentBean {
 	}
 	public void setInstruments(List<SimpleInstrumentBean> instruments) {
 		this.instruments = instruments;
+	}
+
+	public String getParentCharType() {
+		return parentCharType;
+	}
+
+	public void setParentCharType(String parentCharType) {
+		this.parentCharType = parentCharType;
+	}
+
+	public String getParentCharName() {
+		return parentCharName;
+	}
+
+	public void setParentCharName(String parentCharName) {
+		this.parentCharName = parentCharName;
 	}
 	
 }
