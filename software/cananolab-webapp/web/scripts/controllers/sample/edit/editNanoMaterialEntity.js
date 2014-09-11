@@ -77,6 +77,7 @@ var app = angular.module('angularApp')
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/PolymerInfoEdit.html';
                 if( typeof($scope.nanoEntityForm.domainEntity) != "undefined" ) {
                     $scope.nanoEntityForm.domainEntity.crossLinkDegree = $scope.nanoEntityForm.domainEntity.crossLinkDegree.toString(); 
+                    $scope.nanoEntityForm.domainEntity.isCrossLinked = $scope.nanoEntityForm.domainEntity.isCrossLinked.toString(); 
                 }                
             }else if( $scope.nanoEntityForm.type == 'carbon nanotube') {
                 $scope.nanoEntityForm.withProperties = true;
@@ -94,6 +95,9 @@ var app = angular.module('angularApp')
             }else if( $scope.nanoEntityForm.type == 'emulsion') {
                 $scope.nanoEntityForm.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/EmulsionInfoEdit.html';
+                if( typeof($scope.nanoEntityForm.domainEntity) != "undefined" ) {
+                    $scope.nanoEntityForm.domainEntity.isPolymerized = $scope.nanoEntityForm.domainEntity.isPolymerized.toString(); 
+                }
             }else if( $scope.nanoEntityForm.type == 'fullerene') {
                 $scope.nanoEntityForm.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/FullereneInfoEdit.html';
@@ -104,6 +108,9 @@ var app = angular.module('angularApp')
             }else if( $scope.nanoEntityForm.type == 'liposome') {
                 $scope.nanoEntityForm.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/LiposomeInfoEdit.html';
+                if( typeof($scope.nanoEntityForm.domainEntity) != "undefined" ) {
+                    $scope.nanoEntityForm.domainEntity.isPolymerized = $scope.nanoEntityForm.domainEntity.isPolymerized.toString(); 
+                }
             } else {
                 $scope.nanoEntityForm.withProperties = false;
             }
