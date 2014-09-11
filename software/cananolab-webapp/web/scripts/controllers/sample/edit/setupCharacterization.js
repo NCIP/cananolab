@@ -545,8 +545,7 @@ var app = angular.module('angularApp')
 
             $http({method: 'POST', url: '/caNanoLab/rest/characterization/removeFile',data: $scope.currentFinding}).
                 success(function(data, status, headers, config) {
-                    $scope.data = data;
-                    $scope.files = $scope.nanoEntityForm.files;
+                	$scope.currentFinding = data;
                     $scope.addNewFile = false;
                     $scope.loader = false;
                 }).
