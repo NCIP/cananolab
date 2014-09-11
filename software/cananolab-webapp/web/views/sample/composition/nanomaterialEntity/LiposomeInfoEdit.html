@@ -9,10 +9,7 @@
             <label for="liposomeIsPolymerized">Is Polymerized</label>
         </td>
         <td class="cellLabel">
-            <select ng-model="nanoEntityForm.domainEntity.isPolymerized" id="liposomeIsPolymerized">
-                <option value="None"></option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
+            <select ng-model="nanoEntityForm.domainEntity.isPolymerized" id="liposomeIsPolymerized" ng-options="key as value for (key , value) in $parent.yesNoOptions">
             </select>
         </td>
         <td class="cellLabel">
