@@ -3,9 +3,12 @@ package gov.nih.nci.cananolab.restful;
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.RestAssured.with;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.arrayContaining;
 import static org.hamcrest.Matchers.hasItems;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleInstrumentBean;
 
 import java.util.ArrayList;
@@ -174,7 +177,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		System.out.println(res.getBody().asString());
 	}
 	
-	//@Test
+	@Test
 	public void testRemoveExperimentConfig() {
 		
 		String jsessionId = RestTestLoginUtil.loginTest();
@@ -212,20 +215,21 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		
 		
 		SimpleExperimentBean form = new SimpleExperimentBean();
-		form.setId(69632002);
-		form.setDisplayName("sfaer927034wqw34(SEC-MALLS)");
-		form.setDescription("SY Testing");
+		form.setId(70057984);
+		form.setDisplayName("electron microprobe analysis(EMPA)");
+		form.setTechniqueType("electron microprobe analysis");
+		form.setDescription("");
 		
 		List<SimpleInstrumentBean> insts = new ArrayList<SimpleInstrumentBean>();
 		SimpleInstrumentBean inst = new SimpleInstrumentBean();
 		inst.setModelName("");
-		inst.setManufacturer("Agilent");
+		inst.setManufacturer("Affymetrix");
 		inst.setType("");
 		insts.add(inst);
-		inst.setModelName("");
-		inst.setManufacturer("ACT GmbH");
-		inst.setType("");
-		insts.add(inst);
+//		inst.setModelName("");
+//		inst.setManufacturer("ACT GmbH");
+//		inst.setType("");
+//		insts.add(inst);
 		
 		form.setInstruments(insts);
 		
@@ -296,5 +300,128 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		
 		System.out.println(res.getBody().asString());
 
+	}
+	
+	@Test
+	public void testGetColumnValueUnitOptions() {
+		
+		Map<String, String> params = new HashMap<String, String>();
+		//params.put("columnName", "sonification");
+		//params.put("conditionProperty", "number of pulses");
+		
+		params.put("columnName", "short term storage");
+		params.put("conditionProperty", "time");
+		
+		Response res =
+				given()//.contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+				.parameters(params)
+				.expect()
+				.body("", hasItems("day"))
+						.when().get("http://localhost:8080/caNanoLab/rest/characterization/getColumnValueUnitOptions");	
+		
+		System.out.println(res.getBody().asString());
+	}
+	
+	
+	@Test
+	public void testGetConditionPropertyOptions() {
+		
+		Map<String, String> params = new HashMap<String, String>();
+		//params.put("columnName", "electromagnetic radiation");
+		
+		params.put("columnName", "short term storage");
+		
+		Response res =
+				given()//.contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+				.parameters(params)
+				.expect()
+				.body("", hasItems("time"))
+						.when().get("http://localhost:8080/caNanoLab/rest/characterization/getConditionPropertyOptions");	
+		
+		System.out.println(res.getBody().asString());
+	}
+	
+	//@Test
+	public void testRemoveFinding() {
+		
+		String jsessionId = RestTestLoginUtil.loginTest();
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("sampleId", "69500928");
+		params.put("charId", "69599238");
+		params.put("charType", "physico-chemical characterization");
+		params.put("charClassName", "MolecularWeight");
+		
+		Response res =
+				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+				.parameters(params)
+				.expect()
+				.body("assayType", equalTo("molecular weight"))
+						.when().get("http://localhost:8080/caNanoLab/rest/characterization/setupUpdate");
+		
+		System.out.println(res.getBody().asString());
+		
+//		"id":69632002,
+//        "displayName":"sfaer927034wqw34(SEC-MALLS)",
+//        "abbreviation":null,
+//        "description":"SY Testing",
+//        "instruments":[  
+//           {  
+//              "manufacturer":"Agilent",
+//              "modelName":"",
+//              "type":""
+//           },
+//           {  
+//              "manufacturer":"ACT GmbH",
+//              "modelName":"",
+//              "type":""
+//           }
+		
+		
+		SimpleFindingBean simpleFinding = new SimpleFindingBean();
+		simpleFinding.setFindingId(69533708);
+			
+		res = //with().parameters("sampleName", "SY-NCL-23-1")
+		given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(simpleFinding)
+		.expect().body("charTypesLookup", hasItems("physico-chemical characterization",
+				"in vitro characterization",
+				"ex vivo"))
+		.when().post("http://localhost:8080/caNanoLab/rest/characterization/removeFinding");
+		
+		
+		
+		System.out.println(res.getBody().asString());
+	}
+	
+	//@Test
+	public void testDelete() {
+		
+		String jsessionId = RestTestLoginUtil.loginTest();
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("sampleId", "73367552");
+		params.put("charId", "77234176");
+		params.put("charType", "in vivo characterization");
+		params.put("charClassName", "OtherCharacterization");
+		
+		Response res =
+				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+				.parameters(params)
+				.expect()
+				.body("name", equalTo("imaging"))
+						.when().get("http://localhost:8080/caNanoLab/rest/characterization/setupUpdate");
+		
+		System.out.println(res.getBody().asString());
+
+		SimpleCharacterizationEditBean charEdit = new SimpleCharacterizationEditBean();
+		charEdit.setCharId(77234176);
+		charEdit.setParentSampleId(73367552);
+			
+		res = //with().parameters("sampleName", "SY-NCL-23-1")
+		given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(charEdit)
+		.expect().body(arrayContaining("charsByAssayType")) //assertion incorrect!!! fix later
+		.when().post("http://localhost:8080/caNanoLab/rest/characterization/removedCharacterization");
+		
+		
+		
+		System.out.println(res.getBody().asString());
 	}
 }
