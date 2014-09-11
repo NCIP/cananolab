@@ -16,6 +16,7 @@ var app = angular.module('angularApp')
         //$scope.sampleName='Test Sample';
         //$scope.funcEntityId = 60260353;
         $scope.otherSampleNames = [];
+        $scope.localForm.otherSampleNames = [];
 
 
         /* File Variables */
@@ -127,6 +128,8 @@ var app = angular.module('angularApp')
             if( $scope.sampleId != null ) {
             	$scope.funcEntityForm.sampleId = $scope.sampleId;
             }
+            
+            $scope.funcEntityForm.otherSampleNames = $scope.localForm.otherSampleNames;
 
             $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/submit',data: $scope.funcEntityForm}).
                 success(function(data, status, headers, config) {

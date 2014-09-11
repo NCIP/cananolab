@@ -15,6 +15,7 @@ var app = angular.module('angularApp')
         //$scope.sampleId = 20917506;
         //$scope.nanoEntityId = 60260353;
         $scope.otherSampleNames = [];
+        $scope.localForm.otherSampleNames = [];
 
 
         /* File Variables */
@@ -143,6 +144,8 @@ var app = angular.module('angularApp')
             if( $scope.sampleId != null ) {
             	$scope.nanoEntityForm.sampleId = $scope.sampleId;
             }
+            
+            $scope.nanoEntityForm.otherSampleNames = $scope.localForm.otherSampleNames;
 
             $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/submit',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
