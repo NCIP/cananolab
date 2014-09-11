@@ -165,6 +165,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		editBean.transferFromCharacterizationBean(request, charBean, sampleId);
 		
 		request.getSession().setAttribute("theEditChar", editBean);
+		request.getSession().setAttribute("theChar", charBean);
 		return editBean;
 	}
 
@@ -278,7 +279,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		// save to other samples (only when user click [Submit] button.)
 		if (simpleEdit.isSubmitNewChar()) {
-			SampleBean[] otherSampleBeans = prepareCopy(request, simpleEdit,
+			SampleBean[] otherSampleBeans = prepareCopy(request, simpleEdit.getSelectedOtherSampleNames(),
 					sampleBean);
 			if (otherSampleBeans != null) {
 				charService.copyAndSaveCharacterization(charBean, sampleBean,
@@ -568,6 +569,15 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
 		simpleExpConfig.transferToExperimentConfigBean(configBean);
 		
+		
+		///duck tapping
+		if (achar.getCharacterizationName() == null || achar.getCharacterizationName().length() == 0)
+			achar.setCharacterizationName(simpleExpConfig.getParentCharName());
+		
+		if (achar.getCharacterizationType() == null || achar.getCharacterizationType().length() == 0)
+			achar.setCharacterizationType(simpleExpConfig.getParentCharType());
+		///duck tapping
+		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		configBean.setupDomain(user.getLoginName());
 		CharacterizationService service = this.setServicesInSession(request);
@@ -667,6 +677,14 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //		if (!StringUtils.isEmpty(theFindingId)) {
 //			findingBean.getDomain().setId(Long.valueOf(theFindingId));
 //		}
+
+		///duck tapping
+		if (achar.getCharacterizationName() == null || achar.getCharacterizationName().length() == 0)
+			achar.setCharacterizationName(simpleFinding.getParentCharName());
+
+		if (achar.getCharacterizationType() == null || achar.getCharacterizationType().length() == 0)
+			achar.setCharacterizationType(simpleFinding.getParentCharType());
+		///duck tapping
 		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		simpleFinding.transferToFindingBean(findingBean, user);
@@ -708,7 +726,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				achar.getClassName(), achar.getCharacterizationType());
 	}
 
-	public SimpleCharacterizationEditBean saveFile(HttpServletRequest request, SimpleFindingBean simpleFinding)
+	public SimpleFindingBean saveFile(HttpServletRequest request, SimpleFindingBean simpleFinding)
 			throws Exception {
 		
 		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
@@ -723,6 +741,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //		SimpleFileBean simpleFile = simpleFinding.getFiles().get(theFileIndex);
 		
 		FileBean theFile = simpleFinding.transferToNewFileBean();
+		
 		if (theFile.getDomainFile().getId() != null) //existing
 		
 
@@ -744,29 +763,39 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		newFile.setupDomainFile(internalUriPath, user.getLoginName());
 		
 		findingBean.addFile(newFile, theFileIndex);
+		achar.addFinding(findingBean);
+		simpleFinding.transferFromFindingBean(findingBean);
 		
 		request.setAttribute("anchor", "submitFinding");
 //		this.checkOpenForms(achar, theForm, request);
 		InitCharacterizationSetup.getInstance()
 			.persistCharacterizationDropdowns(request, achar);
 		
-//		return mapping.findForward("inputForm");
+		//request.getSession().setAttribute("theFindingBean", findingBean);
 		
-		return editBean;
+		
+		return simpleFinding;
 	}
 
-	public void removeFile(HttpServletRequest request, HttpServletResponse response)
+	public SimpleFindingBean removeFile(HttpServletRequest request, SimpleFindingBean simpleFinding)
 			throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		CharacterizationBean achar = (CharacterizationBean) theForm
-//				.get("achar");
-//		FindingBean findingBean = achar.getTheFinding();
-//		int theFileIndex = findingBean.getTheFileIndex();
-//		findingBean.removeFile(theFileIndex);
-//		findingBean.setTheFile(new FileBean());
-//		request.setAttribute("anchor", "submitFinding");
-//		this.checkOpenForms(achar, theForm, request);
-//		return mapping.findForward("inputForm");
+	
+		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
+		SimpleCharacterizationEditBean editBean = 
+				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+		
+		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
+		int theFileIndex = simpleFinding.getTheFileIndex();
+		findingBean.removeFile(theFileIndex);
+		findingBean.setTheFile(new FileBean());
+		request.setAttribute("anchor", "submitFinding");
+		
+		simpleFinding.transferFilesFromFindingBean(findingBean.getFiles());
+		
+		//this.checkOpenForms(achar, theForm, request);
+		//return mapping.findForward("inputForm");
+		
+		return simpleFinding;
 	}
 
 	/**
