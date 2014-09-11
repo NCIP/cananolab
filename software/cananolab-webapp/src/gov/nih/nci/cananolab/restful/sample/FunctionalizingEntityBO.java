@@ -54,6 +54,9 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			throws Exception {
 		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(bean, request);
 		List<String> msgs = new ArrayList<String>();
+		SampleBean sampleBean = setupSampleById(bean.getSampleId(), request);
+		List<String> otherSampleNames = bean.getOtherSampleNames();
+		this.setServicesInSession(request);
 		msgs = validateInputs(request, msgs, entityBean);
 		if (msgs.size()>0) {
 			return msgs;
@@ -61,7 +64,17 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		this.saveEntity(request, bean.getSampleId(), entityBean);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entityBean);
-
+		
+		// save to other samples (only when user click [Submit] button.)
+		CompositionService compService = (CompositionService) request
+				.getSession().getAttribute("compositionService");
+					SampleBean[] otherSampleBeans = prepareCopy(request, otherSampleNames,
+					sampleBean);
+			if (otherSampleBeans != null) {
+				compService.copyAndSaveFunctionalizingEntity(entityBean,
+						sampleBean, otherSampleBeans);
+			}
+		
 		// to preselect functionalizing entity after returning to the summary
 		// page
 		request.getSession().setAttribute("tab", "2");
@@ -135,16 +148,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 					.toString(), sampleBean.getDomain().getName(), "sample");
 			msgs.add(PropertyUtil.getProperty("sample","message.updateSample.retractFromPublic"));
 		}
-		// save to other samples (only when user click [Submit] button.)
-//		String dispatch = (String) theForm.get("dispatch");
-//		if ("create".equals(dispatch)) {
-//			SampleBean[] otherSampleBeans = prepareCopy(request, theForm,
-//					sampleBean);
-//			if (otherSampleBeans != null) {
-//				compService.copyAndSaveFunctionalizingEntity(entityBean,
-//						sampleBean, otherSampleBeans);
-//			}
-//		}
+
 		return msgs;
 	}
 

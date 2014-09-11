@@ -227,9 +227,9 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	}
 
 	protected SampleBean[] prepareCopy(HttpServletRequest request,
-			SimpleCharacterizationEditBean simpleEdit, SampleBean oldSampleBean)
+			List<String> otherSamples, SampleBean oldSampleBean)
 			throws Exception {
-		List<String> otherSamples = simpleEdit.getSelectedOtherSampleNames();
+		//List<String> otherSamples = simpleEdit.getSelectedOtherSampleNames();
 		if (otherSamples.size() == 0) {
 			return null;
 		}

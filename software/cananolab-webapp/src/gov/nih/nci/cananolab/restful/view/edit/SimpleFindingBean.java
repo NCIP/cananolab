@@ -73,7 +73,9 @@ public class SimpleFindingBean {
 		
 	}
 	
-	protected void transferFilesFromFindingBean(List<FileBean> files) {
+	public void transferFilesFromFindingBean(List<FileBean> files) {
+		this.files.clear();
+		
 		if (files == null) return;
 		
 		for (FileBean file : files) {

@@ -72,6 +72,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		String sampleId = nanoBean.getSampleId();
 		NanomaterialEntityBean entityBean = transferNanoMateriaEntityBean(nanoBean, request);  
 		this.setServicesInSession(request);
+		SampleBean sampleBean = setupSampleById(sampleId, request);
+		List<String> otherSampleNames = nanoBean.getOtherSampleNames();
 		msgs = validateInputs(request, entityBean);
 		if (msgs.size()>0) {
 			return msgs;
@@ -79,7 +81,15 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		this.saveEntity(request, sampleId, entityBean);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entityBean);
-
+		SampleBean[] otherSampleBeans = prepareCopy(request, otherSampleNames,
+				sampleBean);
+		if (otherSampleBeans != null) {
+			CompositionService compService = (CompositionService) request
+					.getSession().getAttribute("compositionService");
+		
+			compService.copyAndSaveNanomaterialEntity(entityBean,
+					sampleBean, otherSampleBeans);
+		}
 		// save action messages in the session so composition.do know about them
 		// to preselect nanomaterial entity after returning to the summary page
 		msgs.add("success");
@@ -144,16 +154,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
 		compService.saveNanomaterialEntity(sampleBean, entityBean);
-		// save to other samples (only when user click [Submit] button.)
-//		String dispatch = form.getDispatch();//("dispatch");
-//		if ("create".equals(dispatch)) {
-//			SampleBean[] otherSampleBeans = prepareCopy(request, form,
-//					sampleBean);
-//			if (otherSampleBeans != null) {
-//				compService.copyAndSaveNanomaterialEntity(entityBean,
-//						sampleBean, otherSampleBeans);
-//			}
-//		}
+		
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newEntity && !user.isCurator() && sampleBean.getPublicStatus()) {

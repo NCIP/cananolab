@@ -5,7 +5,9 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
@@ -61,7 +63,11 @@ public class NanomaterialEntityServiceTest {
 		SimpleComposingElementBean comp = new SimpleComposingElementBean();
 		comp.setType("monomer");
 		comp.setName("TestChem");
+		List<Map<String, Object>> inherent = new ArrayList<Map<String,Object>>();
+		List<SimpleComposingElementBean> compList = new ArrayList<SimpleComposingElementBean>();
+		comp.setInherentFunction(inherent);
 		simpleNano.setSimpleCompBean(comp);
+		simpleNano.setComposingElements(compList);
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 				.body(simpleNano).expect()

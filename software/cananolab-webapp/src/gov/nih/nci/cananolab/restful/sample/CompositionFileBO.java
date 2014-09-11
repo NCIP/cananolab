@@ -147,6 +147,7 @@ public class CompositionFileBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 		fileId = super.validateId(request, "dataId");
+		this.setServicesInSession(request);
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
 		FileBean fileBean = compService.findFileById(fileId);
