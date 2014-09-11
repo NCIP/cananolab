@@ -22,6 +22,9 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiValueMap;
+
 public class SimpleCompositionBean {
 
 	List<String> compositionSections = new ArrayList<String>();
@@ -32,54 +35,58 @@ public class SimpleCompositionBean {
 	Map<String, Object> nanoentitiy;
 	Map<String, Object> composingElement;
 	Map<String, Object> files;
-	Map<String, Object> nanomaterialentity;
+	MultiMap nanomaterialentity;
 
 	List<Map<String, Object>> composingElements;
 	List<Map<String, Object>> fileList;
 	Map<String, Object> Functions;
 	List<Map<String, Object>> functionsList;
 
-	Map<String, Object> functionalizingentity;
+	MultiMap functionalizingentity;
 	Map<String, Object> smallMolecule;
 
-	Map<String, Object> chemicalassociation;
+	MultiMap chemicalassociation;
 	
-	public Map<String, Object> getChemicalassociation() {
+
+	public MultiMap getChemicalassociation() {
 		return chemicalassociation;
 	}
 
-	public void setChemicalassociation(Map<String, Object> chemicalassociation) {
+	public void setChemicalassociation(MultiMap chemicalassociation) {
 		this.chemicalassociation = chemicalassociation;
 	}
 
 	Map<String, Object> association;
 
-	Map<String, Object> compositionfile;
+	MultiMap compositionfile;
 
-	public Map<String, Object> getCompositionfile() {
+	
+
+	public MultiMap getCompositionfile() {
 		return compositionfile;
 	}
 
-	public void setCompositionfile(Map<String, Object> compositionfile) {
+	public void setCompositionfile(MultiMap compositionfile) {
 		this.compositionfile = compositionfile;
 	}
 
 	Map<String, Object> image;
 
-	public Map<String, Object> getNanomaterialentity() {
+	
+	public MultiMap getNanomaterialentity() {
 		return nanomaterialentity;
 	}
 
-	public void setNanomaterialentity(Map<String, Object> nanomaterialentity) {
+	public void setNanomaterialentity(MultiMap nanomaterialentity) {
 		this.nanomaterialentity = nanomaterialentity;
 	}
 
-	public Map<String, Object> getFunctionalizingentity() {
+	
+	public MultiMap getFunctionalizingentity() {
 		return functionalizingentity;
 	}
 
-	public void setFunctionalizingentity(
-			Map<String, Object> functionalizingentity) {
+	public void setFunctionalizingentity(MultiMap functionalizingentity) {
 		this.functionalizingentity = functionalizingentity;
 	}
 
@@ -104,7 +111,7 @@ public class SimpleCompositionBean {
 		// NanoMaterial Entity
 		setCompositionSections(compBean.getCompositionSections());
 		setSampleName(compBean.getDomain().getSample().getName());
-		nanomaterialentity = new HashMap<String, Object>();
+		nanomaterialentity = new MultiValueMap();
 
 		if (compBean.getNanomaterialEntities() != null) {
 
@@ -113,7 +120,7 @@ public class SimpleCompositionBean {
 				for (NanomaterialEntityBean nanoMaterialEntity : compBean
 						.getType2NanoEntities().get(entityType)) {
 					nanoentitiy = new HashMap<String, Object>();
-
+					System.out.println("dataId Testing=== "+ nanoMaterialEntity.getDomainEntity().getId());
 					nanoentitiy.put("Description",
 							nanoMaterialEntity.getDescriptionDisplayName());
 					nanoentitiy.put("dataId", nanoMaterialEntity.getDomainEntity().getId());
@@ -285,7 +292,7 @@ public class SimpleCompositionBean {
 
 			// Functionalizing Entity
 			if (compBean.getFunctionalizingEntities() != null) {
-				functionalizingentity = new HashMap<String, Object>();
+				functionalizingentity = new MultiValueMap();
 				Map<String, Object> function;
 
 				for (String entityType : compBean.getFuncEntityTypes()) {
@@ -431,7 +438,7 @@ public class SimpleCompositionBean {
 			if (compBean.getChemicalAssociations() != null) {
 
 				association = new HashMap<String, Object>();
-				chemicalassociation = new HashMap<String, Object>();
+				chemicalassociation = new MultiValueMap();
 				Map<String, Object> AssociatedElements = null;
 
 				for (String entityType : compBean.getAssocTypes()) {
@@ -531,7 +538,7 @@ public class SimpleCompositionBean {
 			}
 
 			if (compBean.getFiles() != null) {
-				compositionfile = new HashMap<String, Object>();
+				compositionfile = new MultiValueMap();
 				fileList = new ArrayList<Map<String, Object>>();
 
 				for (String entityType : compBean.getFileTypes()) {
