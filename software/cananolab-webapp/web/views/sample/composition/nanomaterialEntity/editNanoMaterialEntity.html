@@ -94,7 +94,7 @@
                         <strong><label for="otherSamples">Copy to other samples with the same primary organization?</label></strong>
                     </td>
                     <td width="20%">
-                        <select ng-disabled="loader" id="otherSamples" ng-model="otherSampleNames" multiple="true" size="10">
+                        <select id="otherSamples" ng-model="otherSampleNames" multiple="true" size="10">
                             <option ng-repeat="option in otherSampleNames" value="{{option}}" ng-selected="{{option == otherSampleNames}}">
                                 {{option}}
                             </option>
