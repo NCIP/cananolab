@@ -306,7 +306,7 @@ public class SimpleNanomaterialEntityBean {
 			domainEntity.put("id", bean.getDendrimer().getId());
 		}else if(bean.getType().equalsIgnoreCase("polymer")){
 			domainEntity = new HashMap<String, Object>();
-			domainEntity.put("crossLinked", bean.getPolymer().getCrossLinked());
+			domainEntity.put("isCrossLinked", bean.getPolymer().getCrossLinked());
 			domainEntity.put("crossLinkDegree", bean.getPolymer().getCrossLinkDegree());
 			domainEntity.put("initiator", bean.getPolymer().getInitiator());
 			domainEntity.put("createdDate", bean.getPolymer().getCreatedDate());

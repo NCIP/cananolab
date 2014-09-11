@@ -634,8 +634,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		}
 		else if(nanoBean.getType().equalsIgnoreCase("Polymer")){
 			Polymer poly = new Polymer();
-			poly.setCrossLinked(Boolean.valueOf((String) nanoBean.getDomainEntity().get("crossLinked")));
-			bean.setIsCrossLinked((String) nanoBean.getDomainEntity().get("crossLinked"));
+			poly.setCrossLinked(Boolean.valueOf((String) nanoBean.getDomainEntity().get("isCrossLinked")));
+			bean.setIsCrossLinked((String) nanoBean.getDomainEntity().get("isCrossLinked"));
 			poly.setCrossLinkDegree(new Float((String) nanoBean.getDomainEntity().get("crossLinkDegree")));
 			poly.setInitiator((String) nanoBean.getDomainEntity().get("initiator"));
 			if(nanoBean.getDomainEntity().get("id")!=null){

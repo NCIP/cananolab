@@ -145,6 +145,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 					file.setCreatedBy(sFBean.getCreatedBy());
 					file.setCreatedDate(sFBean.getCreatedDate());
 					file.setUriExternal(sFBean.getUriExternal());
+					fileBean.setExternalUrl(sFBean.getExternalUrl());
 					fileBean.setKeywordsStr(sFBean.getKeywordsStr());
 					fileBean.setDomainFile(file);
 					filecoll.add(file);
