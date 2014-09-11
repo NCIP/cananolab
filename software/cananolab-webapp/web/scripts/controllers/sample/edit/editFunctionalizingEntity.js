@@ -284,55 +284,57 @@ var app = angular.module('angularApp')
         }
 
         $scope.deleteInherentFunction = function() {
-            var k;
-            for (k = 0; k < $scope.composingElementForm.inherentFunction.length; ++k)
-            {
-                var inherentFunction = $scope.composingElementForm.inherentFunction[k];
-                if ($scope.theInherentFunction.id == inherentFunction.id ) {
-                    $scope.composingElementForm.inherentFunction.splice(k,1);
-                }
-            }
-            $scope.funcEntityForm.functionList = $scope.composingElementForm.inherentFunction;
-            
-            if( $scope.funcEntityForm.simpleFunctionBean == null ) {
-            	$scope.funcEntityForm.simpleFunctionBean = {};
-            }
-            
-        	$scope.funcEntityForm.simpleFunctionBean.type = $scope.theInherentFunction.type;
-        	$scope.funcEntityForm.simpleFunctionBean.modality = $scope.theInherentFunction.modality;
-        	$scope.funcEntityForm.simpleFunctionBean.description = $scope.theInherentFunction.description;
-        	$scope.funcEntityForm.simpleFunctionBean.id = $scope.theInherentFunction.id;
-        	$scope.funcEntityForm.simpleFunctionBean.createdBy = $scope.theInherentFunction.createdBy;
-        	$scope.funcEntityForm.simpleFunctionBean.createdDate = $scope.theInherentFunction.createdDate;
-        	$scope.funcEntityForm.simpleFunctionBean.targets = $scope.theInherentFunction.targets;
-        	
-            if( $scope.sampleId != null ) {
-            	$scope.funcEntityForm.sampleId = $scope.sampleId;
-            }
-            
-            
-            $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/removeFunction',data: $scope.funcEntityForm}).
-            success(function(data, status, headers, config) {
-            	$scope.funcEntityForm = data;
-            	$scope.composingElementForm.inherentFunction = $scope.funcEntityForm.functionList;
-            	
-            	$scope.addNewInherentFunction=false;
-                $scope.theInherentFunction = {};
-            	if( $scope.composingElementForm.inherentFunction.length > 0 ) {
-                    $scope.showInherentFunctionTable = true;
-                }
-                else {
-                    $scope.showInherentFunctionTable = false;
-                }
-                $scope.loader = false;
-            }).
-            error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                // $rootScope.sampleData = data;
-                $scope.loader = false;
-                $scope.messages = data;
-            });
+        	if (confirm("Are you sure you want to delete the Function?")) {
+	            var k;
+	            for (k = 0; k < $scope.composingElementForm.inherentFunction.length; ++k)
+	            {
+	                var inherentFunction = $scope.composingElementForm.inherentFunction[k];
+	                if ($scope.theInherentFunction.id == inherentFunction.id ) {
+	                    $scope.composingElementForm.inherentFunction.splice(k,1);
+	                }
+	            }
+	            $scope.funcEntityForm.functionList = $scope.composingElementForm.inherentFunction;
+	            
+	            if( $scope.funcEntityForm.simpleFunctionBean == null ) {
+	            	$scope.funcEntityForm.simpleFunctionBean = {};
+	            }
+	            
+	        	$scope.funcEntityForm.simpleFunctionBean.type = $scope.theInherentFunction.type;
+	        	$scope.funcEntityForm.simpleFunctionBean.modality = $scope.theInherentFunction.modality;
+	        	$scope.funcEntityForm.simpleFunctionBean.description = $scope.theInherentFunction.description;
+	        	$scope.funcEntityForm.simpleFunctionBean.id = $scope.theInherentFunction.id;
+	        	$scope.funcEntityForm.simpleFunctionBean.createdBy = $scope.theInherentFunction.createdBy;
+	        	$scope.funcEntityForm.simpleFunctionBean.createdDate = $scope.theInherentFunction.createdDate;
+	        	$scope.funcEntityForm.simpleFunctionBean.targets = $scope.theInherentFunction.targets;
+	        	
+	            if( $scope.sampleId != null ) {
+	            	$scope.funcEntityForm.sampleId = $scope.sampleId;
+	            }
+	            
+	            $scope.loader = true;
+	            $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/removeFunction',data: $scope.funcEntityForm}).
+	            success(function(data, status, headers, config) {
+	            	$scope.funcEntityForm = data;
+	            	$scope.composingElementForm.inherentFunction = $scope.funcEntityForm.functionList;
+	            	
+	            	$scope.addNewInherentFunction=false;
+	                $scope.theInherentFunction = {};
+	            	if( $scope.composingElementForm.inherentFunction.length > 0 ) {
+	                    $scope.showInherentFunctionTable = true;
+	                }
+	                else {
+	                    $scope.showInherentFunctionTable = false;
+	                }
+	                $scope.loader = false;
+	            }).
+	            error(function(data, status, headers, config) {
+	                // called asynchronously if an error occurs
+	                // or server returns response with an error status.
+	                // $rootScope.sampleData = data;
+	                $scope.loader = false;
+	                $scope.messages = data;
+	            });
+        	}
             
         }
 
