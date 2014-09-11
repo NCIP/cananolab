@@ -599,6 +599,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		else if(nanoBean.getType().equalsIgnoreCase("Liposome")){
 			Liposome lipo = new Liposome();
 			lipo.setPolymerized(Boolean.valueOf((String) nanoBean.getDomainEntity().get("isPolymerized")));
+			bean.setIsPolymerized((String) nanoBean.getDomainEntity().get("isPolymerized"));
 			lipo.setPolymerName((String) nanoBean.getDomainEntity().get("polymerName"));
 			if(nanoBean.getDomainEntity().get("id")!=null){
 				lipo.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
@@ -616,6 +617,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		else if(nanoBean.getType().equalsIgnoreCase("Emulsion")){
 			Emulsion em = new Emulsion();
 			em.setPolymerized(Boolean.valueOf((String) nanoBean.getDomainEntity().get("isPolymerized")));
+			bean.setIsPolymerized((String) nanoBean.getDomainEntity().get("isPolymerized"));
 			em.setPolymerName((String) nanoBean.getDomainEntity().get("polymerName"));
 			if(nanoBean.getDomainEntity().get("id")!=null){
 				em.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
@@ -633,6 +635,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		else if(nanoBean.getType().equalsIgnoreCase("Polymer")){
 			Polymer poly = new Polymer();
 			poly.setCrossLinked(Boolean.valueOf((String) nanoBean.getDomainEntity().get("crossLinked")));
+			bean.setIsCrossLinked((String) nanoBean.getDomainEntity().get("crossLinked"));
 			poly.setCrossLinkDegree(new Float((String) nanoBean.getDomainEntity().get("crossLinkDegree")));
 			poly.setInitiator((String) nanoBean.getDomainEntity().get("initiator"));
 			if(nanoBean.getDomainEntity().get("id")!=null){
