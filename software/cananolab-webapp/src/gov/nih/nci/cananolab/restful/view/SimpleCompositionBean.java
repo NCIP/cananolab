@@ -307,14 +307,16 @@ public class SimpleCompositionBean {
 						function.put("pubChemLink", funcBean.getPubChemLink());
 						function.put("pubChemDS",
 								funcBean.getPubChemDataSourceName());
-						function.put("Value", funcBean.getValue());
-						function.put("ValueUnit", funcBean.getValueUnit());
-						function.put("MolecularFormula",
+						function.put("value", funcBean.getValue());
+						function.put("valueUnit", funcBean.getValueUnit());
+						function.put("MolecularFormulaDisplayName",
 								funcBean.getMolecularFormulaDisplayName());
 						function.put("withImagingFunction",
 								funcBean.isWithImagingFunction());
 						function.put("withTargettingFunction",
 								funcBean.isWithTargetingFunction());
+						function.put("description",
+								funcBean.getDescription());
 						if (funcBean.isWithProperties()) {
 							properties = new HashMap<String, Object>();
 							properties.put("isWithProperties",
