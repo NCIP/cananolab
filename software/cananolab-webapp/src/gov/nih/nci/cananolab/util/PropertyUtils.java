@@ -41,6 +41,19 @@ public class PropertyUtils {
 		loadProperty(propertyFileName);
 		return (String) properties.get(propertyName);
 	}
+	
+	/**
+	 * Get the named property. If property file has been loaded before, do not reload.
+	 * 
+	 * @param propertyFileName
+	 * @param propertyName
+	 * @return
+	 */
+	public static String getPropertyCached(String propertyFileName,
+			String propertyName) {
+		loadPropertyCached(propertyFileName);
+		return (String) properties.get(propertyName);
+	}
 
 	/**
 	 * This method is for users to set property value. It requires users to
@@ -95,6 +108,26 @@ public class PropertyUtils {
 	protected static void loadProperty(String propertyFileName) {
 		InputStream istream = null;
 		properties = new Properties();
+		try {
+			istream = Thread.currentThread().getContextClassLoader()
+					.getResourceAsStream(propertyFileName);
+			properties.load(istream);
+		} catch (Exception exp) {
+			logger.error("Property file cannot be read: " + exp.toString(), exp);
+		} finally {
+			if (istream != null) {
+				try {
+					istream.close();
+				} catch (Exception e) {
+				}
+			}
+		}
+	}
+	
+	protected static void loadPropertyCached(String propertyFileName) {
+		InputStream istream = null;
+		if (properties == null)
+			properties = new Properties();
 		try {
 			istream = Thread.currentThread().getContextClassLoader()
 					.getResourceAsStream(propertyFileName);
