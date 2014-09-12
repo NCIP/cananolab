@@ -43,7 +43,7 @@ var app = angular.module('angularApp')
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
-                    $scope.message = data;
+                    $scope.messages = data;
                     $scope.loader = false;
                 });
         });
@@ -72,7 +72,7 @@ var app = angular.module('angularApp')
 	                 $scope.loader = false;
                  }).
                  error(function(data, status, headers, config) {
-	                 $scope.message = data;
+	                 $scope.messages = data;
 	                 $scope.loader = false;
                  });
                  

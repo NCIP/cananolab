@@ -132,11 +132,11 @@
                                     {{entityType.ActivationMethod}}
                                 </td>
                             </tr>
-                            <tr ng-if="entityType.FunctionDescriptionDisplayName != ''">
+                            <tr ng-if="entityType.description != ''">
                                 <th scope="row" class="cellLabel" width="10%">
                                     Description
                                 </th>
-                                <td ng-bind-html="entityType.FunctionDescriptionDisplayName">
+                                <td ng-bind-html="entityType.description">
                                 </td>
                             </tr>
                             <tr ng-if="entityType.Files.length > 0">
