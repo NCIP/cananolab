@@ -395,6 +395,7 @@ public class InitSetup {
 	
 	public void setPublicCountInContext(ServletContext appContext) {
 		PublicDataCountJob job=new PublicDataCountJob();
+		job.queryPublicDataCounts();
 		PublicDataCountBean dataCounts=job.getPublicDataCounts();
 		appContext.setAttribute("publicCounts", dataCounts);
 	}
