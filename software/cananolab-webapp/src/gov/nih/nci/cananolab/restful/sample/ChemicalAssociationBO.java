@@ -212,6 +212,11 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 				}
 				chemAssociation.setAssociatedElementA(assoB);
 				chemAssociation.setFileCollection(filecoll);
+				if(bean.getAssociationId()!=null){
+					chemAssociation.setId(bean.getAssociationId());
+					chemAssociation.setCreatedBy(bean.getCreatedBy());
+					chemAssociation.setCreatedDate(bean.getCreatedDate());
+				}
 				
 				//setting up sampleComposition 
 				//Managed to get the sampleComposition in the backend to avoid lazy loading things
