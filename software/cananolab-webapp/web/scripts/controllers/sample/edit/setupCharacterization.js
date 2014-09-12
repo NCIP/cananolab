@@ -579,7 +579,7 @@ var app = angular.module('angularApp')
                     //alert(response.data);
                     //$scope.nanoEntityForm = response.data;
                     $scope.saveFileData();
-                    $scope.loader = false;
+                    //$scope.loader = false;
                 });
             }, function(response) {
                 if (response.status > 0) {
