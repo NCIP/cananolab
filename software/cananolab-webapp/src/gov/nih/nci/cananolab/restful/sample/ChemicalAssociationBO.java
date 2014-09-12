@@ -37,6 +37,7 @@ import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -361,24 +362,31 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		CompositionService compService = this.setServicesInSession(request);
 		CompositionBean compositionBean = compService
 				.findCompositionBySampleId(sampleId);
+		List<String> errors= new ArrayList<String>();
+		errors = validateComposition(compositionBean, request);
+		if (errors.size()>0) {
+			Map<String, Object> errorMap = new HashMap<String, Object>();
+			errorMap.put("errors", errors);
+			return errorMap;
+			}
 		request.getSession().removeAttribute("compositionForm");
 		setLookups(request, compositionBean);
 		this.checkOpenForms(assocBean, request);
 		return CompositionUtil.reformatLocalSearchDropdownsInSessionForChemicalAssociation(request.getSession());
 	}
 
-	public boolean validateComposition(CompositionBean compositionBean,
+	public List<String> validateComposition(CompositionBean compositionBean,
 			HttpServletRequest request) throws Exception {
 		List<String> msgs = new ArrayList<String>();
 		// if no composition return to summary view page
 		if (compositionBean == null) {
 			msgs.add(PropertyUtil.getProperty("sample", "message.nullComposition"));
-			return false;
+			return msgs;
 		}
 		// check if sample has the required nanomaterial entities
 		if (compositionBean.getNanomaterialEntities().isEmpty()) {
 			msgs.add(PropertyUtil.getProperty("sample", "message.emptyMaterialsEntitiesInAssociation"));
-			return false;
+			return msgs;
 		}
 		// check whether nanomaterial entities has composing elements
 		int numberOfCE = 0;
@@ -390,7 +398,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		}
 		if (numberOfCE == 0) {
 			msgs.add(PropertyUtil.getProperty("sample", "message.emptyComposingElementsInAssociation"));
-			return false;
+			return msgs;
 		}
 		// check whether it has a functionalizing entity
 		boolean hasFunctionalizingEntity = false;
@@ -399,13 +407,13 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		}
 		if (!hasFunctionalizingEntity && numberOfCE == 1) {
 			msgs.add(PropertyUtil.getProperty("sample", "message.oneComposingElementsInAssociation"));
-			return false;
+			return msgs;
 		}
 		if (!hasFunctionalizingEntity) {
 			msgs.add(PropertyUtil.getProperty("sample", "message.emptyFunctionalizingEntityInAssociation"));
-			return false;
+			return msgs;
 		}
-		return true;
+		return msgs;
 	}
 
 	public void input(CompositionForm form,

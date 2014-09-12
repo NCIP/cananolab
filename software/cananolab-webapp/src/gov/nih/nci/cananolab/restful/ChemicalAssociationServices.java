@@ -46,8 +46,11 @@ private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 			ChemicalAssociationBO chem = 
 					(ChemicalAssociationBO) applicationContext.getBean("chemicalAssociationBO");
 			Map<String, Object> dropdownMap = chem.setupNew(sampleId, httpRequest);
-			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-
+			List<String> errors = (List<String>) dropdownMap.get("errors");
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(dropdownMap).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+					
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
 
