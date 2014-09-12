@@ -37,7 +37,7 @@ var app = angular.module('angularApp')
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
-                    $scope.message = data;
+                    $scope.messages = data;
                 });
         });
 
@@ -51,7 +51,7 @@ var app = angular.module('angularApp')
                         $scope.loader = false;
                     }).
                     error(function(data, status, headers, config) {
-                        $scope.message = data;
+                        $scope.messages = data;
                         $scope.loader = false;
                     });
 
@@ -100,7 +100,7 @@ var app = angular.module('angularApp')
 
                 $http({method: 'POST', url: '/caNanoLab/rest/compositionFile/delete',data: $scope.fileForm}).
                     success(function(data, status, headers, config) {
-                        $location.search('message', 'Composition File successfully deleted."').path('/editComposition').replace();
+                        $location.search('message', 'Composition File successfully deleted.').path('/editComposition').replace();
                     }).
                     error(function(data, status, headers, config) {
                         // called asynchronously if an error occurs
@@ -164,7 +164,7 @@ var app = angular.module('angularApp')
             $http({method: 'POST', url: '/caNanoLab/rest/compositionFile/submit',data: $scope.fileForm}).
                 success(function(data, status, headers, config) {
                 	if (data == "success") {
-                		$location.search('message', 'Composition File successfully saved."').path('/editComposition').replace();
+                		$location.search('message', 'Composition File successfully saved.').path('/editComposition').replace();
                 	}
                 	else {
                         $scope.messages = data;

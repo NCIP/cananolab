@@ -63,7 +63,7 @@ var app = angular.module('angularApp')
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
-                    $scope.message = data;
+                    $scope.messages = data;
                     $scope.loader = false;
                 });
         });
@@ -131,7 +131,7 @@ var app = angular.module('angularApp')
                             $scope.loader = false;
                         }).
                         error(function(data, status, headers, config) {
-                            $scope.message = data;
+                            $scope.messages = data;
                             $scope.loader = false;
                         });
             }
@@ -159,7 +159,7 @@ var app = angular.module('angularApp')
                 success(function(data, status, headers, config) {
                     if (data == "success") {
                         //$location.search('message', 'Nanomaterial Entity successfully saved "').path('/message').replace();
-                        $location.search('message', 'Nanomaterial Entity successfully saved."').path('/editComposition').replace();
+                        $location.search('message', 'Nanomaterial Entity successfully saved.').path('/editComposition').replace();
                     }
                     else {
                         $scope.loader = false;
@@ -184,7 +184,7 @@ var app = angular.module('angularApp')
                 $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/delete',data: $scope.nanoEntityForm}).
                     success(function(data, status, headers, config) {
                         if (data == "success") {
-                        	$location.search('message', 'Nanomaterial Entity successfully deleted."').path('/editComposition').replace();
+                        	$location.search('message', 'Nanomaterial Entity successfully deleted.').path('/editComposition').replace();
                         }
                         else {
                             $scope.loader = false;

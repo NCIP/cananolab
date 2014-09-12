@@ -17,6 +17,10 @@ var app = angular.module('angularApp')
     if ($routeParams.sampleId) {
       $scope.sampleId.data = $routeParams.sampleId;
     };
+    
+    if ($routeParams.message) {
+        $scope.message = $routeParams.message;
+      };
           
       $scope.select = function(tab) {
           var size = 0, key;

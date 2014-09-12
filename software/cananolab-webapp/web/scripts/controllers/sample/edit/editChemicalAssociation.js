@@ -179,7 +179,7 @@ var app = angular.module('angularApp')
                 success(function(data, status, headers, config) {
                     if (data == "success") {
                         //$location.search('message', 'Nanomaterial Entity successfully saved "').path('/message').replace();
-                        $location.search('message', 'Chemical Association successfully saved."').path('/editComposition').replace();
+                        $location.search('message', 'Chemical Association successfully saved.').path('/editComposition').replace();
                     }
                     else {
                         $scope.loader = false;
@@ -204,7 +204,7 @@ var app = angular.module('angularApp')
                 $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/delete',data: $scope.chemAssociationForm}).
                     success(function(data, status, headers, config) {
                         if (data == "success") {
-                            $location.search('message', 'Chemical Association successfully deleted."').path('/editComposition').replace();
+                            $location.search('message', 'Chemical Association successfully deleted.').path('/editComposition').replace();
                         }
                         else {
                             $scope.loader = false;

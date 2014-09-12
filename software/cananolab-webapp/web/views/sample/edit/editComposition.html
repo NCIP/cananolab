@@ -50,7 +50,13 @@
     <tab ng-repeat="type in masterCompositionSections" heading="{{type}}" ng-click="select({{$index}})"></tab>
   </tabset>
 </div>
-
+<span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:green;align-content: center;" ng-if="message != null">
+    <ul>
+        <li>
+            {{message}}
+        </li>
+    </ul>
+</span>
 <table ng-hide="show0" class="summaryViewNoTop" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
     <tr>
