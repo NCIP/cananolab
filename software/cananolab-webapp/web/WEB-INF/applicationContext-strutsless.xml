@@ -168,6 +168,12 @@
 		class="gov.nih.nci.cananolab.restful.sample.CompositionManager">
 	</bean>
 	
+	<bean id="quartzScheduler"
+		class="gov.nih.nci.cananolab.restful.core.QuartzScheduler">
+		<property name="csmCleanupIntervalInMinutes" value="1" />
+		<property name="publicCountPullIntervalInHours" value="24" />
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 
