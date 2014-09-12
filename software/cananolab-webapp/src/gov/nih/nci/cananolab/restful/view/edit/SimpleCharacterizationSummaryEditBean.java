@@ -19,6 +19,8 @@ import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
  */
 public class SimpleCharacterizationSummaryEditBean extends SimpleCharacterizationSummaryViewBean {
 	
+	List<SimpleCharacterizationsByTypeBean> allCharTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>();
+	
 	public List<SimpleCharacterizationsByTypeBean> transferData(HttpServletRequest request, 
 			CharacterizationSummaryViewBean viewBean, String sampleId) 
 			throws Exception {
@@ -28,14 +30,14 @@ public class SimpleCharacterizationSummaryEditBean extends SimpleCharacterizatio
 		
 		List<SimpleCharacterizationsByTypeBean> charByTypeBeans = super.transferData(viewBean, sampleId);
 		
-		List<SimpleCharacterizationsByTypeBean> allCharByTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>(); 
+		//List<SimpleCharacterizationsByTypeBean> allCharByTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>(); 
 		
 		for (String aType : allCharacterizationTypes) {
 			boolean exists = false;
 			for (SimpleCharacterizationsByTypeBean charBean : charByTypeBeans) {
 				if (charBean.getType().equals(aType)) {
 					charBean.setParentSampleId(Long.parseLong(sampleId));
-					allCharByTypeBeans.add(charBean);
+					allCharTypeBeans.add(charBean);
 					exists = true;
 					break;
 				}
@@ -45,7 +47,7 @@ public class SimpleCharacterizationSummaryEditBean extends SimpleCharacterizatio
 				SimpleCharacterizationsByTypeBean emptyBean = new SimpleCharacterizationsByTypeBean();
 				emptyBean.setType(aType);
 				emptyBean.setParentSampleId(Long.parseLong(sampleId));
-				allCharByTypeBeans.add(emptyBean);
+				allCharTypeBeans.add(emptyBean);
 			}
 		}
 		
@@ -53,9 +55,17 @@ public class SimpleCharacterizationSummaryEditBean extends SimpleCharacterizatio
 		SimpleCharacterizationsByTypeBean other = new SimpleCharacterizationsByTypeBean();
 		other.setType("other");
 		other.setParentSampleId(Long.parseLong(sampleId));
-		allCharByTypeBeans.add(other);
+		allCharTypeBeans.add(other);
 		
-		return allCharByTypeBeans;
+		return allCharTypeBeans;
 	}
 
+	public List<SimpleCharacterizationsByTypeBean> getAllCharTypeBeans() {
+		return allCharTypeBeans;
+	}
+
+	public void setAllCharTypeBeans(
+			List<SimpleCharacterizationsByTypeBean> allCharTypeBeans) {
+		this.allCharTypeBeans = allCharTypeBeans;
+	}
 }

@@ -87,8 +87,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		// Copy "isSoluble" property from char bean to mapping bean.
 		this.copyIsSoluble(charBean);
 
-		InitCharacterizationSetup.getInstance() //save "others" to db
-				.persistCharacterizationDropdowns(request, charBean);
+		
 		
 		List<String> errs = new ArrayList<String>();
 		if (!validateInputs(request, charBean, errs)) {
@@ -108,7 +107,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //				.getInstance().getCharacterizationTypes(request);
 //		int ind = allCharacterizationTypes.indexOf(charBean
 //				.getCharacterizationType()) + 1;
-		
+		InitCharacterizationSetup.getInstance() //save "others" to db
+			.persistCharacterizationDropdowns(request, charBean);
 		return summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request, null);
 		
 
@@ -1115,7 +1115,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		String charName = achar.getCharacterizationName();
 		String charType = achar.getCharacterizationType();
 		
-		if (charType == null || charName.length() == 0) {
+		if (charType == null || charType.length() == 0) {
 			errors.add("Characterization type can't be empty.");
 			return false;
 		}
@@ -1274,4 +1274,18 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return downloadFile(service, fileId, request, response);
 	}
 
+	protected boolean validCharTypeAndName(String charType, String charName, List<String> errors) {
+		boolean valid = true;
+		if (charType == null || charType.length() == 0) {
+			errors.add("Characterization type can't be empty");
+			valid = false;
+		}
+		
+		if (charName == null || charName.length() == 0) {
+			errors.add("Characterization name can't be empty");
+			valid = false;
+		}
+		
+		return valid;
+	}
 }

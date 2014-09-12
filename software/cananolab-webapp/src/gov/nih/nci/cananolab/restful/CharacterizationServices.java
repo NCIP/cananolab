@@ -55,7 +55,7 @@ public class CharacterizationServices {
 		SimpleCharacterizationSummaryEditBean editBean = characterizationBO.summaryEdit(sampleId, httpRequest, 
 				null);
 		
-		List<SimpleCharacterizationsByTypeBean> finalBean = editBean.getCharByTypeBeans(); //editBean.transferData(httpRequest, charView, sampleId);
+		List<SimpleCharacterizationsByTypeBean> finalBean = editBean.getAllCharTypeBeans();
 		
 		logger.debug("Set up " + finalBean.size() + " characterization types for sample: " + sampleId);
 		
