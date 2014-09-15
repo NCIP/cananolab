@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.restful.view.edit.characterization.properties;
 
+import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 
 public class SimpleShape extends SimpleCharacterizationProperty {
 	String type; //says required but empty don't give error
-	float minDimension;
-	float maxDimension;
-	float aspectRatio;
+	Float minDimension;
+	Float maxDimension;
+	Float aspectRatio;
+	
+	String minDimensionUnit;
+	String maxDimensionUnit;
 	
 	List<String> unitOptions = new ArrayList<String>();
 	List<String> shapeTypeOptions = new ArrayList<String>();
@@ -26,6 +31,7 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 		
 		if (options != null)
 			unitOptions.addAll(options);
+		CommonUtil.addOtherToList(unitOptions);
 		
 		options = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"shapeTypes", "shape", "type", "otherType", true);
@@ -33,23 +39,36 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 		if (options != null)
 			shapeTypeOptions.addAll(options);
 		
+		CommonUtil.addOtherToList(shapeTypeOptions);
+		
 	}
 	
 	@Override
 	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean)
 			throws Exception {
-		// TODO Auto-generated method stub
+		super.transferFromPropertyBean(request, charBean);
 		
+		Shape shape = charBean.getShape();
+		
+		this.aspectRatio = shape.getAspectRatio();
+		this.maxDimension = shape.getMaxDimension();
+		this.maxDimensionUnit = shape.getMaxDimensionUnit();
+		this.minDimension = shape.getMinDimension();
+		this.minDimensionUnit = shape.getMinDimensionUnit();
+		
+		this.setLookups(request);
 	}
-
-
-
 
 	@Override
 	public void transferToPropertyBean(CharacterizationBean charBean)
 			throws Exception {
-		// TODO Auto-generated method stub
 		
+		Shape shape = charBean.getShape();
+		shape.setAspectRatio(this.aspectRatio);
+		shape.setMaxDimension(this.maxDimension);
+		shape.setMaxDimensionUnit(this.maxDimensionUnit);
+		shape.setMinDimension(this.minDimension);
+		shape.setMinDimensionUnit(this.minDimensionUnit);
 	}
 
 
@@ -77,25 +96,46 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public float getMinDimension() {
+
+	public Float getMinDimension() {
 		return minDimension;
 	}
-	public void setMinDimension(float minDimension) {
+
+	public void setMinDimension(Float minDimension) {
 		this.minDimension = minDimension;
 	}
-	public float getMaxDimension() {
+
+	public Float getMaxDimension() {
 		return maxDimension;
 	}
-	public void setMaxDimension(float maxDimension) {
+
+	public void setMaxDimension(Float maxDimension) {
 		this.maxDimension = maxDimension;
 	}
-	public float getAspectRatio() {
+
+	public Float getAspectRatio() {
 		return aspectRatio;
 	}
-	public void setAspectRatio(float aspectRatio) {
+
+	public void setAspectRatio(Float aspectRatio) {
 		this.aspectRatio = aspectRatio;
 	}
-	
+
+	public String getMinDimensionUnit() {
+		return minDimensionUnit;
+	}
+
+	public void setMinDimensionUnit(String minDimensionUnit) {
+		this.minDimensionUnit = minDimensionUnit;
+	}
+
+	public String getMaxDimensionUnit() {
+		return maxDimensionUnit;
+	}
+
+	public void setMaxDimensionUnit(String maxDimensionUnit) {
+		this.maxDimensionUnit = maxDimensionUnit;
+	}
 	
 	
 }

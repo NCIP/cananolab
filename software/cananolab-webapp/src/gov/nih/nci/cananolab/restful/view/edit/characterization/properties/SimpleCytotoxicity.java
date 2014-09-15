@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.view.edit.characterization.properties;
 
+import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,6 @@ public class SimpleCytotoxicity extends SimpleCharacterizationProperty {
 	@Override
 	public void setLookups(HttpServletRequest request) 
 	throws Exception {
-		// TODO Auto-generated method stub
 		
 		//no options needed
 	}
@@ -26,15 +26,21 @@ public class SimpleCytotoxicity extends SimpleCharacterizationProperty {
 	@Override
 	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean)
 			throws Exception {
-		// TODO Auto-generated method stub
+		super.transferFromPropertyBean(request, charBean);
 		
+		Cytotoxicity cyto = charBean.getCytotoxicity();
+		if (cyto.getCellLine() != null)
+			this.cellLine = cyto.getCellLine();
+			
 	}
 
 	@Override
 	public void transferToPropertyBean(CharacterizationBean charBean)
 			throws Exception {
-		// TODO Auto-generated method stub
+		Cytotoxicity cyto = charBean.getCytotoxicity();
 		
+		if (this.cellLine != null)
+			cyto.setCellLine(this.cellLine);
 	}
 	
 	

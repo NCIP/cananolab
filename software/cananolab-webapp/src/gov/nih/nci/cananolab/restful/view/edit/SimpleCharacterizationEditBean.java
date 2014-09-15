@@ -134,6 +134,29 @@ public class SimpleCharacterizationEditBean {
 		
 	}
 	
+	protected void transferToPropertyBean(CharacterizationBean charBean) 
+	throws Exception {
+		if (this.property == null) return;
+		
+		if (this.name.contains("physical"))
+			((SimplePhysicalState)property).transferToPropertyBean(charBean);
+		else if (name.contains("shape"))
+			((SimpleShape)property).transferToPropertyBean(charBean);
+		else if (name.contains("solubility"))
+			((SimpleSolubility)property).transferToPropertyBean(charBean);
+		else if (name.contains("surface"))
+			((SimpleSurface)property).transferToPropertyBean(charBean);
+		else if (name.contains("cytotoxicity"))
+			((SimpleCytotoxicity)property).transferToPropertyBean(charBean);
+		else if (name.contains("enzyme"))
+			((SimpleEnzymeInduction)property).transferToPropertyBean(charBean);
+		else if (name.contains("transfection"))
+			((SimpleTransfection)property).transferToPropertyBean(charBean);
+		else 
+			throw new Exception("Unknown charName: " + this.name);
+		
+	}
+	
 	protected void transferProperty(HttpServletRequest request, CharacterizationBean charBean) 
 	throws Exception {
 		if (!charBean.isWithProperties()) return;
@@ -283,7 +306,8 @@ public class SimpleCharacterizationEditBean {
 	 * Currently it only transfter what's needed in "submit" / "update"
 	 * @param charBean
 	 */
-	public CharacterizationBean transferToCharacterizationBean(CharacterizationBean achar) {
+	public CharacterizationBean transferToCharacterizationBean(CharacterizationBean achar) 
+	throws Exception {
 		CharacterizationBean charBean = achar;
 		if (charBean == null || this.charId == 0) 
 			charBean = new CharacterizationBean();
@@ -309,7 +333,7 @@ public class SimpleCharacterizationEditBean {
 		charBean.setDescription(this.designMethodsDescription);
 		charBean.setConclusion(this.analysisConclusion);
 		
-		
+		transferToPropertyBean(achar);
 		
 		return charBean;
 	}

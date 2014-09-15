@@ -604,7 +604,6 @@ public class CharacterizationServices {
 	@Path("/getCharProperties")
 	@Produces ("application/json")
     public Response getCharProperties(@Context HttpServletRequest httpRequest, 
-    		@DefaultValue("") @QueryParam("charType") String charType,
     		@DefaultValue("") @QueryParam("charName") String charName) {
 		logger.debug("In getCharProperties");		
 		
@@ -612,9 +611,10 @@ public class CharacterizationServices {
 			CharacterizationManager characterizationMgr = 
 				(CharacterizationManager) applicationContext.getBean("characterizationManager");
 
-		SimpleCharacterizationProperty simpleProp = characterizationMgr.getCharacterizationProperties(httpRequest, charType, charName);
+		SimpleCharacterizationProperty simpleProp = characterizationMgr.getCharacterizationProperties(httpRequest, charName);
 
-		return Response.ok(simpleProp).header("Access-Control-Allow-Credentials", "true")
+		return (simpleProp == null) ? Response.ok(null).build() :
+				Response.ok(simpleProp).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {

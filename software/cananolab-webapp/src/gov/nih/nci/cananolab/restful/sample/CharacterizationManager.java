@@ -142,10 +142,8 @@ public class CharacterizationManager {
 	}
 	
 	public SimpleCharacterizationProperty getCharacterizationProperties(HttpServletRequest request, 
-			String charType, String charName)
+			String charName)
 			throws Exception {
-		if (charType == null || charType.length() == 0)
-			throw new Exception("CharType can't be null or empty.");
 		
 		if (charName == null || charName.length() == 0)
 			throw new Exception("CharName can't be null or empty.");
@@ -154,6 +152,9 @@ public class CharacterizationManager {
 		String displayName = StringUtils.getCamelCaseFormatInWords(charName);
 		
 		SimpleCharacterizationProperty simpleProp = getPropertyClassByCharName(charName);
+		if (simpleProp == null)
+			return null;
+		
 		simpleProp.setPropertyName(shortClassName);
 		simpleProp.setPropertyDisplayName(displayName);
 		simpleProp.setLookups(request);
@@ -179,7 +180,7 @@ public class CharacterizationManager {
 		else if (charName.contains("transfection"))
 			return new SimpleTransfection();
 		else 
-			throw new Exception("Unknown charName: " + charName);
+			return null;
 				
 	}
 

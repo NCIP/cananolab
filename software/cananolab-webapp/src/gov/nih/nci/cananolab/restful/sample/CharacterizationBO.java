@@ -85,7 +85,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		this.setServicesInSession(request);
 		
 		// Copy "isSoluble" property from char bean to mapping bean.
-		this.copyIsSoluble(charBean);
+		//this.copyIsSoluble(charBean);
 		
 		List<String> errs = new ArrayList<String>();
 		if (!validateInputs(request, charBean, errs)) {
@@ -225,7 +225,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		this.setupInputForm(request, sampleId, charType);	
 		
 		//What is this?
-		this.setupIsSoluble(charBean); // setup "isSoluble" property.
+		//this.setupIsSoluble(charBean); // setup "isSoluble" property.
 		
 		//SY: new
 		request.getSession().setAttribute("theChar", charBean);

@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful.view.edit.characterization.properties;
 import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,8 @@ public class SimplePhysicalState extends SimpleCharacterizationProperty{
 		
 		if (types != null)
 			typeOptions.addAll(types);
+		
+		CommonUtil.addOtherToList(typeOptions);
 	}
 	
 	

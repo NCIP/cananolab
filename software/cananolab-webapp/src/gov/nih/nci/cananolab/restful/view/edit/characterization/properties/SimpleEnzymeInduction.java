@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.restful.view.edit.characterization.properties;
 
+import gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +12,9 @@ import java.util.SortedSet;
 import javax.servlet.http.HttpServletRequest;
 
 public class SimpleEnzymeInduction extends SimpleCharacterizationProperty{
-	String enzymeName;
+	String enzymeName = "";
 	
-	List<String> enzymeNameOptions = new ArrayList<String>(); //
+	List<String> enzymeNameOptions = new ArrayList<String>(); 
 
 	@Override
 	public void setLookups(HttpServletRequest request) 
@@ -23,13 +25,19 @@ public class SimpleEnzymeInduction extends SimpleCharacterizationProperty{
 		
 		if (types != null)
 			enzymeNameOptions.addAll(types);
+		CommonUtil.addOtherToList(enzymeNameOptions);
 		
 	}
 
 	@Override
 	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean)
 			throws Exception {
-		// TODO Auto-generated method stub
+		super.transferFromPropertyBean(request, charBean);
+		
+		EnzymeInduction enzyme = charBean.getEnzymeInduction();
+		
+		if (enzyme.getEnzyme() != null)
+			this.enzymeName = enzyme.getEnzyme();
 		
 	}
 
