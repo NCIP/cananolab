@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.restful.view.edit.characterization.properties;
+package gov.nih.nci.cananolab.restful.view.characterization.properties;
 
 import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -42,9 +42,9 @@ public class SimpleSolubility extends SimpleCharacterizationProperty {
 	
 
 	@Override
-	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean)
+	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean, boolean needOptions)
 			throws Exception {
-		super.transferFromPropertyBean(request, charBean);
+		super.transferFromPropertyBean(request, charBean, false);
 		
 		Solubility solubility = charBean.getSolubility();
 		if (solubility == null) return;
@@ -57,6 +57,9 @@ public class SimpleSolubility extends SimpleCharacterizationProperty {
 			this.isSoluble = "";
 		
 		this.solvent = solubility.getSolvent();
+		
+		if (needOptions)
+			this.setLookups(request);
 		
 	}
 

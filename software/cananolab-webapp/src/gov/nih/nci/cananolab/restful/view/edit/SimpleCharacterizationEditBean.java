@@ -12,14 +12,14 @@ import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleCharacterizationProperty;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleCytotoxicity;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleEnzymeInduction;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimplePhysicalState;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleShape;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleSolubility;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleSurface;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleTransfection;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleCharacterizationProperty;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleCytotoxicity;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleEnzymeInduction;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimplePhysicalState;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleShape;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleSolubility;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleSurface;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleTransfection;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 
 import java.util.ArrayList;
@@ -163,7 +163,7 @@ public class SimpleCharacterizationEditBean {
 		
 		String charName = charBean.getCharacterizationName();
 		property = getPropertyClassByCharName(charName);
-		property.transferFromPropertyBean(request, charBean);
+		property.transferFromPropertyBean(request, charBean, true);
 	}
 	
 	protected SimpleCharacterizationProperty getPropertyClassByCharName(String charName) 

@@ -7,11 +7,11 @@ import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleCharacterizationProperty;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationSummaryEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleCharacterizationProperty;
 
 import java.util.List;
 

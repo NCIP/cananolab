@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.restful.view.edit.characterization.properties;
+package gov.nih.nci.cananolab.restful.view.characterization.properties;
 
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -44,9 +44,9 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 	}
 	
 	@Override
-	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean)
+	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean, boolean needOptions)
 			throws Exception {
-		super.transferFromPropertyBean(request, charBean);
+		super.transferFromPropertyBean(request, charBean, needOptions);
 		
 		Shape shape = charBean.getShape();
 		
@@ -56,7 +56,8 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 		this.minDimension = shape.getMinDimension();
 		this.minDimensionUnit = shape.getMinDimensionUnit();
 		
-		this.setLookups(request);
+		if (needOptions)
+			this.setLookups(request);
 	}
 
 	@Override

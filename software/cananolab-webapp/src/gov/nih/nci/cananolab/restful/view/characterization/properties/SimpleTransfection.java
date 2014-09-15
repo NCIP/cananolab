@@ -1,6 +1,5 @@
-package gov.nih.nci.cananolab.restful.view.edit.characterization.properties;
+package gov.nih.nci.cananolab.restful.view.characterization.properties;
 
-import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
 import gov.nih.nci.cananolab.domain.characterization.invitro.Transfection;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 
@@ -18,9 +17,9 @@ public class SimpleTransfection extends SimpleCharacterizationProperty {
 	}
 
 	@Override
-	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean)
+	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean, boolean needOptions)
 			throws Exception {
-		super.transferFromPropertyBean(request, charBean);
+		super.transferFromPropertyBean(request, charBean, needOptions);
 		
 		Transfection transfection = charBean.getTransfection();
 		if (transfection.getCellLine() != null)

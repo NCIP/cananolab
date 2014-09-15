@@ -10,14 +10,8 @@ package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleCharacterizationProperty;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleCytotoxicity;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleEnzymeInduction;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimplePhysicalState;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleShape;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleSolubility;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleSurface;
-import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleTransfection;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.CharacterizationPropertyUtil;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleCharacterizationProperty;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -151,7 +145,7 @@ public class CharacterizationManager {
 		String shortClassName = ClassUtils.getShortClassNameFromDisplayName(charName);
 		String displayName = StringUtils.getCamelCaseFormatInWords(charName);
 		
-		SimpleCharacterizationProperty simpleProp = getPropertyClassByCharName(charName);
+		SimpleCharacterizationProperty simpleProp = CharacterizationPropertyUtil.getPropertyClassByCharName(charName);
 		if (simpleProp == null)
 			return null;
 		
@@ -163,26 +157,7 @@ public class CharacterizationManager {
 		
 	}
 	
-	protected SimpleCharacterizationProperty getPropertyClassByCharName(String charName) 
-	throws Exception {
-		if (charName.contains("physical"))
-			return new SimplePhysicalState();
-		else if (charName.contains("shape"))
-			return new SimpleShape();
-		else if (charName.contains("solubility"))
-			return new SimpleSolubility();
-		else if (charName.contains("surface"))
-			return new SimpleSurface();
-		else if (charName.contains("cytotoxicity"))
-			return new SimpleCytotoxicity();
-		else if (charName.contains("enzyme"))
-			return new SimpleEnzymeInduction();
-		else if (charName.contains("transfection"))
-			return new SimpleTransfection();
-		else 
-			return null;
-				
-	}
+	
 
 	/**
 	 * This moved to initSetup rest service. To delete ...

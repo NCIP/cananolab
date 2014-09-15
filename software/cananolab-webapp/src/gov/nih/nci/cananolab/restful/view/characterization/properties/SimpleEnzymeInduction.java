@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.restful.view.edit.characterization.properties;
+package gov.nih.nci.cananolab.restful.view.characterization.properties;
 
 import gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -30,15 +30,17 @@ public class SimpleEnzymeInduction extends SimpleCharacterizationProperty{
 	}
 
 	@Override
-	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean)
+	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean, boolean needOptions)
 			throws Exception {
-		super.transferFromPropertyBean(request, charBean);
+		super.transferFromPropertyBean(request, charBean, needOptions);
 		
 		EnzymeInduction enzyme = charBean.getEnzymeInduction();
 		
 		if (enzyme.getEnzyme() != null)
 			this.enzymeName = enzyme.getEnzyme();
 		
+		if (needOptions)
+			this.setLookups(request);
 	}
 
 

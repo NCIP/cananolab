@@ -9,6 +9,8 @@ import gov.nih.nci.cananolab.dto.common.Row;
 import gov.nih.nci.cananolab.dto.common.TableCell;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.CharacterizationPropertyUtil;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleCharacterizationProperty;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +20,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
@@ -49,7 +53,8 @@ public class SimpleCharacterizationSummaryViewBean {
 		this.parentSampleId = parentSampleId;
 	}
 
-	public List<SimpleCharacterizationsByTypeBean> transferData(CharacterizationSummaryViewBean viewBean, String sampleId) 
+	public List<SimpleCharacterizationsByTypeBean> transferData(HttpServletRequest request, 
+			CharacterizationSummaryViewBean viewBean, String sampleId) 
 	throws Exception {
 		
 		logger.info("============ SimpleCharacterizationSummaryViewBean.transferData ==================");
@@ -79,7 +84,7 @@ public class SimpleCharacterizationSummaryViewBean {
 					
 					SimpleCharacterizationViewBean aView = new SimpleCharacterizationViewBean();
 		
-					List<SimpleCharacterizationUnitBean> aBeanUnitList = tranferCharacterizationBeanData(charBean);
+					List<SimpleCharacterizationUnitBean> aBeanUnitList = tranferCharacterizationBeanData(request, charBean);
 					aView.transferData(charBean, aBeanUnitList, sampleId, type);
 										
 					charBeansByCharName.add(aView);
@@ -105,7 +110,8 @@ public class SimpleCharacterizationSummaryViewBean {
 	 * 
 	 * @param charObj
 	 */
-	public List<SimpleCharacterizationUnitBean> tranferCharacterizationBeanData(CharacterizationBean charBean) {
+	public List<SimpleCharacterizationUnitBean> tranferCharacterizationBeanData(HttpServletRequest request, 
+			CharacterizationBean charBean) {
 		if (charBean == null)
 			return null;
 		
@@ -168,10 +174,18 @@ public class SimpleCharacterizationSummaryViewBean {
 		//What is this?
 		if (charBean.isWithProperties()) {
 			
-//			logger.info("======== Details go here ================ ");
-//			String detailPage = gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup
-//					.getInstance().getDetailPage(charType, charName);
-//			logger.info(detailPage);
+			SimpleCharacterizationProperty simpleProp = 
+					CharacterizationPropertyUtil.getPropertyClassByCharName(charBean.getCharacterizationName());
+			
+			try {
+				if (simpleProp != null) 
+					simpleProp.transferFromPropertyBean(request, charBean, false);
+			} catch (Exception e) {
+				logger.error("Error while transferring data from property");
+			}
+			
+			//TODO:
+			//charBeanMap.put("Properties", simpleProp)
 			
 			String phyStateType = charBean.getPhysicalState().getType();
 			

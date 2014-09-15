@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.restful.view.edit.characterization.properties;
+package gov.nih.nci.cananolab.restful.view.characterization.properties;
 
 import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -16,9 +16,9 @@ public class SimpleSurface extends SimpleCharacterizationProperty {
 	}
 
 	@Override
-	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean)
+	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean, boolean needOptions)
 			throws Exception {
-		super.transferFromPropertyBean(request, charBean);
+		super.transferFromPropertyBean(request, charBean, needOptions);
 		Surface surface = charBean.getSurface();
 		if (surface.getIsHydrophobic() == null)
 			isHydrophobic = "";
