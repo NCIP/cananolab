@@ -1,5 +1,9 @@
 package gov.nih.nci.cananolab.restful.view.edit.characterization.properties;
 
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
 
 public abstract class SimpleCharacterizationProperty {
@@ -23,4 +27,12 @@ public abstract class SimpleCharacterizationProperty {
 	}
 	
 	public abstract void setLookups(HttpServletRequest request) throws Exception;
+	
+	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean) 
+			throws Exception {
+		this.propertyName = ClassUtils.getShortClassNameFromDisplayName(charBean.getCharacterizationName());
+		this.propertyDisplayName = StringUtils.getCamelCaseFormatInWords(this.propertyName);
+	}
+	
+	public abstract void transferToPropertyBean(CharacterizationBean charBean) throws Exception;
 }

@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.view.edit.characterization.properties;
 
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 
 import java.util.ArrayList;
@@ -24,6 +25,24 @@ public class SimpleEnzymeInduction extends SimpleCharacterizationProperty{
 			enzymeNameOptions.addAll(types);
 		
 	}
+
+	@Override
+	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void transferToPropertyBean(CharacterizationBean charBean)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 	public String getEnzymeName() {
 		return enzymeName;

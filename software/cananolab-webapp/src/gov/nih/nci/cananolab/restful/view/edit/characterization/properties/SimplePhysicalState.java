@@ -1,7 +1,8 @@
 package gov.nih.nci.cananolab.restful.view.edit.characterization.properties;
 
+import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
-import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,28 @@ public class SimplePhysicalState extends SimpleCharacterizationProperty{
 		
 		if (types != null)
 			typeOptions.addAll(types);
+	}
+	
+	
+
+	@Override
+	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean)
+			throws Exception {
+		PhysicalState phyState = charBean.getPhysicalState();
+		
+		super.transferFromPropertyBean(request, charBean);
+		if (phyState == null) return;
+		
+		this.type = phyState.getType();
+		
+		setLookups(request);
+	}
+
+	@Override
+	public void transferToPropertyBean(CharacterizationBean charBean)
+			throws Exception {
+		PhysicalState phyState = charBean.getPhysicalState();
+		phyState.setType(this.type);		
 	}
 
 	public List<String> getTypeOptions() {

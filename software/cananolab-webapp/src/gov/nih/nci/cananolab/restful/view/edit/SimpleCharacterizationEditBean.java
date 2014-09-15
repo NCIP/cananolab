@@ -13,7 +13,13 @@ import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleCharacterizationProperty;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleCytotoxicity;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleEnzymeInduction;
 import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimplePhysicalState;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleShape;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleSolubility;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleSurface;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleTransfection;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 
 import java.util.ArrayList;
@@ -42,7 +48,7 @@ public class SimpleCharacterizationEditBean {
 	
 	List<String> charNamesForCurrentType;
 	
-	SimpleCharacterizationProperty properties;// = new SimplePhysicalState();
+	SimpleCharacterizationProperty property;// = new SimplePhysicalState();
 	
 	String designMethodsDescription;
 	
@@ -83,7 +89,7 @@ public class SimpleCharacterizationEditBean {
 		setProtocolIdFromProtocolBean(charBean);
 		setCharacterizationSourceIdFromPOCBean(charBean.getPocBean());
 		
-		transferCharBeanData(charBean);
+		transferCharBeanData(request, charBean);
 		
 		setupLookups(request, charBean, sampleId);
 	}
@@ -107,7 +113,8 @@ public class SimpleCharacterizationEditBean {
 		this.protocolId = charBean.getProtocolBean().getDomain().getId();
 	}
 	
-	protected void transferCharBeanData(CharacterizationBean charBean) {
+	protected void transferCharBeanData(HttpServletRequest request, CharacterizationBean charBean) 
+	throws Exception {
 		if (charBean.getDomainChar() == null) 
 			return;
 		
@@ -123,6 +130,38 @@ public class SimpleCharacterizationEditBean {
 		transferExperimentConfigs(charBean.getExperimentConfigs());
 		transferFinding(charBean.getFindings())	;
 		
+		transferProperty(request, charBean);
+		
+	}
+	
+	protected void transferProperty(HttpServletRequest request, CharacterizationBean charBean) 
+	throws Exception {
+		if (!charBean.isWithProperties()) return;
+		
+		String charName = charBean.getCharacterizationName();
+		property = getPropertyClassByCharName(charName);
+		property.transferFromPropertyBean(request, charBean);
+	}
+	
+	protected SimpleCharacterizationProperty getPropertyClassByCharName(String charName) 
+			throws Exception {
+		if (charName.contains("physical"))
+			return new SimplePhysicalState();
+		else if (charName.contains("shape"))
+			return new SimpleShape();
+		else if (charName.contains("solubility"))
+			return new SimpleSolubility();
+		else if (charName.contains("surface"))
+			return new SimpleSurface();
+		else if (charName.contains("cytotoxicity"))
+			return new SimpleCytotoxicity();
+		else if (charName.contains("enzyme"))
+			return new SimpleEnzymeInduction();
+		else if (charName.contains("transfection"))
+			return new SimpleTransfection();
+		else 
+			throw new Exception("Unknown charName: " + charName);
+
 	}
 	
 	protected void transferFinding(List<FindingBean> findingBeans) {
@@ -269,6 +308,8 @@ public class SimpleCharacterizationEditBean {
 		
 		charBean.setDescription(this.designMethodsDescription);
 		charBean.setConclusion(this.analysisConclusion);
+		
+		
 		
 		return charBean;
 	}
@@ -538,11 +579,13 @@ public class SimpleCharacterizationEditBean {
 		this.submitNewChar = submitNewChar;
 	}
 
-	public SimpleCharacterizationProperty getProperties() {
-		return properties;
+	public SimpleCharacterizationProperty getProperty() {
+		return property;
 	}
 
-	public void setProperties(SimpleCharacterizationProperty properties) {
-		this.properties = properties;
+	public void setProperty(SimpleCharacterizationProperty property) {
+		this.property = property;
 	}
+
+	
 }
