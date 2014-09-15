@@ -108,6 +108,10 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 		return attachment;
 	}
 
+	public void setAttachment(Attachment attachment) {
+		this.attachment = attachment;
+	}
+
 	public AssociatedElementBean getAssociatedElementA() {
 		return associatedElementA;
 	}
