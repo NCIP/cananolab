@@ -9,17 +9,15 @@ import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleCharacterizationProperty;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +40,8 @@ public class SimpleCharacterizationEditBean {
 	Date characterizationDate;
 	
 	List<String> charNamesForCurrentType;
+	
+	SimpleCharacterizationProperty properties;
 	
 	String designMethodsDescription;
 	
@@ -535,5 +535,12 @@ public class SimpleCharacterizationEditBean {
 	public void setSubmitNewChar(boolean submitNewChar) {
 		this.submitNewChar = submitNewChar;
 	}
-	
+
+	public SimpleCharacterizationProperty getProperties() {
+		return properties;
+	}
+
+	public void setProperties(SimpleCharacterizationProperty properties) {
+		this.properties = properties;
+	}
 }

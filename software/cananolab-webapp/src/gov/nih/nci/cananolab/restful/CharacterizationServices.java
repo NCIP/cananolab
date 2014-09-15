@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.restful;
 
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
@@ -12,6 +11,7 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationSummaryEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleCharacterizationProperty;
 
 import java.util.List;
 
@@ -592,6 +592,29 @@ public class CharacterizationServices {
 			}
 
 		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	@GET
+	@Path("/getCharProperties")
+	@Produces ("application/json")
+    public Response getCharProperties(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("charType") String charType,
+    		@DefaultValue("") @QueryParam("charName") String charName) {
+		logger.debug("In getCharProperties");		
+		
+		try {
+			CharacterizationManager characterizationMgr = 
+				(CharacterizationManager) applicationContext.getBean("characterizationManager");
+
+		SimpleCharacterizationProperty simpleProp = characterizationMgr.getCharacterizationProperties(httpRequest, charType, charName);
+
+		return Response.ok(simpleProp).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {

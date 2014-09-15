@@ -123,12 +123,14 @@ public class InitCharacterizationSetup {
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"datumConditionValueTypes", "datum and condition", "valueType",
 				"otherValueType", true);
+		
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"dimensionUnits", "dimension", "unit", "otherUnit", true);
 
 		// solubility
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"solventTypes", "solubility", "solvent", "otherSolvent", true);
+		
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"concentrationUnits", "sample concentration", "unit",
 				"otherUnit", true);

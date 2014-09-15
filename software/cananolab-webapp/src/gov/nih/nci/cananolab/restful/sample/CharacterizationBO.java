@@ -86,12 +86,10 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		// Copy "isSoluble" property from char bean to mapping bean.
 		this.copyIsSoluble(charBean);
-
-		
 		
 		List<String> errs = new ArrayList<String>();
 		if (!validateInputs(request, charBean, errs)) {
-			CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(new ArrayList<CharacterizationBean>());
+			//CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(new ArrayList<CharacterizationBean>());
 			
 			SimpleCharacterizationSummaryEditBean emptyView = new SimpleCharacterizationSummaryEditBean();
 			emptyView.setErrors(errs);
@@ -188,8 +186,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 					charType);
 		InitCharacterizationSetup.getInstance().setPOCDropdown(request,
 				sampleId);
-		InitCharacterizationSetup.getInstance().setCharacterizationDropdowns(
-				request);
+//		InitCharacterizationSetup.getInstance().setCharacterizationDropdowns(
+//				request);
 
 		// set up other samples with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);

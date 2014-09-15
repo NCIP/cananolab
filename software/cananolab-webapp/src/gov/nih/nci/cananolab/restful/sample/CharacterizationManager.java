@@ -10,7 +10,14 @@ package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
-import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleCharacterizationProperty;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleCytotoxicity;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleEnzymeInduction;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimplePhysicalState;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleShape;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleSolubility;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleSurface;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleTransfection;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -133,7 +140,54 @@ public class CharacterizationManager {
 			return "";
 		}
 	}
+	
+	public SimpleCharacterizationProperty getCharacterizationProperties(HttpServletRequest request, 
+			String charType, String charName)
+			throws Exception {
+		if (charType == null || charType.length() == 0)
+			throw new Exception("CharType can't be null or empty.");
+		
+		if (charName == null || charName.length() == 0)
+			throw new Exception("CharName can't be null or empty.");
+		
+		String shortClassName = ClassUtils.getShortClassNameFromDisplayName(charName);
+		String displayName = StringUtils.getCamelCaseFormatInWords(charName);
+		
+		SimpleCharacterizationProperty simpleProp = getPropertyClassByCharName(charName);
+		simpleProp.setPropertyName(shortClassName);
+		simpleProp.setPropertyDisplayName(displayName);
+		simpleProp.setLookups(request);
+		
+		return simpleProp;
+		
+	}
+	
+	protected SimpleCharacterizationProperty getPropertyClassByCharName(String charName) 
+	throws Exception {
+		if (charName.contains("physical"))
+			return new SimplePhysicalState();
+		else if (charName.contains("shape"))
+			return new SimpleShape();
+		else if (charName.contains("solubility"))
+			return new SimpleSolubility();
+		else if (charName.contains("surface"))
+			return new SimpleSurface();
+		else if (charName.contains("cytotoxicity"))
+			return new SimpleCytotoxicity();
+		else if (charName.contains("enzyme"))
+			return new SimpleEnzymeInduction();
+		else if (charName.contains("transfection"))
+			return new SimpleTransfection();
+		else 
+			throw new Exception("Unknown charName: " + charName);
+				
+	}
 
+	/**
+	 * This moved to initSetup rest service. To delete ...
+	 * @param characterizationClassName
+	 * @return
+	 */
 	public String getPublicCharacterizationCounts(
 			String characterizationClassName) {
 		WebContext wctx = WebContextFactory.get();
