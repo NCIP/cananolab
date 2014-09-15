@@ -16,8 +16,8 @@ var app = angular.module('angularApp')
             };
         $scope.localForm = {};        
         $scope.localForm.otherCategoryText = '';
+        $scope.externalUrlEnabled  = false; 
         
-
         // Access variables
         $scope.protocolForm.theAccess = {};
         $scope.accessForm = {};
@@ -48,17 +48,20 @@ var app = angular.module('angularApp')
         $scope.usingFlash = FileAPI && FileAPI.upload != null;
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
 
+        $scope.loader = true;
         $scope.$on('$viewContentLoaded', function(){
             $http({method: 'GET', url: '/caNanoLab/rest/protocol/setup'}).
                 success(function(data, status, headers, config) {
                     $scope.data = data;
                     $scope.protocolTypes = data.protocolTypes;
                     $scope.csmRoleNames = data.csmRoleNames;
+                    $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     $scope.messages = data;
+                    $scope.loader = false;
                 });
         });
 
@@ -81,8 +84,9 @@ var app = angular.module('angularApp')
                             $scope.accessExists = true;
                         }
                         
-		                if( $scope.protocolForm.uriExternal != null && $scope.protocolForm.uriExternal != '') {
+		                if( $scope.protocolForm.externalUrl != null && $scope.protocolForm.externalUrl != '') {
 		                    $scope.externalUrlEnabled = true;
+		                    $scope.protocolForm.uriExternal = 'true';
 
 		                    $timeout(function() {
 		                        var el = document.getElementById('external1');
@@ -91,6 +95,7 @@ var app = angular.module('angularApp')
 		                }
 		                else {
 		                    $scope.externalUrlEnabled  = false;
+		                    $scope.protocolForm.uriExternal = 'false';
 
 		                    $timeout(function() {
 		                        var el = document.getElementById('external0');
@@ -110,21 +115,13 @@ var app = angular.module('angularApp')
 
         if( $scope.protocolId != null ) {
             $scope.loadProtocolData();
-/*
-            $scope.protocolForm = {"type":"in vitro assay","name":"Test Protocol","abbreviation":"abbr","version":"1.0","fileId":null,"id":56492032,"fileTitle":"file title 1","fileDescription":"file desc 1","groupAccesses":[{"userBean":{"userId":null,"displayName":"","loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[]},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"}],"userAccesses":[],"protectedData":"","isPublic":false,"isOwner":true,"ownerName":"","createdBy":"jonnalah","createdDate":1407944436000,"theAccess":{"userBean":{"userId":null,"displayName":"","loginName":"","firstName":null,"lastName":null,"fullName":null,"organization":null,"department":null,"title":null,"phoneNumber":null,"password":null,"emailId":null,"admin":false,"curator":false,"domain":null,"groupNames":[]},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"userDeletable":true,"errors":null};
-            $scope.loader = false;
-
-            $scope.groupAccesses = $scope.protocolForm.groupAccesses;
-            $scope.userAccesses = $scope.protocolForm.userAccesses;
-
-            if( $scope.userAccesses != null && $scope.userAccesses.length > 0 ) {
-                $scope.accessExists = true;
-            }
-
-            if( $scope.groupAccesses != null && $scope.groupAccesses.length > 1 ) {
-                $scope.accessExists = true;
-            }  */
         }
+        else {
+            $scope.$on('$viewContentLoaded', function() {
+                $scope.protocolForm.uriExternal = 'false';
+                $scope.externalUrlEnabled = false;
+            });
+        }        
 
         $scope.doSubmitData = function() {
             $scope.loader = true;

@@ -48,6 +48,26 @@ var app = angular.module('angularApp')
                     success(function(data, status, headers, config) {
                         $scope.fileForm = data;
                         //$scope.fileForm = {"uriExternal":true,"uri":"http://www.cancer.gov/","type":"graph","title":"graph","description":"","keywordsStr":"","id":73433125,"createdBy":"jonnalah","createdDate":1410117656000,"sampleId":"57835522","errors":null,"externalUrl":"http://www.cancer.gov/"};
+                        
+		                if( $scope.fileForm.externalUrl != null && $scope.fileForm.externalUrl != '') {
+		                    $scope.externalUrlEnabled = true;
+		                    $scope.fileForm.uriExternal = 'true';
+/*
+		                    $timeout(function() {
+		                        var el = document.getElementById('external1');
+		                        angular.element(el).triggerHandler('click');
+		                    }, 0);  */
+		                }
+		                else {
+		                    $scope.externalUrlEnabled  = false;
+		                    $scope.fileForm.uriExternal = 'false';
+/*
+		                    $timeout(function() {
+		                        var el = document.getElementById('external0');
+		                        angular.element(el).triggerHandler('click');
+		                    }, 0);  */
+		                }
+		                
                         $scope.loader = false;
                     }).
                     error(function(data, status, headers, config) {
@@ -61,6 +81,12 @@ var app = angular.module('angularApp')
         if( $scope.compositionFileId != null ) {
             $scope.loadCompositionFileData();
         }
+        else {
+            $scope.$on('$viewContentLoaded', function() {
+                $scope.fileForm.uriExternal = 'false';
+                $scope.externalUrlEnabled = false;
+            });
+        }  
 
         $scope.resetForm = function() {
             $scope.fileForm = {};
@@ -84,6 +110,15 @@ var app = angular.module('angularApp')
                     $scope.fileForm.keywordsStr = element.keywordsStr;
                     $scope.fileForm.description = element.description;
                     $scope.fileForm.id = element.id;
+                    
+                    if( $scope.fileForm.externalUrl != null && $scope.fileForm.externalUrl != '') {
+                        $scope.externalUrlEnabled = true;
+                        $scope.fileForm.uriExternal = 'true';
+                    }
+                    else {
+                        $scope.externalUrlEnabled  = false;
+                        $scope.fileForm.uriExternal = 'false';
+                    }                      
 
                     break;
                 }
@@ -122,7 +157,7 @@ var app = angular.module('angularApp')
                     url: '/caNanoLab/rest/core/uploadFile',
                     method: 'POST',
                     headers: {'my-header': 'my-header-value'},
-                    data : $scope.protocolForm,
+                    data : $scope.fileForm,
                     file: $scope.selectedFiles[index],
                     fileFormDataName: 'myFile'
                 });

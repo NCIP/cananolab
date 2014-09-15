@@ -46,8 +46,8 @@
                             <span id="load" style="display: block;" ng-show="fileForm.uriExternal=='false'">
         						<input type="file" ng-model="fileForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
 				            </span>
-                            <span id="uploadedUri" ng-show="fileForm.uriExternal=='false' && fileForm.fileId != null">
-			                    <a href="rest/composition/download?fileId={{fileForm.fileId}}">{{fileForm.uri}}</a>
+                            <span id="uploadedUri" ng-show="fileForm.uriExternal=='false' && fileForm.id != null">
+			                    <a href="rest/composition/download?fileId={{fileForm.id}}">{{fileForm.uri}}</a>
                             </span>
                                         <label for="uploadedFile">&nbsp;&nbsp;</label>
 			                <span id="link" ng-show="fileForm.uriExternal=='true'">

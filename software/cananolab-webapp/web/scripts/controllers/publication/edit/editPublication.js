@@ -55,17 +55,20 @@ var app = angular.module('angularApp')
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
 
         //$scope.$on('$viewContentLoaded', function(){
+        $scope.loader = true;
         $http({method: 'GET', url: '/caNanoLab/rest/publication/setup'}).
             success(function(data, status, headers, config) {
                 $scope.publicationCategories = data.publicationCategories;
                 $scope.publicationStatuses = data.publicationStatuses;
                 $scope.publicationResearchAreas = data.publicationResearchAreas;
                 $scope.csmRoleNames = data.csmRoleNames;
+                $scope.loader = false;
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 $scope.messages = data;
+                $scope.loader = false;
             });
         //});
 
@@ -106,8 +109,9 @@ var app = angular.module('angularApp')
 		                    $scope.showAuthorTable = true;
 		                }
 		                
-		                if( $scope.publicationForm.uriExternal != null && $scope.publicationForm.uriExternal != '') {
+		                if( $scope.publicationForm.externalUrl != null && $scope.publicationForm.externalUrl != '') {
 		                    $scope.externalUrlEnabled = true;
+		                    $scope.publicationForm.uriExternal = 'true';
 
 		                    $timeout(function() {
 		                        var el = document.getElementById('external1');
@@ -116,6 +120,7 @@ var app = angular.module('angularApp')
 		                }
 		                else {
 		                    $scope.externalUrlEnabled  = false;
+		                    $scope.publicationForm.uriExternal = 'false';
 
 		                    $timeout(function() {
 		                        var el = document.getElementById('external0');
@@ -135,6 +140,12 @@ var app = angular.module('angularApp')
         
         if( $scope.publicationId != null ) {
         	$scope.loadPublicationData();
+        } 
+        else {
+            $scope.$on('$viewContentLoaded', function() {
+                $scope.publicationForm.uriExternal = 'false';
+                $scope.externalUrlEnabled = false;
+            });
         }
 
         $scope.addAuthor = function() {

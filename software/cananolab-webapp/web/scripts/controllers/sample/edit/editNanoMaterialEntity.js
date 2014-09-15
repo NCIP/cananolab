@@ -492,11 +492,20 @@ var app = angular.module('angularApp')
                     $scope.fileForm.createdDate = element.createdDate;
 
                     $scope.addNewFile = true;
+                    
+                    if( $scope.fileForm.externalUrl != null && $scope.fileForm.externalUrl != '') {
+                        $scope.externalUrlEnabled = true;
+                        $scope.fileForm.uriExternal = 'true';
+                    }
+                    else {
+                        $scope.externalUrlEnabled  = false;
+                        $scope.fileForm.uriExternal = 'false';
+                    }
 
                     break;
                 }
             }
-        }
+        };
 
         $scope.removeFile = function(fileId) {
             if (confirm("Are you sure you want to delete the File?")) {
@@ -655,6 +664,10 @@ var app = angular.module('angularApp')
 
         $scope.openAddNewFile = function() {
             $scope.addNewFile = true;
+            $scope.fileForm = {};
+            
+            $scope.fileForm.uriExternal = 'false';
+            $scope.externalUrlEnabled = false;            
         }
 
         /* End File Section */
