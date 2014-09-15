@@ -15,11 +15,16 @@
                         <td width="30%" class="cellLabel" scope="col">
                             Function Type
                         </td>
-                        <td width="30%" class="cellLabel" scope="col">
+                        <td width="30%" class="cellLabel" scope="col" ng-if="funcEntityForm.withImagingFunction">
                             <div id="modalityHeader">
                                 Imaging Modality
                             </div>
                         </td>
+                        <td width="30%" class="cellLabel" scope="col" ng-if="funcEntityForm.withTargetingFunction">
+                            <div id="modalityHeader">
+                                Targets
+                            </div>
+                        </td>                        
                         <td width="30%" class="cellLabel" scope="col">
                             Description
                         </td>
@@ -30,9 +35,12 @@
                         <td>
                             <span id="functionTypeValue1">{{inherentFunction.type}}</span>
                         </td>
-                        <td>
+                        <td ng-if="funcEntityForm.withImagingFunction">
                             <span id="functionModalityTypeValue1">{{inherentFunction.modality}}</span>
                         </td>
+                        <td ng-if="funcEntityForm.withTargetingFunction">
+                            <div ng-repeat="target in inherentFunction.targets">{{target.type}} : {{target.name}} </div>
+                        </td>                        
                         <td>
                             <span id="functionDescriptionValue1">{{inherentFunction.description}}</span>
                         </td>
