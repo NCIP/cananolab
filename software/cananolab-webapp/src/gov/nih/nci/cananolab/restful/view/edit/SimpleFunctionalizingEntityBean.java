@@ -36,6 +36,25 @@ public class SimpleFunctionalizingEntityBean {
 	List<SimpleFunctionBean> functionList;
 	List<SimpleFileBean> fileList;
 	List<String> otherSampleNames;
+	boolean withImagingFunction = false;
+	boolean withTargetingFunction = false;
+	
+	public boolean isWithImagingFunction() {
+		return withImagingFunction;
+	}
+
+	public void setWithImagingFunction(boolean withImagingFunction) {
+		this.withImagingFunction = withImagingFunction;
+	}
+
+	public boolean isWithTargetingFunction() {
+		return withTargetingFunction;
+	}
+
+	public void setWithTargetingFunction(boolean withTargetingFunction) {
+		this.withTargetingFunction = withTargetingFunction;
+	}
+
 	
 	public List<String> getOtherSampleNames() {
 		return otherSampleNames;
@@ -181,6 +200,8 @@ public class SimpleFunctionalizingEntityBean {
 		this.setValueUnit(bean.getValueUnit());
 		this.setActivationEffect(bean.getActivationMethod().getActivationEffect());
 		this.setActivationMethodType(bean.getActivationMethod().getType());
+		this.setWithImagingFunction(bean.isWithImagingFunction());
+		this.setWithTargetingFunction(bean.isWithTargetingFunction());
 		
 		List<SimpleFileBean> fileList = new ArrayList<SimpleFileBean>();
 		for(FileBean files : bean.getFiles()){
@@ -212,8 +233,7 @@ public class SimpleFunctionalizingEntityBean {
 			simpleBean.setModality(funcBean.getImagingFunction().getModality());
 			simpleBean.setCreatedBy(funcBean.getDomainFunction().getCreatedBy());
 			simpleBean.setCreatedDate(funcBean.getDomainFunction().getCreatedDate());
-			simpleBean.setWithImagingFunction(bean.isWithImagingFunction());
-			simpleBean.setWithTargetingFunction(bean.isWithTargetingFunction());
+			
 			List<Map<String, String>> targets = new ArrayList<Map<String, String>>();
 			for(TargetBean targetBean : funcBean.getTargets()){
 				Map<String, String> target = new HashMap<String, String>();
