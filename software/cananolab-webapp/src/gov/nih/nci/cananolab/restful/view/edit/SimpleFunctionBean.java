@@ -18,6 +18,25 @@ public class SimpleFunctionBean {
 	String createdBy ="";
 	Date createdDate;
 	List<Map<String, String>> targets;
+	boolean withImagingFunction = false;
+	boolean withTargetingFunction = false;
+	
+	public boolean isWithImagingFunction() {
+		return withImagingFunction;
+	}
+
+	public void setWithImagingFunction(boolean withImagingFunction) {
+		this.withImagingFunction = withImagingFunction;
+	}
+
+	public boolean isWithTargetingFunction() {
+		return withTargetingFunction;
+	}
+
+	public void setWithTargetingFunction(boolean withTargetingFunction) {
+		this.withTargetingFunction = withTargetingFunction;
+	}
+
 	
 	public List<Map<String, String>> getTargets() {
 		return targets;

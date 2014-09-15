@@ -212,6 +212,8 @@ public class SimpleFunctionalizingEntityBean {
 			simpleBean.setModality(funcBean.getImagingFunction().getModality());
 			simpleBean.setCreatedBy(funcBean.getDomainFunction().getCreatedBy());
 			simpleBean.setCreatedDate(funcBean.getDomainFunction().getCreatedDate());
+			simpleBean.setWithImagingFunction(bean.isWithImagingFunction());
+			simpleBean.setWithTargetingFunction(bean.isWithTargetingFunction());
 			List<Map<String, String>> targets = new ArrayList<Map<String, String>>();
 			for(TargetBean targetBean : funcBean.getTargets()){
 				Map<String, String> target = new HashMap<String, String>();
