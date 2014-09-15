@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimpleCharacterizationProperty;
+import gov.nih.nci.cananolab.restful.view.edit.characterization.properties.SimplePhysicalState;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class SimpleCharacterizationEditBean {
 	
 	List<String> charNamesForCurrentType;
 	
-	SimpleCharacterizationProperty properties;
+	SimpleCharacterizationProperty properties;// = new SimplePhysicalState();
 	
 	String designMethodsDescription;
 	
@@ -191,7 +192,8 @@ public class SimpleCharacterizationEditBean {
 		otherSampleNameLookup = InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		
 		SortedSet<String> valueTypes = (SortedSet<String>)request.getSession().getAttribute("datumConditionValueTypes");
-		this.datumConditionValueTypeLookup.addAll(valueTypes);
+		if (valueTypes != null) 
+			this.datumConditionValueTypeLookup.addAll(valueTypes);
 		CommonUtil.addOtherToList(this.datumConditionValueTypeLookup);
 		
 		this.techniqueInstruments.setupLookups(request);
