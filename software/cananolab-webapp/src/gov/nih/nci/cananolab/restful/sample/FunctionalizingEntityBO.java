@@ -12,6 +12,8 @@ import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
+import gov.nih.nci.cananolab.domain.function.OtherFunction;
+import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer;
 import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.Function;
@@ -47,37 +49,36 @@ import javax.servlet.http.HttpSession;
 
 import org.jvnet.hk2.config.Changed.TYPE;
 
-
-public class FunctionalizingEntityBO extends BaseAnnotationBO{
+public class FunctionalizingEntityBO extends BaseAnnotationBO {
 	public List<String> create(SimpleFunctionalizingEntityBean bean,
-			HttpServletRequest request)
-			throws Exception {
-		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(bean, request);
+			HttpServletRequest request) throws Exception {
+		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(
+				bean, request);
 		List<String> msgs = new ArrayList<String>();
 		SampleBean sampleBean = setupSampleById(bean.getSampleId(), request);
 		List<String> otherSampleNames = bean.getOtherSampleNames();
 		this.setServicesInSession(request);
 		msgs = validateInputs(request, msgs, entityBean);
-		if (msgs.size()>0) {
+		if (msgs.size() > 0) {
 			return msgs;
 		}
 		this.saveEntity(request, bean.getSampleId(), entityBean);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entityBean);
-		
+
 		// save to other samples (only when user click [Submit] button.)
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
 		SampleBean[] otherSampleBeans = null;
-		if(otherSampleNames!=null){
+		if (otherSampleNames != null) {
 			otherSampleBeans = prepareCopy(request, otherSampleNames,
 					sampleBean);
 		}
-			if (otherSampleBeans != null) {
-				compService.copyAndSaveFunctionalizingEntity(entityBean,
-						sampleBean, otherSampleBeans);
-			}
-		
+		if (otherSampleBeans != null) {
+			compService.copyAndSaveFunctionalizingEntity(entityBean,
+					sampleBean, otherSampleBeans);
+		}
+
 		// to preselect functionalizing entity after returning to the summary
 		// page
 		request.getSession().setAttribute("tab", "2");
@@ -85,10 +86,10 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		return msgs;
 	}
 
-	private List<String> validateTargets(HttpServletRequest request, List<String> msgs,
-			FunctionalizingEntityBean entityBean) {
+	private List<String> validateTargets(HttpServletRequest request,
+			List<String> msgs, FunctionalizingEntityBean entityBean) {
 		for (FunctionBean funcBean : entityBean.getFunctions()) {
-			if(funcBean.getType()==null||funcBean.getType().equals("")){
+			if (funcBean.getType() == null || funcBean.getType().equals("")) {
 				msgs.add("Function Type is required.");
 			}
 			if ("TargetingFunction".equals(funcBean.getClassName())) {
@@ -104,11 +105,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		return msgs;
 	}
 
-	private List<String> validateEntityFile(HttpServletRequest request, List<String> msgs,
-			FunctionalizingEntityBean entityBean) {
+	private List<String> validateEntityFile(HttpServletRequest request,
+			List<String> msgs, FunctionalizingEntityBean entityBean) {
 		for (FileBean filebean : entityBean.getFiles()) {
 			msgs = validateFileBean(request, msgs, filebean);
-			if (msgs.size()>0) {
+			if (msgs.size() > 0) {
 				return msgs;
 			}
 		}
@@ -131,12 +132,14 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				newEntity = false;
 			}
 		} catch (ClassCastException ex) {
-			
+
 			if (!StringUtils.isEmpty(ex.getMessage())
 					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
-				msgs.add(ex.getMessage() +"is an invalid Function type. It is a pre-defined composition type.");
+				msgs.add(ex.getMessage()
+						+ "is an invalid Function type. It is a pre-defined composition type.");
 			} else {
-				msgs.add(ex.getMessage() +"is an invalid functionalizing entity type. It is a pre-defined composition type.");
+				msgs.add(ex.getMessage()
+						+ "is an invalid functionalizing entity type. It is a pre-defined composition type.");
 
 				entityBean.setType(null);
 			}
@@ -149,7 +152,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		if (!newEntity && !user.isCurator() && sampleBean.getPublicStatus()) {
 			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
 					.toString(), sampleBean.getDomain().getName(), "sample");
-			msgs.add(PropertyUtil.getProperty("sample","message.updateSample.retractFromPublic"));
+			msgs.add(PropertyUtil.getProperty("sample",
+					"message.updateSample.retractFromPublic"));
 		}
 
 		return msgs;
@@ -166,8 +170,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 	 * @throws Exception
 	 */
 	public Map<String, Object> setupNew(String sampleId,
-			HttpServletRequest request)
-			throws Exception {
+			HttpServletRequest request) throws Exception {
 		FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean();
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
@@ -176,9 +179,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				"setEntityInclude('feType', 'functionalizingEntity')");
 		this.checkOpenForms(entityBean, request);
 		// clear copy to otherSamples
-//		form.setOtherSamples(new String[0]);
+		// form.setOtherSamples(new String[0]);
 
-		return CompositionUtil.reformatLocalSearchDropdownsInSessionForFunctionalizingEntity(request.getSession());
+		return CompositionUtil
+				.reformatLocalSearchDropdownsInSessionForFunctionalizingEntity(request
+						.getSession());
 	}
 
 	private void setLookups(HttpServletRequest request) throws Exception {
@@ -186,9 +191,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				request);
 	}
 
-	public void setupView(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public void setupView(CompositionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		String entityId = super.validateId(request, "dataId");
 		CompositionService compService = this.setServicesInSession(request);
 
@@ -203,18 +207,17 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		request.setAttribute("entityDetailPage", detailPage);
 	}
 
-	public SimpleFunctionalizingEntityBean setupUpdate(String sampleId, String dataId,
-			HttpServletRequest request)
-			throws Exception {
+	public SimpleFunctionalizingEntityBean setupUpdate(String sampleId,
+			String dataId, HttpServletRequest request) throws Exception {
 		CompositionService compService = this.setServicesInSession(request);
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
-		//dataId = super.validateId(request, "dataId");
+		// dataId = super.validateId(request, "dataId");
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityById(dataId);
 		this.setLookups(request);
 		// clear copy to otherSamples
-	//	form.setOtherSamples(new String[0]);
+		// form.setOtherSamples(new String[0]);
 		checkOpenForms(entityBean, request);
 		request.getSession().setAttribute("sampleId", sampleId);
 		SimpleFunctionalizingEntityBean bean = new SimpleFunctionalizingEntityBean();
@@ -222,18 +225,20 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		return bean;
 	}
 
-	public SimpleFunctionalizingEntityBean saveFunction(SimpleFunctionalizingEntityBean bean,
-			HttpServletRequest request)
+	public SimpleFunctionalizingEntityBean saveFunction(
+			SimpleFunctionalizingEntityBean bean, HttpServletRequest request)
 			throws Exception {
-		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean, request);
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(
+				bean, request);
 		List<String> msgs = new ArrayList<String>();
 		this.setServicesInSession(request);
 		FunctionBean function = entity.getTheFunction();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		function.setupDomainFunction(user.getLoginName(), 0);
 		entity.addFunction(function);
+		// this.addFunction(function, entity.getFunctions());
 		msgs = validateInputs(request, msgs, entity);
-		if (msgs.size()>0) {
+		if (msgs.size() > 0) {
 			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
 			funcBean.setErrors(msgs);
 			return funcBean;
@@ -252,15 +257,35 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				.toString(), request);
 	}
 
-	public SimpleFunctionalizingEntityBean removeFunction(SimpleFunctionalizingEntityBean bean,
-			HttpServletRequest request)
+	private void addFunction(FunctionBean function, List<FunctionBean> functions) {
+		int index = -1;
+
+		for (int i = 0; i < functions.size(); i++) {
+			if (function.getDomainFunction().getId() != null) {
+				if (function.getDomainFunction().getId()
+						.equals(functions.get(i).getDomainFunction().getId()))
+					index = i;
+			}
+		}
+		if (index != -1) {
+			functions.remove(function);
+			// retain the original order
+			functions.add(index, function);
+		} else {
+			functions.add(function);
+		}
+	}
+
+	public SimpleFunctionalizingEntityBean removeFunction(
+			SimpleFunctionalizingEntityBean bean, HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
-		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean, request);
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(
+				bean, request);
 		FunctionBean function = entity.getTheFunction();
 		entity.removeFunction(function);
 		msgs = validateInputs(request, msgs, entity);
-		if (msgs.size()>0) {
+		if (msgs.size() > 0) {
 			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
 			funcBean.setErrors(msgs);
 			return funcBean;
@@ -272,13 +297,15 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		compService.removeAccesses(entity.getDomainEntity(),
 				function.getDomainFunction());
 		checkOpenForms(entity, request);
-		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
+		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId()
+				.toString(), request);
 	}
 
-	public SimpleFunctionalizingEntityBean saveFile(SimpleFunctionalizingEntityBean bean,
-			HttpServletRequest request)
+	public SimpleFunctionalizingEntityBean saveFile(
+			SimpleFunctionalizingEntityBean bean, HttpServletRequest request)
 			throws Exception {
-		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean, request);
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(
+				bean, request);
 		this.setServicesInSession(request);
 		FileBean theFile = entity.getTheFile();
 		String sampleId = bean.getSampleId();
@@ -290,21 +317,25 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				+ sampleBean.getDomain().getName() + "/"
 				+ "functionalizingEntity";
 		theFile.setupDomainFile(internalUriPath, user.getLoginName());
-		
+
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
-		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
-		if(newFileData!=null){
-			theFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
-			theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
-					+ sampleBean.getDomain().getName() + '/' + "functionalizingEntity"+ "/" + timestamp + "_"
-					+ theFile.getDomainFile().getName());
+		byte[] newFileData = (byte[]) request.getSession().getAttribute(
+				"newFileData");
+		if (newFileData != null) {
+			theFile.setNewFileData((byte[]) request.getSession().getAttribute(
+					"newFileData"));
+			theFile.getDomainFile().setUri(
+					Constants.FOLDER_PARTICLE + '/'
+							+ sampleBean.getDomain().getName() + '/'
+							+ "functionalizingEntity" + "/" + timestamp + "_"
+							+ theFile.getDomainFile().getName());
 		}
 		entity.addFile(theFile);
 
 		// save the functionalizing entity
 		msgs = validateInputs(request, msgs, entity);
-		if (msgs.size()>0) {
+		if (msgs.size() > 0) {
 			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
 			funcBean.setErrors(msgs);
 			return funcBean;
@@ -319,20 +350,22 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		request.setAttribute("anchor", "file");
 		this.checkOpenForms(entity, request);
 
-		return setupUpdate(sampleId, entity.getDomainEntity().getId().toString(), request);
+		return setupUpdate(sampleId, entity.getDomainEntity().getId()
+				.toString(), request);
 	}
 
-	public SimpleFunctionalizingEntityBean removeFile(SimpleFunctionalizingEntityBean bean,
-			HttpServletRequest request)
+	public SimpleFunctionalizingEntityBean removeFile(
+			SimpleFunctionalizingEntityBean bean, HttpServletRequest request)
 			throws Exception {
-		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean, request);
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(
+				bean, request);
 		FileBean theFile = entity.getTheFile();
 		List<String> msgs = new ArrayList<String>();
 		entity.removeFile(theFile);
 		request.setAttribute("anchor", "file");
 		// save the functionalizing entity;
 		msgs = validateInputs(request, msgs, entity);
-		if (msgs.size()>0) {
+		if (msgs.size() > 0) {
 			SimpleFunctionalizingEntityBean funcBean = new SimpleFunctionalizingEntityBean();
 			funcBean.setErrors(msgs);
 			return funcBean;
@@ -345,81 +378,85 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				.getSampleComposition(), theFile.getDomainFile());
 
 		checkOpenForms(entity, request);
-		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
+		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId()
+				.toString(), request);
 	}
 
 	// per app scan, can not easily validate in the validation.xml
-	private List<String> validateEntity(HttpServletRequest request, List<String> msgs,
-			FunctionalizingEntityBean entityBean) {
+	private List<String> validateEntity(HttpServletRequest request,
+			List<String> msgs, FunctionalizingEntityBean entityBean) {
 		boolean status = true;
-		if(entityBean.getType()==null||entityBean.getType().equals("")){
+		if (entityBean.getType() == null || entityBean.getType().equals("")) {
 			msgs.add("Functionalizing Entity Type is required.");
 		}
-		if(entityBean.getName()==null||entityBean.getName().equals("")){
+		if (entityBean.getName() == null || entityBean.getName().equals("")) {
 			msgs.add("Functionalizing Entity Chemical Name is required.");
 		}
 		if (entityBean.getType().equalsIgnoreCase("biopolymer")) {
 			if (entityBean.getBiopolymer().getType() != null
 					&& !StringUtils.xssValidate(entityBean.getBiopolymer()
 							.getType())) {
-				msgs.add(PropertyUtil.getProperty("sample","functionalizingEntity.biopolymer.type.invalid"));
+				msgs.add(PropertyUtil.getProperty("sample",
+						"functionalizingEntity.biopolymer.type.invalid"));
 			}
 		}
 		if (entityBean.getType().equalsIgnoreCase("antibody")) {
 			if (entityBean.getAntibody().getType() != null
 					&& !StringUtils.xssValidate(entityBean.getAntibody()
 							.getType())) {
-				msgs.add(PropertyUtil.getProperty("sample","functionalizingEntity.antibody.type.invalid"));
+				msgs.add(PropertyUtil.getProperty("sample",
+						"functionalizingEntity.antibody.type.invalid"));
 
 			}
 			if (entityBean.getAntibody().getIsotype() != null
 					&& !StringUtils.xssValidate(entityBean.getAntibody()
 							.getIsotype())) {
-				msgs.add(PropertyUtil.getProperty("sample","functionalizingEntity.antibody.isotype.invalid"));
+				msgs.add(PropertyUtil.getProperty("sample",
+						"functionalizingEntity.antibody.isotype.invalid"));
 			}
 		}
 		if (entityBean.getType().equalsIgnoreCase("small molecule")) {
 			if (entityBean.getSmallMolecule().getAlternateName() != null
 					&& !StringUtils.xssValidate(entityBean.getSmallMolecule()
 							.getAlternateName())) {
-				msgs.add(PropertyUtil.getProperty("sample","functionalizingEntity.smallMolecule.alternateName.invalid"));
+				msgs.add(PropertyUtil
+						.getProperty("sample",
+								"functionalizingEntity.smallMolecule.alternateName.invalid"));
 
 			}
 		}
 		return msgs;
 	}
 
-	private List<String> validateInputs(HttpServletRequest request, List<String> msgs,
-			FunctionalizingEntityBean entityBean) {
+	private List<String> validateInputs(HttpServletRequest request,
+			List<String> msgs, FunctionalizingEntityBean entityBean) {
 		msgs = validateEntity(request, msgs, entityBean);
 		msgs = validateTargets(request, msgs, entityBean);
 		msgs = validateEntityFile(request, msgs, entityBean);
 		return msgs;
 	}
 
-	public void input(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public void input(CompositionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 
-		FunctionalizingEntityBean entity = form
-				.getFunctionalizingEntity();
+		FunctionalizingEntityBean entity = form.getFunctionalizingEntity();
 		escapeXmlForFileUri(entity.getTheFile());
 		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = entity.getTheFile();
-		//preserveUploadedFile(request, theFile, "functionalizingEntity");
+		// preserveUploadedFile(request, theFile, "functionalizingEntity");
 
 		this.checkOpenForms(entity, request);
 
-//		return mapping.findForward("inputForm");
+		// return mapping.findForward("inputForm");
 	}
 
 	public List<String> delete(SimpleFunctionalizingEntityBean bean,
-			HttpServletRequest request)
-			throws Exception {
+			HttpServletRequest request) throws Exception {
 		List<String> msgs = new ArrayList<String>();
 		CompositionService compositionService = this
 				.setServicesInSession(request);
-		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(bean, request);
+		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(
+				bean, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		entityBean.setupDomainEntity(user.getLoginName());
 		compositionService.deleteFunctionalizingEntity(entityBean
@@ -432,22 +469,22 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 
 	private void checkOpenForms(FunctionalizingEntityBean entity,
 			HttpServletRequest request) throws Exception {
-//		String dispatch = request.getParameter("dispatch");
-//		String browserDispatch = getBrowserDispatch(request);
-//		HttpSession session = request.getSession();
-//		Boolean openFile = false, openFunction = false;
-//		if (dispatch.equals("input") && browserDispatch.equals("saveFile")) {
-//			openFile = true;
-//		}
-//		session.setAttribute("openFile", openFile);
-//		if (dispatch.equals("input")
-//				&& browserDispatch.equals("saveFunction")
-//				|| ((dispatch.equals("setupNew") || dispatch
-//						.equals("setupUpdate")) && entity.getFunctions()
-//						.isEmpty())) {
-//			openFunction = true;
-//		}
-//		session.setAttribute("openFunction", openFunction);
+		// String dispatch = request.getParameter("dispatch");
+		// String browserDispatch = getBrowserDispatch(request);
+		// HttpSession session = request.getSession();
+		// Boolean openFile = false, openFunction = false;
+		// if (dispatch.equals("input") && browserDispatch.equals("saveFile")) {
+		// openFile = true;
+		// }
+		// session.setAttribute("openFile", openFile);
+		// if (dispatch.equals("input")
+		// && browserDispatch.equals("saveFunction")
+		// || ((dispatch.equals("setupNew") || dispatch
+		// .equals("setupUpdate")) && entity.getFunctions()
+		// .isEmpty())) {
+		// openFunction = true;
+		// }
+		// session.setAttribute("openFunction", openFunction);
 
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
@@ -486,11 +523,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		request.getSession().setAttribute("sampleService", sampleService);
 		return compService;
 	}
-	
+
 	public FunctionalizingEntityBean transferSimpleFunctionalizingEntity(
 			SimpleFunctionalizingEntityBean bean, HttpServletRequest request) {
-		
-		//setting up theFunction
+
+		// setting up theFunction
 		FunctionalizingEntityBean funcBean = new FunctionalizingEntityBean();
 		List<FunctionBean> funcList = new ArrayList<FunctionBean>();
 		List<FileBean> fileList = new ArrayList<FileBean>();
@@ -498,28 +535,32 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		FunctionalizingEntity domainEntity = null;
 
 		SimpleFunctionBean sFunction = bean.getSimpleFunctionBean();
-		
 		TargetBean target = new TargetBean();
 		FunctionBean functionBean = new FunctionBean();
 		Function theFunction = new Function();
 		List<TargetBean> targets = new ArrayList<TargetBean>();
-		if(sFunction!=null){
+		if (sFunction != null) {
+			functionBean.setType(sFunction.getType());
+			functionBean.setDescription(sFunction.getDescription());
+			if(sFunction.getId()>0){
+				functionBean.setId(sFunction.getId().toString());
+			}
 			theFunction.setDescription(sFunction.getDescription());
-			if(sFunction.getId()!=null){
+			if (sFunction.getId() != null) {
 				theFunction.setId(sFunction.getId());
 				theFunction.setCreatedBy(sFunction.getCreatedBy());
 				theFunction.setCreatedDate(sFunction.getCreatedDate());
 			}
 			ImagingFunction img = new ImagingFunction();
 			img.setModality(sFunction.getModality());
-			functionBean.setType(sFunction.getType());
-			functionBean.setDescription(sFunction.getDescription());
-			if(sFunction.getTargets()!=null){
-				for(int i=0; i<sFunction.getTargets().size();i++){
+			
+			if (sFunction.getTargets() != null) {
+				for (int i = 0; i < sFunction.getTargets().size(); i++) {
 					target = new TargetBean();
-					if(sFunction.getTargets().get(i).get("id")!=null)
+					if (sFunction.getTargets().get(i).get("id") != null)
 						target.setId(sFunction.getTargets().get(i).get("id"));
-					target.setDescription(sFunction.getTargets().get(i).get("description"));
+					target.setDescription(sFunction.getTargets().get(i)
+							.get("description"));
 					target.setName(sFunction.getTargets().get(i).get("name"));
 					target.setType(sFunction.getTargets().get(i).get("type"));
 					targets.add(target);
@@ -530,11 +571,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			functionBean.setDomainFunction(theFunction);
 		}
 		funcBean.setTheFunction(functionBean);
-		
-		//setting up functions if ther exists
+
+		// setting up functions if ther exists
 		Collection<Function> funCollection = new HashSet<Function>();
-		if(bean.getFunctionList()!=null){
-			for(SimpleFunctionBean fuBean : bean.getFunctionList()){
+		if (bean.getFunctionList() != null) {
+			for (SimpleFunctionBean fuBean : bean.getFunctionList()) {
 				functionBean = new FunctionBean();
 				theFunction = new Function();
 				ImagingFunction img = new ImagingFunction();
@@ -546,12 +587,14 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				theFunction.setId(fuBean.getId());
 				functionBean.setType(fuBean.getType());
 				functionBean.setDescription(fuBean.getDescription());
+				functionBean.setId(fuBean.getId().toString());
 				functionBean.setImagingFunction(img);
-				for(int i=0; i<fuBean.getTargets().size();i++){
+				for (int i = 0; i < fuBean.getTargets().size(); i++) {
 					target = new TargetBean();
-					if(fuBean.getTargets().get(i).get("id")!=null)
+					if (fuBean.getTargets().get(i).get("id") != null)
 						target.setId(fuBean.getTargets().get(i).get("id"));
-					target.setDescription(fuBean.getTargets().get(i).get("description"));
+					target.setDescription(fuBean.getTargets().get(i)
+							.get("description"));
 					target.setName(fuBean.getTargets().get(i).get("name"));
 					target.setType(fuBean.getTargets().get(i).get("type"));
 					targets.add(target);
@@ -561,20 +604,20 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 				funCollection.add(theFunction);
 				funcList.add(functionBean);
 			}
-			
+
 		}
-		//setting up theFile
-		
+		// setting up theFile
+
 		SimpleFileBean sFBean = bean.getFileBean();
-		
+
 		FileBean fileBean = new FileBean();
 		File file = new File();
-		if(sFBean!=null){
+		if (sFBean != null) {
 			file.setType(sFBean.getType());
 			file.setTitle(sFBean.getTitle());
 			file.setDescription(sFBean.getDescription());
 			file.setUri(sFBean.getUri());
-			if(sFBean.getId()!=null){
+			if (sFBean.getId() != null) {
 				file.setId(sFBean.getId());
 				file.setCreatedBy(sFBean.getCreatedBy());
 				file.setCreatedDate(sFBean.getCreatedDate());
@@ -587,57 +630,62 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			fileBean.setDomainFile(file);
 		}
 		funcBean.setTheFile(fileBean);
-		
-		//setting up files if there exists
-		Collection<File> filecoll = new HashSet<File>();
-		List<SimpleFileBean> filelist =  bean.getFileList();
-		
-		if(filelist!=null){
-		for(SimpleFileBean sBean : filelist){
-			fileBean = new FileBean();
-			file = new File();
-			file.setType(sBean.getType());
-			file.setTitle(sBean.getTitle());
-			file.setDescription(sBean.getDescription());
-			file.setUri(sBean.getUri());
-			file.setId(sBean.getId());
-			file.setCreatedBy(sBean.getCreatedBy());
-			file.setCreatedDate(sBean.getCreatedDate());
-			file.setUriExternal(sBean.getUriExternal());
-			fileBean.setExternalUrl(sBean.getExternalUrl());
-			fileBean.setKeywordsStr(sBean.getKeywordsStr());
-			fileBean.setTheAccess(sBean.getTheAccess());
 
-			fileBean.setDomainFile(file);
-			filecoll.add(file);
-			fileList.add(fileBean);
+		// setting up files if there exists
+		Collection<File> filecoll = new HashSet<File>();
+		List<SimpleFileBean> filelist = bean.getFileList();
+
+		if (filelist != null) {
+			for (SimpleFileBean sBean : filelist) {
+				fileBean = new FileBean();
+				file = new File();
+				file.setType(sBean.getType());
+				file.setTitle(sBean.getTitle());
+				file.setDescription(sBean.getDescription());
+				file.setUri(sBean.getUri());
+				file.setId(sBean.getId());
+				file.setCreatedBy(sBean.getCreatedBy());
+				file.setCreatedDate(sBean.getCreatedDate());
+				file.setUriExternal(sBean.getUriExternal());
+				fileBean.setExternalUrl(sBean.getExternalUrl());
+				fileBean.setKeywordsStr(sBean.getKeywordsStr());
+				fileBean.setTheAccess(sBean.getTheAccess());
+
+				fileBean.setDomainFile(file);
+				filecoll.add(file);
+				fileList.add(fileBean);
+			}
 		}
-		}
-		
-		//setting up sampleComposition 
-				//Managed to get the sampleComposition in the backend to avoid lazy loading things
+
+		// setting up sampleComposition
+		// Managed to get the sampleComposition in the backend to avoid lazy
+		// loading things
 		SampleComposition sampleComp = null;
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
-			CompositionServiceHelper helper = new CompositionServiceHelper(securityService);
-			try {
-				sampleComp = helper.findCompositionBySampleId(bean.getSampleId()
-						.toString());
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-				
-		if(bean.getType().equalsIgnoreCase("small molecule")){
+		CompositionServiceHelper helper = new CompositionServiceHelper(
+				securityService);
+		try {
+			sampleComp = helper.findCompositionBySampleId(bean.getSampleId()
+					.toString());
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		if (bean.getType().equalsIgnoreCase("small molecule")) {
 			SmallMolecule mol = new SmallMolecule();
-			mol.setAlternateName((String) bean.getDomainEntity().get("alternateName"));
-			if(bean.getDomainEntity().get("id")!=null){
-				mol.setId(new Long((Integer)bean.getDomainEntity().get("id")));
-				mol.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
-				mol.setCreatedDate(new Date((Long) bean.getDomainEntity().get("createdDate")));
+			mol.setAlternateName((String) bean.getDomainEntity().get(
+					"alternateName"));
+			if (bean.getDomainEntity().get("id") != null) {
+				mol.setId(new Long((Integer) bean.getDomainEntity().get("id")));
+				mol.setCreatedBy((String) bean.getDomainEntity().get(
+						"createdBy"));
+				mol.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
+						"createdDate")));
 				mol.setSampleComposition(sampleComp);
 
-			}else{
+			} else {
 				mol.setSampleComposition(null);
 
 			}
@@ -645,16 +693,18 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			mol.setFileCollection(filecoll);
 			funcBean.setSmallMolecule(mol);
 			domainEntity = mol;
-		}else if(bean.getType().equalsIgnoreCase("Biopolymer")){
-			
+		} else if (bean.getType().equalsIgnoreCase("Biopolymer")) {
+
 			Biopolymer bio = new Biopolymer();
-			if(bean.getDomainEntity().get("id")!=null){
-				bio.setId(new Long((Integer)bean.getDomainEntity().get("id")));
-				bio.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
-				bio.setCreatedDate(new Date((Long) bean.getDomainEntity().get("createdDate")));
+			if (bean.getDomainEntity().get("id") != null) {
+				bio.setId(new Long((Integer) bean.getDomainEntity().get("id")));
+				bio.setCreatedBy((String) bean.getDomainEntity().get(
+						"createdBy"));
+				bio.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
+						"createdDate")));
 				bio.setSampleComposition(sampleComp);
 
-			}else{
+			} else {
 				bio.setSampleComposition(null);
 
 			}
@@ -665,16 +715,18 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			bio.setFileCollection(filecoll);
 			funcBean.setBiopolymer(bio);
 			domainEntity = bio;
-		}else if(bean.getType().equalsIgnoreCase("Antibody")){
+		} else if (bean.getType().equalsIgnoreCase("Antibody")) {
 			Antibody body = new Antibody();
-			
-			if(bean.getDomainEntity().get("id")!=null){
-				body.setId(new Long((Integer)bean.getDomainEntity().get("id")));
-				body.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
-				body.setCreatedDate(new Date((Long) bean.getDomainEntity().get("createdDate")));
+
+			if (bean.getDomainEntity().get("id") != null) {
+				body.setId(new Long((Integer) bean.getDomainEntity().get("id")));
+				body.setCreatedBy((String) bean.getDomainEntity().get(
+						"createdBy"));
+				body.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
+						"createdDate")));
 				body.setSampleComposition(sampleComp);
 
-			}else
+			} else
 				body.setSampleComposition(null);
 
 			body.setType((String) bean.getDomainEntity().get("type"));
@@ -684,16 +736,19 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 			body.setFileCollection(filecoll);
 			funcBean.setAntibody(body);
 			domainEntity = body;
-		} else{
+		} else {
 			domainEntity = new OtherFunctionalizingEntity();
-			if(bean.getDomainEntity()!=null){
-				if(bean.getDomainEntity().get("id")!=null){
-					domainEntity.setId(new Long((Integer)bean.getDomainEntity().get("id")));
-					domainEntity.setCreatedBy((String) bean.getDomainEntity().get("createdBy"));
-					domainEntity.setCreatedDate(new Date((Long) bean.getDomainEntity().get("createdDate")));
+			if (bean.getDomainEntity() != null) {
+				if (bean.getDomainEntity().get("id") != null) {
+					domainEntity.setId(new Long((Integer) bean
+							.getDomainEntity().get("id")));
+					domainEntity.setCreatedBy((String) bean.getDomainEntity()
+							.get("createdBy"));
+					domainEntity.setCreatedDate(new Date((Long) bean
+							.getDomainEntity().get("createdDate")));
 					domainEntity.setSampleComposition(sampleComp);
 
-				}else{
+				} else {
 					domainEntity.setSampleComposition(null);
 				}
 				domainEntity.setFunctionCollection(funCollection);
@@ -718,5 +773,5 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO{
 		funcBean.setDomainEntity(domainEntity);
 		return funcBean;
 	}
-	
+
 }
