@@ -5,7 +5,7 @@
 	</div>
 	<div id="loaderGraphic"></div>
 </div>
-<div ng-class="{formFocus:loader}">
+<div ng-class="{formFocus:loader}"> 
 	<div class="spacer">		
 <table border="0" class="contentTitle" summary="layout" width="100%">
   <tr>
@@ -22,7 +22,7 @@
 <Br />
 	<div>
 		<div class="message" ng-if="data.messages.length">
-			<div ng-repeat="i in data.messages track by $index">{{i}}</div><br />
+			<div ng-repeat="i in data.messageList track by $index">{{i}}</div><br />
 		</div>
 		<div class="message" ng-if="data.errors.length">
 			<div ng-repeat="i in data.errors track by $index">{{i}}</div><br />
@@ -172,8 +172,332 @@
 </tr>
 </tbody></table>
 
+<br />
+
+<table class="submissionView" width="100%" align="center">
+	<tbody ng-if="data.name=='physical state'">
+		<tr>
+			<th colspan="3">Physical State Properties</th>
+		</tr>
+		<tr>
+			<td width="10%">
+				<strong><label for="type">Type</label></strong>
+			</td>
+			<td>
 
 
+				<select data-ng-model="data.property.type" 
+				data-ng-options="option for option in data.property.typeOptions" id="type">
+					<option value=""></option>
+				</select>  
+
+					<div id="promptCategory" ng-if="data.property.type=='other'">
+                         <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                             <tbody>
+                             <tr>
+                                 <td class="cellLabel">
+                                     <label for="textCategory" category="">New Type:</label>
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <input type="text" id="textCategory" ng-model='localForm.otherCategoryText' class="promptbox">
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td style="text-align: right">
+                                     <input type="button" class="promptButton" value="Add" ng-click="data.property.type=localForm.otherCategoryText; data.property.typeOptions.push(localForm.otherCategoryText);">
+                                     <input type="button" class="promptButton" value="Cancel" ng-click="data.property.type='';">
+                                 </td>
+                             </tr>
+                             </tbody>
+                         </table>
+                 	</div>				
+			</td>
+		</tr>
+	</tbody>
+
+	<tbody ng-if="data.name=='shape'">
+		<tr>
+			<th colspan="4">Shape Properties</th>
+		</tr>
+		<tr>
+			<td width="10%">
+				<strong><label for="type">Type</label></strong>
+			</td>
+			<td width="40%">
+				<select data-ng-model="data.property.type" 
+				data-ng-options="option for option in data.property.shapeTypeOptions" id="type">
+					<option value=""></option>
+				</select>  
+
+					<div id="promptCategory" ng-if="data.property.type=='other'">
+                         <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                             <tbody>
+                             <tr>
+                                 <td class="cellLabel">
+                                     <label for="textCategory" category="">New Type:</label>
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <input type="text" id="textCategory" ng-model='localForm.otherCategoryText' class="promptbox">
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td style="text-align: right">
+                                     <input type="button" class="promptButton" value="Add" ng-click="data.property.type=localForm.otherCategoryText; data.property.shapeTypeOptions.push(localForm.otherCategoryText);">
+                                     <input type="button" class="promptButton" value="Cancel" ng-click="data.property.type='';">
+                                 </td>
+                             </tr>
+                             </tbody>
+                         </table>
+                 	</div>				
+			</td>
+			<td width="10%">
+				<strong><label for="aspectRatio">Aspect Ratio</label></strong>
+			</td>
+			<td width="40%">
+				<input type="text" id="aspectratio" ng-model="data.property.aspectRatio">
+			</td>			
+		</tr>
+		<tr>
+			<td width="10%">
+				<strong><label for="minDimension">Minimum Dimension</label></strong>
+			</td>
+			<td width="40%"><input type="text" id="minDimension" ng-model="data.property.minDimension">
+				<select data-ng-model="data.property.minDimensionUnit" 
+				data-ng-options="option for option in data.property.unitOptions" id="type">
+					<option value=""></option>
+				</select>  
+					<div id="promptCategory" ng-if="data.property.minDimensionUnit=='other'">
+                         <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                             <tbody>
+                             <tr>
+                                 <td class="cellLabel">
+                                     <label for="textCategory" category="">New Dimension Unit:</label>
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <input type="text" id="textCategory" ng-model='localForm.otherCategoryText' class="promptbox">
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td style="text-align: right">
+                                     <input type="button" class="promptButton" value="Add" ng-click="data.property.minDimensionUnit=localForm.otherCategoryText; data.property.unitOptions.push(localForm.otherCategoryText);">
+                                     <input type="button" class="promptButton" value="Cancel" ng-click="data.property.minDimensionUnit='';">
+                                 </td>
+                             </tr>
+                             </tbody>
+                         </table>
+                 	</div>				
+			</td>
+			<td width="10%">
+				<strong><label for="maxDimension">Maximum Dimension</label></strong>
+			</td>
+			<td width="40%">
+				<input type="text" id="maxDimension" ng-model="data.property.maxDimension">
+				<select data-ng-model="data.property.maxDimensionUnit" 
+				data-ng-options="option for option in data.property.unitOptions" id="type">
+					<option value=""></option>
+				</select>  
+					<div id="promptCategory" ng-if="data.property.maxDimensionUnit=='other'">
+                         <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                             <tbody>
+                             <tr>
+                                 <td class="cellLabel">
+                                     <label for="textCategory" category="">New Dimension Unit:</label>
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <input type="text" id="textCategory" ng-model='localForm.otherCategoryText' class="promptbox">
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td style="text-align: right">
+                                     <input type="button" class="promptButton" value="Add" ng-click="data.property.maxDimensionUnit=localForm.otherCategoryText; data.property.unitOptions.push(localForm.otherCategoryText);">
+                                     <input type="button" class="promptButton" value="Cancel" ng-click="data.property.maxDimensionUnit='';">
+                                 </td>
+                             </tr>
+                             </tbody>
+                         </table>
+                 	</div>								
+			</td>			
+		</tr>		
+	</tbody>
+
+	<tbody ng-if="data.name=='solubility'">
+		<tr>
+			<th colspan="4">Solubility Properties</th>
+		</tr>
+		<tr>
+			<td width="10%">
+				<strong><label for="solvent">Solvent</label></strong>
+			</td>
+			<td width="40%">
+
+				<select data-ng-model="data.property.solvent" 
+				data-ng-options="option for option in data.property.solventOptions" id="type">
+					<option value=""></option>
+				</select>  
+					<div id="promptCategory" ng-if="data.property.solvent=='other'">
+                         <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                             <tbody>
+                             <tr>
+                                 <td class="cellLabel">
+                                     <label for="textCategory" category="">New Solvent:</label>
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <input type="text" id="textCategory" ng-model='localForm.otherCategoryText' class="promptbox">
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td style="text-align: right">
+                                     <input type="button" class="promptButton" value="Add" ng-click="data.property.solvent=localForm.otherCategoryText; data.property.solventOptions.push(localForm.otherCategoryText);">
+                                     <input type="button" class="promptButton" value="Cancel" ng-click="data.property.solvent='';">
+                                 </td>
+                             </tr>
+                             </tbody>
+                         </table>
+                 	</div>					
+			</td>
+			<td width="10%">
+				<strong><label for="isSoluble">Is Soluble</label></strong>
+			</td>
+			<td width="40%">
+
+				<select data-ng-model="data.property.isSoluble" 
+				data-ng-options="option for option in data.property.isSolubleOptions" id="type">
+					<option value=""></option>
+				</select>  
+
+                </td>			
+		</tr>
+		<tr>
+			<td width="10%">
+				<strong><label for="criticalConcentration">Critical Concentration</label></strong>
+			</td>
+			<td colspan="3">
+				<input type="text" ng-model="data.property.criticalConcentration">
+				<select data-ng-model="data.property.concentrationUnit" 
+				data-ng-options="option for option in data.property.concentrationUnitOptions" id="type">
+					<option value=""></option>
+				</select>  
+					<div id="promptCategory" ng-if="data.property.concentrationUnit=='other'">
+                         <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                             <tbody>
+                             <tr>
+                                 <td class="cellLabel">
+                                     <label for="textCategory" category="">New Unit Option:</label>
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <input type="text" id="textCategory" ng-model='localForm.otherCategoryText' class="promptbox">
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td style="text-align: right">
+                                     <input type="button" class="promptButton" value="Add" ng-click="data.property.concentrationUnit=localForm.otherCategoryText; data.property.concentrationUnitOptions.push(localForm.otherCategoryText);">
+                                     <input type="button" class="promptButton" value="Cancel" ng-click="data.property.concentrationUnit='';">
+                                 </td>
+                             </tr>
+                             </tbody>
+                         </table>
+                 	</div>					
+			</td>			
+		</tr>		
+	</tbody>
+
+	<tbody ng-if="data.name=='surface'">
+		<tr>
+			<th colspan="3">Surface Properties</th>
+		</tr>
+		<tr>
+			<td width="10%">
+				<strong><label for="isHydrophobic">Is Hydrophobic</label></strong>
+			</td>
+			<td>
+				<select data-ng-model="data.property.isHydrophobic" 
+				data-ng-options="option for option in data.property.isHydrophobicOptions" id="isHydrophobic">
+					<option value=""></option>
+				</select>  			
+			</td>
+		</tr>
+	</tbody>
+
+	<tbody ng-if="data.name=='cytotoxicity'">
+		<tr>
+			<th colspan="2">Cytotoxicity Properties</th>
+		</tr>
+		<tr>
+			<td width="10%">
+				<strong><label for="cellLine">Cell Line</label></strong>
+			</td>
+			<td width="90%">
+				<textarea ng-model="data.property.cellLine" name="cellLine" cols="120" rows="3" id="cellLine"></textarea>
+			</td>
+		</tr>
+	</tbody>
+
+	<tbody ng-if="data.name=='enzyme induction'">
+		<tr>
+			<th colspan="2">Enzyme Properties</th>
+		</tr>
+		<tr>
+			<td width="10%">
+				<strong><label for="enzymeName">Enzyme Name</label></strong>
+			</td>
+			<td width="90%">
+
+				<select data-ng-model="data.property.enzymeName" 
+				data-ng-options="option for option in data.property.enzymeNameOptions" id="enzymeName">
+					<option value=""></option>
+				</select> 
+					<div id="promptCategory" ng-if="data.property.enzymeName=='other'">
+                         <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                             <tbody>
+                             <tr>
+                                 <td class="cellLabel">
+                                     <label for="textCategory" category="">New Enzyme Name:</label>
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <input type="text" id="textCategory" ng-model='localForm.otherCategoryText' class="promptbox">
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td style="text-align: right">
+                                     <input type="button" class="promptButton" value="Add" ng-click="data.property.enzymeName=localForm.otherCategoryText; data.property.enzymeNameOptions.push(localForm.otherCategoryText);">
+                                     <input type="button" class="promptButton" value="Cancel" ng-click="data.property.enzymeName='';">
+                                 </td>
+                             </tr>
+                             </tbody>
+                         </table>
+                 	</div>				 
+			</td>
+		</tr>
+	</tbody>
+
+	<tbody ng-if="data.name=='transfection'">
+		<tr>
+			<th colspan="2">Transfection Properties</th>
+		</tr>
+		<tr>
+			<td width="10%">
+				<strong><label for="cellLine">Cell Line</label></strong>
+			</td>
+			<td width="90%">
+				<textarea ng-model="data.property.cellLine" name="cellLine" cols="120" rows="3" id="cellLine"></textarea>
+			</td>
+		</tr>
+	</tbody>				
+</table>
 
 
 <br />
@@ -812,7 +1136,7 @@
 	<div class="modal-footer">
 		<button ng-click="remove()" class="btn btn-warning btn-danger" ng-disabled="loader">Delete</button>  
 		<button ng-click="reset()" class="btn btn-warning btn-danger" ng-disabled="loader">Reset</button>  		  
-		<button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="loader">{{saveButton}}</button>
+		<button ng-disabled="data.type==''||data.name==''" ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="loader">{{saveButton}}</button>
 	</div>
 </div>
 
