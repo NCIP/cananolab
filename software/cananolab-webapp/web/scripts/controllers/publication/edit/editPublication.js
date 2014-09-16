@@ -492,14 +492,17 @@ var app = angular.module('angularApp')
                 $scope.accessForm.theAccess.groupName = '';
             }
 
+            $scope.loader = true;
             $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.groupName}).
                 success(function(data, status, headers, config) {
                     $scope.collabGroups = data;
+                    $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     $scope.message = data;
+                    $scope.loader = false;
                 });
 
             //$scope.collabGroups = ["curator group", "NCI", "NCIP"];
@@ -512,14 +515,17 @@ var app = angular.module('angularApp')
                 $scope.accessForm.theAccess.userBean.loginName = '';
             }
 
+            $scope.loader = true;
             $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.userBean.loginName}).
                 success(function(data, status, headers, config) {
                     $scope.accessUsers = data;
+                    $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     $scope.message = data;
+                    $scope.loader = false;
                 });
 
             //$scope.accessUsers = {"lethai":"Le Thai","Omelchen":"Omelchenko Marina","burnskd":"Burns Kevin","canano_guest":"Guest Guest","grodzinp":"Grodzinski Piotr","swand":"Swan Don","skoczens":"Skoczen Sarah","sternstephan":"Stern Stephan","zolnik":"Zolnik Banu","hunseckerk":"Hunsecker Kelly","lipkeyfg":"Lipkey Foster","marina":"Dobrovolskaia Marina","pottert":"Potter Tim","uckunf":"Uckun Fatih","michal":"Lijowski Michal","mcneils":"Mcneil Scott","neunb":"Neun Barry","cristr":"Crist Rachael","zhengji":"Zheng Jiwen","frittsmj":"Fritts Martin","SchaeferH":"Schaefer Henry","benhamm":"Benham Mick","masoods":"Masood Sana","mclelandc":"McLeland Chris","torresdh":"Torres David","KlemmJ":"Klemm Juli","patria":"Patri Anil","hughesbr":"Hughes Brian","clogstonj":"Clogston Jeff","hinkalgw":"Hinkal George","MorrisS2":"Morris Stephanie","sharon":"Gaheen Sharon"};
@@ -565,6 +571,9 @@ var app = angular.module('angularApp')
                     // $rootScope.sampleData = data;
                     $scope.loader = false;
                     $scope.messages = data;
+                    $scope.showAddAccessButton=false;
+                    $scope.addAccess=true;
+                    $scope.showAccessSelection=false;                    
                 });
             
         }; 
@@ -643,6 +652,34 @@ var app = angular.module('angularApp')
             }
             
         };   
+        
+        $scope.getUserAccessSection = function() {
+            return $scope.showAccessuser && $scope.showAccessSelection;
+        };
+
+        $scope.getCollabAccessSection = function() {
+            return $scope.showCollaborationGroup && $scope.showAccessSelection;
+        };
+
+        $scope.selectCgAccess = function() {
+            $scope.showCollaborationGroup=true;
+            $scope.showAccessuser=false;
+            $scope.showAccessSelection=false;
+        };
+
+        $scope.selectUserAccess = function() {
+            $scope.showCollaborationGroup=false;
+            $scope.showAccessuser=true;
+            $scope.showAccessSelection=false;
+        };
+
+        $scope.selectPublicAccess = function() {
+            $scope.accessForm.theAccess.groupName = 'Public';
+            $scope.accessForm.theAccess.roleName = 'R';
+            $scope.showCollaborationGroup=true;
+            $scope.showAccessuser=false;
+            $scope.showAccessSelection=false;
+        };
         
         /** End - Access Section **/
         
