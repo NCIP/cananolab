@@ -322,16 +322,18 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 				"yyyyMMdd_HH-mm-ss-SSS");
 		byte[] newFileData = (byte[]) request.getSession().getAttribute(
 				"newFileData");
-		if (newFileData != null) {
-			theFile.setNewFileData((byte[]) request.getSession().getAttribute(
-					"newFileData"));
-			theFile.getDomainFile().setUri(
-					Constants.FOLDER_PARTICLE + '/'
-							+ sampleBean.getDomain().getName() + '/'
-							+ "functionalizingEntity" + "/" + timestamp + "_"
-							+ theFile.getDomainFile().getName());
-		}else{
-			theFile.getDomainFile().setUri(null);
+		if(!theFile.getDomainFile().getUriExternal()){
+			if (newFileData != null) {
+				theFile.setNewFileData((byte[]) request.getSession().getAttribute(
+						"newFileData"));
+				theFile.getDomainFile().setUri(
+						Constants.FOLDER_PARTICLE + '/'
+								+ sampleBean.getDomain().getName() + '/'
+								+ "functionalizingEntity" + "/" + timestamp + "_"
+								+ theFile.getDomainFile().getName());
+			}else{
+				theFile.getDomainFile().setUri(null);
+			}
 		}
 		entity.addFile(theFile);
 
@@ -350,6 +352,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 				.getSampleComposition(), theFile.getDomainFile());
 
 		request.setAttribute("anchor", "file");
+		request.getSession().removeAttribute("newFileData");
 		this.checkOpenForms(entity, request);
 
 		return setupUpdate(sampleId, entity.getDomainEntity().getId()
@@ -380,8 +383,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 				.getSampleComposition(), theFile.getDomainFile());
 
 		checkOpenForms(entity, request);
-		 request.getSession().removeAttribute("newFileData");
-
+		 
 		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId()
 				.toString(), request);
 	}

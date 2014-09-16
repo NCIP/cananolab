@@ -57,15 +57,16 @@ public class CompositionFileBO extends BaseAnnotationBO{
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
 		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
-		if(newFileData!=null){
-			theFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
-			theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
-					+ sampleBean.getDomain().getName() + '/' + "compositionFile"+ "/" + timestamp + "_"
-					+ theFile.getDomainFile().getName());
-		}else{
-			theFile.getDomainFile().setUri(null);
+			if(!theFile.getDomainFile().getUriExternal()){
+			if(newFileData!=null){
+				theFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
+				theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
+						+ sampleBean.getDomain().getName() + '/' + "compositionFile"+ "/" + timestamp + "_"
+						+ theFile.getDomainFile().getName());
+			}else{
+				theFile.getDomainFile().setUri(null);
+			}
 		}
-		
 		service.saveCompositionFile(sampleBean, theFile);
 		// retract from public if updating an existing public record and not
 		// curator

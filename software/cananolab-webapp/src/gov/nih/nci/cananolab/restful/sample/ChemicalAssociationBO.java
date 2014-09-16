@@ -565,15 +565,16 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
 		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
-		if(newFileData!=null){
-			theFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
-			theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
-					+ sampleBean.getDomain().getName() + '/' + "chemicalAssociation"+ "/" + timestamp + "_"
-					+ theFile.getDomainFile().getName());
-		}else{
-			theFile.getDomainFile().setUri(null);
+		if(!theFile.getDomainFile().getUriExternal()){
+			if(newFileData!=null){
+				theFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
+				theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
+						+ sampleBean.getDomain().getName() + '/' + "chemicalAssociation"+ "/" + timestamp + "_"
+						+ theFile.getDomainFile().getName());
+			}else{
+				theFile.getDomainFile().setUri(null);
+			}
 		}
-		
 		assoc.addFile(theFile);
 
 		// restore previously uploaded file from session.
