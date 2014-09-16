@@ -11,6 +11,9 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+@JsonTypeName("SimpleEnzymeInduction")
 public class SimpleEnzymeInduction extends SimpleCharacterizationProperty{
 	String enzymeName = "";
 	

@@ -11,6 +11,9 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+@JsonTypeName("SimpleShape")
 public class SimpleShape extends SimpleCharacterizationProperty {
 	String type; //says required but empty don't give error
 	Float minDimension;

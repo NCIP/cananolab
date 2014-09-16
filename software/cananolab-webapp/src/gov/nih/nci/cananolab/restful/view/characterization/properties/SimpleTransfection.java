@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+@JsonTypeName("SimpleTransfection")
 public class SimpleTransfection extends SimpleCharacterizationProperty {
 	String cellLine;
 	

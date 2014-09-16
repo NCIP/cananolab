@@ -11,6 +11,9 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+@JsonTypeName("SimpleSolubility")
 public class SimpleSolubility extends SimpleCharacterizationProperty {
 	String solvent;  //all are not required
 	String isSoluble; //this could be empty

@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+@JsonTypeName("SimpleSurface")
 public class SimpleSurface extends SimpleCharacterizationProperty {
 	String isHydrophobic;  //user doesn't have to choose yes/no. could be empty
 	

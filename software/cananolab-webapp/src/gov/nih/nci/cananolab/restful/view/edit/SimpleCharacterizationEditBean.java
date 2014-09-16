@@ -63,6 +63,9 @@ public class SimpleCharacterizationEditBean {
 	boolean copyToOtherSamples;	
 	boolean submitNewChar;
 	
+	
+	SimpleFindingBean dirtyFindingBean;
+	
 	List<String> charTypesLookup;
 	//List<String> characterizationNameLookup;
 	//List<String> AssayTypeLookup;
@@ -618,6 +621,10 @@ public class SimpleCharacterizationEditBean {
 
 	public void setProperty(SimpleCharacterizationProperty property) {
 		this.property = property;
+	}
+
+	public void setDirtyFindingBean(SimpleFindingBean dirtyFindingBean) {
+		this.dirtyFindingBean = dirtyFindingBean;
 	}
 
 	

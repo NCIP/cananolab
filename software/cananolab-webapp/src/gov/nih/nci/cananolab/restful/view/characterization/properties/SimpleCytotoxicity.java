@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+@JsonTypeName("SimpleCytotoxicity")
 public class SimpleCytotoxicity extends SimpleCharacterizationProperty {
 	String cellLine;
 

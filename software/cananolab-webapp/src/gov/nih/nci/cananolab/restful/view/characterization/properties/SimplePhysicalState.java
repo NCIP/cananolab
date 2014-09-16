@@ -11,6 +11,9 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+@JsonTypeName("SimplePhysicalState")
 public class SimplePhysicalState extends SimpleCharacterizationProperty{
 	String type = ""; //not required but can't be null;
 				//Default to "3D-cylinder?
