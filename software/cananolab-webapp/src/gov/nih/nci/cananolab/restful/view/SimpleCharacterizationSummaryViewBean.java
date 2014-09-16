@@ -184,23 +184,27 @@ public class SimpleCharacterizationSummaryViewBean {
 				logger.error("Error while transferring data from property");
 			}
 			
+			aUnit = new SimpleCharacterizationUnitBean("Properties", simpleProp);
+			charBeanUnits.add(aUnit);
+			
 			//TODO:
 			//charBeanMap.put("Properties", simpleProp)
 			
-			String phyStateType = charBean.getPhysicalState().getType();
-			
-			
-			if (phyStateType != null && phyStateType.length() > 0) {
-				charBeanMap.put("Properties", phyStateType);
-			
-				aUnit = new SimpleCharacterizationUnitBean("Properties", phyStateType);
-				charBeanUnits.add(aUnit);
-			}else {
-				charBeanMap.put("Properties", "N/A");
-				
-				aUnit = new SimpleCharacterizationUnitBean("Properties", "N/A");
-				charBeanUnits.add(aUnit);
-			}
+//			String phyStateType = charBean.getPhysicalState().getType();
+//			
+//			
+//			if (phyStateType != null && phyStateType.length() > 0) {
+//				charBeanMap.put("Properties", phyStateType);
+//			
+//				//aUnit = new SimpleCharacterizationUnitBean("Properties", phyStateType);
+//				aUnit = new SimpleCharacterizationUnitBean("Properties", simpleProp);
+//				charBeanUnits.add(aUnit);
+//			}else {
+//				charBeanMap.put("Properties", "N/A");
+//				
+//				aUnit = new SimpleCharacterizationUnitBean("Properties", "N/A");
+//				charBeanUnits.add(aUnit);
+//			}
 		}
 		
 		//Design Description

@@ -654,12 +654,18 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //	}
 
 	public SimpleCharacterizationEditBean saveFinding(HttpServletRequest request, 
-			SimpleFindingBean simpleFinding)
+			SimpleCharacterizationEditBean editBean
+			/*SimpleFindingBean simpleFinding*/)
 			throws Exception {
 		
 		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
-		SimpleCharacterizationEditBean editBean = 
-				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+//		SimpleCharacterizationEditBean editBean = 
+//				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+		
+		SimpleFindingBean simpleFinding = editBean.getDirtyFindingBean();
+		
+		if (simpleFinding == null)
+			throw new Exception("Can't find dirty finding object"); //temp
 		
 		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
 		
@@ -767,9 +773,22 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
 		if(newFileData!=null){
 			newFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
-//			newFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
-//					+ sampleBean.getDomain().getName() + '/' + "chemicalAssociation"+ "/" + timestamp + "_"
-//					+ theFile.getDomainFile().getName());
+			
+			newFile.getDomainFile().setUri(internalUriPath + "/" + timestamp + "_"
+					+ newFile.getDomainFile().getName());
+			
+			
+//			String internalUriPath = Constants.FOLDER_PARTICLE
+//			+ '/'
+//			+ sampleBean.getDomain().getName()
+//			+ '/'
+//			+ StringUtils.getOneWordLowerCaseFirstLetter(achar
+//					.getCharacterizationName());
+//			
+//			newFile.getDomainFile().setUri(internalUriPath + "/" + timestamp + "_"
+//					+ domainFile.getName());
+		} else {
+			newFile.getDomainFile().setUri(null);
 		}
 		
 		findingBean.addFile(newFile, theFileIndex);
@@ -783,7 +802,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		//request.getSession().setAttribute("theFindingBean", findingBean);
 		
-		
+		request.getSession().removeAttribute("newFileData");
 		return simpleFinding;
 	}
 

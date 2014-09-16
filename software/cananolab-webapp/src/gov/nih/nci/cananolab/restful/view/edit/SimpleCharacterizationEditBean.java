@@ -402,6 +402,15 @@ public class SimpleCharacterizationEditBean {
 		charBean.setProtocolBean(protoBean);
 	}
 	
+	public SimpleFindingBean getDirtyFindingBean() {
+		for (SimpleFindingBean simplefinding : this.finding) {
+			if (simplefinding.isDirty())
+				return simplefinding;
+		}
+		
+		return null;
+	}
+	
 	
 	public String getAnalysisConclusion() {
 		return analysisConclusion;

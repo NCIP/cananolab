@@ -30,6 +30,8 @@ public class SimpleFindingBean {
 	SimpleFileBean theFile = new SimpleFileBean();
 	int theFileIndex = -1;
 	
+	boolean dirty = false;
+	
 	List<String> errors = new ArrayList<String>();
 	
 	String parentCharType = "";
@@ -275,6 +277,14 @@ public class SimpleFindingBean {
 
 	public void setParentCharName(String parentCharName) {
 		this.parentCharName = parentCharName;
+	}
+
+	public boolean isDirty() {
+		return dirty;
+	}
+
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
 	}
 	
 }

@@ -207,6 +207,7 @@ public class SampleBO extends BaseAnnotationBO {
 		}
 		form.setSampleBean(sampleBean);		
 		
+		request.getSession().setAttribute("theSample", sampleBean);
 		simpleBean.transferSampleBeanForSummaryView(sampleBean);
 		return simpleBean;
 	}
@@ -1273,5 +1274,27 @@ public class SampleBO extends BaseAnnotationBO {
 			
 	}
 
+	public String getCurrentSampleNameInSession(HttpServletRequest request, String sampleId) 
+	throws Exception {
+		
+		if (sampleId == null)
+			throw new Exception("Input sample id is null");
+		
+		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute("theSample");
+		if (sampleBean == null)
+			throw new Exception("No sample in session matching sample id: "  + sampleId);
+		
+		Long id = sampleBean.getDomain().getId();
+		if (id == null)
+			throw new Exception("Sample in session has null id");
+		
+		if (Long.parseLong(sampleId) != id.longValue())
+			throw new Exception("Sample in session doesn't match input sample id");
+		
+		return sampleBean.getDomain().getName();
+		
+		
+		
+	}
 	
 }
