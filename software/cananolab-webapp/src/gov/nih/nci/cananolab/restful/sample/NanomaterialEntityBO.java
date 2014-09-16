@@ -404,7 +404,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		ImagingFunction img = new ImagingFunction();
 		Collection<Function> hash = new HashSet<Function>();
 		List<Map<String, Object>> funclist;
-		
+		List<FunctionBean> inherentFunctions = new ArrayList<FunctionBean>();
 		if(sBean!=null){
 			comp.setDescription(sBean.getDescription());
 			comp.setType(sBean.getType());
@@ -423,25 +423,27 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			funclist = sBean.getInherentFunction();
 			if(funclist!= null){
 			for(int j=0;j<funclist.size();j++){
+				func = new FunctionBean();
 				img.setModality((String) funclist.get(j).get("modality"));
 				func.setType((String) funclist.get(j).get("type"));
 				func.setDescription((String) funclist.get(j).get("description"));
 				func.setImagingFunction(img);
 				Function function = new Function();
 				function.setDescription((String) funclist.get(j).get("description"));
-				if((Integer) funclist.get(j).get("id")>0){
+				if(new Long((Integer) funclist.get(j).get("id"))>0){
 					function.setCreatedBy((String) funclist.get(j).get("createdBy"));
 					function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
-				}
-				if(funclist.get(j).get("id")!=null)
 					function.setId(new Long((Integer) funclist.get(j).get("id")));
+				}
 				func.setDomainFunction(function);
 				hash.add(function);
+				inherentFunctions.add(func);
 
 		}
 		}
 		compBean.setTheFunction(func);
 		compBean.setDomain(comp);
+		compBean.setInherentFunctions(inherentFunctions);
 		
 		bean.setTheComposingElement(compBean);
 		}
