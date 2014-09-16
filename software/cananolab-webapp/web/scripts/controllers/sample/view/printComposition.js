@@ -3,6 +3,7 @@ angular.module('angularApp',[
     'ngRoute','ngSanitize','ngRoute'])
     .controller('PrintCompositionCtrl', function (utilsService,$rootScope,$scope,$http,$filter,$routeParams) {
     	$scope.sampleId = utilsService.getParameterFromURL('sampleId');
+        
     	$scope.loader = true;
         $http({method: 'GET', url: '/caNanoLab/rest/composition/summaryPrint?sampleId=' + $scope.sampleId}).
             success(function(data, status, headers, config) {
@@ -12,6 +13,8 @@ angular.module('angularApp',[
                 $scope.functionalizingentity = data.functionalizingentity;
                 $scope.chemicalassociation = data.chemicalassociation;
                 $scope.compositionfile = data.compositionfile;
+                $scope.sampleName = sampleService.sampleName($scope.sampleId);
+
                 $scope.loader = false;
                 
                 $scope.nanomaterialentityEmpty = utilsService.isHashEmpty(data.nanomaterialentity);

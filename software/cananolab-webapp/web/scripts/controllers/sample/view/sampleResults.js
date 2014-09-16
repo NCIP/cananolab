@@ -12,6 +12,16 @@ var app = angular.module('angularApp')
       $location.path("/searchSample").replace();      
     }; 
 
+    $scope.goToSample = function(type,id) {
+      if (type=='edit') { 
+        $location.path("/editSample").search({'sampleId':id}).replace();
+      }
+      else {
+        $location.path("/sample").search({'sampleId':id}).replace();
+      };
+
+    };
+
     $scope.openDataAvailability = function(sampleId) {
 
           $http({method: 'GET', url: '/caNanoLab/rest/sample/viewDataAvailability',params: {"sampleId":sampleId}}).

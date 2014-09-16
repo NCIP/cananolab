@@ -15,7 +15,7 @@ var app = angular.module('angularApp')
     if ($routeParams.sampleId) {
       $scope.sampleId.data = $routeParams.sampleId;
     };
-          
+    
       $scope.select = function(tab) {
           var size = 0, key;
           for (key in $scope.compositionSections) {
@@ -45,6 +45,8 @@ var app = angular.module('angularApp')
                 $scope.functionalizingentity = data.functionalizingentity;
                 $scope.chemicalassociation = data.chemicalassociation;
                 $scope.compositionfile = data.compositionfile;
+                $scope.sampleName = sampleService.sampleName($scope.sampleId.data);
+                
                 $scope.loader = false;     
                 
                 $scope.nanomaterialentityEmpty = utilsService.isHashEmpty(data.nanomaterialentity);

@@ -12,6 +12,7 @@ var app = angular.module('angularApp')
     if ($routeParams.sampleId) {
       $scope.sampleId.data = $routeParams.sampleId;
     };
+    
 
     $scope.goBack = function() {
       $location.path("/sampleResults").replace(); 
@@ -53,6 +54,8 @@ var app = angular.module('angularApp')
                 $scope.publicationCategories = data.publicationCategories;
                 $scope.publicationBean = data.publicationBean;
                 $scope.category2Publications = data.category2Publications;
+                $scope.sampleName = sampleService.sampleName($scope.sampleId.data);
+                
                 $scope.loader = false;
                 
                 // Create a list of categories to display

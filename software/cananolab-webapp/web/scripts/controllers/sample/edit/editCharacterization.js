@@ -8,6 +8,7 @@ app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,
 	$rootScope.groups = groupService.getGroups.data.get();   
 	$scope.sampleData = sampleService.sampleData;
 	$scope.sampleId = sampleService.sampleId;
+	$scope.sampleName = sampleService.sampleName;
 	$scope.isEdit = sampleService.isEdit;
 	$scope.charId = sampleService.charId;
 	$scope.charClassName = sampleService.charClassName;
@@ -23,6 +24,9 @@ app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,
 	if ($routeParams.sampleId) {
 		$scope.sampleId.data = $routeParams.sampleId;
 	};
+
+    $scope.sampleName = sampleService.sampleName($scope.sampleId.data);
+	
 
 	$scope.select = function(tab) {
 		var size = 0, key;

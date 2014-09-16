@@ -92,6 +92,8 @@ var app = angular.module('angularApp')
         $http({method: 'GET', url: '/caNanoLab/rest/sample/edit?sampleId='+$scope.sampleId.data}).
             success(function(data, status, headers, config, statusText) {
                 $scope.sampleData = data;
+                $scope.sampleName = sampleService.sampleName($scope.sampleId.data);
+
                 $scope.loader = false;
                 $scope.editSampleForm = true;
                 

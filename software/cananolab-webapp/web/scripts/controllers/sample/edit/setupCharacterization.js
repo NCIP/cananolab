@@ -83,6 +83,8 @@ var app = angular.module('angularApp')
         $http({method: 'GET', url: '/caNanoLab/rest/characterization/setupUpdate?sampleId='+$scope.sampleId+'&charId='+$scope.charId+'&charClassName='+$scope.charClassName+'&charType='+$scope.type}).
             success(function(data, status, headers, config) {
             $scope.data = data;
+            $scope.sampleName = sampleService.sampleName($scope.sampleId);
+
             if (!$scope.data.characterizationDate) {
                 $scope.today();
             };
@@ -100,6 +102,8 @@ var app = angular.module('angularApp')
         $http({method: 'GET', url: '/caNanoLab/rest/characterization/setupAdd?sampleId='+$scope.sampleId+'&charType='+$scope.type}).
             success(function(data, status, headers, config) {
             $scope.data = data;
+            $scope.sampleName = sampleService.sampleName($scope.sampleId);
+
             $scope.today();
             $scope.loader = false;
             $scope.dataCopy = angular.copy($scope.data);    
