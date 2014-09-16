@@ -703,9 +703,10 @@ public class SampleBO extends BaseAnnotationBO {
 					.getDomain().getId().toString(), securityService);
 		}
 		service.deleteSample(sampleBean.getDomain().getName());
+		request.getSession().removeAttribute("theSample");
 		
 		String msg = PropertyUtil.getPropertyReplacingToken("sample", "message.deleteSample", "0", sampleName);
-
+		
 		return msg;
 	}
 

@@ -19,6 +19,7 @@ public class SimpleSolubility extends SimpleCharacterizationProperty {
 	
 	List<String> solventOptions = new ArrayList<String>();
 	List<String> concentrationUnitOptions = new ArrayList<String>();
+	List<String> isSolubleOptions = new ArrayList<String>();
 
 	@Override
 	public void setLookups(HttpServletRequest request) 
@@ -37,6 +38,9 @@ public class SimpleSolubility extends SimpleCharacterizationProperty {
 		if (options != null)
 			concentrationUnitOptions.addAll(options);
 		CommonUtil.addOtherToList(concentrationUnitOptions);
+		
+		isSolubleOptions.add("yes");
+		isSolubleOptions.add("no");
 	}
 	
 	
@@ -130,6 +134,18 @@ public class SimpleSolubility extends SimpleCharacterizationProperty {
 
 	public void setConcentrationUnitOptions(List<String> concentrationUnitOptions) {
 		this.concentrationUnitOptions = concentrationUnitOptions;
+	}
+
+
+
+	public List<String> getIsSolubleOptions() {
+		return isSolubleOptions;
+	}
+
+
+
+	public void setIsSolubleOptions(List<String> isSolubleOptions) {
+		this.isSolubleOptions = isSolubleOptions;
 	}
 	
 	

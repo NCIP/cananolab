@@ -3,16 +3,21 @@ package gov.nih.nci.cananolab.restful.view.characterization.properties;
 import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 public class SimpleSurface extends SimpleCharacterizationProperty {
 	String isHydrophobic;  //user doesn't have to choose yes/no. could be empty
+	
+	List<String> isHydrophobicOptions = new ArrayList<String>();
 
 	
 	@Override
 	public void setLookups(HttpServletRequest request) {
-		// No lookup 
-		
+		isHydrophobicOptions.add("yes");
+		isHydrophobicOptions.add("no");
 	}
 
 	@Override
@@ -24,6 +29,9 @@ public class SimpleSurface extends SimpleCharacterizationProperty {
 			isHydrophobic = "";
 		else 
 			isHydrophobic = String.valueOf(surface.getIsHydrophobic());
+		
+		if (needOptions)
+			setLookups(request);
 	}
 
 
@@ -44,6 +52,14 @@ public class SimpleSurface extends SimpleCharacterizationProperty {
 
 	public void setIsHydrophobic(String isHydrophobic) {
 		this.isHydrophobic = isHydrophobic;
+	}
+
+	public List<String> getIsHydrophobicOptions() {
+		return isHydrophobicOptions;
+	}
+
+	public void setIsHydrophobicOptions(List<String> isHydrophobicOptions) {
+		this.isHydrophobicOptions = isHydrophobicOptions;
 	}
 	
 	
