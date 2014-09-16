@@ -94,12 +94,6 @@ public class SampleBO extends BaseAnnotationBO {
 		if (sampleId <= 0)
 			throw new Exception("No valid sample id found. Unable to update sample");
 		
-		//String sampleId = String.valueOf(simpleEditBean.getSampleId());
-//		Boolean newSample = true;
-//		if (sampleId == null || sampleId.length() == 0) {
-//			newSample = false;
-//		}
-		
 		SampleBean sampleBean = (SampleBean) this.findMatchSampleInSession(request, sampleId);
 		
 		if (sampleBean == null) {
@@ -928,8 +922,6 @@ public class SampleBO extends BaseAnnotationBO {
 			throw new Exception("Sample object is not valid in session for saving /updating access");
 		}
 		
-		//SimpleAccessBean simpleAccess = findDirtyAccess(simpleEditBean.getAccessToSample());
-		
 		AccessibilityBean theAccess = simpleEditBean.getTheAccess();
 		List<String> errors = validateAccess(request, theAccess);
 		if (errors.size() > 0) {
@@ -937,9 +929,11 @@ public class SampleBO extends BaseAnnotationBO {
 		}
 		
 		SampleService service = this.setServiceInSession(request);
+		
 		// if sample is public, the access is not public, retract public
 		// privilege would be handled in the service method
 		service.assignAccessibility(theAccess, sample.getDomain());
+		
 		// update status to retracted if the access is not public and sample is
 		// public
 		if (theAccess.getGroupName().equals(AccessibilityBean.CSM_PUBLIC_GROUP)
@@ -948,12 +942,16 @@ public class SampleBO extends BaseAnnotationBO {
 					request, sample.getDomain().getId().toString(), sample
 							.getDomain().getName(), "sample");
 		}
+		
 		// if access is public, pending review status, update review
 		// status to public
 		if (theAccess.getGroupName().equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
 			this.switchPendingReviewToPublic(request, sample.getDomain()
 					.getId().toString());
 		}
+		
+		simpleEditBean.populateDataForSavingSample(sample);
+		saveSample(request, sample);
 
 		return summaryEdit(sample.getDomain().getId()
 				.toString(), request);

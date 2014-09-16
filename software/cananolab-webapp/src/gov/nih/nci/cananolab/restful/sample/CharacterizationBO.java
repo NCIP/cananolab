@@ -89,8 +89,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		List<String> errs = new ArrayList<String>();
 		if (!validateInputs(request, charBean, errs)) {
-			//CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(new ArrayList<CharacterizationBean>());
-			
 			SimpleCharacterizationSummaryEditBean emptyView = new SimpleCharacterizationSummaryEditBean();
 			emptyView.setErrors(errs);
 			return emptyView;
@@ -105,11 +103,11 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //				.getInstance().getCharacterizationTypes(request);
 //		int ind = allCharacterizationTypes.indexOf(charBean
 //				.getCharacterizationType()) + 1;
+		
 		InitCharacterizationSetup.getInstance() //save "others" to db
 			.persistCharacterizationDropdowns(request, charBean);
-		return summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request, null);
 		
-
+		return summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request, null);
 	}
 
 //	public ActionForward input(ActionMapping mapping, ActionForm form,
@@ -564,8 +562,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		SimpleCharacterizationEditBean editBean = 
 				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
 				
-		//TODO: get the exp config object from "theChar" based on id
-		// if id is null, it's a new exp config
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
 		simpleExpConfig.transferToExperimentConfigBean(configBean);
 		
@@ -586,8 +582,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		logger.debug("Save exp config complete");
 		achar.addExperimentConfig(configBean);
 		
-		// also save characterization
-		if (!validateInputs(request, achar, editBean.getErrors())) {
+		// This is to validate characterization data fields
+		if (!validateInputs(request, achar, editBean.getMessages())) {
 			return editBean;
 		}
 		
@@ -706,9 +702,10 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		achar.addFinding(findingBean);
 
 		// also save characterization
-		if (!validateInputs(request, achar, editBean.getErrors())) {
+		if (!validateInputs(request, achar, editBean.getMessages())) {
 			return editBean;
 		}
+		
 		this.saveCharacterization(request, achar, editBean);
 		service.assignAccesses(achar.getDomainChar(), findingBean.getDomain());
 		//this.checkOpenForms(achar, theForm, request);

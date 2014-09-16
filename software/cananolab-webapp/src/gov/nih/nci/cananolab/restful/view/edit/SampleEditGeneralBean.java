@@ -520,7 +520,6 @@ public class SampleEditGeneralBean {
 		if (destSampleBean == null)
 			return;
 	
-		
 		//When saving keywords, current implementation is to replace the whole set
 		//ref. SampleServiceLocalImpl.saveSample()
 		List<String> keywords = this.getKeywords();
@@ -536,15 +535,4 @@ public class SampleEditGeneralBean {
 		
 		destSampleBean.getDomain().setName(this.sampleName);
 	}
-	
-//	public void setSubmitForReviewButton(HttpServletRequest request) {
-//		if (request == null) return;
-//		
-//		String submit = (String)request.getAttribute("submitSample");
-//		if (submit != null && submit.equals("true"))
-//			this.showSubmitForReviewButton = true;
-//		else
-//			this.showSubmitForReviewButton = false;
-//	
-//	}
 }
