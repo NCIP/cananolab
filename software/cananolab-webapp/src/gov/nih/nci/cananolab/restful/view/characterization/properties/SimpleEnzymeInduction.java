@@ -11,6 +11,9 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+@JsonTypeName("SimpleEnzymeInduction")
 public class SimpleEnzymeInduction extends SimpleCharacterizationProperty{
 	String enzymeName = "";
 	
@@ -53,6 +56,19 @@ public class SimpleEnzymeInduction extends SimpleCharacterizationProperty{
 	}
 
 
+	@Override
+	public List<String> getPropertyViewTitles() {
+		List<String> titles = new ArrayList<String>();
+		titles.add("Enzyme Name");
+		return titles;
+	}
+
+	@Override
+	public List<String> getPropertyViewValues() {
+		List<String> vals = new ArrayList<String>();
+		vals.add(this.enzymeName);
+		return vals;
+	}
 
 	public String getEnzymeName() {
 		return enzymeName;

@@ -11,6 +11,9 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+@JsonTypeName("SimpleSolubility")
 public class SimpleSolubility extends SimpleCharacterizationProperty {
 	String solvent;  //all are not required
 	String isSoluble; //this could be empty
@@ -81,6 +84,36 @@ public class SimpleSolubility extends SimpleCharacterizationProperty {
 		}
 			
 	}
+	
+	
+
+	@Override
+	public List<String> getPropertyViewTitles() {
+		List<String> vals = new ArrayList<String>();
+		vals.add("Solvent");
+		vals.add("Is Soluble?");
+		vals.add("Critical Concentration");
+		
+		return vals;
+	}
+
+
+
+	@Override
+	public List<String> getPropertyViewValues() {
+		List<String> vals = new ArrayList<String>();
+		vals.add(this.solvent);
+		vals.add(this.isSoluble);
+		
+		if (this.criticalConcentration != null)
+			vals.add(String.valueOf(this.criticalConcentration));
+		else
+			vals.add("");
+		
+		return vals;
+	}
+
+
 
 	public String getSolvent() {
 		return solvent;

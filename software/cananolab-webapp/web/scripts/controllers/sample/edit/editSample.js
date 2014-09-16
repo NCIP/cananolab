@@ -375,14 +375,17 @@ var app = angular.module('angularApp')
             $scope.accessForm.theAccess.groupName = '';
         }
 
+        $scope.loader = true;
         $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.groupName}).
             success(function(data, status, headers, config) {
                 $scope.collabGroups = data;
+                $scope.loader = false;
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 $scope.message = data;
+                $scope.loader = false;
             });
         $scope.showAccessSelection=true;
 
@@ -392,15 +395,18 @@ var app = angular.module('angularApp')
         if ($scope.accessForm.theAccess.userBean.loginName === undefined || $scope.accessForm.theAccess.userBean.loginName === null) {
             $scope.accessForm.theAccess.userBean.loginName = '';
         }
-
+        
+        $scope.loader = true;
         $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.userBean.loginName}).
             success(function(data, status, headers, config) {
                 $scope.accessUsers = data;
+                $scope.loader = false;
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 $scope.message = data;
+                $scope.loader = false;
             });
         $scope.showAccessSelection=true;
 
@@ -434,6 +440,9 @@ var app = angular.module('angularApp')
             error(function(data, status, headers, config) {
                 $scope.loader = false;
                 $scope.messages = data;
+                $scope.showAddAccessButton=false;
+                $scope.addAccess=true;
+                $scope.showAccessSelection=false;                
             });
         
     }; 
@@ -507,6 +516,34 @@ var app = angular.module('angularApp')
         }
         
     };   
+    
+    $scope.getUserAccessSection = function() {
+        return $scope.showAccessuser && $scope.showAccessSelection;
+    };
+
+    $scope.getCollabAccessSection = function() {
+        return $scope.showCollaborationGroup && $scope.showAccessSelection;
+    };
+
+    $scope.selectCgAccess = function() {
+        $scope.showCollaborationGroup=true;
+        $scope.showAccessuser=false;
+        $scope.showAccessSelection=false;
+    };
+
+    $scope.selectUserAccess = function() {
+        $scope.showCollaborationGroup=false;
+        $scope.showAccessuser=true;
+        $scope.showAccessSelection=false;
+    };
+
+    $scope.selectPublicAccess = function() {
+        $scope.accessForm.theAccess.groupName = 'Public';
+        $scope.accessForm.theAccess.roleName = 'R';
+        $scope.showCollaborationGroup=true;
+        $scope.showAccessuser=false;
+        $scope.showAccessSelection=false;
+    }; 
     
     /** End - Access Section **/        
 

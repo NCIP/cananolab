@@ -174,17 +174,9 @@ public class SimpleCharacterizationSummaryViewBean {
 		//What is this?
 		if (charBean.isWithProperties()) {
 			
-			SimpleCharacterizationProperty simpleProp = 
-					CharacterizationPropertyUtil.getPropertyClassByCharName(charBean.getCharacterizationName());
+			List rows = this.transferCharacterizationProperties(charBean);
 			
-			try {
-				if (simpleProp != null) 
-					simpleProp.transferFromPropertyBean(request, charBean, false);
-			} catch (Exception e) {
-				logger.error("Error while transferring data from property");
-			}
-			
-			aUnit = new SimpleCharacterizationUnitBean("Properties", simpleProp);
+			aUnit = new SimpleCharacterizationUnitBean("Properties", rows);
 			charBeanUnits.add(aUnit);
 			
 			//TODO:
@@ -282,6 +274,31 @@ public class SimpleCharacterizationSummaryViewBean {
 		SimpleCharacterizationUnitBean aUnit = new SimpleCharacterizationUnitBean("Experiment Configurations", expConfigTable);
 		charBeanUnits.add(aUnit);
 
+	}
+	
+	protected List transferCharacterizationProperties(CharacterizationBean charBean) {
+		
+		SimpleCharacterizationProperty simpleProp = 
+				CharacterizationPropertyUtil.getPropertyClassByCharName(charBean.getCharacterizationName());
+		try {
+			if (simpleProp != null) {
+				simpleProp.transferFromPropertyBean(null, charBean, false);
+				
+				List<String> titles = simpleProp.getPropertyViewTitles();
+				List<String> vals = simpleProp.getPropertyViewValues();
+				
+				List<SimpleCharacterizationUnitBean> rowsOfTable = new ArrayList<SimpleCharacterizationUnitBean>();
+				rowsOfTable.add(new SimpleCharacterizationUnitBean("colTitles", titles));
+				rowsOfTable.add(new SimpleCharacterizationUnitBean("colValues", vals));
+				
+				return rowsOfTable;
+				
+			}
+		} catch (Exception e) {
+			logger.error("Error while transferring data from property");
+		}
+		
+		return null;
 	}
 	
 	protected List transferCharacterizationResultsDataAndCondition(FindingBean findingBean) {

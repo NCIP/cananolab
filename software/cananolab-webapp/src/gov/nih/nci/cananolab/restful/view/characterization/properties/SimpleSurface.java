@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+@JsonTypeName("SimpleSurface")
 public class SimpleSurface extends SimpleCharacterizationProperty {
 	String isHydrophobic;  //user doesn't have to choose yes/no. could be empty
 	
@@ -45,6 +48,20 @@ public class SimpleSurface extends SimpleCharacterizationProperty {
 	}
 
 
+
+	@Override
+	public List<String> getPropertyViewTitles() {
+		List<String> vals = new ArrayList<String>();
+		vals.add("Is Hydrophobic?");
+		return vals;
+	}
+
+	@Override
+	public List<String> getPropertyViewValues() {
+		List<String> vals = new ArrayList<String>();
+		vals.add(this.isHydrophobic);
+		return vals;
+	}
 
 	public String getIsHydrophobic() {
 		return isHydrophobic;

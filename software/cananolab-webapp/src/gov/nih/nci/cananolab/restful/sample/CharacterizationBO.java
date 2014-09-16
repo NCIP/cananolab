@@ -745,6 +745,10 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		FileBean theFile = simpleFinding.transferToNewFileBean();
 		
+		
+		//TODO:
+		//List<String> msgs = validateInputs(request, entity);
+		
 		//if (theFile.getDomainFile().getId() != null) //existing
 			
 			
@@ -771,24 +775,27 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
 		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
-		if(newFileData!=null){
-			newFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
-			
-			newFile.getDomainFile().setUri(internalUriPath + "/" + timestamp + "_"
-					+ newFile.getDomainFile().getName());
-			
-			
-//			String internalUriPath = Constants.FOLDER_PARTICLE
-//			+ '/'
-//			+ sampleBean.getDomain().getName()
-//			+ '/'
-//			+ StringUtils.getOneWordLowerCaseFirstLetter(achar
-//					.getCharacterizationName());
-//			
-//			newFile.getDomainFile().setUri(internalUriPath + "/" + timestamp + "_"
-//					+ domainFile.getName());
-		} else {
-			newFile.getDomainFile().setUri(null);
+		
+		if(!theFile.getDomainFile().getUriExternal()){
+			if(newFileData!=null){
+				newFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
+
+				newFile.getDomainFile().setUri(internalUriPath + "/" + timestamp + "_"
+						+ newFile.getDomainFile().getName());
+
+
+				//			String internalUriPath = Constants.FOLDER_PARTICLE
+				//			+ '/'
+				//			+ sampleBean.getDomain().getName()
+				//			+ '/'
+				//			+ StringUtils.getOneWordLowerCaseFirstLetter(achar
+				//					.getCharacterizationName());
+				//			
+				//			newFile.getDomainFile().setUri(internalUriPath + "/" + timestamp + "_"
+				//					+ domainFile.getName());
+			} else {
+				newFile.getDomainFile().setUri(null);
+			}
 		}
 		
 		findingBean.addFile(newFile, theFileIndex);

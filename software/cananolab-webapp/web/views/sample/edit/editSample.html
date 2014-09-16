@@ -33,6 +33,12 @@
     </div>
         <br>    
 </div>
+<div ng-if="messages">
+    <div class="message" ng-repeat="e in messages track by $index">
+        {{e}}
+    </div>
+        <br>    
+</div>
 <!-- Application  -->
 <div ng-show="editSampleForm">
     <form name="sampleForm" id="sampleForm">

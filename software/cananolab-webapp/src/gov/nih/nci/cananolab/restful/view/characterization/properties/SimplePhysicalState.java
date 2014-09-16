@@ -11,6 +11,9 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+@JsonTypeName("SimplePhysicalState")
 public class SimplePhysicalState extends SimpleCharacterizationProperty{
 	String type = ""; //not required but can't be null;
 				//Default to "3D-cylinder?
@@ -60,6 +63,20 @@ public class SimplePhysicalState extends SimpleCharacterizationProperty{
 			throws Exception {
 		PhysicalState phyState = charBean.getPhysicalState();
 		phyState.setType(this.type);		
+	}
+
+	@Override
+	public List<String> getPropertyViewTitles() {
+		List<String> vals = new ArrayList<String>();
+		vals.add("Type");
+		return vals;
+	}
+
+	@Override
+	public List<String> getPropertyViewValues() {
+		List<String> vals = new ArrayList<String>();
+		vals.add(this.type);
+		return vals;
 	}
 
 	public List<String> getTypeOptions() {
