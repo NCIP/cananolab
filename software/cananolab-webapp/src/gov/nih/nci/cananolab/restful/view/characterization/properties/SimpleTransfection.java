@@ -3,6 +3,9 @@ package gov.nih.nci.cananolab.restful.view.characterization.properties;
 import gov.nih.nci.cananolab.domain.characterization.invitro.Transfection;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 public class SimpleTransfection extends SimpleCharacterizationProperty {
@@ -27,7 +30,19 @@ public class SimpleTransfection extends SimpleCharacterizationProperty {
 		
 	}
 
+	@Override
+	public List<String> getPropertyViewTitles() {
+		List<String> vals = new ArrayList<String>();
+		vals.add("Cell Line");
+		return vals;
+	}
 
+	@Override
+	public List<String> getPropertyViewValues() {
+		List<String> vals = new ArrayList<String>();
+		vals.add(this.cellLine);
+		return vals;
+	}
 
 	@Override
 	public void transferToPropertyBean(CharacterizationBean charBean)

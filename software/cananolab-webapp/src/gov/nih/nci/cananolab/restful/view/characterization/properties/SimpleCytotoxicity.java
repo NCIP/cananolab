@@ -3,6 +3,9 @@ package gov.nih.nci.cananolab.restful.view.characterization.properties;
 import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 public class SimpleCytotoxicity extends SimpleCharacterizationProperty {
@@ -41,6 +44,22 @@ public class SimpleCytotoxicity extends SimpleCharacterizationProperty {
 		
 		if (this.cellLine != null)
 			cyto.setCellLine(this.cellLine);
+	}
+
+	@Override
+	public List<String> getPropertyViewTitles() {
+		List<String> titles = new ArrayList<String>();
+		titles.add("Cell Line");
+		
+		return titles;
+	}
+
+	@Override
+	public List<String> getPropertyViewValues() {
+		List<String> vals = new ArrayList<String>();
+		vals.add(this.cellLine);
+		
+		return vals;
 	}
 	
 	

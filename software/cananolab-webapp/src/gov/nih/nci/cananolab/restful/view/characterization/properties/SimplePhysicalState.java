@@ -62,6 +62,20 @@ public class SimplePhysicalState extends SimpleCharacterizationProperty{
 		phyState.setType(this.type);		
 	}
 
+	@Override
+	public List<String> getPropertyViewTitles() {
+		List<String> vals = new ArrayList<String>();
+		vals.add("Type");
+		return vals;
+	}
+
+	@Override
+	public List<String> getPropertyViewValues() {
+		List<String> vals = new ArrayList<String>();
+		vals.add(this.type);
+		return vals;
+	}
+
 	public List<String> getTypeOptions() {
 		return typeOptions;
 	}

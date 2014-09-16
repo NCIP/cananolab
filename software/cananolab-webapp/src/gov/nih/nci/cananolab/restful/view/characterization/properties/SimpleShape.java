@@ -73,7 +73,37 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 	}
 
 
+	@Override
+	public List<String> getPropertyViewTitles() {
+		List<String> vals = new ArrayList<String>();
+		vals.add("Type");
+		vals.add("Aspect Ratio");
+		vals.add("Minimum Dimention");
+		vals.add("Maximum Dimention");
+		return vals;
+	}
 
+	@Override
+	public List<String> getPropertyViewValues() {
+		List<String> vals = new ArrayList<String>();
+		vals.add(this.type);
+		if (this.aspectRatio != null)
+			vals.add(String.valueOf(this.aspectRatio));
+		else
+			vals.add("");
+		
+		if (this.minDimension != null)
+			vals.add(String.valueOf(this.minDimension));
+		else
+			vals.add("");
+
+		if (this.maxDimension != null)
+			vals.add(String.valueOf(this.maxDimension));
+		else
+			vals.add("");
+		
+		return vals;
+	}
 
 	public List<String> getUnitOptions() {
 		return unitOptions;

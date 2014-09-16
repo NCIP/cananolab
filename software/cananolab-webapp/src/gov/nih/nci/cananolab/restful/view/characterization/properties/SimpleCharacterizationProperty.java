@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.restful.view.characterization.properties;
 
+import java.util.List;
+
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -35,4 +37,6 @@ public abstract class SimpleCharacterizationProperty {
 	}
 	
 	public abstract void transferToPropertyBean(CharacterizationBean charBean) throws Exception;
+	public abstract List<String> getPropertyViewTitles();
+	public abstract List<String> getPropertyViewValues();
 }
