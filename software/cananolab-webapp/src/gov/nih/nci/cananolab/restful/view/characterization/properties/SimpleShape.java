@@ -53,6 +53,7 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 		
 		Shape shape = charBean.getShape();
 		
+		this.type = shape.getType();
 		this.aspectRatio = shape.getAspectRatio();
 		this.maxDimension = shape.getMaxDimension();
 		this.maxDimensionUnit = shape.getMaxDimensionUnit();
@@ -68,6 +69,7 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 			throws Exception {
 		
 		Shape shape = charBean.getShape();
+		shape.setType(this.type);
 		shape.setAspectRatio(this.aspectRatio);
 		shape.setMaxDimension(this.maxDimension);
 		shape.setMaxDimensionUnit(this.maxDimensionUnit);

@@ -130,18 +130,19 @@ public class SimpleCharacterizationSummaryViewBean {
 			logger.info(charObj.getAssayType());
 			charBeanMap.put("Assay Type", charObj.getAssayType());
 			
-			//aUnit.setName("Assay Type");
-			//aUnit.setValue(charObj.getAssayType());
 			aUnit = new SimpleCharacterizationUnitBean("Assay Type", charObj.getAssayType());
-			charBeanUnits.add(aUnit);
 			
-		} else if (charBean.getCharacterizationType().equals("physico chemical characterization")) {
-			logger.info("Assay Type: " + charName);
-			charBeanMap.put("Assay Type", charName);
-			
-			aUnit = new SimpleCharacterizationUnitBean("Assay Type", charName);
-			charBeanUnits.add(aUnit);
-		}
+		} else 
+			aUnit = new SimpleCharacterizationUnitBean("Assay Type", "N/A");
+		charBeanUnits.add(aUnit);
+		
+//		else if (charBean.getCharacterizationType().equals("physico chemical characterization")) {
+//			logger.info("Assay Type: " + charName);
+//			charBeanMap.put("Assay Type", charName);
+//			
+//			aUnit = new SimpleCharacterizationUnitBean("Assay Type", charName);
+//			charBeanUnits.add(aUnit);
+//		}
 		
 		//Point of Contacts
 		String pocName = charBean.getPocBean().getDisplayName();
@@ -151,16 +152,21 @@ public class SimpleCharacterizationSummaryViewBean {
 			charBeanMap.put("Point of Contact", pocName);
 			
 			aUnit = new SimpleCharacterizationUnitBean("Point of Contact", pocName);
-			charBeanUnits.add(aUnit);
-		}
+			
+		} else
+			aUnit = new SimpleCharacterizationUnitBean("Point of Contact", "N/A");
+		
+		charBeanUnits.add(aUnit);
 		
 		//Characterization Date
 		if (charBean.getDateString().length() > 0) {
 			logger.info("Characterization Date: " + charBean.getDateString());
 			charBeanMap.put("Characterization Date", charBean.getDateString());
 			aUnit = new SimpleCharacterizationUnitBean("Characterization Date", charBean.getDateString());
-			charBeanUnits.add(aUnit);
-		}
+			
+		} else 
+			aUnit = new SimpleCharacterizationUnitBean("Characterization Date", "N/A");
+		charBeanUnits.add(aUnit);
 		
 		//Protocol		
 		if (charBean.getProtocolBean().getDisplayName().length() > 0) {
@@ -168,8 +174,10 @@ public class SimpleCharacterizationSummaryViewBean {
 			charBeanMap.put("Protocol", charBean.getProtocolBean().getDisplayName());
 			
 			aUnit = new SimpleCharacterizationUnitBean("Protocol", charBean.getProtocolBean().getDisplayName());
-			charBeanUnits.add(aUnit);
-		}
+			
+		} else
+			aUnit = new SimpleCharacterizationUnitBean("Protocol", "N/A");
+		charBeanUnits.add(aUnit);
 		
 		//What is this?
 		if (charBean.isWithProperties()) {
@@ -178,25 +186,6 @@ public class SimpleCharacterizationSummaryViewBean {
 			
 			aUnit = new SimpleCharacterizationUnitBean("Properties", rows);
 			charBeanUnits.add(aUnit);
-			
-			//TODO:
-			//charBeanMap.put("Properties", simpleProp)
-			
-//			String phyStateType = charBean.getPhysicalState().getType();
-//			
-//			
-//			if (phyStateType != null && phyStateType.length() > 0) {
-//				charBeanMap.put("Properties", phyStateType);
-//			
-//				//aUnit = new SimpleCharacterizationUnitBean("Properties", phyStateType);
-//				aUnit = new SimpleCharacterizationUnitBean("Properties", simpleProp);
-//				charBeanUnits.add(aUnit);
-//			}else {
-//				charBeanMap.put("Properties", "N/A");
-//				
-//				aUnit = new SimpleCharacterizationUnitBean("Properties", "N/A");
-//				charBeanUnits.add(aUnit);
-//			}
 		}
 		
 		//Design Description
@@ -206,8 +195,10 @@ public class SimpleCharacterizationSummaryViewBean {
 			charBeanMap.put("Design Description", desigMethodsDesc);
 			
 			aUnit = new SimpleCharacterizationUnitBean("Design Description", desigMethodsDesc);
-			charBeanUnits.add(aUnit);
-		} 
+			
+		} else
+			aUnit = new SimpleCharacterizationUnitBean("Design Description", "N/A");
+		charBeanUnits.add(aUnit);
 		
 		//Experiment Configurations
 		transferExperimentConfigurations(charBeanMap, charBeanUnits, charBean);
@@ -221,15 +212,19 @@ public class SimpleCharacterizationSummaryViewBean {
 			charBeanMap.put("Analysis and Conclusion", charBean.getConclusion());
 			
 			aUnit = new SimpleCharacterizationUnitBean("Analysis and Conclusion", charBean.getConclusion());
-			charBeanUnits.add(aUnit);
-		}
+		} else
+			aUnit = new SimpleCharacterizationUnitBean("Analysis and Conclusion", "N/A");
+		charBeanUnits.add(aUnit);
 		
 		return charBeanUnits;
 	}
 	
 	protected void transferExperimentConfigurations(Map<String, Object> charBeanMap, List<SimpleCharacterizationUnitBean> charBeanUnits, CharacterizationBean charBean) {
-		if (charBean.getExperimentConfigs().size() == 0) 
+		if (charBean.getExperimentConfigs().size() == 0) {
+			//SimpleCharacterizationUnitBean aUnit = new SimpleCharacterizationUnitBean("Experiment Configurations", "N/A");
+			//charBeanUnits.add(aUnit);
 			return;
+		}
 
 		logger.info("Experiment Configurations size: " + charBean.getExperimentConfigs().size());
 		List<ExperimentConfigBean> expConfigBeans = charBean.getExperimentConfigs();
