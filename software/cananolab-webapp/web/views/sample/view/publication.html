@@ -42,7 +42,7 @@
                             <a name="{{type}}" class="anchorLink"><span
                                     class="summaryViewHeading">{{type}}</span> </a>
                                 &nbsp;&nbsp;
-                                <a href="/caNanoLab/#/submitPublication?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleData.data[0].sampleName}}" class="addlink"  ng-if="tabs.userLoggedIn">
+                                <a href="/caNanoLab/#/submitPublication?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="addlink"  ng-if="tabs.userLoggedIn">
                                     <img align="middle" src="images/btn_add.gif" border="0" alt="add new {{type}}">
                                 </a>
                         </th>
@@ -58,7 +58,7 @@
                                 <tr  ng-repeat="pubBean in category2Publications[type]" ng-init="pubObj = pubBean.domainFile" ng-if="category2Publications[type] != null">
                                     <td>
 	                                    	<div class="editButton" ng-if="pubBean.userUpdatable == true">
-												<a href="#/editPublication?sampleId={{sampleId.data}}&amp;publicationId={{pubBean.publicationId}}&amp;sampleName={{sampleData.data[0].sampleName}}">Edit</a>
+												<a href="#/editPublication?sampleId={{sampleId.data}}&amp;publicationId={{pubBean.publicationId}}&amp;sampleName={{sampleName.name}}">Edit</a>
 											</div>
                                             <table class="summaryViewNoGrid" width="99%" align="center" ng-style="{'background-color':'#F5F5f5'}">
 

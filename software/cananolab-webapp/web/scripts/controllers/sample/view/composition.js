@@ -40,6 +40,7 @@ var app = angular.module('angularApp')
   $scope.loader = true;
 	$http({method: 'GET', url: '/caNanoLab/rest/composition/summaryView?sampleId=' + $scope.sampleId.data}).
             success(function(data, status, headers, config) {
+            	$scope.sampleName = sampleService.sampleName($scope.sampleId.data);
                 $scope.compositionSections = data.compositionSections;
                 $scope.nanomaterialentity = data.nanomaterialentity;
                 $scope.functionalizingentity = data.functionalizingentity;
