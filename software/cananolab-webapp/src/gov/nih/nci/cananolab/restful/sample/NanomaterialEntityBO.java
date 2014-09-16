@@ -752,6 +752,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
 					+ sampleBean.getDomain().getName() + '/' + "nanomaterialEntity"+ "/" + timestamp + "_"
 					+ theFile.getDomainFile().getName());
+		}else{
+			theFile.getDomainFile().setUri(null);
 		}
 		entity.addFile(theFile);
 		
@@ -775,6 +777,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		request.setAttribute("anchor", "file");
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
 				.toString());
+		 request.getSession().removeAttribute("newFileData");
+
 		return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId()
 				.toString(), request);
 	}

@@ -330,6 +330,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 							+ sampleBean.getDomain().getName() + '/'
 							+ "functionalizingEntity" + "/" + timestamp + "_"
 							+ theFile.getDomainFile().getName());
+		}else{
+			theFile.getDomainFile().setUri(null);
 		}
 		entity.addFile(theFile);
 
@@ -378,6 +380,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 				.getSampleComposition(), theFile.getDomainFile());
 
 		checkOpenForms(entity, request);
+		 request.getSession().removeAttribute("newFileData");
+
 		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId()
 				.toString(), request);
 	}

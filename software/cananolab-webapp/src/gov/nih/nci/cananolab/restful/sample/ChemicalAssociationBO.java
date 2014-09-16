@@ -570,6 +570,8 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 			theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
 					+ sampleBean.getDomain().getName() + '/' + "chemicalAssociation"+ "/" + timestamp + "_"
 					+ theFile.getDomainFile().getName());
+		}else{
+			theFile.getDomainFile().setUri(null);
 		}
 		
 		assoc.addFile(theFile);
@@ -594,7 +596,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 
 		request.setAttribute("anchor", "file");
 		this.checkOpenForms(assoc, request);
-
+		 request.getSession().removeAttribute("newFileData");
 		request.setAttribute("dataId", assoc.getDomainAssociation().getId()
 				.toString());
 		return setupUpdate(bean.getSampleId(), assoc.getDomainAssociation().getId()

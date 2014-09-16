@@ -275,17 +275,19 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 			}
 		} else {
 			// all empty
-			if ((fileBean.getNewFileData() == null) 
+			if ((fileBean.getNewFileData() == null)&&(StringUtils
+					.isEmpty(fileBean.getDomainFile().getUri())
 					&& (fileBean.getExternalUrl() == null || fileBean
-							.getExternalUrl().trim().length() == 0)){
+							.getExternalUrl().trim().length() == 0))){
 //					&& (fileBean.getDomainFile() == null || fileBean
-//							.getDomainFile().getTitle() == null)) {
+//							.getDomainFile().getTitle() == null))) {
 				
 						msgs.add("Uploading a file is required.");
 
 				// the case that user switch from url to upload file, but no
 				// file is selected
-			} else if ((fileBean.getNewFileData() == null)
+			} else if ((fileBean.getNewFileData() == null)&& StringUtils
+					.isEmpty(fileBean.getDomainFile().getUri())
 					&& !StringUtils.isEmpty(fileBean.getExternalUrl())) {
 
 				msgs.add("Uploading a file is required.");

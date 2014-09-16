@@ -62,6 +62,8 @@ public class CompositionFileBO extends BaseAnnotationBO{
 			theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
 					+ sampleBean.getDomain().getName() + '/' + "compositionFile"+ "/" + timestamp + "_"
 					+ theFile.getDomainFile().getName());
+		}else{
+			theFile.getDomainFile().setUri(null);
 		}
 		
 		service.saveCompositionFile(sampleBean, theFile);
@@ -77,6 +79,7 @@ public class CompositionFileBO extends BaseAnnotationBO{
 			
 			}
 		msgs.add("success");
+		 request.getSession().removeAttribute("newFileData");
 		// to preselect composition file after returning to the summary page
 		request.getSession().setAttribute("tab", "4");
 		return msgs;
