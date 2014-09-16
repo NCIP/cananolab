@@ -207,7 +207,10 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		 PublicationBO publicationBO = 
 					(PublicationBO) applicationContext.getBean("publicationBO");
 
-				 
+		 UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
 		 SimpleSubmitPublicationBean view = publicationBO.setupUpdate(publicationId,sampleId, httpRequest);
 			
 			List<String> errors = view.getErrors();
