@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.domain.agentmaterial.Antibody;
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
@@ -655,6 +656,16 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 				file.setUriExternal(sBean.getUriExternal());
 				fileBean.setExternalUrl(sBean.getExternalUrl());
 				fileBean.setKeywordsStr(sBean.getKeywordsStr());
+				file.setKeywordCollection(new HashSet<Keyword>());
+				if(!StringUtils.isEmpty(sBean.getKeywordsStr())){
+					String[] strs = sBean.getKeywordsStr().split("\r\n");
+					for (String str : strs) {
+						// change to upper case
+						Keyword keyword = new Keyword();
+						keyword.setName(str.toUpperCase());
+						file.getKeywordCollection().add(keyword);
+					}
+				}
 				fileBean.setTheAccess(sBean.getTheAccess());
 
 				fileBean.setDomainFile(file);

@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.linkage.Attachment;
 import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
@@ -134,21 +135,32 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 				
 				//setting up files
 				List<SimpleFileBean> filelist =  bean.getFiles();
-				fileBean = new FileBean();
-				file = new File();
+				
 				List<FileBean> fileBeanList = new ArrayList<FileBean>();
 				if(filelist!=null){
 				for(SimpleFileBean sFBean : filelist){
+					fileBean = new FileBean();
+					file = new File();
 					file.setType(sFBean.getType());
 					file.setTitle(sFBean.getTitle());
 					file.setDescription(sFBean.getDescription());
 					file.setUri(sFBean.getUri());
 					file.setId(sFBean.getId());
 					file.setCreatedBy(sFBean.getCreatedBy());
+					file.setKeywordCollection(new HashSet<Keyword>());
 					file.setCreatedDate(sFBean.getCreatedDate());
 					file.setUriExternal(sFBean.getUriExternal());
 					fileBean.setExternalUrl(sFBean.getExternalUrl());
 					fileBean.setKeywordsStr(sFBean.getKeywordsStr());
+					if(!StringUtils.isEmpty(sFBean.getKeywordsStr())){
+						String[] strs = sFBean.getKeywordsStr().split("\r\n");
+						for (String str : strs) {
+							// change to upper case
+							Keyword keyword = new Keyword();
+							keyword.setName(str.toUpperCase());
+							file.getKeywordCollection().add(keyword);
+						}
+					}
 					fileBean.setDomainFile(file);
 					filecoll.add(file);
 					fileBeanList.add(fileBean);

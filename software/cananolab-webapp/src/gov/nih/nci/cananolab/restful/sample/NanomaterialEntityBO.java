@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
 import gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube;
@@ -538,6 +539,16 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			file.setCreatedDate(sFBean.getCreatedDate());
 			file.setUriExternal(sFBean.getUriExternal());
 			fileBean.setKeywordsStr(sFBean.getKeywordsStr());
+			file.setKeywordCollection(new HashSet<Keyword>());
+			if(!StringUtils.isEmpty(sFBean.getKeywordsStr())){
+				String[] strs = sFBean.getKeywordsStr().split("\r\n");
+				for (String str : strs) {
+					// change to upper case
+					Keyword keyword = new Keyword();
+					keyword.setName(str.toUpperCase());
+					file.getKeywordCollection().add(keyword);
+				}
+			}
 			fileBean.setTheAccess(sFBean.getTheAccess());
 			fileBean.setExternalUrl(sFBean.getExternalUrl());
 			fileBean.setDomainFile(file);
