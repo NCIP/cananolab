@@ -538,7 +538,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		session.setAttribute("entityListB", entityListB);
 	}
 
-	public SimpleChemicalAssociationBean setupUpdate(String sampleId, String dataId,
+	public SimpleChemicalAssociationBean setupUpdate(String sampleId, String assocId,
 			HttpServletRequest request)
 			throws Exception {
 		// set up compositionBean required to set up drop-down
@@ -546,7 +546,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		CompositionBean compositionBean = compService
 				.findCompositionBySampleId(sampleId);
 		setLookups(request, compositionBean);
-		String assocId = super.validateId(request, "dataId");
+		//String assocId = super.validateId(request, "dataId");
 		ChemicalAssociationBean assocBean = compService
 				.findChemicalAssociationById(assocId);
 		prepareEntityLists(assocBean, request);
