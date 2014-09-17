@@ -238,8 +238,10 @@ var app = angular.module('angularApp')
 
                     if ( $scope.composingElementForm.inherentFunction != null && $scope.composingElementForm.inherentFunction.length > 0)
                         $scope.showInherentFunctionTable = true;
-                    else
+                    else {
                         $scope.showInherentFunctionTable = false;
+                        $scope.composingElementForm.inherentFunction = [];
+                    }
 
                     break;
                 }
@@ -638,6 +640,7 @@ var app = angular.module('angularApp')
             	$scope.nanoEntityForm.sampleId = $scope.sampleId;
             }
 
+            $scope.messages = [];
             $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveFile',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
                 	$scope.nanoEntityForm = data;
