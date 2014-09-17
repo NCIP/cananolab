@@ -251,7 +251,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	}
 
 	protected List<String> validateFileBean(HttpServletRequest request, List<String> msgs, FileBean fileBean) {
-
+		
 		if (fileBean == null) {
 			return msgs;
 		}

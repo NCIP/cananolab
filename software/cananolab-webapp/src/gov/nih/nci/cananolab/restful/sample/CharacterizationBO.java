@@ -735,36 +735,29 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
 		SimpleCharacterizationEditBean editBean = 
 				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+		SampleBean currentSample = (SampleBean) request.getSession().getAttribute("theSample");
 		
 		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
 		
-		//FileBean theFile = findingBean.getTheFile();
-		
-		int theFileIndex = simpleFinding.getTheFileIndex();
-//		SimpleFileBean simpleFile = simpleFinding.getFiles().get(theFileIndex);
-		
+		int theFileIndex = simpleFinding.getTheFileIndex();		
 		FileBean theFile = simpleFinding.transferToNewFileBean();
 		
-		
-		//TODO:
-		//List<String> msgs = validateInputs(request, entity);
-		
-		//if (theFile.getDomainFile().getId() != null) //existing
-			
-			
-		
-
-		// restore previously uploaded file from session.
-		//restoreUploadedFile(request, theFile);/
+		simpleFinding.getErrors().clear();
+		this.validateFileBean(request, simpleFinding.getErrors(), theFile);
+		if (simpleFinding.getErrors().size() > 0)
+			return simpleFinding;
+	
 		this.setServicesInSession(request);
 
 		// create a new copy before adding to finding
 		FileBean newFile = theFile.copy();
-		SampleBean sampleBean = setupSampleById(String.valueOf(editBean.getParentSampleId()), request);
+		
+		if (currentSample == null) //should not be
+			currentSample = setupSampleById(String.valueOf(editBean.getParentSampleId()), request);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ '/'
-				+ sampleBean.getDomain().getName()
+				+ currentSample.getDomain().getName()
 				+ '/'
 				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
 						.getCharacterizationName());
@@ -782,17 +775,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 
 				newFile.getDomainFile().setUri(internalUriPath + "/" + timestamp + "_"
 						+ newFile.getDomainFile().getName());
-
-
-				//			String internalUriPath = Constants.FOLDER_PARTICLE
-				//			+ '/'
-				//			+ sampleBean.getDomain().getName()
-				//			+ '/'
-				//			+ StringUtils.getOneWordLowerCaseFirstLetter(achar
-				//					.getCharacterizationName());
-				//			
-				//			newFile.getDomainFile().setUri(internalUriPath + "/" + timestamp + "_"
-				//					+ domainFile.getName());
 			} else {
 				newFile.getDomainFile().setUri(null);
 			}
@@ -1025,7 +1007,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			FindingBean newBean = new FindingBean();
 			achar.setTheFinding(newBean);
 			return newBean;
-			//return achar.getTheFinding();
 		}
 		
 		throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());
