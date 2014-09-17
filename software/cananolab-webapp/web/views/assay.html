@@ -1,4 +1,3 @@
-
 <div class="assay" ng-repeat="assay in characterization">
 	<!-- property -->
 	<div class="table" ng-repeat="property in assay.displayableItems" ng-if="property.value.length" ng-switch on="property.name">
@@ -11,6 +10,21 @@
 			<span ng-switch-default>
 				{{property.value}}
 			</span>	
+			<span ng-switch-when="Properties">
+				<table cellspacing="0" cellpadding="0" border="0" class="propertyTable" ng-if="property.value.length">
+					<tr>
+						<td>
+							<table class="dataConditions" cellspacing="0" cellpadding="0">
+								<tr ng-repeat="row in property.value">
+									<th ng-if="row.name=='colTitles'" ng-repeat="col in row.value track by $index" ng-bind-html="col"></th>
+									<td ng-if="row.name=='colValues'" ng-repeat="col in row.value track by $index" ng-bind-html="col"></td>		
+								</tr>	
+							</table>					
+						</td>
+					</tr>
+				</table>				
+
+			</span>
 			<span ng-switch-when="Experiment Configurations">
 				<!--  Experiment Configuration Table -->
 				<table cellspacing="0" cellpadding="0" border="0" class="propertyTable">
