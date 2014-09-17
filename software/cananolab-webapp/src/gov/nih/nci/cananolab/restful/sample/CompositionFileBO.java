@@ -63,6 +63,8 @@ public class CompositionFileBO extends BaseAnnotationBO{
 				theFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
 						+ sampleBean.getDomain().getName() + '/' + "compositionFile"+ "/" + timestamp + "_"
 						+ theFile.getDomainFile().getName());
+			}else if(theFile.getDomainFile().getId()!=null){
+				theFile.getDomainFile().setUri(theFile.getDomainFile().getName());
 			}else{
 				theFile.getDomainFile().setUri(null);
 			}

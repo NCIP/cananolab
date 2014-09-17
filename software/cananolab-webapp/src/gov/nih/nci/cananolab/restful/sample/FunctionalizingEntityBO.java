@@ -332,6 +332,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 								+ sampleBean.getDomain().getName() + '/'
 								+ "functionalizingEntity" + "/" + timestamp + "_"
 								+ theFile.getDomainFile().getName());
+			}else if(theFile.getDomainFile().getId()!=null){
+				theFile.getDomainFile().setUri(theFile.getDomainFile().getName());
 			}else{
 				theFile.getDomainFile().setUri(null);
 			}
