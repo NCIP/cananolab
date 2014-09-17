@@ -552,27 +552,31 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	}
 
 	public SimpleCharacterizationEditBean saveExperimentConfig(HttpServletRequest request, 
-			SimpleExperimentBean simpleExpConfig) 
+			SimpleCharacterizationEditBean charEditBean) 
 			throws Exception {
 		
 		logger.debug("Start saving experiment confg");
 		
 		//editBean's charId could be null, indicating new char
 		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
-		SimpleCharacterizationEditBean editBean = 
-				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+//		SimpleCharacterizationEditBean editBean = 
+//				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+		
+		SimpleExperimentBean simpleExpConfig = charEditBean.getDirtyExperimentBean();
 				
-		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
+		ExperimentConfigBean configBean = this.findMatchExperimentConfig(achar, simpleExpConfig);
+		
+		
 		simpleExpConfig.transferToExperimentConfigBean(configBean);
 		
 		
-		///duck tapping
-		if (achar.getCharacterizationName() == null || achar.getCharacterizationName().length() == 0)
-			achar.setCharacterizationName(simpleExpConfig.getParentCharName());
-		
-		if (achar.getCharacterizationType() == null || achar.getCharacterizationType().length() == 0)
-			achar.setCharacterizationType(simpleExpConfig.getParentCharType());
-		///duck tapping
+//		///duck tapping
+//		if (achar.getCharacterizationName() == null || achar.getCharacterizationName().length() == 0)
+//			achar.setCharacterizationName(simpleExpConfig.getParentCharName());
+//		
+//		if (achar.getCharacterizationType() == null || achar.getCharacterizationType().length() == 0)
+//			achar.setCharacterizationType(simpleExpConfig.getParentCharType());
+//		///duck tapping
 		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		configBean.setupDomain(user.getLoginName());
@@ -582,12 +586,15 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		logger.debug("Save exp config complete");
 		achar.addExperimentConfig(configBean);
 		
+		//transfer other data fields of the char
+		charEditBean.transferToCharacterizationBean(achar);
+		
 		// This is to validate characterization data fields
-		if (!validateInputs(request, achar, editBean.getMessages())) {
-			return editBean;
+		if (!validateInputs(request, achar, charEditBean.getMessages())) {
+			return charEditBean;
 		}
 		
-		this.saveCharacterization(request, achar, editBean);
+		this.saveCharacterization(request, achar, charEditBean);
 		logger.debug("Save char complete");
 		service.assignAccesses(achar.getDomainChar(), configBean.getDomain());
 		
@@ -603,7 +610,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		request.setAttribute("charType", achar.getCharacterizationType());
 		
 		
-		return setupUpdate(request, String.valueOf(editBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
+		return setupUpdate(request, String.valueOf(charEditBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
 				achar.getClassName(), achar.getCharacterizationType());
 		
 	}
@@ -670,25 +677,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
 		
 		CharacterizationService service = this.setServicesInSession(request);
-		
-		SampleBean sampleBean = setupSampleById(String.valueOf(editBean.getParentSampleId()), request);
 				
 		//FindingBean findingBean = achar.getTheFinding();
 		String theFindingId = String.valueOf(simpleFinding.getFindingId());
-		
-//		if (!StringUtils.isEmpty(theFindingId)) {
-//			findingBean.getDomain().setId(Long.valueOf(theFindingId));
-//		}
-
-		///duck tapping
-//		if (achar.getCharacterizationName() == null || achar.getCharacterizationName().length() == 0)
-//			achar.setCharacterizationName(simpleFinding.getParentCharName());
-//
-//		if (achar.getCharacterizationType() == null || achar.getCharacterizationType().length() == 0)
-//			achar.setCharacterizationType(simpleFinding.getParentCharType());
-		///duck tapping
-		
-		
 		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		simpleFinding.transferToFindingBean(findingBean, user);
@@ -698,6 +689,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		
 		// setup domainFile uri for fileBeans
+		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute("theSample");
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ '/'
 				+ sampleBean.getDomain().getName()
@@ -742,6 +734,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
 		SampleBean currentSample = (SampleBean) request.getSession().getAttribute("theSample");
 		
+		request.getSession().setAttribute("sampleId", String.valueOf(editBean.getParentSampleId()));
+		
 		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
 		
 		int theFileIndex = simpleFinding.getTheFileIndex();		
@@ -759,6 +753,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		if (currentSample == null) //should not be
 			currentSample = setupSampleById(String.valueOf(editBean.getParentSampleId()), request);
+		
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ '/'
@@ -787,7 +782,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		findingBean.addFile(newFile, theFileIndex);
 		achar.addFinding(findingBean);
-		simpleFinding.transferFromFindingBean(findingBean);
+		simpleFinding.transferFromFindingBean(request, findingBean);
 		
 		request.setAttribute("anchor", "submitFinding");
 //		this.checkOpenForms(achar, theForm, request);
@@ -811,7 +806,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		findingBean.setTheFile(new FileBean());
 		request.setAttribute("anchor", "submitFinding");
 		
-		simpleFinding.transferFilesFromFindingBean(findingBean.getFiles());
+		simpleFinding.transferFilesFromFindingBean(request, findingBean.getFiles());
 		
 		//this.checkOpenForms(achar, theForm, request);
 		//return mapping.findForward("inputForm");
@@ -882,7 +877,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		InitCharacterizationSetup.getInstance()
 			.persistCharacterizationDropdowns(request, achar);
 		
-		simpleFinding.transferFromFindingBean(findingBean);
+		simpleFinding.transferFromFindingBean(request, findingBean);
 		simpleFinding.setColumnHeaders(findingBean.getColumnHeaders());
 		simpleFinding.setDefaultValuesForNullHeaders();
 		
@@ -976,7 +971,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 
 		findingBean.updateColumnOrder();
 		
-		simpleFinding.transferFromFindingBean(findingBean);
+		simpleFinding.transferFromFindingBean(request, findingBean);
 
 		request.setAttribute("anchor", "submitFinding");
 		//this.checkOpenForms(achar, theForm, request);
@@ -1013,6 +1008,32 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		
 		throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());
+	}
+	
+	protected ExperimentConfigBean findMatchExperimentConfig(CharacterizationBean achar, 
+			SimpleExperimentBean simpleExp) 
+	throws Exception {
+		
+		long expId = simpleExp.getId();
+		
+		if (expId <= 0)
+			return achar.getTheExperimentConfig();
+		
+		List<ExperimentConfigBean> expConfigs = achar.getExperimentConfigs();
+		
+		if (expConfigs == null)
+			throw new Exception("Current characterization has null experiment config list. This should not happen");
+		
+		for (ExperimentConfigBean expConfig : expConfigs) {
+			if (expConfig.getDomain() != null && expConfig.getDomain().getId() != null) {
+				if (expId == expConfig.getDomain().getId().longValue())
+					return expConfig;
+			}
+			
+		}
+		
+		throw new Exception("Current characterization has no Experiment config matching input experiment id: " 
+		+ expId);
 	}
 
 //	private void checkOpenForms(CharacterizationBean achar,

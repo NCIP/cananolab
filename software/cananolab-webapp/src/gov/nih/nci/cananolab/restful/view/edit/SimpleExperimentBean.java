@@ -15,10 +15,10 @@ public class SimpleExperimentBean {
 	String abbreviation;
 	String description;
 	
+	boolean dirty;
+	
 	List<SimpleInstrumentBean> instruments = new ArrayList<SimpleInstrumentBean>();
 	
-	String parentCharType = "";
-	String parentCharName = "";
 	
 	
 	public void transferToExperimentConfigBean(ExperimentConfigBean expConfigBean) {
@@ -89,20 +89,12 @@ public class SimpleExperimentBean {
 		this.instruments = instruments;
 	}
 
-	public String getParentCharType() {
-		return parentCharType;
+	public boolean isDirty() {
+		return dirty;
 	}
 
-	public void setParentCharType(String parentCharType) {
-		this.parentCharType = parentCharType;
-	}
-
-	public String getParentCharName() {
-		return parentCharName;
-	}
-
-	public void setParentCharName(String parentCharName) {
-		this.parentCharName = parentCharName;
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
 	}
 	
 }

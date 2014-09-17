@@ -199,7 +199,7 @@ public class CharacterizationServices {
 	@Path("/saveExperimentConfig")
 	@Produces ("application/json")
     public Response saveExperimentConfig(@Context HttpServletRequest httpRequest, 
-    		SimpleExperimentBean simpleExpConfig ) {
+    		SimpleCharacterizationEditBean charEditBean ) {
 		logger.debug("In saveExperimentConfig");	
 		
 		if (! SecurityUtil.isUserLoggedIn(httpRequest))
@@ -210,7 +210,7 @@ public class CharacterizationServices {
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) applicationContext.getBean("characterizationBO");
 			
-			SimpleCharacterizationEditBean editBean = characterizationBO.saveExperimentConfig(httpRequest, simpleExpConfig);
+			SimpleCharacterizationEditBean editBean = characterizationBO.saveExperimentConfig(httpRequest, charEditBean);
 			List<String> errors = editBean.getErrors();
 			if (errors != null && errors.size() > 0) {
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

@@ -6,11 +6,12 @@ import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.Row;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
@@ -37,7 +38,7 @@ public class SimpleFindingBean {
 	String parentCharType = "";
 	String parentCharName = "";
 	
-	public void transferFromFindingBean(FindingBean findingBean) {
+	public void transferFromFindingBean(HttpServletRequest request, FindingBean findingBean) {
 		columnHeaders =  findingBean.getColumnHeaders();
 		//findingBean.getDomain();
 		//findingBean.getFiles();
@@ -54,7 +55,7 @@ public class SimpleFindingBean {
 		if (domain.getId() != null)
 			findingId = domain.getId();
 		
-		transferFilesFromFindingBean(findingBean.getFiles());
+		transferFilesFromFindingBean(request, findingBean.getFiles());
 	}
 	
 	public void transferToFindingBean(FindingBean findingBean, UserBean user) 
@@ -75,24 +76,26 @@ public class SimpleFindingBean {
 		
 	}
 	
-	public void transferFilesFromFindingBean(List<FileBean> files) {
+	public void transferFilesFromFindingBean(HttpServletRequest request, List<FileBean> files) {
 		this.files.clear();
 		
 		if (files == null) return;
 		
 		for (FileBean file : files) {
 			SimpleFileBean simpleFile = new SimpleFileBean();
-			simpleFile.setDescription(file.getDescription());
-			File domainFile = file.getDomainFile();
-			if (domainFile != null) {
-				if (domainFile.getId() != null)
-					simpleFile.setId(domainFile.getId());
-				simpleFile.setTitle(domainFile.getTitle());
-				simpleFile.setType(domainFile.getType());
-				simpleFile.setUri(domainFile.getUri());
-				simpleFile.setUriExternal(domainFile.getUriExternal());
-				
-			}
+			simpleFile.transferSimpleFileBean(file, request);
+//			simpleFile.setDescription(file.getDescription());
+//			File domainFile = file.getDomainFile();
+//			if (domainFile != null) {
+//				if (domainFile.getId() != null)
+//					simpleFile.setId(domainFile.getId());
+//				simpleFile.setTitle(domainFile.getTitle());
+//				simpleFile.setType(domainFile.getType());
+//				simpleFile.setUri(domainFile.getUri());
+//				simpleFile.setUriExternal(domainFile.getUriExternal());
+//				simple
+//				
+//			}
 			
 			this.files.add(simpleFile);
 		}

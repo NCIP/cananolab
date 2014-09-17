@@ -63,9 +63,6 @@ public class SimpleCharacterizationEditBean {
 	boolean copyToOtherSamples;	
 	boolean submitNewChar;
 	
-	
-	SimpleFindingBean dirtyFindingBean;
-	
 	List<String> charTypesLookup;
 	//List<String> characterizationNameLookup;
 	//List<String> AssayTypeLookup;
@@ -79,6 +76,20 @@ public class SimpleCharacterizationEditBean {
 	List<String> errors = new ArrayList<String>();
 	List<String> messages = new ArrayList<String>();
 	
+	SimpleFindingBean dirtyFindingBean;
+	
+	SimpleExperimentBean dirtyExperimentBean;
+	
+	
+	
+	public void setDirtyFindingBean(SimpleFindingBean dirtyFindingBean) {
+		this.dirtyFindingBean = dirtyFindingBean;
+	}
+
+	public void setDirtyExperimentBean(SimpleExperimentBean dirtyExperimentBean) {
+		this.dirtyExperimentBean = dirtyExperimentBean;
+	}
+
 	public void transferFromCharacterizationBean(HttpServletRequest request, 
 			CharacterizationBean charBean, String sampleId) 
 	throws Exception {
@@ -131,7 +142,7 @@ public class SimpleCharacterizationEditBean {
 		}
 		
 		transferExperimentConfigs(charBean.getExperimentConfigs());
-		transferFinding(charBean.getFindings())	;
+		transferFinding(request, charBean.getFindings())	;
 		
 		transferProperty(request, charBean);
 		
@@ -190,12 +201,12 @@ public class SimpleCharacterizationEditBean {
 
 	}
 	
-	protected void transferFinding(List<FindingBean> findingBeans) {
+	protected void transferFinding(HttpServletRequest request, List<FindingBean> findingBeans) {
 		if (findingBeans == null) return;
 		
 		for (FindingBean findingBean : findingBeans) {
 			SimpleFindingBean simpleBean = new SimpleFindingBean();
-			simpleBean.transferFromFindingBean(findingBean);
+			simpleBean.transferFromFindingBean(request, findingBean);
 			
 			
 			//List<FileBean> files = findingBean.getFiles();
@@ -414,6 +425,17 @@ public class SimpleCharacterizationEditBean {
 		return null;
 	}
 	
+	public SimpleExperimentBean getDirtyExperimentBean() {
+		List<SimpleExperimentBean> expConfigs = this.techniqueInstruments.getExperiments();
+		
+		for (SimpleExperimentBean simpleExp : expConfigs) {
+			if (simpleExp.isDirty())
+				return simpleExp;
+		}
+		
+		return null;
+	}
+	
 	
 	public String getAnalysisConclusion() {
 		return analysisConclusion;
@@ -621,10 +643,6 @@ public class SimpleCharacterizationEditBean {
 
 	public void setProperty(SimpleCharacterizationProperty property) {
 		this.property = property;
-	}
-
-	public void setDirtyFindingBean(SimpleFindingBean dirtyFindingBean) {
-		this.dirtyFindingBean = dirtyFindingBean;
 	}
 
 	
