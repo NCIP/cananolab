@@ -379,6 +379,7 @@ var app = angular.module('angularApp')
             inherentFunction.id = $scope.theInherentFunction.id;
             if (inherentFunction.id == null || inherentFunction.id.length == 0) {
                 inherentFunction.id = -1000 - $scope.composingElementForm.inherentFunction.length;
+                inherentFunction.id = String(inherentFunction.id);
                 newInherentFunction = true;
             }
             inherentFunction.type = $scope.theInherentFunction.type;
