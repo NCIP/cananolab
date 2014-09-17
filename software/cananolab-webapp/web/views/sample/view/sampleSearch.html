@@ -13,7 +13,11 @@
             </td>
         </tr>
     </table><br>
-
+<div class="message" ng-if="message">
+    <div ng-repeat="m in message">
+        {{m}}
+    </div><br />
+</div>
     <table align="center" class="submissionView" summary="layout" width="100%">
         <tr>
             <td class="cellLabel" width="110"><label for=
@@ -168,7 +172,7 @@
             "Search" ng-click="doSearch()"> <input ng-disabled="loader" name="dispatch" type="hidden" value="search">
             <input ng-disabled="loader" name="page" type="hidden" value="1"></td>
         </tr>
-    </table><div ng-if="message">{{message}}</div>
+    </table>
 </div> 
 
   <div id="loader" ng-show="loader">
