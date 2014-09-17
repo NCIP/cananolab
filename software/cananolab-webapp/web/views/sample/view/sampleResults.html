@@ -19,9 +19,7 @@
 
 <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
-		<td data-title="''" width="5%" class="columnOne">
-			<a ng-if="row.editable" ng-click="goToSample('edit',{{row.sampleId}})" href="">Edits</a>
-			<a ng-if="!row.editable" ng-click="goToSample('view',{{row.sampleId}})" href="">Views</a>			
+		<td data-title="''" width="5%" class="columnOne">	
 			<a ng-if="row.editable" href="#/editSample?sampleId={{row.sampleId}}">Edit</a>
 			<a ng-if="!row.editable"href="#/sample?sampleId={{row.sampleId}}">View</a>
 

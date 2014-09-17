@@ -1,4 +1,5 @@
 <div class="assay" ng-repeat="assay in characterization">
+	<table width="100%"><tr><td>
 	<!-- property -->
 	<div class="table" ng-repeat="property in assay.displayableItems" ng-if="property.value.length" ng-switch on="property.name">
 		<!-- property name -->
@@ -86,6 +87,12 @@
 </div>     
 <!-- property name -->
 </div>		   
-<!-- property -->	 
+<!-- property -->
+</td>
+<td valign="top" align="right">
+                  <div style="float:right;margin-right:10px;">
+                       <button ng-click="editCharacterization(type.type,assay.charId,assay	.charClassName)">Edit</button>
+                  </div>
+</td></tr></table>	 
 </div>
 <!-- assay -->
