@@ -200,10 +200,13 @@ var app = angular.module('angularApp')
     // save experiment config and close section //
     $scope.saveExperimentConfig = function() {
         $scope.loader = true;
+        if ($scope.isNewExperimentConfig) {
+            $scope.data.techniqueInstruments.experiments.push($scope.techniqueInstrument);
+        };
         $scope.techniqueInstrument.parentCharType = $scope.data.type;
         $scope.techniqueInstrument.parentCharName = $scope.data.name;
-
-        $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveExperimentConfig',data: $scope.techniqueInstrument}).
+        $scope.techniqueInstrument.dirty = 1;
+        $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveExperimentConfig',data: $scope.data}).
         success(function(data, status, headers, config) {   
             $scope.saveButton = "Update";        
             $scope.loader = false;
@@ -280,6 +283,7 @@ var app = angular.module('angularApp')
     $scope.addNewFinding = function() {
         var old = $location.hash();
         $scope.currentFinding = {};
+        $scope.currentFinding.dirty = 1;
         $scope.updateFinding = 1;
         $scope.finding = {};
         $scope.scroll('editFindingInfo');
@@ -416,8 +420,10 @@ var app = angular.module('angularApp')
     // saves finding info //
     $scope.saveFindingInfo = function() {
         $scope.loader = true;
-        $scope.currentFinding.parentCharType = $scope.data.type;
-        $scope.currentFinding.parentCharName = $scope.data.name;
+        if ($scope.isNewFinding) {
+            $scope.data.finding.push($scope.currentFinding);            
+        };
+        
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveFinding',data: $scope.data}).
         success(function(data, status, headers, config) { 
             $scope.saveButton = "Update";                           
