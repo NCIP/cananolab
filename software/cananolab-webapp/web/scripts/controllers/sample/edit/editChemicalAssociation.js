@@ -380,7 +380,11 @@ var app = angular.module('angularApp')
 
 
             $scope.chemAssociationForm.simpleFile.externalUrl = $scope.fileForm.externalUrl;
-            $scope.chemAssociationForm.simpleFile.uri = $scope.selectedFileName;
+            if( $scope.selectedFileName != null && $scope.selectedFileName != '' ) {
+            	$scope.chemAssociationForm.simpleFile.uri = $scope.selectedFileName;
+            } else {
+            	$scope.chemAssociationForm.simpleFile.uri = $scope.fileForm.uri;
+            }
             $scope.chemAssociationForm.simpleFile.uriExternal = $scope.fileForm.uriExternal;
             $scope.chemAssociationForm.simpleFile.type = $scope.fileForm.type;
             $scope.chemAssociationForm.simpleFile.title = $scope.fileForm.title;
