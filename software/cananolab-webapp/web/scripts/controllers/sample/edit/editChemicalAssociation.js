@@ -401,7 +401,7 @@ var app = angular.module('angularApp')
             	$scope.chemAssociationForm.associationId = $scope.chemAssociationId;
             }            
             
-
+            $scope.messages = [];
             $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/saveFile',data: $scope.chemAssociationForm}).
                 success(function(data, status, headers, config) {
                     $scope.chemAssociationForm = data;

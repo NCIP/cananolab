@@ -668,8 +668,7 @@ var app = angular.module('angularApp')
             $scope.currentFinding.theFile.sampleId = $scope.sampleId;
         }
 
-        console.log($scope.currentFinding);
-
+        $scope.messages = [];
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveFile',data: $scope.currentFinding}).
             success(function(data, status, headers, config) {
                 $scope.currentFinding = data;
