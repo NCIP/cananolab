@@ -25,7 +25,6 @@ app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,
 		$scope.sampleId.data = $routeParams.sampleId;
 	};
 
-    $scope.sampleName = sampleService.sampleName($scope.sampleId.data);
 	
 
 	$scope.select = function(tab) {
@@ -53,6 +52,8 @@ app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,
 	$http({method: 'GET', url: '/caNanoLab/rest/characterization/setupEdit?sampleId='+$scope.sampleId.data}).
 		success(function(data, status, headers, config) {
 		$scope.data = data;
+	     $scope.sampleName = sampleService.sampleName($scope.sampleId.data);
+
 		$scope.loader = false;      
 	}).
 	error(function(data, status, headers, config) {

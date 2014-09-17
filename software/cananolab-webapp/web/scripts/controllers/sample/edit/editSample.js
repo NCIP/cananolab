@@ -116,6 +116,8 @@ var app = angular.module('angularApp')
                 } else {
                     $scope.message = data;
                 }
+                $scope.sampleName = sampleService.sampleName($scope.sampleId.data);
+                
                 $scope.loader = false;
                 $scope.submissionView = false;
         });
