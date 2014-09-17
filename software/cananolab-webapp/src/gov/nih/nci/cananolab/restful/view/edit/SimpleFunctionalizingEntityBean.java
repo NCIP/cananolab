@@ -27,6 +27,7 @@ public class SimpleFunctionalizingEntityBean {
 	String molecularFormula = "";
 	String activationMethodType = "";
 	String activationEffect = "";
+	Long activationId = 0L;
 	String description = "";
 	String sampleId = "";
 	String createdBy = "";
@@ -39,6 +40,14 @@ public class SimpleFunctionalizingEntityBean {
 	boolean withImagingFunction = false;
 	boolean withTargetingFunction = false;
 	
+	public Long getActivationId() {
+		return activationId;
+	}
+
+	public void setActivationId(Long activationId) {
+		this.activationId = activationId;
+	}
+
 	public boolean isWithImagingFunction() {
 		return withImagingFunction;
 	}
@@ -198,6 +207,8 @@ public class SimpleFunctionalizingEntityBean {
 		this.setPubChemId(bean.getPubChemId());
 		this.setValue(bean.getValue());
 		this.setValueUnit(bean.getValueUnit());
+		
+		this.setActivationId(bean.getActivationMethod().getId());
 		this.setActivationEffect(bean.getActivationMethod().getActivationEffect());
 		this.setActivationMethodType(bean.getActivationMethod().getType());
 		this.setWithImagingFunction(bean.isWithImagingFunction());

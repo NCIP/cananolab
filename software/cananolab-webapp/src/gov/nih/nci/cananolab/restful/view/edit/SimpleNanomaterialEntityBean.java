@@ -230,6 +230,7 @@ public class SimpleNanomaterialEntityBean {
 		setDescription(bean.getDescription());
 		setCreatedBy(nanoEntity.getCreatedBy());
 		setCreatedDate(nanoEntity.getCreatedDate());
+		setWithProperties(bean.isWithProperties());
 		if(bean.getDomainEntity().getComposingElementCollection()!=null){
 			composingElements = new ArrayList<SimpleComposingElementBean>();
 			for(ComposingElementBean comp : bean.getComposingElements()){
