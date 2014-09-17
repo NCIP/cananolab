@@ -646,6 +646,9 @@ var app = angular.module('angularApp')
                 	$scope.nanoEntityForm = data;
                     $scope.files = $scope.nanoEntityForm.files;
                     $scope.addNewFile = false;
+                    
+                    $scope.showProperties();
+                    
                     $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {

@@ -663,6 +663,9 @@ var app = angular.module('angularApp')
                     $scope.funcEntityForm = data;
                     $scope.files = $scope.funcEntityForm.fileList;
                     $scope.addNewFile = false;
+                    
+                    $scope.showProperties();
+                    
                     $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {

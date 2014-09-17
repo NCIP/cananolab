@@ -300,7 +300,7 @@ var app = angular.module('angularApp')
                 	$scope.chemAssociationForm.associationId = $scope.chemAssociationId;
                 }                
 
-                $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/removeFile',data: $scope.fileForm}).
+                $http({method: 'POST', url: '/caNanoLab/rest/chemicalAssociation/removeFile',data: $scope.chemAssociationForm}).
                     success(function(data, status, headers, config) {
                         $scope.chemAssociationForm = data;
                         $scope.files = $scope.chemAssociationForm.files;
