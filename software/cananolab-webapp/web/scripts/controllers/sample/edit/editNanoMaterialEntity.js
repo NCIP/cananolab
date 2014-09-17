@@ -238,8 +238,10 @@ var app = angular.module('angularApp')
 
                     if ( $scope.composingElementForm.inherentFunction != null && $scope.composingElementForm.inherentFunction.length > 0)
                         $scope.showInherentFunctionTable = true;
-                    else
+                    else {
                         $scope.showInherentFunctionTable = false;
+                        $scope.composingElementForm.inherentFunction = [];
+                    }
 
                     break;
                 }
