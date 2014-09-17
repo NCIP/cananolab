@@ -301,7 +301,8 @@ var app = angular.module('angularApp')
         $scope.updateFinding = 1;        
         $scope.currentFinding = finding;
         $scope.scroll('editFindingInfo');
-        $scope.isNewFinding = 0;   
+        $scope.isNewFinding = 0;  
+        $scope.currentFinding.dirty = 1;
         $scope.currentFindingCopy = angular.copy(finding);
     };
 
@@ -424,7 +425,7 @@ var app = angular.module('angularApp')
         $scope.loader = true;
         $scope.currentFinding.parentCharType = $scope.data.type;
         $scope.currentFinding.parentCharName = $scope.data.name;
-        $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveFinding',data: $scope.currentFinding}).
+        $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveFinding',data: $scope.data}).
         success(function(data, status, headers, config) { 
             $scope.saveButton = "Update";                           
             $scope.loader = false;
