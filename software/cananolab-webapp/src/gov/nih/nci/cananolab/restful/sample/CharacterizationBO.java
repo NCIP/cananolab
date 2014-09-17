@@ -681,12 +681,14 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //		}
 
 		///duck tapping
-		if (achar.getCharacterizationName() == null || achar.getCharacterizationName().length() == 0)
-			achar.setCharacterizationName(simpleFinding.getParentCharName());
-
-		if (achar.getCharacterizationType() == null || achar.getCharacterizationType().length() == 0)
-			achar.setCharacterizationType(simpleFinding.getParentCharType());
+//		if (achar.getCharacterizationName() == null || achar.getCharacterizationName().length() == 0)
+//			achar.setCharacterizationName(simpleFinding.getParentCharName());
+//
+//		if (achar.getCharacterizationType() == null || achar.getCharacterizationType().length() == 0)
+//			achar.setCharacterizationType(simpleFinding.getParentCharType());
 		///duck tapping
+		
+		
 		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		simpleFinding.transferToFindingBean(findingBean, user);
@@ -706,6 +708,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		findingBean.setupDomain(internalUriPath, user.getLoginName());
 		service.saveFinding(findingBean);
 		achar.addFinding(findingBean);
+		
+		//transfer other data fields of the char
+		editBean.transferToCharacterizationBean(achar);
 
 		// also save characterization
 		if (!validateInputs(request, achar, editBean.getMessages())) {
@@ -788,8 +793,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //		this.checkOpenForms(achar, theForm, request);
 		InitCharacterizationSetup.getInstance()
 			.persistCharacterizationDropdowns(request, achar);
-		
-		//request.getSession().setAttribute("theFindingBean", findingBean);
 		
 		request.getSession().removeAttribute("newFileData");
 		return simpleFinding;

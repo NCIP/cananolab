@@ -1,22 +1,17 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
-import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
 
 /**
  * Class to support sample search view. It has exactly what needs to be
@@ -132,8 +127,10 @@ public class SimpleSearchSampleBean {
 			int i = 0;
 			while (ite.hasNext()) {
 				NanomaterialEntity n = (NanomaterialEntity) ite.next();
-				String cn = ClassUtils
-						.getShortClassName(n.getClass().getName());
+				String cn = ClassUtils.getShortClassName(n.getClass().getName());
+				if (n instanceof OtherNanomaterialEntity)
+					cn = ((OtherNanomaterialEntity)n).getType();
+						
 				v[i++] = cn;
 			}
 			setComposition(v);
