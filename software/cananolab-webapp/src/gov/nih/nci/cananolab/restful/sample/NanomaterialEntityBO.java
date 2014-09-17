@@ -430,10 +430,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				func.setImagingFunction(img);
 				Function function = new Function();
 				function.setDescription((String) funclist.get(j).get("description"));
-				if(new Long((Integer) funclist.get(j).get("id"))>0){
+				if(new Long((String) funclist.get(j).get("id"))>0){
 					function.setCreatedBy((String) funclist.get(j).get("createdBy"));
 					function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
-					function.setId(new Long((Integer) funclist.get(j).get("id")));
+					function.setId(new Long((String) funclist.get(j).get("id")));
 				}
 				func.setDomainFunction(function);
 				hash.add(function);
@@ -481,10 +481,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 					func.setImagingFunction(img);
 					Function function = new Function();
 					function.setDescription((String) funclist.get(j).get("description"));
-					function.setCreatedBy((String) funclist.get(j).get("createdBy"));
-					function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
-					if(funclist.get(j).get("id")!=null)
-					function.setId(new Long((Integer) funclist.get(j).get("id")));
+					
+					if(new Long((String) funclist.get(j).get("id"))>0){
+						function.setId(new Long((String) funclist.get(j).get("id")));
+						function.setCreatedBy((String) funclist.get(j).get("createdBy"));
+						function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
+					}
 					hash.add(function);
 					func.setDomainFunction(function);
 				}
