@@ -670,6 +670,7 @@ var app = angular.module('angularApp')
                     // $rootScope.sampleData = data;
                     $scope.loader = false;
                     $scope.messages = data;
+                    $scope.addNewFile = true;
                 });
         };
 

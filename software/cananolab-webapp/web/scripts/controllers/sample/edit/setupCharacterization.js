@@ -578,7 +578,7 @@ var app = angular.module('angularApp')
                     // or server returns response with an error status.
                     // $rootScope.sampleData = data;
                     $scope.loader = false;
-                    $scope.messages = data;
+                    $scope.data.errors = data;
                 });
         }
     };
@@ -607,7 +607,7 @@ var app = angular.module('angularApp')
                 });
             }, function(response) {
                 if (response.status > 0) {
-                    $scope.messages = response.status + ': ' + response.data;
+                	$scope.data.errors = response.status + ': ' + response.data;
                     $scope.loader = false;
                 }
             }, function(evt) {
@@ -681,7 +681,8 @@ var app = angular.module('angularApp')
                 // or server returns response with an error status.
                 // $rootScope.sampleData = data;
                 $scope.loader = false;
-                $scope.messages = data;
+                $scope.data.errors = data;
+                $scope.addNewFile = true;
             });
     };
 
