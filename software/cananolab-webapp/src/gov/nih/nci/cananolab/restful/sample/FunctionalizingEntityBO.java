@@ -775,7 +775,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 			}
 		}
 		ActivationMethod act = new ActivationMethod();
-		if(bean.getActivationId()>0)
+		if((bean.getActivationId()!=null)&&(bean.getActivationId()>0))
 			act.setId(bean.getActivationId());
 		act.setType(bean.getActivationMethodType());
 		act.setActivationEffect(bean.getActivationEffect());

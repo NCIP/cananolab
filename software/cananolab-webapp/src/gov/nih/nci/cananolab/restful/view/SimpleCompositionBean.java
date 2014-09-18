@@ -332,7 +332,7 @@ public class SimpleCompositionBean {
 										+ detailPage);
 								function.put("detailsPage", detailPage);
 								if (detailPage.contains("SmallMolecule")) {
-									properties.put("AlternateName", funcBean
+									properties.put("alternateName", funcBean
 											.getSmallMolecule()
 											.getAlternateName());
 								}
@@ -340,20 +340,20 @@ public class SimpleCompositionBean {
 								if (detailPage.contains("Biopolymer")) {
 									properties = new HashMap<String, Object>();
 
-									properties.put("Type", funcBean
+									properties.put("type", funcBean
 											.getBiopolymer().getType());
-									properties.put("Sequence", funcBean
+									properties.put("sequence", funcBean
 											.getBiopolymer().getSequence());
 
 								}
 								if (detailPage.contains("Antibody")) {
 									properties = new HashMap<String, Object>();
 
-									properties.put("Type", funcBean
+									properties.put("type", funcBean
 											.getAntibody().getType());
-									properties.put("IsoType", funcBean
+									properties.put("isoType", funcBean
 											.getAntibody().getIsotype());
-									properties.put("Species", funcBean
+									properties.put("species", funcBean
 											.getAntibody().getSpecies());
 
 								}
