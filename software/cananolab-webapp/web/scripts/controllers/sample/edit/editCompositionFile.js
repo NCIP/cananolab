@@ -194,7 +194,9 @@ var app = angular.module('angularApp')
             	$scope.fileForm.sampleId = $scope.sampleId;
             }      
             
-            $scope.fileForm.uri = $scope.selectedFileName;
+            if( $scope.selectedFileName != null && $scope.selectedFileName != '' ) {
+            	$scope.fileForm.uri = $scope.selectedFileName;
+            }
             
             $http({method: 'POST', url: '/caNanoLab/rest/compositionFile/submit',data: $scope.fileForm}).
                 success(function(data, status, headers, config) {
