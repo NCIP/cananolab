@@ -48,7 +48,7 @@ public class SimpleCharacterizationEditBean {
 	
 	List<String> charNamesForCurrentType;
 	
-	SimpleCharacterizationProperty property;// = new SimplePhysicalState();
+	SimpleCharacterizationProperty property = new SimpleCharacterizationProperty();
 	
 	String designMethodsDescription;
 	
@@ -166,8 +166,6 @@ public class SimpleCharacterizationEditBean {
 			((SimpleEnzymeInduction)property).transferToPropertyBean(charBean);
 		else if (name.contains("transfection"))
 			((SimpleTransfection)property).transferToPropertyBean(charBean);
-		else 
-			throw new Exception("Unknown charName: " + this.name);
 		
 	}
 	
