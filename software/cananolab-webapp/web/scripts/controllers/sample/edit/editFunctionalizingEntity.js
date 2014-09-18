@@ -352,6 +352,8 @@ var app = angular.module('angularApp')
 
 
         $scope.openAddNewInherentFunction = function() {
+        	$scope.theInherentFunction = {};
+        	$scope.theInherentFunction.targets = [];
             $scope.addNewInherentFunction = true;
         }
 

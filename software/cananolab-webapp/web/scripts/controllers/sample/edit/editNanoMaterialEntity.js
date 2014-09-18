@@ -229,6 +229,8 @@ var app = angular.module('angularApp')
         };
 
         $scope.openAddComposingElement = function() {
+        	$scope.composingElementForm = {};
+        	$scope.composingElementForm.inherentFunction = [];
             $scope.addNewComposingElement=true;
         };
 
