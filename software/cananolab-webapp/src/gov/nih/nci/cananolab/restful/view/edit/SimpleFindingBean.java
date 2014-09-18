@@ -127,6 +127,7 @@ public class SimpleFindingBean {
 		fileBean.setTheAccess(simpleFile.getTheAccess());
 
 		fileBean.setDomainFile(file);
+		fileBean.setExternalUrl(simpleFile.getExternalUrl());
 		return fileBean;
 	}
 	
