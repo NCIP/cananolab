@@ -402,6 +402,9 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 			msgs.add("Functionalizing Entity Chemical Name is required.");
 		}
 		if (entityBean.getType().equalsIgnoreCase("biopolymer")) {
+			if(entityBean.getBiopolymer().getType() == null){
+				msgs.add("Biopolymer Type is required.");
+			}
 			if (entityBean.getBiopolymer().getType() != null
 					&& !StringUtils.xssValidate(entityBean.getBiopolymer()
 							.getType())) {

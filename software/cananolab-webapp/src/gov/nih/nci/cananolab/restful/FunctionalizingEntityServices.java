@@ -91,7 +91,7 @@ private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
 			
 			SimpleFunctionalizingEntityBean bean = functionalizingEntity.saveFunction(funcBean, httpRequest);
 			
-			List<String> errors = funcBean.getErrors();
+			List<String> errors = bean.getErrors();
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(bean).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
