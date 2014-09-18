@@ -674,7 +674,7 @@ var app = angular.module('angularApp')
         if( $scope.fileForm.id == null || $scope.fileForm.id == '') {
             $scope.currentFinding.theFileIndex = -1;
         } else {
-            $scope.currentFinding.theFileIndex = k;
+            $scope.currentFinding.theFileIndex = k-1;
         }
 
         if( $scope.sampleId != null ) {
