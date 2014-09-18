@@ -211,12 +211,14 @@ public class CharacterizationResultManager {
 		return null;
 	}
 
-	public String addColumnHeader(ColumnHeader header, int columnNumber) {
+	public String addColumnHeader(HttpServletRequest request, ColumnHeader header, int columnNumber) {
+		//TODO: untested and unused for angular impl.
+		
 		if (!validateColumnHeader(header)) {
 			return "contain special characters";
 		}
-		WebContext wctx = WebContextFactory.get();
-		HttpSession session = wctx.getSession();
+		
+		HttpSession session =  request.getSession();
 		// store existing columns in the session to prevent entering of
 		// duplicate column
 		List<ColumnHeader> columnHeaders = (List<ColumnHeader>) session
@@ -241,7 +243,7 @@ public class CharacterizationResultManager {
 			}
 			if (!datumColumnNames.contains(header.getColumnName())) {
 				otherDatumNames.add(header.getColumnName());
-				WebContextFactory.get().getSession().setAttribute(
+				session.setAttribute(
 						"otherCharDatumNames", otherDatumNames);
 			}
 		}
@@ -256,7 +258,7 @@ public class CharacterizationResultManager {
 			}
 			if (!conditionColumnNames.contains(header.getColumnName())) {
 				otherConditionNames.add(header.getColumnName());
-				WebContextFactory.get().getSession().setAttribute(
+				session.setAttribute(
 						"otherCharConditionNames", otherConditionNames);
 			}
 		}
@@ -273,7 +275,7 @@ public class CharacterizationResultManager {
 			if (!conditionProperties.contains(header.getConditionProperty())
 					&& !StringUtils.isEmpty(header.getConditionProperty())) {
 				otherConditionProperties.add(header.getConditionProperty());
-				WebContextFactory.get().getSession().setAttribute(
+				session.setAttribute(
 						"otherCharConditionProperties",
 						otherConditionProperties);
 			}
@@ -289,7 +291,7 @@ public class CharacterizationResultManager {
 		if (!valueUnits.contains(header.getValueUnit())
 				&& !StringUtils.isEmpty(header.getValueUnit())) {
 			otherValueUnits.add(header.getValueUnit());
-			WebContextFactory.get().getSession().setAttribute(
+			session.setAttribute(
 					"otherCharValueUnits", otherValueUnits);
 		}
 
@@ -304,7 +306,7 @@ public class CharacterizationResultManager {
 		if (!valueTypes.contains(header.getValueType())
 				&& !StringUtils.isEmpty(header.getValueType())) {
 			otherValueTypes.add(header.getValueType());
-			WebContextFactory.get().getSession().setAttribute(
+			session.setAttribute(
 					"otherCharValueTypes", otherValueTypes);
 		}
 		return header.getDisplayName();

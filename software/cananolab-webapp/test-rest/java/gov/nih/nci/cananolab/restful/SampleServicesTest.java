@@ -95,7 +95,7 @@ public class SampleServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("sample/characterizationView")
-				.queryParam("sampleId", "20917507") //ncl-17
+				.queryParam("sampleId", "100597760") //SY-Sprint-6
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);

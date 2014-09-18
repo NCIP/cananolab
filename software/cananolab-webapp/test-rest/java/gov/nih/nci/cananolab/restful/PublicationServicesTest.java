@@ -1,14 +1,19 @@
 package gov.nih.nci.cananolab.restful;
 
+import static com.jayway.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
@@ -164,20 +169,34 @@ public class PublicationServicesTest {
 	@Test
 	public void testEdit() {
 		
-			try{
-		String jsonString = client.target(urlbase)
-				.register(PublicationServices.class)
-				.path("publication/edit")
-				.queryParam("publicationId", "44990464") 
-				.queryParam("sampleId", "20917509") 
-				.request("application/json")
-				.header("some-header", "true")
-				.get(String.class);
-		System.out.println(jsonString);
-			}catch(Exception e){
-				assertTrue("NoAccessException", e.toString().contains("Internal Server Error"));
-			}
+//			try{
+//		String jsonString = client.target(urlbase)
+//				.register(PublicationServices.class)
+//				.path("publication/edit")
+//				.queryParam("publicationId", "44990464") 
+//				.queryParam("sampleId", "20917509") 
+//				.request("application/json")
+//				.header("some-header", "true")
+//				.get(String.class);
+//		System.out.println(jsonString);
+//			}catch(Exception e){
+//				assertTrue("NoAccessException", e.toString().contains("Internal Server Error"));
+//			}
 
+			
+			String jsessionId = RestTestLoginUtil.loginTest();
+			
+			Map<String, String> parameters = new HashMap<String, String>();
+			parameters.put("publicationId", "44990464");
+			parameters.put("sampleId", "20917509");
+			com.jayway.restassured.response.Response res =
+					given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+					.parameters(parameters).expect()
+					.body("category", equalToIgnoringCase("Test Pub Type"))
+							.when().get("http://localhost:8080/caNanoLab/rest/publication/edit");
+
+			System.out.println(res.getBody().asString());
+			RestTestLoginUtil.logoutTest();
 	}
 	
 	@Test
