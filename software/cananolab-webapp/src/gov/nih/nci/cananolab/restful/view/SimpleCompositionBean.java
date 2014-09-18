@@ -300,6 +300,7 @@ public class SimpleCompositionBean {
 
 					for (FunctionalizingEntityBean funcBean : compBean
 							.getType2FuncEntities().get(entityType)) {
+						function = new HashMap<String, Object>();
 
 						function.put("dataId", funcBean.getDomainEntity().getId());
 						function.put("Name", funcBean.getName());
