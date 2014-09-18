@@ -480,6 +480,7 @@ var app = angular.module('angularApp')
         };
 
         $scope.editFile = function(fileId) {
+        	$scope.selectedFileName = ''; 
             for (var k = 0; k < $scope.files.length; ++k) {
                 var element = $scope.files[k];
                 if (element.id == fileId ) {
@@ -624,7 +625,11 @@ var app = angular.module('angularApp')
 
 
             $scope.nanoEntityForm.fileBean.externalUrl = $scope.fileForm.externalUrl;
-            $scope.nanoEntityForm.fileBean.uri = $scope.selectedFileName;
+            if( $scope.selectedFileName != null && $scope.selectedFileName != '' ) {
+            	$scope.nanoEntityForm.fileBean.uri = $scope.selectedFileName;
+            } else {
+            	$scope.nanoEntityForm.fileBean.uri = $scope.fileForm.uri;
+            }            
             $scope.nanoEntityForm.fileBean.uriExternal = $scope.fileForm.uriExternal;
             $scope.nanoEntityForm.fileBean.type = $scope.fileForm.type;
             $scope.nanoEntityForm.fileBean.title = $scope.fileForm.title;

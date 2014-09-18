@@ -510,6 +510,7 @@ var app = angular.module('angularApp')
     };
 
     $scope.editFile = function(fileId) {
+    	$scope.selectedFileName = ''; 
         for (var k = 0; k < $scope.currentFinding.files.length; ++k) {
             var element = $scope.currentFinding.files[k];
             if (element.id == fileId ) {
@@ -654,7 +655,11 @@ var app = angular.module('angularApp')
         }
 
         $scope.currentFinding.theFile.externalUrl = $scope.fileForm.externalUrl;
-        $scope.currentFinding.theFile.uri = $scope.selectedFileName;
+        if( $scope.selectedFileName != null && $scope.selectedFileName != '' ) {
+        	$scope.currentFinding.theFile.uri = $scope.selectedFileName;
+        } else {
+        	$scope.currentFinding.theFile.uri = $scope.fileForm.uri;
+        }        
         $scope.currentFinding.theFile.uriExternal = $scope.fileForm.uriExternal;
         $scope.currentFinding.theFile.type = $scope.fileForm.type;
         $scope.currentFinding.theFile.title = $scope.fileForm.title;

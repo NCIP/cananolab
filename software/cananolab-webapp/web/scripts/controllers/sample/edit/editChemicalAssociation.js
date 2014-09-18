@@ -233,6 +233,7 @@ var app = angular.module('angularApp')
         };
 
         $scope.editFile = function(fileId) {
+        	$scope.selectedFileName = ''; 
             for (var k = 0; k < $scope.files.length; ++k) {
                 var element = $scope.files[k];
                 if (element.id == fileId ) {
