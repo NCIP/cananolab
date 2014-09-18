@@ -918,8 +918,12 @@
 															<label for="columnName">Column Name *</label>
 														</td>
 														<td>
-															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()">
+                                                            <select ng-model="findingsColumn.columnName" ng-init="findingsColumn.columnName=findingsColumn.columnName" ng-change="onColumnNameDropdownChange()">
+
+<!--                                                                 
+															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()"> -->
 															<option value=""></option>
+                                                            <option ng-repeat="option in columnNameLookup" ng-disabled="disableColumn(option)">{{option}}</option>
 																
 															</select>
 
@@ -1046,7 +1050,8 @@
 															<button ng-click="removeColumnForm()" class="btn btn-danger btn-xxs">Remove</button>
 														</td>
 														<td>
-															<button ng-click="saveColumnForm()" class="btn btn-primary btn-xxs">Save</button>&nbsp;<button ng-click="closeColumnForm()" class="btn btn-warning btn-xxs">Cancel</button>
+                                                
+															<button ng-disabled="!findingsColumn.columnType||columnNameLookup.indexOf(findingsColumn.columnName)==-1" ng-click="saveColumnForm()" class="btn btn-primary btn-xxs">Save</button>&nbsp;<button ng-click="closeColumnForm()" class="btn btn-warning btn-xxs">Cancel</button>
 														</td>
 													</tr>
 												</table>
@@ -1068,11 +1073,11 @@
 			            </tr>						
 						<tr>
 							<td>
-								<button ng-if="!isNewFinding" ng-click="removeFindingInfo()" class="btn btn-danger btn-xxs">Remove</button>								
+								<button ng-if="!isNewFinding" ng-click="removeFindingInfo()" class="btn btn-danger btn-xxs" ng-disabled="columnForm">Remove</button>								
 							</td>
 							<td align="right" style="float:right;">
-								<button ng-click="saveFindingInfo()" ng-disabled="data.type==''||data.name==''" class="btn btn-primary btn-xxs">Save</button>									
-								<button ng-click="cancelFindingInfo()" class="btn btn-warning btn-xxs">Cancel</button>
+								<button ng-click="saveFindingInfo()" ng-disabled="data.type==''||data.name==''||columnForm||columnInvalid()" class="btn btn-primary btn-xxs">Save</button>									
+								<button ng-disabled="columnForm" ng-click="cancelFindingInfo()" class="btn btn-warning btn-xxs">Cancel</button>
 							</td>
 						</tr>
 					</tbody>
@@ -1136,7 +1141,7 @@
 	<div class="modal-footer">
 		<button ng-click="remove()" class="btn btn-warning btn-danger" ng-disabled="loader">Delete</button>  
 		<button ng-click="reset()" class="btn btn-warning btn-danger" ng-disabled="loader">Reset</button>  		  
-		<button ng-disabled="data.type==''||data.name==''" ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="loader">{{saveButton}}</button>
+		<button ng-disabled="data.type==''||data.name==''||loader" ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="loader">{{saveButton}}</button>
 	</div>
 </div>
 
