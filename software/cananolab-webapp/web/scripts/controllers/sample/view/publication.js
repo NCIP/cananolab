@@ -84,7 +84,7 @@ var app = angular.module('angularApp')
 
         
         $scope.print = function() {
-        	window.open('views/sample/view/printPublication.html?sampleId=' + $scope.sampleId.data+'&sampleName='+$scope.sampleData.data[0].sampleName);
+        	window.open('views/sample/view/printPublication.html?sampleId=' + $scope.sampleId.data+'&sampleName='+$scope.sampleName.name);
         };
 
   });

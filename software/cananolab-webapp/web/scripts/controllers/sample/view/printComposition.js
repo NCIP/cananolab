@@ -13,7 +13,7 @@ angular.module('angularApp',[
                 $scope.functionalizingentity = data.functionalizingentity;
                 $scope.chemicalassociation = data.chemicalassociation;
                 $scope.compositionfile = data.compositionfile;
-                $scope.sampleName = sampleService.sampleName($scope.sampleId);
+                $scope.sampleName = $routeParams.sampleName;
 
                 $scope.loader = false;
                 

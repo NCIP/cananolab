@@ -402,6 +402,9 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 			msgs.add("Functionalizing Entity Chemical Name is required.");
 		}
 		if (entityBean.getType().equalsIgnoreCase("biopolymer")) {
+			if(entityBean.getBiopolymer().getType() == null){
+				msgs.add("Biopolymer Type is required.");
+			}
 			if (entityBean.getBiopolymer().getType() != null
 					&& !StringUtils.xssValidate(entityBean.getBiopolymer()
 							.getType())) {
@@ -694,19 +697,21 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 
 		if (bean.getType().equalsIgnoreCase("small molecule")) {
 			SmallMolecule mol = new SmallMolecule();
-			mol.setAlternateName((String) bean.getDomainEntity().get(
-					"alternateName"));
-			if (bean.getDomainEntity().get("id") != null) {
-				mol.setId(new Long((Integer) bean.getDomainEntity().get("id")));
-				mol.setCreatedBy((String) bean.getDomainEntity().get(
-						"createdBy"));
-				mol.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
-						"createdDate")));
-				mol.setSampleComposition(sampleComp);
-
-			} else {
-				mol.setSampleComposition(null);
-
+			if (bean.getDomainEntity() != null) {
+				if(bean.getDomainEntity().get("alternateName")!=null)
+					mol.setAlternateName((String) bean.getDomainEntity().get("alternateName"));
+				if (bean.getDomainEntity().get("id") != null) {
+					mol.setId(new Long((Integer) bean.getDomainEntity().get("id")));
+					mol.setCreatedBy((String) bean.getDomainEntity().get(
+							"createdBy"));
+					mol.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
+							"createdDate")));
+					mol.setSampleComposition(sampleComp);
+	
+				} else {
+					mol.setSampleComposition(null);
+	
+				}
 			}
 			mol.setFunctionCollection(funCollection);
 			mol.setFileCollection(filecoll);
@@ -715,42 +720,49 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 		} else if (bean.getType().equalsIgnoreCase("Biopolymer")) {
 
 			Biopolymer bio = new Biopolymer();
-			if (bean.getDomainEntity().get("id") != null) {
-				bio.setId(new Long((Integer) bean.getDomainEntity().get("id")));
-				bio.setCreatedBy((String) bean.getDomainEntity().get(
-						"createdBy"));
-				bio.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
-						"createdDate")));
-				bio.setSampleComposition(sampleComp);
-
-			} else {
-				bio.setSampleComposition(null);
-
+			if (bean.getDomainEntity() != null) {
+				if(bean.getDomainEntity().get("type")!=null)
+					bio.setType((String) bean.getDomainEntity().get("type"));
+				if(bean.getDomainEntity().get("sequence")!=null)
+					bio.setSequence((String) bean.getDomainEntity().get("sequence"));
+				if (bean.getDomainEntity().get("id") != null) {
+					bio.setId(new Long((Integer) bean.getDomainEntity().get("id")));
+					bio.setCreatedBy((String) bean.getDomainEntity().get(
+							"createdBy"));
+					bio.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
+							"createdDate")));
+					bio.setSampleComposition(sampleComp);
+	
+				} else {
+					bio.setSampleComposition(null);
+				}
 			}
-			bio.setType((String) bean.getDomainEntity().get("type"));
-			bio.setSequence((String) bean.getDomainEntity().get("sequence"));
+			
 			bio.setFunctionCollection(funCollection);
-
 			bio.setFileCollection(filecoll);
 			funcBean.setBiopolymer(bio);
 			domainEntity = bio;
 		} else if (bean.getType().equalsIgnoreCase("Antibody")) {
 			Antibody body = new Antibody();
-
-			if (bean.getDomainEntity().get("id") != null) {
-				body.setId(new Long((Integer) bean.getDomainEntity().get("id")));
-				body.setCreatedBy((String) bean.getDomainEntity().get(
-						"createdBy"));
-				body.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
-						"createdDate")));
-				body.setSampleComposition(sampleComp);
-
-			} else
-				body.setSampleComposition(null);
-
-			body.setType((String) bean.getDomainEntity().get("type"));
-			body.setIsotype((String) bean.getDomainEntity().get("isoType"));
-			body.setSpecies((String) bean.getDomainEntity().get("species"));
+			if (bean.getDomainEntity() != null) {
+				if(bean.getDomainEntity().get("type") != null)
+					body.setType((String) bean.getDomainEntity().get("type"));
+				if(bean.getDomainEntity().get("isoType") != null)
+					body.setIsotype((String) bean.getDomainEntity().get("isoType"));
+				if(bean.getDomainEntity().get("species") != null)
+					body.setSpecies((String) bean.getDomainEntity().get("species"));
+				if (bean.getDomainEntity().get("id") != null) {
+					body.setId(new Long((Integer) bean.getDomainEntity().get("id")));
+					body.setCreatedBy((String) bean.getDomainEntity().get(
+							"createdBy"));
+					body.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
+							"createdDate")));
+					body.setSampleComposition(sampleComp);
+	
+				} else{
+					body.setSampleComposition(null);
+				}
+			}
 			body.setFunctionCollection(funCollection);
 			body.setFileCollection(filecoll);
 			funcBean.setAntibody(body);

@@ -25,7 +25,7 @@ defaultImpl = SimplePropertyDefault.class)
 @JsonSubTypes.Type(value = SimpleSurface.class, name = "SimpleSurface"),
 @JsonSubTypes.Type(value = SimpleTransfection.class, name = "SimpleTransfection")
 })
-public class SimpleCharacterizationProperty {
+public abstract class SimpleCharacterizationProperty {
 	
 	String propertyName;
 	String propertyDisplayName;
@@ -53,7 +53,7 @@ public class SimpleCharacterizationProperty {
 		this.propertyDisplayName = StringUtils.getCamelCaseFormatInWords(this.propertyName);
 	}
 	
-	public void transferToPropertyBean(CharacterizationBean charBean) throws Exception {;}
-	public List<String> getPropertyViewTitles() {return new ArrayList<String>();}
-	public List<String> getPropertyViewValues() {return new ArrayList<String>();}
+	public abstract void transferToPropertyBean(CharacterizationBean charBean) throws Exception;// {;}
+	public abstract List<String> getPropertyViewTitles(); // {return new ArrayList<String>();}
+	public abstract List<String> getPropertyViewValues(); // {return new ArrayList<String>();}
 }

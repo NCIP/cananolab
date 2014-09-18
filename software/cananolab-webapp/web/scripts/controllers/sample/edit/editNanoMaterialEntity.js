@@ -76,40 +76,58 @@ var app = angular.module('angularApp')
                 $scope.nanoEntityForm.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/PolymerInfoEdit.html';
                 if( typeof($scope.nanoEntityForm.domainEntity) != "undefined" ) {
-                    $scope.nanoEntityForm.domainEntity.crossLinkDegree = $scope.nanoEntityForm.domainEntity.crossLinkDegree.toString(); 
-                    $scope.nanoEntityForm.domainEntity.isCrossLinked = $scope.nanoEntityForm.domainEntity.isCrossLinked.toString(); 
+                	if( $scope.nanoEntityForm.domainEntity.crossLinkDegree != null) {
+                		$scope.nanoEntityForm.domainEntity.crossLinkDegree = $scope.nanoEntityForm.domainEntity.crossLinkDegree.toString();
+                	} 
+                	if($scope.nanoEntityForm.domainEntity.isCrossLinked != null){
+                    	$scope.nanoEntityForm.domainEntity.isCrossLinked = $scope.nanoEntityForm.domainEntity.isCrossLinked.toString();
+                	}
                 }                
             }else if( $scope.nanoEntityForm.type == 'carbon nanotube') {
                 $scope.nanoEntityForm.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/CarbonNanotubeInfoEdit.html';
                 if( typeof($scope.nanoEntityForm.domainEntity) != "undefined" ) {
-                    $scope.nanoEntityForm.domainEntity.averageLength = $scope.nanoEntityForm.domainEntity.averageLength.toString(); 
-                    $scope.nanoEntityForm.domainEntity.diameter = $scope.nanoEntityForm.domainEntity.diameter.toString(); 
+                	if($scope.nanoEntityForm.domainEntity.averageLength != null){
+                		$scope.nanoEntityForm.domainEntity.averageLength = $scope.nanoEntityForm.domainEntity.averageLength.toString(); 
+                	}
+                	if($scope.nanoEntityForm.domainEntity.diameter != null){
+                		$scope.nanoEntityForm.domainEntity.diameter = $scope.nanoEntityForm.domainEntity.diameter.toString(); 
+                	}
                 }
             }else if( $scope.nanoEntityForm.type == 'dendrimer') {
                 $scope.nanoEntityForm.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/DendrimerInfoEdit.html';
                 if( typeof($scope.nanoEntityForm.domainEntity) != "undefined" ) {
-                    $scope.nanoEntityForm.domainEntity.generation = $scope.nanoEntityForm.domainEntity.generation.toString(); //json returns float - so manually convert back to string
+                	if($scope.nanoEntityForm.domainEntity.generation != null){
+                		$scope.nanoEntityForm.domainEntity.generation = $scope.nanoEntityForm.domainEntity.generation.toString(); //json returns float - so manually convert back to string
+                	}
                 }
             }else if( $scope.nanoEntityForm.type == 'emulsion') {
                 $scope.nanoEntityForm.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/EmulsionInfoEdit.html';
                 if( typeof($scope.nanoEntityForm.domainEntity) != "undefined" ) {
-                    $scope.nanoEntityForm.domainEntity.isPolymerized = $scope.nanoEntityForm.domainEntity.isPolymerized.toString(); 
+                	if($scope.nanoEntityForm.domainEntity.isPolymerized != null){
+                		$scope.nanoEntityForm.domainEntity.isPolymerized = $scope.nanoEntityForm.domainEntity.isPolymerized.toString(); 
+                	}
                 }
             }else if( $scope.nanoEntityForm.type == 'fullerene') {
                 $scope.nanoEntityForm.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/FullereneInfoEdit.html';
                 if( typeof($scope.nanoEntityForm.domainEntity) != "undefined" ) {
-                    $scope.nanoEntityForm.domainEntity.averageDiameter = $scope.nanoEntityForm.domainEntity.averageDiameter.toString(); 
-                    $scope.nanoEntityForm.domainEntity.numberOfCarbon = $scope.nanoEntityForm.domainEntity.numberOfCarbon.toString(); 
+                	if($scope.nanoEntityForm.domainEntity.averageDiameter != null){
+                		$scope.nanoEntityForm.domainEntity.averageDiameter = $scope.nanoEntityForm.domainEntity.averageDiameter.toString(); 
+                	}
+                	if($scope.nanoEntityForm.domainEntity.numberOfCarbon != null){
+                		$scope.nanoEntityForm.domainEntity.numberOfCarbon = $scope.nanoEntityForm.domainEntity.numberOfCarbon.toString(); 
+                	}
                 }                
             }else if( $scope.nanoEntityForm.type == 'liposome') {
                 $scope.nanoEntityForm.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/LiposomeInfoEdit.html';
                 if( typeof($scope.nanoEntityForm.domainEntity) != "undefined" ) {
-                    $scope.nanoEntityForm.domainEntity.isPolymerized = $scope.nanoEntityForm.domainEntity.isPolymerized.toString(); 
+                	if($scope.nanoEntityForm.domainEntity.isPolymerized != null){
+                		$scope.nanoEntityForm.domainEntity.isPolymerized = $scope.nanoEntityForm.domainEntity.isPolymerized.toString();
+                	}
                 }
             } else {
                 $scope.nanoEntityForm.withProperties = false;
@@ -341,6 +359,7 @@ var app = angular.module('angularApp')
             	$scope.nanoEntityForm.sampleId = $scope.sampleId;
             }
 
+            $scope.messages = [];
             $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveComposingElement',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
                 	$scope.nanoEntityForm = data;
