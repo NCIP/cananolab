@@ -525,11 +525,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		
 		//setting up files
 		List<SimpleFileBean> filelist =  nanoBean.getFiles();
-		fileBean = new FileBean();
-		file = new File();
+		
 		List<FileBean> fileBeanList = new ArrayList<FileBean>();
 		if(filelist!=null){
 		for(SimpleFileBean sFBean : filelist){
+			fileBean = new FileBean();
+			file = new File();
 			file.setType(sFBean.getType());
 			file.setTitle(sFBean.getTitle());
 			file.setDescription(sFBean.getDescription());
