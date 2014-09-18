@@ -742,9 +742,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		FileBean theFile = simpleFinding.transferToNewFileBean();
 		
 		simpleFinding.getErrors().clear();
-		this.validateFileBean(request, simpleFinding.getErrors(), theFile);
-		if (simpleFinding.getErrors().size() > 0)
-			return simpleFinding;
 	
 		this.setServicesInSession(request);
 
@@ -779,6 +776,10 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				newFile.getDomainFile().setUri(null);
 			}
 		}
+		
+		this.validateFileBean(request, simpleFinding.getErrors(), theFile);
+		if (simpleFinding.getErrors().size() > 0)
+			return simpleFinding;
 		
 		findingBean.addFile(newFile, theFileIndex);
 		achar.addFinding(findingBean);
