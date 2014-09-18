@@ -95,13 +95,13 @@ public class SampleServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("sample/characterizationView")
-				.queryParam("sampleId", "100597760") //SY-Sprint-6
+				.queryParam("sampleId", "20917510") //NCL-26-1
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
 
 		assertNotNull(jsonString);
-		assertTrue(jsonString.contains("blood contact"));
+		assertTrue(jsonString.contains("DNT 122006 UV-Vis"));
 	}
 	@Test
 	public void testSummaryView() {
