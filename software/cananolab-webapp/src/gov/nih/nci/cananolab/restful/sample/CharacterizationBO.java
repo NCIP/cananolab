@@ -770,9 +770,13 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			if(newFileData!=null){
 				newFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
 
-				newFile.getDomainFile().setUri(internalUriPath + "/" + timestamp + "_"
-						+ newFile.getDomainFile().getName());
-			} else {
+//				newFile.getDomainFile().setUri(internalUriPath + "/" + timestamp + "_"
+//						+ newFile.getDomainFile().getName());
+				
+				logger.debug("File path: " + newFile.getDomainFile().getUri());
+			} else if(theFile.getDomainFile().getId()!=null){
+				theFile.getDomainFile().setUri(theFile.getDomainFile().getName());
+			}else {
 				newFile.getDomainFile().setUri(null);
 			}
 		}

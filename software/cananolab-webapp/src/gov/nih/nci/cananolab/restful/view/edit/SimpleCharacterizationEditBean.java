@@ -320,34 +320,33 @@ public class SimpleCharacterizationEditBean {
 	 */
 	public CharacterizationBean transferToCharacterizationBean(CharacterizationBean achar) 
 	throws Exception {
-		CharacterizationBean charBean = achar;
-		if (charBean == null || this.charId == 0) 
-			charBean = new CharacterizationBean();
+		if (achar == null || this.charId == 0) 
+			achar = new CharacterizationBean();
 		
-		charBean.setCharacterizationName(this.name);
-		charBean.setCharacterizationType(this.type);
+		achar.setCharacterizationName(this.name);
+		achar.setCharacterizationType(this.type);
 		
-		charBean.setAssayType(assayType);
+		achar.setAssayType(assayType);
 		
 		//Protocol
 		//Use id to find matching one in lookup list
 		//then transfer to a bean
-		transferToProtocolBean(charBean, this.protocolId);
+		transferToProtocolBean(achar, this.protocolId);
 		
 		//POC
-		transferToPOCBean(charBean, this.characterizationSourceId);
+		transferToPOCBean(achar, this.characterizationSourceId);
 		
 		//char date
-		if (charBean.getDomainChar() != null) {
-			charBean.getDomainChar().setDate(characterizationDate);
+		if (achar.getDomainChar() != null) {
+			achar.getDomainChar().setDate(characterizationDate);
 		}
 		
-		charBean.setDescription(this.designMethodsDescription);
-		charBean.setConclusion(this.analysisConclusion);
+		achar.setDescription(this.designMethodsDescription);
+		achar.setConclusion(this.analysisConclusion);
 		
 		transferToPropertyBean(achar);
 		
-		return charBean;
+		return achar;
 	}
 	
 	protected void transferToPOCBean(CharacterizationBean charBean, long selectedId) {

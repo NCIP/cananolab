@@ -130,7 +130,7 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 		return type;
 	}
 	public void setType(String type) {
-		this.type = type;
+		this.type = (type == null) ? "" : type;
 	}
 
 	public Float getMinDimension() {

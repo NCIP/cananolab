@@ -25,7 +25,7 @@ public class SimplePhysicalState extends SimpleCharacterizationProperty{
 	}
 
 	public void setType(String type) {
-		this.type = type;
+		this.type = (type == null) ? "" : type;
 	}
 
 	@Override

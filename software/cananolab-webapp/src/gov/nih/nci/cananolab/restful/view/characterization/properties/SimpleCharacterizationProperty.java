@@ -15,7 +15,6 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
 @JsonTypeInfo(
 use = JsonTypeInfo.Id.NAME,
 include = JsonTypeInfo.As.PROPERTY,
-property = "type",
 defaultImpl = SimplePropertyDefault.class)
 @JsonSubTypes({
 @JsonSubTypes.Type(value = SimpleCytotoxicity.class, name = "SimpleCytotoxicity"),
