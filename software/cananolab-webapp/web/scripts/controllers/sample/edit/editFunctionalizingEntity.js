@@ -233,6 +233,7 @@ var app = angular.module('angularApp')
                 }
 
                 $scope.loader = true;
+                $scope.messages = [];
 	            $http({method: 'POST', url: '/caNanoLab/rest/functionalizingEntity/saveFunction',data: $scope.funcEntityForm}).
                 success(function(data, status, headers, config) {
                 	$scope.funcEntityForm = data;

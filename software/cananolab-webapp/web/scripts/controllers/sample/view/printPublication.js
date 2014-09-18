@@ -11,7 +11,7 @@ angular.module('angularApp',[
                 $scope.publicationCategories = data.publicationCategories;
                 $scope.publicationBean = data.publicationBean;
                 $scope.category2Publications = data.category2Publications;
-                $scope.sampleName = sampleService.sampleName($scope.sampleId);
+                $scope.sampleName = $routeParams.sampleName;
 
                 $scope.loader = false;
             }).

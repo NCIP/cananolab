@@ -359,6 +359,7 @@ var app = angular.module('angularApp')
             	$scope.nanoEntityForm.sampleId = $scope.sampleId;
             }
 
+            $scope.messages = [];
             $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveComposingElement',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
                 	$scope.nanoEntityForm = data;
