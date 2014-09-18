@@ -51,8 +51,9 @@ public class SimpleEnzymeInduction extends SimpleCharacterizationProperty{
 	@Override
 	public void transferToPropertyBean(CharacterizationBean charBean)
 			throws Exception {
-		// TODO Auto-generated method stub
-		
+		EnzymeInduction enzyme = charBean.getEnzymeInduction();
+		String name = (this.enzymeName == null) ? "" : this.enzymeName;
+		enzyme.setEnzyme(name);
 	}
 
 
