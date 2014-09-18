@@ -18,6 +18,13 @@
     </div>
     <div id="loaderGraphic"></div>
   </div>
+  <table border="0" class="contentTitle" summary="layout" width="100%">
+  <tr>
+    <th align="left" scope="col">
+      Sample {{sampleName.name}} Characterization
+    </th>
+  </tr> 
+</table>
 <table border="0" ng-hide="show{{$index}}" cellspacing="0" cellpadding="0" style=""  width="100%" summary="layout" ng-repeat="type in data track by $index" border="0" class="dataTable">
 {{$location.search('sampleId')}}<br>
   <tr class="heading">
@@ -38,7 +45,7 @@
               </td>
             </tr>
             <tr>
-              <td><div ng-include="'./assay.html'"></div>
+              <td><div ng-include="'../../assay.html'"></div>
               </td>
             </tr>
         </table><br />
@@ -52,6 +59,7 @@
 <script src="../../../scripts/controllers/sample/view/printCharacterization.js"></script>
 <script src="../../../bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="../../../scripts/factories/utils.js"></script>
+<script src="../../../scripts/factories/sampleService.js"></script>
 
 
 </div>

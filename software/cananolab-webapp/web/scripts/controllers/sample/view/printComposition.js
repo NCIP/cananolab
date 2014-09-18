@@ -1,7 +1,7 @@
 'use strict';
 angular.module('angularApp',[
     'ngRoute','ngSanitize','ngRoute'])
-    .controller('PrintCompositionCtrl', function (utilsService,$rootScope,$scope,$http,$filter,$routeParams) {
+    .controller('PrintCompositionCtrl', function (utilsService,$rootScope,$scope,$http,$filter,$routeParams,sampleService) {
     	$scope.sampleId = utilsService.getParameterFromURL('sampleId');
         
     	$scope.loader = true;
