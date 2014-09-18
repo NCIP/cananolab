@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleChar
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleCytotoxicity;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleEnzymeInduction;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimplePhysicalState;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimplePropertyDefault;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleShape;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleSolubility;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleSurface;
@@ -48,7 +49,7 @@ public class SimpleCharacterizationEditBean {
 	
 	List<String> charNamesForCurrentType;
 	
-	SimpleCharacterizationProperty property = new SimpleCharacterizationProperty();
+	SimpleCharacterizationProperty property = new SimplePropertyDefault();
 	
 	String designMethodsDescription;
 	
