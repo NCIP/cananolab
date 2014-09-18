@@ -1206,8 +1206,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		} else if (charName.equalsIgnoreCase(
 				"enzyme induction")) {
 			if (achar.getEnzymeInduction().getEnzyme() != null
-					&& !StringUtils.xssValidate(achar.getSolubility()
-							.getSolvent())) {
+					&& !StringUtils.xssValidate(achar.getEnzymeInduction().getEnzyme())) {
 				errors.add(PropertyUtil.getProperty("sample", "achar.enzymeInduction.enzyme.invalid"));
 				status = false;
 			}
