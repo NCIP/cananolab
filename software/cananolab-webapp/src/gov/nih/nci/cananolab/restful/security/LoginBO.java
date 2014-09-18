@@ -51,6 +51,7 @@ public class LoginBO  {
 			}
 			session = request.getSession(true);
 			session.setAttribute("securityService", service);
+			logger.debug("Is user bean null: " + (service.getUserBean() == null));
 			session.setAttribute("user", service.getUserBean());
 			
 		} catch (Exception e) {

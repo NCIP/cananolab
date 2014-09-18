@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,9 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 @JsonTypeInfo(
 use = JsonTypeInfo.Id.NAME,
-include = JsonTypeInfo.As.PROPERTY)
+include = JsonTypeInfo.As.PROPERTY,
+property = "type",
+defaultImpl = SimplePropertyDefault.class)
 @JsonSubTypes({
 @JsonSubTypes.Type(value = SimpleCytotoxicity.class, name = "SimpleCytotoxicity"),
 @JsonSubTypes.Type(value = SimpleEnzymeInduction.class, name = "SimpleEnzymeInduction"),
@@ -23,7 +26,7 @@ include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes.Type(value = SimpleSurface.class, name = "SimpleSurface"),
 @JsonSubTypes.Type(value = SimpleTransfection.class, name = "SimpleTransfection")
 })
-public abstract class SimpleCharacterizationProperty {
+public class SimpleCharacterizationProperty {
 	
 	String propertyName;
 	String propertyDisplayName;
@@ -43,7 +46,7 @@ public abstract class SimpleCharacterizationProperty {
 		this.propertyDisplayName = propertyDisplayName;
 	}
 	
-	public abstract void setLookups(HttpServletRequest request) throws Exception;
+	public void setLookups(HttpServletRequest request) throws Exception {;}
 	
 	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean, boolean needOptions) 
 			throws Exception {
@@ -51,7 +54,7 @@ public abstract class SimpleCharacterizationProperty {
 		this.propertyDisplayName = StringUtils.getCamelCaseFormatInWords(this.propertyName);
 	}
 	
-	public abstract void transferToPropertyBean(CharacterizationBean charBean) throws Exception;
-	public abstract List<String> getPropertyViewTitles();
-	public abstract List<String> getPropertyViewValues();
+	public void transferToPropertyBean(CharacterizationBean charBean) throws Exception {;}
+	public List<String> getPropertyViewTitles() {return new ArrayList<String>();}
+	public List<String> getPropertyViewValues() {return new ArrayList<String>();}
 }

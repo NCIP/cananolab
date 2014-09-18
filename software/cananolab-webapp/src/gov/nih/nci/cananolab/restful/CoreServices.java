@@ -77,7 +77,8 @@ public class CoreServices {
     public Response getTabs(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("homePage") String homePage) {
 		
-		System.out.println("In getTabs");
+		logger.debug("In getTabs. SessionId: " + httpRequest.getSession().getId());
+		
 		
 		TabGenerationBO tabGen = (TabGenerationBO)applicationContext.getBean("tabGenerationBO");
 		SimpleTabsBean tabs = tabGen.getTabs(httpRequest, homePage);
