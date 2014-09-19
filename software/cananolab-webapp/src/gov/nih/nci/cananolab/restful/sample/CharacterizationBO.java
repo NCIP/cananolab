@@ -587,7 +587,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		achar.addExperimentConfig(configBean);
 		
 		//transfer other data fields of the char
-		charEditBean.transferToCharacterizationBean(achar);
+		achar = charEditBean.transferToCharacterizationBean(achar);
 		
 		// This is to validate characterization data fields
 		if (!validateInputs(request, achar, charEditBean.getMessages())) {

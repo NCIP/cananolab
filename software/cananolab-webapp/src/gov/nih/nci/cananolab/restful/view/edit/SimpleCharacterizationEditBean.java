@@ -49,7 +49,7 @@ public class SimpleCharacterizationEditBean {
 	
 	List<String> charNamesForCurrentType;
 	
-	SimpleCharacterizationProperty property = new SimplePropertyDefault();
+	SimpleCharacterizationProperty property = new SimpleCharacterizationProperty();
 	
 	String designMethodsDescription;
 	
@@ -321,7 +321,7 @@ public class SimpleCharacterizationEditBean {
 	 */
 	public CharacterizationBean transferToCharacterizationBean(CharacterizationBean achar) 
 	throws Exception {
-		if (achar == null || this.charId == 0) 
+		if (achar == null) 
 			achar = new CharacterizationBean();
 		
 		achar.setCharacterizationName(this.name);

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.codehaus.jackson.annotate.JsonSubTypes;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.annotate.JsonTypeName;
 
 @JsonTypeInfo(
 use = JsonTypeInfo.Id.NAME,
@@ -25,10 +26,11 @@ defaultImpl = SimplePropertyDefault.class)
 @JsonSubTypes.Type(value = SimpleSurface.class, name = "SimpleSurface"),
 @JsonSubTypes.Type(value = SimpleTransfection.class, name = "SimpleTransfection")
 })
-public abstract class SimpleCharacterizationProperty {
+@JsonTypeName("SimpleCharacterizationProperty")
+public class SimpleCharacterizationProperty {
 	
-	String propertyName;
-	String propertyDisplayName;
+	String propertyName = "";
+	String propertyDisplayName = "";
 	
 	public String getPropertyName() {
 		return propertyName;
@@ -53,7 +55,7 @@ public abstract class SimpleCharacterizationProperty {
 		this.propertyDisplayName = StringUtils.getCamelCaseFormatInWords(this.propertyName);
 	}
 	
-	public abstract void transferToPropertyBean(CharacterizationBean charBean) throws Exception;// {;}
-	public abstract List<String> getPropertyViewTitles(); // {return new ArrayList<String>();}
-	public abstract List<String> getPropertyViewValues(); // {return new ArrayList<String>();}
+	public void transferToPropertyBean(CharacterizationBean charBean) throws Exception {;}
+	public List<String> getPropertyViewTitles() {return new ArrayList<String>();}
+	public List<String> getPropertyViewValues() {return new ArrayList<String>();}
 }
