@@ -22,6 +22,8 @@ import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleSolu
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleSurface;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleTransfection;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -328,6 +330,11 @@ public class SimpleCharacterizationEditBean {
 		achar.setCharacterizationType(this.type);
 		
 		achar.setAssayType(assayType);
+		
+		if (this.characterizationDate != null) {
+			String dateString = DateUtils.convertDateToString(this.characterizationDate, Constants.DEFAULT_DATE_FORMAT);
+			achar.setDateString(dateString);
+		}
 		
 		//Protocol
 		//Use id to find matching one in lookup list

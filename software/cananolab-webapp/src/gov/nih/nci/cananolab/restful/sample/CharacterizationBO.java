@@ -256,6 +256,10 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		charBean.setupDomain(user.getLoginName());
+		
+		if (charBean.getDomainChar().getDate() == null && simpleEdit.getCharacterizationDate() != null)
+			charBean.getDomainChar().setDate(simpleEdit.getCharacterizationDate());
+		
 		Boolean newChar = true;
 		if (charBean.getDomainChar().getId() != null) {
 			newChar = false;
