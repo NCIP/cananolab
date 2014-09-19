@@ -1,5 +1,5 @@
-<div class="modal-header">
 <div ng-class="{formFocus:loader}">
+<div class="modal-header">
     <h3 class="modal-title pull-left">Point Of Contact Information</h3>
     <div class="pull-right">
         <a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
@@ -185,11 +185,12 @@
     <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="!poc.organization.name || loader">Save</button>
 </div>
 
-  <div id="loader" ng-show="loader">
+
+
+</div>
+  <div id="loaderPopup" style="top:-300px;left:300px" ng-show="loader">
     <div id="loaderText">
       {{loaderMessage}}
     </div>
     <div id="loaderGraphic"></div>
   </div>
-
-</div>

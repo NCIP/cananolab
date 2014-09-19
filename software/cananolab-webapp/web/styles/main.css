@@ -1213,30 +1213,19 @@ a:active.mainMenuLink.home {
 a:hover.mainMenuLink.home {
     color: #fff /* constant: white */
 }
-
-/*#loader {
+#loaderPopup {
     position: relative;
     top: -300px; left: 350px;
-    z-index: 100
+    z-index: 100;
 }
-
-#loader.sample{
-    position: relative;
-    top: -100px; left: 350px;
-    z-index: 100
-}
-
-#loader.sample.offset{
-    position: relative;
-    top: 0px; left: 350px;
-    z-index: 100
-}*/
 
 #loader {
     position: fixed;
     top: 50%; left: 600px;
     z-index: 100
 }
+
+
 
 #loader.sample{
     position: fixed;

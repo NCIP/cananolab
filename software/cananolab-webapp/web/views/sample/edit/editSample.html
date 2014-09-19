@@ -1,6 +1,6 @@
 <div class="nanoPageContainer">
 <div class="spacer">
-  <div ng-class="{formFocus:loader}">
+  <div ng-class="{formFocus:loader||generateLoader}">
 
 <!-- Menu Bar -->
     <table border="0" class="contentTitle" summary="layout" width="100%">
@@ -153,7 +153,7 @@
 
                         <td>
                             <button ng-if="!sampleData.dataAvailability" ng-click="generateDataAvailability(sampleId.data)" class="btn btn-primary btn-xxs">Generate</button>
-                            <div id="loader" class="sample offset" ng-show="loader">
+                            <div id="loader" class="sample offset" ng-show="generateLoader">
                                 <div id="loaderText">
                                     Generating Data Availability Metrics
                                 </div>
