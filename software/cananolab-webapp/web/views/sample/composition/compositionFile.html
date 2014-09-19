@@ -34,7 +34,7 @@
                                             <span ng-if="indFile.isImage">
                                                 {{indFile.Title}}
                                                 <br />
-                                                <a href="#" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}', '{{indFile.fileId}}')">
+                                                <a href="" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}', '{{indFile.fileId}}');  return false;">
                                                 	<img src="/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}" border="0" width="150" alt="uploaded image"> 
                                                 </a>        
                                                 </span>

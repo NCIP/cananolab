@@ -329,6 +329,9 @@ var app = angular.module('angularApp')
 	                else {
 	                    $scope.showInherentFunctionTable = false;
 	                }
+	            	
+	            	$scope.showProperties();
+	            	
 	                $scope.loader = false;
 	            }).
 	            error(function(data, status, headers, config) {
@@ -568,6 +571,7 @@ var app = angular.module('angularApp')
                         $scope.funcEntityForm = data;
                         $scope.files = $scope.funcEntityForm.fileList;
                         $scope.addNewFile = false;
+                        $scope.showProperties();
                         $scope.loader = false;
                     }).
                     error(function(data, status, headers, config) {
