@@ -319,18 +319,17 @@ var app = angular.module('angularApp')
 
     // generates data availability //
     $scope.generateDataAvailability = function(sampleId) {
-        $scope.generateLoader = true;
+        $scope.loader = true;
 
           $http({method: 'GET', url: '/caNanoLab/rest/sample/regenerateDataAvailability',params: {"sampleId":sampleId}}).
             success(function(data, status, headers, config) {
                 // $scope.accessUsers = data;
                 $scope.sampleData = data;
-                $scope.generateLoader = false;
+                $scope.loader = false;
             }).
             error(function(data, status, headers, config) {
-                alert(data);
                 $scope.message = data;
-                $scope.generateLoader = false;                
+                $scope.loader = false;                
             });        
 
     };

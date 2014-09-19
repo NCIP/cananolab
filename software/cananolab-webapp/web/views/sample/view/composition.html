@@ -1,4 +1,6 @@
 <div class="spacer">
+<div ng-class="{formFocus:loader}"> 
+
     <table border="0" class="contentTitle" summary="layout" width="100%">
       <tr>
         <th align="left" scope="col">
@@ -113,10 +115,11 @@
         </td>
     </tr>
 </table>
+</div>
+</div>
   <div id="loader" class="sample" ng-show="loader">
     <div id="loaderText">
       Loading
     </div>
     <div id="loaderGraphic"></div>
   </div>
-</div>

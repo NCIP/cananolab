@@ -1214,7 +1214,7 @@ a:hover.mainMenuLink.home {
     color: #fff /* constant: white */
 }
 
-#loader {
+/*#loader {
     position: relative;
     top: -300px; left: 350px;
     z-index: 100
@@ -1230,7 +1230,26 @@ a:hover.mainMenuLink.home {
     position: relative;
     top: 0px; left: 350px;
     z-index: 100
+}*/
+
+#loader {
+    position: fixed;
+    top: 50%; left: 600px;
+    z-index: 100
 }
+
+#loader.sample{
+    position: fixed;
+    top: 50%; left: 600px;
+    z-index: 100
+}
+
+#loader.sample.offset{
+    position: fixed;
+    top: 50%; left: 600px;
+    z-index: 100
+}
+
 
 #loaderText {
     padding-top: 0;

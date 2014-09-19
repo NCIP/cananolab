@@ -1,5 +1,7 @@
 <div class="nanoPageContainer">
 <div class="spacer">
+  <div ng-class="{formFocus:loader}">
+
 <!-- Menu Bar -->
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
@@ -134,7 +136,7 @@
                    </td>
                 </tr>
 
-				<tr ng-show="sampleData.pointOfContacts.length && sampleData.errors.length==0"">
+				<tr ng-show="sampleData.pointOfContacts.length && sampleData.errors.length==0">
                     <td colspan="5">
                         <table>
                             <ng-include src="'/caNanoLab/views/manageAccessibility.html'"></ng-include>
@@ -151,7 +153,7 @@
 
                         <td>
                             <button ng-if="!sampleData.dataAvailability" ng-click="generateDataAvailability(sampleId.data)" class="btn btn-primary btn-xxs">Generate</button>
-                            <div id="loader" class="sample offset" style="left:100px;top:-15px;" ng-show="generateLoader">
+                            <div id="loader" class="sample offset" ng-show="loader">
                                 <div id="loaderText">
                                     Generating Data Availability Metrics
                                 </div>
@@ -204,13 +206,14 @@
 
 
 </div>
+
+
+</div>
+
+</div></div>
 <div id="loader" class="sample offset" ng-show="loader">
     <div id="loaderText">
         {{loaderText}}
     </div>
     <div id="loaderGraphic"></div>
-</div>
-
-</div>
-
 </div>
