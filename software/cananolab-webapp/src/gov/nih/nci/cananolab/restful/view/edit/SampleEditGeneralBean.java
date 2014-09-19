@@ -229,6 +229,7 @@ public class SampleEditGeneralBean {
 		this.sampleName = sampleBean.getDomain().getName();
 		this.sampleId = sampleBean.getDomain().getId();
 		this.userIsCurator = sampleBean.getUser().isCurator();
+		this.isPublic = sampleBean.getPublicStatus();
 		
 		transferPointOfContactData(sampleBean);
 		
