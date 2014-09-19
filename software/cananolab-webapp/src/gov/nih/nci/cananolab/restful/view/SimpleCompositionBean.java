@@ -1,26 +1,17 @@
 package gov.nih.nci.cananolab.restful.view;
 
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.restful.sample.InitCompositionSetup;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
@@ -225,7 +216,6 @@ public class SimpleCompositionBean {
 							}
 
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 
@@ -359,7 +349,6 @@ public class SimpleCompositionBean {
 
 								}
 							} catch (Exception e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 							//
@@ -369,6 +358,7 @@ public class SimpleCompositionBean {
 							Functions = new HashMap<String, Object>();
 							functionsList = new ArrayList<Map<String, Object>>();
 							for (FunctionBean func : funcBean.getFunctions()) {
+								Functions = new HashMap<String, Object>();
 
 								Functions.put("withImagingFunction",
 										funcBean.isWithImagingFunction());
@@ -389,8 +379,8 @@ public class SimpleCompositionBean {
 								// funcBean.getDescription());
 								// Functions.put("Description",
 								// funcBean.getDescriptionDisplayName());
+								functionsList.add(Functions);
 							}
-							functionsList.add(Functions);
 							function.put("Functions", functionsList);
 						}
 						if (funcBean.getActivationMethodDisplayName() != null) {
