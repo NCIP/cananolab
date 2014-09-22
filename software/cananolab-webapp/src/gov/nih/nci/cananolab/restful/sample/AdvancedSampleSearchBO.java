@@ -17,6 +17,7 @@ package gov.nih.nci.cananolab.restful.sample;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.util.SampleUtil;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleExporter;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
@@ -28,6 +29,7 @@ import gov.nih.nci.cananolab.util.ExportUtils;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -259,15 +261,41 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		//return mapping.findForward("inputForm");
 	}
 
-	public void setup(HttpServletRequest request)
+//	public void setup(HttpServletRequest request)
+//			throws Exception {
+//		
+//		request.getSession().removeAttribute("advancedSampleSearchForm");
+//		InitCharacterizationSetup.getInstance()
+//				.getDecoratedCharacterizationTypes(request);
+//		request.getSession().removeAttribute("advancedSampleSearchResults");
+//		request.getSession().removeAttribute("samplesResultList");
+//		request.getSession().removeAttribute("samplesFullList");
+//		//return mapping.getInputForward();
+//	}
+	
+	public Map<String, List<String>> setup(HttpServletRequest request)
 			throws Exception {
 		request.getSession().removeAttribute("advancedSampleSearchForm");
-		InitCharacterizationSetup.getInstance()
-				.getDecoratedCharacterizationTypes(request);
+		
 		request.getSession().removeAttribute("advancedSampleSearchResults");
 		request.getSession().removeAttribute("samplesResultList");
 		request.getSession().removeAttribute("samplesFullList");
-		//return mapping.getInputForward();
+		
+		List<String> charTypes = InitCharacterizationSetup.getInstance()
+				.getDecoratedCharacterizationTypes(request);
+		
+		//////////////////////////
+		//From simple search setup
+
+		InitSampleSetup.getInstance().setLocalSearchDropdowns(request);
+		request.getSession().removeAttribute("sampleSearchResults");
+		
+		Map<String, List<String>> listMap = SampleUtil.reformatLocalSearchDropdownsInSession(request.getSession());
+		//Replace char types with the "decorated" version
+		listMap.put("characterizationTypes", charTypes);
+		
+		return listMap;
+		
 	}
 
 	/**

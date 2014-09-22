@@ -68,26 +68,28 @@ public class InitCharacterizationSetup {
 	}
 
 	//public List<LabelValueBean> getDecoratedCharacterizationTypes(
-	public void getDecoratedCharacterizationTypes(
+	public List<String> getDecoratedCharacterizationTypes(
 			HttpServletRequest request) throws Exception {
-//		List<LabelValueBean> charTypes = new ArrayList<LabelValueBean>();
-//		List<String> types = getDefaultCharacterizationTypes(request
-//				.getSession().getServletContext());
+		//List<LabelValueBean> charTypes = new ArrayList<LabelValueBean>();
+		List<String> types = getDefaultCharacterizationTypes(request
+				.getSession().getServletContext());
+		
 //		for (String type : types) {
 //			LabelValueBean bean = new LabelValueBean(type, type);
 //			charTypes.add(bean);
 //		}
-//		SortedSet<String> otherTypes = LookupService
-//				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.characterization.OtherCharacterization");
-//		for (String type : otherTypes) {
-//			if (!types.contains(type)) {
+		SortedSet<String> otherTypes = LookupService
+				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.characterization.OtherCharacterization");
+		for (String type : otherTypes) {
+			if (!types.contains(type)) {
 //				LabelValueBean bean = new LabelValueBean("[" + type + "]", type);
 //				charTypes.add(bean);
-//			}
-//		}
+				types.add("[" + type + "]");
+			}
+		}
 //		request.getSession().setAttribute("decoratedCharacterizationTypes",
 //				charTypes);
-//		return charTypes;
+		return types;
 	}
 
 	/**

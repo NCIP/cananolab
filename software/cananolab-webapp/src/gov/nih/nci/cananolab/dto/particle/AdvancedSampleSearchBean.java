@@ -26,9 +26,11 @@ public class AdvancedSampleSearchBean {
 	private List<SampleQueryBean> sampleQueries = new ArrayList<SampleQueryBean>();
 	private List<CompositionQueryBean> compositionQueries = new ArrayList<CompositionQueryBean>();
 	private List<CharacterizationQueryBean> characterizationQueries = new ArrayList<CharacterizationQueryBean>();
+	
 	private SampleQueryBean theSampleQuery = new SampleQueryBean();
 	private CompositionQueryBean theCompositionQuery = new CompositionQueryBean();
 	private CharacterizationQueryBean theCharacterizationQuery = new CharacterizationQueryBean();
+	
 	private String sampleLogicalOperator = "and";
 	private String compositionLogicalOperator = "and";
 	private String characterizationLogicalOperator = "and";

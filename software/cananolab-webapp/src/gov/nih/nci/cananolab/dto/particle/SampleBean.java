@@ -318,7 +318,6 @@ public class SampleBean extends SecuredDataBean {
 		this.mincharScore = mincharScore;
 	}
 
-	@JsonIgnore
 	public PointOfContactBean getThePOC() {
 		return thePOC;
 	}

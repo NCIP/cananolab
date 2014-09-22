@@ -2,8 +2,7 @@ package gov.nih.nci.cananolab.restful.util;
 
 import java.util.List;
 
-import gov.nih.nci.cananolab.restful.SampleServices;
-import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
+import org.apache.log4j.Logger;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
