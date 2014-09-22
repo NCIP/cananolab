@@ -37,11 +37,19 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/searchSample', {
         templateUrl: 'views/sample/view/sampleSearch.html',
         controller: 'SampleSearchCtrl'
-      })   
+      }) 
+      .when('/advancedSampleSearch', {
+        templateUrl: 'views/sample/view/advancedSampleSearch.html',
+        controller: 'AdvancedSampleSearchCtrl'
+      })         
       .when('/sampleResults', {
         templateUrl: 'views/sample/view/sampleResults.html',
         controller: 'SampleResultsCtrl'
-      })                  
+      })     
+      .when('/advancedSampleResults', {
+        templateUrl: 'views/sample/view/advancedSampleResults.html',
+        controller: 'AdvancedSampleResultsCtrl'
+      })                        
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
