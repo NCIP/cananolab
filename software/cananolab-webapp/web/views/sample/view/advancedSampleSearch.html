@@ -1,0 +1,394 @@
+<div class="spacer">{{searchSampleForm}}
+<table class="contentTitle" summary="layout" width="100%" border="0">
+	<tbody><tr>
+		<th scope="col" align="left">
+			Advanced Sample Search
+		</th>
+		
+			<td width="30%" align="right">
+  
+
+	<a class="helpText" href="/sampleSearch">Basic Search</a>
+	&nbsp;
+  
+<a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>
+&nbsp;				
+		
+  
+<a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+&nbsp;
+
+			</td>
+		
+	</tr>
+</tbody></table>
+<br>
+<br>
+
+	
+	
+	
+
+
+
+
+	<table class="submissionView" width="100%" align="center">
+		<tbody><tr>
+			<th scope="col">
+				Sample Criteria
+			</th>
+		</tr>
+		<tr ng-show="searchSampleForm.theSampleQuery.length">
+			<td>
+				<table id="sampleQueryTable" class="editTableWithGrid" summary="layout" width="85%">
+					<tbody id="sampleQueryRows">
+						<tr id="samplePattern" ng-repeat="sample in searchSampleForm.theSampleQuery">
+							<td>
+								<span id="nameTypeValue">{{sample.nameType}}</span>
+							</td>
+							<td>
+								<span id="sampleOperandValue">{{sample.operand}}</span>
+							</td>
+							<td>
+								<span id="nameValue">{{sample.name}}</span>
+							</td>
+							<td>
+								<button ng-click="editSampleCriteria(sample)">Edit</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table id="newSampleQuery" style="display: block;" class="promptbox" summary="layout">
+					<tbody><tr>
+						<td>
+
+							<label for="nameType">&nbsp;</label>
+							<select ng-model="theSampleQuery.nameType" name="theSampleQuery.nameType" ng-init="theSampleQuery.nameType=''" id="nameType"><option value="">
+									-- Please Select --
+								</option>
+								<option value="sample name">
+									sample name
+								</option>
+								<option value="point of contact name">
+									point of contact name
+								</option></select>
+						</td>
+						<td>
+						    <label for="sampleOperand">&nbsp;</label>
+							<select ng-model="theSampleQuery.operand" name="theSampleQuery.operand" ng-init="theSampleQuery.operand=''" id="sampleOperand"><option value="">
+									-- Please Select --
+								</option>
+								<option value="contains">contains</option>
+								<option value="equals">equals</option></select>
+						</td>
+						<td>
+						    <label for="name">&nbsp;</label>
+							<input ng-model="theSampleQuery.name" name="theSampleQuery.name" size="50" value="" id="name" type="text">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<table summary="layout" cellspacing="0" align="left">
+								<tbody><tr>
+									<td>
+										<button ng-click="updateSampleCriteria()" ng-disabled="!theSampleQuery.nameType||!theSampleQuery.operand||!theSampleQuery.name">Add</button>	
+									</td>
+									<td>
+										<button class="promptButton" value="Reset" ng-click="clearSampleQuery();">Reset</button>
+									</td>
+									<td>
+										<button ng-show="!isNewSample" class="promptButton" ng-click="removeSample();">Remove</button>
+									</td>
+								</tr>
+							</tbody></table>
+						</td>
+					</tr>
+				</tbody></table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="sampleLogicalOperator" style="display: none">
+					<input name="searchBean.sampleLogicalOperator" value="and" checked="checked" id="sampleLogicalOperatorAnd" type="radio">
+					<label for="sampleLogicalOperatorAnd">AND</label>
+					<input name="searchBean.sampleLogicalOperator" value="or" id="sampleLogicalOperatorOr" type="radio">
+					<label for="sampleLogicalOperatorOr">OR</label>
+				</div>
+			</td>
+		</tr>
+	</tbody></table>
+	<br>
+	<table class="submissionView" width="100%" align="center">
+		<tbody><tr>
+			<th scope="col">
+				Composition Criteria
+			</th>
+		</tr>
+		<tr>
+			<td>
+				<table id="compositionQueryTable" class="editTableWithGrid" summary="layout" width="85%">
+					<tbody id="compositionQueryRows"><tr id="compPattern">
+							<td width="25%">
+								<span id="compTypeValue">Composition Type</span>
+							</td>
+							<td width="20%">
+								<span id="entityTypeValue">Entity Type</span>
+							</td>
+							<td width="20%">
+								<span id="compOperandValue">Operand</span>
+							</td>
+							<td width="20%">
+								<span id="chemicalNameValue">Chemical Name</span>
+							</td>
+							<td>
+								<input class="noBorderButton" id="compEdit" value="Edit" onclick="editCompositionQuery(this.id);" type="button">
+							</td>
+						</tr></tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table id="newCompositionQuery" style="display: block;" class="promptbox" summary="layout">
+					<tbody><tr>
+						<td>
+							<input name="searchBean.theCompositionQuery.id" value="" id="compQueryId" type="hidden">
+							<label for="compType">&nbsp;</label>
+							<select name="searchBean.theCompositionQuery.compositionType" onchange="javascript:setCompositionEntityOptions();" id="compType"><option value="">
+									-- Please Select --
+								</option>
+								<option value="nanomaterial entity">
+									nanomaterial entity
+								</option>
+								<option value="functionalizing entity">
+									functionalizing entity
+								</option>
+								<option value="function">
+									function
+								</option></select>
+						</td>
+						<td>
+							<label for="entityType">&nbsp;</label>
+							<select name="searchBean.theCompositionQuery.entityType" id="entityType"><option value="">
+									-- Please Select --
+								</option></select>
+						</td>
+						<td class="cellLabel">
+							<span id="compChemicalNameLabel"><label for="chemicalName">with chemical name</label></span>
+						</td>
+						<td>
+							<label for="compOperand">&nbsp;</label>
+							<select name="searchBean.theCompositionQuery.operand" id="compOperand"><option value="">
+									-- Please Select --
+								</option>
+								<option value="contains">contains</option>
+<option value="equals">equals</option></select>
+						</td>
+						<td>
+							<input name="searchBean.theCompositionQuery.chemicalName" size="50" value="" id="chemicalName" type="text">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="5">
+							<table summary="layout" cellspacing="0" align="left">
+								<tbody><tr>
+									<td>
+										<input class="promptButton" value="Add" onclick="addCompositionQuery();show('characterizationQueryTable');" type="button">
+									</td>
+									<td>
+										<input class="promptButton" value="Reset" onclick="clearCompositionQuery();" type="button">
+									</td>
+									<td>
+										<input style="display: none;" class="promptButton" id="deleteCompositionQuery" value="Remove" onclick="deleteTheCompositionQuery()" type="button">
+									</td>
+								</tr>
+							</tbody></table>
+						</td>
+					</tr>
+				</tbody></table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="compositionLogicalOperator" style="display: none">
+					<input name="searchBean.compositionLogicalOperator" value="and" checked="checked" id="compositionLogicalOperatorAnd" type="radio">
+					<label for="compositionLogicalOperatorAnd">AND</label>
+					<input name="searchBean.compositionLogicalOperator" value="or" id="compositionLogicalOperatorOr" type="radio">
+					<label for="compositionLogicalOperatorOr">OR</label>
+				</div>
+			</td>
+		</tr>
+	</tbody></table>
+	<br>
+	<table class="submissionView" width="100%" align="center">
+		<tbody><tr>
+			<th scope="col">
+				Characterization Criteria
+			</th>
+		</tr>
+		<tr>
+			<td>
+				<table id="characterizationQueryTable" class="editTableWithGrid" summary="layout" width="85%">
+					<tbody id="characterizationQueryRows"><tr id="charPattern">
+							<td width="15%">
+								<span id="charTypeValue">Characterization Type</span>
+							</td>
+							<td width="15%">
+								<span id="charNameValue">Characterization Name</span>
+							</td>
+							<td width="15%">
+								<span id="datumNameValue">Datum Name</span>
+							</td>
+							<td width="10%">
+								<span id="charOperandValue">Operand</span>
+							</td>
+							<td width="15%">
+								<span id="datumValueValue">Datum Value</span>
+							</td>
+							<td>
+								<span id="datumValueUnitValue">Datum Unit</span>
+							</td>
+							<td>
+								<input class="noBorderButton" id="charEdit" value="Edit" onclick="editCharacterizationQuery(this.id);" type="button">
+							</td>
+						</tr></tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table id="newCharacterizationQuery" style="display: block;" class="promptbox" summary="layout">
+					<tbody><tr>
+						<td>
+							<input name="searchBean.theCharacterizationQuery.id" value="" id="charQueryId" type="hidden">
+							<label for="charType">&nbsp;</label>
+							<select name="searchBean.theCharacterizationQuery.characterizationType" onchange="javascript:setCharacterizationOptions();" id="charType"><option value="">
+									-- Please Select --
+								</option>
+								<option value="physico-chemical characterization">physico-chemical characterization</option>
+<option value="in vitro characterization">in vitro characterization</option>
+<option value="in vivo characterization">in vivo characterization</option>
+<option value="ex vivo">[ex vivo]</option></select>
+						</td>
+						<td><label for="charName">&nbsp;</label>
+							<select name="searchBean.theCharacterizationQuery.characterizationName" onchange="javascript:setDatumNameOptionsByCharName();" id="charName"><option value="">
+									-- Please Select --
+								</option></select>
+						</td>
+						<td><label for="datumName">&nbsp;</label>
+							<select name="searchBean.theCharacterizationQuery.datumName" onchange="javascript:setDatumValueUnitOptions();setCharacterizationOperandOptions();setDatumValueOptions()" id="datumName"><option value="">
+									-- Please Select --
+								</option></select>
+						</td>
+						<td><label for="charOperand">&nbsp;</label>
+							<select name="searchBean.theCharacterizationQuery.operand" id="charOperand"><option value="">
+									-- Please Select --
+								</option>
+								<option value="=">=</option>
+<option value=">">&gt;</option>
+<option value=">=">&gt;=</option>
+<option value="<">&lt;</option>
+<option value="<=">&lt;=</option></select>
+						</td>
+						<td>
+							<div id="datumValueTextBlock" style="display:none">
+								<label for="datumValue">&nbsp;</label>
+								<input name="searchBean.theCharacterizationQuery.datumValue" size="10" value="" id="datumValue" type="text">
+								
+							</div>
+							<div id="datumValueSelectBlock" style="display:none">
+								<label for="datumValueSelect">&nbsp;</label>
+								<select name="searchBean.theCharacterizationQuery.datumValue" id="datumValueSelect"><option value="">
+										-- Please Select --
+									</option>
+									<option value="1">true</option>
+<option value="0">false</option></select>
+							</div>
+						</td>
+						<td>
+							<div id="datumValueUnitBlock" style="display: none">
+							    <label for="datumValueUnit">&nbsp;</label>
+								<select name="searchBean.theCharacterizationQuery.datumValueUnit" id="datumValueUnit"><option value="">
+									</option></select>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							<table summary="layout" cellspacing="0" align="left">
+								<tbody><tr>
+									<td>
+										<input class="promptButton" value="Add" onclick="addCharacterizationQuery();show('characterizationQueryTable');" type="button">
+									</td>
+									<td>
+										<input class="promptButton" value="Reset" onclick="clearCharacterizationQuery();" type="button">
+									</td>
+									<td>
+										<input style="display: none;" class="promptButton" id="deleteCharacterizationQuery" value="Remove" onclick="deleteTheCharacterizationQuery()" type="button">
+									</td>
+								</tr>
+							</tbody></table>
+						</td>
+					</tr>
+				</tbody></table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="characterizationLogicalOperator" style="display: none">
+					<input name="searchBean.characterizationLogicalOperator" value="and" checked="checked" id="characterizationLogicalOperatorAnd" type="radio">
+					<label for="characterizationLogicalOperatorAnd">AND</label>
+					<input name="searchBean.characterizationLogicalOperator" value="or" id="characterizationLogicalOperatorOr" type="radio">
+					<label for="characterizationLogicalOperatorOr">OR</label>
+				</div>
+			</td>
+		</tr>
+	</tbody></table>
+	<br>
+	<table class="submissionView" summary="layout" style="border: 0" width="100%" align="center">
+		<tbody><tr>
+			<td>
+				<div id="logicalOperator" style="display: block">
+					<input name="searchBean.logicalOperator" value="and" id="masterLogicalOperatorAnd" type="radio">
+					<label for="masterLogicalOperatorAnd">AND</label>
+					<input name="searchBean.logicalOperator" value="or" checked="checked" id="masterLogicalOperatorOr" type="radio">
+					<label for="masterLogicalOperatorOr">OR</label>
+				</div>
+			</td>
+		</tr>
+	</tbody></table>
+	<br>
+	
+	
+	
+	
+	
+
+
+
+<table class="invisibleTable" summary="layout" width="100%">
+	<tbody><tr>
+		<td align="center">
+			<span class="formMessage"> <em>Searching without any
+					parameters returns all samples.</em> </span>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+			<input value="Reset" onclick="javascript: location.href = 'advancedSampleSearch.do?dispatch=setup&amp;page=0'" type="reset">
+			&nbsp;
+			
+				
+				
+					<input value="Search" type="submit">
+					<input name="dispatch" value="search" type="hidden">
+					<input name="page" value="1" type="hidden">
+				
+			
+		</td>
+	</tr>
+</tbody></table>

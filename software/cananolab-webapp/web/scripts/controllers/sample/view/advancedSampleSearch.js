@@ -2,61 +2,71 @@
 var app = angular.module('angularApp')
 
   .controller('AdvancedSampleSearchCtrl', function (sampleService,navigationService,groupService,$rootScope,$scope,$http,$location) {
-    $scope.searchSampleForm = {};
     $scope.sampleData = sampleService.sampleData;
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();   
-    
+
+    // setup object where all data is stored //
+    $scope.searchSampleForm = {};
+    $scope.searchSampleForm.theSampleQuery = [];
+    $scope.searchSampleForm.theCompositionQuery = [];
+    $scope.searchSampleForm.theCharacterizationQuery = [];
+    $scope.isNewSample = true;
+    $scope.isNewCharacterization = true;
+    $scope.isNewComposition = true;
+
+
+
+    // setup initial objects where individual temporary objects will be stored //
+    // on add or remove they get pushed or removed from the searchSampleForm //
+    $scope.theSampleQuery = {};
+    $scope.theCompositionQuery = {};
+    $scope.theCharacterizationQuery = {};
+
+
+    $scope.data = {"functionalizingEntityTypes":["Magnetic Particle","Monomer","Polymer","Quantum Dot","antibody","biopolymer","radioisotope","small molecule"],"characterizationTypes":["physico-chemical characterization","in vitro characterization","in vivo characterization","[Canano_char_type]","[SY-New-Char-Type]","[TEST111]","[ex vivo]"],"nanomaterialEntityTypes":["biopolymer","carbon","carbon black","carbon nanotube","dendrimer","emulsion","fullerene","liposome","metal oxide","metal particle","metalloid","nanohorn","nanolipogel","nanorod","nanoshell","polymer","quantum dot","silica"],"functionTypes":["TEST TYPE","endosomolysis","imaging function","other","targeting function","test function","therapeutic function","transfection"]};
+
+    // initial rest call to setup form dropdowns //
     $scope.$on('$viewContentLoaded', function(){
-      $http({method: 'GET', url: '/caNanoLab/rest/sample/setup'}).
+      $http({method: 'GET', url: '/caNanoLab/rest/sample/setupAdvancedSearch'}).
       success(function(data, status, headers, config) {
-        $scope.functionalizingEntityTypesList = data.functionalizingEntityTypes;
-        $scope.characterizationTypesList = data.characterizationTypes;
-        $scope.nanomaterialEntityTypesList = data.nanomaterialEntityTypes;
-        $scope.functionTypesList = data.functionTypes;
+        $scope.data = data;
       }).
       error(function(data, status, headers, config) {
-          // called asynchronously if an error occurs
-          // or server returns response with an error status.
-      $scope.message = data;
+        $scope.message = data;
       });
     });     
 
-    $scope.setCharacterizationOptionsByCharType = function() {
-      $http({method: 'GET', url: '/caNanoLab/rest/sample/getCharacterizationByType',params: {"type":$scope.searchSampleForm.characterizationType}}).
-      success(function(data, status, headers, config) {
-        $scope.characterizationsList = data;
-      }).
-      error(function(data, status, headers, config) {
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
-        $scope.message = data;
-      });        
+    $scope.updateSampleCriteria = function() {
+      if ($scope.isNewSample) {
+        $scope.searchSampleForm.theSampleQuery.push($scope.theSampleQuery);
+      }
+      else {
+        angular.copy($scope.theSampleQuery,$scope.currentSample);
+      }
+      $scope.theSampleQuery = {};
+      $scope.isNewSample=true;
     };
-       
 
-    $scope.doSearch = function() {
-      $scope.loader = true;
+    $scope.editSampleCriteria = function(sample) {
+      $scope.currentSample = sample;
+      $scope.theSampleQuery = angular.copy(sample); 
+      $scope.isNewSample=false;
+    }; 
 
-      $http({method: 'POST', url: '/caNanoLab/rest/sample/searchSample',data: $scope.searchSampleForm}).
-      success(function(data, status, headers, config) {
-        // $rootScope.sampleData = data;
-        $scope.sampleData.data = data;
-        $location.path("/sampleResults").replace();
+    $scope.removeSample = function() {
+      $scope.searchSampleForm.theSampleQuery.splice($scope.searchSampleForm.theSampleQuery.indexOf($scope.currentSample),1);
+      $scope.theSampleQuery = {};
+      $scope.isNewSample = true;
+    };        
 
-      }).
-      error(function(data, status, headers, config) {
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
-        // $rootScope.sampleData = data;
-        $scope.loader = false;
-        $scope.message = data;
-      }); 
+    $scope.clearSampleQuery = function() {
+      $scope.theSampleQuery = {};
+      $scope.isNewSample = true;
     };
 
     $scope.resetForm = function() {
       $scope.searchSampleForm = {};
-      $scope.characterizationsList = [];  
     };
 
   });
