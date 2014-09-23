@@ -1,4 +1,9 @@
-<div class="spacer">{{searchSampleForm}}
+<div class="spacer"><div style="border:1px solid blue;padding:5px;">{{searchSampleForm}}</div><br />
+
+<div style="border:1px solid blue;padding:5px;">{{data}}</div><br />
+<div style="border:1px solid red;padding:5px;">{{theCompositionQuery}}</div><br />
+<div style="border:1px solid green;padding:5px;">{{entityTypes}}</div><br />
+
 <table class="contentTitle" summary="layout" width="100%" border="0">
 	<tbody><tr>
 		<th scope="col" align="left">
@@ -38,11 +43,11 @@
 				Sample Criteria
 			</th>
 		</tr>
-		<tr ng-show="searchSampleForm.theSampleQuery.length">
+		<tr ng-show="searchSampleForm.sampleQueries.length">
 			<td>
 				<table id="sampleQueryTable" class="editTableWithGrid" summary="layout" width="85%">
 					<tbody id="sampleQueryRows">
-						<tr id="samplePattern" ng-repeat="sample in searchSampleForm.theSampleQuery">
+						<tr id="samplePattern" ng-repeat="sample in searchSampleForm.sampleQueries">
 							<td>
 								<span id="nameTypeValue">{{sample.nameType}}</span>
 							</td>
@@ -110,12 +115,12 @@
 				</tbody></table>
 			</td>
 		</tr>
-		<tr>
+		<tr ng-if="searchSampleForm.sampleQueries.length>1">
 			<td>
-				<div id="sampleLogicalOperator" style="display: none">
-					<input name="searchBean.sampleLogicalOperator" value="and" checked="checked" id="sampleLogicalOperatorAnd" type="radio">
+				<div id="sampleLogicalOperator">
+					<input name="searchSampleForm.sampleLogicalOperator" value="and" ng-model="searchSampleForm.sampleLogicalOperator" id="sampleLogicalOperatorAnd" type="radio">
 					<label for="sampleLogicalOperatorAnd">AND</label>
-					<input name="searchBean.sampleLogicalOperator" value="or" id="sampleLogicalOperatorOr" type="radio">
+					<input name="searchSampleForm.sampleLogicalOperator" value="or" ng-model="searchSampleForm.sampleLogicalOperator" id="sampleLogicalOperatorAnd" type="radio">
 					<label for="sampleLogicalOperatorOr">OR</label>
 				</div>
 			</td>
@@ -128,24 +133,25 @@
 				Composition Criteria
 			</th>
 		</tr>
-		<tr>
+		<tr ng-show="searchSampleForm.compositionQueries.length">
 			<td>
 				<table id="compositionQueryTable" class="editTableWithGrid" summary="layout" width="85%">
-					<tbody id="compositionQueryRows"><tr id="compPattern">
+					<tbody id="compositionQueryRows">
+						<tr id="compPattern" ng-repeat="composition in searchSampleForm.compositionQueries">
 							<td width="25%">
-								<span id="compTypeValue">Composition Type</span>
+								<span id="compTypeValue">{{composition.compositionType}}</span>
 							</td>
 							<td width="20%">
-								<span id="entityTypeValue">Entity Type</span>
+								<span id="entityTypeValue">{{composition.entityType}}</span>
 							</td>
 							<td width="20%">
-								<span id="compOperandValue">Operand</span>
+								<span id="compOperandValue">{{composition.operand}}</span>
 							</td>
 							<td width="20%">
-								<span id="chemicalNameValue">Chemical Name</span>
+								<span id="chemicalNameValue">{{composition.chemicalName}}</span>
 							</td>
 							<td>
-								<input class="noBorderButton" id="compEdit" value="Edit" onclick="editCompositionQuery(this.id);" type="button">
+								<button ng-click="editCompositionCriteria(composition)">Edit</button>
 							</td>
 						</tr></tbody>
 				</table>
@@ -156,9 +162,8 @@
 				<table id="newCompositionQuery" style="display: block;" class="promptbox" summary="layout">
 					<tbody><tr>
 						<td>
-							<input name="searchBean.theCompositionQuery.id" value="" id="compQueryId" type="hidden">
 							<label for="compType">&nbsp;</label>
-							<select name="searchBean.theCompositionQuery.compositionType" onchange="javascript:setCompositionEntityOptions();" id="compType"><option value="">
+							<select name="theCompositionQuery.compositionType" ng-model="theCompositionQuery.compositionType" ng-change="setCompositionEntityOptions();" id="compType"><option value="">
 									-- Please Select --
 								</option>
 								<option value="nanomaterial entity">
@@ -173,23 +178,25 @@
 						</td>
 						<td>
 							<label for="entityType">&nbsp;</label>
-							<select name="searchBean.theCompositionQuery.entityType" id="entityType"><option value="">
+							<select ng-options="option for option in entityTypes" ng-model="theCompositionQuery.entityType" id="entityType">
+								<option value="">
 									-- Please Select --
-								</option></select>
+								</option>
+							</select>
 						</td>
 						<td class="cellLabel">
 							<span id="compChemicalNameLabel"><label for="chemicalName">with chemical name</label></span>
 						</td>
 						<td>
 							<label for="compOperand">&nbsp;</label>
-							<select name="searchBean.theCompositionQuery.operand" id="compOperand"><option value="">
+							<select name="theCompositionQuery.operand" ng-model="theCompositionQuery.operand" id="compOperand"><option value="">
 									-- Please Select --
 								</option>
 								<option value="contains">contains</option>
-<option value="equals">equals</option></select>
+								<option value="equals">equals</option></select>
 						</td>
 						<td>
-							<input name="searchBean.theCompositionQuery.chemicalName" size="50" value="" id="chemicalName" type="text">
+							<input name="theCompositionQuery.chemicalName" ng-model="theCompositionQuery.chemicalName" size="50" value="" id="chemicalName" type="text">
 						</td>
 					</tr>
 					<tr>
@@ -197,13 +204,13 @@
 							<table summary="layout" cellspacing="0" align="left">
 								<tbody><tr>
 									<td>
-										<input class="promptButton" value="Add" onclick="addCompositionQuery();show('characterizationQueryTable');" type="button">
+										<button ng-click="updateCompositionCriteria()" ng-disabled="!theCompositionQuery.compositionType||!theCompositionQuery.entityType">Add</button>	
 									</td>
 									<td>
-										<input class="promptButton" value="Reset" onclick="clearCompositionQuery();" type="button">
+										<button class="promptButton" value="Reset" ng-click="clearCompositionQuery();">Reset</button>
 									</td>
 									<td>
-										<input style="display: none;" class="promptButton" id="deleteCompositionQuery" value="Remove" onclick="deleteTheCompositionQuery()" type="button">
+										<button ng-show="!isNewComposition" class="promptButton" ng-click="removeComposition();">Remove</button>
 									</td>
 								</tr>
 							</tbody></table>
@@ -212,12 +219,12 @@
 				</tbody></table>
 			</td>
 		</tr>
-		<tr>
+		<tr ng-if="searchSampleForm.compositionQueries.length>1">
 			<td>
-				<div id="compositionLogicalOperator" style="display: none">
-					<input name="searchBean.compositionLogicalOperator" value="and" checked="checked" id="compositionLogicalOperatorAnd" type="radio">
+				<div id="compositionLogicalOperator">
+					<input name="searchSampleForm.compositionLogicalOperator" value="and" ng-model="searchSampleForm.compositionLogicalOperator" id="compositionLogicalOperator" type="radio">
 					<label for="compositionLogicalOperatorAnd">AND</label>
-					<input name="searchBean.compositionLogicalOperator" value="or" id="compositionLogicalOperatorOr" type="radio">
+					<input name="searchSampleForm.compositionLogicalOperator" value="or" ng-model="searchSampleForm.compositionLogicalOperator" id="compositionLogicalOperator" type="radio">
 					<label for="compositionLogicalOperatorOr">OR</label>
 				</div>
 			</td>
@@ -353,9 +360,9 @@
 		<tbody><tr>
 			<td>
 				<div id="logicalOperator" style="display: block">
-					<input name="searchBean.logicalOperator" value="and" id="masterLogicalOperatorAnd" type="radio">
+					<input name="searchSampleForm.logicalOperator" ng-model="searchSampleForm.logicalOperator" value="and" id="masterLogicalOperatorAnd" type="radio">
 					<label for="masterLogicalOperatorAnd">AND</label>
-					<input name="searchBean.logicalOperator" value="or" checked="checked" id="masterLogicalOperatorOr" type="radio">
+					<input name="searchSampleForm.logicalOperator" ng-model="searchSampleForm.logicalOperator" value="or" id="masterLogicalOperatorOr" type="radio">
 					<label for="masterLogicalOperatorOr">OR</label>
 				</div>
 			</td>
