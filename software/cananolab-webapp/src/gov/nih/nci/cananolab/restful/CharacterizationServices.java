@@ -368,7 +368,7 @@ public class CharacterizationServices {
 				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
 			
 			List<String> names = characterizationResultManager
-					.getColumnValueUnitOptions(httpRequest, columnName, conditionProperty);
+					.getColumnValueUnitOptions(httpRequest, columnName, conditionProperty, true);
 					
 			return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")

@@ -16,23 +16,22 @@ package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleExporter;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
-import gov.nih.nci.cananolab.util.ExportUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 //import org.apache.struts.action.ActionForm;
@@ -273,7 +272,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 //		//return mapping.getInputForward();
 //	}
 	
-	public Map<String, List<String>> setup(HttpServletRequest request)
+	public Map<String, Object> setup(HttpServletRequest request)
 			throws Exception {
 		request.getSession().removeAttribute("advancedSampleSearchForm");
 		
@@ -281,7 +280,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		request.getSession().removeAttribute("samplesResultList");
 		request.getSession().removeAttribute("samplesFullList");
 		
-		List<String> charTypes = InitCharacterizationSetup.getInstance()
+		List<LabelValueBean> charTypes = InitCharacterizationSetup.getInstance()
 				.getDecoratedCharacterizationTypes(request);
 		
 		//////////////////////////
@@ -291,10 +290,21 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		request.getSession().removeAttribute("sampleSearchResults");
 		
 		Map<String, List<String>> listMap = SampleUtil.reformatLocalSearchDropdownsInSession(request.getSession());
-		//Replace char types with the "decorated" version
-		listMap.put("characterizationTypes", charTypes);
 		
-		return listMap;
+		Map<String, Object> mixedMap = new HashMap<String, Object>();
+		mixedMap.put("functionTypes", listMap.get("functionTypes"));
+		mixedMap.put("nanomaterialEntityTypes", listMap.get("nanomaterialEntityTypes"));
+		mixedMap.put("functionalizingEntityTypes", listMap.get("functionalizingEntityTypes"));
+		mixedMap.put("characterizationTypes", charTypes);
+		
+		List<String> numberOperands = new ArrayList<String>() ;
+		numberOperands.add("=");
+		numberOperands.add(">");
+		numberOperands.add(">=");
+		numberOperands.add("<=");
+
+		mixedMap.put("numberOperands", numberOperands);
+		return mixedMap;
 		
 	}
 

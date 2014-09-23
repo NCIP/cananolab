@@ -2,8 +2,11 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.sample.AdvancedSampleSearchBO;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
@@ -16,7 +19,6 @@ import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
 import java.io.FileInputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -678,13 +680,78 @@ public class SampleServices {
 			AdvancedSampleSearchBO searchSampleBO = 
 					(AdvancedSampleSearchBO) applicationContext.getBean("advancedSampleSearchBO");
 			
-			Map<String, List<String>> dropdownTypeLists = searchSampleBO.setup(httpRequest);
-					//searchSampleBO.setup(httpRequest);
+			Map<String, Object> dropdownTypeLists = searchSampleBO.setup(httpRequest);
 
 			return Response.ok(dropdownTypeLists).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists")).build();
+		}
+	}
+	
+	@GET
+	@Path("/getDecoratedCharacterizationOptions")
+	@Produces ("application/json")
+    public Response getDecoratedCharacterizationOptions(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("charType") String charType) {
+		logger.debug("In getDecoratedCharacterizationOptions");		
+		
+		try { 
+			CharacterizationManager characterizationMgr = 
+					(CharacterizationManager) applicationContext.getBean("characterizationManager");
+			
+			List<LabelValueBean> charOptions = characterizationMgr.getDecoratedCharacterizationOptions(httpRequest, charType);
+					//searchSampleBO.setup(httpRequest);
+
+			return Response.ok(charOptions).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while creating characterization options")).build();
+		}
+	}
+	
+	@GET
+	@Path("/getDecoratedDatumOptions")
+	@Produces ("application/json")
+    public Response getDecoratedDatumOptions(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("charType") String charType, 
+    		@DefaultValue("") @QueryParam("charName") String charNameAssayType) {
+		logger.debug("In getDecoratedDatumOptions");		
+		
+		try { 
+			CharacterizationResultManager characterizationMgr = 
+					(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+			
+			List<LabelValueBean> datumOptions = characterizationMgr.getDecoratedDatumNameOptions(
+					httpRequest, charType, charNameAssayType, "");
+
+			return Response.ok(datumOptions).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while creating characterization datum options")).build();
+		}
+	}
+	
+	@GET
+	@Path("/getDatumUnitOptions")
+	@Produces ("application/json")
+    public Response getDatumUnitOptions(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("datumName") String datumName) {
+		logger.debug("In getDatumUnitOptions");		
+		
+		try {
+			CharacterizationResultManager characterizationResultManager = 
+				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+			
+			List<String> names = characterizationResultManager
+					.getColumnValueUnitOptions(httpRequest, datumName, "", false);
+					
+			return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
 }
