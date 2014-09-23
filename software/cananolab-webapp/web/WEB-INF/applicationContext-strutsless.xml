@@ -182,6 +182,13 @@
 		</property>
 	</bean>
 	
+	<bean id="favoritesBO"
+		class="gov.nih.nci.cananolab.restful.favorites.FavoritesBO">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 

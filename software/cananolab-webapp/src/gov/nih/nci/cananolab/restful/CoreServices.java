@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.dto.common.FavoriteBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.restful.core.AccessibilityManager;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
@@ -9,6 +10,7 @@ import gov.nih.nci.cananolab.restful.core.CustomPlugInBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.core.PointOfContactManager;
 import gov.nih.nci.cananolab.restful.core.TabGenerationBO;
+import gov.nih.nci.cananolab.restful.favorites.FavoritesBO;
 import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
@@ -209,5 +211,24 @@ public class CoreServices {
 		
 	}
 
-	
+	@GET
+	@Path("/getFavorites")
+	@Produces ("application/json")
+    public Response getFavorites(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("id") Long id) {
+				
+		try { 
+			FavoritesBO favorite = 
+					 (FavoritesBO) applicationContext.getBean("favoritesBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			List<FavoriteBean> list = favorite.findFavourite(httpRequest);
+				return	Response.ok(list).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the favorites : "+ e.getMessage()).build();
+		}
+	}
 }
