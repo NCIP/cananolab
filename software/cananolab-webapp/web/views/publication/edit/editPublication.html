@@ -7,18 +7,18 @@
         <th scope="col" align="left" ng-if="(sampleId==null || sampleId=='') && publicationId==null">
             Submit Publication
         </th>
-        
+
         <th scope="col" align="left" ng-if="(sampleId==null || sampleId=='') && publicationId!=null">
             Update Publication
         </th>
-        
+
         <th scope="col" align="left" ng-if="sampleId!=null && sampleId != '' && publicationId!=null">
             Update Publication for Sample {{sampleName}}
-        </th>    
-        
+        </th>
+
         <th scope="col" align="left" ng-if="sampleId!=null && sampleId != '' && publicationId==null">
             Submit Publication for {{sampleName}}
-        </th>    
+        </th>
 
         <td align="right" width="30%">
             <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SubmittingaPublication')">Help</a>
@@ -399,7 +399,7 @@
                                         <img ng-src="images/ajax-loader.gif" border="0" class="counts"
                                              id="loaderImg" style="display: none" alt="load existing samples">
                                         <select ng-disabled="loader" id="matchedSampleSelect" ng-model="localForm.matchedSampleSelect" size="5" multiple="multiple">
-                                            <option ng-repeat="option in sampleResults" value="{{option}}">
+                                            <option ng-repeat="option in sampleResults track by $index" value="{{option}}">
                                                 {{option}}
                                             </option>
                                         </select>
@@ -443,7 +443,7 @@
 </div>
 <br>
 <table width="100%" align="center" class="submissionView" summary="layout" id="accessBlock">
-<!-- 
+<!--
         <c:set var="groupAccesses"
                value="${publicationForm.map.publication.groupAccesses}" />
         <c:set var="userAccesses"
