@@ -55,4 +55,18 @@ public class FavoritesBO extends BaseAnnotationBO {
 		request.getSession().setAttribute("favoritesService", favoritesService);
 		return favoritesService;
 	}
+
+	public List<String> delete(FavoriteBean bean, HttpServletRequest request) {
+		List<String> msgs = new ArrayList<String>();
+		try {
+			FavoritesService service = this.setServiceInSession(request);
+			if((bean.getDataId()!=null)&&(bean.getLoginName()!=null)){
+				service.deleteFromFavorite(bean, request);
+				msgs.add(bean.getDataName() +" deleted from your favorites successfully");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return msgs;
+	}
 }

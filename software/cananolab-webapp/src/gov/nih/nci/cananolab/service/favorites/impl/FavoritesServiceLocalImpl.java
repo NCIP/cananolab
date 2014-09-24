@@ -55,7 +55,14 @@ public class FavoritesServiceLocalImpl extends BaseServiceLocalImpl implements F
 	@Override
 	public void deleteFromFavorite(FavoriteBean bean, HttpServletRequest request)
 			throws FavoriteException, NoAccessException {
-		// TODO Auto-generated method stub
+		CaNanoLabApplicationService appService;
+		try {
+			appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			appService.delete(bean);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 

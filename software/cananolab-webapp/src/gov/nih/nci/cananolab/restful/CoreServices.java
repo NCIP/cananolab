@@ -272,4 +272,24 @@ public class CoreServices {
 			return Response.status(Response.Status.NOT_FOUND).entity("Problem adding the favorites : "+ e.getMessage()).build();
 		}
 	}
+	@POST
+	@Path("/deleteFavorite")
+	@Produces ("application/json")
+    public Response deleteFavorite(@Context HttpServletRequest httpRequest, FavoriteBean bean) {
+				
+		try { 
+			FavoritesBO favorite = 
+					 (FavoritesBO) applicationContext.getBean("favoritesBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+	
+			List<String> list = favorite.delete(bean, httpRequest);
+				return	Response.ok(list).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem while deleting the favorites : "+ e.getMessage()).build();
+		}
+	}
 }
