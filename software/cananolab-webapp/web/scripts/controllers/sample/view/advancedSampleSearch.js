@@ -195,7 +195,7 @@ var app = angular.module('angularApp')
     };
 
     // called when adding a new characterization or updating an existing one //
-    $scope.updateCompositionCriteria = function() {
+    $scope.updateCharacterizationCriteria = function() {
       if ($scope.isNewCharacterization) {
         $scope.searchSampleForm.characterizationQueries.push($scope.theCharacterizationQuery);
       }
@@ -213,11 +213,9 @@ var app = angular.module('angularApp')
     $scope.editCharacterizationCriteria = function(characterization) {
       $scope.currentCharacterization = characterization;
       $scope.theCharacterizationQuery = angular.copy(characterization); 
-
       $scope.setCharacterizationOptions('update');
       $scope.setDatumNameOptionsByCharName('update');
       $scope.setDatumValueUnitOptions('update');
-      $scope.loader = false;
       $scope.isNewCharacterization=false;
     }; 
 
@@ -231,6 +229,9 @@ var app = angular.module('angularApp')
     // resets characterization criteria //
     $scope.clearCharacterizationQuery = function() {
       $scope.theCharacterizationQuery = {};
+      $scope.datumUnitOptionsList = [];
+      $scope.datumNameList = [];
+      $scope.characterizationNameList = [];      
       $scope.isNewCharacterization = true;
     };    
 

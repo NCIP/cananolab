@@ -1,7 +1,5 @@
 <div class="spacer">
 <div ng-class="{formFocus:loader}"> 
-{{sampleData.data}}
-<!-- <div style="border:1px solid pink;padding:5px;">char name list ** {{characterizationNameList}} **</div> --><br />
 
 <table class="contentTitle" summary="layout" width="100%" border="0">
 	<tbody><tr>
@@ -325,7 +323,7 @@
 							<table summary="layout" cellspacing="0" align="left">
 								<tbody><tr>
 									<td>
-										<button ng-click="updateCompositionCriteria()" ng-disabled="!theCharacterizationQuery.characterizationType||!theCharacterizationQuery.characterizationName">Add</button>	
+										<button ng-click="updateCharacterizationCriteria()" ng-disabled="!theCharacterizationQuery.characterizationType||!theCharacterizationQuery.characterizationName">Add</button>	
 									</td>
 									<td>
 										<button class="promptButton" value="Reset" ng-click="clearCharacterizationQuery();">Reset</button>
