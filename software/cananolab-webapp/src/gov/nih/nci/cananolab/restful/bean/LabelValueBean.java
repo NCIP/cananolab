@@ -10,6 +10,12 @@ public class LabelValueBean {
 		this.label = label;
 		this.value = value;
 	}
+	@Override
+	public boolean equals(Object obj) {
+		
+		return this.label.equals(((LabelValueBean)obj).getLabel());
+	}
+
 	public String getLabel() {
 		return label;
 	}
