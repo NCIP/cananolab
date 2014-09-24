@@ -34,6 +34,31 @@ var app = angular.module('angularApp')
                     $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                 }
             });
+        
+        $scope.addToFavorites = function(protocolId, protocolName) {
+            $scope.loader = true;
+
+            $scope.favoriteBean = {"dataType" : "protocol", "dataName" : protocolName, "dataId" : protocolId, "loginName" : "canano_res"};
+
+            console.log($rootScope.groups);
+
+            $http({method: 'POST', url: '/caNanoLab/rest/core/addFavorite',data: $scope.favoriteBean}).
+                success(function(data, status, headers, config) {
+                     var hrefEl = document.getElementById('href' + protocolId);
+                     var msgEl = document.getElementById('msg' + protocolId);
+                     msgEl.innerHTML = data;
+                     hrefEl.style.visibility="hidden";
+                     $scope.loader = false;
+
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    // $rootScope.sampleData = data;
+                    $scope.loader = false;
+                    $scope.messages = data;
+                });
+        };        
 
 
     });
