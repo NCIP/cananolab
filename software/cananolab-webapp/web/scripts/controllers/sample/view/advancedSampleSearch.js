@@ -10,15 +10,18 @@ var app = angular.module('angularApp')
     $scope.searchSampleForm = {};
 
     // define logical operators for each section and overall query //
-    $scope.searchSampleForm.sampleLogicalOperator = "and";
-    $scope.searchSampleForm.compositionLogicalOperator = "and";
-    $scope.searchSampleForm.characterizationLogicalOperator = "and";
-    $scope.searchSampleForm.logicalOperator = "and";
+    $scope.defineSampleForm = function() {
+      $scope.searchSampleForm.sampleLogicalOperator = "and";
+      $scope.searchSampleForm.compositionLogicalOperator = "and";
+      $scope.searchSampleForm.characterizationLogicalOperator = "and";
+      $scope.searchSampleForm.logicalOperator = "and";
 
-    //define array placeholders for samples, compositions and characterizations //
-    $scope.searchSampleForm.sampleQueries = [];
-    $scope.searchSampleForm.compositionQueries = [];
-    $scope.searchSampleForm.characterizationQueries = [];
+      //define array placeholders for samples, compositions and characterizations //
+      $scope.searchSampleForm.sampleQueries = [];
+      $scope.searchSampleForm.compositionQueries = [];
+      $scope.searchSampleForm.characterizationQueries = [];
+    };
+    $scope.defineSampleForm();
 
     // set default values to determine if new sample, etc. //
     $scope.isNewSample = true;
@@ -231,9 +234,29 @@ var app = angular.module('angularApp')
       $scope.isNewCharacterization = true;
     };    
 
+    // gets results from advanced search //
+    $scope.search = function() {
+      $scope.loader = true;
+      $http({method: 'POST', url: '/caNanoLab/rest/sample/searchSampleAdvanced',data: $scope.searchSampleForm}).
+      success(function(data, status, headers, config) {
+        $scope.sampleData.data = data;
+        $scope.loader = false;
+        // $location.path("/sampleResults").replace();
+
+      }).
+      error(function(data, status, headers, config) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+        // $rootScope.sampleData = data;
+        $scope.loader = false;
+        $scope.message = data;
+      }); 
+    };
+
     // resets overall form //
     $scope.resetForm = function() {
       $scope.searchSampleForm = {};
+      $scope.defineSampleForm();
     };
 
   });

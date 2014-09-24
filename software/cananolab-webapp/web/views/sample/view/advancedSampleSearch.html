@@ -1,6 +1,6 @@
 <div class="spacer">
 <div ng-class="{formFocus:loader}"> 
-
+{{sampleData.data}}
 <!-- <div style="border:1px solid pink;padding:5px;">char name list ** {{characterizationNameList}} **</div> --><br />
 
 <table class="contentTitle" summary="layout" width="100%" border="0">
@@ -375,14 +375,10 @@
 	</tr>
 	<tr>
 		<td align="right">
-			<input value="Reset" onclick="javascript: location.href = 'advancedSampleSearch.do?dispatch=setup&amp;page=0'" type="reset">
-			&nbsp;
-			
+
+					<button ng-click="resetForm()">Reset</button>
 				
-				
-					<input value="Search" type="submit">
-					<input name="dispatch" value="search" type="hidden">
-					<input name="page" value="1" type="hidden">
+					<button ng-click="search()">Search</button>
 				
 			
 		</td>
