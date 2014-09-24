@@ -62,11 +62,11 @@ public class WorkspaceManager {
 		List<SimpleWorkspaceItem> sampleItems =  getSampleItems(request, securityService, user);
 		simpleWorkspace.setSamples(sampleItems);
 		
-		List<SimpleWorkspaceItem> pubItems = getPublicationItems(request, securityService, user);
-		simpleWorkspace.setPublications(pubItems);
-	
-		List<SimpleWorkspaceItem> protoItems = getProtocolItems(request, securityService, user);
-		simpleWorkspace.setProtocols(protoItems);
+//		List<SimpleWorkspaceItem> pubItems = getPublicationItems(request, securityService, user);
+//		simpleWorkspace.setPublications(pubItems);
+//	
+//		List<SimpleWorkspaceItem> protoItems = getProtocolItems(request, securityService, user);
+//		simpleWorkspace.setProtocols(protoItems);
 		
 		return simpleWorkspace;
 	}
@@ -150,7 +150,12 @@ public class WorkspaceManager {
 		if (sampleIds == null)
 			return items;
 	
+		//int num = 0;
 		for (String id : sampleIds) {
+//			num++;
+//			if (num > 10)
+//				break;
+			//SampleBasicBean sampleBean = sampleService.findSampleBasicById(id, true);   //.findSampleById(id, true);
 			SampleBean sampleBean = sampleService.findSampleById(id, true);
 			if (sampleBean == null) continue;
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();

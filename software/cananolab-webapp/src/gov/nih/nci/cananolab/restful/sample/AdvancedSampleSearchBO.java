@@ -16,12 +16,16 @@ package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 
@@ -46,27 +50,25 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 	// Partial URL for viewing detailed sample info from Excel report file.
 	public static final String VIEW_SAMPLE_URL = "sample.do?dispatch=summaryView&page=0";
 
-	public void search(HttpServletRequest request, AdvancedSampleSearchBean searchBean)
+	public List search(HttpServletRequest request, AdvancedSampleSearchBean searchBean)
 			throws Exception {
+		
+		List<SimpleSearchSampleBean> simpleBeans = this.createDummyData();
+				
+		if (simpleBeans.size() > 0)
+			return simpleBeans;
+		
 		// get the page number from request
 		int displayPage = getDisplayPage(request);
 
 		HttpSession session = request.getSession();
 
-		//DynaValidatorForm theForm = (DynaValidatorForm) form;
-		//AdvancedSampleSearchBean searchBean = null;
-				
-//				(AdvancedSampleSearchBean) theForm
-//				.get("searchBean");
-		
-		
 		this.setServiceInSession(request);
 		searchBean.updateQueries();
 		
 		// retrieve from session if it's not null
 		List<AdvancedSampleBean> sampleBeans = (List<AdvancedSampleBean>) session
 				.getAttribute("advancedSampleSearchResults");
-		
 		
 		if (sampleBeans == null || displayPage <= 0) {
 			sampleBeans = querySamples(request, searchBean);
@@ -75,12 +77,10 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 						.setAttribute("advancedSampleSearchResults",
 								sampleBeans);
 			} else {
-//				ActionMessages msgs = new ActionMessages();
-//				ActionMessage msg = new ActionMessage(
-//						"message.advancedSampleSearch.noresult");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//				saveMessages(request, msgs);
-//				return mapping.getInputForward();
+				List<String> messages = new ArrayList<String>();
+				messages.add(PropertyUtil.getProperty("sample", "message.advancedSampleSearch.noresult"));
+				return messages;
+
 			}
 		}
 		// load advancedSampleBean details 25 at a time for displaying
@@ -102,6 +102,9 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		// save sample result set in session for printing.
 		session.setAttribute("samplesResultList", sampleBeansPerPage);
 		//return mapping.findForward("success");
+		List<SimpleSearchSampleBean> simpleBeanss = transfertoSimpleSampleBeans(sampleBeansPerPage, (UserBean)session.getAttribute("user"));
+		
+		return simpleBeans;
 	}
 
 	/**
@@ -213,11 +216,11 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 //				.get("searchBean");
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
-		List<String> sampleNames = service
+		List<String> sampleIds = service
 				.findSampleIdsByAdvancedSearch(searchBean);
 		List<AdvancedSampleBean> sampleBeans = new ArrayList<AdvancedSampleBean>();
-		for (String name : sampleNames) {
-			AdvancedSampleBean sampleBean = new AdvancedSampleBean(name);
+		for (String id : sampleIds) {
+			AdvancedSampleBean sampleBean = new AdvancedSampleBean(id);
 			sampleBeans.add(sampleBean);
 		}
 		return sampleBeans;
@@ -238,6 +241,9 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
 				String sampleId = sampleBeans.get(i).getSampleId();
+				
+				//TODO: check on the query. Don't need much
+				
 				AdvancedSampleBean loadedAdvancedSample = service
 						.findAdvancedSampleByAdvancedSearch(sampleId,
 								searchBean);
@@ -348,5 +354,52 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 				securityService);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return sampleService;
+	}
+	
+	/**
+	 * 
+	 */
+	protected List<SimpleSearchSampleBean> transfertoSimpleSampleBeans(List<AdvancedSampleBean> sampleBeans,
+			UserBean user) {
+		List<SimpleSearchSampleBean> simpleBeans = new ArrayList<SimpleSearchSampleBean>();
+		
+		for (AdvancedSampleBean bean : sampleBeans) {
+			
+			SimpleSearchSampleBean simpleBean = new SimpleSearchSampleBean();
+			simpleBean.transferAdvancedSampleBeanForResultView(bean, user);
+			simpleBeans.add(simpleBean);
+		}
+		
+		return simpleBeans;
+	}
+	
+	protected List<SimpleSearchSampleBean> createDummyData() {
+		List<SimpleSearchSampleBean> simpleBeans = new ArrayList<SimpleSearchSampleBean>();
+
+		SimpleSearchSampleBean simpleBean = new SimpleSearchSampleBean();
+		simpleBean.setSampleId(66846720);
+		simpleBean.setSampleName("ncl-14-1-Copy");
+		simpleBean.setEditable(true);
+		simpleBeans.add(simpleBean);
+		
+		simpleBean = new SimpleSearchSampleBean();
+		simpleBean.setSampleId(20917504);
+		simpleBean.setSampleName("NCL-20-1");
+		simpleBean.setEditable(true);
+		simpleBeans.add(simpleBean);
+		
+		simpleBean = new SimpleSearchSampleBean();
+		simpleBean.setSampleId(20917505);
+		simpleBean.setSampleName("NCL-21-1");
+		simpleBean.setEditable(false);
+		simpleBeans.add(simpleBean);
+		
+		simpleBean = new SimpleSearchSampleBean();
+		simpleBean.setSampleId(20917507);
+		simpleBean.setSampleName("NCL-23-1");
+		simpleBean.setEditable(false);
+		simpleBeans.add(simpleBean);
+		
+		return simpleBeans;
 	}
 }

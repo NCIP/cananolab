@@ -33,8 +33,10 @@ import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
+import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.system.web.struts.action.Criteria;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,6 +60,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
 /**
  * Helper class providing implementations of search methods needed for both
@@ -693,6 +696,51 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		
 		
 
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+		}
+		return sample;
+	}
+	
+	public Sample findSampleBasicById(String sampleId) throws Exception {
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+			throw new NoAccessException("User has no access to the sample "
+					+ sampleId);
+		}
+		Sample sample = null;
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		
+//		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+//		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+//		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+//		crit.setFetchMode("otherPointOfContactCollection.organization",
+//				FetchMode.JOIN);
+//		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+//		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+//		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
+//				FetchMode.JOIN);
+//		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
+//				FetchMode.JOIN);
+//		crit.setFetchMode(
+//				"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
+//				FetchMode.JOIN);
+//		crit.setFetchMode(
+//				"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+//				FetchMode.JOIN);
+//
+//		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
+//				FetchMode.JOIN);
+//		crit.setFetchMode(
+//				"sampleComposition.functionalizingEntityCollection.functionCollection",
+//				FetchMode.JOIN);
+//		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+	
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);

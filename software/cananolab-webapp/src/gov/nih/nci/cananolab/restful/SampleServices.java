@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
+import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.sample.AdvancedSampleSearchBO;
@@ -715,7 +716,7 @@ public class SampleServices {
 	@Produces ("application/json")
     public Response getDecoratedDatumOptions(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("charType") String charType, 
-    		@DefaultValue("") @QueryParam("charName") String charNameAssayType) {
+    		@DefaultValue("") @QueryParam("charName") String charName) {
 		logger.debug("In getDecoratedDatumOptions");		
 		
 		try { 
@@ -723,7 +724,7 @@ public class SampleServices {
 					(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
 			
 			List<LabelValueBean> datumOptions = characterizationMgr.getDecoratedDatumNameOptions(
-					httpRequest, charType, charNameAssayType, "");
+					httpRequest, charType, charName, "");
 
 			return Response.ok(datumOptions).build();
 		} catch (Exception e) {
@@ -752,6 +753,34 @@ public class SampleServices {
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	@POST
+	@Path("/searchSampleAdvanced")
+	@Produces ("application/json")
+	public Response searchSampleAdvanced(@Context HttpServletRequest httpRequest, 
+			AdvancedSampleSearchBean searchBean ) {
+		
+		try {
+			AdvancedSampleSearchBO searchSampleBO = 
+					(AdvancedSampleSearchBO) applicationContext.getBean("advancedSampleSearchBO");
+			
+			List results = searchSampleBO.search(httpRequest, searchBean);
+			
+			Object result = results.get(0);
+			if (result instanceof String) {
+				logger.debug("Search sampel has error: " + results.get(0));
+				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
+			} else {
+				logger.debug("Sample search successful");
+				return Response.ok(results).build();
+			}
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while searching for samples: " + e.getMessage())).build();
 		}
 	}
 }
