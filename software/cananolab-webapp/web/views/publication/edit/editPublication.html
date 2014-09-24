@@ -399,7 +399,7 @@
                                         <img ng-src="images/ajax-loader.gif" border="0" class="counts"
                                              id="loaderImg" style="display: none" alt="load existing samples">
                                         <select ng-disabled="loader" id="matchedSampleSelect" ng-model="localForm.matchedSampleSelect" size="5" multiple="multiple">
-                                            <option ng-repeat="option in sampleResults" value="{{option}}">
+                                            <option ng-repeat="option in sampleResults track by $index" value="{{option}}">
                                                 {{option}}
                                             </option>
                                         </select>
