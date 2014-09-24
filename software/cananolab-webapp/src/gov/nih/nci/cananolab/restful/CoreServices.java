@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.restful.favorites.FavoritesBO;
 import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleFavoriteBean;
 import gov.nih.nci.cananolab.restful.view.SimpleTabsBean;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleOrganizationBean;
@@ -25,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -224,11 +226,50 @@ public class CoreServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			List<FavoriteBean> list = favorite.findFavourite(httpRequest);
-				return	Response.ok(list).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			List<FavoriteBean> list = favorite.findFavorites(httpRequest);
+			
+			SimpleFavoriteBean simpleBean = new SimpleFavoriteBean();
+			List<FavoriteBean> samples = new ArrayList<FavoriteBean>();
+			List<FavoriteBean> publications = new ArrayList<FavoriteBean>();
+			List<FavoriteBean> protocols = new ArrayList<FavoriteBean>();
+			
+			for(FavoriteBean favBean : list){
+				if(favBean.getDataType().equalsIgnoreCase("sample")){
+					samples.add(favBean);
+					simpleBean.setSamples(samples);
+				}else if(favBean.getDataType().equalsIgnoreCase("publication")){
+						publications.add(favBean);
+						simpleBean.setPublications(publications);
+				}else{
+					protocols.add(favBean);
+					simpleBean.setProtocols(protocols);
+				}
+			}
+			return	Response.ok(simpleBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the favorites : "+ e.getMessage()).build();
+		}
+	}
+	
+	@POST
+	@Path("/addFavorite")
+	@Produces ("application/json")
+    public Response addFavorite(@Context HttpServletRequest httpRequest, FavoriteBean bean) {
+				
+		try { 
+			FavoritesBO favorite = 
+					 (FavoritesBO) applicationContext.getBean("favoritesBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			List<String> list = favorite.create(bean, httpRequest);
+				return	Response.ok(list).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem adding the favorites : "+ e.getMessage()).build();
 		}
 	}
 }

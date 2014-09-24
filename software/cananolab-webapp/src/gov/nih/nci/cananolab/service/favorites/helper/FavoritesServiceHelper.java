@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
@@ -41,16 +42,18 @@ public class FavoritesServiceHelper extends BaseServiceHelper{
 		super(securityService);
 	}
 
-	public FavoriteBean findFavouritesById(Long id) {
+	public FavoriteBean findFavouritesById(String dataId, String loginName) {
 		FavoriteBean bean = null;
 
 		CaNanoLabApplicationService appService;
 		try {
 			appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(FavoriteBean.class).add(
-					Property.forName("id").eq(new Long(id)));
-
+			DetachedCriteria crit = DetachedCriteria.forClass(FavoriteBean.class);
+			Criterion crit1 = Restrictions.eq("dataId", dataId);
+			Criterion crit2 = Restrictions.like("loginName", loginName,
+					MatchMode.EXACT);
+			crit.add(Expression.and(crit1, crit2));
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
 				bean = (FavoriteBean) result.get(0);

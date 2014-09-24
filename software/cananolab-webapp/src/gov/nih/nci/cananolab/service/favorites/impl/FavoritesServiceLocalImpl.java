@@ -12,9 +12,10 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.favorites.FavoritesService;
 import gov.nih.nci.cananolab.service.favorites.helper.FavoritesServiceHelper;
-import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
+import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 public class FavoritesServiceLocalImpl extends BaseServiceLocalImpl implements FavoritesService{
 
@@ -36,11 +37,19 @@ public class FavoritesServiceLocalImpl extends BaseServiceLocalImpl implements F
 		super(securityService);
 		helper = new FavoritesServiceHelper(this.securityService);
 	}
-	@Override
-	public void addToFavorite(FavoriteBean bean, HttpServletRequest request) throws FavoriteException,
+	public void addFavorite(FavoriteBean bean, HttpServletRequest request) throws FavoriteException,
 			NoAccessException {
-		// TODO Auto-generated method stub
-		
+		try{
+		bean.setId(null);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		bean.setLoginName(user.getLoginName());
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		appService.saveOrUpdate(bean);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -51,14 +60,14 @@ public class FavoritesServiceLocalImpl extends BaseServiceLocalImpl implements F
 	}
 
 	@Override
-	public FavoriteBean findFavoriteById(Long id) throws FavoriteException,
+	public FavoriteBean findFavoriteById(String dataId, String loginName) throws FavoriteException,
 			NoAccessException {
 		FavoriteBean bean = null;
 		try {
-			bean = helper.findFavouritesById(id);
+			bean = helper.findFavouritesById(dataId, loginName);
 			
 		} catch (Exception e) {
-			String err = "Problem finding the favorite by id: " + id;
+			String err = "Problem finding the favorite by id: " + dataId;
 			logger.error(err, e);
 			throw new FavoriteException(err, e);
 		}

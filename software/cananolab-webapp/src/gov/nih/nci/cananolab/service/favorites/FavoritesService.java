@@ -17,13 +17,13 @@ import gov.nih.nci.cananolab.service.BaseService;
  */
 public interface FavoritesService extends BaseService{
 
-	public void addToFavorite(FavoriteBean bean, HttpServletRequest request)
+	public void addFavorite(FavoriteBean bean, HttpServletRequest request)
 			throws FavoriteException, NoAccessException;
 	
 	public void deleteFromFavorite(FavoriteBean bean, HttpServletRequest request)
 			throws FavoriteException, NoAccessException;
 	
-	public FavoriteBean findFavoriteById(Long id)
+	public FavoriteBean findFavoriteById(String dataId, String loginName)
 			throws FavoriteException, NoAccessException;
 
 	public List<FavoriteBean> findFavorites(HttpServletRequest request)
