@@ -1,8 +1,7 @@
-<div class="spacer"><div style="border:1px solid blue;padding:5px;">{{searchSampleForm}}</div><br />
+<div class="spacer">
+<div ng-class="{formFocus:loader}"> 
 
-<div style="border:1px solid blue;padding:5px;">{{data}}</div><br />
-<div style="border:1px solid red;padding:5px;">{{theCompositionQuery}}</div><br />
-<div style="border:1px solid green;padding:5px;">{{entityTypes}}</div><br />
+<!-- <div style="border:1px solid pink;padding:5px;">char name list ** {{characterizationNameList}} **</div> --><br />
 
 <table class="contentTitle" summary="layout" width="100%" border="0">
 	<tbody><tr>
@@ -237,30 +236,31 @@
 				Characterization Criteria
 			</th>
 		</tr>
-		<tr>
+		<tr ng-show="searchSampleForm.characterizationQueries.length">
 			<td>
 				<table id="characterizationQueryTable" class="editTableWithGrid" summary="layout" width="85%">
-					<tbody id="characterizationQueryRows"><tr id="charPattern">
+					<tbody id="characterizationQueryRows">
+						<tr id="charPattern" ng-repeat="characterization in searchSampleForm.characterizationQueries">
 							<td width="15%">
-								<span id="charTypeValue">Characterization Type</span>
+								<span id="charTypeValue">{{characterization.characterizationType}}</span>
 							</td>
 							<td width="15%">
-								<span id="charNameValue">Characterization Name</span>
+								<span id="charNameValue">{{characterization.characterizationName}}</span>
 							</td>
 							<td width="15%">
-								<span id="datumNameValue">Datum Name</span>
+								<span id="datumNameValue">{{characterization.datumName}}</span>
 							</td>
 							<td width="10%">
-								<span id="charOperandValue">Operand</span>
+								<span id="charOperandValue">{{characterization.operand}}</span>
 							</td>
 							<td width="15%">
-								<span id="datumValueValue">Datum Value</span>
+								<span id="datumValueValue">{{characterization.datumValue}}</span>
 							</td>
 							<td>
-								<span id="datumValueUnitValue">Datum Unit</span>
+								<span id="datumValueUnitValue">{{characterization.datumValueUnit}}</span>
 							</td>
 							<td>
-								<input class="noBorderButton" id="charEdit" value="Edit" onclick="editCharacterizationQuery(this.id);" type="button">
+								<button ng-click="editCharacterizationCriteria(characterization)">Edit</button>
 							</td>
 						</tr></tbody>
 				</table>
@@ -271,28 +271,24 @@
 				<table id="newCharacterizationQuery" style="display: block;" class="promptbox" summary="layout">
 					<tbody><tr>
 						<td>
-							<input name="searchBean.theCharacterizationQuery.id" value="" id="charQueryId" type="hidden">
 							<label for="charType">&nbsp;</label>
-							<select name="searchBean.theCharacterizationQuery.characterizationType" onchange="javascript:setCharacterizationOptions();" id="charType"><option value="">
-									-- Please Select --
-								</option>
-								<option value="physico-chemical characterization">physico-chemical characterization</option>
-<option value="in vitro characterization">in vitro characterization</option>
-<option value="in vivo characterization">in vivo characterization</option>
-<option value="ex vivo">[ex vivo]</option></select>
+								<select data-ng-model="theCharacterizationQuery.characterizationType"
+								data-ng-options="option.value as option.label for option in data.characterizationTypes" id="charType" ng-change="setCharacterizationOptions()">
+								<option value="">-- Please Select --</option>
+								</select>
 						</td>
 						<td><label for="charName">&nbsp;</label>
-							<select name="searchBean.theCharacterizationQuery.characterizationName" onchange="javascript:setDatumNameOptionsByCharName();" id="charName"><option value="">
+							<select data-ng-options="option.value as option.label for option in characterizationNameList" name="theCharacterizationQuery.characterizationName" ng-change="setDatumNameOptionsByCharName()" data-ng-model="theCharacterizationQuery.characterizationName" id="charName"><option value="">
 									-- Please Select --
 								</option></select>
 						</td>
 						<td><label for="datumName">&nbsp;</label>
-							<select name="searchBean.theCharacterizationQuery.datumName" onchange="javascript:setDatumValueUnitOptions();setCharacterizationOperandOptions();setDatumValueOptions()" id="datumName"><option value="">
+							<select name="theCharacterizationQuery.datumName" data-ng-options="option.value as option.label for option in datumNameList" ng-change="setDatumValueUnitOptions()" ng-model="theCharacterizationQuery.datumName" id="datumName"><option value="">
 									-- Please Select --
 								</option></select>
 						</td>
-						<td><label for="charOperand">&nbsp;</label>
-							<select name="searchBean.theCharacterizationQuery.operand" id="charOperand"><option value="">
+						<td ng-show="theCharacterizationQuery.datumName"><label for="charOperand">&nbsp;</label>
+							<select ng-model="theCharacterizationQuery.operand" name="theCharacterizationQuery.operand" id="charOperand"><option value="">
 									-- Please Select --
 								</option>
 								<option value="=">=</option>
@@ -302,24 +298,24 @@
 <option value="<=">&lt;=</option></select>
 						</td>
 						<td>
-							<div id="datumValueTextBlock" style="display:none">
+							<div id="datumValueTextBlock" ng-if="theCharacterizationQuery.datumName">
 								<label for="datumValue">&nbsp;</label>
-								<input name="searchBean.theCharacterizationQuery.datumValue" size="10" value="" id="datumValue" type="text">
+								<input ng-model="theCharacterizationQuery.datumValue" name="theCharacterizationQuery.datumValue" size="10" value="" id="datumValue" type="text">
 								
 							</div>
-							<div id="datumValueSelectBlock" style="display:none">
+<!-- 							<div id="datumValueSelectBlock" style="display:none">
 								<label for="datumValueSelect">&nbsp;</label>
 								<select name="searchBean.theCharacterizationQuery.datumValue" id="datumValueSelect"><option value="">
 										-- Please Select --
 									</option>
 									<option value="1">true</option>
 <option value="0">false</option></select>
-							</div>
+							</div> -->
 						</td>
-						<td>
-							<div id="datumValueUnitBlock" style="display: none">
+						<td ng-show="datumUnitOptionsList.length">
+							<div id="datumValueUnitBlock">
 							    <label for="datumValueUnit">&nbsp;</label>
-								<select name="searchBean.theCharacterizationQuery.datumValueUnit" id="datumValueUnit"><option value="">
+								<select ng-init="theCharacterizationQuery.datumValueUnit=''" data-ng-options="option for option in datumUnitOptionsList" ng-model="theCharacterizationQuery.datumValueUnit" name="theCharacterizationQuery.datumValueUnit" id="datumValueUnit"><option value=""> -- Please Select --
 									</option></select>
 							</div>
 						</td>
@@ -329,13 +325,13 @@
 							<table summary="layout" cellspacing="0" align="left">
 								<tbody><tr>
 									<td>
-										<input class="promptButton" value="Add" onclick="addCharacterizationQuery();show('characterizationQueryTable');" type="button">
+										<button ng-click="updateCompositionCriteria()" ng-disabled="!theCharacterizationQuery.characterizationType||!theCharacterizationQuery.characterizationName">Add</button>	
 									</td>
 									<td>
-										<input class="promptButton" value="Reset" onclick="clearCharacterizationQuery();" type="button">
+										<button class="promptButton" value="Reset" ng-click="clearCharacterizationQuery();">Reset</button>
 									</td>
 									<td>
-										<input style="display: none;" class="promptButton" id="deleteCharacterizationQuery" value="Remove" onclick="deleteTheCharacterizationQuery()" type="button">
+										<button ng-show="!isNewCharacterization" class="promptButton" ng-click="removeCharacterization();">Remove</button>
 									</td>
 								</tr>
 							</tbody></table>
@@ -344,12 +340,12 @@
 				</tbody></table>
 			</td>
 		</tr>
-		<tr>
+		<tr ng-if="searchSampleForm.characterizationQueries.length>1">
 			<td>
-				<div id="characterizationLogicalOperator" style="display: none">
-					<input name="searchBean.characterizationLogicalOperator" value="and" checked="checked" id="characterizationLogicalOperatorAnd" type="radio">
+				<div id="characterizationLogicalOperator">
+					<input name="searchSampleForm.characterizationLogicalOperator" value="and" ng-model="searchSampleForm.characterizationLogicalOperator" id="characterizationLogicalOperator" type="radio">
 					<label for="characterizationLogicalOperatorAnd">AND</label>
-					<input name="searchBean.characterizationLogicalOperator" value="or" id="characterizationLogicalOperatorOr" type="radio">
+					<input name="searchSampleForm.characterizationLogicalOperator" value="or" ng-model="searchSampleForm.characterizationLogicalOperator" id="characterizationLogicalOperator" type="radio">
 					<label for="characterizationLogicalOperatorOr">OR</label>
 				</div>
 			</td>
@@ -369,13 +365,6 @@
 		</tr>
 	</tbody></table>
 	<br>
-	
-	
-	
-	
-	
-
-
 
 <table class="invisibleTable" summary="layout" width="100%">
 	<tbody><tr>
@@ -399,3 +388,11 @@
 		</td>
 	</tr>
 </tbody></table>
+</div>
+<div id="loader" ng-show="loader">
+	<div id="loaderText">
+		Loading
+	</div>
+	<div id="loaderGraphic"></div>
+</div>	
+</div>
