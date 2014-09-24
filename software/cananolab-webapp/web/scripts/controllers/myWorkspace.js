@@ -34,5 +34,29 @@ var app = angular.module('angularApp')
         //$scope.samples = [{'sampleName':'NCL-25-1', 'status':'in preparation', 'createdDate':'01/01/2014', 'user' : []}];
         //$scope.protocols = [{'protocolName':'Protocol 1', 'status':'in preparation', 'createdDate':'01/01/2014', 'user' : []}];
         //$scope.publications = [{'id':'1','publicationTitle':'Pub 1', 'status':'in preparation', 'createdDate':'01/01/2014', 'user' : []}];
+        
+        $scope.doDeleteSample = function(sampleId) {
+            if (confirm("Are you sure you want to delete the Sample?")) {
+                $scope.loader = true;
+
+                $http({method: 'GET', url: '/caNanoLab/rest/sample/deleteSample',params: {"sampleId":sampleId}}).
+                success(function(data, status, headers, config) {
+                    var b = $scope.sampleResultData['data'];
+                    if (b) {
+                        for (var g = 0;g<b.length;g++) {
+                          if (b[g].sampleId==$scope.sampleId.data) {
+                            $scope.sampleResultsData = b.splice(g,1);
+                          };
+                        };
+                     }   
+                    $location.path("/sampleResults").replace();
+                }).
+                error(function(data, status, headers, config) {
+                    $scope.loader = false;
+                    $scope.message = data;
+                }); 
+            }
+        };
+        
 
     });

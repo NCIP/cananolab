@@ -202,6 +202,10 @@ app.config(function ($routeProvider, $httpProvider) {
         .when('/editCompositionFile', {
             templateUrl: 'views/sample/composition/editCompositionFile.html',
             controller: 'EditCompositionFileCtrl'
+        })  
+        .when('/myFavorites', {
+            templateUrl: 'views/myFavorites.html',
+            controller: 'MyFavoritesCtrl'
         })        
       .otherwise({
         redirectTo: '/'
