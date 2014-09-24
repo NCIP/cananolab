@@ -6,11 +6,12 @@ var app = angular.module('angularApp')
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();   
 
-    // setup object where all data is stored //
-    $scope.searchSampleForm = {};
-
     // define logical operators for each section and overall query //
     $scope.defineSampleForm = function() {
+      // setup object where all data is stored //
+      $scope.searchSampleForm = {};      
+
+      // define logical operators for overall form and 3 sections //
       $scope.searchSampleForm.sampleLogicalOperator = "and";
       $scope.searchSampleForm.compositionLogicalOperator = "and";
       $scope.searchSampleForm.characterizationLogicalOperator = "and";
@@ -20,23 +21,29 @@ var app = angular.module('angularApp')
       $scope.searchSampleForm.sampleQueries = [];
       $scope.searchSampleForm.compositionQueries = [];
       $scope.searchSampleForm.characterizationQueries = [];
+
+      // setup initial objects where individual temporary objects will be stored //
+      // on add or remove they get pushed or removed from the searchSampleForm //
+      $scope.theSampleQuery = {};
+      $scope.theCompositionQuery = {};
+      $scope.theCharacterizationQuery = {};
+
+      // define placeholder lists for characterization dropdowns //
+      $scope.datumUnitOptionsList = [];
+      $scope.datumNameList = [];
+      $scope.characterizationNameList = [];  
+
+      // define list for composition entity type dropdowns //
+      $scope.entityTypes = [];
+
+      // set default values to determine if new sample, etc. //
+      $scope.isNewSample = true;
+      $scope.isNewCharacterization = true;
+      $scope.isNewComposition = true;
+
     };
     $scope.defineSampleForm();
 
-    // set default values to determine if new sample, etc. //
-    $scope.isNewSample = true;
-    $scope.isNewCharacterization = true;
-    $scope.isNewComposition = true;
-
-    // setup initial objects where individual temporary objects will be stored //
-    // on add or remove they get pushed or removed from the searchSampleForm //
-    $scope.theSampleQuery = {};
-    $scope.theCompositionQuery = {};
-    $scope.theCharacterizationQuery = {};
-
-
-    $scope.data = {"functionalizingEntityTypes":["Magnetic Particle","Monomer","Polymer","Quantum Dot","antibody","biopolymer","radioisotope","small molecule"],"numberOperands":["=",">",">=","<="],"characterizationTypes":[{"label":"physico-chemical characterization","value":"physico-chemical characterization"},{"label":"in vitro characterization","value":"in vitro characterization"},{"label":"in vivo characterization","value":"in vivo characterization"},{"label":"[Canano_char_type]","value":"Canano_char_type"},{"label":"[SY-New-Char-Type]","value":"SY-New-Char-Type"},{"label":"[TEST111]","value":"TEST111"},{"label":"[ex vivo]","value":"ex vivo"}],"nanomaterialEntityTypes":["biopolymer","carbon","carbon black","carbon nanotube","dendrimer","emulsion","fullerene","liposome","metal oxide","metal particle","metalloid","nanohorn","nanolipogel","nanorod","nanoshell","polymer","quantum dot","silica"],"functionTypes":["TEST TYPE","endosomolysis","imaging function","other","targeting function","test function","therapeutic function","transfection"]};
-    // $scope.characterizationNameList = [{"label":"pharmacokinetics","value":"pharmacokinetics"},{"label":" --[pharmacokinetics]","value":"pharmacokinetics:pharmacokinetics"},{"label":"toxicology","value":"toxicology"},{"label":" --[toxicity]","value":"toxicology:toxicity"},{"label":"[imaging]","value":"imaging"},{"label":" --[imaging]","value":"imaging:imaging"},{"label":" --[intra-operative photoacoustic imaging]","value":"imaging:intra-operative photoacoustic imaging"},{"label":" --[multimodality imaging]","value":"imaging:multimodality imaging"},{"label":" --[multimodality imaging sensitivity]","value":"imaging:multimodality imaging sensitivity"},{"label":" --[multimodality kinetics]","value":"imaging:multimodality kinetics"},{"label":" --[tumor resection]","value":"imaging:tumor resection"},{"label":"[other_vv]","value":"other_vv"},{"label":" --[activation of innate and adaptive immunity]","value":"other_vv:activation of innate and adaptive immunity"},{"label":" --[adaptive immunity]","value":"other_vv:adaptive immunity"},{"label":" --[biodistribution]","value":"other_vv:biodistribution"},{"label":" --[drug accumulation]","value":"other_vv:drug accumulation"},{"label":" --[dye accumulation]","value":"other_vv:dye accumulation"},{"label":" --[health status]","value":"other_vv:health status"},{"label":" --[NK depletion]","value":"other_vv:NK depletion"},{"label":" --[photoacoustic imaging detection sensitivity]","value":"other_vv:photoacoustic imaging detection sensitivity"},{"label":" --[photothermal response]","value":"other_vv:photothermal response"},{"label":" --[reproducibility of photoacoustic imaging system]","value":"other_vv:reproducibility of photoacoustic imaging system"},{"label":" --[SERS detection sensitivity]","value":"other_vv:SERS detection sensitivity"},{"label":" --[stability]","value":"other_vv:stability"},{"label":" --[therapeutic efficacy]","value":"other_vv:therapeutic efficacy"},{"label":" --[toxicity]","value":"other_vv:toxicity"}];
     // initial rest call to setup form dropdowns //
     $scope.$on('$viewContentLoaded', function(){
       $http({method: 'GET', url: '/caNanoLab/rest/sample/setupAdvancedSearch'}).
@@ -257,7 +264,7 @@ var app = angular.module('angularApp')
     // resets overall form //
     $scope.resetForm = function() {
       $scope.searchSampleForm = {};
-      $scope.defineSampleForm();
+      $scope.defineSampleForm();    
     };
 
   });
