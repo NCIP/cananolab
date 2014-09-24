@@ -24,9 +24,9 @@
         </tr>
         <tr ng-repeat="data in samples">
             <td class="columnOne" width="20%">
-                <a href="/caNanoLab/#/sample?sampleId={{data.id}}">View</a>&nbsp;
-                <a href="/caNanoLab/#/editSample?sampleId={{data.id}}&amp;fromMyWorkspace=true" ng-if="data.editable">Edit</a> <br />
-                <a href="/caNanoLab/#/editSample?sampleId={{data.id}}&amp;fromMyWorkspace=true">Remove from Favorites</a>
+                <a href="/caNanoLab/#/sample?sampleId={{data.dataId}}">View</a>&nbsp;
+                <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromMyWorkspace=true" ng-if="data.editable">Edit</a> <br />
+                <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromMyWorkspace=true">Remove from Favorites</a>
             </td>
             <td>
                 <div>{{data.dataName}}</div>
@@ -43,8 +43,8 @@
         <tr ng-repeat="data in protocols">
             <td class="columnOne" width="20%">
                 <a href="rest/protocol/download?fileId={{data.fileId}}" target="_blank" ng-if="data.fileId != null && data.fileId != ''">View</a>&nbsp;
-                <a href="/caNanoLab/#/editProtocol?protocolId={{data.id}}" ng-if="data.editable">Edit</a> <br/>
-                <a href="/caNanoLab/#/editSample?sampleId={{data.id}}&amp;fromMyWorkspace=true">Remove from Favorites</a>
+                <a href="/caNanoLab/#/editProtocol?protocolId={{data.dataId}}" ng-if="data.editable">Edit</a> <br/>
+                <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromMyWorkspace=true">Remove from Favorites</a>
             </td>
             <td>
                 <div>{{data.dataName}}</div>
@@ -61,9 +61,9 @@
         </tr>
         <tr ng-repeat="data in publications">
             <td class="columnOne" width="20%">
-                <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}" target="_blank">View</a>&nbsp;
-                <a href="/caNanoLab/#/editPublication?publicationId={{data.id}}" ng-if="data.editable">Edit</a> <br />
-                <a href="/caNanoLab/#/editSample?sampleId={{data.id}}&amp;fromMyWorkspace=true">Remove from Favorites</a>
+                <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.dataId}}" target="_blank">View</a>&nbsp;
+                <a href="/caNanoLab/#/editPublication?publicationId={{data.dataId}}" ng-if="data.editable">Edit</a> <br />
+                <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromMyWorkspace=true">Remove from Favorites</a>
             </td>
             <td>
                 <div>{{data.pubMedId}}</div>
