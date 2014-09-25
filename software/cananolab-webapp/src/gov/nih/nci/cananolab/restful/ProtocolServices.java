@@ -72,7 +72,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while searching for publication " + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while searching for protocol " + e.getMessage())).build();
 		}
 	}
 	
