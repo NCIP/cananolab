@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.view;
 
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
@@ -9,9 +10,11 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.restful.sample.AdvancedSampleSearchBO;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
@@ -20,12 +23,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
+	private Logger logger = Logger.getLogger(SimpleAdvancedSearchSampleBean.class);
 	
 	List<String> orgNames = new ArrayList<String>();
 	List<String> nanomaterialEntityNames = new ArrayList<String>(); 
 	String functionalizingEntityName;
 	List<String> functionNames = new ArrayList<String>();
+	
+	List<SimpleCharacterizationsByTypeBean> charsByType = new ArrayList<SimpleCharacterizationsByTypeBean>();
 	
 	boolean showPOC;
 	boolean showNanomaterialEntity;
@@ -127,6 +135,8 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		populateNanomaterialEntity(sampleBean, searchBean);
 		populateFunctionalizingEntity(sampleBean, searchBean);
 		populateFunctionNames(sampleBean, searchBean);
+		
+		populateCharacterizations(sampleBean, searchBean);
 
 		editable = false; ///sampleBean.getUserUpdatable();
 	}
@@ -206,9 +216,32 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		
 		for (Function fe : functions) {
 			FunctionBean fbean = new FunctionBean(fe);
+			
+			//TODO: data doesn't seems to be formatted right.
 			String[] dns = fbean.getTargetDisplayNames();
 			if (dns != null)
 				Collections.addAll(this.functionNames, dns);
 		}
+	}
+	
+	protected void populateCharacterizations(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean) {
+		if (!searchBean.getHasDatum())
+			return;
+		
+		List<Characterization> chars = sampleBean.getCharacterizations();
+
+		if (chars == null) 
+			return;
+		
+		for (Characterization achar : chars) {
+			CharacterizationBean charBean = new CharacterizationBean(achar);
+			String type = charBean.getCharacterizationType();
+			String assayType = charBean.getAssayType();
+			String name = charBean.getCharacterizationName();
+			
+			logger.debug("Type: " + type + " Name: " + name + " assayType: " + assayType);
+			
+		}
+
 	}
 }

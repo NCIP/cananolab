@@ -20,6 +20,7 @@ import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchResultView;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchSampleBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -53,7 +54,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 	// Partial URL for viewing detailed sample info from Excel report file.
 	public static final String VIEW_SAMPLE_URL = "sample.do?dispatch=summaryView&page=0";
 
-	public List search(HttpServletRequest request, AdvancedSampleSearchBean searchBean)
+	public SimpleAdvancedSearchResultView search(HttpServletRequest request, AdvancedSampleSearchBean searchBean)
 			throws Exception {
 		
 		HttpSession session = request.getSession();
@@ -67,10 +68,10 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		List<AdvancedSampleBean> sampleBeans = querySamples(request, searchBean);
 		
 		if (sampleBeans == null || sampleBeans.isEmpty()) {
-
+			SimpleAdvancedSearchResultView empty = new SimpleAdvancedSearchResultView();
 			List<String> messages = new ArrayList<String>();
-			messages.add(PropertyUtil.getProperty("sample", "message.advancedSampleSearch.noresult"));
-			return messages;
+			empty.getErrors().add(PropertyUtil.getProperty("sample", "message.advancedSampleSearch.noresult"));
+			return empty;
 
 		}
 			
@@ -92,11 +93,11 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		// save sample result set in session for printing.
 		//session.setAttribute("samplesResultList", sampleBeansPerPage);
 		//return mapping.findForward("success");
-		List<SimpleSearchSampleBean> simpleBeans = 
+		SimpleAdvancedSearchResultView resultView = 
 				transfertoSimpleSampleBeans(loadedSampleBeans, (UserBean)session.getAttribute("user"),
 						searchBean);
 		
-		return simpleBeans;
+		return resultView;
 	}
 
 	/**
@@ -370,9 +371,31 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 	/**
 	 * 
 	 */
-	protected List<SimpleSearchSampleBean> transfertoSimpleSampleBeans(List<AdvancedSampleBean> sampleBeans,
+	protected SimpleAdvancedSearchResultView transfertoSimpleSampleBeans(List<AdvancedSampleBean> sampleBeans,
 			UserBean user, AdvancedSampleSearchBean searchBean) {
-		List<SimpleSearchSampleBean> simpleBeans = new ArrayList<SimpleSearchSampleBean>();
+		
+		SimpleAdvancedSearchResultView resultView = new SimpleAdvancedSearchResultView();
+		
+		resultView.getColumnTitles().add("Sample Name");
+		resultView.setShowPOC(searchBean.getHasPOC());
+		
+		resultView.setShowNanomaterialEntity(searchBean.getHasNanomaterial());
+		resultView.setShowFunctionalizingEntity(searchBean.getHasAgentMaterial());
+		resultView.setShowFunction(searchBean.getHasFunction());
+		
+		if (resultView.isShowPOC())
+			resultView.getColumnTitles().add("Point Of Contact Name");
+		
+		if (resultView.isShowNanomaterialEntity())
+			resultView.getColumnTitles().add("Nanomaterial Entity");
+		
+		if (resultView.isShowFunctionalizingEntity())
+			resultView.getColumnTitles().add("Functionalizing Entity");
+		
+		if (resultView.isShowFunction())
+			resultView.getColumnTitles().add("Function");
+		
+		List<SimpleAdvancedSearchSampleBean> simpleBeans = new ArrayList<SimpleAdvancedSearchSampleBean>();
 		
 		for (AdvancedSampleBean bean : sampleBeans) {
 			
@@ -381,7 +404,9 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 			simpleBeans.add(simpleBean);
 		}
 		
-		return simpleBeans;
+		resultView.setSamples(simpleBeans);
+		
+		return resultView;
 	}
 	
 	protected List<SimpleSearchSampleBean> createDummyData() {

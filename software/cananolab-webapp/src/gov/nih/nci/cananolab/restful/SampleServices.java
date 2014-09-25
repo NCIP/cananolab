@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchResultView;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
@@ -768,15 +769,15 @@ public class SampleServices {
 			AdvancedSampleSearchBO searchSampleBO = 
 					(AdvancedSampleSearchBO) applicationContext.getBean("advancedSampleSearchBO");
 			
-			List results = searchSampleBO.search(httpRequest, searchBean);
+			SimpleAdvancedSearchResultView resultView = searchSampleBO.search(httpRequest, searchBean);
 			
-			Object result = results.get(0);
-			if (result instanceof String) {
-				logger.debug("Search sampel has error: " + results.get(0));
-				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
+			
+			if (resultView.getErrors().size() > 0) {
+				logger.debug("Search sampel has error: " + resultView.getErrors().get(0));
+				return Response.status(Response.Status.NOT_FOUND).entity(resultView.getErrors()).build();
 			} else {
 				logger.debug("Sample search successful");
-				return Response.ok(results).build();
+				return Response.ok(resultView).build();
 			}
 
 		} catch (Exception e) {
