@@ -9,6 +9,8 @@ public class FavoriteBean {
 	String dataName;
 	String dataId;
 	String loginName;
+	String pubmedId;
+	String protocolFileId;
 	
 	public Long getId() {
 		return id;
@@ -39,6 +41,18 @@ public class FavoriteBean {
 	}
 	public void setLoginName(String loginName) {
 		this.loginName = loginName;
+	}
+	public String getPubmedId() {
+		return pubmedId;
+	}
+	public void setPubmedId(String pubmedId) {
+		this.pubmedId = pubmedId;
+	}
+	public String getProtocolFileId() {
+		return protocolFileId;
+	}
+	public void setProtocolFileId(String protocolFileId) {
+		this.protocolFileId = protocolFileId;
 	}
 
 }
