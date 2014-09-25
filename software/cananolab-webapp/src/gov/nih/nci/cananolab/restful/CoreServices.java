@@ -226,25 +226,8 @@ public class CoreServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			List<FavoriteBean> list = favorite.findFavorites(httpRequest);
+			SimpleFavoriteBean simpleBean = favorite.findFavorites(httpRequest);
 			
-			SimpleFavoriteBean simpleBean = new SimpleFavoriteBean();
-			List<FavoriteBean> samples = new ArrayList<FavoriteBean>();
-			List<FavoriteBean> publications = new ArrayList<FavoriteBean>();
-			List<FavoriteBean> protocols = new ArrayList<FavoriteBean>();
-			
-			for(FavoriteBean favBean : list){
-				if(favBean.getDataType().equalsIgnoreCase("sample")){
-					samples.add(favBean);
-					simpleBean.setSamples(samples);
-				}else if(favBean.getDataType().equalsIgnoreCase("publication")){
-						publications.add(favBean);
-						simpleBean.setPublications(publications);
-				}else{
-					protocols.add(favBean);
-					simpleBean.setProtocols(protocols);
-				}
-			}
 			return	Response.ok(simpleBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
@@ -284,12 +267,12 @@ public class CoreServices {
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
-	
-			List<String> list = favorite.delete(bean, httpRequest);
-				return	Response.ok(list).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			
+			SimpleFavoriteBean simpleBean = favorite.delete(bean, httpRequest);
+				return	Response.ok(simpleBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
-			return Response.status(Response.Status.NOT_FOUND).entity("Problem while deleting the favorites : "+ e.getMessage()).build();
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem while deleting the favorites from the list : "+ e.getMessage()).build();
 		}
 	}
 }
