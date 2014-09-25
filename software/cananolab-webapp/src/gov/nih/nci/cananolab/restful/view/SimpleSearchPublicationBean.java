@@ -141,9 +141,10 @@ public class SimpleSearchPublicationBean {
 			this.setCreatedDate(pub.getCreatedDate());
 			this.setUserDeletable(bean.getUserDeletable());
 			this.setEditable(bean.getUserUpdatable());
-			this.setPubmedId(pub.getPubMedId());
+			if(pub.getPubMedId()!=null)
+				this.setPubmedId(pub.getPubMedId());
 		//	editable = SecurityUtil.isEntityEditableForUser(bean.getUserAccesses(), user);
-			id = bean.getDomainFile().getId();
+			this.setId(bean.getDomainFile().getId());
 		}catch(Exception e){
 			System.out.println("error while setting up simple bean  "+e);
 			e.printStackTrace();
