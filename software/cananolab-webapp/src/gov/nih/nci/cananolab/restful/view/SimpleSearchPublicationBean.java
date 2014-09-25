@@ -16,10 +16,19 @@ public class SimpleSearchPublicationBean {
 	String[] sampleNames;
 	String descriptionDetail;
 	String status;
+	String title;
 	Date createdDate;
 	boolean userDeletable = false;
 	long pubmedId;
 	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public long getPubmedId() {
 		return pubmedId;
 	}
@@ -141,6 +150,7 @@ public class SimpleSearchPublicationBean {
 			this.setCreatedDate(pub.getCreatedDate());
 			this.setUserDeletable(bean.getUserDeletable());
 			this.setEditable(bean.getUserUpdatable());
+			this.setTitle(pub.getTitle());
 			if(pub.getPubMedId()!=null)
 				this.setPubmedId(pub.getPubMedId());
 		//	editable = SecurityUtil.isEntityEditableForUser(bean.getUserAccesses(), user);
