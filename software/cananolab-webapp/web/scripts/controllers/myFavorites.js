@@ -35,5 +35,29 @@ var app = angular.module('angularApp')
         //$scope.samples = [{'sampleName':'NCL-25-1', 'status':'in preparation', 'createdDate':'01/01/2014', 'user' : []}];
         //$scope.protocols = [{'protocolName':'Protocol 1', 'status':'in preparation', 'createdDate':'01/01/2014', 'user' : []}];
         //$scope.publications = [{'id':'1','publicationTitle':'Pub 1', 'status':'in preparation', 'createdDate':'01/01/2014', 'user' : []}];
+        
+        $scope.removeFromFavorites = function(dataId) {
+        	if (confirm("Remove from Favorites?")) {
+	            $scope.loader = true;
+	            
+	            $scope.favoriteBean = {"dataId" : dataId};
+	
+	            $http({method: 'POST', url: '/caNanoLab/rest/core/deleteFavorite',data: $scope.favoriteBean}).
+	                success(function(data, status, headers, config) {
+		                	$scope.data = data;
+		                    $scope.samples = $scope.data.samples;
+		                    $scope.protocols = $scope.data.protocols;
+		                    $scope.publications = $scope.data.publications;
+		                    $scope.loader = false;
+		                }).
+	                error(function(data, status, headers, config) {
+	                    // called asynchronously if an error occurs
+	                    // or server returns response with an error status.
+	                    // $rootScope.sampleData = data;
+	                    $scope.loader = false;
+	                    $scope.messages = data;
+	                });
+        	}
+        };   
 
     });

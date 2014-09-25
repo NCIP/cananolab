@@ -27,7 +27,7 @@
             <td class="columnOne" width="20%">
                 <a href="/caNanoLab/#/sample?sampleId={{data.dataId}}">View</a>&nbsp;
                 <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromMyWorkspace=true" ng-if="data.editable">Edit</a>
-                <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromMyWorkspace=true">Remove from Favorites</a>
+                <a href="" ng-click="removeFromFavorites(data.dataId)">Remove from Favorites</a>
             </td>
             <td>
                 <div>{{data.dataName}}</div>
@@ -45,7 +45,7 @@
             <td class="columnOne" width="20%">
                 <a href="rest/protocol/download?fileId={{data.protocolFileId}}" target="_blank" ng-if="data.protocolFileId != null && data.protocolFileId != '0'">View</a>&nbsp;
                 <a href="/caNanoLab/#/editProtocol?protocolId={{data.dataId}}" ng-if="data.editable">Edit</a>
-                <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromMyWorkspace=true">Remove from Favorites</a>
+                <a href="" ng-click="removeFromFavorites(data.dataId)">Remove from Favorites</a>
             </td>
             <td>
                 <div>{{data.dataName}}</div>
@@ -64,7 +64,7 @@
             <td class="columnOne" width="20%">
                 <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.pubmedId}}" target="_blank" ng-if="data.pubmedId != null && data.pubmedId != '0'">View</a>&nbsp;
                 <a href="/caNanoLab/#/editPublication?publicationId={{data.dataId}}" ng-if="data.editable">Edit</a>
-                <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromMyWorkspace=true">Remove from Favorites</a>
+                <a href="" ng-click="removeFromFavorites(data.dataId)">Remove from Favorites</a>
             </td>
             <td>
                 <div>{{data.pubMedId}}</div>
