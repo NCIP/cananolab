@@ -2,29 +2,32 @@ package gov.nih.nci.cananolab.restful.view;
 
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	
 	List<String> orgNames = new ArrayList<String>();
+	List<String> nanomaterialEntityNames = new ArrayList<String>(); 
+	List<String> functionalizingEntityNames = new ArrayList<String>();
+	List<String> functionNames = new ArrayList<String>();
 	
 	boolean showPOC;
 	boolean showNanomaterialEntity;
-	boolean showFunctioningEntity;
-	boolean showFuntion;
-	
-	
+	boolean showFunctionalizingEntity;
+	boolean showFunction;
 	
 	public boolean isShowPOC() {
 		return showPOC;
@@ -46,23 +49,24 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	}
 
 
-	public boolean isShowFunctioningEntity() {
-		return showFunctioningEntity;
+
+	public boolean isShowFunctionalizingEntity() {
+		return showFunctionalizingEntity;
 	}
 
 
-	public void setShowFunctioningEntity(boolean showFunctioningEntity) {
-		this.showFunctioningEntity = showFunctioningEntity;
+	public void setShowFunctionalizingEntity(boolean showFunctionalizingEntity) {
+		this.showFunctionalizingEntity = showFunctionalizingEntity;
 	}
 
 
 	public boolean isShowFuntion() {
-		return showFuntion;
+		return showFunction;
 	}
 
 
-	public void setShowFuntion(boolean showFuntion) {
-		this.showFuntion = showFuntion;
+	public void setShowFuntion(boolean showFunction) {
+		this.showFunction = showFunction;
 	}
 
 
@@ -76,6 +80,46 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	}
 
 
+	public List<String> getNanomaterialEntityNames() {
+		return nanomaterialEntityNames;
+	}
+
+
+	public void setNanomaterialEntityNames(List<String> nanomaterialEntityNames) {
+		this.nanomaterialEntityNames = nanomaterialEntityNames;
+	}
+
+	public List<String> getFunctionalizingEntityNames() {
+		return functionalizingEntityNames;
+	}
+
+
+	public void setFunctionalizingEntityNames(
+			List<String> functionalizingEntityNames) {
+		this.functionalizingEntityNames = functionalizingEntityNames;
+	}
+
+
+	public List<String> getFunctionNames() {
+		return functionNames;
+	}
+
+
+	public void setFunctionNames(List<String> functionNames) {
+		this.functionNames = functionNames;
+	}
+
+
+	public boolean isShowFunction() {
+		return showFunction;
+	}
+
+
+	public void setShowFunction(boolean showFunction) {
+		this.showFunction = showFunction;
+	}
+
+
 	public void transferAdvancedSampleBeanForResultView(AdvancedSampleBean sampleBean,
 			UserBean user, AdvancedSampleSearchBean searchBean) {
 
@@ -85,24 +129,10 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		setSampleId(sampleBean.getDomainSample().getId());
 		setSampleName(sampleBean.getDomainSample().getName());
 		
-		//Only if queries contain poc type
 		populatePOCs(sampleBean, searchBean);
-		
+		populateNanomaterialEntity(sampleBean, searchBean);
+		populateFunctionalizingEntity(sampleBean, searchBean);
 
-		
-
-	
-//
-//		setFunctions(sampleBean.getFunctionClassNames());
-//		setCharacterizations(sampleBean.getCharacterizationClassNames());
-//		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
-//		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain()
-//				.getCreatedDate());
-//
-//		//editable = SecurityUtil.isEntityEditableForUser(sampleBean.getUserAccesses(), user);
-//		editable = sampleBean.getUserUpdatable();
-
-		//editable = SecurityUtil.isEntityEditableForUser(sampleBean.getUserAccesses(), user);
 		editable = false; ///sampleBean.getUserUpdatable();
 	}
 	
@@ -128,31 +158,61 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		if (!searchBean.getHasNanomaterial())
 			return;
 		
-		SampleComposition comp = sampleBean.getDomainSample().getSampleComposition();
+		this.showNanomaterialEntity = true;
 		
-		//TODO: need to filter for this only
-		//query.getCompositionType().equals("nanomaterial entity")
-		//query.getCompositionType().equals("function")
-		//query.getCompositionType().equals("functionalizing entity")
+		List<NanomaterialEntity> nanos = sampleBean.getNanomaterialEntities();
+		if (nanos == null)
+			return;
 		
-
-		if (comp != null) {
-			Collection<NanomaterialEntity> nanocoll = comp
-					.getNanomaterialEntityCollection();
-			String[] v = new String[nanocoll.size()];
-			Iterator ite = nanocoll.iterator();
-
-			int i = 0;
-			while (ite.hasNext()) {
-				NanomaterialEntity n = (NanomaterialEntity) ite.next();
-				
-				String cn = ClassUtils.getShortClassName(n.getClass().getName());
-				if (n instanceof OtherNanomaterialEntity)
-					cn = ((OtherNanomaterialEntity)n).getType();
-
-				v[i++] = cn;
+		for (NanomaterialEntity nano : nanos) {
+			String cn = ClassUtils.getShortClassName(nano.getClass().getName());
+			if (nano instanceof OtherNanomaterialEntity)
+				cn = ((OtherNanomaterialEntity)nano).getType();
+			
+			this.nanomaterialEntityNames.add(cn);
+			
+			Collection<ComposingElement> ces = nano.getComposingElementCollection();
+			if (ces != null) {
+				for (ComposingElement ce : ces) {
+					ComposingElementBean ceBean = new ComposingElementBean(ce);
+					String val = ceBean.getAdvancedSearchDisplayName();
+					this.nanomaterialEntityNames.add(val);
+				}
 			}
-			setComposition(v);
+			
+			
+		}
+	}
+	
+	protected void populateFunctionalizingEntity(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean) {
+		if (!searchBean.getHasAgentMaterial())
+			return;
+		
+		this.showFunctionalizingEntity = true;
+		
+		List<FunctionalizingEntity> fes = sampleBean.getFunctionalizingEntities();
+		if (fes == null)
+			return;
+		
+		for (FunctionalizingEntity fe : fes) {
+			String cn = ClassUtils.getShortClassName(fe.getClass().getName());
+			this.functionalizingEntityNames.add(cn);
+		}
+	}
+	
+	protected void populateFunctionNames(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean) {
+		if (!searchBean.getHasFunction())
+			return;
+		
+		this.showFunction = true;
+		
+		List<Function> functions = sampleBean.getFunctions();
+		if (functions == null)
+			return;
+		
+		for (Function fe : functions) {
+			String cn = ClassUtils.getShortClassName(fe.getClass().getName());
+			this.functionNames.add(cn);
 		}
 	}
 }
