@@ -42,7 +42,7 @@
         </tr>
         <tr ng-repeat="data in protocols">
             <td class="columnOne" width="20%">
-                <a href="rest/protocol/download?fileId={{data.protocolFileId}}" target="_blank" ng-if="data.protocolFileId != null && data.protocolFileId != ''">View</a>&nbsp;
+                <a href="rest/protocol/download?fileId={{data.protocolFileId}}" target="_blank" ng-if="data.protocolFileId != null && data.protocolFileId != '0'">View</a>&nbsp;
                 <a href="/caNanoLab/#/editProtocol?protocolId={{data.dataId}}" ng-if="data.editable">Edit</a>
                 <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromMyWorkspace=true">Remove from Favorites</a>
             </td>
@@ -61,7 +61,7 @@
         </tr>
         <tr ng-repeat="data in publications">
             <td class="columnOne" width="20%">
-                <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.dataId}}" target="_blank">View</a>&nbsp;
+                <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.pubmedId}}" target="_blank" ng-if="data.pubmedId != null && data.pubmedId != '0'">View</a>&nbsp;
                 <a href="/caNanoLab/#/editPublication?publicationId={{data.dataId}}" ng-if="data.editable">Edit</a>
                 <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromMyWorkspace=true">Remove from Favorites</a>
             </td>
