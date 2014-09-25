@@ -10,18 +10,21 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	
 	List<String> orgNames = new ArrayList<String>();
 	List<String> nanomaterialEntityNames = new ArrayList<String>(); 
-	List<String> functionalizingEntityNames = new ArrayList<String>();
+	String functionalizingEntityName;
 	List<String> functionNames = new ArrayList<String>();
 	
 	boolean showPOC;
@@ -60,16 +63,6 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	}
 
 
-	public boolean isShowFuntion() {
-		return showFunction;
-	}
-
-
-	public void setShowFuntion(boolean showFunction) {
-		this.showFunction = showFunction;
-	}
-
-
 	public List<String> getOrgNames() {
 		return orgNames;
 	}
@@ -89,14 +82,15 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		this.nanomaterialEntityNames = nanomaterialEntityNames;
 	}
 
-	public List<String> getFunctionalizingEntityNames() {
-		return functionalizingEntityNames;
+	
+
+	public String getFunctionalizingEntityName() {
+		return functionalizingEntityName;
 	}
 
 
-	public void setFunctionalizingEntityNames(
-			List<String> functionalizingEntityNames) {
-		this.functionalizingEntityNames = functionalizingEntityNames;
+	public void setFunctionalizingEntityName(String functionalizingEntityName) {
+		this.functionalizingEntityName = functionalizingEntityName;
 	}
 
 
@@ -132,6 +126,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		populatePOCs(sampleBean, searchBean);
 		populateNanomaterialEntity(sampleBean, searchBean);
 		populateFunctionalizingEntity(sampleBean, searchBean);
+		populateFunctionNames(sampleBean, searchBean);
 
 		editable = false; ///sampleBean.getUserUpdatable();
 	}
@@ -179,8 +174,6 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 					this.nanomaterialEntityNames.add(val);
 				}
 			}
-			
-			
 		}
 	}
 	
@@ -195,8 +188,9 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			return;
 		
 		for (FunctionalizingEntity fe : fes) {
-			String cn = ClassUtils.getShortClassName(fe.getClass().getName());
-			this.functionalizingEntityNames.add(cn);
+			FunctionalizingEntityBean fBean = new FunctionalizingEntityBean(fe);
+			this.functionalizingEntityName = fBean.getAdvancedSearchDisplayName();
+			
 		}
 	}
 	
@@ -211,8 +205,10 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			return;
 		
 		for (Function fe : functions) {
-			String cn = ClassUtils.getShortClassName(fe.getClass().getName());
-			this.functionNames.add(cn);
+			FunctionBean fbean = new FunctionBean(fe);
+			String[] dns = fbean.getTargetDisplayNames();
+			if (dns != null)
+				Collections.addAll(this.functionNames, dns);
 		}
 	}
 }
