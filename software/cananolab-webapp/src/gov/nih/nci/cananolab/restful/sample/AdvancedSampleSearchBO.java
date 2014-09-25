@@ -20,18 +20,17 @@ import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchSampleBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -57,55 +56,45 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 	public List search(HttpServletRequest request, AdvancedSampleSearchBean searchBean)
 			throws Exception {
 		
-//		List<SimpleSearchSampleBean> simpleBeans = this.createDummyData();
-//				
-//		if (simpleBeans.size() > 0)
-//			return simpleBeans;
-
 		HttpSession session = request.getSession();
 
 		this.setServiceInSession(request);
+		SampleService service = (SampleService) request.getSession()
+				.getAttribute("sampleService");
+		
 		searchBean.updateQueries();
 		
-		// retrieve from session if it's not null
-//		List<AdvancedSampleBean> sampleBeans = (List<AdvancedSampleBean>) session
-//				.getAttribute("advancedSampleSearchResults");
-		
-		//if (sampleBeans == null || displayPage <= 0) {
 		List<AdvancedSampleBean> sampleBeans = querySamples(request, searchBean);
-			if (sampleBeans != null && !sampleBeans.isEmpty()) {
-				session
-						.setAttribute("advancedSampleSearchResults",
-								sampleBeans);
-			} else {
-				List<String> messages = new ArrayList<String>();
-				messages.add(PropertyUtil.getProperty("sample", "message.advancedSampleSearch.noresult"));
-				return messages;
-
-			}
-			
-		logger.debug("Got " + sampleBeans.size() + " samples from adv. queries");
-		//}
-		// load advancedSampleBean details 25 at a time for displaying
-		// pass in page and size
-//		List<AdvancedSampleBean> sampleBeansPerPage = getSamplesPerPage(
-//				sampleBeans, 0, Constants.DISPLAY_TAG_TABLE_SIZE,
-//				request, searchBean);
-		// set in sessionScope so user can go back to the result from the sample
-				// summary page
-		//request.getSession().setAttribute("advancedSamples", sampleBeansPerPage);
-		// get the total size of collection , required for display tag to
-		// get the pagination to work
 		
-		// set in sessionScope so user can go back to the result from the sample
-				// summary page
-//		request.getSession().setAttribute("resultSize", Integer
-//				.valueOf((sampleBeans.size())));
+		if (sampleBeans == null || sampleBeans.isEmpty()) {
 
+			List<String> messages = new ArrayList<String>();
+			messages.add(PropertyUtil.getProperty("sample", "message.advancedSampleSearch.noresult"));
+			return messages;
+
+		}
+			
+		logger.debug("Got " + sampleBeans.size() + " sample ids from adv. queries");
+		
+		
+		//Load full objects
+		List<AdvancedSampleBean> loadedSampleBeans = new ArrayList<AdvancedSampleBean>();
+		for (AdvancedSampleBean sampleBean : sampleBeans) {
+
+			String sampleId = sampleBean.getSampleId();
+			AdvancedSampleBean loadedAdvancedSample = service
+					.findAdvancedSampleByAdvancedSearch(sampleId,
+							searchBean, true);
+			loadedSampleBeans.add(loadedAdvancedSample);
+
+		}
+		
 		// save sample result set in session for printing.
 		//session.setAttribute("samplesResultList", sampleBeansPerPage);
 		//return mapping.findForward("success");
-		List<SimpleSearchSampleBean> simpleBeans = transfertoSimpleSampleBeans(sampleBeans, (UserBean)session.getAttribute("user"));
+		List<SimpleSearchSampleBean> simpleBeans = 
+				transfertoSimpleSampleBeans(loadedSampleBeans, (UserBean)session.getAttribute("user"),
+						searchBean);
 		
 		return simpleBeans;
 	}
@@ -212,45 +201,42 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 
 	private List<AdvancedSampleBean> querySamples(HttpServletRequest request, AdvancedSampleSearchBean searchBean) 
 			throws Exception {
-		//DynaValidatorForm theForm = (DynaValidatorForm) form;
-		//AdvancedSampleSearchBean searchBean = null;
-				
-//				(AdvancedSampleSearchBean) theForm
-//				.get("searchBean");
+		
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
-//		List<String> sampleIds = service
-//				.findSampleIdsByAdvancedSearch(searchBean);
 		
-		Map<String, String> sampleIdNames = service.findSampleIdNamesByAdvancedSearch(searchBean);
-		
-		logger.debug("Advanced search returned " + sampleIdNames.size() + " sampleId and name pairs");
-		
+		List<String> sampleNames = service
+				.findSampleIdsByAdvancedSearch(searchBean);
 		List<AdvancedSampleBean> sampleBeans = new ArrayList<AdvancedSampleBean>();
-		
-		Iterator<String> ite = sampleIdNames.keySet().iterator();
-		while (ite.hasNext()) {
-			String id = ite.next();
-			String name = sampleIdNames.get(id);
-			AdvancedSampleBean sampleBean = new AdvancedSampleBean(id);
-			sampleBean.setSampleName(name);
-			
-			//TODO: Need to get access
-			service.loadAccessesForSampleBean(sampleBean);
-			
+		for (String name : sampleNames) {
+			AdvancedSampleBean sampleBean = new AdvancedSampleBean(name);
 			sampleBeans.add(sampleBean);
 		}
+		return sampleBeans;
 		
-		
-//		for (String id : sampleIds) {
+//		Map<String, String> sampleIdNames = service.findSampleIdNamesByAdvancedSearch(searchBean);
+//		
+//		logger.debug("Advanced search returned " + sampleIdNames.size() + " sampleId and name pairs");
+//		
+//		List<AdvancedSampleBean> sampleBeans = new ArrayList<AdvancedSampleBean>();
+//		
+//		Iterator<String> ite = sampleIdNames.keySet().iterator();
+//		while (ite.hasNext()) {
+//			String id = ite.next();
+//			String name = sampleIdNames.get(id);
 //			AdvancedSampleBean sampleBean = new AdvancedSampleBean(id);
+//			sampleBean.setSampleName(name);
+//			
+//			//TODO: Need to get access
+//			service.loadAccessesForSampleBean(sampleBean);
+//			
 //			sampleBeans.add(sampleBean);
 //		}
-		return sampleBeans;
+		
+		//return sampleBeans;
 	}
 
-	private List<AdvancedSampleBean> getSamplesPerPage(
-			List<AdvancedSampleBean> sampleBeans, int page, int pageSize,
+	private List<AdvancedSampleBean> loadSamples(List<AdvancedSampleBean> sampleBeans, int page, int pageSize,
 			HttpServletRequest request, AdvancedSampleSearchBean searchBean)
 			throws Exception {
 		List<AdvancedSampleBean> loadedSampleBeans = new ArrayList<AdvancedSampleBean>();
@@ -385,13 +371,13 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 	 * 
 	 */
 	protected List<SimpleSearchSampleBean> transfertoSimpleSampleBeans(List<AdvancedSampleBean> sampleBeans,
-			UserBean user) {
+			UserBean user, AdvancedSampleSearchBean searchBean) {
 		List<SimpleSearchSampleBean> simpleBeans = new ArrayList<SimpleSearchSampleBean>();
 		
 		for (AdvancedSampleBean bean : sampleBeans) {
 			
-			SimpleSearchSampleBean simpleBean = new SimpleSearchSampleBean();
-			simpleBean.transferAdvancedSampleBeanForResultView(bean, user);
+			SimpleAdvancedSearchSampleBean simpleBean = new SimpleAdvancedSearchSampleBean();
+			simpleBean.transferAdvancedSampleBeanForResultView(bean, user, searchBean);
 			simpleBeans.add(simpleBean);
 		}
 		

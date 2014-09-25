@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
@@ -11,6 +12,7 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -148,20 +150,5 @@ public class SimpleSearchSampleBean {
 	}
 	
 
-	public void transferAdvancedSampleBeanForResultView(AdvancedSampleBean sampleBean,
-			UserBean user) {
-
-		if (sampleBean == null)
-			return;
-		
-		setSampleId(Long.valueOf(sampleBean.getSampleId()));
-		setSampleName(sampleBean.getSampleName());
-		
-//		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
-//		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain()
-//				.getCreatedDate());
-
-		//editable = SecurityUtil.isEntityEditableForUser(sampleBean.getUserAccesses(), user);
-		editable = sampleBean.getUserUpdatable();
-	}
+	
 }
