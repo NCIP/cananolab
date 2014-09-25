@@ -3,6 +3,7 @@ var app = angular.module('angularApp')
     .controller('MyFavoritesCtrl', function (navigationService, groupService, $rootScope,$scope,$http,$filter,$location,$routeParams) {
         $rootScope.tabs = navigationService.get();
         $rootScope.groups = groupService.getGroups.data.get();
+        $scope.loggedInUser = groupService.getUserName();        
 
         $scope.$on('$viewContentLoaded', function(){
             $scope.loader = true;
@@ -36,20 +37,20 @@ var app = angular.module('angularApp')
         //$scope.protocols = [{'protocolName':'Protocol 1', 'status':'in preparation', 'createdDate':'01/01/2014', 'user' : []}];
         //$scope.publications = [{'id':'1','publicationTitle':'Pub 1', 'status':'in preparation', 'createdDate':'01/01/2014', 'user' : []}];
         
-        $scope.removeFromFavorites = function(dataId) {
+        $scope.removeFromFavorites = function(data, dataType) {
         	if (confirm("Remove from Favorites?")) {
 	            $scope.loader = true;
 	            
-	            $scope.favoriteBean = {"dataId" : dataId};
+                $scope.favoriteBean = {"dataType" : dataType, "dataName" : data.dataName, "dataId" : data.id, "loginName" : $scope.loggedInUser.name};
 	
 	            $http({method: 'POST', url: '/caNanoLab/rest/core/deleteFavorite',data: $scope.favoriteBean}).
 	                success(function(data, status, headers, config) {
-		                	$scope.data = data;
-		                    $scope.samples = $scope.data.samples;
-		                    $scope.protocols = $scope.data.protocols;
-		                    $scope.publications = $scope.data.publications;
-		                    $scope.loader = false;
-		                }).
+	                	$scope.data = data;
+	                    $scope.samples = $scope.data.samples;
+	                    $scope.protocols = $scope.data.protocols;
+	                    $scope.publications = $scope.data.publications;
+	                    $scope.loader = false;
+		            }).
 	                error(function(data, status, headers, config) {
 	                    // called asynchronously if an error occurs
 	                    // or server returns response with an error status.
