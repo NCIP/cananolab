@@ -60,6 +60,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -519,6 +520,39 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return sampleBean;
 	}
 	
+	public void loadAccessesForSampleBean(AdvancedSampleBean sampleBean) throws Exception {
+		//Sample sample = sampleBean.getDomainSample();
+		
+		String sampleId = sampleBean.getSampleId();
+		logger.debug("Sample id to load accesseses for: " + sampleId);
+		if (user != null) {
+			List<AccessibilityBean> groupAccesses = super
+					.findGroupAccessibilities(sampleId);
+			List<AccessibilityBean> userAccesses = super
+					.findUserAccessibilities(sampleId);
+			sampleBean.setUserAccesses(userAccesses);
+			sampleBean.setGroupAccesses(groupAccesses);
+			sampleBean.setUser(user);
+			
+			logger.debug("Accesses loaded for sample " + sampleId + " for user: " + user.getLoginName());
+		}
+		
+	}
+	
+	private void loadAccessesFormAdvancedSampleBean(AdvancedSampleBean sampleBean) throws Exception {
+		Sample sample = sampleBean.getDomainSample();
+		if (user != null) {
+			List<AccessibilityBean> groupAccesses = super
+					.findGroupAccessibilities(sample.getId().toString());
+			List<AccessibilityBean> userAccesses = super
+					.findUserAccessibilities(sample.getId().toString());
+			sampleBean.setUserAccesses(userAccesses);
+			sampleBean.setGroupAccesses(groupAccesses);
+			sampleBean.setUser(user);
+		}
+		
+	}
+	
 	private SampleBasicBean loadSampleBasicBean(Sample sample) throws Exception {
 		SampleBasicBean sampleBean = new SampleBasicBean(sample);
 		if (user != null) {
@@ -661,13 +695,29 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new SampleException(err, e);
 		}
 	}
-
-	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
-			String sampleId, AdvancedSampleSearchBean searchBean)
+	
+	public Map<String, String> findSampleIdNamesByAdvancedSearch (AdvancedSampleSearchBean searchBean) 
 			throws SampleException {
 		try {
-			return advancedHelper.findAdvancedSampleByAdvancedSearch(sampleId,
+			return advancedHelper.findSampleIdNamesByAdvancedSearch(searchBean);
+		} catch (Exception e) {
+			String err = "Problem finding samples with the given advanced search parameters.";
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+	}
+
+	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
+			String sampleId, AdvancedSampleSearchBean searchBean, boolean loadAccess)
+			throws SampleException {
+		try {
+			AdvancedSampleBean advSampleBean = advancedHelper.findAdvancedSampleByAdvancedSearch(sampleId,
 					searchBean);
+			if (loadAccess)
+				this.loadAccessesFormAdvancedSampleBean(advSampleBean); 
+			
+			return advSampleBean;
+					
 		} catch (Exception e) {
 			String err = "Problem finding advanced sample details with the given advanced search parameters.";
 			logger.error(err, e);

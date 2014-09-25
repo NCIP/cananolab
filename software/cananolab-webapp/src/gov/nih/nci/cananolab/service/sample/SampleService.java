@@ -23,6 +23,7 @@ import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 
 /**
@@ -77,7 +78,7 @@ public interface SampleService extends BaseService {
 			AdvancedSampleSearchBean searchBean) throws SampleException;
 
 	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
-			String sampleName, AdvancedSampleSearchBean searchBean)
+			String sampleName, AdvancedSampleSearchBean searchBean, boolean loadAccess)
 			throws SampleException;
 
 	public SampleBean cloneSample(String originalSampleName,
@@ -106,4 +107,9 @@ public interface SampleService extends BaseService {
 	
 	public SampleBasicBean findSampleBasicById(String sampleId, Boolean loadAccessInfo)
 			throws SampleException, NoAccessException;
+	
+	public Map<String, String> findSampleIdNamesByAdvancedSearch (AdvancedSampleSearchBean searchBean) 
+			throws SampleException;
+	
+	public void loadAccessesForSampleBean(AdvancedSampleBean sampleBean) throws Exception;
 }

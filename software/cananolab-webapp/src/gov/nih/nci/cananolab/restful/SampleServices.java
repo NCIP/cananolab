@@ -724,7 +724,7 @@ public class SampleServices {
 					(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
 			
 			List<LabelValueBean> datumOptions = characterizationMgr.getDecoratedDatumNameOptions(
-					httpRequest, charType, charName, "");
+					httpRequest, charType, charName, null);
 
 			return Response.ok(datumOptions).build();
 		} catch (Exception e) {
@@ -761,6 +761,8 @@ public class SampleServices {
 	@Produces ("application/json")
 	public Response searchSampleAdvanced(@Context HttpServletRequest httpRequest, 
 			AdvancedSampleSearchBean searchBean ) {
+		
+		logger.debug("In searchSampleAdvanced");
 		
 		try {
 			AdvancedSampleSearchBO searchSampleBO = 

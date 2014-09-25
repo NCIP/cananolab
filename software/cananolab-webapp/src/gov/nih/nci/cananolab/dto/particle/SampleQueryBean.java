@@ -9,10 +9,10 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.dto.BaseQueryBean;
-import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
+
+import org.codehaus.jackson.annotate.JsonTypeName;
 
 /**
  * Information for the sample query form
@@ -20,9 +20,47 @@ import java.util.List;
  * @author pansu
  * 
  */
-public class SampleQueryBean extends BaseQueryBean {
+@JsonTypeName("SampleQueryBean")
+public class SampleQueryBean {//extends BaseQueryBean {
 	private String nameType="";
 	private String name="";
+	
+	
+	
+	
+	private String id;
+	private String operand;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getOperand() {
+		return operand;
+	}
+
+	public void setOperand(String operand) {
+		this.operand = operand;
+	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof BaseQueryBean) {
+			BaseQueryBean q = (BaseQueryBean) obj;
+			String thisId = this.getId();
+			if (thisId != null && thisId.equals(q.getId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
+	
+	
+	
 
 	public String getNameType() {
 		return nameType;
@@ -39,19 +77,34 @@ public class SampleQueryBean extends BaseQueryBean {
 	public void setName(String name) {
 		this.name = name.trim();
 	}
+	
+//	private void writeObject(ObjectOutputStream o)
+//		    throws IOException {  
+//		    
+//		    o.writeObject(propertyOne);  
+//		    o.writeObject(propertyTwo);
+//		  }
+//		  
+//		  private void readObject(ObjectInputStream o)
+//		    throws IOException, ClassNotFoundException {  
+//		    
+//		    propertyOne = (String) o.readObject();  
+//		    propertyTwo = (String) o.readObject();
+//		    validate();
+//		  }
 
-	public String getDisplayName() {
-		List<String> strs = new ArrayList<String>();
-		strs.add(nameType);
-		strs.add(getOperand());
-		strs.add(name);
-		return StringUtils.join(strs, " ");
-	}
-
-	public String getQueryAsColumnName() {
-		if (nameType.equals("sample name")) {
-			return null;
-		}
-		return nameType;
-	}
+//	public String getDisplayName() {
+//		List<String> strs = new ArrayList<String>();
+//		strs.add(nameType);
+//		strs.add(getOperand());
+//		strs.add(name);
+//		return StringUtils.join(strs, " ");
+//	}
+//
+//	public String getQueryAsColumnName() {
+//		if (nameType.equals("sample name")) {
+//			return null;
+//		}
+//		return nameType;
+//	}
 }

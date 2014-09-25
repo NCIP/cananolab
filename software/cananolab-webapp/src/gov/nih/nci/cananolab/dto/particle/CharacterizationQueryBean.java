@@ -14,13 +14,16 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonTypeName;
+
 /**
  * Information for the characterization query form
  * 
  * @author pansu
  * 
  */
-public class CharacterizationQueryBean extends BaseQueryBean {
+@JsonTypeName("CharacterizationQueryBean")
+public class CharacterizationQueryBean { //extends BaseQueryBean {
 	private String characterizationType = "";
 	private String characterizationName = "";
 	private String assayType = "";
@@ -28,7 +31,40 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 	private String datumName = "";
 	private String datumValue = "";
 	private String datumValueUnit = "";
+	
+	
+	private String id;
+	private String operand;
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getOperand() {
+		return operand;
+	}
+
+	public void setOperand(String operand) {
+		this.operand = operand;
+	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof BaseQueryBean) {
+			BaseQueryBean q = (BaseQueryBean) obj;
+			String thisId = this.getId();
+			if (thisId != null && thisId.equals(q.getId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
+	
+	
 	public String getCharacterizationType() {
 		return characterizationType;
 	}
@@ -85,27 +121,27 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 		this.datumValueBoolean = datumValueBoolean;
 	}
 
-	public String getDisplayName() {
-		List<String> strs = new ArrayList<String>();
-		strs.add(characterizationType);
-		if (!StringUtils.isEmpty(assayType)) {
-			strs.add(characterizationName + ":" + assayType);
-		} else {
-			strs.add(characterizationName);
-		}
-		strs.add(datumName);
-		strs.add(getOperand());
-		strs.add(datumValue);
-		strs.add(datumValueUnit);
-		return StringUtils.join(strs, " ");
-	}
-
-	public String getQueryAsColumnName() {
-		if (StringUtils.isEmpty(datumName) && StringUtils.isEmpty(datumValue)) {
-			return characterizationType;
-		} else {
-			return characterizationType + "<br>" + characterizationName
-					+ "<br>" + datumName;
-		}
-	}
+//	public String getDisplayName() {
+//		List<String> strs = new ArrayList<String>();
+//		strs.add(characterizationType);
+//		if (!StringUtils.isEmpty(assayType)) {
+//			strs.add(characterizationName + ":" + assayType);
+//		} else {
+//			strs.add(characterizationName);
+//		}
+//		strs.add(datumName);
+//		strs.add(getOperand());
+//		strs.add(datumValue);
+//		strs.add(datumValueUnit);
+//		return StringUtils.join(strs, " ");
+//	}
+//
+//	public String getQueryAsColumnName() {
+//		if (StringUtils.isEmpty(datumName) && StringUtils.isEmpty(datumValue)) {
+//			return characterizationType;
+//		} else {
+//			return characterizationType + "<br>" + characterizationName
+//					+ "<br>" + datumName;
+//		}
+//	}
 }

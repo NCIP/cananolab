@@ -154,14 +154,14 @@ public class SimpleSearchSampleBean {
 		if (sampleBean == null)
 			return;
 		
-		setSampleId(sampleBean.getDomainSample().getId());
-		setSampleName(sampleBean.getDomainSample().getName());
+		setSampleId(Long.valueOf(sampleBean.getSampleId()));
+		setSampleName(sampleBean.getSampleName());
 		
 //		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
 //		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain()
 //				.getCreatedDate());
 
 		//editable = SecurityUtil.isEntityEditableForUser(sampleBean.getUserAccesses(), user);
-		editable = false;
+		editable = sampleBean.getUserUpdatable();
 	}
 }

@@ -16,12 +16,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 /**
  * information needed for the advanced sample search form
  *
  * @author pansu
  *
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AdvancedSampleSearchBean {
 	private List<SampleQueryBean> sampleQueries = new ArrayList<SampleQueryBean>();
 	private List<CompositionQueryBean> compositionQueries = new ArrayList<CompositionQueryBean>();
@@ -90,63 +93,63 @@ public class AdvancedSampleSearchBean {
 		this.characterizationLogicalOperator = characterizationLogicalOperator;
 	}
 
-	public void addQuery(BaseQueryBean query) {
-		if (query instanceof SampleQueryBean) {
-			int index = sampleQueries.indexOf(query);
-			if (index != -1) {
-				sampleQueries.remove(query);
-				// retain the original order`
-				sampleQueries.add(index, (SampleQueryBean) query);
-			} else {
-				SampleQueryBean sampleQuery=(SampleQueryBean)query;
-				//set operand empty if name is empty
-				if (StringUtils.isEmpty(sampleQuery.getName())) {
-					sampleQuery.setOperand("");
-				}
-				sampleQueries.add(sampleQuery);
-			}
-		} else if (query instanceof CompositionQueryBean) {
-			int index = compositionQueries.indexOf(query);
-			if (index != -1) {
-				compositionQueries.remove(query);
-				// retain the original order
-				compositionQueries.add(index, (CompositionQueryBean) query);
-			} else {
-				CompositionQueryBean compQuery = (CompositionQueryBean) query;
-				//set operand empty if chemical name is empty
-				if (StringUtils.isEmpty(compQuery.getChemicalName())) {
-					compQuery.setOperand("");
-				}
-				compositionQueries.add(compQuery);
-			}
-		} else if (query instanceof CharacterizationQueryBean) {
-			int index = characterizationQueries.indexOf(query);
-			if (index != -1) {
-				characterizationQueries.remove(query);
-				// retain the original order
-				characterizationQueries.add(index,
-						(CharacterizationQueryBean) query);
-			} else {
-				CharacterizationQueryBean charQuery = (CharacterizationQueryBean) query;
-				//set operand and unit empty if value is empty
-				if (StringUtils.isEmpty(charQuery.getDatumValue())) {
-					charQuery.setOperand("");
-					charQuery.setDatumValueUnit("");
-				}
-				characterizationQueries.add(charQuery);
-			}
-		}
-	}
+//	public void addQuery(BaseQueryBean query) {
+//		if (query instanceof SampleQueryBean) {
+//			int index = sampleQueries.indexOf(query);
+//			if (index != -1) {
+//				sampleQueries.remove(query);
+//				// retain the original order`
+//				sampleQueries.add(index, (SampleQueryBean) query);
+//			} else {
+//				SampleQueryBean sampleQuery=(SampleQueryBean)query;
+//				//set operand empty if name is empty
+//				if (StringUtils.isEmpty(sampleQuery.getName())) {
+//					sampleQuery.setOperand("");
+//				}
+//				sampleQueries.add(sampleQuery);
+//			}
+//		} else if (query instanceof CompositionQueryBean) {
+//			int index = compositionQueries.indexOf(query);
+//			if (index != -1) {
+//				compositionQueries.remove(query);
+//				// retain the original order
+//				compositionQueries.add(index, (CompositionQueryBean) query);
+//			} else {
+//				CompositionQueryBean compQuery = (CompositionQueryBean) query;
+//				//set operand empty if chemical name is empty
+//				if (StringUtils.isEmpty(compQuery.getChemicalName())) {
+//					compQuery.setOperand("");
+//				}
+//				compositionQueries.add(compQuery);
+//			}
+//		} else if (query instanceof CharacterizationQueryBean) {
+//			int index = characterizationQueries.indexOf(query);
+//			if (index != -1) {
+//				characterizationQueries.remove(query);
+//				// retain the original order
+//				characterizationQueries.add(index,
+//						(CharacterizationQueryBean) query);
+//			} else {
+//				CharacterizationQueryBean charQuery = (CharacterizationQueryBean) query;
+//				//set operand and unit empty if value is empty
+//				if (StringUtils.isEmpty(charQuery.getDatumValue())) {
+//					charQuery.setOperand("");
+//					charQuery.setDatumValueUnit("");
+//				}
+//				characterizationQueries.add(charQuery);
+//			}
+//		}
+//	}
 
-	public void removeQuery(BaseQueryBean query) {
-		if (query instanceof SampleQueryBean) {
-			sampleQueries.remove((SampleQueryBean) query);
-		} else if (query instanceof CompositionQueryBean) {
-			compositionQueries.remove((CompositionQueryBean) query);
-		} else if (query instanceof CharacterizationQueryBean) {
-			characterizationQueries.remove((CharacterizationQueryBean) query);
-		}
-	}
+//	public void removeQuery(BaseQueryBean query) {
+//		if (query instanceof SampleQueryBean) {
+//			sampleQueries.remove((SampleQueryBean) query);
+//		} else if (query instanceof CompositionQueryBean) {
+//			compositionQueries.remove((CompositionQueryBean) query);
+//		} else if (query instanceof CharacterizationQueryBean) {
+//			characterizationQueries.remove((CharacterizationQueryBean) query);
+//		}
+//	}
 
 	public String getLogicalOperator() {
 		return logicalOperator;
@@ -235,44 +238,44 @@ public class AdvancedSampleSearchBean {
 		this.sampleLogicalOperator = sampleLogicalOperator;
 	}
 
-	private String getQueryDisplayName(
-			List<? extends BaseQueryBean> queryBeans, String operator) {
-		List<String> strs = new ArrayList<String>();
-		for (BaseQueryBean query : queryBeans) {
-			strs.add(query.getDisplayName());
-		}
-		String name = StringUtils.join(strs, "<br>" + operator + "<br>");
-		if (StringUtils.isEmpty(name)) {
-			return name;
-		} else {
-			return "(" + name + ")";
-		}
-	}
+//	private String getQueryDisplayName(
+//			List<? extends BaseQueryBean> queryBeans, String operator) {
+//		List<String> strs = new ArrayList<String>();
+//		for (BaseQueryBean query : queryBeans) {
+//			strs.add(query.getDisplayName());
+//		}
+//		String name = StringUtils.join(strs, "<br>" + operator + "<br>");
+//		if (StringUtils.isEmpty(name)) {
+//			return name;
+//		} else {
+//			return "(" + name + ")";
+//		}
+//	}
+//
+//	public String getDisplayName() {
+//		List<String> strs = new ArrayList<String>();
+//		strs.add(getQueryDisplayName(sampleQueries, sampleLogicalOperator));
+//		strs.add(getQueryDisplayName(compositionQueries,
+//				compositionLogicalOperator));
+//		strs.add(getQueryDisplayName(characterizationQueries,
+//				characterizationLogicalOperator));
+//		return StringUtils.join(strs, "<br>" + logicalOperator + "<br>");
+//	}
 
-	public String getDisplayName() {
-		List<String> strs = new ArrayList<String>();
-		strs.add(getQueryDisplayName(sampleQueries, sampleLogicalOperator));
-		strs.add(getQueryDisplayName(compositionQueries,
-				compositionLogicalOperator));
-		strs.add(getQueryDisplayName(characterizationQueries,
-				characterizationLogicalOperator));
-		return StringUtils.join(strs, "<br>" + logicalOperator + "<br>");
-	}
-
-	public List<String> getQueryAsColumnNames() {
-		List<String> columnNames = new ArrayList<String>();
-		for (SampleQueryBean query : sampleQueries) {
-			if (!StringUtils.isEmpty(query.getQueryAsColumnName()))
-				columnNames.add(query.getQueryAsColumnName());
-		}
-		for (CompositionQueryBean query : compositionQueries) {
-			columnNames.add(query.getQueryAsColumnName());
-		}
-		for (CharacterizationQueryBean query : characterizationQueries) {
-			columnNames.add(query.getQueryAsColumnName());
-		}
-		return columnNames;
-	}
+//	public List<String> getQueryAsColumnNames() {
+//		List<String> columnNames = new ArrayList<String>();
+//		for (SampleQueryBean query : sampleQueries) {
+//			if (!StringUtils.isEmpty(query.getQueryAsColumnName()))
+//				columnNames.add(query.getQueryAsColumnName());
+//		}
+//		for (CompositionQueryBean query : compositionQueries) {
+//			columnNames.add(query.getQueryAsColumnName());
+//		}
+//		for (CharacterizationQueryBean query : characterizationQueries) {
+//			columnNames.add(query.getQueryAsColumnName());
+//		}
+//		return columnNames;
+//	}
 
 	public void updateQueries() {
 		pocCount = 0;

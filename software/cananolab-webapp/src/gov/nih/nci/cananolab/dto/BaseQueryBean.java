@@ -8,12 +8,33 @@
 
 package gov.nih.nci.cananolab.dto;
 
+import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
+import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
+import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
+
+import org.codehaus.jackson.annotate.JsonSubTypes;
+import org.codehaus.jackson.annotate.JsonSubTypes.Type;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.annotate.JsonTypeName;
+
 /**
  * Contains information about a basic query
  * 
  * @author pansu
  * 
  */
+@JsonTypeInfo(
+use = JsonTypeInfo.Id.NAME,
+include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+//	@JsonSubTypes.Type(value = SampleQueryBean.class, name = "SampleQueryBean"),
+//	@JsonSubTypes.Type(value = CompositionQueryBean.class, name = "CompositionQueryBean"),
+//	@JsonSubTypes.Type(value = CharacterizationQueryBean.class, name = "CharacterizationQueryBean")
+@Type(value = SampleQueryBean.class, name = "SampleQueryBean"),
+@Type(value = CompositionQueryBean.class, name = "CompositionQueryBean"),
+@Type(value = CharacterizationQueryBean.class, name = "CharacterizationQueryBean")
+})
+@JsonTypeName("BaseQueryBean")
 public class BaseQueryBean {
 	private String id;
 	private String operand;
@@ -46,7 +67,7 @@ public class BaseQueryBean {
 		return eq;
 	}
 
-	public String getDisplayName() {
-		return "";
-	}
+//	public String getDisplayName() {
+//		return "";
+//	}
 }
