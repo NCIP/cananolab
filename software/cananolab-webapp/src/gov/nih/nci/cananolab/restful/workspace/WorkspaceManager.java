@@ -62,11 +62,11 @@ public class WorkspaceManager {
 		List<SimpleWorkspaceItem> sampleItems =  getSampleItems(request, securityService, user);
 		simpleWorkspace.setSamples(sampleItems);
 		
-//		List<SimpleWorkspaceItem> pubItems = getPublicationItems(request, securityService, user);
-//		simpleWorkspace.setPublications(pubItems);
-//	
-//		List<SimpleWorkspaceItem> protoItems = getProtocolItems(request, securityService, user);
-//		simpleWorkspace.setProtocols(protoItems);
+		List<SimpleWorkspaceItem> pubItems = getPublicationItems(request, securityService, user);
+		simpleWorkspace.setPublications(pubItems);
+	
+		List<SimpleWorkspaceItem> protoItems = getProtocolItems(request, securityService, user);
+		simpleWorkspace.setProtocols(protoItems);
 		
 		return simpleWorkspace;
 	}
