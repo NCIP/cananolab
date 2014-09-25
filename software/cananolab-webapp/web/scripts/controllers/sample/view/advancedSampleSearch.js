@@ -249,7 +249,7 @@ var app = angular.module('angularApp')
       success(function(data, status, headers, config) {
         $scope.sampleData.data = data;
         $scope.loader = false;
-        // $location.path("/sampleResults").replace();
+        $location.path("/advancedSampleResults").replace();
 
       }).
       error(function(data, status, headers, config) {

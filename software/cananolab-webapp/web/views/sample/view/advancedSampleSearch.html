@@ -1,6 +1,5 @@
 <div class="spacer">
 <div ng-class="{formFocus:loader}"> 
-
 <table class="contentTitle" summary="layout" width="100%" border="0">
 	<tbody><tr>
 		<th scope="col" align="left">
@@ -10,7 +9,7 @@
 			<td width="30%" align="right">
   
 
-	<a class="helpText" href="/sampleSearch">Basic Search</a>
+	<a class="helpText" href="#/searchSample">Basic Search</a>
 	&nbsp;
   
 <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>
@@ -376,7 +375,7 @@
 
 					<button ng-click="resetForm()">Reset</button>
 				
-					<button ng-click="search()">Search</button>
+					<button ng-disabled="" ng-click="search()">Search</button>
 				
 			
 		</td>
