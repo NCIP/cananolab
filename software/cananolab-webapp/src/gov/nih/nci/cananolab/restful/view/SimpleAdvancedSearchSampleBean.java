@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
@@ -10,18 +11,21 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.restful.sample.AdvancedSampleSearchBO;
+import gov.nih.nci.cananolab.restful.bean.characterization.SimpleCharacterizationAdvancedSearchResultBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -33,13 +37,25 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	String functionalizingEntityName;
 	List<String> functionNames = new ArrayList<String>();
 	
-	List<SimpleCharacterizationsByTypeBean> charsByType = new ArrayList<SimpleCharacterizationsByTypeBean>();
+	List<List<SimpleCharacterizationAdvancedSearchResultBean>> orderedChars = 
+			new ArrayList<List<SimpleCharacterizationAdvancedSearchResultBean>>();
 	
 	boolean showPOC;
 	boolean showNanomaterialEntity;
 	boolean showFunctionalizingEntity;
 	boolean showFunction;
-	
+
+	public List<List<SimpleCharacterizationAdvancedSearchResultBean>> getOrderedChars() {
+		return orderedChars;
+	}
+
+
+	public void setOrderedChars(
+			List<List<SimpleCharacterizationAdvancedSearchResultBean>> orderedChars) {
+		this.orderedChars = orderedChars;
+	}
+
+
 	public boolean isShowPOC() {
 		return showPOC;
 	}
@@ -225,7 +241,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	}
 	
 	protected void populateCharacterizations(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean) {
-		if (!searchBean.getHasDatum())
+		if (searchBean.getCharacterizationQueries().size() == 0)
 			return;
 		
 		List<Characterization> chars = sampleBean.getCharacterizations();
@@ -233,14 +249,56 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		if (chars == null) 
 			return;
 		
+		Map<String, List<SimpleCharacterizationAdvancedSearchResultBean>> charsByType = 
+				new HashMap<String, List<SimpleCharacterizationAdvancedSearchResultBean>>();
+		
 		for (Characterization achar : chars) {
-			CharacterizationBean charBean = new CharacterizationBean(achar);
-			String type = charBean.getCharacterizationType();
-			String assayType = charBean.getAssayType();
-			String name = charBean.getCharacterizationName();
 			
-			logger.debug("Type: " + type + " Name: " + name + " assayType: " + assayType);
+			long id = achar.getId();
+			String type = "";
+			String name = "";
 			
+			if (achar instanceof OtherCharacterization) {
+				type = ((OtherCharacterization) achar)
+						.getAssayCategory();
+				type = ((OtherCharacterization) achar)
+						.getName();
+				logger.debug("Type: " + type + " Name: " + name);
+			} else {
+				String superClassShortName = ClassUtils
+						.getShortClassName(achar.getClass().getSuperclass()
+								.getName());
+				type = ClassUtils
+						.getDisplayName(superClassShortName);
+				
+				name = ClassUtils.getDisplayName(ClassUtils.getShortClassName(achar.getClass().getName()));
+				
+				logger.debug("Type: " + type + " Name: " + name);
+			}
+			
+			List<SimpleCharacterizationAdvancedSearchResultBean> currentTypeList = charsByType.get(type);
+			
+			if (currentTypeList == null) {
+				currentTypeList = new ArrayList<SimpleCharacterizationAdvancedSearchResultBean>();
+				charsByType.put(type, currentTypeList);
+			}
+			
+			SimpleCharacterizationAdvancedSearchResultBean simpleChar = new SimpleCharacterizationAdvancedSearchResultBean();
+			simpleChar.setCharId(id);
+			simpleChar.setDisplayName(type + ":" + name);
+			
+			currentTypeList.add(simpleChar);
+			
+		}
+		
+		List<CharacterizationQueryBean> charQueries = searchBean.getCharacterizationQueries();
+		
+		for (CharacterizationQueryBean cqBean : charQueries) {
+			List<SimpleCharacterizationAdvancedSearchResultBean> cc = charsByType.get(cqBean.getCharacterizationType());
+			if (cc == null)
+				cc = new ArrayList<SimpleCharacterizationAdvancedSearchResultBean>();
+			
+			this.orderedChars.add(cc);
 		}
 
 	}

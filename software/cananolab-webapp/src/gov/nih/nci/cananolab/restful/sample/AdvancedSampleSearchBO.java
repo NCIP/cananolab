@@ -16,6 +16,7 @@ package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
@@ -394,6 +395,25 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		
 		if (resultView.isShowFunction())
 			resultView.getColumnTitles().add("Function");
+		
+		List<CharacterizationQueryBean> charQueries = searchBean.getCharacterizationQueries();
+		for (CharacterizationQueryBean query : charQueries) {
+			// set assay type and characterization name
+			if (query.getCharacterizationName().contains(":")) {
+				int ind = query.getCharacterizationName().indexOf(":");
+				query.setAssayType(query.getCharacterizationName().substring(
+						ind + 1));
+				query.setCharacterizationName(query.getCharacterizationName()
+						.substring(0, ind));
+			}
+			
+			if( query.getCharacterizationName().startsWith("other")) {
+				query.setCharacterizationName("OtherCharacterization");
+			}
+			
+			resultView.getColumnTitles().add(query.getCharacterizationType());
+		}
+		
 		
 		List<SimpleAdvancedSearchSampleBean> simpleBeans = new ArrayList<SimpleAdvancedSearchSampleBean>();
 		

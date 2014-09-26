@@ -338,4 +338,6 @@ public class AdvancedSampleSearchBean {
 	public int getDatumTypeCount() {
 		return datumTypeCount;
 	}
+	
+	
 }
