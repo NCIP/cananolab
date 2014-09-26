@@ -25,5 +25,7 @@ L-->
 		<property name="dataId" type="string" column="data_id"/>
 		<property name="pubmedId" type="string" column="pubmed_id"/>
 		<property name="protocolFileId" type="string" column="protocol_file_id"/>
+		<property name="editable" type="boolean" column="editable" />
 	</class>
 </hibernate-mapping>
+ 

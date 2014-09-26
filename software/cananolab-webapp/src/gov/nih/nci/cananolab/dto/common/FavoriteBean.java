@@ -11,7 +11,15 @@ public class FavoriteBean {
 	String loginName;
 	String pubmedId;
 	String protocolFileId;
-	boolean isEditable = false;
+	boolean editable;
+	
+	
+	public boolean getEditable() {
+		return editable;
+	}
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
 	
 	public Long getId() {
 		return id;
@@ -55,11 +63,5 @@ public class FavoriteBean {
 	public void setProtocolFileId(String protocolFileId) {
 		this.protocolFileId = protocolFileId;
 	}
-	public boolean isEditable() {
-		return isEditable;
-	}
-	public void setEditable(boolean isEditable) {
-		this.isEditable = isEditable;
-	}
-
+	
 }
