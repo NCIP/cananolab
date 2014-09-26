@@ -5,7 +5,6 @@ var app = angular.module('angularApp')
     $scope.sampleData = sampleService.sampleData;
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();   
-
     // define logical operators for each section and overall query //
     $scope.defineSampleForm = function() {
       // setup object where all data is stored //

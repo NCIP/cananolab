@@ -1,4 +1,4 @@
-<div class="spacer">{{sampleData.data}}
+<div class="spacer">
 	<div ng-class="{formFocus:loader}"> 
     <table border="0" class="contentTitle" summary="layout" width="100%">
       <tr>
@@ -14,59 +14,51 @@
       </tr>
     </table>
 <br /><div ng-init="p=tableParams.$params;
-				length=sampleData.data.length;
+				length=sampleData.data.samples.length;
 				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
 	</div><br />
 
 <table ng-table="tableParams" class="table sample" width="100%" cellspacing="0" cellpadding="0">
 	<tr>
-		<th sortable="'sampleName'">
-			Sample Name
-		</th>		
-		<th ng-show="data.showPOC">
-			Point of Contact
-		</th>
-		<th ng-show="data.showNanomaterialEntity">
-			Nanomaterial Entity
-		</th>
-		<th ng-show="data.showFunctionalizingEntity">
-			Functionalizing Entity
-		</th>
-		<th ng-show="data.showFunction">
-			Functions
+		<th ng-repeat="column in sampleData.data.columnTitles track by $index">
+			{{column}}
 		</th>										
 	</tr>
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
-		<td sortable="'sampleName'" width="10%">
-		 <a ng-if="row.editable" href="#/editSample?sampleId={{row.sampleId}}">{{row.sampleName}}</a>
-		<a ng-if="!row.editable"href="#/sample?sampleId={{row.sampleId}}">{{row.sampleName}}</a>
+		<td ng-repeat="col in row.columns track by $index" valign="top">
+			<div ng-if="col.type=='Sample'">
+				<a href=""  ng-click="displaySample(col.val[1])">{{col.val[0]}}</a>
+			</div>
+
+			<div ng-if="col.type=='POC'">
+				<div ng-repeat="poc in col.val track by $index" ng-bind-html="poc">
+					poc
+				</div><br /><a href="" ng-click="showPocDetails(row.sampleId)">Details</a>
+			</div>
+
+
+			<div ng-if="col.type=='Characterization'">
+				<div ng-repeat="char in col.val track by $index">
+					{{char.displayName}} (charID = {{char.charId}})<br />
+					<a href="">Details</a><br /><br />
+				</div>
+			</div>	
+			<div ng-if="col.type=='Nanomaterial'">
+				<div ng-repeat="char in col.val track by $index">
+					{{char}}<br /><br />
+				</div>
+			</div>
+			<div ng-if="col.type=='Function'">
+				<div ng-repeat="char in col.val track by $index">
+					{{char}}<br /><br />
+				</div>
+			</div>
+			<div ng-if="col.type=='Functionalizing'">
+				<div ng-repeat="char in col.val track by $index">
+					{{char}}<br /><br />
+				</div>
+			</div>															
 		</td>
-		<td ng-show="row.showPOC" width="10%">
-			<div ng-repeat="poc in row.orgNames track by $index">
-				<span ng-bind-html="poc">POC</span>
-			</div>
-			<a href="" ng-click="showPocDetails(row.sampleId)">Details</a>
-		</td>
-		<td ng-show="row.showNanomaterialEntity" width="10%">
-			<div ng-repeat="entity in row.nanomaterialEntityNames track by $index">
-				<span ng-bind-html="entity">Entity</span>
-			</div>
-			<a href="" ng-click="showEntityDetails(row.sampleId)">Details</a>
-		</td>
-		<td ng-show="row.showFunctionalizingEntity" width="10%">
-			<div ng-repeat="entity in row.functionalizingEntityNames track by $index">
-				<span ng-bind-html="entity">Entity</span>
-			</div>
-			<a href="" ng-click="showEntityDetails(row.sampleId)">Details</a>
-		</td>	
-		<td ng-show="row.showFunction" width="10%">
-			<div ng-repeat="entity in row.functions track by $index">
-				<span ng-bind-html="entity">Entity</span>
-			</div>
-			<a href="" ng-click="showEntityDetails(row.sampleId)">Details</a>
-		</td>				
-		
-				
 	</tr>
 </table> 
 </div>
