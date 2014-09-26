@@ -1293,8 +1293,13 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		return sampleBean.getDomain().getName();
 		
-		
-		
+	}
+	
+	public boolean isSampleEditableByCurrentUser(HttpServletRequest request, String sampleId) 
+	throws Exception {
+		SampleService service = this.setServiceInSession(request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		return false;
 	}
 	
 }
