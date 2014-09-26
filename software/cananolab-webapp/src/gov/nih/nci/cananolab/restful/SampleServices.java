@@ -786,4 +786,28 @@ public class SampleServices {
 					.entity(CommonUtil.wrapErrorMessageInList("Error while searching for samples: " + e.getMessage())).build();
 		}
 	}
+	
+	@GET
+	@Path("/isSampleEditable")
+	@Produces ("application/json")
+	 public Response isSampleEditable(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+		
+		try { 
+
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+
+			boolean editable = sampleBO.isSampleEditableByCurrentUser(httpRequest, sampleId);
+			
+			return Response.ok(editable).header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while evaluating if sample is editable by current user.")).build();
+		}
+	}
 }

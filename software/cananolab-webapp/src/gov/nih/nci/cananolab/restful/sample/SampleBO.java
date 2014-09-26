@@ -1297,9 +1297,23 @@ public class SampleBO extends BaseAnnotationBO {
 	
 	public boolean isSampleEditableByCurrentUser(HttpServletRequest request, String sampleId) 
 	throws Exception {
-		SampleService service = this.setServiceInSession(request);
+		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		return false;
+		if (user == null)
+			return false;
+		
+		if (sampleId == null || sampleId.length() == 0)
+			return false;
+		
+		SampleBean sampleBean = new SampleBean();
+		sampleBean.getDomain().setId(Long.parseLong(sampleId));
+		
+		SampleService service = this.setServiceInSession(request);
+		service.loadAccessesForSampleBean(sampleBean);
+		
+		sampleBean.setUser(user);
+		return sampleBean.getUserUpdatable();
+		
 	}
 	
 }

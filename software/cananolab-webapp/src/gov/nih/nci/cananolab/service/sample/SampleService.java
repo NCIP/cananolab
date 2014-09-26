@@ -111,5 +111,5 @@ public interface SampleService extends BaseService {
 	public Map<String, String> findSampleIdNamesByAdvancedSearch (AdvancedSampleSearchBean searchBean) 
 			throws SampleException;
 	
-	public void loadAccessesForSampleBean(AdvancedSampleBean sampleBean) throws Exception;
+	public void loadAccessesForSampleBean(SampleBean sampleBean) throws Exception;
 }

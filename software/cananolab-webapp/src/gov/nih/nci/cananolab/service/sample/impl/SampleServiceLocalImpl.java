@@ -520,10 +520,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return sampleBean;
 	}
 	
-	public void loadAccessesForSampleBean(AdvancedSampleBean sampleBean) throws Exception {
+	public void loadAccessesForSampleBean(SampleBean sampleBean) throws Exception {
 		//Sample sample = sampleBean.getDomainSample();
 		
-		String sampleId = sampleBean.getSampleId();
+		String sampleId = sampleBean.getDomain().getId().toString();
 		logger.debug("Sample id to load accesseses for: " + sampleId);
 		if (user != null) {
 			List<AccessibilityBean> groupAccesses = super
