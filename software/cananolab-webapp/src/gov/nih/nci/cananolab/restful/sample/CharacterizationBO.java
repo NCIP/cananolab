@@ -19,11 +19,13 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean.SimpleCharacterizationViewBean;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationUnitBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationSummaryEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
@@ -46,7 +48,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -1321,5 +1322,30 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		
 		return valid;
+	}
+	
+	/**
+	 * Set up the input form for editing existing characterization
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public List<SimpleCharacterizationUnitBean> setupView(HttpServletRequest request, String sampleId, String charId, 
+			String charClassName, String charType)
+			throws Exception {
+		CharacterizationService charService = this.setServicesInSession(request);
+		charId = super.validateCharId(charId);
+		
+		CharacterizationBean charBean = charService
+				.findCharacterizationById(charId);
+		
+		SimpleCharacterizationSummaryViewBean viewHelper = new SimpleCharacterizationSummaryViewBean();
+		List<SimpleCharacterizationUnitBean> aBeanUnitList = viewHelper.tranferCharacterizationBeanData(request, charBean);
+		
+		return aBeanUnitList;
 	}
 }
