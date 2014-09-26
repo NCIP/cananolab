@@ -14,6 +14,7 @@ package gov.nih.nci.cananolab.restful.workspace;
  * @author lethai, pansu
  */
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
@@ -89,7 +90,9 @@ public class WorkspaceManager {
 			item.setName(pubBean.getDomainFile().getTitle());
 			item.setId(pubBean.getDomainFile().getId());
 			item.setCreatedDate(pubBean.getDomainFile().getCreatedDate());
-			
+			Publication pub = (Publication) pubBean.getDomainFile();
+			if(pub.getPubMedId()!=null)
+			item.setPubMedId(pub.getPubMedId().toString());
 			setCommonDataFields(id, item, pubBean, securityService, user);
 			
 			items.add(item);

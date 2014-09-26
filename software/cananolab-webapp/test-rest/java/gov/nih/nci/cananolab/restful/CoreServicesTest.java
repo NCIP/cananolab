@@ -76,7 +76,7 @@ public class CoreServicesTest {
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 				.expect()
-				.body("samples.dataName", hasItems("Test 1", "SY-NCL-23-1"))
+				.body("samples.dataName", equalToIgnoringCase("Sample 1"))
 						.when().get("http://localhost:8080/caNanoLab/rest/core/getFavorites");
 		
 		RestTestLoginUtil.logoutTest();
@@ -93,6 +93,21 @@ public class CoreServicesTest {
 				given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(form)
 				.expect().statusCode(200)
 				.when().post("http://localhost:8080/caNanoLab/rest/core/addFavorite");
+				
+	}
+	
+	@Test
+	public void testDeleteFavorites(){
+		String jsessionId = RestTestLoginUtil.loginTest();
+		FavoriteBean form = new FavoriteBean();
+		form.setDataType("sample");
+		form.setDataId("94699520");
+		form.setDataName("Test_HJ_DEV_01");
+		form.setId(new Long(105283586));
+		Response res =
+				given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(form)
+				.expect().statusCode(200)
+				.when().post("http://localhost:8080/caNanoLab/rest/core/deleteFavorite");
 				
 	}
 }
