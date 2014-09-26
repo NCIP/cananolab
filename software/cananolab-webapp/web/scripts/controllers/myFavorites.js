@@ -41,7 +41,7 @@ var app = angular.module('angularApp')
         	if (confirm("Remove from Favorites?")) {
 	            $scope.loader = true;
 	            
-                $scope.favoriteBean = {"dataType" : dataType, "dataName" : data.dataName, "dataId" : data.id, "loginName" : $scope.loggedInUser.name};
+                $scope.favoriteBean = {"id": data.id, "dataType" : dataType, "dataName" : data.dataName, "dataId" : data.dataId, "loginName" : $scope.loggedInUser.name};
 	
 	            $http({method: 'POST', url: '/caNanoLab/rest/core/deleteFavorite',data: $scope.favoriteBean}).
 	                success(function(data, status, headers, config) {

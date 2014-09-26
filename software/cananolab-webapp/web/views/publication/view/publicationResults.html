@@ -20,7 +20,7 @@
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
 		<td data-title="''" width="5%" class="columnOne">
 			<a ng-if="row.editable" href="#/editPublication?publicationId={{row.id}}">Edit</a> <br />
-            <a id="href{{row.id}}" href="" ng-click="addToFavorites(row.id, row.title, row.pubmedId)" ng-if="tabs.userLoggedIn">Add to Favorites</a>
+            <a id="href{{row.id}}" href="" ng-click="addToFavorites(row.id, row.title, row.pubmedId, row.editable)" ng-if="tabs.userLoggedIn">Add to Favorites</a>
             <span id="msg{{row.id}}" style="color:#2276ff;font-weight:bold;"></span>		
 		</td>
 		<td data-title="'Bibliography Info'" sortable="'displayName'" width="25%" ng-bind-html="row.displayName">{{row.displayName}}

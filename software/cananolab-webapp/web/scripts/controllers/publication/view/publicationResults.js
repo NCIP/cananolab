@@ -50,10 +50,10 @@ var app = angular.module('angularApp')
             } 
         }); 
     
-    $scope.addToFavorites = function(publicationId, publicationTitle, pubmedId) {
+    $scope.addToFavorites = function(publicationId, publicationTitle, pubmedId, editable) {
         $scope.loader = true;
         
-        $scope.favoriteBean = {"dataType" : "publication", "dataName" : publicationTitle, "dataId" : publicationId, "pubmedId" : pubmedId, "loginName" : $scope.loggedInUser.name};
+        $scope.favoriteBean = {"dataType" : "publication", "dataName" : publicationTitle, "dataId" : publicationId, "pubmedId" : pubmedId, "editable" : editable, "loginName" : $scope.loggedInUser.name};
 
         $http({method: 'POST', url: '/caNanoLab/rest/core/addFavorite',data: $scope.favoriteBean}).
             success(function(data, status, headers, config) {

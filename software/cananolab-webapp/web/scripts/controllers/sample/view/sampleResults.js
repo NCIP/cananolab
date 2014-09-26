@@ -81,10 +81,10 @@ var app = angular.module('angularApp')
             } 
         }); 
     
-    $scope.addToFavorites = function(sampleId, sampleName) {
+    $scope.addToFavorites = function(sampleId, sampleName, editable) {
         $scope.loader = true;
         
-        $scope.favoriteBean = {"dataType" : "sample", "dataName" : sampleName, "dataId" : sampleId, "loginName" : $scope.loggedInUser.name};
+        $scope.favoriteBean = {"dataType" : "sample", "dataName" : sampleName, "dataId" : sampleId, "editable" : editable, "loginName" : $scope.loggedInUser.name};
 
         $http({method: 'POST', url: '/caNanoLab/rest/core/addFavorite',data: $scope.favoriteBean}).
             success(function(data, status, headers, config) {
