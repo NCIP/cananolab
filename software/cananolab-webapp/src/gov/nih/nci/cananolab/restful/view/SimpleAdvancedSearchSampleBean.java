@@ -315,6 +315,9 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 				logger.debug("Type: " + type + " Name: " + name);
 			}
 			
+			
+			String assayType = achar.getAssayType();
+			
 			List<SimpleCharacterizationAdvancedSearchResultBean> currentTypeList = charsByType.get(type);
 			
 			if (currentTypeList == null) {
@@ -324,7 +327,10 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			
 			SimpleCharacterizationAdvancedSearchResultBean simpleChar = new SimpleCharacterizationAdvancedSearchResultBean();
 			simpleChar.setCharId(id);
-			simpleChar.setDisplayName(type + ":" + name);
+			
+			if (assayType != null && assayType.length() > 0)
+				name += ":" + assayType;
+			simpleChar.setDisplayName(name);
 			
 			currentTypeList.add(simpleChar);
 			
