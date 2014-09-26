@@ -45,13 +45,16 @@ var app = angular.module('angularApp')
     $scope.defineSampleForm();
 
     // initial rest call to setup form dropdowns //
+    $scope.loader = true;
     $scope.$on('$viewContentLoaded', function(){
       $http({method: 'GET', url: '/caNanoLab/rest/sample/setupAdvancedSearch'}).
       success(function(data, status, headers, config) {
         $scope.data = data;
+        $scope.loader = false;
       }).
       error(function(data, status, headers, config) {
         $scope.message = data;
+        $scope.loader = false;
       });
     });     
 
