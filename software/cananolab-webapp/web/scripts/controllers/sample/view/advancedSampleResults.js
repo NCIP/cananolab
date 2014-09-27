@@ -45,19 +45,24 @@ var app = angular.module('angularApp')
       });       
     };
 
-    $scope.tableHtml = function(val) {
-      if (val||val==true) {
-        return 1
-      }
-      else {
-        return 0;
-      };
-
+    // gets sample being clicked on and determines if it is edit or view. //
+    // redirects to updateSample or sample page //
+    $scope.displaySample = function(sampleId) {
+      $http({method: 'GET', url: '/caNanoLab/rest/sample/isSampleEditable?sampleId='+sampleId}).
+      success(function(data, status, headers, config) {
+        var isEditable = data;
+        if (isEditable=='true') {
+            $location.path("/editSample").search({'sampleId':sampleId}).replace();      
+        }
+        else {
+            $location.path("/sample").search({'sampleId':sampleId}).replace();      
+        };
+      }).
+      error(function(data, status, headers, config) {
+        $scope.message = data;
+      });
     };
 
-    $scope.tableHtml2 = function(val) {
-      return 0;
-    };
 
     var data = $scope.sampleData.data.samples;
     // $scope.sampleData.data  = data;

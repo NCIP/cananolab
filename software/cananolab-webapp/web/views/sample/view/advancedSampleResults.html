@@ -27,7 +27,7 @@
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
 		<td ng-repeat="col in row.columns track by $index" valign="top">
 			<div ng-if="col.type=='Sample'">
-				<a href=""  ng-click="displaySample(col.val[1])">{{col.val[0]}}</a>
+				<a href=""  ng-click="displaySample(row.sampleId)">{{col.val[0]}}</a>
 			</div>
 
 			<div ng-if="col.type=='POC'">
