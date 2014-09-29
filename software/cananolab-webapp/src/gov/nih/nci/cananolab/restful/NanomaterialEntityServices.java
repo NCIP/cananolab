@@ -228,5 +228,27 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 
 		}
 	}
+	@GET
+	@Path("/viewDetails")
+	@Produces ("application/json")
+    public Response viewDetails(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
+				
+		try { 
+			NanomaterialEntityBO nanomaterialEntityBO = 
+					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+						
+			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.setupUpdate(sampleId, dataId, httpRequest);
+			
+			List<String> errors = nano.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(nano).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the NanoMaterial Entity" + e.getMessage())).build();
+
+		}
+	}
+	
 }
 

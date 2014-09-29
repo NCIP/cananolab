@@ -230,4 +230,25 @@ private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
 
 		}
 	}
+	@GET
+	@Path("/viewDetails")
+	@Produces ("application/json")
+    public Response viewDetails(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
+				
+		try { 
+			FunctionalizingEntityBO functionalizingEntity = 
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
+			
+			SimpleFunctionalizingEntityBean bean = functionalizingEntity.setupUpdate(sampleId, dataId, httpRequest);
+			
+			List<String> errors = bean.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(bean).build() :
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the Functionalizing Entity" + e.getMessage())).build();
+
+		}
+	}
 }
