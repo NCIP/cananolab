@@ -180,18 +180,19 @@
 								</option>
 							</select>
 						</td>
-						<td class="cellLabel">
+						<td class="cellLabel" ng-show="theCompositionQuery.compositionType != 'function'">
 							<span id="compChemicalNameLabel"><label for="chemicalName">with chemical name</label></span>
 						</td>
-						<td>
+						<td ng-show="theCompositionQuery.compositionType != 'function'">
 							<label for="compOperand">&nbsp;</label>
-							<select name="theCompositionQuery.operand" ng-model="theCompositionQuery.operand" id="compOperand"><option value="">
+							<select name="theCompositionQuery.operand" ng-model="theCompositionQuery.operand" id="compOperand" ><option value="">
 									-- Please Select --
 								</option>
 								<option value="contains">contains</option>
-								<option value="equals">equals</option></select>
+								<option value="equals">equals</option>
+							</select>
 						</td>
-						<td>
+						<td ng-show="theCompositionQuery.compositionType != 'function'">
 							<input name="theCompositionQuery.chemicalName" ng-model="theCompositionQuery.chemicalName" size="50" value="" id="chemicalName" type="text">
 						</td>
 					</tr>
