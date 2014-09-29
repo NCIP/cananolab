@@ -63,7 +63,7 @@ var app = angular.module('angularApp')
             if (confirm("Are you sure you want to delete the Protocol?")) {
                 $scope.loader = true;
 
-                $http({method: 'POST', url: '/caNanoLab/rest/protocol/deleteProtocol',data: $scope.protocolForm}).
+                $http({method: 'POST', url: '/caNanoLab/rest/protocol/deleteProtocolById',data: {"protocolId":protocolId}}).
                     success(function(data, status, headers, config) {
                         if (data == "success") {
                         	//var protocolRow = document.getElementById('protocol' + protocolId);
@@ -97,7 +97,7 @@ var app = angular.module('angularApp')
             if (confirm("Are you sure you want to delete  the Publication?")) {
             	$scope.loader = true;
 
-            	$http({method: 'POST', url: '/caNanoLab/rest/publication/deletePublication',data: $scope.publicationForm}).
+            	$http({method: 'POST', url: '/caNanoLab/rest/publication/deletePublicationById',data: {"publicationId":publicationId}}).
 	                success(function(data, status, headers, config) {
 	                	if (data == "success") {
 	                		//var publicationRow = document.getElementById('publication' + publicationId);
