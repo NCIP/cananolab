@@ -39,7 +39,7 @@ var app = angular.module('angularApp')
             if (confirm("Are you sure you want to delete the Sample?")) {
                 $scope.loader = true;
 
-                $http({method: 'GET', url: '/caNanoLab/rest/sample/deleteSample',params: {"sampleId":sampleId}}).
+                $http({method: 'GET', url: '/caNanoLab/rest/sample/deleteSampleFromWorkspace',params: {"sampleId":sampleId}}).
                 success(function(data, status, headers, config) {
                 	//var sampleRow = document.getElementById('sample' + sampleId);
                     //sampleRow.parentNode.removeChild(sampleRow);
@@ -63,7 +63,7 @@ var app = angular.module('angularApp')
             if (confirm("Are you sure you want to delete the Protocol?")) {
                 $scope.loader = true;
 
-                $http({method: 'POST', url: '/caNanoLab/rest/protocol/deleteProtocolById',data: {"protocolId":protocolId}}).
+                $http({method: 'GET', url: '/caNanoLab/rest/protocol/deleteProtocolById',params: {"protocolId":protocolId}}).
                     success(function(data, status, headers, config) {
                         if (data == "success") {
                         	//var protocolRow = document.getElementById('protocol' + protocolId);
@@ -97,7 +97,7 @@ var app = angular.module('angularApp')
             if (confirm("Are you sure you want to delete  the Publication?")) {
             	$scope.loader = true;
 
-            	$http({method: 'POST', url: '/caNanoLab/rest/publication/deletePublicationById',data: {"publicationId":publicationId}}).
+            	$http({method: 'GET', url: '/caNanoLab/rest/publication/deletePublicationById',params: {"publicationId":publicationId}}).
 	                success(function(data, status, headers, config) {
 	                	if (data == "success") {
 	                		//var publicationRow = document.getElementById('publication' + publicationId);
