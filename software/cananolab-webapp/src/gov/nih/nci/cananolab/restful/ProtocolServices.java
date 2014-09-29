@@ -298,7 +298,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 		}
 	}
 	
-	@POST
+	@GET
 	@Path("/deleteProtocolById")
 	@Produces ("application/json")
 	public Response deleteProtocolById(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("protocolId") String protocolId) {

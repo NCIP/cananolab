@@ -529,7 +529,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		}
 	}	
 
-	@POST
+	@GET
 	@Path("/deletePublicationById")
 	@Produces ("application/json")
 	public Response deletePublicationById(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("publicationId") String publicationId) {
