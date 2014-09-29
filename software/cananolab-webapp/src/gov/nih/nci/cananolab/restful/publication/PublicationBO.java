@@ -966,5 +966,30 @@ public class PublicationBO extends BaseAnnotationBO{
 			}
 		}
 
+	/**
+	 * Delete a publication from MyWorkspace
+	 * 
+	 * @param mapping
+	 * @param publicationId
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> deletePublicationById(String publicationId,
+			HttpServletRequest request)
+			throws Exception {
+		List<String> msgs = new ArrayList<String>();
+		PublicationService service = this.setServicesInSession(request);
+		PublicationBean publicationBean = service.findPublicationById(publicationId, true);
+
+		// update data review status to "DELETED"
+		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
+				publicationBean.getDomainFile().getId().toString(),
+				publicationBean.getDomainFile().getTitle(), "publication");
+		service.deletePublication((Publication) publicationBean.getDomainFile());
+	
+		msgs.add("success");
+		return msgs;
+	}
 }
 

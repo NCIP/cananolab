@@ -529,6 +529,33 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		}
 	}	
 
+	@POST
+	@Path("/deletePublicationById")
+	@Produces ("application/json")
+	public Response deletePublicationById(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("publicationId") String publicationId) {
+	
+		try {
+			
+			PublicationBO pubBO = 
+					 (PublicationBO) applicationContext.getBean("publicationBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			List<String> msgs = pubBO.deletePublicationById(publicationId, httpRequest);
+			 
+			
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the publication " + e.getMessage())).build();
+		}
+	}
+	
 	
 }
 	
