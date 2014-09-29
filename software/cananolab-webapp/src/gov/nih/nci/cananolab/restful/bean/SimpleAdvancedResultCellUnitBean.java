@@ -1,13 +1,13 @@
-package gov.nih.nci.cananolab.restful.bean.characterization;
+package gov.nih.nci.cananolab.restful.bean;
 
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 
 import java.util.List;
 
-public class SimpleCharacterizationAdvancedSearchResultBean {
+public class SimpleAdvancedResultCellUnitBean {
 	
 	long parentSampleId;
-	long charId;
+	long dataId;
 	
 	String displayName;
 
@@ -19,12 +19,12 @@ public class SimpleCharacterizationAdvancedSearchResultBean {
 		this.parentSampleId = parentSampleId;
 	}
 
-	public long getCharId() {
-		return charId;
+	public long getDataId() {
+		return dataId;
 	}
 
-	public void setCharId(long charId) {
-		this.charId = charId;
+	public void setDataId(long dataId) {
+		this.dataId = dataId;
 	}
 
 	public String getDisplayName() {

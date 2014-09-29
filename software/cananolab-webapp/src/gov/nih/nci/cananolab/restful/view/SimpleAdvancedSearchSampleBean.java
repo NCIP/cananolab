@@ -15,8 +15,8 @@ import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.restful.bean.characterization.SimpleAdvancedCellBean;
-import gov.nih.nci.cananolab.restful.bean.characterization.SimpleCharacterizationAdvancedSearchResultBean;
+import gov.nih.nci.cananolab.restful.bean.SimpleAdvancedResultCellBean;
+import gov.nih.nci.cananolab.restful.bean.SimpleAdvancedResultCellUnitBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
@@ -38,11 +38,11 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 //	List<String> functionNames = new ArrayList<String>();
 
 	
-	List<List<SimpleCharacterizationAdvancedSearchResultBean>> orderedChars = 
-			new ArrayList<List<SimpleCharacterizationAdvancedSearchResultBean>>();
+//	List<List<SimpleCharacterizationAdvancedSearchResultBean>> orderedChars = 
+//			new ArrayList<List<SimpleCharacterizationAdvancedSearchResultBean>>();
 	
 	
-	List<SimpleAdvancedCellBean> columns = new ArrayList<SimpleAdvancedCellBean>();
+	List<SimpleAdvancedResultCellBean> columns = new ArrayList<SimpleAdvancedResultCellBean>();
 	
 	boolean showPOC;
 	boolean showNanomaterialEntity;
@@ -67,13 +67,13 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 
 
 
-	public List<SimpleAdvancedCellBean> getColumns() {
+	public List<SimpleAdvancedResultCellBean> getColumns() {
 		return columns;
 	}
 
 
 
-	public void setColumns(List<SimpleAdvancedCellBean> columns) {
+	public void setColumns(List<SimpleAdvancedResultCellBean> columns) {
 		this.columns = columns;
 	}
 
@@ -170,7 +170,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		sampleIdName.add(String.valueOf(this.sampleId));
 		
 		
-		this.columns.add(new SimpleAdvancedCellBean("Sample", sampleIdName));
+		this.columns.add(new SimpleAdvancedResultCellBean("Sample", sampleIdName));
 		
 		populatePOCs(sampleBean, searchBean);
 		populateNanomaterialEntity(sampleBean, searchBean);
@@ -199,7 +199,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 
 		}
 
-		this.columns.add(new SimpleAdvancedCellBean("POC", orgNames));
+		this.columns.add(new SimpleAdvancedResultCellBean("POC", orgNames));
 	}
 	
 	protected void populateNanomaterialEntity(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean) {
@@ -231,7 +231,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			}
 		}
 		
-		this.columns.add(new SimpleAdvancedCellBean("Nanomaterial", nanomaterialEntityNames));
+		this.columns.add(new SimpleAdvancedResultCellBean("Nanomaterial", nanomaterialEntityNames));
 	}
 	
 	protected void populateFunctionalizingEntity(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean) {
@@ -248,11 +248,14 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		for (FunctionalizingEntity fe : fes) {
 			FunctionalizingEntityBean fBean = new FunctionalizingEntityBean(fe);
 			String name = fBean.getAdvancedSearchDisplayName();
-			functionalizingEntityName.add(name);
+			
+			logger.debug(fBean.getClassName() + ";" + fBean.getDescription() + ";" + fBean.getDescriptionDisplayName() +
+					";" + fBean.getDisplayName());
+			functionalizingEntityName.add(fBean.getDisplayName());
 		}
 		
 		//this.columns.add(functionalizingEntityName);
-		this.columns.add(new SimpleAdvancedCellBean("FunctionalizaingEntity", functionalizingEntityName));
+		this.columns.add(new SimpleAdvancedResultCellBean("FunctionalizaingEntity", functionalizingEntityName));
 	}
 	
 	protected void populateFunctionNames(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean) {
@@ -269,14 +272,13 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		for (Function fe : functions) {
 			FunctionBean fbean = new FunctionBean(fe);
 			
-			//TODO: data doesn't seems to be formatted right.
-			String[] dns = fbean.getTargetDisplayNames();
-			if (dns != null)
-				Collections.addAll(functionNames, dns);
+			logger.debug(fbean.getClassName() + ":" + fbean.getDescription()+ ":" + fbean.getDescriptionDisplayName() + fbean.getDisplayName());
+			
+			functionNames.add(fbean.getDisplayName());
 		}
 		
 		//this.columns.add(functionNames);
-		this.columns.add(new SimpleAdvancedCellBean("Function", functionNames));
+		this.columns.add(new SimpleAdvancedResultCellBean("Function", functionNames));
 	}
 	
 	protected void populateCharacterizations(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean) {
@@ -288,8 +290,8 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		if (chars == null) 
 			return;
 		
-		Map<String, List<SimpleCharacterizationAdvancedSearchResultBean>> charsByType = 
-				new HashMap<String, List<SimpleCharacterizationAdvancedSearchResultBean>>();
+		Map<String, List<SimpleAdvancedResultCellUnitBean>> charsByType = 
+				new HashMap<String, List<SimpleAdvancedResultCellUnitBean>>();
 		
 		for (Characterization achar : chars) {
 			
@@ -318,15 +320,15 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			
 			String assayType = achar.getAssayType();
 			
-			List<SimpleCharacterizationAdvancedSearchResultBean> currentTypeList = charsByType.get(type);
+			List<SimpleAdvancedResultCellUnitBean> currentTypeList = charsByType.get(type);
 			
 			if (currentTypeList == null) {
-				currentTypeList = new ArrayList<SimpleCharacterizationAdvancedSearchResultBean>();
+				currentTypeList = new ArrayList<SimpleAdvancedResultCellUnitBean>();
 				charsByType.put(type, currentTypeList);
 			}
 			
-			SimpleCharacterizationAdvancedSearchResultBean simpleChar = new SimpleCharacterizationAdvancedSearchResultBean();
-			simpleChar.setCharId(id);
+			SimpleAdvancedResultCellUnitBean simpleChar = new SimpleAdvancedResultCellUnitBean();
+			simpleChar.setDataId(id);
 			
 			if (assayType != null && assayType.length() > 0)
 				name += ":" + assayType;
@@ -339,9 +341,9 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		List<CharacterizationQueryBean> charQueries = searchBean.getCharacterizationQueries();
 		
 		for (CharacterizationQueryBean cqBean : charQueries) {
-			List<SimpleCharacterizationAdvancedSearchResultBean> cc = charsByType.get(cqBean.getCharacterizationType());
+			List<SimpleAdvancedResultCellUnitBean> cc = charsByType.get(cqBean.getCharacterizationType());
 			if (cc == null)
-				cc = new ArrayList<SimpleCharacterizationAdvancedSearchResultBean>();
+				cc = new ArrayList<SimpleAdvancedResultCellUnitBean>();
 			
 //			for (SimpleCharacterizationAdvancedSearchResultBean result : cc) {
 //				List<String> cell = new ArrayList<String>();
@@ -352,7 +354,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			
 			
 			//this.columns.add(cc);
-			this.columns.add(new SimpleAdvancedCellBean("Characterization", cc));
+			this.columns.add(new SimpleAdvancedResultCellBean("Characterization", cc));
 		}
 
 	}

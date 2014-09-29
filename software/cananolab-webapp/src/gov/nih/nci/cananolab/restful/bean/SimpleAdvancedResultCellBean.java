@@ -1,12 +1,12 @@
-package gov.nih.nci.cananolab.restful.bean.characterization;
+package gov.nih.nci.cananolab.restful.bean;
 
-public class SimpleAdvancedCellBean {
+public class SimpleAdvancedResultCellBean {
 	
 	String type;
 	
 	Object val;
 	
-	public SimpleAdvancedCellBean(String type, Object val) {
+	public SimpleAdvancedResultCellBean(String type, Object val) {
 		this.type = type;
 		this.val = val;
 	}

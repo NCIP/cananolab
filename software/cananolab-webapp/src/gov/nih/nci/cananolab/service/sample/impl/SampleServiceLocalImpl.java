@@ -313,11 +313,16 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throws SampleException, NoAccessException {
 		SampleBean sampleBean = null;
 		try {
+			logger.debug("Begin getting sample: " + System.currentTimeMillis());
 			Sample sample = helper.findSampleById(sampleId);
+			logger.debug("End getting sample: " + System.currentTimeMillis());
 			if (sample != null) {
 				if (loadAccessInfo) {
+					logger.debug("Begin load access: " + System.currentTimeMillis());
 					sampleBean = loadSampleBean(sample);
+					logger.debug("End load access: " + System.currentTimeMillis());
 				} else {
+					
 					sampleBean = new SampleBean(sample);
 				}
 			}

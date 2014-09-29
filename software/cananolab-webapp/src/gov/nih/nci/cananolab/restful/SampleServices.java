@@ -18,6 +18,7 @@ import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
+import gov.nih.nci.cananolab.restful.workspace.WorkspaceManager;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
 import java.io.FileInputStream;
@@ -470,6 +471,35 @@ public class SampleServices {
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			String msg = sampleBO.delete(sampleId, httpRequest);
+			logger.debug("Delete sample complete: " + msg);
+			return (msg == null || msg.startsWith("Error")) ?
+					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build()
+					:
+					Response.ok(msg).build();
+						
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while deleting sample: " + e.getMessage())).build();
+		}
+	}
+	
+	@GET
+	@Path("/deleteSampleFromWorkspace")
+	@Produces("application/json")
+	 public Response deleteSampleFromWorkspace(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+		logger.debug("In deleteSampleFromWorkspace");
+		try {
+			WorkspaceManager workspaceManager = 
+					(WorkspaceManager) applicationContext.getBean("workspaceManager");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			String msg = workspaceManager.deleteSample(sampleId, httpRequest);
 			logger.debug("Delete sample complete: " + msg);
 			return (msg == null || msg.startsWith("Error")) ?
 					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build()

@@ -21,6 +21,9 @@ import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceBean;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceItem;
 import gov.nih.nci.cananolab.service.curation.CurationService;
@@ -28,6 +31,7 @@ import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -42,11 +46,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
-public class WorkspaceManager {
+public class WorkspaceManager extends BaseAnnotationBO {
 	
 	private static Logger logger = Logger.getLogger(WorkspaceManager.class);
 	
-	CurationService curationService;
+	private DataAvailabilityService dataAvailabilityService;
 
 
 	public SimpleWorkspaceBean getWorkspaceItems(HttpServletRequest request)
@@ -320,4 +324,49 @@ public class WorkspaceManager {
 	public void setCurationService(CurationService curationService) {
 		this.curationService = curationService;
 	}
+	
+	public String deleteSample(String sampleId, HttpServletRequest request)
+			throws Exception {
+		
+		SecurityService securityService = getSecurityService(request);
+		UserBean user = (UserBean)request.getSession().getAttribute("user");
+		SampleService sampleService = this.getSampleServiceInSession(request, securityService);
+		
+		SampleBean sampleBean = sampleService.findSampleById(sampleId, true);
+		if (sampleBean == null)
+			return "Error: unable to find a valid sample in session with id . Sample deletion failed";
+		
+		String sampleName = sampleBean.getDomain().getName();
+
+		// remove all access associated with sample takes too long. Set up the
+		// delete job in scheduler
+		InitSampleSetup.getInstance().updateCSMCleanupEntriesInContext(
+				sampleBean.getDomain(), request);
+
+		// update data review status to "DELETED"
+		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
+				sampleBean.getDomain().getId().toString(), sampleBean
+						.getDomain().getName(), "sample");
+		if (sampleBean.getHasDataAvailability()) {
+			dataAvailabilityService.deleteDataAvailability(sampleBean
+					.getDomain().getId().toString(), securityService);
+		}
+		sampleService.deleteSample(sampleBean.getDomain().getName());
+		request.getSession().removeAttribute("theSample");
+		
+		String msg = PropertyUtil.getPropertyReplacingToken("sample", "message.deleteSample", "0", sampleName);
+		
+		return msg;
+	}
+
+	public DataAvailabilityService getDataAvailabilityService() {
+		return dataAvailabilityService;
+	}
+
+	public void setDataAvailabilityService(
+			DataAvailabilityService dataAvailabilityService) {
+		this.dataAvailabilityService = dataAvailabilityService;
+	}
+	
+	
 }
