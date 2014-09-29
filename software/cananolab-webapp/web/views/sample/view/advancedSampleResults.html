@@ -39,23 +39,26 @@
 
 			<div ng-if="col.type=='Characterization'">
 				<div ng-repeat="char in col.val track by $index">
-					{{char.displayName}} (charID = {{char.charId}})<br />
-					<a href="">Details</a><br /><br />
+					{{char.displayName}} (charID = {{char.dataId}})<br />
+					<a href="" ng-click="showCharDetails(row.sampleId, char.dataId)">Details</a><br /><br />
 				</div>
 			</div>	
 			<div ng-if="col.type=='Nanomaterial'">
 				<div ng-repeat="char in col.val track by $index">
-					{{char}}<br /><br />
+					{{char.displayName}} (charID = {{char.dataId}})<br />
+					<a href="">Details</a><br /><br />
 				</div>
 			</div>
 			<div ng-if="col.type=='Function'">
 				<div ng-repeat="char in col.val track by $index">
-					{{char}}<br /><br />
+					{{char.displayName}} (charID = {{char.dataId}})<br />
+					<a href="">Details</a><br /><br />
 				</div>
 			</div>
-			<div ng-if="col.type=='Functionalizing'">
+			<div ng-if="col.type=='FunctionalizaingEntity'">
 				<div ng-repeat="char in col.val track by $index">
-					{{char}}<br /><br />
+					{{char.displayName}} (charID = {{char.dataId}})<br />
+					<a href="">Details</a><br /><br />
 				</div>
 			</div>															
 		</td>
