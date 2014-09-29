@@ -14,6 +14,7 @@ package gov.nih.nci.cananolab.restful.workspace;
  * @author lethai, pansu
  */
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
@@ -42,143 +43,145 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 public class WorkspaceManager {
-	
+
 	private static Logger logger = Logger.getLogger(WorkspaceManager.class);
-	
+
 	CurationService curationService;
 
 
 	public SimpleWorkspaceBean getWorkspaceItems(HttpServletRequest request)
 			throws Exception {
-		
+
 		logger.info("In getWorkspaceItems");
-		
+
 		//return createDummy(new SimpleWorkspaceBean());
-		
+
 		SecurityService securityService = getSecurityService(request);
 		UserBean user = (UserBean)request.getSession().getAttribute("user");
 		SimpleWorkspaceBean simpleWorkspace = new SimpleWorkspaceBean();
-		
+
 		List<SimpleWorkspaceItem> sampleItems =  getSampleItems(request, securityService, user);
 		simpleWorkspace.setSamples(sampleItems);
-		
+
 		List<SimpleWorkspaceItem> pubItems = getPublicationItems(request, securityService, user);
 		simpleWorkspace.setPublications(pubItems);
-	
+
 		List<SimpleWorkspaceItem> protoItems = getProtocolItems(request, securityService, user);
 		simpleWorkspace.setProtocols(protoItems);
-		
+
 		return simpleWorkspace;
 	}
-	
+
 	protected List<SimpleWorkspaceItem> getPublicationItems(HttpServletRequest request,
-			SecurityService securityService, UserBean user) 
+			SecurityService securityService, UserBean user)
 			throws Exception {
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
-		
+
 		PublicationService service = this.getPublicationServiceInSession(request, securityService);
 		List<String> publicationIds = service.findPublicationIdsByOwner(user.getLoginName());
 		if (publicationIds == null)
 			return items;
-		
+
 		for (String id : publicationIds) {
 			PublicationBean pubBean = service.findPublicationById(id, true);
 			if (pubBean == null) continue;
-			
+
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
 			item.setName(pubBean.getDomainFile().getTitle());
 			item.setId(pubBean.getDomainFile().getId());
 			item.setCreatedDate(pubBean.getDomainFile().getCreatedDate());
-			
+			Publication pub = (Publication) pubBean.getDomainFile();
+			if(pub.getPubMedId()!=null)
+				item.setPubMedId(pub.getPubMedId().toString());
 			setCommonDataFields(id, item, pubBean, securityService, user);
-			
+
 			items.add(item);
 		}
-		
+
 		return items;
 	}
-	
+
 	protected List<SimpleWorkspaceItem> getProtocolItems(HttpServletRequest request,
-			SecurityService securityService, UserBean user) 
+			SecurityService securityService, UserBean user)
 			throws Exception {
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
 		ProtocolService protocolService = getProtocolServiceInSession(request, securityService);
 		List<String> protoIds = protocolService.findProtocolIdsByOwner(user.getLoginName());
-		
+
 		if (protoIds == null)
 			return items;
-		
+
 		for (String id : protoIds) {
 			ProtocolBean protoBean = protocolService.findProtocolById(id);
-			
-			
-		
+
+
+
 			if (protoBean == null) continue;
-			
+
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
 			item.setName(protoBean.getDomain().getName());
 			item.setId(protoBean.getDomain().getId());
 			item.setCreatedDate(protoBean.getDomain().getCreatedDate());
-			
+
 			File domainFile = protoBean.getFileBean().getDomainFile();
-			if( domainFile != null && 
-					domainFile.getId() != null && 
+			if( domainFile != null &&
+					domainFile.getId() != null &&
 					!StringUtils.isEmpty(domainFile.getUri())) {
 				item.setFileId(protoBean.getFileBean().getDomainFile().getId().longValue());
 			}
-			
+
 			File file = protoBean.getDomain().getFile();
 			if (file != null && file.getUriExternal())
 				item.setExternalURL(file.getUri());
-				
+
 			setCommonDataFields(id, item, protoBean, securityService, user);
-			
+
 			items.add(item);
 		}
 		return items;
 	}
 
-	
+
 	protected List<SimpleWorkspaceItem> getSampleItems(HttpServletRequest request,
-			SecurityService securityService, UserBean user) 
+			SecurityService securityService, UserBean user)
 			throws Exception {
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
 		SampleService sampleService = this.getSampleServiceInSession(request, securityService);
 		String loginUser = user.getLoginName();
-		
+
 		List<String> sampleIds = sampleService.findSampleIdsByOwner(loginUser);
 		if (sampleIds == null)
 			return items;
-	
+
 		for (String id : sampleIds) {
 			SampleBean sampleBean = sampleService.findSampleById(id, true);
 			if (sampleBean == null) continue;
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
-			
+
 			item.setName(sampleBean.getDomain().getName());
 			item.setId(sampleBean.getDomain().getId());
 			item.setCreatedDate(sampleBean.getDomain().getCreatedDate());
-			
+
 			setCommonDataFields(id, item, sampleBean, securityService, user);
-					
+
 			items.add(item);
 		}
-		
+
 		return items;
 	}
-	
-	protected String getAccessString(List<AccessibilityBean> groupAccesses, List<AccessibilityBean> userAccesses, 
+
+	protected String getAccessString(List<AccessibilityBean> groupAccesses, List<AccessibilityBean> userAccesses,
 			String loginUser, boolean isOwner) {
 		StringBuilder sb = new StringBuilder();
-		
+
 		if (groupAccesses != null) {
 			sb.append("Shared by: ");
-			
+
 			for (AccessibilityBean access : groupAccesses) {
 				sb.append(access.getGroupName()).append(", ");
 			}
 		}
-		
+
 		if (userAccesses != null) {
 			for (AccessibilityBean access : userAccesses) {
 				UserBean ubean = access.getUserBean();
@@ -187,11 +190,11 @@ public class WorkspaceManager {
 					//sb.append(ubean.getFirstName()).append(" ").append(ubean.getLastName()).append(", ");
 			}
 		}
-		
+
 		String accessString = isOwner ? "(Owner, " : "(";
 		accessString += sb.subSequence(0, sb.lastIndexOf(","));
 		accessString += ")";
-		
+
 		return accessString;
 	}
 
@@ -206,9 +209,9 @@ public class WorkspaceManager {
 		}
 		return securityService;
 	}
-	
+
 	protected SimpleWorkspaceBean createDummy(SimpleWorkspaceBean workspaceBean) {
-		
+
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
 		for (int i = 0; i < 5; i++) {
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
@@ -221,9 +224,9 @@ public class WorkspaceManager {
 			item.setEditable(false);
 			items.add(item);
 		}
-		
+
 		workspaceBean.setProtocols(items);
-		
+
 		items = new ArrayList<SimpleWorkspaceItem>();
 		for (int i = 0; i < 4; i++) {
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
@@ -232,30 +235,30 @@ public class WorkspaceManager {
 			item.setCreatedDate(new Date());
 			item.setSubmisstionStatus("In Review");
 			List<String> actions = new ArrayList<String>();
-			
+
 			item.setAccess("Read Write Delete (Owner)");
 			item.setEditable(false);
 			item.setPubMedId("1868677" + i);
-			
+
 			items.add(item);
 		}
-		
+
 		workspaceBean.setPublications(items);
-		
-		
+
+
 		return workspaceBean;
 	}
-	
-	protected void setCommonDataFields(String itemId, SimpleWorkspaceItem item, 
+
+	protected void setCommonDataFields(String itemId, SimpleWorkspaceItem item,
 			SecuredDataBean dataBean, SecurityService securityService, UserBean user) {
-		
+
 		item.setEditable(dataBean.getUserUpdatable());
-		
+
 		if (dataBean.getPublicStatus())
-			item.setSubmisstionStatus("Approved"); 
+			item.setSubmisstionStatus("Approved");
 		else
 			item.setSubmisstionStatus("In Draft");
-		
+
 		try {
 			DataReviewStatusBean reviewBean =  this.curationService.findDataReviewStatusBeanByDataId(itemId, securityService);
 			if (reviewBean != null) {
@@ -264,44 +267,44 @@ public class WorkspaceManager {
 		} catch (Exception e) {
 			logger.debug("Exception while finding data review status due to curator role restriction. Ignore for now");
 		}
-		
+
 		List<AccessibilityBean> groupAccesses = dataBean.getGroupAccesses();
 		List<AccessibilityBean> userAccesses = dataBean.getUserAccesses();
-		
+
 		String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), dataBean.getUserIsOwner());
 		item.setAccess(access);
 	}
-	
+
 	private SampleService getSampleServiceInSession(HttpServletRequest request, SecurityService securityService) {
-		
+
 		SampleService sampleService = (SampleService)request.getSession().getAttribute("sampleService");
-		if (sampleService == null) {	
+		if (sampleService == null) {
 			sampleService = new SampleServiceLocalImpl(securityService);
 			request.getSession().setAttribute("sampleService", sampleService);
 		}
 		return sampleService;
 
 	}
-	
+
 	private PublicationService getPublicationServiceInSession(HttpServletRequest request, SecurityService securityService)
 			throws Exception {
 		PublicationService publicationService = (PublicationService)request.getSession().getAttribute("publicationService");
-			
+
 		if (publicationService == null) {
 			publicationService = new PublicationServiceLocalImpl(securityService);
 			request.getSession().setAttribute("publicationService", publicationService);
 		}
 		return publicationService;
 	}
-	
+
 	private ProtocolService getProtocolServiceInSession(HttpServletRequest request, SecurityService securityService)
 			throws Exception {
-		
+
 		ProtocolService protocolService = (ProtocolService)request.getSession().getAttribute("protocolService");
-		if (protocolService == null) {	
+		if (protocolService == null) {
 			protocolService =	new ProtocolServiceLocalImpl(securityService);
 			request.getSession().setAttribute("protocolService", protocolService);
-		}	
+		}
 		return protocolService;
 	}
 

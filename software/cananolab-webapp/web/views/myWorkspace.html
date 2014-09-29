@@ -92,7 +92,7 @@
         </tr>
         <tr ng-repeat="data in publications">
             <td class="columnOne">
-            	<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}" target="_blank">View</a>&nbsp;
+            	<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.pubMedId}}" ng-if="data.pubMedId!=null" target="_blank">View</a>&nbsp;
             	<a href="/caNanoLab/#/editPublication?publicationId={{data.id}}" ng-if="data.editable">Edit</a>
             </td>
             <td>
