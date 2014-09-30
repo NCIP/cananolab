@@ -34,7 +34,7 @@ public class CharacterizationQueryBean { //extends BaseQueryBean {
 	
 	
 	private String id;
-	private String operand;
+	private String operand = "";
 
 	public String getId() {
 		return id;
