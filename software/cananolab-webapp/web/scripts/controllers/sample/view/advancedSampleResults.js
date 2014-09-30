@@ -44,6 +44,49 @@ var app = angular.module('angularApp')
         $scope.loader = false;
       });       
     };
+    
+    $scope.showCharDetails = function(sampleId, charId) {
+        $scope.loader = true;
+        $http({method: 'GET', url: '/caNanoLab/rest/characterization/viewCharacterization?charId='+charId}).
+        success(function(data, status, headers, config) {
+          $scope.pocDetails = data;
+          $scope.loader = false;
+          $scope.popupModal($scope.pocDetails,'views/sample/view/modal/charDetails.html','CharDetailsCtrl')
+        }).
+        error(function(data, status, headers, config) {
+          $scope.message = data;
+          $scope.loader = false;
+        });       
+      };
+      
+      
+      $scope.showNanoMaterialDetails = function(sampleId, dataId) {
+          $scope.loader = true; 
+          $http({method: 'GET', url: '/caNanoLab/rest/nanomaterialEntity/viewDetails?sampleId='+sampleId+'&dataId='+dataId}).
+          success(function(data, status, headers, config) {
+            $scope.pocDetails = data;
+            $scope.loader = false;
+            $scope.popupModal($scope.pocDetails,'views/sample/view/modal/nanoMaterialDetails.html','NanoMaterialDetailsCtrl')
+          }).
+          error(function(data, status, headers, config) {
+            $scope.message = data;
+            $scope.loader = false;
+          });       
+        };
+        
+        $scope.showFunctionalizingEntityDetails = function(sampleId, dataId) {
+            $scope.loader = true; 
+            $http({method: 'GET', url: '/caNanoLab/rest/functionalizingEntity/viewDetails?sampleId='+sampleId+'&dataId='+dataId}).
+            success(function(data, status, headers, config) {
+              $scope.pocDetails = data;
+              $scope.loader = false;
+              $scope.popupModal($scope.pocDetails,'views/sample/view/modal/functionalizingEntityDetails.html','FunctionalizingEntityDetailsCtrl')
+            }).
+            error(function(data, status, headers, config) {
+              $scope.message = data;
+              $scope.loader = false;
+            });       
+          };
 
     // gets sample being clicked on and determines if it is edit or view. //
     // redirects to updateSample or sample page //
