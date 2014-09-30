@@ -246,6 +246,11 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			unit.setDataId(fe.getId());
 			unit.setDisplayName(fbean.getDisplayName());
 			
+			if (fe.getComposingElement() == null)
+				unit.setSubType("FunctionalizaingEntity");
+			else
+				unit.setSubType("Nanomaterial");
+			
 			units.add(unit);
 		}
 		

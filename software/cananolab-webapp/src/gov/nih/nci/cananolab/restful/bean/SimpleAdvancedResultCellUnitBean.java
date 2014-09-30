@@ -10,6 +10,7 @@ public class SimpleAdvancedResultCellUnitBean {
 	long dataId;
 	
 	String displayName;
+	String subType;
 
 	public long getParentSampleId() {
 		return parentSampleId;
@@ -33,6 +34,14 @@ public class SimpleAdvancedResultCellUnitBean {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	public String getSubType() {
+		return subType;
+	}
+
+	public void setSubType(String subType) {
+		this.subType = subType;
 	}
 	
 }
