@@ -49,6 +49,7 @@ var app = angular.module('angularApp')
       $http({method: 'GET', url: '/caNanoLab/rest/sample/setupAdvancedSearch'}).
       success(function(data, status, headers, config) {
         $scope.data = data;
+        //$scope.searchSampleForm = data;
         $scope.loader = false;
       }).
       error(function(data, status, headers, config) {
@@ -62,6 +63,7 @@ var app = angular.module('angularApp')
     // called when adding a new sample or updating an existing one //
     $scope.updateSampleCriteria = function() {
       if ($scope.isNewSample) {
+    	  $scope.theSampleQuery.type = 'SampleQueryBean';
         $scope.searchSampleForm.sampleQueries.push($scope.theSampleQuery);
       }
       else {
@@ -106,6 +108,7 @@ var app = angular.module('angularApp')
     // called when adding a new composition or updating an existing one //
     $scope.updateCompositionCriteria = function() {
       if ($scope.isNewComposition) {
+    	  $scope.theCompositionQuery.type = 'CompositionQueryBean';
         $scope.searchSampleForm.compositionQueries.push($scope.theCompositionQuery);
       }
       else {
@@ -206,7 +209,8 @@ var app = angular.module('angularApp')
     // called when adding a new characterization or updating an existing one //
     $scope.updateCharacterizationCriteria = function() {
       if ($scope.isNewCharacterization) {
-        $scope.searchSampleForm.characterizationQueries.push($scope.theCharacterizationQuery);
+    	  $scope.theCharacterizationQuery.type = 'CharacterizationQueryBean';
+           $scope.searchSampleForm.characterizationQueries.push($scope.theCharacterizationQuery);
       }
       else {
         angular.copy($scope.theCharacterizationQuery,$scope.currentCharacterization);
