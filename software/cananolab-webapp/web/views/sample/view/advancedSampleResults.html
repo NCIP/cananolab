@@ -54,10 +54,10 @@
 				<div ng-repeat="char in col.val track by $index">
 					{{char.displayName}} (charID = {{char.dataId}})<br />
 					
-					<div ng-if="char.subType=='FunctionalizaingEntity'">
+					<div ng-if="char.relatedEntityType=='functionalizingEntity'">
 					<a href="" ng-click="showFunctionalizingEntityDetails(row.sampleId, char.dataId)">Details</a><br /><br />
 					</div>
-					<div ng-if="char.subType=='Nanomaterial'">
+					<div ng-if="char.relatedEntityType=='nanomaterialEntity'">
 					<a href="" ng-click="showNanoMaterialDetails(row.sampleId, char.dataId)">Details</a><br /><br />
 					</div>
 					
