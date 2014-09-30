@@ -713,6 +713,7 @@ public class SampleServices {
 					(AdvancedSampleSearchBO) applicationContext.getBean("advancedSampleSearchBO");
 			
 			Map<String, Object> dropdownTypeLists = searchSampleBO.setup(httpRequest);
+			//AdvancedSampleSearchBean searchBean = searchSampleBO.setup(httpRequest);
 
 			return Response.ok(dropdownTypeLists).build();
 		} catch (Exception e) {

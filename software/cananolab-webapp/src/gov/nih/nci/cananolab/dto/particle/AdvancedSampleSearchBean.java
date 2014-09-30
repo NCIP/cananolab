@@ -12,8 +12,10 @@ import gov.nih.nci.cananolab.dto.BaseQueryBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -40,6 +42,18 @@ public class AdvancedSampleSearchBean {
 	private String logicalOperator = "or";
 	private int nanoEntityCount = 0, funcEntityCount = 0, funcCount = 0,
 			pocCount = 0, datumTypeCount = 0;
+	
+	Map<String, Object> setupMap = new HashMap<String, Object>();
+
+	
+
+	public Map<String, Object> getSetupMap() {
+		return setupMap;
+	}
+
+	public void setSetupMap(Map<String, Object> setupMap) {
+		this.setupMap = setupMap;
+	}
 
 	public List<CompositionQueryBean> getCompositionQueries() {
 		return compositionQueries;
@@ -238,44 +252,44 @@ public class AdvancedSampleSearchBean {
 		this.sampleLogicalOperator = sampleLogicalOperator;
 	}
 
-//	private String getQueryDisplayName(
-//			List<? extends BaseQueryBean> queryBeans, String operator) {
-//		List<String> strs = new ArrayList<String>();
-//		for (BaseQueryBean query : queryBeans) {
-//			strs.add(query.getDisplayName());
-//		}
-//		String name = StringUtils.join(strs, "<br>" + operator + "<br>");
-//		if (StringUtils.isEmpty(name)) {
-//			return name;
-//		} else {
-//			return "(" + name + ")";
-//		}
-//	}
-//
-//	public String getDisplayName() {
-//		List<String> strs = new ArrayList<String>();
-//		strs.add(getQueryDisplayName(sampleQueries, sampleLogicalOperator));
-//		strs.add(getQueryDisplayName(compositionQueries,
-//				compositionLogicalOperator));
-//		strs.add(getQueryDisplayName(characterizationQueries,
-//				characterizationLogicalOperator));
-//		return StringUtils.join(strs, "<br>" + logicalOperator + "<br>");
-//	}
+	private String getQueryDisplayName(
+			List<? extends BaseQueryBean> queryBeans, String operator) {
+		List<String> strs = new ArrayList<String>();
+		for (BaseQueryBean query : queryBeans) {
+			strs.add(query.getDisplayName());
+		}
+		String name = StringUtils.join(strs, "<br>" + operator + "<br>");
+		if (StringUtils.isEmpty(name)) {
+			return name;
+		} else {
+			return "(" + name + ")";
+		}
+	}
 
-//	public List<String> getQueryAsColumnNames() {
-//		List<String> columnNames = new ArrayList<String>();
-//		for (SampleQueryBean query : sampleQueries) {
-//			if (!StringUtils.isEmpty(query.getQueryAsColumnName()))
-//				columnNames.add(query.getQueryAsColumnName());
-//		}
-//		for (CompositionQueryBean query : compositionQueries) {
-//			columnNames.add(query.getQueryAsColumnName());
-//		}
-//		for (CharacterizationQueryBean query : characterizationQueries) {
-//			columnNames.add(query.getQueryAsColumnName());
-//		}
-//		return columnNames;
-//	}
+	public String getDisplayName() {
+		List<String> strs = new ArrayList<String>();
+		strs.add(getQueryDisplayName(sampleQueries, sampleLogicalOperator));
+		strs.add(getQueryDisplayName(compositionQueries,
+				compositionLogicalOperator));
+		strs.add(getQueryDisplayName(characterizationQueries,
+				characterizationLogicalOperator));
+		return StringUtils.join(strs, "<br>" + logicalOperator + "<br>");
+	}
+
+	public List<String> getQueryAsColumnNames() {
+		List<String> columnNames = new ArrayList<String>();
+		for (SampleQueryBean query : sampleQueries) {
+			if (!StringUtils.isEmpty(query.getQueryAsColumnName()))
+				columnNames.add(query.getQueryAsColumnName());
+		}
+		for (CompositionQueryBean query : compositionQueries) {
+			columnNames.add(query.getQueryAsColumnName());
+		}
+		for (CharacterizationQueryBean query : characterizationQueries) {
+			columnNames.add(query.getQueryAsColumnName());
+		}
+		return columnNames;
+	}
 
 	public void updateQueries() {
 		pocCount = 0;

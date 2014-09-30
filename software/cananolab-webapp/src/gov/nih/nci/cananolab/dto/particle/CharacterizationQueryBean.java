@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonTypeName;
 
 /**
@@ -23,7 +24,8 @@ import org.codehaus.jackson.annotate.JsonTypeName;
  * 
  */
 @JsonTypeName("CharacterizationQueryBean")
-public class CharacterizationQueryBean { //extends BaseQueryBean {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CharacterizationQueryBean extends BaseQueryBean {
 	private String characterizationType = "";
 	private String characterizationName = "";
 	private String assayType = "";
@@ -121,27 +123,41 @@ public class CharacterizationQueryBean { //extends BaseQueryBean {
 		this.datumValueBoolean = datumValueBoolean;
 	}
 
-//	public String getDisplayName() {
-//		List<String> strs = new ArrayList<String>();
-//		strs.add(characterizationType);
-//		if (!StringUtils.isEmpty(assayType)) {
-//			strs.add(characterizationName + ":" + assayType);
-//		} else {
-//			strs.add(characterizationName);
-//		}
-//		strs.add(datumName);
-//		strs.add(getOperand());
-//		strs.add(datumValue);
-//		strs.add(datumValueUnit);
-//		return StringUtils.join(strs, " ");
-//	}
-//
-//	public String getQueryAsColumnName() {
-//		if (StringUtils.isEmpty(datumName) && StringUtils.isEmpty(datumValue)) {
-//			return characterizationType;
-//		} else {
-//			return characterizationType + "<br>" + characterizationName
-//					+ "<br>" + datumName;
-//		}
-//	}
+	public String getDisplayName() {
+		List<String> strs = new ArrayList<String>();
+		strs.add(characterizationType);
+		if (!StringUtils.isEmpty(assayType)) {
+			strs.add(characterizationName + ":" + assayType);
+		} else {
+			strs.add(characterizationName);
+		}
+		strs.add(datumName);
+		strs.add(getOperand());
+		strs.add(datumValue);
+		strs.add(datumValueUnit);
+		return StringUtils.join(strs, " ");
+	}
+
+	public String getQueryAsColumnName() {
+		if (StringUtils.isEmpty(datumName) && StringUtils.isEmpty(datumValue)) {
+			return characterizationType;
+		} else {
+			return characterizationType + "<br>" + characterizationName
+					+ "<br>" + datumName;
+		}
+	}
+
+	@Override
+	public String getType() {
+		// TODO Auto-generated method stub
+		return "CharacterizationQueryBean";
+	}
+
+	@Override
+	public void setType(String type) {
+		// TODO Auto-generated method stub
+		super.setType(type);
+	}
+	
+	
 }

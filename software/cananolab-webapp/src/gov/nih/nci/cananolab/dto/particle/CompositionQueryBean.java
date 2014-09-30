@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonTypeName;
 
 /**
@@ -23,7 +24,8 @@ import org.codehaus.jackson.annotate.JsonTypeName;
  * 
  */
 @JsonTypeName("CompositionQueryBean")
-public class CompositionQueryBean { //extends BaseQueryBean {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CompositionQueryBean extends BaseQueryBean {
 	private String compositionType = "";
 	private String entityType = "";
 	private String chemicalName = "";
@@ -86,23 +88,37 @@ public class CompositionQueryBean { //extends BaseQueryBean {
 		this.chemicalName = chemicalName.trim();
 	}
 
-//	public String getDisplayName() {
-//		List<String> strs = new ArrayList<String>();
-//		strs.add(compositionType);
-//		strs.add(entityType);
-//		strs.add(getOperand());
-//		strs.add(chemicalName);
-//		return StringUtils.join(strs, " ");
-//	}
-//
-//	public String getQueryAsColumnName() {
-//		if (compositionType.equals("function")) {
-//			return compositionType;
-//		}
-//		if (StringUtils.isEmpty(chemicalName)) {
-//			return compositionType;
-//		} else {
-//			return compositionType+"<br>"+entityType;
-//		}
-//	}
+	public String getDisplayName() {
+		List<String> strs = new ArrayList<String>();
+		strs.add(compositionType);
+		strs.add(entityType);
+		strs.add(getOperand());
+		strs.add(chemicalName);
+		return StringUtils.join(strs, " ");
+	}
+
+	public String getQueryAsColumnName() {
+		if (compositionType.equals("function")) {
+			return compositionType;
+		}
+		if (StringUtils.isEmpty(chemicalName)) {
+			return compositionType;
+		} else {
+			return compositionType+"<br>"+entityType;
+		}
+	}
+
+	@Override
+	public String getType() {
+		// TODO Auto-generated method stub
+		return "CompositionQueryBean";
+	}
+
+	@Override
+	public void setType(String type) {
+		// TODO Auto-generated method stub
+		super.setType(type);
+	}
+	
+	
 }

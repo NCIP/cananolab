@@ -36,8 +36,18 @@ include = JsonTypeInfo.As.PROPERTY, property = "type")
 })
 @JsonTypeName("BaseQueryBean")
 public class BaseQueryBean {
+	
+	protected String type = "";
 	private String id;
-	private String operand;
+	private String operand = "";
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public String getId() {
 		return id;
@@ -67,7 +77,7 @@ public class BaseQueryBean {
 		return eq;
 	}
 
-//	public String getDisplayName() {
-//		return "";
-//	}
+	public String getDisplayName() {
+		return "";
+	}
 }

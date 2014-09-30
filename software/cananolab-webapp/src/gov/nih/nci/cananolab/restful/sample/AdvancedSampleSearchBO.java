@@ -308,9 +308,11 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		InitSampleSetup.getInstance().setLocalSearchDropdowns(request);
 		request.getSession().removeAttribute("sampleSearchResults");
 		
+		AdvancedSampleSearchBean advancedSearchBean = new AdvancedSampleSearchBean();
+		
 		Map<String, List<String>> listMap = SampleUtil.reformatLocalSearchDropdownsInSession(request.getSession());
 		
-		Map<String, Object> mixedMap = new HashMap<String, Object>();
+		Map<String, Object> mixedMap = new HashMap<String, Object>(); // advancedSearchBean.getSetupMap();
 		mixedMap.put("functionTypes", listMap.get("functionTypes"));
 		mixedMap.put("nanomaterialEntityTypes", listMap.get("nanomaterialEntityTypes"));
 		mixedMap.put("functionalizingEntityTypes", listMap.get("functionalizingEntityTypes"));
@@ -323,6 +325,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		numberOperands.add("<=");
 
 		mixedMap.put("numberOperands", numberOperands);
+		
 		return mixedMap;
 		
 	}

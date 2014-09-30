@@ -237,7 +237,6 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			return;
 		
 		List<SimpleAdvancedResultCellUnitBean> units = new ArrayList<SimpleAdvancedResultCellUnitBean>();
-		Map<String, List<LinkableItem>> actions = sampleBean.getAttributeMap();
 		List<LinkableItem> items = sampleBean.getFunctionItems();
 		
 		for (LinkableItem item :items) {
@@ -261,26 +260,6 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			units.add(unit);
 			
 		}
-		
-//		
-//		
-//		for (Function fe : functions) {
-//			FunctionBean fbean = new FunctionBean(fe);
-//			
-//						
-//			logger.debug(fbean.getClassName() + ":" + fbean.getDescription()+ ":" + fbean.getDescriptionDisplayName() + fbean.getDisplayName());
-//			
-//			SimpleAdvancedResultCellUnitBean unit = new SimpleAdvancedResultCellUnitBean();
-//			unit.setDataId(fe.getId());
-//			unit.setDisplayName(fbean.getDisplayName());
-//			
-//			if (fe.getComposingElement() == null)
-//				unit.setSubType("FunctionalizaingEntity");
-//			else
-//				unit.setSubType("Nanomaterial");
-//			
-//			units.add(unit);
-//		}
 		
 		this.columns.add(new SimpleAdvancedResultCellBean("Function", units));
 	}

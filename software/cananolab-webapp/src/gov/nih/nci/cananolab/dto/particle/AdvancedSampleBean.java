@@ -9,7 +9,6 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
@@ -18,14 +17,8 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.LinkableItem;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
-import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
-import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -293,6 +286,61 @@ public class AdvancedSampleBean extends SecuredDataBean{
 //		}
 		return attributeMap;
 	}
+	
+//	public void getCharacterizationItems() {
+//		boolean hasDatum = false;
+//		for (Datum datum : data) {
+//			if (columnName.contains(datum.getName())) {
+//				LinkableItem item = new LinkableItem();
+//				// find corresponding characterization from domainSample
+//				for (Characterization chara : domainSample
+//						.getCharacterizationCollection()) {
+//					for (Finding finding : chara.getFindingCollection()) {
+//						for (Datum datum0 : finding
+//								.getDatumCollection()) {
+//							if (datum.equals(datum0)) {
+//								item
+//										.setAction(CHARACTERIZATION_DETAIL_URL
+//												+ linkSuffix
+//												+ "&charId="
+//												+ chara.getId());
+//								break;
+//							}
+//						}
+//					}
+//				}
+//				item.getDisplayStrings().add(
+//						datum.getValue() + " " + datum.getValueUnit());
+//				hasDatum = true;
+//				items.add(item);
+//			}
+//		}
+//		if (!hasDatum && !columnName.contains("<br>")) {
+//			for (Characterization chara : characterizations) {
+//				String characterizationType = ClassUtils
+//						.getDisplayName(ClassUtils
+//								.getShortClassName(chara.getClass()
+//										.getSuperclass().getName()));
+//				LinkableItem item = new LinkableItem();
+//				item.setAction(CHARACTERIZATION_DETAIL_URL + linkSuffix
+//						+ "&charId=" + chara.getId());
+//				if (columnName.contains(characterizationType)) {
+//					String charName = ClassUtils
+//							.getDisplayName(ClassUtils
+//									.getShortClassName(chara.getClass()
+//											.getName()));
+//					if (!StringUtils.isEmpty(chara.getAssayType())) {
+//						item.getDisplayStrings().add(
+//								charName + ":" + chara.getAssayType());
+//					} else {
+//						item.getDisplayStrings().add(charName);
+//					}
+//				}
+//				items.add(item);
+//			}
+//		}
+//	}
+	
 	
 	public List<LinkableItem> getFunctionItems() {
 		List<LinkableItem> items = new ArrayList<LinkableItem>();

@@ -9,9 +9,15 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.dto.BaseQueryBean;
+import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonTypeName;
 
 /**
@@ -21,31 +27,32 @@ import org.codehaus.jackson.annotate.JsonTypeName;
  * 
  */
 @JsonTypeName("SampleQueryBean")
-public class SampleQueryBean {//extends BaseQueryBean {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SampleQueryBean extends BaseQueryBean {
 	private String nameType="";
 	private String name="";
 	
 	
-	
-	
-	private String id;
-	private String operand = "";
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getOperand() {
-		return operand;
-	}
-
-	public void setOperand(String operand) {
-		this.operand = operand;
-	}
+//	
+//	
+//	private String id;
+//	private String operand = "";
+//
+//	public String getId() {
+//		return id;
+//	}
+//
+//	public void setId(String id) {
+//		this.id = id;
+//	}
+//
+//	public String getOperand() {
+//		return operand;
+//	}
+//
+//	public void setOperand(String operand) {
+//		this.operand = operand;
+//	}
 
 	public boolean equals(Object obj) {
 		boolean eq = false;
@@ -61,6 +68,22 @@ public class SampleQueryBean {//extends BaseQueryBean {
 	
 	
 	
+
+	@Override
+	public String getType() {
+		return "SampleQueryBean";
+	}
+
+
+
+
+	@Override
+	public void setType(String type) {
+		super.setType(type);
+	}
+
+
+
 
 	public String getNameType() {
 		return nameType;
@@ -78,33 +101,18 @@ public class SampleQueryBean {//extends BaseQueryBean {
 		this.name = name.trim();
 	}
 	
-//	private void writeObject(ObjectOutputStream o)
-//		    throws IOException {  
-//		    
-//		    o.writeObject(propertyOne);  
-//		    o.writeObject(propertyTwo);
-//		  }
-//		  
-//		  private void readObject(ObjectInputStream o)
-//		    throws IOException, ClassNotFoundException {  
-//		    
-//		    propertyOne = (String) o.readObject();  
-//		    propertyTwo = (String) o.readObject();
-//		    validate();
-//		  }
+	public String getDisplayName() {
+		List<String> strs = new ArrayList<String>();
+		strs.add(nameType);
+		strs.add(getOperand());
+		strs.add(name);
+		return StringUtils.join(strs, " ");
+	}
 
-//	public String getDisplayName() {
-//		List<String> strs = new ArrayList<String>();
-//		strs.add(nameType);
-//		strs.add(getOperand());
-//		strs.add(name);
-//		return StringUtils.join(strs, " ");
-//	}
-//
-//	public String getQueryAsColumnName() {
-//		if (nameType.equals("sample name")) {
-//			return null;
-//		}
-//		return nameType;
-//	}
+	public String getQueryAsColumnName() {
+		if (nameType.equals("sample name")) {
+			return null;
+		}
+		return nameType;
+	}
 }
