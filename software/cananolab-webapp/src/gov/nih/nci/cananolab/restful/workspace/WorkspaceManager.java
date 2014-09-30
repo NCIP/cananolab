@@ -26,6 +26,7 @@ import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceBean;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceItem;
+import gov.nih.nci.cananolab.service.common.helper.CommonServiceHelper;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
@@ -108,14 +109,24 @@ public class WorkspaceManager extends BaseAnnotationBO {
 	protected List<SimpleWorkspaceItem> getProtocolItems(HttpServletRequest request,
 			SecurityService securityService, UserBean user) 
 			throws Exception {
+		CommonServiceHelper helper = new CommonServiceHelper();
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
 		ProtocolService protocolService = getProtocolServiceInSession(request, securityService);
 		List<String> protoIds = protocolService.findProtocolIdsByOwner(user.getLoginName());
+		List<String> Id = helper.findSharedProtocols(user.getLoginName());
 		
-		if (protoIds == null)
+		List<String> protoIdList = new ArrayList<String>();
+		
+		for(String ids : protoIds){
+			if(!Id.contains(ids))
+			protoIdList.add(ids);
+		}
+		for(String pid : Id){
+			protoIdList.add(pid);
+		}
+		if (protoIdList == null)
 			return items;
-		
-		for (String id : protoIds) {
+		for (String id : protoIdList) {
 			ProtocolBean protoBean = protocolService.findProtocolById(id);
 			
 			
