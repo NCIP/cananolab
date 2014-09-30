@@ -17,4 +17,10 @@ var app = angular.module('angularApp')
         $scope.cancel = function() {
             $modalInstance.close();
         };
+ })
+ 	.controller('CharDetailsCtrl', function ($scope,$http,$modalInstance,data) {
+ 		$scope.sampleData = data;
+        $scope.cancel = function() {
+            $modalInstance.close();
+        };        
  });
