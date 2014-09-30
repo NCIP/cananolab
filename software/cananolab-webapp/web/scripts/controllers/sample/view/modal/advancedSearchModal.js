@@ -6,13 +6,19 @@ var app = angular.module('angularApp')
             $modalInstance.close();
         };
  })
-    .controller('anotherCtrl', function ($scope,$http,$modalInstance,data) {
+    .controller('CharDetailsCtrl', function ($scope,$http,$modalInstance,data) {
         $scope.sampleData = data;
         $scope.cancel = function() {
             $modalInstance.close();
         };        
  })
-    .controller('anotherCtrl2', function ($scope,$http,$modalInstance,data) {
+ 	.controller('NanoMaterialDetailsCtrl', function ($scope,$http,$modalInstance,data) {
+        $scope.sampleData = data;
+        $scope.cancel = function() {
+            $modalInstance.close();
+        };
+ })
+    .controller('FunctionalizingEntityDetailsCtrl', function ($scope,$http,$modalInstance,data) {
         $scope.sampleData = data;
         $scope.cancel = function() {
             $modalInstance.close();
