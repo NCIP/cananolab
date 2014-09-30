@@ -80,10 +80,13 @@ public class WorkspaceManager extends BaseAnnotationBO {
 	protected List<SimpleWorkspaceItem> getPublicationItems(HttpServletRequest request,
 			SecurityService securityService, UserBean user) 
 			throws Exception {
+		CommonServiceHelper helper = new CommonServiceHelper();
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
 		
 		PublicationService service = this.getPublicationServiceInSession(request, securityService);
 		List<String> publicationIds = service.findPublicationIdsByOwner(user.getLoginName());
+		List<String> Ids = helper.findSharedPublications(user.getLoginName());
+		
 		if (publicationIds == null)
 			return items;
 		
@@ -195,12 +198,16 @@ public class WorkspaceManager extends BaseAnnotationBO {
 		StringBuilder sb = new StringBuilder();
 		
 		if (groupAccesses != null) {
-			sb.append("Shared by: ");
-			
+			if(isOwner){
+				sb.append("Shared with: ");
+			}else{
+				sb.append("Shared by:");
+			}
 			for (AccessibilityBean access : groupAccesses) {
 				sb.append(access.getGroupName()).append(", ");
 			}
 		}
+		
 		
 		if (userAccesses != null) {
 			for (AccessibilityBean access : userAccesses) {
@@ -273,6 +280,7 @@ public class WorkspaceManager extends BaseAnnotationBO {
 			SecuredDataBean dataBean, SecurityService securityService, UserBean user) {
 		
 		item.setEditable(dataBean.getUserUpdatable());
+		item.setOwner(dataBean.getUserIsOwner());
 		
 		if (dataBean.getPublicStatus())
 			item.setSubmisstionStatus("Approved"); 
