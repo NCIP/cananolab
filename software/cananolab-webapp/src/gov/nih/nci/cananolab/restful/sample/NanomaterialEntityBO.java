@@ -956,5 +956,23 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				.getAttribute("compositionService"));
 		return downloadFile(service, fileId, request, response);
 	}
-	
+	public NanomaterialEntityBean setupNanoEntityForAdvSearch(String sampleId, String entityId,
+			HttpServletRequest request)
+			throws Exception {
+	//	entityId = super.validateId(request, "dataId");
+		CompositionForm form = new CompositionForm();
+		// set up other particles with the same primary point of contact
+		CompositionService compService = this.setServicesInSession(request);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+
+		NanomaterialEntityBean entityBean = compService
+				.findNanomaterialEntityById(entityId);
+		form.setNanomaterialEntity(entityBean);
+		form.setOtherSamples(new String[0]);
+		this.checkOpenForms(entityBean, request);
+		request.getSession().setAttribute("sampleId", sampleId);
+//		SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
+//		nano.transferNanoMaterialEntityBeanToSimple(entityBean, request);
+		return entityBean;
+	}
 }

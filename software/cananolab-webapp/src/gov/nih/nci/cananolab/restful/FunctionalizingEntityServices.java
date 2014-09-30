@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.restful.sample.FunctionalizingEntityBO;
 import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleAdvacedSampleCompositionBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionalizingEntityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
@@ -239,13 +240,13 @@ private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
 			FunctionalizingEntityBO functionalizingEntity = 
 					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
 			
-			SimpleFunctionalizingEntityBean bean = functionalizingEntity.setupUpdate(sampleId, dataId, httpRequest);
+			FunctionalizingEntityBean entityBean = functionalizingEntity.setupFunctionalizingEntityForAdvancedSearch(sampleId, dataId, httpRequest);
 			
-			List<String> errors = bean.getErrors();
-			return (errors == null || errors.size() == 0) ?
-					Response.ok(bean).build() :
-						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			SimpleAdvacedSampleCompositionBean bean = new SimpleAdvacedSampleCompositionBean();
+			bean.transferFunctionalizingEntityForAdvancedSampleSearch(entityBean, httpRequest);
 			
+			return Response.ok(bean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the Functionalizing Entity" + e.getMessage())).build();
 
