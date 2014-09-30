@@ -64,29 +64,29 @@ var app = angular.module('angularApp')
           $scope.loader = true; 
           $http({method: 'GET', url: '/caNanoLab/rest/nanomaterialEntity/viewDetails?sampleId='+sampleId+'&dataId='+dataId}).
           success(function(data, status, headers, config) {
-            $scope.pocDetails = data;
+            $scope.compositionData = data;
             $scope.loader = false;
-            $scope.popupModal($scope.pocDetails,'views/sample/view/modal/nanoMaterialDetails.html','NanoMaterialDetailsCtrl')
+           $scope.popupModal($scope.compositionData,'views/sample/composition/nanomaterialEntity/nanoMaterialEntitySummaryView.html','NanoMaterialDetailsCtrl');
           }).
           error(function(data, status, headers, config) {
             $scope.message = data;
             $scope.loader = false;
-          });       
+          }); 
         };
         
         $scope.showFunctionalizingEntityDetails = function(sampleId, dataId) {
             $scope.loader = true; 
             $http({method: 'GET', url: '/caNanoLab/rest/functionalizingEntity/viewDetails?sampleId='+sampleId+'&dataId='+dataId}).
             success(function(data, status, headers, config) {
-              $scope.pocDetails = data;
+              $scope.compositionData = data;
               $scope.loader = false;
-              $scope.popupModal($scope.pocDetails,'views/sample/view/modal/functionalizingEntityDetails.html','FunctionalizingEntityDetailsCtrl')
+              $scope.popupModal($scope.compositionData,'views/sample//composition/functionalizingentity/functionalizingEntitySummaryView.html','FunctionalizingEntityDetailsCtrl')
             }).
             error(function(data, status, headers, config) {
               $scope.message = data;
               $scope.loader = false;
-            });       
-          };
+            }); 
+        };
 
     // gets sample being clicked on and determines if it is edit or view. //
     // redirects to updateSample or sample page //

@@ -6,20 +6,14 @@ var app = angular.module('angularApp')
             $modalInstance.close();
         };
  })
-    .controller('CharDetailsCtrl', function ($scope,$http,$modalInstance,data) {
-        $scope.sampleData = data;
+    .controller('NanoMaterialDetailsCtrl', function ($scope,$http,$modalInstance,data) {
+        $scope.nanomaterialentity = data.nanomaterialentity;
         $scope.cancel = function() {
             $modalInstance.close();
         };        
  })
- 	.controller('NanoMaterialDetailsCtrl', function ($scope,$http,$modalInstance,data) {
-        $scope.sampleData = data;
-        $scope.cancel = function() {
-            $modalInstance.close();
-        };
- })
     .controller('FunctionalizingEntityDetailsCtrl', function ($scope,$http,$modalInstance,data) {
-        $scope.sampleData = data;
+        $scope.functionalizingentity = data.functionalizingentity;
         $scope.cancel = function() {
             $modalInstance.close();
         };
