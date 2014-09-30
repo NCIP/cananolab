@@ -40,10 +40,16 @@ import java.util.Map;
  *
  */
 public class AdvancedSampleBean extends SecuredDataBean{
-	public static String SAMPLE_DETAIL_URL = "sample.do?page=0&dispatch=setupView";
-	public static String NANOMATERIAL_DETAIL_URL = "nanomaterialEntity.do?page=0&dispatch=setupView";
-	public static String AGENTMATERIAL_DETAIL_URL = "functionalizingEntity.do?page=0&dispatch=setupView";
-	public static String CHARACTERIZATION_DETAIL_URL = "characterization.do?page=0&dispatch=setupView";
+//	public static String SAMPLE_DETAIL_URL = "sample.do?page=0&dispatch=setupView";
+//	public static String NANOMATERIAL_DETAIL_URL = "nanomaterialEntity.do?page=0&dispatch=setupView";
+//	public static String AGENTMATERIAL_DETAIL_URL = "functionalizingEntity.do?page=0&dispatch=setupView";
+//	public static String CHARACTERIZATION_DETAIL_URL = "characterization.do?page=0&dispatch=setupView";
+//	
+	public static String NANOMATERIAL_NAME = "nanomaterialEntity";
+	public static String AGENTMATERIAL_NAME = "functionalizingEntity";
+	
+	//public static String CHARACTERIZATION_DETAIL_URL = "characterization.do?page=0&dispatch=setupView";
+	
 	private Sample domainSample;
 	private String sampleId;
 	private List<PointOfContact> pointOfContacts;
@@ -171,7 +177,7 @@ public class AdvancedSampleBean extends SecuredDataBean{
 //						FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
 //								entity);
 //						LinkableItem item = new LinkableItem();
-//						item.setAction(AGENTMATERIAL_DETAIL_URL + linkSuffix
+//						item.setAction(AGENTMATERIAL_DETAIL_URL + 
 //								+ "&dataId=" + entity.getId());
 //						item.getDisplayStrings().add(
 //								entityBean.getAdvancedSearchDisplayName());
@@ -286,6 +292,46 @@ public class AdvancedSampleBean extends SecuredDataBean{
 //			attributeMap.put(columnName, items);
 //		}
 		return attributeMap;
+	}
+	
+	public List<LinkableItem> getFunctionItems() {
+		List<LinkableItem> items = new ArrayList<LinkableItem>();
+		for (Function func : functions) {
+			LinkableItem item = new LinkableItem();
+			FunctionBean funcBean = new FunctionBean(func);
+			// find corresponding nanomaterial entity from domainSample
+			for (NanomaterialEntity entity : domainSample
+					.getSampleComposition()
+					.getNanomaterialEntityCollection()) {
+				for (ComposingElement ce : entity
+						.getComposingElementCollection()) {
+					for (Function function : ce
+							.getInherentFunctionCollection()) {
+						if (func.equals(function)) {
+							
+							item.setAction(NANOMATERIAL_NAME + ":" + entity.getId());
+							break;
+						}
+					}
+				}
+			}
+			// find corresponding functionalizing entity from
+			// domainSample
+			for (FunctionalizingEntity entity : domainSample
+					.getSampleComposition()
+					.getFunctionalizingEntityCollection()) {
+				for (Function function : entity.getFunctionCollection()) {
+					if (func.equals(function)) {
+						item.setAction(AGENTMATERIAL_NAME + ":" + entity.getId());
+						break;
+					}
+				}
+			}
+			item.getDisplayStrings().add(funcBean.getDisplayName());
+			items.add(item);
+		}
+		
+		return items;
 	}
 
 	public List<PointOfContact> getPointOfContacts() {

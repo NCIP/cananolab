@@ -10,7 +10,9 @@ public class SimpleAdvancedResultCellUnitBean {
 	long dataId;
 	
 	String displayName;
-	String subType;
+	String relatedEntityType;
+	long relatedEntityId;
+	
 
 	public long getParentSampleId() {
 		return parentSampleId;
@@ -36,12 +38,19 @@ public class SimpleAdvancedResultCellUnitBean {
 		this.displayName = displayName;
 	}
 
-	public String getSubType() {
-		return subType;
+	public String getRelatedEntityType() {
+		return relatedEntityType;
 	}
 
-	public void setSubType(String subType) {
-		this.subType = subType;
+	public void setRelatedEntityType(String relatedEntityType) {
+		this.relatedEntityType = relatedEntityType;
 	}
-	
+
+	public long getRelatedEntityId() {
+		return relatedEntityId;
+	}
+
+	public void setRelatedEntityId(long relatedEntityId) {
+		this.relatedEntityId = relatedEntityId;
+	}
 }

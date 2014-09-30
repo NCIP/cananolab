@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.dto.common.LinkableItem;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
@@ -22,7 +23,6 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -237,22 +237,50 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			return;
 		
 		List<SimpleAdvancedResultCellUnitBean> units = new ArrayList<SimpleAdvancedResultCellUnitBean>();
-		for (Function fe : functions) {
-			FunctionBean fbean = new FunctionBean(fe);
+		Map<String, List<LinkableItem>> actions = sampleBean.getAttributeMap();
+		List<LinkableItem> items = sampleBean.getFunctionItems();
+		
+		for (LinkableItem item :items) {
+			String dn = item.getDisplayName();
+			List<String> dnStr = item.getDisplayStrings();
+			String action = item.getAction();
 			
-			logger.debug(fbean.getClassName() + ":" + fbean.getDescription()+ ":" + fbean.getDescriptionDisplayName() + fbean.getDisplayName());
+			logger.debug(dn + "||" + action);
 			
 			SimpleAdvancedResultCellUnitBean unit = new SimpleAdvancedResultCellUnitBean();
-			unit.setDataId(fe.getId());
-			unit.setDisplayName(fbean.getDisplayName());
+			unit.setDisplayName(dn);
 			
-			if (fe.getComposingElement() == null)
-				unit.setSubType("FunctionalizaingEntity");
-			else
-				unit.setSubType("Nanomaterial");
+			if (action != null) {
+				String [] relatedItems = action.split(":");
+				if (relatedItems.length == 2) {
+					unit.setDataId(Long.parseLong(relatedItems[1]));
+					unit.setRelatedEntityType(relatedItems[0]);
+				}
+			}
 			
 			units.add(unit);
+			
 		}
+		
+//		
+//		
+//		for (Function fe : functions) {
+//			FunctionBean fbean = new FunctionBean(fe);
+//			
+//						
+//			logger.debug(fbean.getClassName() + ":" + fbean.getDescription()+ ":" + fbean.getDescriptionDisplayName() + fbean.getDisplayName());
+//			
+//			SimpleAdvancedResultCellUnitBean unit = new SimpleAdvancedResultCellUnitBean();
+//			unit.setDataId(fe.getId());
+//			unit.setDisplayName(fbean.getDisplayName());
+//			
+//			if (fe.getComposingElement() == null)
+//				unit.setSubType("FunctionalizaingEntity");
+//			else
+//				unit.setSubType("Nanomaterial");
+//			
+//			units.add(unit);
+//		}
 		
 		this.columns.add(new SimpleAdvancedResultCellBean("Function", units));
 	}
