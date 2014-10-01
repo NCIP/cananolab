@@ -4,6 +4,9 @@ var app = angular.module('angularApp')
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();
     $scope.sampleData = sampleService.sampleData;
+    $scope.sampleQueries = sampleService.sampleQueries;
+    $scope.compositionQueries = sampleService.compositionQueries;
+    $scope.characterizationQueries = sampleService.characterizationQueries;    
     $scope.utilsService = utilsService;
     $scope.data = $scope.sampleData.data;
 
@@ -66,7 +69,7 @@ var app = angular.module('angularApp')
           success(function(data, status, headers, config) {
             $scope.compositionData = data;
             $scope.loader = false;
-           $scope.popupModal($scope.compositionData,'views/sample/composition/nanomaterialEntity/nanoMaterialEntitySummaryView.html','NanoMaterialDetailsCtrl');
+           $scope.popupModal($scope.compositionData,'views/sample/view/modal/nanoEntityDetails.html','NanoMaterialDetailsCtrl');
           }).
           error(function(data, status, headers, config) {
             $scope.message = data;
@@ -80,7 +83,7 @@ var app = angular.module('angularApp')
             success(function(data, status, headers, config) {
               $scope.compositionData = data;
               $scope.loader = false;
-              $scope.popupModal($scope.compositionData,'views/sample//composition/functionalizingentity/functionalizingEntitySummaryView.html','FunctionalizingEntityDetailsCtrl')
+              $scope.popupModal($scope.compositionData,'views/sample/view/modal/funcEntityDetails.html','FunctionalizingEntityDetailsCtrl')
             }).
             error(function(data, status, headers, config) {
               $scope.message = data;

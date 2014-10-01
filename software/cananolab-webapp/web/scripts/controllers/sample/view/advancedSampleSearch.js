@@ -17,9 +17,17 @@ var app = angular.module('angularApp')
       $scope.searchSampleForm.logicalOperator = "and";
 
       //define array placeholders for samples, compositions and characterizations //
-      $scope.searchSampleForm.sampleQueries = [];
-      $scope.searchSampleForm.compositionQueries = [];
-      $scope.searchSampleForm.characterizationQueries = [];
+      $scope.searchSampleForm.sampleQueries = sampleService.sampleQueries;
+      $scope.searchSampleForm.compositionQueries = sampleService.compositionQueries;
+      $scope.searchSampleForm.characterizationQueries = sampleService.characterizationQueries;
+      
+      console.log('&******');
+      console.log($scope.searchSampleForm.sampleQueries);
+      console.log($scope.searchSampleForm.compositionQueries);
+      console.log($scope.searchSampleForm.characterizationQueries);
+      
+      console.log('!******');
+      
 
       // setup initial objects where individual temporary objects will be stored //
       // on add or remove they get pushed or removed from the searchSampleForm //

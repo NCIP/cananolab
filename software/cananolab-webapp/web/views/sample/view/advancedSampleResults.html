@@ -13,7 +13,85 @@
         </td>
       </tr>
     </table>
-<br /><div ng-init="p=tableParams.$params;
+	<br />
+	<table class="editTableWithGrid" width="100%">
+	    <tr>
+	        <th style="text-align: center" scope="col">
+	            Selected Criteria
+	        </th>
+	        <td style="text-align: right">
+	                <a href="/caNanoLab/#/advancedSampleSearch">Edit</a>
+	        </td>
+	    </tr>
+	    <tr>
+	        <td>
+	            <table summary="layout">
+	                <tr ng-repeat="sample in sampleQueries">
+	                    <td>
+	                        <span id="nameTypeValue">{{sample.nameType}}</span>
+	                    </td>
+	                    <td>
+	                        <span id="sampleOperandValue">{{sample.operand}}</span>
+	                    </td>
+	                    <td>
+	                        <span id="nameValue">{{sample.name}}</span>
+	                    </td>
+	                </tr>
+	            </table>
+	        </td>
+	        <td></td>
+	    </tr>
+	    <tr>
+	        <td>
+	            <table summary="layout">
+	                <tr ng-repeat="composition in compositionQueries">
+	                    <td width="25%">
+	                        <span id="compTypeValue">{{composition.compositionType}}</span>
+	                    </td>
+	                    <td width="20%">
+	                        <span id="entityTypeValue">{{composition.entityType}}</span>
+	                    </td>
+	                    <td width="20%">
+	                        <span id="compOperandValue">{{composition.operand}}</span>
+	                    </td>
+	                    <td width="20%">
+	                        <span id="chemicalNameValue">{{composition.chemicalName}}</span>
+	                    </td>
+	                </tr>
+	            </table>
+	        </td>
+	        <td></td>
+	    </tr>
+	    <tr>
+	        <td>
+	            <table summary="layout">
+	                <tr ng-repeat="characterization in characterizationQueries">
+	                    <td width="15%">
+	                        <span id="charTypeValue">{{characterization.characterizationType}}</span>
+	                    </td>
+	                    <td width="15%">
+	                        <span id="charNameValue">{{characterization.characterizationName}}</span>
+	                    </td>
+	                    <td width="15%">
+	                        <span id="datumNameValue">{{characterization.datumName}}</span>
+	                    </td>
+	                    <td width="10%">
+	                        <span id="charOperandValue">{{characterization.operand}}</span>
+	                    </td>
+	                    <td width="15%">
+	                        <span id="datumValueValue">{{characterization.datumValue}}</span>
+	                    </td>
+	                    <td>
+	                        <span id="datumValueUnitValue">{{characterization.datumValueUnit}}</span>
+	                    </td>
+	                </tr>
+	            </table>
+	        </td>
+	        <td></td>
+	    </tr>
+	</table>
+<br />
+<div ng-init="p=tableParams.$params;
 				length=sampleData.data.samples.length;
 				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
 	</div><br />
