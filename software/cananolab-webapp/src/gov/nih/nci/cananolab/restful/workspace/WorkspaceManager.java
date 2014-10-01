@@ -219,9 +219,11 @@ public class WorkspaceManager extends BaseAnnotationBO {
 		if (userAccesses != null) {
 			for (AccessibilityBean access : userAccesses) {
 				UserBean ubean = access.getUserBean();
-				if (!loginUser.equals(ubean.getLoginName()))
-					sb.append(ubean.getLoginName()).append(", ");
-					//sb.append(ubean.getFirstName()).append(" ").append(ubean.getLastName()).append(", ");
+				if(isOwner){
+					if (!loginUser.equals(ubean.getLoginName()))
+						sb.append(ubean.getLoginName()).append(", ");
+						//sb.append(ubean.getFirstName()).append(" ").append(ubean.getLastName()).append(", ");
+				}
 			}
 		}
 		

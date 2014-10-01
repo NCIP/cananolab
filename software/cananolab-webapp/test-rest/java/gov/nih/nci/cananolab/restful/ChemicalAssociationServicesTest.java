@@ -86,9 +86,9 @@ public class ChemicalAssociationServicesTest {
 		parameters.put("id", "84377600");
 		ValidatableResponse res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.queryParam("id", "74022912")
+				.queryParam("id", "84377600")
 						.when().post("http://localhost:8080/caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId")
-		.then().body(containsString("modifier"));
+		.then().body(containsString("RNA"));
 		RestTestLoginUtil.logoutTest();
 		
 	}
