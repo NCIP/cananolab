@@ -36,16 +36,6 @@ public class SimpleSearchSampleBean {
 	String dataAvailability;
 	Date createdDate;
 
-	boolean editable;
-
-	public boolean isEditable() {
-		return editable;
-	}
-
-	public void setEditable(boolean editable) {
-		this.editable = editable;
-	}
-
 	public long getSampleId() {
 		return sampleId;
 	}
@@ -145,8 +135,6 @@ public class SimpleSearchSampleBean {
 		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain()
 				.getCreatedDate());
 
-		//editable = SecurityUtil.isEntityEditableForUser(sampleBean.getUserAccesses(), user);
-		editable = sampleBean.getUserUpdatable();
 	}
 	
 

@@ -381,43 +381,8 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		SimpleAdvancedSearchResultView resultView = new SimpleAdvancedSearchResultView();
 		
 		resultView.getColumnTitles().add("Sample Name");
-		resultView.setShowPOC(searchBean.getHasPOC());
-		
-		resultView.setShowNanomaterialEntity(searchBean.getHasNanomaterial());
-		resultView.setShowFunctionalizingEntity(searchBean.getHasAgentMaterial());
-		resultView.setShowFunction(searchBean.getHasFunction());
-		
-		if (resultView.isShowPOC())
-			resultView.getColumnTitles().add("Point Of Contact Name");
-		
-		if (resultView.isShowNanomaterialEntity())
-			resultView.getColumnTitles().add("Nanomaterial Entity");
-		
-		if (resultView.isShowFunctionalizingEntity())
-			resultView.getColumnTitles().add("Functionalizing Entity");
-		
-		if (resultView.isShowFunction())
-			resultView.getColumnTitles().add("Function");
-		
-		List<CharacterizationQueryBean> charQueries = searchBean.getCharacterizationQueries();
-		for (CharacterizationQueryBean query : charQueries) {
-			// set assay type and characterization name
-			if (query.getCharacterizationName().contains(":")) {
-				int ind = query.getCharacterizationName().indexOf(":");
-				query.setAssayType(query.getCharacterizationName().substring(
-						ind + 1));
-				query.setCharacterizationName(query.getCharacterizationName()
-						.substring(0, ind));
-			}
+		resultView.getColumnTitles().addAll(searchBean.getQueryAsColumnNames());
 			
-			if( query.getCharacterizationName().startsWith("other")) {
-				query.setCharacterizationName("OtherCharacterization");
-			}
-			
-			resultView.getColumnTitles().add(query.getCharacterizationType());
-		}
-		
-		
 		List<SimpleAdvancedSearchSampleBean> simpleBeans = new ArrayList<SimpleAdvancedSearchSampleBean>();
 		
 		for (AdvancedSampleBean bean : sampleBeans) {
@@ -432,33 +397,4 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		return resultView;
 	}
 	
-	protected List<SimpleSearchSampleBean> createDummyData() {
-		List<SimpleSearchSampleBean> simpleBeans = new ArrayList<SimpleSearchSampleBean>();
-
-		SimpleSearchSampleBean simpleBean = new SimpleSearchSampleBean();
-		simpleBean.setSampleId(66846720);
-		simpleBean.setSampleName("ncl-14-1-Copy");
-		simpleBean.setEditable(true);
-		simpleBeans.add(simpleBean);
-		
-		simpleBean = new SimpleSearchSampleBean();
-		simpleBean.setSampleId(20917504);
-		simpleBean.setSampleName("NCL-20-1");
-		simpleBean.setEditable(true);
-		simpleBeans.add(simpleBean);
-		
-		simpleBean = new SimpleSearchSampleBean();
-		simpleBean.setSampleId(20917505);
-		simpleBean.setSampleName("NCL-21-1");
-		simpleBean.setEditable(false);
-		simpleBeans.add(simpleBean);
-		
-		simpleBean = new SimpleSearchSampleBean();
-		simpleBean.setSampleId(20917507);
-		simpleBean.setSampleName("NCL-23-1");
-		simpleBean.setEditable(false);
-		simpleBeans.add(simpleBean);
-		
-		return simpleBeans;
-	}
 }

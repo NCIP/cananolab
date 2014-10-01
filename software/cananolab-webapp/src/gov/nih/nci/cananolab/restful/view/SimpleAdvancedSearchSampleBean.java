@@ -31,16 +31,7 @@ import org.apache.log4j.Logger;
 
 public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	private Logger logger = Logger.getLogger(SimpleAdvancedSearchSampleBean.class);
-	
-//	List<String> orgNames = new ArrayList<String>();
-//	List<String> nanomaterialEntityNames = new ArrayList<String>(); 
-//	String functionalizingEntityName;
-//	List<String> functionNames = new ArrayList<String>();
 
-	
-//	List<List<SimpleCharacterizationAdvancedSearchResultBean>> orderedChars = 
-//			new ArrayList<List<SimpleCharacterizationAdvancedSearchResultBean>>();
-	
 	
 	List<SimpleAdvancedResultCellBean> columns = new ArrayList<SimpleAdvancedResultCellBean>();
 	
@@ -48,18 +39,6 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	boolean showNanomaterialEntity;
 	boolean showFunctionalizingEntity;
 	boolean showFunction;
-
-//	public List<List<SimpleCharacterizationAdvancedSearchResultBean>> getOrderedChars() {
-//		return orderedChars;
-//	}
-//
-//
-//	public void setOrderedChars(
-//			List<List<SimpleCharacterizationAdvancedSearchResultBean>> orderedChars) {
-//		this.orderedChars = orderedChars;
-//	}
-
-	
 
 	public boolean isShowPOC() {
 		return showPOC;
@@ -130,137 +109,110 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		
 		this.columns.add(new SimpleAdvancedResultCellBean("Sample", sampleIdName));
 		
-		populatePOCs(sampleBean, searchBean);
-		populateNanomaterialEntity(sampleBean, searchBean);
-		populateFunctionalizingEntity(sampleBean, searchBean);
-		populateFunctionNames(sampleBean, searchBean);
+		List<String> columnNames = searchBean.getQueryAsColumnNames();
+		Map<String, List<LinkableItem>> dataMap = sampleBean.getAttributeMap();
+		
+		populatePOCs(dataMap, columnNames);
+		populateNanomaterialEntity(dataMap, columnNames);
+		populateFunctionalizingEntity(dataMap, columnNames);
+		populateFunctionNames(dataMap, columnNames);
 		
 		populateCharacterizations(sampleBean, searchBean);
-
-		editable = false; ///sampleBean.getUserUpdatable();
 	}
 	
-	protected void populatePOCs(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean) {
-		if (!searchBean.getHasPOC())
-			return;
-		
-		this.showPOC = true;
-		
-		List<PointOfContact> pocs = sampleBean.getPointOfContacts();
-		List<String> orgNames = new ArrayList<String>();
-
-		if (pocs != null) {
-			for (PointOfContact poc : pocs) {
-				PointOfContactBean pocBean = new PointOfContactBean(poc);
-				orgNames.add(pocBean.getOrganizationDisplayName());
-			}
-
-		}
-
-		this.columns.add(new SimpleAdvancedResultCellBean("POC", orgNames));
-	}
-	
-	protected void populateNanomaterialEntity(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean) {
-		if (!searchBean.getHasNanomaterial())
-			return;
-		
-		this.showNanomaterialEntity = true;
-		
-		List<NanomaterialEntity> nanos = sampleBean.getNanomaterialEntities();
-		if (nanos == null)
-			return;
-		
-		List<SimpleAdvancedResultCellUnitBean> nanomaterialEntities = new ArrayList<SimpleAdvancedResultCellUnitBean>();
-		
-		for (NanomaterialEntity nano : nanos) {
-			String cn = ClassUtils.getShortClassName(nano.getClass().getName());
-			if (nano instanceof OtherNanomaterialEntity)
-				cn = ((OtherNanomaterialEntity)nano).getType();
-			
-			String displayName = cn;
-			Collection<ComposingElement> ces = nano.getComposingElementCollection();
-			if (ces != null) {
-				for (ComposingElement ce : ces) {
-					ComposingElementBean ceBean = new ComposingElementBean(ce);
-					String val = ceBean.getAdvancedSearchDisplayName();
-					displayName += ":" + val;
-				}
-			}
-			
-			SimpleAdvancedResultCellUnitBean entity = new SimpleAdvancedResultCellUnitBean();
-			entity.setDisplayName(displayName);
-			entity.setDataId(nano.getId());
-			
-			nanomaterialEntities.add(entity);
+	protected String getKeyFromColumnNames(List<String> columnNames, String token) {
+		for (String columnName : columnNames) {
+			if (columnName.contains(token))
+				return columnName;
 		}
 		
-		this.columns.add(new SimpleAdvancedResultCellBean("Nanomaterial", nanomaterialEntities));
+		return "";
 	}
 	
-	protected void populateFunctionalizingEntity(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean) {
-		if (!searchBean.getHasAgentMaterial())
-			return;
+	protected String getKeyFromColumnNamesExactMatch(List<String> columnNames, String token) {
+		for (String columnName : columnNames) {
+			if (columnName.equals(token))
+				return columnName;
+		}
 		
-		this.showFunctionalizingEntity = true;
-		
-		List<FunctionalizingEntity> fes = sampleBean.getFunctionalizingEntities();
-		if (fes == null)
-			return;
-		
+		return "";
+	}
+	
+	protected List<SimpleAdvancedResultCellUnitBean> transferFromLinkableItems(List<LinkableItem> items) {
 		List<SimpleAdvancedResultCellUnitBean> units = new ArrayList<SimpleAdvancedResultCellUnitBean>();
-		
-		for (FunctionalizingEntity fe : fes) {
-			FunctionalizingEntityBean fBean = new FunctionalizingEntityBean(fe);
-			String name = fBean.getAdvancedSearchDisplayName();
-			
-			SimpleAdvancedResultCellUnitBean unit = new SimpleAdvancedResultCellUnitBean();
-			
-			logger.debug(fBean.getClassName() + ";" + fBean.getDescription() + ";" + fBean.getDescriptionDisplayName() +
-					";" + fBean.getDisplayName());
-			unit.setDataId(fe.getId());
-			unit.setDisplayName(fBean.getDisplayName());
-			
-			units.add(unit);
-		}
-		
-		this.columns.add(new SimpleAdvancedResultCellBean("FunctionalizaingEntity", units));
-	}
-	
-	protected void populateFunctionNames(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean) {
-		if (!searchBean.getHasFunction())
-			return;
-		
-		this.showFunction = true;
-		
-		List<Function> functions = sampleBean.getFunctions();
-		if (functions == null)
-			return;
-		
-		List<SimpleAdvancedResultCellUnitBean> units = new ArrayList<SimpleAdvancedResultCellUnitBean>();
-		List<LinkableItem> items = sampleBean.getFunctionItems();
 		
 		for (LinkableItem item :items) {
 			String dn = item.getDisplayName();
-			List<String> dnStr = item.getDisplayStrings();
-			String action = item.getAction();
+			List<String> dnStrs = item.getDisplayStrings();
+			String dataId = item.getAction();
 			
-			logger.debug(dn + "||" + action);
+			logger.debug(dn + "||" + dataId);
 			
 			SimpleAdvancedResultCellUnitBean unit = new SimpleAdvancedResultCellUnitBean();
-			unit.setDisplayName(dn);
 			
-			if (action != null) {
-				String [] relatedItems = action.split(":");
-				if (relatedItems.length == 2) {
-					unit.setDataId(Long.parseLong(relatedItems[1]));
-					unit.setRelatedEntityType(relatedItems[0]);
-				}
+			String names = "";
+			for (String dnStr : dnStrs) {
+				if (names.length() > 0)
+					names += "<br>";
+				names += dnStr;
 			}
 			
+			unit.setDisplayName(names);
+			
+			if (dataId != null) {
+				String [] relatedItems = dataId.split(":");
+				if (relatedItems.length == 2) { //a hack to handle Function data
+					unit.setDataId(Long.parseLong(relatedItems[1]));
+					unit.setRelatedEntityType(relatedItems[0]);
+				} else
+					unit.setDataId(Long.parseLong(dataId));
+			}
+			
+			unit.setDataId(Long.parseLong(dataId));
 			units.add(unit);
 			
 		}
 		
+		return units;
+	}
+	
+	protected void populatePOCs(Map<String, List<LinkableItem>> dataMap, List<String> columnNames) {
+		
+		String key = getKeyFromColumnNames(columnNames, "point of contact");
+		List<LinkableItem> pocs = dataMap.get(key);
+		
+		if (pocs == null) return;
+		
+		List<SimpleAdvancedResultCellUnitBean> units = this.transferFromLinkableItems(pocs);
+		
+		this.columns.add(new SimpleAdvancedResultCellBean("POC", units));
+	}
+	
+	protected void populateNanomaterialEntity( Map<String, List<LinkableItem>> dataMap, List<String> columnNames) {
+		String key = getKeyFromColumnNames(columnNames, "nanomaterial entity");
+		List<LinkableItem> nanoItems = dataMap.get(key);
+		if (nanoItems == null) return;
+		
+		List<SimpleAdvancedResultCellUnitBean> units = this.transferFromLinkableItems(nanoItems);
+		
+		this.columns.add(new SimpleAdvancedResultCellBean("Nanomaterial", units));
+	}
+	
+	protected void populateFunctionalizingEntity(Map<String, List<LinkableItem>> dataMap, List<String> columnNames) {
+		String key = getKeyFromColumnNames(columnNames, "functionalizing entity");
+		List<LinkableItem> items = dataMap.get(key);
+		if (items == null) return;
+		
+		List<SimpleAdvancedResultCellUnitBean> units = this.transferFromLinkableItems(items);
+		this.columns.add(new SimpleAdvancedResultCellBean("FunctionalizaingEntity", units));
+	}
+	
+	protected void populateFunctionNames(Map<String, List<LinkableItem>> dataMap, List<String> columnNames) {
+		String key = getKeyFromColumnNamesExactMatch(columnNames, "function");
+		List<LinkableItem> items = dataMap.get(key);
+		if (items == null) return;
+		
+		List<SimpleAdvancedResultCellUnitBean> units = this.transferFromLinkableItems(items);
 		this.columns.add(new SimpleAdvancedResultCellBean("Function", units));
 	}
 	
