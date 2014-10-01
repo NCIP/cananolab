@@ -78,7 +78,7 @@ public interface SampleService extends BaseService {
 			AdvancedSampleSearchBean searchBean) throws SampleException;
 
 	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
-			String sampleName, AdvancedSampleSearchBean searchBean, boolean loadAccess)
+			String sampleName, AdvancedSampleSearchBean searchBean)
 			throws SampleException;
 
 	public SampleBean cloneSample(String originalSampleName,
@@ -112,4 +112,6 @@ public interface SampleService extends BaseService {
 			throws SampleException;
 	
 	public void loadAccessesForSampleBean(SampleBean sampleBean) throws Exception;
+	
+	public void loadAccessesForBasicSampleBean(SampleBasicBean sampleBean) throws Exception;
 }

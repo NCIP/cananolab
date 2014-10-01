@@ -86,7 +86,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 			String sampleId = sampleBean.getSampleId();
 			AdvancedSampleBean loadedAdvancedSample = service
 					.findAdvancedSampleByAdvancedSearch(sampleId,
-							searchBean, true);
+							searchBean);
 			loadedSampleBeans.add(loadedAdvancedSample);
 
 		}
@@ -140,7 +140,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 					AdvancedSampleBean loadedAdvancedSample = null;
 					loadedAdvancedSample = service
 							.findAdvancedSampleByAdvancedSearch(sampleId,
-									searchBean, false);
+									searchBean);
 					samplesFullList.add(loadedAdvancedSample);
 				}
 				// save full sample result set in session for later use.
@@ -238,33 +238,33 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		//return sampleBeans;
 	}
 
-	private List<AdvancedSampleBean> loadSamples(List<AdvancedSampleBean> sampleBeans, int page, int pageSize,
-			HttpServletRequest request, AdvancedSampleSearchBean searchBean)
-			throws Exception {
-		List<AdvancedSampleBean> loadedSampleBeans = new ArrayList<AdvancedSampleBean>();
-		SampleService service = null;
-		
-		
-		if (request.getSession().getAttribute("sampleService") != null) {
-			service = (SampleService) request.getSession().getAttribute(
-					"sampleService");
-		} else {
-			service = this.setServiceInSession(request);
-		}
-		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
-			if (i < sampleBeans.size()) {
-				String sampleId = sampleBeans.get(i).getSampleId();
-				
-				//TODO: check on the query. Don't need much
-				
-				AdvancedSampleBean loadedAdvancedSample = service
-						.findAdvancedSampleByAdvancedSearch(sampleId,
-								searchBean, true);
-				loadedSampleBeans.add(loadedAdvancedSample);
-			}
-		}
-		return loadedSampleBeans;
-	}
+//	private List<AdvancedSampleBean> loadSamples(List<AdvancedSampleBean> sampleBeans, int page, int pageSize,
+//			HttpServletRequest request, AdvancedSampleSearchBean searchBean)
+//			throws Exception {
+//		List<AdvancedSampleBean> loadedSampleBeans = new ArrayList<AdvancedSampleBean>();
+//		SampleService service = null;
+//		
+//		
+//		if (request.getSession().getAttribute("sampleService") != null) {
+//			service = (SampleService) request.getSession().getAttribute(
+//					"sampleService");
+//		} else {
+//			service = this.setServiceInSession(request);
+//		}
+//		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
+//			if (i < sampleBeans.size()) {
+//				String sampleId = sampleBeans.get(i).getSampleId();
+//				
+//				//TODO: check on the query. Don't need much
+//				
+//				AdvancedSampleBean loadedAdvancedSample = service
+//						.findAdvancedSampleByAdvancedSearch(sampleId,
+//								searchBean, true);
+//				loadedSampleBeans.add(loadedAdvancedSample);
+//			}
+//		}
+//		return loadedSampleBeans;
+//	}
 
 	public void validateSetup(HttpServletRequest request)
 			throws Exception {

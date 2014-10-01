@@ -20,6 +20,7 @@ import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBasicBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
@@ -58,8 +59,6 @@ public class WorkspaceManager extends BaseAnnotationBO {
 			throws Exception {
 		
 		logger.info("In getWorkspaceItems");
-		
-		//return createDummy(new SimpleWorkspaceBean());
 		
 		SecurityService securityService = getSecurityService(request);
 		UserBean user = (UserBean)request.getSession().getAttribute("user");
@@ -170,27 +169,34 @@ public class WorkspaceManager extends BaseAnnotationBO {
 	protected List<SimpleWorkspaceItem> getSampleItems(HttpServletRequest request,
 			SecurityService securityService, UserBean user) 
 			throws Exception {
+		CommonServiceHelper helper = new CommonServiceHelper();
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
 		SampleService sampleService = this.getSampleServiceInSession(request, securityService);
 		String loginUser = user.getLoginName();
 		
 		List<String> sampleIds = sampleService.findSampleIdsByOwner(loginUser);
-		if (sampleIds == null)
-			return items;
-	
+		List<String> sharedByIds = helper.findSharedSampleIds(user.getLoginName());
+		
+		for (String sharedById : sharedByIds) {
+			if (!sampleIds.contains(sharedById))
+				sampleIds.add(sharedById);
+		}
+
 		//int num = 0;
 		for (String id : sampleIds) {
 //			num++;
 //			if (num > 10)
 //				break;
-			//SampleBasicBean sampleBean = sampleService.findSampleBasicById(id, true);   //.findSampleById(id, true);
-			SampleBean sampleBean = sampleService.findSampleById(id, true);
+			SampleBasicBean sampleBean = sampleService.findSampleBasicById(id, true);   //.findSampleById(id, true);
+			//SampleBean sampleBean = sampleService.findSampleById(id, true);
 			if (sampleBean == null) continue;
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
 			
 			item.setName(sampleBean.getDomain().getName());
 			item.setId(sampleBean.getDomain().getId());
 			item.setCreatedDate(sampleBean.getDomain().getCreatedDate());
+			
+			sampleService.loadAccessesForBasicSampleBean(sampleBean);
 			
 			setCommonDataFields(id, item, sampleBean, securityService, user);
 					

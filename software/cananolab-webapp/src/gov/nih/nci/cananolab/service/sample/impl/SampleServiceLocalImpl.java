@@ -514,6 +514,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	private SampleBean loadSampleBean(Sample sample) throws Exception {
 		SampleBean sampleBean = new SampleBean(sample);
 		if (user != null) {
+			
 			List<AccessibilityBean> groupAccesses = super
 					.findGroupAccessibilities(sample.getId().toString());
 			List<AccessibilityBean> userAccesses = super
@@ -526,8 +527,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 	
 	public void loadAccessesForSampleBean(SampleBean sampleBean) throws Exception {
-		//Sample sample = sampleBean.getDomainSample();
-		
 		String sampleId = sampleBean.getDomain().getId().toString();
 		logger.debug("Sample id to load accesseses for: " + sampleId);
 		if (user != null) {
@@ -544,8 +543,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		
 	}
 	
-	private void loadAccessesFormAdvancedSampleBean(AdvancedSampleBean sampleBean) throws Exception {
-		Sample sample = sampleBean.getDomainSample();
+	public void loadAccessesForBasicSampleBean(SampleBasicBean sampleBean) throws Exception {
+		Sample sample = sampleBean.getDomain();
 		if (user != null) {
 			List<AccessibilityBean> groupAccesses = super
 					.findGroupAccessibilities(sample.getId().toString());
@@ -713,13 +712,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 
 	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
-			String sampleId, AdvancedSampleSearchBean searchBean, boolean loadAccess)
+			String sampleId, AdvancedSampleSearchBean searchBean)
 			throws SampleException {
 		try {
 			AdvancedSampleBean advSampleBean = advancedHelper.findAdvancedSampleByAdvancedSearch(sampleId,
 					searchBean);
-			if (loadAccess)
-				this.loadAccessesFormAdvancedSampleBean(advSampleBean); 
+//			if (loadAccess)
+//				this.loadAccessesFormAdvancedSampleBean(advSampleBean); 
 			
 			return advSampleBean;
 					

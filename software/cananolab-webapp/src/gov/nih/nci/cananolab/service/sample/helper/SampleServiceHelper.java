@@ -662,6 +662,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			throw new NoAccessException("User has no access to the sample "
 					+ sampleId);
 		}
+		
+		logger.debug("===============Finding a sample by id: " + System.currentTimeMillis());
 		Sample sample = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -700,6 +702,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
 		}
+		
+		logger.debug("===============Done Finding a sample by id: " + System.currentTimeMillis());
 		return sample;
 	}
 	

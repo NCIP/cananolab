@@ -320,10 +320,14 @@ public class SecurityService {
 		if (protectionElementObjectId == null) {
 			return false;
 		}
+		logger.debug("============= checkReadPermission isPublic: " + System.currentTimeMillis());
+		
 		boolean publicStatus = isPublic(protectionElementObjectId);
+		logger.debug("============= Done checkReadPermission isPublic: " + System.currentTimeMillis());
 		if (publicStatus) {
 			return true;
 		} else {
+			logger.debug("============= checkReadPermission again: " + System.currentTimeMillis());
 			return checkPermission(protectionElementObjectId,
 					AccessibilityBean.CSM_READ_PRIVILEGE);
 		}
