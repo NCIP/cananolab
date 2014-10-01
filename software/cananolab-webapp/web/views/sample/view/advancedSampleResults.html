@@ -31,7 +31,7 @@
 
 			<div ng-if="col.type=='POC'">
 				<div ng-repeat="poc in col.val track by $index" ng-bind-html="poc">
-					poc
+					{{poc.displayName}}
 				</div><br /><a href="" ng-click="showPocDetails(row.sampleId)">Details</a>
 			</div>
 
