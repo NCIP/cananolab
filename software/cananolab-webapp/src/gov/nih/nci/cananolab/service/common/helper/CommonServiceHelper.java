@@ -26,13 +26,8 @@ public class CommonServiceHelper {
 				+ "AND ugrp.role_id = r.role_id "
 				+ "AND p.protocol_pk_id = pg.protection_group_name "
 				+ "AND ugrp.user_id = u.user_id " + "AND u.login_name = '"
-				+ loginName + "' "
-				+ "AND r.role_name IN ('"
-				+ AccessibilityBean.CSM_READ_ROLE
-				+ "', '"
-				+ AccessibilityBean.CSM_CUR_ROLE
-				+ "', '"
-				+ AccessibilityBean.CSM_CURD_ROLE + "')";
+				+ loginName + "' ";
+				
 		
 		String[] columns = new String[] { "protocol_pk_id" };
 		Object[] columnTypes = new Object[] { Hibernate.STRING };
@@ -63,13 +58,8 @@ public class CommonServiceHelper {
 				+ "AND ugrp.role_id = r.role_id "
 				+ "AND p.publication_pk_id = pg.protection_group_name "
 				+ "AND ugrp.user_id = u.user_id " + "AND u.login_name = '"
-				+ loginName + "' "
-				+ "AND r.role_name IN ('"
-				+ AccessibilityBean.CSM_READ_ROLE
-				+ "', '"
-				+ AccessibilityBean.CSM_CUR_ROLE
-				+ "', '"
-				+ AccessibilityBean.CSM_CURD_ROLE + "')";
+				+ loginName + "' ";
+				
 		
 		String[] columns = new String[] { "publication_pk_id" };
 		Object[] columnTypes = new Object[] { Hibernate.STRING };
