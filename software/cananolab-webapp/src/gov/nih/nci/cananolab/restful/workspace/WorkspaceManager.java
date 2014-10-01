@@ -89,8 +89,15 @@ public class WorkspaceManager extends BaseAnnotationBO {
 		
 		if (publicationIds == null)
 			return items;
-		
-		for (String id : publicationIds) {
+		List<String> publicationIdList = new ArrayList<String>();
+		for(String pubId : publicationIds){
+			if(!Ids.contains(pubId))
+				publicationIdList.add(pubId);
+		}
+		for(String Id : Ids){
+			publicationIdList.add(Id);
+		}
+		for (String id : publicationIdList) {
 			PublicationBean pubBean = service.findPublicationById(id, true);
 			if (pubBean == null) continue;
 			

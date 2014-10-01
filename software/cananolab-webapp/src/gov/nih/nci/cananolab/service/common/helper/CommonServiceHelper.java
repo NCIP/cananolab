@@ -61,7 +61,7 @@ public class CommonServiceHelper {
 				+ "csm_role r "
 				+ "WHERE     ugrp.protection_group_id = pg.protection_group_id "
 				+ "AND ugrp.role_id = r.role_id "
-				+ "AND p.protocol_pk_id = pg.protection_group_name "
+				+ "AND p.publication_pk_id = pg.protection_group_name "
 				+ "AND ugrp.user_id = u.user_id " + "AND u.login_name = '"
 				+ loginName + "' "
 				+ "AND r.role_name IN ('"
