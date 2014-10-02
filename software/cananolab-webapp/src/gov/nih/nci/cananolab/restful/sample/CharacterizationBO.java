@@ -85,9 +85,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		this.setServicesInSession(request);
 		
-		// Copy "isSoluble" property from char bean to mapping bean.
-		//this.copyIsSoluble(charBean);
-		
 		List<String> errs = new ArrayList<String>();
 		if (!validateInputs(request, charBean, errs)) {
 			SimpleCharacterizationSummaryEditBean emptyView = new SimpleCharacterizationSummaryEditBean();
@@ -98,17 +95,14 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		this.saveCharacterization(request, charBean, simpleEdit);
 		simpleEdit.getMessages().add(PropertyUtil.getPropertyReplacingToken("sample", "message.addCharacterization", "0", 
 				charBean.getCharacterizationName()));
-		// to preselect the same characterization type after returning to the
-		// summary page
-//		List<String> allCharacterizationTypes = InitCharacterizationSetup
-//				.getInstance().getCharacterizationTypes(request);
-//		int ind = allCharacterizationTypes.indexOf(charBean
-//				.getCharacterizationType()) + 1;
 		
 		InitCharacterizationSetup.getInstance() //save "others" to db
 			.persistCharacterizationDropdowns(request, charBean);
 		
-		return summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request, null);
+		SimpleCharacterizationSummaryEditBean success = new SimpleCharacterizationSummaryEditBean();
+		success.getMessages().add("The characterization has been saved successfully");
+		//return summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request, null);
+		return success;
 	}
 
 //	public ActionForward input(ActionMapping mapping, ActionForm form,
