@@ -12,11 +12,13 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.service.CSMCleanupJob;
+import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -63,6 +65,71 @@ public class InitSampleSetup {
 						true);
 		InitCharacterizationSetup.getInstance().getCharacterizationTypes(
 				request);
+	}
+	
+	public SortedSet<String> getDefaultTypesByReflection(HttpServletRequest request, String fullClassName) 
+	throws Exception {
+		SortedSet<String> defaultTypes = InitSetup.getInstance().getDefaultTypesByReflection(
+				request.getSession().getServletContext(), 
+				"defaultFunctionalizingEntityTypes", fullClassName);
+		
+		return defaultTypes;
+	}
+	
+	public List<String> getFunctionTypes(HttpServletRequest request)
+			throws Exception {
+
+		List<String> sortedFormatted = new ArrayList<String>();
+		SortedSet<String> defaultTypes = InitSetup.getInstance().getDefaultTypesByReflection(
+				request.getSession().getServletContext(), 
+				"defaultFunctionTypes", "gov.nih.nci.cananolab.domain.particle.Function");
+		sortedFormatted.addAll(defaultTypes);
+
+		SortedSet<String> otherTypes = LookupService
+				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.function.OtherFunction");
+
+		for (String type : otherTypes) {
+			sortedFormatted.add("[" + type + "]");
+		}
+
+		return sortedFormatted;
+	}
+	
+	public List<String> getNanomaterialEntityTypes(HttpServletRequest request)
+	throws Exception {
+		
+		List<String> sortedFormatted = new ArrayList<String>();
+		SortedSet<String> defaultTypes = InitSetup.getInstance().getDefaultTypesByReflection(
+				request.getSession().getServletContext(), 
+				"defaultNanomaterialEntityTypes", "gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
+		sortedFormatted.addAll(defaultTypes);
+		
+		SortedSet<String> otherTypes = LookupService
+				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity");
+		
+		for (String type : otherTypes) {
+			sortedFormatted.add("[" + type + "]");
+		}
+		
+		return sortedFormatted;
+	}
+	
+	public List<String> getFunctionalizingEntityTypes(HttpServletRequest request) 
+	throws Exception {
+		List<String> sortedFormatted = new ArrayList<String>();
+		SortedSet<String> defaultTypes = InitSetup.getInstance().getDefaultTypesByReflection(
+				request.getSession().getServletContext(), 
+				"defaultFunctionalizingEntityTypes", "gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
+		sortedFormatted.addAll(defaultTypes);
+		
+		SortedSet<String> otherTypes = LookupService
+				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity");
+		
+		for (String type : otherTypes) {
+			sortedFormatted.add("[" + type + "]");
+		}
+		
+		return sortedFormatted;
 	}
 
 	public List<String> getOtherSampleNames(HttpServletRequest request,

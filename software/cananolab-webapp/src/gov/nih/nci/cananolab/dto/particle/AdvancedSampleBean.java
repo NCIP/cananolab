@@ -39,7 +39,7 @@ import java.util.Map;
  * @author pansu
  *
  */
-public class AdvancedSampleBean extends SecuredDataBean{
+public class AdvancedSampleBean {//extends SecuredDataBean{
 //	public static String SAMPLE_DETAIL_URL = "sample.do?page=0&dispatch=setupView";
 //	public static String NANOMATERIAL_DETAIL_URL = "nanomaterialEntity.do?page=0&dispatch=setupView";
 //	public static String AGENTMATERIAL_DETAIL_URL = "functionalizingEntity.do?page=0&dispatch=setupView";

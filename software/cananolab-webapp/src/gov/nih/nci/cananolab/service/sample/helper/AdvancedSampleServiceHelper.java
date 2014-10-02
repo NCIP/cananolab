@@ -1246,11 +1246,17 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		Criterion funcEntityCrit = null;
 		// other entity type
 		if (clazz == null) {
-			Criterion otherFuncCrit1 = Restrictions.eq(entityAlias + "class",
+			/*Criterion otherFuncCrit1 = Restrictions.eq(entityAlias + "class",
 					"OtherFunctionalizingEntity");
 			Criterion otherFuncCrit2 = Restrictions.eq(entityAlias + "type",
 					compQuery.getEntityType());
-			funcEntityCrit = Restrictions.and(otherFuncCrit1, otherFuncCrit2);
+			funcEntityCrit = Restrictions.and(otherFuncCrit1, otherFuncCrit2);*/
+		
+			Integer funcClassNameInteger = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
+					.get("OtherFunctionalizingEntity");
+			funcEntityCrit = Restrictions.eq(entityAlias + "class",
+							funcClassNameInteger);
+		
 		} else {
 			Integer funcClassNameInteger = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
 					.get(funcEntityClassName);

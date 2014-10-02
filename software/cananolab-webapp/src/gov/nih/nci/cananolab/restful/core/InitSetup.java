@@ -18,6 +18,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -225,10 +226,31 @@ public class InitSetup {
 		SortedSet<String> types = null;
 		if (updateSession) {
 			types = new TreeSet<String>(defaultTypes);
+			
+			if (contextAttributeForDefaults.equals("defaultFunctionalizingEntityTypes")) {
+				Iterator<String> ite = types.iterator();
+				while (ite.hasNext())
+					System.out.println("DefaultType: " + ite.next());
+			}
+			
 			SortedSet<String> otherTypes = LookupService
 					.getAllOtherObjectTypes(otherFullParentClassName);
+			
+			if (otherTypes != null && contextAttributeForDefaults.equals("defaultFunctionalizingEntityTypes")) {
+				Iterator<String> ite = otherTypes.iterator();
+				while (ite.hasNext())
+					System.out.println("otherTypes: " + ite.next());
+			}
+			
 			if (otherTypes != null)
 				types.addAll(otherTypes);
+			
+			if (contextAttributeForDefaults.equals("defaultFunctionalizingEntityTypes")) {
+				Iterator<String> ite = types.iterator();
+				while (ite.hasNext())
+					System.out.println("Combined types: " + ite.next());
+			}
+			
 			request.getSession().setAttribute(sessionAttribute, types);
 		} else {
 			types = new TreeSet<String>((SortedSet<? extends String>) (request

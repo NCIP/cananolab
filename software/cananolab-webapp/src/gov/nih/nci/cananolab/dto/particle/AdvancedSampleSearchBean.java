@@ -307,11 +307,20 @@ public class AdvancedSampleSearchBean {
 			if (query.getCompositionType().equals("nanomaterial entity")) {
 				nanoEntityCount++;
 			} else if (query.getCompositionType().equals(
-					"functionalizing entity")) {
+					"functionalizing entity")) { 
 				funcEntityCount++;
+				
 			} else if (query.getCompositionType().equals("function")) {
 				funcCount++;
+				if (query.getOperand() == null || query.getOperand().length() == 0)
+					query.setOperand("contains");
 			}
+			
+			String entType = query.getEntityType();
+			if (entType != null && entType.startsWith("["))
+				query.setEntityType(entType.substring(1, entType.length()-1));
+			
+			int i = 0;
 		}
 		// how many types of datum and set assay type if any
 		Set<String> datumNames = new HashSet<String>();

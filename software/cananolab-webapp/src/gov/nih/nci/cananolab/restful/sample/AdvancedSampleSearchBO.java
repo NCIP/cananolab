@@ -16,14 +16,14 @@ package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
-import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchResultView;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchSampleBean;
-import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
+import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -35,6 +35,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -81,13 +82,21 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		
 		//Load full objects
 		List<AdvancedSampleBean> loadedSampleBeans = new ArrayList<AdvancedSampleBean>();
+		
+		int idx = 0;
 		for (AdvancedSampleBean sampleBean : sampleBeans) {
 
+			if (idx == 81) {
+				String n = "";
+				int i = idx;
+			}
 			String sampleId = sampleBean.getSampleId();
 			AdvancedSampleBean loadedAdvancedSample = service
 					.findAdvancedSampleByAdvancedSearch(sampleId,
 							searchBean);
 			loadedSampleBeans.add(loadedAdvancedSample);
+			
+			logger.debug("Processin #: " + idx++);
 
 		}
 		
@@ -302,29 +311,17 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		List<LabelValueBean> charTypes = InitCharacterizationSetup.getInstance()
 				.getDecoratedCharacterizationTypes(request);
 		
-		//////////////////////////
-		//From simple search setup
-
-		InitSampleSetup.getInstance().setLocalSearchDropdowns(request);
+		List<String> nanomaterialTypes = InitSampleSetup.getInstance().getNanomaterialEntityTypes(request);
+		List<String> fetypes = InitSampleSetup.getInstance().getFunctionalizingEntityTypes(request);
+		List<String> functionTypes = InitSampleSetup.getInstance().getFunctionTypes(request);
+		
 		request.getSession().removeAttribute("sampleSearchResults");
 		
-		AdvancedSampleSearchBean advancedSearchBean = new AdvancedSampleSearchBean();
-		
-		Map<String, List<String>> listMap = SampleUtil.reformatLocalSearchDropdownsInSession(request.getSession());
-		
-		Map<String, Object> mixedMap = new HashMap<String, Object>(); // advancedSearchBean.getSetupMap();
-		mixedMap.put("functionTypes", listMap.get("functionTypes"));
-		mixedMap.put("nanomaterialEntityTypes", listMap.get("nanomaterialEntityTypes"));
-		mixedMap.put("functionalizingEntityTypes", listMap.get("functionalizingEntityTypes"));
+		Map<String, Object> mixedMap = new HashMap<String, Object>(); 
+		mixedMap.put("functionTypes", functionTypes);
+		mixedMap.put("nanomaterialEntityTypes", nanomaterialTypes);
+		mixedMap.put("functionalizingEntityTypes", fetypes);
 		mixedMap.put("characterizationTypes", charTypes);
-		
-		List<String> numberOperands = new ArrayList<String>() ;
-		numberOperands.add("=");
-		numberOperands.add(">");
-		numberOperands.add(">=");
-		numberOperands.add("<=");
-
-		mixedMap.put("numberOperands", numberOperands);
 		
 		return mixedMap;
 		
