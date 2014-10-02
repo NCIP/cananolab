@@ -253,7 +253,10 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			CharacterizationBean charBean, SimpleCharacterizationEditBean simpleEdit)
 			throws Exception {
 
-		SampleBean sampleBean = setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
+		//TODO: just get from session
+		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute("theSample");
+				
+			//	setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
 		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		charBean.setupDomain(user.getLoginName());
@@ -292,9 +295,11 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			simpleEdit.setSubmitNewChar(false);
 		}
 		
-		sampleBean = setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
-		request.setAttribute("sampleId", sampleBean.getDomain().getId()
-				.toString());
+//		sampleBean = setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
+//		request.setAttribute("sampleId", sampleBean.getDomain().getId()
+//				.toString());
+//		
+		
 		logger.debug("Done saving characterization: " + charBean.getDomainChar().getId());
 	}
 
@@ -407,15 +412,16 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 */
 	private CharacterizationSummaryViewBean prepareSummary(String sampleId, HttpServletRequest request)
 			throws Exception {
+		
 		// Remove previous result from session.
 		request.getSession().removeAttribute("characterizationSummaryView");
-		request.getSession().removeAttribute("theSample");
+		//request.getSession().removeAttribute("theSample");
 
 		//DynaValidatorForm theForm = (DynaValidatorForm) form;
 		//String sampleId = form.getSampleId();  //.getString(SampleConstants.SAMPLE_ID);
 		CharacterizationService service = this.setServicesInSession(request);
 		
-		SampleBean sampleBean = setupSampleById(sampleId, request);
+		//SampleBean sampleBean = setupSampleById(sampleId, request);
 		
 		List<CharacterizationBean> charBeans = service
 				.findCharacterizationsBySampleId(sampleId);
@@ -426,7 +432,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				summaryView);
 
 		// Save sample bean in session for sample name in export/print.
-		request.getSession().setAttribute("theSample", sampleBean);
+		//request.getSession().setAttribute("theSample", sampleBean);
 		
 		return summaryView;
 	}

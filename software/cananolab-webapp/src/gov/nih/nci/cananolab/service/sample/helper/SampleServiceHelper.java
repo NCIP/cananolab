@@ -718,31 +718,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Property.forName("id").eq(new Long(sampleId)));
-		
-//		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-//		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
-//		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-//		crit.setFetchMode("otherPointOfContactCollection.organization",
-//				FetchMode.JOIN);
-//		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
-//		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-//		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-//				FetchMode.JOIN);
-//		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
-//				FetchMode.JOIN);
-//		crit.setFetchMode(
-//				"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
-//				FetchMode.JOIN);
-//		crit.setFetchMode(
-//				"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-//				FetchMode.JOIN);
-//
-//		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
-//				FetchMode.JOIN);
-//		crit.setFetchMode(
-//				"sampleComposition.functionalizingEntityCollection.functionCollection",
-//				FetchMode.JOIN);
-//		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+	
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 	
 		List result = appService.query(crit);

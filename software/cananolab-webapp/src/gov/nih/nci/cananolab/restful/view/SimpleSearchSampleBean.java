@@ -35,6 +35,15 @@ public class SimpleSearchSampleBean {
 	String[] characterizations;
 	String dataAvailability;
 	Date createdDate;
+	boolean editable;
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
 
 	public long getSampleId() {
 		return sampleId;
@@ -134,7 +143,8 @@ public class SimpleSearchSampleBean {
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
 		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain()
 				.getCreatedDate());
-
+		
+		editable = sampleBean.getUserUpdatable();
 	}
 	
 

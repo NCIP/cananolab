@@ -117,7 +117,7 @@ public class SampleBO extends BaseAnnotationBO {
 			
 		}
 		
-		request.getSession().setAttribute("updateSample", "true");
+		//request.getSession().setAttribute("updateSample", "true");
 	
 		return summaryEdit(String.valueOf(sampleBean.getDomain().getId()), request);
 	}
@@ -201,7 +201,10 @@ public class SampleBO extends BaseAnnotationBO {
 		SimpleSampleBean simpleBean = new SimpleSampleBean();
 		
 		// "setupSample()" will retrieve and return the SampleBean.
-		SampleBean sampleBean = setupSample(form, request);
+		//SampleBean sampleBean = setupSample(form, request);
+		
+		SampleBean sampleBean = setupSampleById(sampleId, request);
+		
 		if (hasNullPOC(request, sampleBean, simpleBean.getErrors())) {
 			return simpleBean;
 		}
@@ -227,16 +230,16 @@ public class SampleBO extends BaseAnnotationBO {
 		super.checkOpenAccessForm(request);
 	}
 
-	public SampleBean setupView(SampleForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		this.setServiceInSession(request);
-		// "setupSample()" will retrieve and return the SampleBean.
-		SampleBean sampleBean = setupSample(form, request);
-		form.setSampleBean(sampleBean);
-		return sampleBean;
-	}
+//	public SampleBean setupView(SampleForm form,
+//			HttpServletRequest request, HttpServletResponse response)
+//			throws Exception {
+//	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		this.setServiceInSession(request);
+//		// "setupSample()" will retrieve and return the SampleBean.
+//		SampleBean sampleBean = setupSample(form, request);
+//		form.setSampleBean(sampleBean);
+//		return sampleBean;
+//	}
 
 	/**
 	 * 
@@ -280,12 +283,9 @@ public class SampleBO extends BaseAnnotationBO {
 	public SampleEditGeneralBean summaryEdit(String sampleId, HttpServletRequest request)
 			throws Exception {
 	
-		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
-		//sampleEdit.setSubmitForReviewButton(request);
-	
+		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();	
 		this.setServiceInSession(request);
 
-		// "setupSample()" will retrieve and return the SampleBean.
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
 		
@@ -317,7 +317,7 @@ public class SampleBO extends BaseAnnotationBO {
 
 		sampleEdit.transferSampleBeanData(request, this.getCurationService(), sampleBean, availableEntityNames);
 		
-		request.getSession().setAttribute("updateSample", "true");
+		//request.getSession().setAttribute("updateSample", "true");
 		
 		//need to save sampleBean in session for other edit feature.
 		//new in rest implement
@@ -578,13 +578,10 @@ public class SampleBO extends BaseAnnotationBO {
 			return simpleSampleBean;
 		}
 		
-		//if (newSample != null && newSampleName.length() > 0)
 		if (newSample)
 			this.setAccesses(request, sample); //this will assign default curator access to this sample.
 		
-		//TODO: check on this
 		InitSampleSetup.getInstance().persistPOCDropdowns(request, sample);
-		// return forward;
 		
 		return summaryEdit(sample.getDomain().getId().toString(), request);
 	}
@@ -979,20 +976,6 @@ public class SampleBO extends BaseAnnotationBO {
 		SampleService service = this.setServiceInSession(request);
 		service.removeAccessibility(theAccess, sample.getDomain());
 
-		//Don't know what are the following lines for. To delete...
-		
-//		ActionForward forward = null;
-//		String updateSample = (String) request.getSession().getAttribute(
-//				"updateSample");
-//		if (updateSample == null) {
-//	//		forward = mapping.findForward("createInput");
-//			setupLookups(request);
-//			this.setAccesses(request, sample);
-//		} else {
-//			request.setAttribute("sampleId", sample.getDomain().getId()
-//					.toString());
-//	//		forward = summaryEdit(mapping, form, request, response);
-//		}
 		return summaryEdit(String.valueOf(sample.getDomain().getId()), request);
 	}
 

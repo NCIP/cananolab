@@ -72,32 +72,32 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	 * @throws Exception
 	 *             if user is not allowed to access the sample
 	 */
-	protected SampleBean setupSample(SampleForm sampleForm,
-			HttpServletRequest request) throws Exception {
-		String sampleId = request.getParameter("sampleId");
-		
-		if (!StringUtils.isEmpty(sampleId)) {
-			sampleForm.setSampleId(sampleId);
-		//	theForm.set("sampleId", sampleId);
-		} else {
-			sampleId = (String) request.getAttribute("sampleId");
-			if (sampleId == null) {
-				sampleId = sampleForm.getSampleId();
-				//sampleId = theForm.getString("sampleId");
-			}
-		}
-		// sample service has been created earlier
-		SampleService service = (SampleService) request.getSession()
-				.getAttribute("sampleService");
-
-		SampleBean sampleBean = service.findSampleById(sampleId, true);
-		if (sampleBean == null) {
-			throw new NotExistException("No such sample in the system");
-		}
-		request.setAttribute("theSample", sampleBean);
-
-		return sampleBean;
-	}
+//	protected SampleBean setupSample(SampleForm sampleForm,
+//			HttpServletRequest request) throws Exception {
+//		String sampleId = request.getParameter("sampleId");
+//		
+//		if (!StringUtils.isEmpty(sampleId)) {
+//			sampleForm.setSampleId(sampleId);
+//		//	theForm.set("sampleId", sampleId);
+//		} else {
+//			sampleId = (String) request.getAttribute("sampleId");
+//			if (sampleId == null) {
+//				sampleId = sampleForm.getSampleId();
+//				//sampleId = theForm.getString("sampleId");
+//			}
+//		}
+//		// sample service has been created earlier
+//		SampleService service = (SampleService) request.getSession()
+//				.getAttribute("sampleService");
+//
+//		SampleBean sampleBean = service.findSampleById(sampleId, true);
+//		if (sampleBean == null) {
+//			throw new NotExistException("No such sample in the system");
+//		}
+//		request.setAttribute("theSample", sampleBean);
+//
+//		return sampleBean;
+//	}
 	
 	/**
 	 * This is a simplified version of setupSample(SampleForm sampleForm, HttpServletRequest request)
@@ -122,7 +122,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		if (sampleBean == null) {
 			throw new NotExistException("No such sample in the system");
 		}
-		request.setAttribute("theSample", sampleBean);
+		//request.setAttribute("theSample", sampleBean);
 
 		return sampleBean;
 	}
