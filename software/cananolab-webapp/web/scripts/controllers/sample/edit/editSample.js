@@ -199,8 +199,15 @@ var app = angular.module('angularApp')
                             $scope.sampleResultsData = b.splice(g,1);
                           };
                         };
-                     }   
-                    $location.path("/sampleResults").replace();
+                     }  
+                    if($routeParams.fromMyWorkspace=='true') {
+                        $location.path("/myWorkspace").replace();
+                        $location.search('sampleId', null);
+                        $location.search('fromMyWorkspace', null); 
+                        }
+                	else {
+                		$location.path("/sampleResults").replace();
+                	}
                 }).
                 error(function(data, status, headers, config) {
                     $scope.loader = false;
