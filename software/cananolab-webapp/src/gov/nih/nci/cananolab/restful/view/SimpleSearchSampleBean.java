@@ -141,8 +141,7 @@ public class SimpleSearchSampleBean {
 		setFunctions(sampleBean.getFunctionClassNames());
 		setCharacterizations(sampleBean.getCharacterizationClassNames());
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
-		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain()
-				.getCreatedDate());
+		setCreatedDate(sampleBean.getDomain().getCreatedDate());
 		
 		editable = sampleBean.getUserUpdatable();
 	}
