@@ -864,17 +864,6 @@ public class SampleBO extends BaseAnnotationBO {
 				availEntityNames[i++] = bean.getAvailableEntityName()
 						.toLowerCase();
 			}
-			
-			//setAvailableEntityNames(availEntityNames);
-			//request.setAttribute("availableEntityNames", availableEntityNames);
-		}
-		request.setAttribute("sampleBean", sampleBean);
-		
-		String styleId = request.getParameter("styleId");
-		if (styleId != null) {
-	//		return mapping.findForward("dataAvailabilityView");
-		} else {
-	//		return mapping.findForward("dataAvailabilityEdit");
 		}
 		
 		SimpleSampleBean simpleBean = transferDataAvailabilityToSimpleSampleBean(sampleBean, request, availEntityNames);
