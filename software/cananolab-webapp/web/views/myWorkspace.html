@@ -26,7 +26,7 @@
             <th>Created Date</th>
             <th>Sample Access</th>
         </tr>
-        <tr ng-repeat="data in samples" id="sample{{data.id}}">
+        <tr ng-repeat="data in samples" id="sample{{data.id}}" ng-class="{greenShade: !data.owner}">
             <td class="columnOne">
             	<a href="/caNanoLab/#/sample?sampleId={{data.id}}">View</a>
             	<a href="/caNanoLab/#/editSample?sampleId={{data.id}}&amp;fromMyWorkspace=true" ng-if="data.editable">Edit</a>
