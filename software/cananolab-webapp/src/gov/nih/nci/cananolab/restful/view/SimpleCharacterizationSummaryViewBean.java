@@ -57,7 +57,7 @@ public class SimpleCharacterizationSummaryViewBean {
 			CharacterizationSummaryViewBean viewBean, String sampleId) 
 	throws Exception {
 		
-		logger.info("============ SimpleCharacterizationSummaryViewBean.transferData ==================");
+		logger.debug("============ SimpleCharacterizationSummaryViewBean.transferData ==================");
 		if (viewBean == null) return null;
 		
 		Map<String, SortedSet<CharacterizationBean>> name2CharBeans = viewBean.getCharName2Characterizations();
@@ -68,13 +68,13 @@ public class SimpleCharacterizationSummaryViewBean {
 			return charByTypeBeans;
 		
 		for (String type : charTypes) {
-			logger.info("Processing type: " + type);
+			logger.debug("Processing type: " + type);
 			
 			SortedSet<String> namesOfType = charNames.get(type);
 			SortedMap<String, Object> charsByAssayType = new TreeMap<String, Object>();
 			
 			for (String charname : namesOfType) {
-				logger.info("Char Name for type: " + charname + " | " + type);
+				logger.debug("Char Name for type: " + charname + " | " + type);
 				
 				SortedSet<CharacterizationBean> charBeans = name2CharBeans.get(charname);
 				List<SimpleCharacterizationViewBean> charBeansByCharName = new ArrayList<SimpleCharacterizationViewBean>();
@@ -88,7 +88,7 @@ public class SimpleCharacterizationSummaryViewBean {
 					aView.transferData(charBean, aBeanUnitList, sampleId, type);
 										
 					charBeansByCharName.add(aView);
-					logger.info("End Proccessing char bean: " + charBean.getCharacterizationName());
+					logger.debug("End Proccessing char bean: " + charBean.getCharacterizationName());
 				}
 				charsByAssayType.put(charname, charBeansByCharName);
 				
@@ -99,7 +99,7 @@ public class SimpleCharacterizationSummaryViewBean {
 			charByTypeBean.setCharsByAssayType(charsByAssayType);
 			charByTypeBeans.add(charByTypeBean);
 			
-			logger.info("End of Processing type: " + type);
+			logger.debug("End of Processing type: " + type);
 		}		
 
 		return charByTypeBeans;
@@ -191,7 +191,7 @@ public class SimpleCharacterizationSummaryViewBean {
 		//Design Description
 		String desigMethodsDesc = charObj.getDesignMethodsDescription();
 		if (desigMethodsDesc != null && desigMethodsDesc.length() > 0) {
-			logger.info("Design Description: " + desigMethodsDesc);
+			logger.debug("Design Description: " + desigMethodsDesc);
 			charBeanMap.put("Design Description", desigMethodsDesc);
 			
 			aUnit = new SimpleCharacterizationUnitBean("Design Description", desigMethodsDesc);
@@ -208,7 +208,7 @@ public class SimpleCharacterizationSummaryViewBean {
 		
 		//Analysis and Conclusion
 		if (charBean.getConclusion() != null && charBean.getConclusion().length() > 0) {
-			logger.info("Analysis and Conclusion: " + charBean.getConclusion());
+			logger.debug("Analysis and Conclusion: " + charBean.getConclusion());
 			charBeanMap.put("Analysis and Conclusion", charBean.getConclusion());
 			
 			aUnit = new SimpleCharacterizationUnitBean("Analysis and Conclusion", charBean.getConclusion());
@@ -226,7 +226,7 @@ public class SimpleCharacterizationSummaryViewBean {
 			return;
 		}
 
-		logger.info("Experiment Configurations size: " + charBean.getExperimentConfigs().size());
+		logger.debug("Experiment Configurations size: " + charBean.getExperimentConfigs().size());
 		List<ExperimentConfigBean> expConfigBeans = charBean.getExperimentConfigs();
 
 		MultiMap technique = new MultiValueMap();
@@ -257,7 +257,7 @@ public class SimpleCharacterizationSummaryViewBean {
 			instruments.put("Instruments", sb.toString());
 			description.put("Description", desc);
 
-			logger.info("Tech display name: " + aBean.getTechniqueDisplayName());
+			logger.debug("Tech display name: " + aBean.getTechniqueDisplayName());
 		}
 
 		expConfigTable.add(technique);
