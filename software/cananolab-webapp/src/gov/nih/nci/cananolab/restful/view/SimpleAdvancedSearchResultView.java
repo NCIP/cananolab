@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +9,8 @@ public class SimpleAdvancedSearchResultView {
 	
 	List<SimpleAdvancedSearchSampleBean> samples = new ArrayList<SimpleAdvancedSearchSampleBean>();
 	
-	List<String> columnTitles = new ArrayList<String>();
-	
+	List<LabelValueBean> columnTitles = new ArrayList<LabelValueBean>();
+
 	
 	boolean showPOC;
 	boolean showNanomaterialEntity;
@@ -17,6 +19,17 @@ public class SimpleAdvancedSearchResultView {
 	
 	List<String> errors = new ArrayList<String>();
 	
+	public void createColumnTitles(List<String> columnNamesFromQueries) {
+		columnTitles.clear();
+		LabelValueBean title = new LabelValueBean("Sample Name", "Sample");
+		columnTitles.add(title);
+		
+		for (String colName : columnNamesFromQueries) {
+			String type = SimpleAdvancedSearchSampleBean.getHtmlFieldType(colName);
+			title = new LabelValueBean(colName, type);
+			columnTitles.add(title);
+		}
+	}
 	
 	public List<SimpleAdvancedSearchSampleBean> getSamples() {
 		return samples;
@@ -24,12 +37,15 @@ public class SimpleAdvancedSearchResultView {
 	public void setSamples(List<SimpleAdvancedSearchSampleBean> samples) {
 		this.samples = samples;
 	}
-	public List<String> getColumnTitles() {
+	
+	public List<LabelValueBean> getColumnTitles() {
 		return columnTitles;
 	}
-	public void setColumnTitles(List<String> columnTitles) {
+
+	public void setColumnTitles(List<LabelValueBean> columnTitles) {
 		this.columnTitles = columnTitles;
 	}
+
 	public boolean isShowPOC() {
 		return showPOC;
 	}

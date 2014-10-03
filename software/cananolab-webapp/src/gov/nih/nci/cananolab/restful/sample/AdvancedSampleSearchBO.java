@@ -377,8 +377,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		
 		SimpleAdvancedSearchResultView resultView = new SimpleAdvancedSearchResultView();
 		
-		resultView.getColumnTitles().add("Sample Name");
-		resultView.getColumnTitles().addAll(searchBean.getQueryAsColumnNames());
+		
 			
 		List<SimpleAdvancedSearchSampleBean> simpleBeans = new ArrayList<SimpleAdvancedSearchSampleBean>();
 		
@@ -389,6 +388,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 			simpleBeans.add(simpleBean);
 		}
 		
+		resultView.createColumnTitles(searchBean.getQueryAsColumnNames());
 		resultView.setSamples(simpleBeans);
 		
 		return resultView;

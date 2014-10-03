@@ -52,25 +52,26 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		}
 	}
 	
+	public static String getHtmlFieldType(String colName) {
+		//map to the type value the html is using.
+		if (colName.contains("point of contact"))
+			return "POC";
+		else if (colName.contains("nanomaterial entity"))
+			return "Nanomaterial";
+		else if (colName.contains("functionalizing entity"))
+			return "FunctionalizaingEntity";
+		else if (colName.equals("function"))
+			return "Function";
+		else if (colName.contains("characterization"))
+			return "Characterization";
+		
+		return "";
+	}
 	
 	protected void populateColumnContent(String colName, List<LinkableItem> items) {
 		List<SimpleAdvancedResultCellUnitBean> units = transferFromLinkableItems(items);
 		
-		String type = "";
-		
-		//map to the type value the html is using.
-		if (colName.contains("point of contact"))
-			type = "POC";
-		else if (colName.contains("nanomaterial entity"))
-			type = "Nanomaterial";
-		else if (colName.contains("functionalizing entity"))
-			type = "FunctionalizaingEntity";
-		else if (colName.equals("function"))
-			type = "Function";
-		else if (colName.contains("characterization"))
-			type = "Characterization";
-		
-		
+		String type = getHtmlFieldType(colName);
 		this.columns.add(new SimpleAdvancedResultCellBean(type, units));
 	}
 	
