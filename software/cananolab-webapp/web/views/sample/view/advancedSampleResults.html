@@ -98,10 +98,7 @@
 
 <table ng-table="tableParams" class="table sample" width="100%" cellspacing="0" cellpadding="0">
 	<tr>
-		<th class="text-center sortable" ng-class="{
-                    'sort-asc': tableParams.isSortBy(column.field, 'asc'),
-                    'sort-desc': tableParams.isSortBy(column.field, 'desc')
-                  }" ng-repeat="column in sampleData.data.columnTitles track by $index" ng-bind-html="column" ng-click="tableParams.sorting(column.field, tableParams.isSortBy(column.field, 'asc') ? 'desc' : 'asc')">
+		<th class="text-center sortable" ng-repeat="column in sampleData.data.columnTitles track by $index" ng-bind-html="column.label" ng-click="tableParams.sorting(column.value, tableParams.isSortBy(column.value, 'asc') ? 'desc' : 'asc')">
 		</th>										
 	</tr>
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
