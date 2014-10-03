@@ -98,13 +98,16 @@
 
 <table ng-table="tableParams" class="table sample" width="100%" cellspacing="0" cellpadding="0">
 	<tr>
-		<th ng-repeat="column in sampleData.data.columnTitles track by $index" ng-bind-html="column">
+		<th class="text-center sortable" ng-class="{
+                    'sort-asc': tableParams.isSortBy(column.field, 'asc'),
+                    'sort-desc': tableParams.isSortBy(column.field, 'desc')
+                  }" ng-repeat="column in sampleData.data.columnTitles track by $index" ng-bind-html="column" ng-click="tableParams.sorting(column.field, tableParams.isSortBy(column.field, 'asc') ? 'desc' : 'asc')">
 		</th>										
 	</tr>
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
 		<td ng-repeat="col in row.columns track by $index" valign="top">
 			<div ng-if="col.type=='Sample'">
-				<a href=""  ng-click="displaySample(row.sampleId)">{{col.val[0]}}</a>
+				<a href="" ng-click="displaySample(row.sampleId)">{{col.val[0]}}</a>
 			</div>
 
 			<div ng-if="col.type=='POC'">
@@ -116,20 +119,20 @@
 
 			<div ng-if="col.type=='Characterization'">
 				<div ng-repeat="char in col.val track by $index">
-					{{char.displayName}}<br />
+					<span ng-bind-html="char.displayName">Display Name</span><br />
 					<a href="" ng-click="showCharDetails(row.sampleId, char.dataId)">Details</a><br /><br />
 				</div>
 			</div>	
 			<div ng-if="col.type=='Nanomaterial'">
 				<div ng-repeat="char in col.val track by $index">
-					{{char.displayName}}<br />
+					<span ng-bind-html="char.displayName">Display Name</span><br />
 					<a href="" ng-click="showNanoMaterialDetails(row.sampleId, char.dataId)">Details</a><br /><br />
 				</div>
 			</div>
 			
 			<div ng-if="col.type=='Function'">
 				<div ng-repeat="char in col.val track by $index">
-					{{char.displayName}}<br />
+					<span ng-bind-html="char.displayName">Display Name</span><br />
 					
 					<div ng-if="char.relatedEntityType=='functionalizingEntity'">
 					<a href="" ng-click="showFunctionalizingEntityDetails(row.sampleId, char.dataId)">Details</a><br /><br />
@@ -142,7 +145,7 @@
 			</div>
 			<div ng-if="col.type=='FunctionalizaingEntity'">
 				<div ng-repeat="char in col.val track by $index">
-					{{char.displayName}}<br />
+					<span ng-bind-html="char.displayName">Display Name</span><br />
 					<a href="" ng-click="showFunctionalizingEntityDetails(row.sampleId, char.dataId)">Details</a><br /><br />
 				</div>
 			</div>															
