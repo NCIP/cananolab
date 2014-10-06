@@ -8,15 +8,15 @@ import gov.nih.nci.cananolab.restful.bean.SimpleAdvancedResultCellBean;
 import gov.nih.nci.cananolab.restful.bean.SimpleAdvancedResultCellUnitBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
-import java.awt.ItemSelectable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-
-import com.lowagie.text.pdf.AcroFields.Item;
 
 public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	private Logger logger = Logger.getLogger(SimpleAdvancedSearchSampleBean.class);
@@ -126,19 +126,52 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		this.rowCellRefs.put(colName, units);
 		
 		//map to the type value the html is using.
-				if (colName.contains("point of contact"))
-					this.dataRow.setPointOfContact(units.get(0).getDisplayName());
-				else if (colName.contains("nanomaterial entity"))
-					this.dataRow.setNanomaterialEntity(units.get(0).getDisplayName());
-				else if (colName.contains("functionalizing entity"))
-					this.dataRow.setFunctionalizaingEntity(units.get(0).getDisplayName());
-				else if (colName.equals("function"))
-					this.dataRow.setFunction(units.get(0).getDisplayName());
-				else if (colName.contains("physico"))
-					this.dataRow.setPhysicalChemicalChar(units);
+		if (colName.contains("point of contact"))
+			this.dataRow.setPointOfContact(units.get(0).getDisplayName());
+		else if (colName.contains("nanomaterial entity"))
+			this.dataRow.setNanomaterialEntity(units.get(0).getDisplayName());
+		else if (colName.contains("functionalizing entity"))
+			this.dataRow.setFunctionalizaingEntity(units.get(0).getDisplayName());
+		else if (colName.equals("function"))
+			this.dataRow.setFunction(units.get(0).getDisplayName());
+		else if (colName.contains("physico")) {
+			//String method = StringUtil.  .capitalise(str)
+			List<String> r = new ArrayList<String>();
+			for (SimpleAdvancedResultCellUnitBean unit :units) {
+				r.add(unit.getDisplayName() + "|" + unit.getDataId());
+			}
+			
+			this.dataRow.setPhysicalChemicalChar(r);;
+		}
 		
-		
-		
+	}
+	
+	protected void setProperty(Object targetObj, String methodName, String value) {
+
+		try {
+			Class[] paramString = new Class[1];
+			paramString[0] = String.class;
+			Class currClass = targetObj.getClass();
+			Method method = currClass.getMethod(methodName, paramString);
+
+			method.invoke(targetObj, value);
+
+		} catch (SecurityException se) {
+			logger.debug(se);
+		} catch (IllegalArgumentException ex) {
+			ex.printStackTrace();
+		} catch (InvocationTargetException ex) {
+			ex.printStackTrace();
+			return;
+		} catch (IllegalAccessException ex) {
+			ex.printStackTrace();
+			return;
+		} catch (Exception ex) {
+			logger.debug(ex);
+		} catch (Throwable t) {
+			logger.debug(t);
+		}
+
 	}
 	
 	/**

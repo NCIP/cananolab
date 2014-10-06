@@ -16,7 +16,8 @@ public class SimpleAdvancedResultRow {
 	String functionalizaingEntity;
 	String function;
 	
-	List<SimpleAdvancedResultCellUnitBean> physicalChemicalChar = new ArrayList<SimpleAdvancedResultCellUnitBean>();
+	//List<SimpleAdvancedResultCellUnitBean> physicalChemicalChar = new ArrayList<SimpleAdvancedResultCellUnitBean>();
+	List<String> physicalChemicalChar = new ArrayList<String>();
 	String invivoChar;
 	String invitroChar;
 	String exvivoChar;
@@ -60,11 +61,10 @@ public class SimpleAdvancedResultRow {
 	}
 	
 	
-	public List<SimpleAdvancedResultCellUnitBean> getPhysicalChemicalChar() {
+	public List<String> getPhysicalChemicalChar() {
 		return physicalChemicalChar;
 	}
-	public void setPhysicalChemicalChar(
-			List<SimpleAdvancedResultCellUnitBean> physicalChemicalChar) {
+	public void setPhysicalChemicalChar(List<String> physicalChemicalChar) {
 		this.physicalChemicalChar = physicalChemicalChar;
 	}
 	public String getExvivoChar() {
