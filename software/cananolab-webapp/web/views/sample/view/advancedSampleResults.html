@@ -13,6 +13,7 @@
         </td>
       </tr>
     </table>
+
 	<br />
 	<table class="editTableWithGrid" width="100%">
 	    <tr>
@@ -97,55 +98,60 @@
 	</div><br />
 
 <table ng-table="tableParams" class="table sample" width="100%" cellspacing="0" cellpadding="0">
-	<tr>
-		<th class="text-center sortable" ng-repeat="column in sampleData.data.columnTitles track by $index" ng-bind-html="column.label" ng-click="tableParams.sorting(column.value, tableParams.isSortBy(column.value, 'asc') ? 'desc' : 'asc')">
+<!-- 	<tr>
+		<th ng-repeat="column in sampleData.data.columnTitles track by $index">
+			{{column.label}}
 		</th>										
-	</tr>
+	</tr> -->
+
+        <tr>
+            <th valign="top" ng-repeat="column in sampleData.data.resultTable.columnTitles"
+                class="text-center sortable" ng-class="{
+                    'sort-asc': tableParams.isSortBy(column.value, 'asc'),
+                    'sort-desc': tableParams.isSortBy(column.value, 'desc')
+                  }"
+                ng-click="tableParams.sorting(column.value, tableParams.isSortBy(column.value, 'asc') ? 'desc' : 'asc')">
+                <div>{{column.label}}</div>
+            </th>
+        </tr>
+
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
-		<td ng-repeat="col in row.columns track by $index" valign="top">
-			<div ng-if="col.type=='Sample'">
-				<a href="" ng-click="displaySample(row.sampleId)">{{col.val[0]}}</a>
+		<td ng-repeat="col in sampleData.data.resultTable.columnTitles track by $index" sortable="col.value" ng-init="colVal=col.value">
+			<div ng-if="colVal=='sampleName'">
+				<a href="" ng-click="displaySample(row.sampleId)">{{row[colVal]}}</a>
 			</div>
 
-			<div ng-if="col.type=='POC'">
-				<div ng-repeat="poc in col.val track by $index" ng-bind-html="poc">
-					{{poc.displayName}}
+			<div ng-if="colVal=='pointOfContact'">
+				<div ng-bind-html="row[colVal]">
+					Contact
 				</div><br /><a href="" ng-click="showPocDetails(row.sampleId)">Details</a>
 			</div>
-
-
-			<div ng-if="col.type=='Characterization'">
-				<div ng-repeat="char in col.val track by $index">
-					<span ng-bind-html="char.displayName">Display Name</span><br />
-					<a href="" ng-click="showCharDetails(row.sampleId, char.dataId)">Details</a><br /><br />
+			<div ng-if="colVal=='physicalChemicalChar'||colVal=='invivoChar'||colVal=='invitroChar'||colVal=='exvivoChar'">
+				<div ng-repeat="char in row[colVal] track by $index" ng-init="charList=char.split('|')">
+					<div>{{charList[0]}}<br />
+						<a href="" ng-click="showCharDetails(row.sampleId,charList[1])">Details</a><br /><br />
+					</div>
 				</div>
 			</div>	
-			<div ng-if="col.type=='Nanomaterial'">
-				<div ng-repeat="char in col.val track by $index">
-					<span ng-bind-html="char.displayName">Display Name</span><br />
-					<a href="" ng-click="showNanoMaterialDetails(row.sampleId, char.dataId)">Details</a><br /><br />
+			<div ng-if="colVal=='functionalizingEntity'||colVal=='nanomaterialEntity'||colVal=='function'">
+				<div ng-if="colVal=='nanomaterialEntity'" ng-repeat="item in row[colVal] track by $index" ng-init="itemList=item.split('|')">
+					<span ng-bind-html="itemList[0]">Entity</span><br />
+					<a href="" ng-click="showNanoMaterialDetails(row.sampleId, itemList[1])">Details</a><br /><br />					
+				</div>
+				<div ng-if="colVal=='functionalizingEntity'" ng-repeat="item in row[colVal] track by $index" ng-init="itemList=item.split('|')">
+					<span ng-bind-html="itemList[0]">Entity</span><br />					<a href="" ng-click="showFunctionalizingEntityDetails(row.sampleId, itemList[1])">Details</a><br /><br />
+				</div>
+				<div ng-if="colVal=='function'" ng-repeat="item in row[colVal] track by $index" ng-init="itemList=item.split('|')">
+					{{itemList[0]}}<br />
+					<div ng-if="itemList.length>2">
+						<a href="" ng-if="itemList[2]=='functionalizingEntity'" ng-click="showFunctionalizingEntityDetails(row.sampleId, itemList[1])">Details</a>
+						<a href="" ng-if="itemList[2]=='nanomaterialEntity'" ng-click="showNanoMaterialDetails(row.sampleId, itemList[1])">Details</a>
+
+					</div><br /><br />
+
+
 				</div>
 			</div>
-			
-			<div ng-if="col.type=='Function'">
-				<div ng-repeat="char in col.val track by $index">
-					<span ng-bind-html="char.displayName">Display Name</span><br />
-					
-					<div ng-if="char.relatedEntityType=='functionalizingEntity'">
-					<a href="" ng-click="showFunctionalizingEntityDetails(row.sampleId, char.dataId)">Details</a><br /><br />
-					</div>
-					<div ng-if="char.relatedEntityType=='nanomaterialEntity'">
-					<a href="" ng-click="showNanoMaterialDetails(row.sampleId, char.dataId)">Details</a><br /><br />
-					</div>
-					
-				</div>
-			</div>
-			<div ng-if="col.type=='FunctionalizaingEntity'">
-				<div ng-repeat="char in col.val track by $index">
-					<span ng-bind-html="char.displayName">Display Name</span><br />
-					<a href="" ng-click="showFunctionalizingEntityDetails(row.sampleId, char.dataId)">Details</a><br /><br />
-				</div>
-			</div>															
 		</td>
 	</tr>
 </table> 
