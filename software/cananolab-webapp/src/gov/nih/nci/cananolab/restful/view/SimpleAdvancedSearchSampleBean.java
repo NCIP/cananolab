@@ -125,28 +125,52 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		this.columns.add(new SimpleAdvancedResultCellBean(type, units));
 		this.rowCellRefs.put(colName, units);
 		
-		//map to the type value the html is using.
-		if (colName.contains("point of contact"))
-			this.dataRow.setPointOfContact(units.get(0).getDisplayName());
-		else if (colName.contains("nanomaterial entity"))
-			this.dataRow.setNanomaterialEntity(units.get(0).getDisplayName());
-		else if (colName.contains("functionalizing entity"))
-			this.dataRow.setFunctionalizaingEntity(units.get(0).getDisplayName());
-		else if (colName.equals("function"))
-			this.dataRow.setFunction(units.get(0).getDisplayName());
-		else if (colName.contains("physico")) {
-			//String method = StringUtil.  .capitalise(str)
-			List<String> r = new ArrayList<String>();
-			for (SimpleAdvancedResultCellUnitBean unit :units) {
-				r.add(unit.getDisplayName() + "|" + unit.getDataId());
-			}
+		List<String> formattedDisplayables = new ArrayList<String>();
+		for (SimpleAdvancedResultCellUnitBean unit :units) {
+			String formatted = unit.getDisplayName() + "|" + unit.getDataId();
+			formattedDisplayables.add(unit.getDisplayName() + "|" + unit.getDataId());
 			
-			this.dataRow.setPhysicalChemicalChar(r);;
+			if (type.equals("function"))
+				formatted += "|" + unit.getRelatedEntityType();
+			
+			formattedDisplayables.add(formatted);
 		}
 		
+		String methodName = "set" + type.substring(0, 1).toUpperCase() + type.substring(1);
+		
+		//this.setProperty(this.dataRow, methodName, formattedDisplayables);
+		
+//		//map to the type value the html is using.
+		if (colName.contains("point of contact"))
+			this.dataRow.setPointOfContact(formattedDisplayables);
+		else if (colName.contains("nanomaterial entity"))
+			this.dataRow.setNanomaterialEntity(formattedDisplayables);
+		else if (colName.contains("functionalizing entity"))
+			this.dataRow.setFunctionalizaingEntity(formattedDisplayables);
+		else if (colName.equals("function"))
+			this.dataRow.setFunction(formattedDisplayables);
+		else if (colName.contains("physico")) 
+			this.dataRow.setPhysicalChemicalChar(formattedDisplayables);
+		else if (colName.contains("vivo"))
+			this.dataRow.setInvivoChar(formattedDisplayables);
+		else if (colName.contains("vitro"))
+			this.dataRow.setInvitroChar(formattedDisplayables);
+		else if (colName.contains("ex"))
+			this.dataRow.setExvivoChar(formattedDisplayables);
+			
+//			
+//			
+//			List<String> r = new ArrayList<String>();
+//			for (SimpleAdvancedResultCellUnitBean unit :units) {
+//				r.add(unit.getDisplayName() + "|" + unit.getDataId());
+//			}
+//			
+//			this.dataRow.setPhysicalChemicalChar(r);;
+//		}
+//		
 	}
 	
-	protected void setProperty(Object targetObj, String methodName, String value) {
+	protected void setProperty(Object targetObj, String methodName, List<String> value) {
 
 		try {
 			Class[] paramString = new Class[1];

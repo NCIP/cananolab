@@ -9,18 +9,18 @@ public class SimpleAdvancedResultRow {
 	
 	long sampleId;
 	String sampleName;
-	String pointOfContact;
+	List<String> pointOfContact;
 	
-	String nanomaterialEntity;
+	List<String> nanomaterialEntity;
 
-	String functionalizaingEntity;
-	String function;
+	List<String> functionalizaingEntity;
+	List<String> function;
 	
 	//List<SimpleAdvancedResultCellUnitBean> physicalChemicalChar = new ArrayList<SimpleAdvancedResultCellUnitBean>();
-	List<String> physicalChemicalChar = new ArrayList<String>();
-	String invivoChar;
-	String invitroChar;
-	String exvivoChar;
+	List<String> physicalChemicalChar;
+	List<String> invivoChar;
+	List<String> invitroChar;
+	List<String> exvivoChar;
 	
 	
 	public long getSampleId() {
@@ -35,74 +35,53 @@ public class SimpleAdvancedResultRow {
 	public void setSampleName(String sampleName) {
 		this.sampleName = sampleName;
 	}
-	public String getPointOfContact() {
+	public List<String> getPointOfContact() {
 		return pointOfContact;
 	}
-	public void setPointOfContact(String pointOfContact) {
+	public void setPointOfContact(List<String> pointOfContact) {
 		this.pointOfContact = pointOfContact;
 	}
-	public String getNanomaterialEntity() {
+	public List<String> getNanomaterialEntity() {
 		return nanomaterialEntity;
 	}
-	public void setNanomaterialEntity(String nanomaterialEntity) {
+	public void setNanomaterialEntity(List<String> nanomaterialEntity) {
 		this.nanomaterialEntity = nanomaterialEntity;
 	}
-	public String getFunctionalizaingEntity() {
+	public List<String> getFunctionalizaingEntity() {
 		return functionalizaingEntity;
 	}
-	public void setFunctionalizaingEntity(String functionalizaingEntity) {
+	public void setFunctionalizaingEntity(List<String> functionalizaingEntity) {
 		this.functionalizaingEntity = functionalizaingEntity;
 	}
-	public String getFunction() {
+	public List<String> getFunction() {
 		return function;
 	}
-	public void setFunction(String function) {
+	public void setFunction(List<String> function) {
 		this.function = function;
 	}
-	
-	
 	public List<String> getPhysicalChemicalChar() {
 		return physicalChemicalChar;
 	}
 	public void setPhysicalChemicalChar(List<String> physicalChemicalChar) {
 		this.physicalChemicalChar = physicalChemicalChar;
 	}
-	public String getExvivoChar() {
-		return exvivoChar;
-	}
-	public void setExvivoChar(String exvivoChar) {
-		this.exvivoChar = exvivoChar;
-	}
-	public String getInvitroChar() {
-		return invitroChar;
-	}
-	public void setInvitroChar(String invitroChar) {
-		this.invitroChar = invitroChar;
-	}
-	public String getInvivoChar() {
+	public List<String> getInvivoChar() {
 		return invivoChar;
 	}
-	public void setInvivoChar(String invivoChar) {
+	public void setInvivoChar(List<String> invivoChar) {
 		this.invivoChar = invivoChar;
 	}
-	
-	public class CellUnit {
-		String displayName;
-		long dataId;
-		public String getDisplayName() {
-			return displayName;
-		}
-		public void setDisplayName(String displayName) {
-			this.displayName = displayName;
-		}
-		public long getDataId() {
-			return dataId;
-		}
-		public void setDataId(long dataId) {
-			this.dataId = dataId;
-		}
-		
-		
+	public List<String> getInvitroChar() {
+		return invitroChar;
+	}
+	public void setInvitroChar(List<String> invitroChar) {
+		this.invitroChar = invitroChar;
+	}
+	public List<String> getExvivoChar() {
+		return exvivoChar;
+	}
+	public void setExvivoChar(List<String> exvivoChar) {
+		this.exvivoChar = exvivoChar;
 	}
 	
 }
