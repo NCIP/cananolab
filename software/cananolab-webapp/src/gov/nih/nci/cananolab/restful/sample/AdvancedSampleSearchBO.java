@@ -376,19 +376,18 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 			UserBean user, AdvancedSampleSearchBean searchBean) {
 		
 		SimpleAdvancedSearchResultView resultView = new SimpleAdvancedSearchResultView();
-		
-		
-			
+		resultView.createColumnTitles(searchBean.getQueryAsColumnNames());
+	
 		List<SimpleAdvancedSearchSampleBean> simpleBeans = new ArrayList<SimpleAdvancedSearchSampleBean>();
 		
 		for (AdvancedSampleBean bean : sampleBeans) {
 			
 			SimpleAdvancedSearchSampleBean simpleBean = new SimpleAdvancedSearchSampleBean();
-			simpleBean.transferAdvancedSampleBeanForResultView(bean, user, searchBean);
+			simpleBean.transferAdvancedSampleBeanForResultView(bean, user, searchBean, resultView.getColumnTitles());
 			simpleBeans.add(simpleBean);
 		}
 		
-		resultView.createColumnTitles(searchBean.getQueryAsColumnNames());
+		
 		resultView.setSamples(simpleBeans);
 		
 		return resultView;

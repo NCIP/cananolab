@@ -3,21 +3,30 @@ package gov.nih.nci.cananolab.restful.view;
 import gov.nih.nci.cananolab.dto.common.LinkableItem;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.bean.SimpleAdvancedResultCellBean;
 import gov.nih.nci.cananolab.restful.bean.SimpleAdvancedResultCellUnitBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
+import java.awt.ItemSelectable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+
+import com.lowagie.text.pdf.AcroFields.Item;
 
 public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	private Logger logger = Logger.getLogger(SimpleAdvancedSearchSampleBean.class);
 
 	
 	List<SimpleAdvancedResultCellBean> columns = new ArrayList<SimpleAdvancedResultCellBean>();
+	
+	List<Map<String, Object>> rowCells = new ArrayList<Map<String, Object>>();
+
+	Map<String, List<SimpleAdvancedResultCellUnitBean>> rowCellRefs = new HashMap<String, List<SimpleAdvancedResultCellUnitBean>>();
 	
 	public List<SimpleAdvancedResultCellBean> getColumns() {
 		return columns;
@@ -28,10 +37,20 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	}
 
 	public void transferAdvancedSampleBeanForResultView(AdvancedSampleBean sampleBean,
-			UserBean user, AdvancedSampleSearchBean searchBean) {
+			UserBean user, AdvancedSampleSearchBean searchBean, List<LabelValueBean> colNames) {
 
 		if (sampleBean == null)
 			return;
+		
+		for (LabelValueBean col : colNames) {
+			Map<String, String> data = new HashMap<String, String>();
+			String colName = col.getLabel();
+			
+			if (colName.contains("Sample"))
+				data.put(colName, sampleBean.getDomainSample().getName());
+			
+			
+		}
 		
 		setSampleId(sampleBean.getDomainSample().getId());
 		setSampleName(sampleBean.getDomainSample().getName());
@@ -46,9 +65,24 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		List<String> columnNames = searchBean.getQueryAsColumnNames();
 		Map<String, List<LinkableItem>> dataMap = sampleBean.getAttributeMap();
 		
-		for (String columnName : columnNames) {
-			List<LinkableItem> items = dataMap.get(columnName);
-			populateColumnContent(columnName, items);
+//		for (String columnName : columnNames) {
+//			List<LinkableItem> items = dataMap.get(columnName);
+//			populateColumnContent(columnName, items);
+//		}
+//		
+		
+		for (LabelValueBean col : colNames) {
+			Map<String, Object> data = new HashMap<String, Object>();
+			String colName = col.getLabel();
+			
+			if (colName.contains("Sample")) {
+				data.put(colName, sampleBean.getDomainSample().getName());
+				this.rowCells.add(data);
+			} else {
+				List<LinkableItem> items = dataMap.get(colName);
+				populateColumnContent(colName, items, this.rowCells);
+			}
+			
 		}
 	}
 	
@@ -60,7 +94,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			return "Nanomaterial";
 		else if (colName.contains("functionalizing entity"))
 			return "FunctionalizaingEntity";
-		else if (colName.equals("function"))
+		else if (colName.equals("fusnction"))
 			return "Function";
 		else if (colName.contains("characterization"))
 			return "Characterization";
@@ -68,15 +102,27 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		return "";
 	}
 	
-	protected void populateColumnContent(String colName, List<LinkableItem> items) {
-		List<SimpleAdvancedResultCellUnitBean> units = transferFromLinkableItems(items);
+	protected void populateColumnContent(String colName, List<LinkableItem> items, List<Map<String, Object>> displayableData) {
+		
+		List<SimpleAdvancedResultCellUnitBean> units = transferFromLinkableItems(items, colName, displayableData);
 		
 		String type = getHtmlFieldType(colName);
 		this.columns.add(new SimpleAdvancedResultCellBean(type, units));
+		this.rowCellRefs.put(colName, units);
 	}
 	
-	protected List<SimpleAdvancedResultCellUnitBean> transferFromLinkableItems(List<LinkableItem> items) {
+	/**
+	 * 
+	 * @param items
+	 * @param colName
+	 * @param dataMap
+	 * @return
+	 */
+	protected List<SimpleAdvancedResultCellUnitBean> transferFromLinkableItems(List<LinkableItem> items, 
+			String colName, List<Map<String, Object>> dataMap) {
 		List<SimpleAdvancedResultCellUnitBean> units = new ArrayList<SimpleAdvancedResultCellUnitBean>();
+		List<String> displayables = new ArrayList<String>();
+		Map<String, Object> displayMap = new HashMap<String, Object>();
 		
 		for (LinkableItem item :items) {
 			String dn = item.getDisplayName();
@@ -95,6 +141,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			}
 			
 			unit.setDisplayName(names);
+			displayables.add(names);
 			
 			if (dataId != null) {
 				String [] relatedItems = dataId.split(":");
@@ -109,6 +156,28 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			
 		}
 		
+		displayMap.put(colName, displayables);
+		dataMap.add(displayMap);
+		
 		return units;
 	}
+
+	public List<Map<String, Object>> getRowCells() {
+		return rowCells;
+	}
+
+	public void setRowCells(List<Map<String, Object>> rowCells) {
+		this.rowCells = rowCells;
+	}
+
+	public Map<String, List<SimpleAdvancedResultCellUnitBean>> getRowCellRefs() {
+		return rowCellRefs;
+	}
+
+	public void setRowCellRefs(
+			Map<String, List<SimpleAdvancedResultCellUnitBean>> rowCellRefs) {
+		this.rowCellRefs = rowCellRefs;
+	}
+
+	
 }
