@@ -389,7 +389,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		
 		
 		resultView.setSamples(simpleBeans);
-		
+		resultView.transformToTableView();
 		return resultView;
 	}
 	

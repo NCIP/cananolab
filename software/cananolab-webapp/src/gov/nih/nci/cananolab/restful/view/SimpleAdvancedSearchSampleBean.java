@@ -28,6 +28,9 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 
 	Map<String, List<SimpleAdvancedResultCellUnitBean>> rowCellRefs = new HashMap<String, List<SimpleAdvancedResultCellUnitBean>>();
 	
+	SimpleAdvancedResultRow dataRow = new SimpleAdvancedResultRow();
+	
+	
 	public List<SimpleAdvancedResultCellBean> getColumns() {
 		return columns;
 	}
@@ -60,6 +63,9 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		sampleIdName.add(String.valueOf(this.sampleId));
 		
 		
+		
+		
+		
 		this.columns.add(new SimpleAdvancedResultCellBean("Sample", sampleIdName));
 		
 		List<String> columnNames = searchBean.getQueryAsColumnNames();
@@ -78,6 +84,9 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			if (colName.contains("Sample")) {
 				data.put(colName, sampleBean.getDomainSample().getName());
 				this.rowCells.add(data);
+				
+				this.dataRow.setSampleId(this.sampleId);
+				this.dataRow.setSampleName(this.sampleName);
 			} else {
 				List<LinkableItem> items = dataMap.get(colName);
 				populateColumnContent(colName, items, this.rowCells);
@@ -89,15 +98,21 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	public static String getHtmlFieldType(String colName) {
 		//map to the type value the html is using.
 		if (colName.contains("point of contact"))
-			return "POC";
+			return "pointOfContact";
 		else if (colName.contains("nanomaterial entity"))
-			return "Nanomaterial";
+			return "nanomaterialEntity";
 		else if (colName.contains("functionalizing entity"))
-			return "FunctionalizaingEntity";
-		else if (colName.equals("fusnction"))
-			return "Function";
-		else if (colName.contains("characterization"))
-			return "Characterization";
+			return "functionalizaingEntity";
+		else if (colName.equals("function"))
+			return "function";
+		else if (colName.contains("physico"))
+			return "physicalChemicalChar";
+		else if (colName.contains("in vivo"))
+			return "invivoChar";
+		else if (colName.contains("in vitro"))
+			return "invitroChar";
+		else if (colName.contains("ex vivo"))
+			return "exvivoChar";
 		
 		return "";
 	}
@@ -109,6 +124,21 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		String type = getHtmlFieldType(colName);
 		this.columns.add(new SimpleAdvancedResultCellBean(type, units));
 		this.rowCellRefs.put(colName, units);
+		
+		//map to the type value the html is using.
+				if (colName.contains("point of contact"))
+					this.dataRow.setPointOfContact(units.get(0).getDisplayName());
+				else if (colName.contains("nanomaterial entity"))
+					this.dataRow.setNanomaterialEntity(units.get(0).getDisplayName());
+				else if (colName.contains("functionalizing entity"))
+					this.dataRow.setFunctionalizaingEntity(units.get(0).getDisplayName());
+				else if (colName.equals("function"))
+					this.dataRow.setFunction(units.get(0).getDisplayName());
+				else if (colName.contains("physico"))
+					this.dataRow.setPhysicalChemicalChar(units);
+		
+		
+		
 	}
 	
 	/**
@@ -177,6 +207,14 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	public void setRowCellRefs(
 			Map<String, List<SimpleAdvancedResultCellUnitBean>> rowCellRefs) {
 		this.rowCellRefs = rowCellRefs;
+	}
+
+	public SimpleAdvancedResultRow getDataRow() {
+		return dataRow;
+	}
+
+	public void setDataRow(SimpleAdvancedResultRow dataRow) {
+		this.dataRow = dataRow;
 	}
 
 	

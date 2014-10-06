@@ -3,13 +3,17 @@ package gov.nih.nci.cananolab.restful.view;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SimpleAdvancedSearchResultView {
 	
 	List<SimpleAdvancedSearchSampleBean> samples = new ArrayList<SimpleAdvancedSearchSampleBean>();
 	
 	List<LabelValueBean> columnTitles = new ArrayList<LabelValueBean>();
+	
+	SimpleTableBean resultTable = new SimpleTableBean();
 
 	
 	boolean showPOC;
@@ -19,9 +23,29 @@ public class SimpleAdvancedSearchResultView {
 	
 	List<String> errors = new ArrayList<String>();
 	
+	public void transformToTableView() {
+		this.resultTable.getColumnTitles().clear();
+		this.resultTable.getColumnTitles().addAll(this.columnTitles);
+		
+//		int idx = 0;
+//		for (LabelValueBean lableval : this.columnTitles) {
+//			String colName = lableval.getLabel();
+//			this.resultTable.getHeaders().add(colName);
+//		}
+		
+		for (SimpleAdvancedSearchSampleBean sample : this.samples) {
+			//List<Map<String, Object>> rowCells = new ArrayList<Map<String, Object>>();
+			//List<Map<String, Object>> rowCels = sample.getRowCells();
+			//this.resultTable.getDiffRows().add(rowCels);
+			
+			this.resultTable.getDataRows().add(sample.getDataRow());
+		}
+		
+	}
+	
 	public void createColumnTitles(List<String> columnNamesFromQueries) {
 		columnTitles.clear();
-		LabelValueBean title = new LabelValueBean("Sample Name", "Sample");
+		LabelValueBean title = new LabelValueBean("Sample Name", "sampleName");
 		columnTitles.add(title);
 		
 		for (String colName : columnNamesFromQueries) {
@@ -75,6 +99,14 @@ public class SimpleAdvancedSearchResultView {
 	}
 	public void setErrors(List<String> errors) {
 		this.errors = errors;
+	}
+
+	public SimpleTableBean getResultTable() {
+		return resultTable;
+	}
+
+	public void setResultTable(SimpleTableBean resultTable) {
+		this.resultTable = resultTable;
 	}
 	
 	
