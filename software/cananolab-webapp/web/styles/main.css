@@ -1768,6 +1768,10 @@ ul.pagination li.disabled a,ul.pagination li.disabled a:hover{
     background-color: mediumspringgreen;
 }
 
+.ng-table th.sortable.sort-desc, .ng-table th.sortable.sort-asc {
+background-color:#0089BB !important;
+text-shadow: 0px 0px 0px !important;
+}
 
 
 
