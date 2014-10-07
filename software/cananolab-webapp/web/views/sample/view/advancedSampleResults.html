@@ -116,9 +116,9 @@
 				<a href="" ng-click="displaySample(row.sampleId)">{{row[colVal]}}</a>
 			</div>
 
-			<div ng-if="colVal=='pointOfContact'">
-				<div>
-					<span ng-bind-html="row[colVal]">Contact</span>
+			<div ng-if="colVal=='pointOfContact'" ng-init="poc=row[colVal]">
+				<div ng-repeat="p in poc track by $index" ng-init="pocList=p.split('|')">
+					<span ng-bind-html="pocList[0]">Entity</span><br /><br />
 				</div><br /><a href="" ng-click="showPocDetails(row.sampleId)">Details</a>
 			</div>
 			<div ng-if="colVal=='physicalChemicalChar'||colVal=='invivoChar'||colVal=='invitroChar'||colVal=='exvivoChar'">
