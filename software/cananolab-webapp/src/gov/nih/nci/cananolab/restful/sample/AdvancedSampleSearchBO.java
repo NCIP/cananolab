@@ -86,17 +86,13 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		int idx = 0;
 		for (AdvancedSampleBean sampleBean : sampleBeans) {
 
-			if (idx == 81) {
-				String n = "";
-				int i = idx;
-			}
 			String sampleId = sampleBean.getSampleId();
 			AdvancedSampleBean loadedAdvancedSample = service
 					.findAdvancedSampleByAdvancedSearch(sampleId,
 							searchBean);
 			loadedSampleBeans.add(loadedAdvancedSample);
 			
-			logger.debug("Processin #: " + idx++);
+			logger.debug("Processing sample #: " + idx++);
 
 		}
 		
