@@ -21,7 +21,7 @@
 	            Selected Criteria
 	        </th>
 	        <td style="text-align: right">
-	                <a href="/caNanoLab/#/advancedSampleSearch">Edit</a>
+	        		<button ng-click="goBack()">Edit</button>
 	        </td>
 	    </tr>
 	    <tr>
@@ -122,8 +122,8 @@
 			</div>
 
 			<div ng-if="colVal=='pointOfContact'">
-				<div ng-bind-html="row[colVal]">
-					Contact
+				<div>
+					<span ng-bind-html="row[colVal]">Contact</span>
 				</div><br /><a href="" ng-click="showPocDetails(row.sampleId)">Details</a>
 			</div>
 			<div ng-if="colVal=='physicalChemicalChar'||colVal=='invivoChar'||colVal=='invitroChar'||colVal=='exvivoChar'">
