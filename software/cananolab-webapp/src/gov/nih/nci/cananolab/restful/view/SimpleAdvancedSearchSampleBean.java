@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -140,27 +141,40 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			formattedDisplayables.add(formatted);
 		}
 		
+		try { //set data fields by reflection
+			PropertyUtils.setProperty(this.dataRow, type, formattedDisplayables);
+		} catch (NoSuchMethodException nse) {
+			logger.error("Got NoSuchMethodException while setting adv. search result data field: " + nse.getMessage());
+		} catch (Exception e) {
+			logger.error("Got exception while setting adv. search result data field: " + e.getMessage());
+		}
+		
+		
+		
 		String methodName = "set" + type.substring(0, 1).toUpperCase() + type.substring(1);
 		
-		//this.setProperty(this.dataRow, methodName, formattedDisplayables);
-		
-//		//map to the type value the html is using.
-		if (colName.contains("point of contact"))
-			this.dataRow.setPointOfContact(formattedDisplayables);
-		else if (colName.contains("nanomaterial entity"))
-			this.dataRow.setNanomaterialEntity(formattedDisplayables);
-		else if (colName.contains("functionalizing entity"))
-			this.dataRow.setFunctionalizaingEntity(formattedDisplayables);
-		else if (colName.equals("function"))
-			this.dataRow.setFunction(formattedDisplayables);
-		else if (colName.contains("physico")) 
-			this.dataRow.setPhysicalChemicalChar(formattedDisplayables);
-		else if (colName.contains("vivo"))
-			this.dataRow.setInvivoChar(formattedDisplayables);
-		else if (colName.contains("vitro"))
-			this.dataRow.setInvitroChar(formattedDisplayables);
-		else if (colName.contains("ex"))
-			this.dataRow.setExvivoChar(formattedDisplayables);
+//		//this.setProperty(this.dataRow, methodName, formattedDisplayables);
+//		
+////		//map to the type value the html is using.
+//		if (colName.contains("point of contact")) {
+//			//this.dataRow.setPointOfContact(formattedDisplayables);
+//			try {
+//			PropertyUtils.setProperty(this.dataRow, "pointOfContact", formattedDisplayables);
+//			} catch (Exception nse) {}
+//		} else if (colName.contains("nanomaterial entity"))
+//			this.dataRow.setNanomaterialEntity(formattedDisplayables);
+//		else if (colName.contains("functionalizing entity"))
+//			this.dataRow.setFunctionalizaingEntity(formattedDisplayables);
+//		else if (colName.equals("function"))
+//			this.dataRow.setFunction(formattedDisplayables);
+//		else if (colName.contains("physico")) 
+//			this.dataRow.setPhysicalChemicalChar(formattedDisplayables);
+//		else if (colName.contains("vivo"))
+//			this.dataRow.setInvivoChar(formattedDisplayables);
+//		else if (colName.contains("vitro"))
+//			this.dataRow.setInvitroChar(formattedDisplayables);
+//		else if (colName.contains("ex"))
+//			this.dataRow.setExvivoChar(formattedDisplayables);
 			
 //			
 //			
