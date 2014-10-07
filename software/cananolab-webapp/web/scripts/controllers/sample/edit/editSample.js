@@ -46,7 +46,9 @@ var app = angular.module('angularApp')
     $scope.editSampleForm = false;
 
 
-
+    if ($routeParams.isAdvancedSearch) {
+      $scope.isAdvancedSearch = 1;
+    }; 
 
     //goBack
     //Change location if user hits the Back button
@@ -61,7 +63,12 @@ var app = angular.module('angularApp')
             $location.search('fromMyWorkspace', null);
         }        
         else {
-            $location.path("/sampleResults").replace();
+        if ($scope.isAdvancedSearch) {
+          $location.path("/advancedSampleSearch").replace();           
+        }
+        else {
+          $location.path("/sampleResults").replace();           
+        }
             $location.search('sampleId', null);
         }
 
@@ -74,6 +81,7 @@ var app = angular.module('angularApp')
     } else {
         $scope.sampleId.data = null;
     }
+     
 
     $scope.returnUserReadableBoolean = function(val) {
         if (val== true) {

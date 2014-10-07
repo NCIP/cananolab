@@ -10,13 +10,22 @@ var app = angular.module('angularApp')
     // Displays left hand nav for samples section. navTree shows nav and navDetail is page index //
     $scope.sampleData = sampleService.sampleData;
 
+    if ($routeParams.isAdvancedSearch) {
+      $scope.isAdvancedSearch = 1;
+    };   
+
      $scope.goBack = function() {
-      $location.path("/sampleResults").replace();
+        if ($scope.isAdvancedSearch) {
+          $location.path("/advancedSampleSearch").replace();           
+        }
+        else {
+          $location.path("/sampleResults").replace();           
+        }
       $location.search('sampleId', null);      };
       
     if ($routeParams.sampleId) {
       $scope.sampleId.data = $routeParams.sampleId;
-    };
+    };   
     
     if ($routeParams.message) {
         $scope.message = $routeParams.message;

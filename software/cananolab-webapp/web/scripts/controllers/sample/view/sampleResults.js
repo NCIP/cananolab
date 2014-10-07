@@ -7,6 +7,7 @@ var app = angular.module('angularApp')
     $scope.sampleData2 = sampleService.sampleData;
     $scope.utilsService = utilsService;
     $scope.loggedInUser = groupService.getUserName();
+    $scope.searchType = sampleService.searchType.data;
     
     $scope.goBack = function() {
       $location.path("/searchSample").replace();      
