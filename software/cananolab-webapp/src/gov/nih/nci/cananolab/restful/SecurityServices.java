@@ -44,6 +44,8 @@ public class SecurityServices {
     		@DefaultValue("") @QueryParam("username") String username, 
     		@DefaultValue("") @QueryParam("password") String password) {
 		
+		logger.info("In login service");
+		
 		if (username.length() == 0 || password.length() == 0)
 			return Response.serverError().entity("User name or password can't be blank").build();
 		
