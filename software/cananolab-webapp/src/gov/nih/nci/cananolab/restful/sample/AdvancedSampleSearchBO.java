@@ -387,7 +387,6 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 			simpleBeans.add(simpleBean);
 		}
 		
-		
 		resultView.setSamples(simpleBeans);
 		resultView.transformToTableView();
 		return resultView;

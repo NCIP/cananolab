@@ -15,19 +15,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	private Logger logger = Logger.getLogger(SimpleAdvancedSearchSampleBean.class);
 
-	
+	@JsonIgnore
 	List<SimpleAdvancedResultCellBean> columns = new ArrayList<SimpleAdvancedResultCellBean>();
 	
-	List<Map<String, Object>> rowCells = new ArrayList<Map<String, Object>>();
-
-	Map<String, List<SimpleAdvancedResultCellUnitBean>> rowCellRefs = new HashMap<String, List<SimpleAdvancedResultCellUnitBean>>();
+//	List<Map<String, Object>> rowCells = new ArrayList<Map<String, Object>>();
+//
+//	Map<String, List<SimpleAdvancedResultCellUnitBean>> rowCellRefs = new HashMap<String, List<SimpleAdvancedResultCellUnitBean>>();
 	
+	@JsonIgnore
 	SimpleAdvancedResultRow dataRow = new SimpleAdvancedResultRow();
 	
 	
@@ -45,30 +46,24 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		if (sampleBean == null)
 			return;
 		
-		for (LabelValueBean col : colNames) {
-			Map<String, String> data = new HashMap<String, String>();
-			String colName = col.getLabel();
-			
-			if (colName.contains("Sample"))
-				data.put(colName, sampleBean.getDomainSample().getName());
-			
-			
-		}
+//		for (LabelValueBean col : colNames) {
+//			Map<String, String> data = new HashMap<String, String>();
+//			String colName = col.getLabel();
+//			
+//			if (colName.contains("Sample"))
+//				data.put(colName, sampleBean.getDomainSample().getName());
+//		}
 		
-		setSampleId(sampleBean.getDomainSample().getId());
-		setSampleName(sampleBean.getDomainSample().getName());
+//		setSampleId(sampleBean.getDomainSample().getId());
+//		setSampleName(sampleBean.getDomainSample().getName());
+//		
+//		List<String> sampleIdName = new ArrayList<String>();
+//		sampleIdName.add(this.sampleName);
+//		sampleIdName.add(String.valueOf(this.sampleId));
 		
-		List<String> sampleIdName = new ArrayList<String>();
-		sampleIdName.add(this.sampleName);
-		sampleIdName.add(String.valueOf(this.sampleId));
+		//this.columns.add(new SimpleAdvancedResultCellBean("Sample", sampleIdName));
 		
-		
-		
-		
-		
-		this.columns.add(new SimpleAdvancedResultCellBean("Sample", sampleIdName));
-		
-		List<String> columnNames = searchBean.getQueryAsColumnNames();
+		//List<String> columnNames = searchBean.getQueryAsColumnNames();
 		Map<String, List<LinkableItem>> dataMap = sampleBean.getAttributeMap();
 		
 //		for (String columnName : columnNames) {
@@ -82,14 +77,14 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			String colName = col.getLabel();
 			
 			if (colName.contains("Sample")) {
-				data.put(colName, sampleBean.getDomainSample().getName());
-				this.rowCells.add(data);
+				//data.put(colName, sampleBean.getDomainSample().getName());
+				//this.rowCells.add(data);
 				
 				this.dataRow.setSampleId(this.sampleId);
 				this.dataRow.setSampleName(this.sampleName);
 			} else {
 				List<LinkableItem> items = dataMap.get(colName);
-				populateColumnContent(colName, items, this.rowCells);
+				populateColumnContent(colName, items);
 			}
 			
 		}
@@ -117,21 +112,30 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		return "";
 	}
 	
-	protected void populateColumnContent(String colName, List<LinkableItem> items, List<Map<String, Object>> displayableData) {
+	protected void populateColumnContent(String colName, List<LinkableItem> items/*, List<Map<String, Object>> displayableData*/) {
 		
-		List<SimpleAdvancedResultCellUnitBean> units = transferFromLinkableItems(items, colName, displayableData);
+		List<SimpleAdvancedResultCellUnitBean> units = transferFromLinkableItems(items, colName);
 		
 		String type = getHtmlFieldType(colName);
-		this.columns.add(new SimpleAdvancedResultCellBean(type, units));
-		this.rowCellRefs.put(colName, units);
+		//this.columns.add(new SimpleAdvancedResultCellBean(type, units));
+		///this.rowCellRefs.put(colName, units);
 		
 		List<String> formattedDisplayables = new ArrayList<String>();
 		for (SimpleAdvancedResultCellUnitBean unit :units) {
 			String formatted = unit.getDisplayName() + "|" + unit.getDataId();
-			formattedDisplayables.add(unit.getDisplayName() + "|" + unit.getDataId());
+			//formattedDisplayables.add(unit.getDisplayName() + "|" + unit.getDataId());
 			
-			if (type.equals("function"))
-				formatted += "|" + unit.getRelatedEntityType();
+			if (unit.getDataId() == 10846280) {
+				String n = "stop and watch";
+			}
+			
+			if (type.equals("function")) {
+				String relatedType = unit.getRelatedEntityType();
+				if (relatedType != null && relatedType.length() > 0)
+					formatted += "|" + relatedType;
+				else
+					continue;
+			}
 			
 			formattedDisplayables.add(formatted);
 		}
@@ -206,9 +210,10 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	 * @return
 	 */
 	protected List<SimpleAdvancedResultCellUnitBean> transferFromLinkableItems(List<LinkableItem> items, 
-			String colName, List<Map<String, Object>> dataMap) {
+			String colName) {
+		
 		List<SimpleAdvancedResultCellUnitBean> units = new ArrayList<SimpleAdvancedResultCellUnitBean>();
-		List<String> displayables = new ArrayList<String>();
+		//List<String> displayables = new ArrayList<String>();
 		Map<String, Object> displayMap = new HashMap<String, Object>();
 		
 		for (LinkableItem item :items) {
@@ -228,7 +233,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			}
 			
 			unit.setDisplayName(names);
-			displayables.add(names);
+			//displayables.add(names);
 			
 			if (dataId != null) {
 				String [] relatedItems = dataId.split(":");
@@ -243,28 +248,28 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			
 		}
 		
-		displayMap.put(colName, displayables);
-		dataMap.add(displayMap);
+		//displayMap.put(colName, displayables);
+		//dataMap.add(displayMap);
 		
 		return units;
 	}
 
-	public List<Map<String, Object>> getRowCells() {
-		return rowCells;
-	}
-
-	public void setRowCells(List<Map<String, Object>> rowCells) {
-		this.rowCells = rowCells;
-	}
-
-	public Map<String, List<SimpleAdvancedResultCellUnitBean>> getRowCellRefs() {
-		return rowCellRefs;
-	}
-
-	public void setRowCellRefs(
-			Map<String, List<SimpleAdvancedResultCellUnitBean>> rowCellRefs) {
-		this.rowCellRefs = rowCellRefs;
-	}
+//	public List<Map<String, Object>> getRowCells() {
+//		return rowCells;
+//	}
+//
+//	public void setRowCells(List<Map<String, Object>> rowCells) {
+//		this.rowCells = rowCells;
+//	}
+//
+//	public Map<String, List<SimpleAdvancedResultCellUnitBean>> getRowCellRefs() {
+//		return rowCellRefs;
+//	}
+//
+//	public void setRowCellRefs(
+//			Map<String, List<SimpleAdvancedResultCellUnitBean>> rowCellRefs) {
+//		this.rowCellRefs = rowCellRefs;
+//	}
 
 	public SimpleAdvancedResultRow getDataRow() {
 		return dataRow;
