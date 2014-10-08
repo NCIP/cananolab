@@ -187,7 +187,7 @@ public class WorkspaceManager extends BaseAnnotationBO {
 //			num++;
 //			if (num > 10)
 //				break;
-			SampleBasicBean sampleBean = sampleService.findSampleBasicById(id, true);   //.findSampleById(id, true);
+			SampleBasicBean sampleBean = sampleService.findSampleBasicById(id, false);   //.findSampleById(id, true);
 			//SampleBean sampleBean = sampleService.findSampleById(id, true);
 			if (sampleBean == null) continue;
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();

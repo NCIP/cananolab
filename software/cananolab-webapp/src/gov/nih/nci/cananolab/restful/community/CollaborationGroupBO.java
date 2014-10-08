@@ -42,18 +42,17 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 	 * @return
 	 * @throws Exception
 	 */
-//	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
-//			HttpServletRequest request, HttpServletResponse response)
+//	public void setupNew(HttpServletRequest request)
 //			throws Exception {
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
 //		theForm.set("group", new CollaborationGroupBean());
 //		request.getSession().removeAttribute("openCollaborationGroup");
-//		setExistingGroups(request);
-//		saveToken(request);
+//		getExistingGroups(request);
+//		
 //		return mapping.findForward("setup");
 //	}
 
-	public List<SimpleCollaborationGroup> getExistingGroups(HttpServletRequest request) throws Exception {
+	public List<CollaborationGroupBean> getExistingGroups(HttpServletRequest request) throws Exception {
 		CommunityService service = setServiceInSession(request);
 		List<CollaborationGroupBean> existingCollaborationGroups = service
 				.findCollaborationGroups();
@@ -62,7 +61,7 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 		
 		List<SimpleCollaborationGroup> simpleGroups = transferToSimpleCollaborationGroups(existingCollaborationGroups);
 		
-		return simpleGroups;
+		return existingCollaborationGroups;
 	}
 	
 	protected List<SimpleCollaborationGroup> transferToSimpleCollaborationGroups(

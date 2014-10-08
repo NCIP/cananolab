@@ -14,6 +14,8 @@ import gov.nih.nci.security.authorization.domainobjects.User;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * This class represents properties of a user object to be shown in the view
  * page.
@@ -36,23 +38,28 @@ public class UserBean {
 	/**
 	 * The first name of the user
 	 */
+	@JsonIgnore
 	private String firstName;
 
 	/**
 	 * The last name of the user
 	 */
+	@JsonIgnore
 	private String lastName;
 
+	@JsonIgnore
 	private String fullName;
 
 	/**
 	 * The name of the organization that this user belongs to.
 	 */
+	@JsonIgnore
 	private String organization;
 
 	/**
 	 * The name of the department that this user belongs to.
 	 */
+	@JsonIgnore
 	private String department;
 
 	/**
@@ -63,22 +70,28 @@ public class UserBean {
 	/**
 	 * This is the work phone of the user.
 	 */
+	@JsonIgnore
 	private String phoneNumber;
 
 	/**
 	 * The password used to login into the application
 	 */
+	
+	@JsonIgnore
 	private String password;
 
 	/**
 	 * Email id for this user.
 	 */
+	
+	@JsonIgnore
 	private String emailId;
 
 	private boolean admin = false;
 
 	private boolean curator = false;
 
+	@JsonIgnore
 	private User domain;
 
 	private SortedSet<String> groupNames = new TreeSet<String>();

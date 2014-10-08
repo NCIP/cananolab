@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
-import gov.nih.nci.cananolab.restful.bean.SimpleCollaborationGroup;
+import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.restful.community.CollaborationGroupBO;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 
@@ -39,7 +39,7 @@ public class CommunityServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			List<SimpleCollaborationGroup> existingGroups = collGroupBO.getExistingGroups(httpRequest);
+			List<CollaborationGroupBean> existingGroups = collGroupBO.getExistingGroups(httpRequest);
 			
 			return Response.ok(existingGroups).header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
