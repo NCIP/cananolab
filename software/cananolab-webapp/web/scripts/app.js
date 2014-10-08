@@ -72,6 +72,14 @@ app.config(function ($routeProvider, $httpProvider) {
        templateUrl: 'views/manageSample.html',
        controller: 'ManageSampleCtrl'
       }) 
+      .when('/collaborationGroup', {
+       templateUrl: 'views/collaborationGroup.html',
+       controller: 'CollaborationGroupCtrl'
+      })       
+      .when('/manageCommunity', {
+       templateUrl: 'views/manageCommunity.html',
+       controller: 'ManageCommunityCtrl'
+      })       
       .when('/sample', {
        templateUrl: 'views/sample/view/viewSample.html',
        controller: 'IndSampleCtrl'
