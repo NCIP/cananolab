@@ -192,6 +192,10 @@
 		</property>
 	</bean>
 	
+	<bean id="collaborationGroupBO"
+		class="gov.nih.nci.cananolab.restful.community.CollaborationGroupBO">
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 
