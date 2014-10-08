@@ -106,7 +106,7 @@
                     'sort-desc': tableParams.isSortBy(column.value, 'desc')
                   }"
                 ng-click="tableParams.sorting(column.value, tableParams.isSortBy(column.value, 'asc') ? 'desc' : 'asc')">
-                <div>{{column.label}}</div>
+                <div ng-bind-html="column.label">{{column.label}}</div>
             </th>
         </tr>
 
