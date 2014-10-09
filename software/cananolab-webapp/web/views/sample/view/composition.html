@@ -7,7 +7,6 @@
           Sample {{sampleName.name}} Composition
         </th>
         <td align="right" width="30%">
-        <button class="btn back btn-xs" ng-click="goBack()">Back</button>
         <a ng-disabled="loader" class="helpText" ng-click="print()" href="" target="_blank">Print</a>   
         <!-- <a class="helpText" ng-href="views/sample/composition/printComposition.html?sampleId={{sampleId.data}}" target="_blank">Print</a> -->
         <a ng-disabled="loader" class="helpText" ng-href="/caNanoLab/rest/composition/summaryExport?sampleId={{sampleId.data}}&type=all">Export</a>
