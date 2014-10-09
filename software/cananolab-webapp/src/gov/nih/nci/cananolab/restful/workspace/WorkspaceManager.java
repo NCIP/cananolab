@@ -71,6 +71,30 @@ public class WorkspaceManager {
 
 		return simpleWorkspace;
 	}
+	
+	public SimpleWorkspaceBean getWorkspaceItems(HttpServletRequest request, String type)
+			throws Exception {
+
+		logger.info("In getWorkspaceItems with type: " + type);
+
+		SecurityService securityService = getSecurityService(request);
+		UserBean user = (UserBean)request.getSession().getAttribute("user");
+		SimpleWorkspaceBean simpleWorkspace = new SimpleWorkspaceBean();
+
+		List<SimpleWorkspaceItem> items = null;
+		if (type.equals("sample")) {
+			items =  getSampleItems(request, securityService, user);
+			simpleWorkspace.setSamples(items);
+		} else if (type.equals("protocol")) {
+			items = getProtocolItems(request, securityService, user);
+			simpleWorkspace.setProtocols(items);
+		} else if (type.equals("publication")) {
+			items = getPublicationItems(request, securityService, user);
+			simpleWorkspace.setPublications(items);
+		}
+		
+		return simpleWorkspace;
+	}
 
 	protected List<SimpleWorkspaceItem> getPublicationItems(HttpServletRequest request,
 			SecurityService securityService, UserBean user)
