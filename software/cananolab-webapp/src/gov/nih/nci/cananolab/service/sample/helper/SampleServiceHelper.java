@@ -699,6 +699,27 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		}
 		return sample;
 	}
+	
+	public Sample findSampleBasicById(String sampleId) throws Exception {
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+			throw new NoAccessException("User has no access to the sample "
+					+ sampleId);
+		}
+		Sample sample = null;
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+	
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+	
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+		}
+		return sample;
+	}
 
 	public int getNumberOfPublicSamples() throws Exception {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider

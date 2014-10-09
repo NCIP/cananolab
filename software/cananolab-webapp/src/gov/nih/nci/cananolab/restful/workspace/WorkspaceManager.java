@@ -20,7 +20,7 @@ import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBasicBean;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceBean;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceItem;
 import gov.nih.nci.cananolab.service.curation.CurationService;
@@ -178,7 +178,7 @@ public class WorkspaceManager {
 			return items;
 
 		for (String id : sampleIds) {
-			SampleBean sampleBean = sampleService.findSampleById(id, false);
+			SampleBasicBean sampleBean = sampleService.findSampleBasicById(id, false);
 			if (sampleBean == null) continue;
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
 

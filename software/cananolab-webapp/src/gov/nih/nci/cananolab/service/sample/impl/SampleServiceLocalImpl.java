@@ -30,6 +30,7 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBasicBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
@@ -328,6 +329,28 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		return sampleBean;
 	}
+	
+	public SampleBasicBean findSampleBasicById(String sampleId, Boolean loadAccessInfo)
+			throws SampleException, NoAccessException {
+		SampleBasicBean sampleBean = null;
+		try {
+			Sample sample = helper.findSampleBasicById(sampleId);
+			if (sample != null) {
+				if (loadAccessInfo) {
+					sampleBean = loadSampleBasicBean(sample);
+				} else {
+					sampleBean = new SampleBasicBean(sample);
+				}
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Problem finding the sample by id: " + sampleId;
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+		return sampleBean;
+	}
 
 	private Sample findFullyLoadedSampleByName(String sampleName)
 			throws Exception {
@@ -482,8 +505,37 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return chars;
 	}
 
+	
 	private SampleBean loadSampleBean(Sample sample) throws Exception {
 		SampleBean sampleBean = new SampleBean(sample);
+		if (user != null) {
+			List<AccessibilityBean> groupAccesses = super
+					.findGroupAccessibilities(sample.getId().toString());
+			List<AccessibilityBean> userAccesses = super
+					.findUserAccessibilities(sample.getId().toString());
+			sampleBean.setUserAccesses(userAccesses);
+			sampleBean.setGroupAccesses(groupAccesses);
+			sampleBean.setUser(user);
+		}
+		return sampleBean;
+	}
+	
+	public void loadAccessesForBasicSampleBean(SampleBasicBean sampleBean) throws Exception {
+		Sample sample = sampleBean.getDomain();
+		if (user != null) {
+			List<AccessibilityBean> groupAccesses = super
+					.findGroupAccessibilities(sample.getId().toString());
+			List<AccessibilityBean> userAccesses = super
+					.findUserAccessibilities(sample.getId().toString());
+			sampleBean.setUserAccesses(userAccesses);
+			sampleBean.setGroupAccesses(groupAccesses);
+			sampleBean.setUser(user);
+		}
+		
+	}
+	
+	private SampleBasicBean loadSampleBasicBean(Sample sample) throws Exception {
+		SampleBasicBean sampleBean = new SampleBasicBean(sample);
 		if (user != null) {
 			List<AccessibilityBean> groupAccesses = super
 					.findGroupAccessibilities(sample.getId().toString());
