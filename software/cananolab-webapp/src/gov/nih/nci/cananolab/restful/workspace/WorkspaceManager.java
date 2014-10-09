@@ -178,13 +178,15 @@ public class WorkspaceManager {
 			return items;
 
 		for (String id : sampleIds) {
-			SampleBean sampleBean = sampleService.findSampleById(id, true);
+			SampleBean sampleBean = sampleService.findSampleById(id, false);
 			if (sampleBean == null) continue;
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
 
 			item.setName(sampleBean.getDomain().getName());
 			item.setId(sampleBean.getDomain().getId());
 			item.setCreatedDate(sampleBean.getDomain().getCreatedDate());
+			
+			//sampleService.loadAccessesForBasicSampleBean(sampleBean);
 
 			setCommonDataFields(id, item, sampleBean, securityService, user);
 
@@ -292,11 +294,11 @@ public class WorkspaceManager {
 			logger.debug("Exception while finding data review status due to curator role restriction. Ignore for now");
 		}
 
-		List<AccessibilityBean> groupAccesses = dataBean.getGroupAccesses();
-		List<AccessibilityBean> userAccesses = dataBean.getUserAccesses();
-
-		String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), dataBean.getUserIsOwner());
-		item.setAccess(access);
+//		List<AccessibilityBean> groupAccesses = dataBean.getGroupAccesses();
+//		List<AccessibilityBean> userAccesses = dataBean.getUserAccesses();
+//
+//		String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), dataBean.getUserIsOwner());
+//		item.setAccess(access);
 	}
 
 	private SampleService getSampleServiceInSession(HttpServletRequest request, SecurityService securityService) {
