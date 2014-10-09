@@ -15,7 +15,13 @@
 
 <table class="submissionView" width="100%" align="center">
 	<tr>
-		<td>test</td>
+		<td>
+	<div ng-repeat="item in data">{{item}}
+		<div ng-repeat="user in item.userAccesses">
+			{{user}}<br /><br /><br />
+		</div>
+	</div>
+		</td>
 	</tr>
 </table>
 
