@@ -9,11 +9,11 @@ var app = angular.module('angularApp')
       $scope.dirtyForm = [];
       if ($scope.id) {
           if (!parseInt($scope.id)) {
-            $scope.dirtyForm.push("SampleId must be a number");
+            $scope.dirtyForm.push("ID must be a number");
           };
       }
       else {
-            $scope.dirtyForm.push("SampleId cannot be blank");
+            $scope.dirtyForm.push("ID cannot be blank");
       };
 
       if ($scope.dirtyForm.length==0) {
