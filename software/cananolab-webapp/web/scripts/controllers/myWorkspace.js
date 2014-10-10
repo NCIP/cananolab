@@ -6,7 +6,7 @@ var app = angular.module('angularApp')
 
         $scope.$on('$viewContentLoaded', function(){
             $scope.loader = true;
-            $http({method: 'GET', url: '/caNanoLab/rest/core/getWorkspaceItems'}).
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getAllWorkspaceItems'}).
                 success(function(data, status, headers, config) {
                     $scope.data = data;
                     $scope.samples = $scope.data.samples;
