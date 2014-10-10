@@ -64,7 +64,7 @@ var app = angular.module('angularApp')
         }        
         else {
         if ($scope.isAdvancedSearch) {
-          $location.path("/advancedSampleSearch").replace();           
+          $location.path("/advancedSampleResults").replace();           
         }
         else {
           $location.path("/sampleResults").replace();           

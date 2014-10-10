@@ -3,7 +3,7 @@
 
     <table border="0" class="contentTitle" summary="layout" width="100%">
       <tr>
-        <th align="left" scope="col"><!-- {{sampleData}}
+        <th align="left" scope="col"><!-- {{data}}
  -->          Sample {{sampleName.name}}
         </th>
         <td align="right" width="30%">
@@ -32,14 +32,14 @@
              Sample Name
            </th>
            <td>
-             {{sampleData.sampleName}}
+             {{data.sampleName}}
            </td>
          </tr>
          <tr>
            <th valign="top" class="cellLabel" scope="row" width="20%">
              Created Date
            </th>
-           <td>{{sampleData.createdDate | date:'shortDate'}}
+           <td>{{data.createdDate | date:'shortDate'}}
 
            </td>
          </tr>
@@ -48,7 +48,7 @@
              Keywords
            </th>
            <td>
-             <div ng-bind-html="sampleData.keywords" />
+             <div ng-bind-html="data.keywords" />
            </td>
          </tr>
          <tr>
@@ -71,21 +71,21 @@
                    Role
                  </th>
                </tr>
-               <tr ng-repeat="contact in sampleData.pointOfContactMap.contactPerson track by $index">
-                <td>{{returnUserReadableBoolean(sampleData.pointOfContactMap.primaryContact[$index])}}</td>
-                <td ng-bind-html="sampleData.pointOfContactMap.contactPerson[$index]"></td>
-                <td ng-bind-html="sampleData.pointOfContactMap.organizationDisplayName[$index]"></td>
-                <td>{{sampleData.pointOfContactMap.role[$index]}}</td>
+               <tr ng-repeat="contact in data.pointOfContactMap.contactPerson track by $index">
+                <td>{{returnUserReadableBoolean(data.pointOfContactMap.primaryContact[$index])}}</td>
+                <td ng-bind-html="data.pointOfContactMap.contactPerson[$index]"></td>
+                <td ng-bind-html="data.pointOfContactMap.organizationDisplayName[$index]"></td>
+                <td>{{data.pointOfContactMap.role[$index]}}</td>
                </tr>
                <tr>
                  <td>
-                   {{sampleData.otherPOCBeans.personDisplayName}}
+                   {{data.otherPOCBeans.personDisplayName}}
                  </td>
                  <td>
-                   {{sampleData.otherPOCBeans.organizationDisplayName}}
+                   {{data.otherPOCBeans.organizationDisplayName}}
                  </td>
                  <td>
-                   {{sampleData.otherPOCBeans.domain.role}}
+                   {{data.otherPOCBeans.domain.role}}
                  </td>
                </tr>
              </table>
