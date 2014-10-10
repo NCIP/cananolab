@@ -66,6 +66,9 @@ var app = angular.module('angularApp')
         if ($scope.isAdvancedSearch) {
           $location.path("/advancedSampleResults").replace();           
         }
+        if ($routeParams.fromFavorites=='true') {
+          $location.path("/myFavorites").replace();           
+        }        
         else {
           $location.path("/sampleResults").replace();           
         }
