@@ -21,6 +21,12 @@ var app = angular.module('angularApp', [
 
 app.config(function ($routeProvider, $httpProvider) {
   $httpProvider.defaults.useXDomain = true;  
+  $httpProvider.defaults.cache = false;  
+    if (!$httpProvider.defaults.headers.get) {
+      $httpProvider.defaults.headers.get = {};
+    };
+    // disable IE ajax request caching
+    $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -37,11 +43,19 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/searchSample', {
         templateUrl: 'views/sample/view/sampleSearch.html',
         controller: 'SampleSearchCtrl'
-      })   
+      }) 
+      .when('/advancedSampleSearch', {
+        templateUrl: 'views/sample/view/advancedSampleSearch.html',
+        controller: 'AdvancedSampleSearchCtrl'
+      })         
       .when('/sampleResults', {
         templateUrl: 'views/sample/view/sampleResults.html',
         controller: 'SampleResultsCtrl'
-      })                  
+      })     
+      .when('/advancedSampleResults', {
+        templateUrl: 'views/sample/view/advancedSampleResults.html',
+        controller: 'AdvancedSampleResultsCtrl'
+      })                        
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
@@ -58,6 +72,14 @@ app.config(function ($routeProvider, $httpProvider) {
        templateUrl: 'views/manageSample.html',
        controller: 'ManageSampleCtrl'
       }) 
+      .when('/collaborationGroup', {
+       templateUrl: 'views/collaborationGroup.html',
+       controller: 'CollaborationGroupCtrl'
+      })       
+      .when('/manageCommunity', {
+       templateUrl: 'views/manageCommunity.html',
+       controller: 'ManageCommunityCtrl'
+      })       
       .when('/sample', {
        templateUrl: 'views/sample/view/viewSample.html',
        controller: 'IndSampleCtrl'
@@ -194,6 +216,10 @@ app.config(function ($routeProvider, $httpProvider) {
         .when('/editCompositionFile', {
             templateUrl: 'views/sample/composition/editCompositionFile.html',
             controller: 'EditCompositionFileCtrl'
+        })  
+        .when('/myFavorites', {
+            templateUrl: 'views/myFavorites.html',
+            controller: 'MyFavoritesCtrl'
         })        
       .otherwise({
         redirectTo: '/'
