@@ -182,7 +182,7 @@ public class WorkspaceManager {
 			return items;
 
 		for (String id : sampleIds) {
-			SampleBasicBean sampleBean = sampleService.findSampleBasicById(id, false);
+			SampleBasicBean sampleBean = sampleService.findSampleBasicById(id, true);
 			if (sampleBean == null) continue;
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
 
@@ -190,7 +190,7 @@ public class WorkspaceManager {
 			item.setId(sampleBean.getDomain().getId());
 			item.setCreatedDate(sampleBean.getDomain().getCreatedDate());
 			
-			sampleService.loadAccessesForBasicSampleBean(sampleBean);
+			//sampleService.loadAccessesForBasicSampleBean(sampleBean);
 
 			setCommonDataFields(id, item, sampleBean, securityService, user);
 
