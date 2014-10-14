@@ -7,18 +7,18 @@
         <th scope="col" align="left" ng-if="(sampleId==null || sampleId=='') && publicationId==null">
             Submit Publication
         </th>
-
+        
         <th scope="col" align="left" ng-if="(sampleId==null || sampleId=='') && publicationId!=null">
             Update Publication
         </th>
-
+        
         <th scope="col" align="left" ng-if="sampleId!=null && sampleId != '' && publicationId!=null">
             Update Publication for Sample {{sampleName}}
-        </th>
-
+        </th>    
+        
         <th scope="col" align="left" ng-if="sampleId!=null && sampleId != '' && publicationId==null">
             Submit Publication for {{sampleName}}
-        </th>
+        </th>    
 
         <td align="right" width="30%">
             <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SubmittingaPublication')">Help</a>
@@ -388,9 +388,7 @@
                             <em>one name per line</em>
                         </td>
                         <td width="5">
-                            <a href ng-click="showSearchSampleTable=true;searchMatchedSamples();"><img
-                                    ng-src="images/icon_browse.jpg" align="middle"
-                                    alt="search existing samples" border="0" /></a>
+                            <button ng-click="showSearchSampleTable=true;searchMatchedSamples();">Search For Samples</button>
                         </td>
                         <td>
                             <table class="invisibleTable" summary="layout" ng-show="showSearchSampleTable">
@@ -443,7 +441,7 @@
 </div>
 <br>
 <table width="100%" align="center" class="submissionView" summary="layout" id="accessBlock">
-<!--
+<!-- 
         <c:set var="groupAccesses"
                value="${publicationForm.map.publication.groupAccesses}" />
         <c:set var="userAccesses"
