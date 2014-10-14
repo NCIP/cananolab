@@ -94,7 +94,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		if (sampleBean == null) {
 			throw new NotExistException("No such sample in the system");
 		}
-		request.setAttribute("theSample", sampleBean);
+		//request.setAttribute("theSample", sampleBean);
 
 		return sampleBean;
 	}

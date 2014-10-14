@@ -295,6 +295,7 @@ public class SampleBO extends BaseAnnotationBO {
 			return sampleEdit;
 		}
 		
+		logger.debug("====== Finding data availability");
 		Set<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
 						.toString(), securityService);
@@ -316,8 +317,6 @@ public class SampleBO extends BaseAnnotationBO {
 		}
 
 		sampleEdit.transferSampleBeanData(request, this.getCurationService(), sampleBean, availableEntityNames);
-		
-		request.getSession().setAttribute("updateSample", "true");
 		
 		//need to save sampleBean in session for other edit feature.
 		//new in rest implement
@@ -498,6 +497,7 @@ public class SampleBO extends BaseAnnotationBO {
 			SimplePointOfContactBean simplePOC, HttpServletRequest request) 
 			throws Exception {
 
+		logger.debug("========== Start saving POC");
 		List<String> errors = validatePointOfContactInput(simplePOC);
 		if (errors.size() > 0) {
 			return wrapErrorsInEditBean(errors, "POC");
@@ -527,6 +527,7 @@ public class SampleBO extends BaseAnnotationBO {
 				return this.wrapErrorInEditBean("Current sample id doesn't match sample id in session");
 		}
 		
+		logger.debug("========== Resolving Input");
 		PointOfContactBean thePOC = resolveThePOCToSaveFromInput(sample, simplePOC, user.getLoginName());
 		Long oldPOCId = thePOC.getDomain().getId();
 		determinePrimaryPOC(thePOC, sample, newSample);
@@ -538,6 +539,8 @@ public class SampleBO extends BaseAnnotationBO {
 		// saved in the same session
 		service.savePointOfContact(thePOC);
 		sample.addPointOfContact(thePOC, oldPOCId);
+		
+		logger.debug("========== Done saving POC");
 
 		// if the oldPOCId is different from the one after POC save
 		if (oldPOCId != null && !oldPOCId.equals(thePOC.getDomain().getId())) {
@@ -578,6 +581,8 @@ public class SampleBO extends BaseAnnotationBO {
 			return simpleSampleBean;
 		}
 		
+		logger.debug("========== Done saving POC Sample");
+		
 		//if (newSample != null && newSampleName.length() > 0)
 		if (newSample)
 			this.setAccesses(request, sample); //this will assign default curator access to this sample.
@@ -585,7 +590,7 @@ public class SampleBO extends BaseAnnotationBO {
 		//TODO: check on this
 		InitSampleSetup.getInstance().persistPOCDropdowns(request, sample);
 		// return forward;
-		
+		logger.debug("========== Populating UpdateSample data");
 		return summaryEdit(sample.getDomain().getId().toString(), request);
 	}
 	

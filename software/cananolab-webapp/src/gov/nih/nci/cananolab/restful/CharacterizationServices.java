@@ -487,13 +487,16 @@ public class CharacterizationServices {
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 						.entity(errors).build();
 			}
+			return Response.ok(summaryView.getMessages()).header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
-			List<SimpleCharacterizationsByTypeBean> finalBeans = summaryView.getCharByTypeBeans();
-			logger.debug("Save characterization successful.");
-
-			return Response.ok(finalBeans).header("Access-Control-Allow-Credentials", "true")
-						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+//			List<SimpleCharacterizationsByTypeBean> finalBeans = summaryView.getCharByTypeBeans();
+//			logger.debug("Save characterization successful.");
+//
+//			return Response.ok(finalBeans).header("Access-Control-Allow-Credentials", "true")
+//						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+//						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();

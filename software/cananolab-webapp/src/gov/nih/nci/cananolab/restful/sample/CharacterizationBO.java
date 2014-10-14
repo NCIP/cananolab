@@ -107,7 +107,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		InitCharacterizationSetup.getInstance() //save "others" to db
 			.persistCharacterizationDropdowns(request, charBean);
 		
-		return summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request, null);
+		SimpleCharacterizationSummaryEditBean success = new SimpleCharacterizationSummaryEditBean();
+		success.getMessages().add("The characterization has been saved successfully");
+		return success;
 	}
 
 //	public ActionForward input(ActionMapping mapping, ActionForm form,
@@ -414,7 +416,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		//String sampleId = form.getSampleId();  //.getString(SampleConstants.SAMPLE_ID);
 		CharacterizationService service = this.setServicesInSession(request);
 		
-		SampleBean sampleBean = setupSampleById(sampleId, request);
+		//SampleBean sampleBean = setupSampleById(sampleId, request);
 		
 		List<CharacterizationBean> charBeans = service
 				.findCharacterizationsBySampleId(sampleId);
@@ -425,7 +427,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				summaryView);
 
 		// Save sample bean in session for sample name in export/print.
-		request.getSession().setAttribute("theSample", sampleBean);
+		//request.getSession().setAttribute("theSample", sampleBean);
 		
 		return summaryView;
 	}
