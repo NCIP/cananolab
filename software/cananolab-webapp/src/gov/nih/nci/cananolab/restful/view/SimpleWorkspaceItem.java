@@ -16,7 +16,7 @@ public class SimpleWorkspaceItem {
 	String externalURL; //for protocol
 	
 	String comments;
-	String pubMedId;
+	String pubMedDOIId;
 	String access;
 
 	List<String> actions = new ArrayList<String>();
@@ -86,12 +86,12 @@ public class SimpleWorkspaceItem {
 		this.comments = comments;
 	}
 
-	public String getPubMedId() {
-		return pubMedId;
+	public String getPubMedDOIId() {
+		return pubMedDOIId;
 	}
 
-	public void setPubMedId(String pubMedId) {
-		this.pubMedId = pubMedId;
+	public void setPubMedDOIId(String pubMedDOIId) {
+		this.pubMedDOIId = pubMedDOIId;
 	}
 
 	public String getAccess() {

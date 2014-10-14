@@ -115,8 +115,12 @@ public class WorkspaceManager {
 			item.setId(pubBean.getDomainFile().getId());
 			item.setCreatedDate(pubBean.getDomainFile().getCreatedDate());
 			Publication pub = (Publication) pubBean.getDomainFile();
-			if(pub.getPubMedId()!=null)
-				item.setPubMedId(pub.getPubMedId().toString());
+			
+			
+			String pubId = (pub.getPubMedId() != null) ? pub.getPubMedId().toString() : "";
+			pubId = (pub.getDigitalObjectId()!=null) ? pubId + "<br>" + pub.getDigitalObjectId().toString() : pubId;
+			item.setPubMedDOIId(pubId);
+			
 			setCommonDataFields(id, item, pubBean, securityService, user);
 
 			items.add(item);
@@ -186,7 +190,7 @@ public class WorkspaceManager {
 			item.setId(sampleBean.getDomain().getId());
 			item.setCreatedDate(sampleBean.getDomain().getCreatedDate());
 			
-			//sampleService.loadAccessesForBasicSampleBean(sampleBean);
+			sampleService.loadAccessesForBasicSampleBean(sampleBean);
 
 			setCommonDataFields(id, item, sampleBean, securityService, user);
 
@@ -264,7 +268,7 @@ public class WorkspaceManager {
 
 			item.setAccess("Read Write Delete (Owner)");
 			item.setEditable(false);
-			item.setPubMedId("1868677" + i);
+			//item.setPubMedId("1868677" + i);
 
 			items.add(item);
 		}
@@ -294,11 +298,11 @@ public class WorkspaceManager {
 			logger.debug("Exception while finding data review status due to curator role restriction. Ignore for now");
 		}
 
-//		List<AccessibilityBean> groupAccesses = dataBean.getGroupAccesses();
-//		List<AccessibilityBean> userAccesses = dataBean.getUserAccesses();
-//
-//		String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), dataBean.getUserIsOwner());
-//		item.setAccess(access);
+		List<AccessibilityBean> groupAccesses = dataBean.getGroupAccesses();
+		List<AccessibilityBean> userAccesses = dataBean.getUserAccesses();
+
+		String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), dataBean.getUserIsOwner());
+		item.setAccess(access);
 	}
 
 	private SampleService getSampleServiceInSession(HttpServletRequest request, SecurityService securityService) {
