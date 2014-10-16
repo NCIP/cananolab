@@ -64,6 +64,11 @@ L-->
 			<version>1.4.0</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.8</version>
+		</dependency>
 		
 		<!--  
 		<dependency>
