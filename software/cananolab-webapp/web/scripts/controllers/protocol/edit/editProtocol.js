@@ -19,31 +19,33 @@ var app = angular.module('angularApp')
         $scope.externalUrlEnabled  = false; 
         
         // Access variables
-        $scope.protocolForm.theAccess = {};
-        $scope.accessForm = {};
-        $scope.dataType = 'Protocol';
-        $scope.parentFormName = 'protocolForm';
-        $scope.accessForm.theAcccess = {};
-        $scope.accessForm.theAcccess.userBean = {};
-        $scope.isCurator = groupService.isCurator();
-        $scope.groupAccesses = [];
-        $scope.userAccesses = [];
-        $scope.addAccess = false;
-        $scope.showAddAccessButton = true;
-        $scope.showCollaborationGroup = true;
-        $scope.showAccessuser = false;
-        $scope.showAccessSelection = false;
-        $scope.accessForm.theAccess = {};
-        $scope.accessForm.theAccess.groupName = '';
-        $scope.accessForm.theAccess.userBean = {};
-        $scope.accessForm.theAccess.userBean.loginName = '';
-        $scope.access = {};
-        $scope.access.groupName = '';
-        $scope.access.loginName = '';
-        $scope.protocolForm.isPublic = false;
-        $scope.accessForm.theAccess.accessBy = 'group';
-        $scope.accessExists = false;
-
+        $scope.defineAccessVariables = function() {
+            $scope.protocolForm.theAccess = {};
+            $scope.accessForm = {};
+            $scope.dataType = 'Protocol';
+            $scope.parentFormName = 'protocolForm';
+            $scope.accessForm.theAcccess = {};
+            $scope.accessForm.theAcccess.userBean = {};
+            $scope.isCurator = groupService.isCurator();
+            $scope.groupAccesses = [];
+            $scope.userAccesses = [];
+            $scope.addAccess = false;
+            $scope.showAddAccessButton = true;
+            $scope.showCollaborationGroup = true;
+            $scope.showAccessuser = false;
+            $scope.showAccessSelection = false;
+            $scope.accessForm.theAccess = {};
+            $scope.accessForm.theAccess.groupName = '';
+            $scope.accessForm.theAccess.userBean = {};
+            $scope.accessForm.theAccess.userBean.loginName = '';
+            $scope.access = {};
+            $scope.access.groupName = '';
+            $scope.access.loginName = '';
+            $scope.protocolForm.isPublic = false;
+            $scope.accessForm.theAccess.accessBy = 'group';
+            $scope.accessExists = false;
+        };
+        $scope.defineAccessVariables();
         /* File Variables */
         $scope.usingFlash = FileAPI && FileAPI.upload != null;
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
@@ -181,6 +183,7 @@ var app = angular.module('angularApp')
 
         $scope.resetForm = function() {
             $scope.protocolForm = {};
+            $scope.defineAccessVariables();
         };
         
         $scope.fillProtocolInfo = function() {
