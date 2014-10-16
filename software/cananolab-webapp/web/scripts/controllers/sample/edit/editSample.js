@@ -63,9 +63,12 @@ var app = angular.module('angularApp')
             $location.search('fromMyWorkspace', null);
         }        
         else {
-        if ($scope.isAdvancedSearch) {
-          $location.path("/advancedSampleSearch").replace();           
+        if ($routeParams.fromFavorites=='true') {
+          $location.path("/myFavorites").replace();           
         }
+        if ($scope.isAdvancedSearch) {
+          $location.path("/advancedSampleResults").replace();           
+        }        
         else {
           $location.path("/sampleResults").replace();           
         }
