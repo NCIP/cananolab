@@ -94,7 +94,7 @@ var app = angular.module('angularApp')
     }
 
     // if sampleid exists do initial loading of rest data for sample, else this is new sample //
-
+    
     if ($scope.sampleId.data != null) {
         $scope.updateButton = "Update";
         $scope.loader = true;
@@ -229,7 +229,11 @@ var app = angular.module('angularApp')
     };    
 
     $scope.reset = function() {
+         var orgs = $scope.sampleData.organizationNamesForUser;
+         var roles = $scope.sampleData.contactRoles;
          $scope.sampleData = angular.copy($scope.master);
+         $scope.sampleData.organizationNamesForUser = orgs;
+         $scope.sampleData.contactRoles = roles;
     };
 
     $scope.submitSample = function() {
