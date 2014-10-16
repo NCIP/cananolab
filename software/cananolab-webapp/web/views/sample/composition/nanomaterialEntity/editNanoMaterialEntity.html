@@ -87,28 +87,30 @@
             <ng-include src="'/caNanoLab/views/sample/composition/manageFileEdit.html'"></ng-include>
             <br />
 
-            <table width="100%" align="center" class="submissionView">
+            <table class="submissionView" width="100%">
                 <tbody>
-                <tr ng-if="otherSampleNames != null">
-                    <td width="5%">
-                        <strong><label for="otherSamples">Copy to other samples with the same primary organization?</label></strong>
-                    </td>
+                <tr ng-hide="otherSampleNames == null">
                     <td width="20%">
+                          <strong><label for="otherSamples">Copy to other samples with the same primary organization?</label></strong>
+                    </td>
+                    <td width="80%">
                         <select id="otherSamples" ng-model="localForm.otherSampleNames" multiple="true" size="10">
                             <option ng-repeat="option in otherSampleNames" value="{{option}}" ng-selected="{{option == localForm.otherSampleNames}}">
                                 {{option}}
                             </option>
-                        </select>
+                        </select>                        
                     </td>
                 </tr>
-
-                <tr ng-if="otherSampleNames == null">
-                    <td colspan="3">
+                <tr ng-show="otherSampleNames == null">
+                    <td >
                         There are no other samples to copy annotation to.
                     </td>
-                </tr>
+                </tr>                
                 </tbody>
             </table>
+
+
+
             <br />
             <table width="100%" class="invisibleTable" summary="layout">
                 <tbody><tr>
