@@ -64,6 +64,13 @@ L-->
 			<version>1.4.0</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.8</version>
+		</dependency>
+		
+		
 		
 		<!--  
 		<dependency>
@@ -158,11 +165,11 @@ L-->
        
           
         <dependency>
-    		<groupId>org.glassfish.jersey.media</groupId>
-    		<artifactId>jersey-media-json-jackson</artifactId>
-    		<version>2.6</version>
-    
-		</dependency>
+	<groupId>org.glassfish.jersey.media</groupId>
+	<artifactId>jersey-media-json-jackson</artifactId>
+	<version>2.6</version>
+</dependency>
+
 		
 		<dependency>
   <groupId>org.glassfish.jersey.media</groupId>
@@ -220,7 +227,7 @@ L-->
    				</exclusion>
      		</exclusions>
 		</dependency>
- 
+   
 		<dependency>
  		 	<groupId>org.springframework</groupId>
   			<artifactId>spring-struts</artifactId>
