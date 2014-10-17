@@ -135,7 +135,7 @@ var app = angular.module('angularApp')
                 success(function(data, status, headers, config) {
                     if (data == "success") {
                         //$location.search('message', 'Nanomaterial Entity successfully saved "').path('/message').replace();
-                        $location.search('message', 'FunctionalizingEntity Entity successfully saved.').path('/editComposition').replace();
+                        $location.search('message', 'Functionalizing Entity successfully saved.').path('/editComposition').replace();
                     }
                     else {
                         $scope.loader = false;
