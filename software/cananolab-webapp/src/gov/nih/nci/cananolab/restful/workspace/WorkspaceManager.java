@@ -190,8 +190,6 @@ public class WorkspaceManager {
 			item.setId(sampleBean.getDomain().getId());
 			item.setCreatedDate(sampleBean.getDomain().getCreatedDate());
 			
-			//sampleService.loadAccessesForBasicSampleBean(sampleBean);
-
 			setCommonDataFields(id, item, sampleBean, securityService, user);
 
 			items.add(item);
@@ -217,7 +215,6 @@ public class WorkspaceManager {
 				UserBean ubean = access.getUserBean();
 				if (!loginUser.equals(ubean.getLoginName()))
 					sb.append(ubean.getLoginName()).append(", ");
-					//sb.append(ubean.getFirstName()).append(" ").append(ubean.getLastName()).append(", ");
 			}
 		}
 
