@@ -189,7 +189,13 @@ public class InitSetup {
 	public SortedSet<String> getDefaultTypesByReflection(
 			ServletContext appContext, String contextAttribute,
 			String fullParentClassName) throws Exception {
-		SortedSet<String> types = new TreeSet<String>();
+		
+		SortedSet<String> types = (SortedSet<String>) appContext.getAttribute(contextAttribute);
+		
+		if (types != null)
+			return types;
+			
+		types = new TreeSet<String>();
 		List<String> classNames = ClassUtils
 				.getChildClassNames(fullParentClassName);
 		for (String name : classNames) {

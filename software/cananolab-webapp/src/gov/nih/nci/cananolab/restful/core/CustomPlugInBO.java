@@ -8,19 +8,19 @@
 
 package gov.nih.nci.cananolab.restful.core;
 
+import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
+import gov.nih.nci.cananolab.util.SampleConstants;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import gov.nih.nci.cananolab.restful.core.InitSetup;
-import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
-import gov.nih.nci.cananolab.util.SampleConstants;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
+import org.springframework.web.context.ServletContextAware;
 
 
 /**
@@ -30,12 +30,18 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-public class CustomPlugInBO { //implements PlugIn {
+public class CustomPlugInBO implements ServletContextAware { //implements PlugIn {
 	Logger logger = Logger.getLogger(CustomPlugInBO.class);
+	
+	ServletContext servletContext;
 
 	// This method will be called at application startup time
+	public CustomPlugInBO() {
+		//init(servletContext);
+	}
+ 	
 	public void init(ServletContext actionServlet)
-			throws ServletException {
+			{//throws ServletException {
 		logger.info("Entering CustomPlugIn.init()");
 		try {
 			// set default lookup valules in the servlet context
@@ -149,4 +155,16 @@ public class CustomPlugInBO { //implements PlugIn {
 		// be sure to clean up CSM entries that need to be removed before
 		// shutting down the server.
 	}
+
+	@Override
+	public void setServletContext(ServletContext arg0) {
+		servletContext = arg0;
+		init(servletContext);
+	}
+
+	public ServletContext getServletContext() {
+		return servletContext;
+	}
+	
+	
 }

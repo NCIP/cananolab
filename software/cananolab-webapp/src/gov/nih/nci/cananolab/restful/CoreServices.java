@@ -59,13 +59,13 @@ public class CoreServices {
     public Response initSetup(@Context HttpServletRequest httpRequest) {
 		System.out.println("In initSetup");		
 		
-		CustomPlugInBO customPlugInBO = (CustomPlugInBO)applicationContext.getBean("customPlugInBO");
+//		CustomPlugInBO customPlugInBO = (CustomPlugInBO)applicationContext.getBean("customPlugInBO");
 		ServletContext context = httpRequest.getSession(true).getServletContext();
-		try {
-			customPlugInBO.init(context);
-		} catch(Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-		}
+//		try {
+//			customPlugInBO.init(context);
+//		} catch(Exception e) {
+//			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+//		}
 		
 		InitSetup.getInstance().setPublicCountInContext(context);
 		return Response.ok(context.getAttribute("publicCounts")).build();
