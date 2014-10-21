@@ -17,9 +17,12 @@ package gov.nih.nci.cananolab.restful.community;
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.restful.bean.SimpleCollaborationGroup;
 import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.service.community.CommunityService;
 import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,15 +45,14 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 	 * @return
 	 * @throws Exception
 	 */
-//	public void setupNew(HttpServletRequest request)
-//			throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		theForm.set("group", new CollaborationGroupBean());
-//		request.getSession().removeAttribute("openCollaborationGroup");
-//		getExistingGroups(request);
-//		
-//		return mapping.findForward("setup");
-//	}
+	public List<CollaborationGroupBean> setupNew(HttpServletRequest request)
+			throws Exception {
+		//theForm.set("group", new CollaborationGroupBean());
+		request.getSession().removeAttribute("openCollaborationGroup");
+		List<CollaborationGroupBean> beans = getExistingGroups(request);
+		
+		return beans;
+	}
 
 	public List<CollaborationGroupBean> getExistingGroups(HttpServletRequest request) throws Exception {
 		CommunityService service = setServiceInSession(request);
@@ -115,31 +117,27 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 	 * @return
 	 * @throws Exception
 	 */
-//	public ActionForward create(ActionMapping mapping, ActionForm form,
-//			HttpServletRequest request, HttpServletResponse response)
-//			throws Exception {
-//		if (!validateToken(request)) {
-//			return input(mapping, form, request, response);
-//		}
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+	public List<CollaborationGroupBean> create(CollaborationGroupBean group,
+			HttpServletRequest request)
+			throws Exception {
+		
 //		CollaborationGroupBean group = (CollaborationGroupBean) theForm
 //				.get("group");
-//		//double check the groupName for invalid special characters
-//		if (!StringUtils.xssValidate(group.getName())) {
-//			ActionMessages msgs = new ActionMessages();
-//			ActionMessage error = new ActionMessage("group.name.invalid");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, error);
-//			saveErrors(request, msgs);
-//			return mapping.findForward("input");
-//		}
-//		CommunityService service = setServiceInSession(request);
-//		service.saveCollaborationGroup(group);
-//		// update user's groupNames
-//		UserBean user = ((CommunityServiceLocalImpl) service).getUser();
-//		request.getSession().setAttribute("user", user);
-//		resetToken(request);
-//		return setupNew(mapping, form, request, response);
-//	}
+		//double check the groupName for invalid special characters
+		if (!StringUtils.xssValidate(group.getName())) {
+			//ActionMessage error = new ActionMessage("group.name.invalid");
+//			msgs.add(PropertyUtil.getProperty("community.properties", "group.name.invalid"));
+//			//saveErrors(request, msgs);
+//			return msgs;
+		}
+		CommunityService service = setServiceInSession(request);
+		service.saveCollaborationGroup(group);
+		// update user's groupNames
+		UserBean user = ((CommunityServiceLocalImpl) service).getUser();
+		request.getSession().setAttribute("user", user);
+
+		return setupNew(request);
+	}
 
 	private CommunityService setServiceInSession(HttpServletRequest request)
 			throws Exception {
@@ -151,18 +149,15 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 		return service;
 	}
 
-//	public ActionForward delete(ActionMapping mapping, ActionForm form,
-//			HttpServletRequest request, HttpServletResponse response)
-//			throws Exception {
-//		if (!validateToken(request)) {
-//			return input(mapping, form, request, response);
-//		}
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+	public List<CollaborationGroupBean> delete(CollaborationGroupBean group,
+			HttpServletRequest request)
+			throws Exception {
+		
 //		CollaborationGroupBean group = (CollaborationGroupBean) theForm
 //				.get("group");
-//		CommunityService service = setServiceInSession(request);
-//		service.deleteCollaborationGroup(group);
+		CommunityService service = setServiceInSession(request);
+		service.deleteCollaborationGroup(group);
 //		resetToken(request);
-//		return setupNew(mapping, form, request, response);
-//	}
+		return setupNew(request);
+	}
 }
