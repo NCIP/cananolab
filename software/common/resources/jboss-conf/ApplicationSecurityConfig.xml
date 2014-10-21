@@ -1,70 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
 <!--L
-   Copyright Ekagra Software Technologies Ltd.
-   Copyright SAIC, SAIC-Frederick
+   Copyright SAIC
+   Copyright SAIC-Frederick
 
    Distributed under the OSI-approved BSD 3-Clause License.
-   See http://ncip.github.com/common-security-module/LICENSE.txt for details.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
 L-->
 
-<security-config>
-    <upt-context-name>
-        csmupt
-    </upt-context-name>
-    <application-list>
-        <!-- For every application using the security api an entry should be made here -->
-        
-	<application>
-            <context-name>caNanoLab</context-name>
-            <authentication>
-                <authentication-provider-class/>
-				<lockout-time>
-					60000
-				</lockout-time>
-				<allowed-login-time>
-					60000
-				</allowed-login-time>
-				<allowed-attempts>
-					3
-				</allowed-attempts>
-				
-            </authentication>
-            <authorization>
-                <authorization-provider-class>
-                    <!-- Fully qualified class name-->
-                </authorization-provider-class>
-                <hibernate-config-file>@jboss.server.dir@/conf/csmconfig/csmupt45.csm.new.hibernate.cfg.xml</hibernate-config-file>
-            </authorization>
-        </application>
-    </application-list>
+<security-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<upt-context-name>csmupt</upt-context-name>
+	<application-list>
+		<application>
+			<context-name>csmupt</context-name>
+			<authentication>
+				<authentication-provider-class />
+				<lockout-time>1800000</lockout-time>
+				<allowed-login-time>60000</allowed-login-time>
+				<allowed-attempts>6</allowed-attempts>
+			</authentication>
+			<authorization>
+				<authorization-provider-class>
+				</authorization-provider-class>
+				<hibernate-config-file>csmupt423.csm.new.hibernate.cfg.xml</hibernate-config-file>
+			</authorization>
+		</application>
+	</application-list>
 	<backwards-compatibility>
 		<login-application-context-name>uptlogin</login-application-context-name>
 		<central-upt-configuration>true</central-upt-configuration>
 		<upt-application-list>
-		<upt-application>
-					<context-name>csmupt</context-name>
-					<url-context-name>upt43</url-context-name>
-					<authorization>
-						<authorization-provider-class>String</authorization-provider-class>
-						<hibernate-config-file>placeholder_string_val</hibernate-config-file>
-					</authorization>
-		</upt-application>
-		<upt-application>
-					<context-name>csmupt42</context-name>
-					<url-context-name>upt42</url-context-name>
-					<authorization>
-						<authorization-provider-class>String</authorization-provider-class>
-						<hibernate-config-file>placeholder_string_val</hibernate-config-file>
-					</authorization>
-		</upt-application>
-		<upt-application>
-					<context-name>csmupt40</context-name>
-					<url-context-name>upt40</url-context-name>
-					<authorization>
-						<authorization-provider-class>String</authorization-provider-class>
-						<hibernate-config-file>placeholder_string_val</hibernate-config-file>
-					</authorization>
-		</upt-application>
-</upt-application-list>
+			<upt-application>
+				<context-name>csmupt</context-name>
+				<url-context-name>upt423</url-context-name>
+				<authorization>
+					<authorization-provider-class>String</authorization-provider-class>
+					<hibernate-config-file>csmupt423.csm.new.hibernate.cfg.xml</hibernate-config-file>
+				</authorization>
+			</upt-application>
+		</upt-application-list>
 	</backwards-compatibility>
-    
 </security-config>
