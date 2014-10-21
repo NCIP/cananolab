@@ -166,7 +166,10 @@ L-->
 			</restrict>
 			<mapper classpathref="maven-ant-tasks.classpath" type="flatten" />
 		</copy>
-
+		
+		<copy overwrite="true" tofile="${common.dist.dir}/bcprov-jdk15on-147.jar" 
+			file="${common.dir}/lib/sdk/bcprov-jdk15on-147.jar" />
+	
 		<!--copy mysql-ds.xml and replace database connection info-->
 		<copy overwrite="true" tofile="${common.dist.dir}/mysql-ds.xml" file="${common.dir}/resources/jboss-conf/mysql-ds.xml">
 			<!-- replace tokens with values from build properties -->
@@ -259,6 +262,12 @@ L-->
 				<include name="mysql-connector-java*.jar" />
 			</fileset>
 		</copy>
+		
+		<copy todir="${jboss.lib.dir}" overwrite="true">
+					<fileset dir="${common.dist.dir}">
+						<include name="bcprov-jdk15on-147.jar" />
+					</fileset>
+				</copy>
 	</target>
 	
 	<target name="deploy_local" depends="dist">
