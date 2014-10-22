@@ -40,6 +40,15 @@ L-->
 		
         <load-on-startup>1</load-on-startup>
     </servlet>
+    
+	<servlet>
+		<servlet-name>file_upload</servlet-name>
+		<servlet-class>gov.nih.nci.cananolab.util.FileUpload</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>file_upload</servlet-name>
+		<url-pattern>/uploadFile</url-pattern>
+	</servlet-mapping>     
 	
 	<servlet-mapping>
 		<servlet-name>dwr-invoker</servlet-name>
