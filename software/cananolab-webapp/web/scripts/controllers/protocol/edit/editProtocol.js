@@ -47,6 +47,10 @@ var app = angular.module('angularApp')
         /* File Variables */
         $scope.usingFlash = FileAPI && FileAPI.upload != null;
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
+        
+        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        if(navigator.appVersion.indexOf("MSIE 9.")!=-1)
+            uploadUrl = '/caNanoLab/uploadFile';
 
         $scope.loader = true;
         $scope.$on('$viewContentLoaded', function(){
@@ -262,7 +266,7 @@ var app = angular.module('angularApp')
             $scope.upload = [];
             if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) {
                 $scope.upload[index] = $upload.upload({
-                    url: '/caNanoLab/rest/core/uploadFile',
+                    url: uploadUrl,
                     method: 'POST',
                     headers: {'my-header': 'my-header-value'},
                     data : $scope.protocolForm,
@@ -273,11 +277,22 @@ var app = angular.module('angularApp')
                     $timeout(function() {
                         //$scope.uploadResult.push(response.data);
                     	//alert(response.data);
+                    	//For browsers other than IE 9
                     	$scope.protocolForm.uri = response.data;
                     	$scope.doSubmitData();
                     });
                 }, function(response) {
-                    if (response.status > 0) $scope.messages = response.status + ': ' + response.data;
+                	$timeout(function() {
+                    	//only for IE 9
+                        if(navigator.appVersion.indexOf("MSIE 9.")!=-1) {
+                        	$scope.protocolForm.uri = response.data;
+                        	$scope.doSubmitData();
+                        }
+                    });
+                    if (response.status > 0) { 
+                    	$scope.messages = response.status + ': ' + response.data;
+                    	$scope.loader = false;
+                    }
                 }, function(evt) {
                     // Math.min is to fix IE which reports 200% sometimes
                     // $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
