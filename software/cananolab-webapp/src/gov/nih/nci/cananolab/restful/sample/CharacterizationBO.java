@@ -84,9 +84,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		this.setServicesInSession(request);
 		
-		// Copy "isSoluble" property from char bean to mapping bean.
-		//this.copyIsSoluble(charBean);
-		
 		List<String> errs = new ArrayList<String>();
 		if (!validateInputs(request, charBean, errs)) {
 			SimpleCharacterizationSummaryEditBean emptyView = new SimpleCharacterizationSummaryEditBean();
@@ -97,12 +94,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		this.saveCharacterization(request, charBean, simpleEdit);
 		simpleEdit.getMessages().add(PropertyUtil.getPropertyReplacingToken("sample", "message.addCharacterization", "0", 
 				charBean.getCharacterizationName()));
-		// to preselect the same characterization type after returning to the
-		// summary page
-//		List<String> allCharacterizationTypes = InitCharacterizationSetup
-//				.getInstance().getCharacterizationTypes(request);
-//		int ind = allCharacterizationTypes.indexOf(charBean
-//				.getCharacterizationType()) + 1;
 		
 		InitCharacterizationSetup.getInstance() //save "others" to db
 			.persistCharacterizationDropdowns(request, charBean);
@@ -410,24 +401,16 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			throws Exception {
 		// Remove previous result from session.
 		request.getSession().removeAttribute("characterizationSummaryView");
-		request.getSession().removeAttribute("theSample");
-
-		//DynaValidatorForm theForm = (DynaValidatorForm) form;
-		//String sampleId = form.getSampleId();  //.getString(SampleConstants.SAMPLE_ID);
+	
 		CharacterizationService service = this.setServicesInSession(request);
-		
-		//SampleBean sampleBean = setupSampleById(sampleId, request);
 		
 		List<CharacterizationBean> charBeans = service
 				.findCharacterizationsBySampleId(sampleId);
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
 				charBeans);
-		// Save result bean in session for later use - export/print.
+		
 		request.getSession().setAttribute("characterizationSummaryView",
 				summaryView);
-
-		// Save sample bean in session for sample name in export/print.
-		//request.getSession().setAttribute("theSample", sampleBean);
 		
 		return summaryView;
 	}

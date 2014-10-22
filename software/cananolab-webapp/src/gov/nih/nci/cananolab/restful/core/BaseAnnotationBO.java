@@ -126,6 +126,25 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 
 		return sampleBean;
 	}
+	
+	protected SampleBean setupSampleById(String sampleId,
+			HttpServletRequest request, boolean loadAccess) throws Exception {
+		
+		if (StringUtils.isEmpty(sampleId)) 
+			throw new NotExistException("Null or empty sample Id passed in setupSampleById()");
+		
+		// sample service has been created earlier
+		SampleService service = (SampleService) request.getSession()
+				.getAttribute("sampleService");
+
+		SampleBean sampleBean = service.findSampleById(sampleId, loadAccess);
+		if (sampleBean == null) {
+			throw new NotExistException("No such sample in the system");
+		}
+		request.setAttribute("theSample", sampleBean);
+
+		return sampleBean;
+	}
 
 	// check for cases where delete can't happen
 	protected boolean checkDelete(HttpServletRequest request, String id) throws Exception {

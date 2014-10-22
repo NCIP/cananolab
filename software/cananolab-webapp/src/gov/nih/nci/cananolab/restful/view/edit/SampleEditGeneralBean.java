@@ -43,7 +43,7 @@ public class SampleEditGeneralBean {
 	//These are lookups needed for dropdown lists
 	List<String> organizationNamesForUser;
 	List<String> contactRoles;
-	List<String> allGroupNames;
+	List<String> allGroupNames = new ArrayList<String>();
 	Map<String, String> filteredUsers;
 	Map<String, String> roleNames;
 	Boolean isPublic = false;
@@ -226,25 +226,44 @@ public class SampleEditGeneralBean {
 			CurationService curatorService, SampleBean sampleBean, String[] availableEntityNames) 
 	throws Exception {
 		
+		logger.debug("Start transferming data to simple bean");
+		
 		this.sampleName = sampleBean.getDomain().getName();
 		this.sampleId = sampleBean.getDomain().getId();
-		this.userIsCurator = sampleBean.getUser().isCurator();
+		//this.userIsCurator = sampleBean.getUser().isCurator();
 		this.isPublic = sampleBean.getPublicStatus();
 		
+		logger.debug("Transferming POC");
 		transferPointOfContactData(sampleBean);
+		logger.debug("Transferming POC");
 		
 		this.keywords = new ArrayList<String>(sampleBean.getKeywordSet());
 
+		logger.debug("Transferming Access");
 		transferAccessibilityData(sampleBean);
+		logger.debug("Done Transferming acess");
 		
 		transferDataAvailability(request, sampleBean, availableEntityNames);
 		
+		logger.debug("Transferming lookup");
 		setupLookups(request);
+		logger.debug("Done Transferming lookup");
+		logger.debug("Transferming GroupName");
 		setupGroupNamesForNewAccess(request);
+		logger.debug("Done Transferming GroupName");
+		
+		logger.debug("Transferming FilteredUsersParamForNewAccess");
 		setupFilteredUsersParamForNewAccess(request, sampleBean.getDomain().getCreatedBy());
-			
+		logger.debug("Done Transferming FilteredUsersParamForNewAccess");
+		
+		logger.debug("Transferming REview button");
 		setupReviewButton(request, curatorService, sampleBean);
+		logger.debug("Done Transferming REview button");
+		
+		logger.debug("Transferming role map");
 		setupRoleNameMap();
+		logger.debug("Done Transferming role map");
+		
 	}
 	
 	protected void setupRoleNameMap() {
@@ -335,9 +354,18 @@ public class SampleEditGeneralBean {
 	}
 	
 	protected void setupGroupNamesForNewAccess(HttpServletRequest request) {
+		
+		//TODO: only need this after a save new access
 		try {
-			SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
-			this.allGroupNames = sampleService.findGroupNames("");
+			List<String> groupNames = (List<String>)request.getSession().getAttribute("allGroupNames");
+			
+			if (groupNames == null) {
+				SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
+				groupNames = sampleService.findGroupNames("");
+				request.getSession().setAttribute("allGroupNames", groupNames);
+			}
+			
+			this.allGroupNames.addAll(groupNames);
 			
 		} catch (Exception e) {
 			logger.error("Got error while setting up params for adding access");
@@ -355,29 +383,6 @@ public class SampleEditGeneralBean {
 			// remove current user from the list
 			updatedUsers.remove(user);
 
-//			// remove data owner from the list if owner is not the current user
-//			if (!dataOwner.equalsIgnoreCase(user.getLoginName())) {
-//				for (UserBean userBean : matchedUsers) {
-//					if (userBean.getLoginName().equalsIgnoreCase(dataOwner)) {
-//						updatedUsers.remove(userBean);
-//						break;
-//					}
-//				}
-//			}
-//			// exclude curators;
-//			List<String> curators = securityService
-//					.getUserNames(AccessibilityBean.CSM_DATA_CURATOR);
-//			for (UserBean userBean : matchedUsers) {
-//				for (String curator : curators) {
-//					if (userBean.getLoginName().equalsIgnoreCase(curator)) {
-//						updatedUsers.remove(userBean);
-//					}
-//				}
-//			}
-//
-//			UserBean[] users = updatedUsers.toArray(new UserBean[updatedUsers.size()]);
-//			
-//			return updatedUsers.toArray(new UserBean[updatedUsers.size()]);
 			
 		} catch (Exception e) {
 			logger.error("Got error while setting up params for adding access");

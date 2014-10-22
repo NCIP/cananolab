@@ -289,7 +289,9 @@ public class SampleBO extends BaseAnnotationBO {
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
 		
+		logger.debug("========== Setting up sample in summaryEdit");
 		SampleBean sampleBean = setupSampleById(sampleId, request);
+		logger.debug("========== Done Setting up sample in summaryEdit");
 		
 		if (hasNullPOC(request, sampleBean, sampleEdit.getErrors())) {
 			return sampleEdit;
@@ -315,9 +317,16 @@ public class SampleBO extends BaseAnnotationBO {
 						.toLowerCase();
 			}
 		}
-
-		sampleEdit.transferSampleBeanData(request, this.getCurationService(), sampleBean, availableEntityNames);
 		
+		if (request.getSession().getAttribute("allGroupNames") == null) {
+			SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
+			List<String> availGroupNames = sampleService.findGroupNames("");
+			request.getSession().setAttribute("allGroupNames", availGroupNames);
+		}
+
+		logger.debug("========== Done Setting up all data for sample in summaryEdit");
+		sampleEdit.transferSampleBeanData(request, this.getCurationService(), sampleBean, availableEntityNames);
+		logger.debug("========== Done transforming sample summaryEdit");
 		//need to save sampleBean in session for other edit feature.
 		//new in rest implement
 		request.getSession().setAttribute("theSample", sampleBean);
@@ -553,7 +562,9 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		try {
 		// save sample
+			logger.debug("========== Saving Sample with POC");
 			saveSample(request, sample);
+			logger.debug("========== Done Saving Sample with POC");
 		} catch (NoAccessException e) {
 			if (newSample)
 				simpleSampleBean.getPointOfContacts().clear();
@@ -581,11 +592,14 @@ public class SampleBO extends BaseAnnotationBO {
 			return simpleSampleBean;
 		}
 		
-		logger.debug("========== Done saving POC Sample");
+		//logger.debug("========== Done saving POC Sample");
 		
 		//if (newSample != null && newSampleName.length() > 0)
-		if (newSample)
+		if (newSample) {
+			logger.debug("========== Setting access for new sample");
 			this.setAccesses(request, sample); //this will assign default curator access to this sample.
+			logger.debug("========== Done Setting access for new sample");
+		}
 		
 		//TODO: check on this
 		InitSampleSetup.getInstance().persistPOCDropdowns(request, sample);
@@ -960,6 +974,19 @@ public class SampleBO extends BaseAnnotationBO {
 		simpleEditBean.populateDataForSavingSample(sample);
 		saveSample(request, sample);
 
+		//if (request.getSession().getAttribute("allGroupNames") == null) {
+		//refresh groupNames in case the new access was a "other"
+		
+		if (theAccess.getAccessBy().equals("group")) {
+			List<String> groupNames = (List<String>) request.getSession().getAttribute("allGroupNames");
+			if (groupNames == null || !groupNames.contains(theAccess.getGroupName())) {
+				SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
+				List<String> availGroupNames = sampleService.findGroupNames("");
+				request.getSession().setAttribute("allGroupNames", availGroupNames);
+			}
+		}
+		//}
+		
 		return summaryEdit(sample.getDomain().getId()
 				.toString(), request);
 	}
