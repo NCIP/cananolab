@@ -864,7 +864,7 @@
 								<input type="text" ng-model="currentFinding.numberOfRows" name="numberOfRows" size="4">
 								<label for="colNum">rows</label>			
 								<button ng-click="updateRowsColsForFinding()" class="btn btn-primary btn-xxs">Update</button>
-								<button ng-click="openColumnOrderForm()" class="btn btn-primary btn-xxs">Set Column Order</button>							</td>
+								<button ng-hide="isNewFinding" ng-click="openColumnOrderForm()" class="btn btn-primary btn-xxs">Set Column Order</button>							</td>
 						</tr>
 						<tr ng-show="columnOrder">
 							<td colspan="2">
