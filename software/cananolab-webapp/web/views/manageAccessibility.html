@@ -132,13 +132,13 @@
                                 </td>
                                 <td>
                                     <label for="matchedUserNameSelect" style="display:none" id="userNameSelectLabel">Select a user</label>
-                                    <select ng-model="access.loginName" id="matchedUserNameSelect"  ng-click="$parent.accessForm.theAccess.userBean.loginName = $parent.access.loginName;" ng-if="getUserAccessSection()">
+                                    <select ng-model="access.loginName" id="matchedUserNameSelect"  ng-change="$parent.accessForm.theAccess.userBean.loginName = $parent.access.loginName;" ng-if="getUserAccessSection()">
                                         <option ng-repeat="(loginId, name) in $parent.accessUsers track by $index" value="{{loginId}}">
                                             {{name}}
                                         </option>
                                     </select>
                                     <label for="matchedGroupNameSelect" style="display:none">Select a group</label>
-                                    <select ng-model="access.groupName" id="matchedGroupNameSelect" ng-click="$parent.accessForm.theAccess.groupName = $parent.access.groupName;" ng-if="getCollabAccessSection()">
+                                    <select ng-model="access.groupName" id="matchedGroupNameSelect" ng-change="$parent.accessForm.theAccess.groupName = $parent.access.groupName;" ng-if="getCollabAccessSection()">
                                         <option ng-repeat="group in $parent.collabGroups track by $index" value="{{group}}">
                                             {{group}}
                                         </option>
