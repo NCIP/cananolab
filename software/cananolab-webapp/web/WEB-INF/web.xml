@@ -13,7 +13,15 @@ L-->
 	version="2.5">
 	<display-name>caNanoLab</display-name>
 	
-	
+	<servlet>
+		<servlet-name>file_upload</servlet-name>
+		<servlet-class>gov.nih.nci.cananolab.util.FileUpload</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>file_upload</servlet-name>
+		<url-pattern>/uploadFile</url-pattern>
+	</servlet-mapping> 
+		
 	<servlet>
 		<servlet-name>dwr-invoker</servlet-name>
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
