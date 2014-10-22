@@ -1,10 +1,11 @@
-<div class="spacer">{{data}}
+<div class="spacer"><!-- {{data}} -->{{someData}}
 <div ng-class="{formFocus:loader}">
 <table border="0" class="contentTitle" summary="layout" width="100%">
  <tr>
   <th scope="col" align="left">
     Manage Collaboration Groups
   </th>
+  
    <td align="right" width="30%">
      <a class="helpText" href=
      "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/7+-+Administration+in+caNanoLab#id-7-AdministrationincaNanoLab-ManagingCollaborationGroups')">Help</a>   <a class=
@@ -45,7 +46,7 @@
 									{{item.name}}
 								</td>
 								<td>
-									{{item.descriptionDisplayName}}
+									{{item.description}}
 								</td>
 								<td>
 									{{item.ownerName}}
@@ -131,8 +132,8 @@
 						</tr>													
 						<tr ng-show="userInfo">
 							<td colspan="2">
-								<div id="newUser" style="display: block;">
-									<table class="promptbox" summary="layout" border="10" width="100%" align="center">
+								<div id="newUser" style="display: block;padding-left:85px;">
+									<table class="promptbox" summary="layout" border="10" width="90%" align="center">
 										<tbody><tr>
 											<td class="cellLabel" width="30%">
 												<label for="loginName">User Login Name*</label>
@@ -149,8 +150,12 @@
 														<td>
 															<img src="images/ajax-loader.gif" class="counts" id="loaderImg" style="display: none;" alt="load existing users" border="0">
 														</td>
-														<td><label for="matchedUserNameSelect">&nbsp;</label>
-														<select name="group.theAccess.userBean.loginName" size="10" onclick="updateUserLoginName()" id="matchedUserNameSelect" style="display: block;"><option value="cristr">Crist, Rachael</option></select>
+														<td ng-show="showUsers"><label for="matchedUserNameSelect">&nbsp;</label>
+															
+															
+														<select data-ng-model="userInfoBean.userBean.loginName"
+															data-ng-options="key as val for (key,val) in userList" id="loginName"><option value=""></option>
+														</select>
 														</td>
 													</tr>
 												</tbody></table>
@@ -214,4 +219,11 @@
 	</div> -->
 
 </div>
+</div>
+
+<div id="loader" class="sample offset" ng-show="loader">
+    <div id="loaderText">
+        {{loaderText}}
+    </div>
+    <div id="loaderGraphic"></div>
 </div>
