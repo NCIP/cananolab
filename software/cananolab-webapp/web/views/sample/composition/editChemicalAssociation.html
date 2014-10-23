@@ -35,7 +35,7 @@
         </td>
         <td>
             <div id="categoryPrompt">
-                <select id="type" ng-model="chemAssociationForm.type" ng-click="showProperties();">
+                <select id="type" ng-model="chemAssociationForm.type" ng-change="showProperties();">
                     <option ng-repeat="option in chemicalAssociationTypes" value="{{option}}" ng-selected="{{option==chemAssociationForm.type}}">
                         {{option}}
                     </option>
@@ -127,7 +127,7 @@
                 </tr>
                 <tr>
                     <td><label for="compositionTypeA">&nbsp;</label>
-                        <select ng-model="chemAssociationForm.associatedElementA.compositionType" id="compositionTypeA" ng-click="loadAssociatedElements('A', chemAssociationForm.associatedElementA.compositionType);">
+                        <select ng-model="chemAssociationForm.associatedElementA.compositionType" id="compositionTypeA" ng-change="loadAssociatedElements('A', chemAssociationForm.associatedElementA.compositionType);">
                             <option value=""></option>
                             <option ng-repeat="option in associationCompositionTypes" value="{{option}}" ng-selected="{{option==chemAssociationForm.associatedElementA.compositionType}}">
                                 {{option}}
@@ -136,7 +136,7 @@
                         <div id="entitySelectA" ng-show="chemAssociationForm.associatedElementA.compositionType != null">
                             <br>
                             <label for="entityIdA">&nbsp;</label>
-                            <select ng-model="chemAssociationForm.associatedElementA.entityId" ng-click="loadComposingElements('A', chemAssociationForm.associatedElementA.compositionType, chemAssociationForm.associatedElementA.entityId);" id="entityIdA"
+                            <select ng-model="chemAssociationForm.associatedElementA.entityId" ng-change="loadComposingElements('A', chemAssociationForm.associatedElementA.compositionType, chemAssociationForm.associatedElementA.entityId);" id="entityIdA"
                                     ng-options="element.domainId as element.type for element in associatedElementsA">
                                 <option value=""></option>
                             </select>
@@ -168,7 +168,7 @@
                 </tr>
                 <tr>
                     <td><label for="compositionTypeB">&nbsp;</label>
-                        <select ng-model="chemAssociationForm.associatedElementB.compositionType" ng-click="loadAssociatedElements('B', chemAssociationForm.associatedElementB.compositionType);" id="compositionTypeB">
+                        <select ng-model="chemAssociationForm.associatedElementB.compositionType" ng-change="loadAssociatedElements('B', chemAssociationForm.associatedElementB.compositionType);" id="compositionTypeB">
                             <option value=""></option>
                             <option ng-repeat="option in associationCompositionTypes" value="{{option}}" ng-selected="{{option==chemAssociationForm.associatedElementB.compositionType}}">
                                 {{option}}
@@ -177,7 +177,7 @@
                         <div id="entitySelectB" ng-show="chemAssociationForm.associatedElementB.compositionType != null">
                             <br>
                             <label for="entityIdB">&nbsp;</label>
-                            <select ng-model="chemAssociationForm.associatedElementB.entityId" ng-click="loadComposingElements('B', chemAssociationForm.associatedElementB.compositionType, chemAssociationForm.associatedElementB.entityId);" id="entityIdB"
+                            <select ng-model="chemAssociationForm.associatedElementB.entityId" ng-change="loadComposingElements('B', chemAssociationForm.associatedElementB.compositionType, chemAssociationForm.associatedElementB.entityId);" id="entityIdB"
                                     ng-options="element.domainId as element.type for element in associatedElementsB">
                                 <option value=""></option>
                             </select>
