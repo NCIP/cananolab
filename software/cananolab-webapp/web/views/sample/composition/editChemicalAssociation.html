@@ -118,7 +118,7 @@
 </table>
 <table width="100%" align="center" class="submissionView">
     <tbody><tr>
-        <td>
+        <td valign="top">
             <table>
                 <tbody><tr>
                     <td class="cellLabel" width="40%">
@@ -126,7 +126,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="compositionTypeA">&nbsp;</label>
+                    <td valign="top"><label for="compositionTypeA">&nbsp;</label>
                         <select ng-model="chemAssociationForm.associatedElementA.compositionType" id="compositionTypeA" ng-change="loadAssociatedElements('A', chemAssociationForm.associatedElementA.compositionType);">
                             <option value=""></option>
                             <option ng-repeat="option in associationCompositionTypes" value="{{option}}" ng-selected="{{option==chemAssociationForm.associatedElementA.compositionType}}">
@@ -142,7 +142,6 @@
                             </select>
                         </div>
                         <div id="composingElementSelectA" ng-show="chemAssociationForm.associatedElementA.entityId != null && chemAssociationForm.associatedElementA.compositionType == 'nanomaterial entity'">
-                            <br>
                             <label for="composingElementIdA">&nbsp;</label>
                             <select ng-model="chemAssociationForm.associatedElementA.composingElement.id" id="composingElementIdA" ng-options="element.id as element.type + ' (name: ' + element.name + ')' for element in composingElementsA">
                                 <option value=""></option>
@@ -154,12 +153,12 @@
                 </tbody>
             </table>
         </td>
-        <td>
+        <td valign="top">
             <img src="images/arrow_left_right_gray.gif" id="assocImg" alt="associated with">
             <br>
             associated with
         </td>
-        <td>
+        <td valign="top">
             <table>
                 <tbody><tr>
                     <td class="cellLabel" width="40%">
@@ -167,7 +166,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="compositionTypeB">&nbsp;</label>
+                    <td valign="top"><label for="compositionTypeB">&nbsp;</label>
                         <select ng-model="chemAssociationForm.associatedElementB.compositionType" ng-change="loadAssociatedElements('B', chemAssociationForm.associatedElementB.compositionType);" id="compositionTypeB">
                             <option value=""></option>
                             <option ng-repeat="option in associationCompositionTypes" value="{{option}}" ng-selected="{{option==chemAssociationForm.associatedElementB.compositionType}}">
