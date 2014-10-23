@@ -26,6 +26,10 @@ var app = angular.module('angularApp')
         $scope.externalUrlEnabled = false;
         $scope.addNewFile = false;
         $scope.selectedFileName = '';
+        
+        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        if(navigator.appVersion.indexOf("MSIE 9.")!=-1)
+            uploadUrl = '/caNanoLab/uploadFile';        
 
         $scope.$on('$viewContentLoaded', function(){
             $http({method: 'GET', url: '/caNanoLab/rest/compositionFile/setup?sampleId=' + $scope.sampleId}).
@@ -96,6 +100,22 @@ var app = angular.module('angularApp')
         $scope.onFileSelect = function($files) {
             $scope.selectedFiles = [];
             $scope.selectedFiles = $files;
+            
+            $scope.dataUrls = [];
+    		for ( var i = 0; i < $files.length; i++) {
+    			var $file = $files[i];
+    			if ($scope.fileReaderSupported && $file.type.indexOf('image') > -1) {
+    				var fileReader = new FileReader();
+    				fileReader.readAsDataURL($files[i]);
+    				var loadFile = function(fileReader, index) {
+    					fileReader.onload = function(e) {
+    						$timeout(function() {
+    							$scope.dataUrls[index] = e.target.result;
+    						});
+    					}
+    				}(fileReader, i);
+    			}
+    		}            
         };
 
         $scope.editFile = function(fileId) {
@@ -154,7 +174,7 @@ var app = angular.module('angularApp')
             if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) {
             	$scope.selectedFileName = $scope.selectedFiles[0].name;
                 $scope.upload[index] = $upload.upload({
-                    url: '/caNanoLab/rest/core/uploadFile',
+                    url: uploadUrl,
                     method: 'POST',
                     headers: {'my-header': 'my-header-value'},
                     data : $scope.fileForm,
@@ -170,6 +190,12 @@ var app = angular.module('angularApp')
                         //$scope.loader = false;
                     });
                 }, function(response) {
+                    $timeout(function() {
+                    	//only for IE 9
+                        if(navigator.appVersion.indexOf("MSIE 9.")!=-1) {
+                            $scope.saveFileData();
+                        }
+                    });                	
                     if (response.status > 0) {
                         $scope.messages = response.status + ': ' + response.data;
                         $scope.loader = false;
