@@ -344,6 +344,12 @@ var app = angular.module('angularApp')
         var columnIndex = 0;
         if( $scope.findingsColumn.columnOrder != null ) {
             columnIndex = parseInt($scope.findingsColumn.columnOrder) - 1;
+            for (var x=0;x<$scope.currentFinding.rows.length;x++) {
+                var curCell = $scope.currentFinding.rows[x].cells[columnIndex];
+                if ($scope.findingsColumn.constantValue!='') {
+                    curCell.value=$scope.findingsColumn.constantValue;
+                }
+            };
             var headerName = $scope.findingsColumn.columnName;
 
             if( $scope.findingsColumn.valueType != null ) {
