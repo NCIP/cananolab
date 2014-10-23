@@ -281,21 +281,17 @@ public class SampleBO extends BaseAnnotationBO {
 			throws Exception {
 	
 		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
-		//sampleEdit.setSubmitForReviewButton(request);
-	
+		
 		this.setServiceInSession(request);
-
-		// "setupSample()" will retrieve and return the SampleBean.
-		SecurityService securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
+		SecurityService securityService = (SecurityService) request.getSession().getAttribute("securityService");
 		
 		logger.debug("========== Setting up sample in summaryEdit");
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 		logger.debug("========== Done Setting up sample in summaryEdit");
 		
-		if (hasNullPOC(request, sampleBean, sampleEdit.getErrors())) {
-			return sampleEdit;
-		}
+//		if (hasNullPOC(request, sampleBean, sampleEdit.getErrors())) {
+//			return sampleEdit;
+//		}
 		
 		logger.debug("====== Finding data availability");
 		Set<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityService
@@ -318,6 +314,8 @@ public class SampleBO extends BaseAnnotationBO {
 			}
 		}
 		
+		//Set collaboration group names in session for later use. The list should never change
+		//unless a curator added new group
 		if (request.getSession().getAttribute("allGroupNames") == null) {
 			SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
 			List<String> availGroupNames = sampleService.findGroupNames("");

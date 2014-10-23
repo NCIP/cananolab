@@ -336,7 +336,11 @@ public class SampleEditGeneralBean {
 			List<String> curators = securityService
 					.getUserNames(AccessibilityBean.CSM_DATA_CURATOR);
 			for (UserBean userBean : matchedUsers) {
+				if (userBean.getLoginName().equalsIgnoreCase("sharon")) {
+					String n = "sa";
+				}
 				for (String curator : curators) {
+					
 					if (userBean.getLoginName().equalsIgnoreCase(curator)) {
 						updatedUsers.remove(userBean);
 					}

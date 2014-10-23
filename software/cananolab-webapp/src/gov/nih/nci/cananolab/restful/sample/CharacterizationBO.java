@@ -143,7 +143,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		setServicesInSession(request);
 		
 		//This method sets tons of lookups. Need to see what's needed and what's not
-		setupInputForm(request, sampleId, charType);
+		//setupInputForm(request, sampleId, charType);
 		
 		CharacterizationBean charBean = new CharacterizationBean();		
 		charBean.setCharacterizationType(charType);
@@ -205,18 +205,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 //
 //		// TODO: Find out usage of "charNameDatumNames", not used in any JSPs.
-		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
-				request, charBean.getCharacterizationType(),
-				charBean.getCharacterizationName(), charBean.getAssayType());
-//
-//		request.setAttribute("achar", charBean);
-//		//theForm.set("achar", charBean);
-		
-		//This method sets tons of lookups. Need to see what's needed and what's not
-		this.setupInputForm(request, sampleId, charType);	
-		
-		//What is this?
-		//this.setupIsSoluble(charBean); // setup "isSoluble" property.
+//		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
+//				request, charBean.getCharacterizationType(),
+//				charBean.getCharacterizationName(), charBean.getAssayType());
 		
 		//SY: new
 		request.getSession().setAttribute("theChar", charBean);
