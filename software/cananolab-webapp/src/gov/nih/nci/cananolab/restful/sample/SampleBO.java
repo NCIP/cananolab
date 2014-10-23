@@ -288,10 +288,7 @@ public class SampleBO extends BaseAnnotationBO {
 		logger.debug("========== Setting up sample in summaryEdit");
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 		logger.debug("========== Done Setting up sample in summaryEdit");
-		
-//		if (hasNullPOC(request, sampleBean, sampleEdit.getErrors())) {
-//			return sampleEdit;
-//		}
+
 		
 		logger.debug("====== Finding data availability");
 		Set<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityService
@@ -599,9 +596,9 @@ public class SampleBO extends BaseAnnotationBO {
 			logger.debug("========== Done Setting access for new sample");
 		}
 		
-		//TODO: check on this
+		//This is needed when user chose "[other]" in Org. Name dropdown
 		InitSampleSetup.getInstance().persistPOCDropdowns(request, sample);
-		// return forward;
+		
 		logger.debug("========== Populating UpdateSample data");
 		return summaryEdit(sample.getDomain().getId().toString(), request);
 	}

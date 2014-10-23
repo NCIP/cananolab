@@ -330,14 +330,19 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return sampleBean;
 	}
 	
-	public SampleBasicBean findSampleBasicById(String sampleId, Boolean loadAccessInfo)
+	/**
+	 * Only load sample core data.
+	 * 
+	 * Do not check read permission because workspace items are owned by user.
+	 */
+	public SampleBasicBean findSWorkspaceSampleById(String sampleId, boolean loadAccessInfo)
 			throws SampleException, NoAccessException {
 		SampleBasicBean sampleBean = null;
 		try {
 			Sample sample = helper.findSampleBasicById(sampleId);
 			if (sample != null) {
 				if (loadAccessInfo) {
-					sampleBean = loadSampleBasicBean(sample);
+					sampleBean = loadSampleBean(sample, false);
 				} else {
 					sampleBean = new SampleBasicBean(sample);
 				}
@@ -534,13 +539,18 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		
 	}
 	
-	private SampleBasicBean loadSampleBasicBean(Sample sample) throws Exception {
+	private SampleBasicBean loadSampleBean(Sample sample, boolean checkReadPermission) throws Exception {
 		SampleBasicBean sampleBean = new SampleBasicBean(sample);
 		if (user != null) {
+			logger.debug("=== Loading group accesses");
 			List<AccessibilityBean> groupAccesses = super
-					.findGroupAccessibilities(sample.getId().toString());
+					.findGroupAccessibilities(sample.getId().toString(), checkReadPermission);
+			logger.debug("=== Done Loading group accesses");
+			
+			logger.debug("=== Loading user accesses");
 			List<AccessibilityBean> userAccesses = super
-					.findUserAccessibilities(sample.getId().toString());
+					.findUserAccessibilities(sample.getId().toString(), checkReadPermission);
+			logger.debug("=== Done Loading user accesses");
 			sampleBean.setUserAccesses(userAccesses);
 			sampleBean.setGroupAccesses(groupAccesses);
 			sampleBean.setUser(user);

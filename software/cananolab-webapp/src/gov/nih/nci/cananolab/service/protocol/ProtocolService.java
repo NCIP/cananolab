@@ -58,4 +58,8 @@ public interface ProtocolService extends BaseService {
 
 	public List<String> findProtocolIdsByOwner(String currentOwner)
 			throws ProtocolException;
+	
+
+	public ProtocolBean findWorkspaceProtocolById(String protocolId)
+			throws ProtocolException, NoAccessException;
 }

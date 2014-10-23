@@ -140,9 +140,7 @@ public class WorkspaceManager {
 			return items;
 
 		for (String id : protoIds) {
-			ProtocolBean protoBean = protocolService.findProtocolById(id);
-
-
+			ProtocolBean protoBean = protocolService.findWorkspaceProtocolById(id);
 
 			if (protoBean == null) continue;
 
@@ -182,7 +180,7 @@ public class WorkspaceManager {
 			return items;
 
 		for (String id : sampleIds) {
-			SampleBasicBean sampleBean = sampleService.findSampleBasicById(id, true);
+			SampleBasicBean sampleBean = sampleService.findSWorkspaceSampleById(id, true);
 			if (sampleBean == null) continue;
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
 

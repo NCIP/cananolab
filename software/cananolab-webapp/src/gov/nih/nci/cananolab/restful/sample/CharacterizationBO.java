@@ -1230,23 +1230,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 	}
 
-	/**
-	 * Setup "isSoluble" property in achar from Solubility entity.
-	 * 
-	 * @param achar
-	 */
-	private void setupIsSoluble(CharacterizationBean achar) {
-		Boolean soluble = null;
-		if ("Solubility".equals(achar.getClassName())) {
-			soluble = achar.getSolubility().getIsSoluble();
-		}
-		if (soluble == null) {
-			achar.setIsSoluble(null);
-		} else {
-			achar.setIsSoluble(soluble.toString());
-		}
-	}
-
 	public Boolean canUserExecutePrivateDispatch(UserBean user)
 			throws SecurityException {
 		if (user == null) {
