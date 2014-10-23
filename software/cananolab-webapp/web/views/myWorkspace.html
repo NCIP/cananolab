@@ -33,7 +33,7 @@
             	<a href="/caNanoLab/#/editSample?sampleId={{data.id}}&amp;fromMyWorkspace=true" ng-if="data.editable">Edit</a>
             </td>
             <td>
-                <div>{{data.name}}</div>
+                <div ng-bind="data.name">{{data.name}}</div>
             </td>
             <td>
                 <div>{{data.submisstionStatus}}</div>
@@ -64,7 +64,7 @@
             	<a href="/caNanoLab/#/editProtocol?protocolId={{data.id}}" ng-if="data.editable">Edit</a>
             </td>
             <td>
-                <div>{{data.name}}</div>
+                <div ng-bind-html="data.name">{{data.name}}</div>
             </td>
             <td>
                 <div>{{data.submisstionStatus}}</div>
@@ -96,10 +96,10 @@
             	<a href="/caNanoLab/#/editPublication?publicationId={{data.id}}" ng-if="data.editable">Edit</a>
             </td>
             <td>
-                <div>{{data.pubMedDOIId}}</div>
+                <div ng-bind-html="data.pubMedDOIId">{{data.pubMedDOIId}}</div>
             </td>
             <td>
-                <div>{{data.name}}</div>
+                <div ng-bind-html="data.name">{{data.name}}</div>
             </td>
             <td>
                 <div>{{data.submisstionStatus}}</div>
