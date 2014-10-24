@@ -423,8 +423,6 @@ public class SimpleCharacterizationSummaryViewBean {
 		this.errors = errors;
 	}
 
-
-
 	public class SimpleCharacterizationViewBean {
 		
 		long charId;
