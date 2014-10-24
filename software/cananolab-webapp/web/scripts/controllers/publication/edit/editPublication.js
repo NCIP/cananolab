@@ -53,10 +53,14 @@ var app = angular.module('angularApp')
         /* File Variables */
         $scope.usingFlash = FileAPI && FileAPI.upload != null;
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
-
+        $scope.selectedFileName = '';
+        
         var uploadUrl = '/caNanoLab/rest/core/uploadFile';
-        if(navigator.appVersion.indexOf("MSIE 9.")!=-1)
+        $scope.ie9 = false;
+        if(navigator.appVersion.indexOf("MSIE 9.")!=-1){
             uploadUrl = '/caNanoLab/uploadFile';
+            $scope.ie9 = true;
+        }
         
         //$scope.$on('$viewContentLoaded', function(){
         $scope.loader = true;
@@ -295,6 +299,9 @@ var app = angular.module('angularApp')
         $scope.onFileSelect = function($files) {
             $scope.selectedFiles = [];
             $scope.selectedFiles = $files;
+            
+            if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) 
+            	$scope.selectedFileName = $scope.selectedFiles[0].name;
         };
 
         $scope.doSubmit = function() {

@@ -353,6 +353,8 @@
                         <td colspan="2">
                             <span id="load" style="display: block;" ng-show="publicationForm.uriExternal=='false'">
         						<input type="file" ng-model="publicationForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
+        						<span ng-if="ie9">{{selectedFileName}}</span>
+        						
         						<!-- <input type="file" file-model="localForm.uploadedFile" ng-model="localForm.uploadedFile" size="60" value="" onchange="angular.element(this).scope().uploadFile(this);" id="uploadedFile"> -->
 				            </span>
                             <span id="uploadedUri" ng-show="publicationForm.uriExternal=='false' && publicationForm.fileId != null">
