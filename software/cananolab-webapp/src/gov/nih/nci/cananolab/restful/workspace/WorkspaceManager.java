@@ -140,6 +140,8 @@ public class WorkspaceManager {
 			return items;
 
 		for (String id : protoIds) {
+			//User this method so it won't check user read permission, since user owns this item
+			//Performance turning
 			ProtocolBean protoBean = protocolService.findWorkspaceProtocolById(id);
 
 			if (protoBean == null) continue;
@@ -180,6 +182,8 @@ public class WorkspaceManager {
 			return items;
 
 		for (String id : sampleIds) {
+			//Use this method so it won't check user read permission, since user owns this item
+			//Performance turning
 			SampleBasicBean sampleBean = sampleService.findSWorkspaceSampleById(id, true);
 			if (sampleBean == null) continue;
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
