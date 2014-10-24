@@ -116,10 +116,14 @@ public class WorkspaceManager {
 			item.setCreatedDate(pubBean.getDomainFile().getCreatedDate());
 			Publication pub = (Publication) pubBean.getDomainFile();
 			
-			
 			String pubId = (pub.getPubMedId() != null) ? pub.getPubMedId().toString() : "";
-			pubId = (pub.getDigitalObjectId()!=null) ? pubId + "<br>" + pub.getDigitalObjectId().toString() : pubId;
-			item.setPubMedDOIId(pubId);
+			String val = "";
+			if (pubId.length() > 0) {
+				val = "<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/" + pubId + "\" target=\"_blank\">" + pubId + "</a>";
+			}
+			
+			val = (pub.getDigitalObjectId()!=null) ? val + "<br>" + pub.getDigitalObjectId().toString() : val;
+			item.setPubMedDOIId(val);
 			
 			setCommonDataFields(id, item, pubBean, securityService, user);
 
