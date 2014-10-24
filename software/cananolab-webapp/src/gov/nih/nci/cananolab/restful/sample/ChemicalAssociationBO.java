@@ -56,6 +56,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		List<String> msgs = new ArrayList<String>();
 		ChemicalAssociationBean assocBean = transferChemicalAssociationBean(bean, request);
 		 msgs = validateAssociatedElements(assocBean);
+		 msgs = validateComposingElements(assocBean);
 		 msgs = validateAssociationFile(request, msgs, assocBean);
 		if (msgs.size()>0) {
 			return msgs;
@@ -68,6 +69,27 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		// to preselect chemical association after returning to the summary page
 		request.getSession().setAttribute("tab", "3");
 		return msgs;
+	}
+	/**
+	 *  Added if the user misses to pick the composingElement for the nanomaterial entity
+	 * @param assocBean
+	 * @return
+	 */
+	private List<String> validateComposingElements(
+			ChemicalAssociationBean assocBean) {
+		List<String> msgs = new ArrayList<String>();
+		 String compTypeA = assocBean.getAssociatedElementA().getCompositionType();
+		 String compTypeB = assocBean.getAssociatedElementB().getCompositionType();
+			
+		 if((compTypeA!=null)&&(compTypeA.equalsIgnoreCase("nanomaterial entity"))){
+				if(assocBean.getAssociatedElementA().getComposingElement().getId()==null)
+						msgs.add("Choosing an element on the left is required.");
+			}
+			if((compTypeB!=null)&&(compTypeB.equalsIgnoreCase("nanomaterial entity"))){
+				if(assocBean.getAssociatedElementB().getComposingElement().getId()==null)
+						msgs.add("Choosing an element on the right is required.");
+			}
+			return msgs;
 	}
 
 	private ChemicalAssociationBean transferChemicalAssociationBean(
@@ -321,12 +343,12 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 			msgs.add(PropertyUtil.getProperty("sample", "error.duplicateAssociatedElementsInAssociation"));
 		}
 		}else {
-		if((entityTypeA==null||entityTypeA.equals(""))&&(entityIdA==null)){
-			msgs.add("Choosing an element on the left is required.");
-		}
-		if((entityTypeB==null||entityTypeB.equals(""))&&(entityIdB==null)){
-			msgs.add("Choosing an element on the right is required.");
-		}
+			if((entityTypeA==null||entityTypeA.equals(""))&&(entityIdA==null)){
+				msgs.add("Choosing an element on the left is required.");
+			}
+			if((entityTypeB==null||entityTypeB.equals(""))&&(entityIdB==null)){
+				msgs.add("Choosing an element on the right is required.");
+			}
 		}
 		return msgs;
 	}
@@ -594,6 +616,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		// restore previously uploaded file from session.
 		//this.restoreUploadedFile(request, theFile);
 		msgs = validateAssociatedElements(assoc);
+		msgs = validateComposingElements(assoc);
 		msgs = validateAssociationFile(request, msgs, assoc);
 		
 		SimpleChemicalAssociationBean simpleAsso = new SimpleChemicalAssociationBean();
