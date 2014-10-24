@@ -140,7 +140,7 @@
                                     ng-options="element.domainId as element.type for element in associatedElementsA">
                                 <option value=""></option>
                             </select>
-                        </div><br />
+                        </div><br />    
                         <div id="composingElementSelectA" ng-show="chemAssociationForm.associatedElementA.entityId != null && chemAssociationForm.associatedElementA.compositionType == 'nanomaterial entity'">
                             <label for="composingElementIdA">&nbsp;</label>
                             <select ng-model="chemAssociationForm.associatedElementA.composingElement.id" id="composingElementIdA" ng-options="element.id as element.type + ' (name: ' + element.name + ')' for element in composingElementsA">
