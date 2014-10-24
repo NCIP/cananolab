@@ -56,7 +56,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		List<String> msgs = new ArrayList<String>();
 		ChemicalAssociationBean assocBean = transferChemicalAssociationBean(bean, request);
 		 msgs = validateAssociatedElements(assocBean);
-		 msgs = validateComposingElements(assocBean);
+		 msgs = validateComposingElements(assocBean, msgs);
 		 msgs = validateAssociationFile(request, msgs, assocBean);
 		if (msgs.size()>0) {
 			return msgs;
@@ -76,16 +76,15 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 	 * @return
 	 */
 	private List<String> validateComposingElements(
-			ChemicalAssociationBean assocBean) {
-		List<String> msgs = new ArrayList<String>();
+			ChemicalAssociationBean assocBean, List<String> msgs) {
 		 String compTypeA = assocBean.getAssociatedElementA().getCompositionType();
 		 String compTypeB = assocBean.getAssociatedElementB().getCompositionType();
 			
-		 if((compTypeA!=null)&&(compTypeA.equalsIgnoreCase("nanomaterial entity"))){
+		 if((compTypeA!=null)&&(compTypeA.equalsIgnoreCase("nanomaterial entity"))&&(assocBean.getAssociatedElementA().getEntityDisplayName()!=null)){
 				if(assocBean.getAssociatedElementA().getComposingElement().getId()==null)
 						msgs.add("Choosing an element on the left is required.");
 			}
-			if((compTypeB!=null)&&(compTypeB.equalsIgnoreCase("nanomaterial entity"))){
+			if((compTypeB!=null)&&(compTypeB.equalsIgnoreCase("nanomaterial entity"))&&(assocBean.getAssociatedElementB().getEntityDisplayName()!=null)){
 				if(assocBean.getAssociatedElementB().getComposingElement().getId()==null)
 						msgs.add("Choosing an element on the right is required.");
 			}
@@ -616,7 +615,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		// restore previously uploaded file from session.
 		//this.restoreUploadedFile(request, theFile);
 		msgs = validateAssociatedElements(assoc);
-		msgs = validateComposingElements(assoc);
+		msgs = validateComposingElements(assoc, msgs);
 		msgs = validateAssociationFile(request, msgs, assoc);
 		
 		SimpleChemicalAssociationBean simpleAsso = new SimpleChemicalAssociationBean();
