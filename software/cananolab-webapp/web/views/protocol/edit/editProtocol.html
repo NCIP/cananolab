@@ -34,38 +34,38 @@
         <label for="type">Protocol Type *</label>
     </td>
     <td>
-	    <div id="categoryPrompt">
-	        <select ng-disabled="loader" id="type" ng-model="protocolForm.type">
-	            <option ng-repeat="option in protocolTypes" value="{{option}}" ng-selected="{{option==protocolForm.type}}">
-	                {{option}}
-	            </option>
-	            <option value="other">
-	                [other]
-	            </option>            
-	        </select>
-	        <div id="promptCategory" ng-if="protocolForm.type=='other'">
-	              <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
-	                  <tbody>
-	                  <tr>
-	                      <td class="cellLabel">
-	                          <label for="textCategory" category="">New Protocol Type:</label>
-	                      </td>
-	                  </tr>
-	                  <tr>
-	                      <td>
-	                          <input type="text" id="textCategory" ng-model='localForm.otherCategoryText' class="promptbox">
-	                      </td>
-	                  </tr>
-	                  <tr>
-	                      <td style="text-align: right">
-	                          <input type="button" class="promptButton" value="Add" ng-click="protocolForm.type=localForm.otherCategoryText; protocolTypes.push(localForm.otherCategoryText);">
-	                          <input type="button" class="promptButton" value="Cancel" ng-click="protocolForm.type='';">
-	                      </td>
-	                  </tr>
-	                  </tbody>
-	              </table>
-	          </div>
-	    </div>
+        <div id="categoryPrompt">
+            <select ng-disabled="loader" id="type" ng-model="protocolForm.type">
+                <option ng-repeat="option in protocolTypes" value="{{option}}" ng-selected="{{option==protocolForm.type}}">
+                    {{option}}
+                </option>
+                <option value="other">
+                    [other]
+                </option>            
+            </select>
+            <div id="promptCategory" ng-if="protocolForm.type=='other'">
+                  <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                      <tbody>
+                      <tr>
+                          <td class="cellLabel">
+                              <label for="textCategory" category="">New Protocol Type:</label>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>
+                              <input type="text" id="textCategory" ng-model='localForm.otherCategoryText' class="promptbox">
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="text-align: right">
+                              <input type="button" class="promptButton" value="Add" ng-click="protocolForm.type=localForm.otherCategoryText; protocolTypes.push(localForm.otherCategoryText);">
+                              <input type="button" class="promptButton" value="Cancel" ng-click="protocolForm.type='';">
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+        </div>
     </td>
 </tr>
 <tr>
@@ -115,19 +115,19 @@
             <tr>
                 <td colspan="2">
                             <span id="load" style="display: block;" ng-show="protocolForm.uriExternal=='false'">
-        						<input type="file" ng-model="protocolForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
-        						<span ng-if="ie9">{{selectedFileName}}</span>
-        						<!-- <input type="button" value="Upload" ng-click="uploadFile()" ng-show="protocolForm.uriExternal=='false'">  -->
-        						<!-- <input type="file" file-model="localForm.uploadedFile" ng-model="localForm.uploadedFile" size="60" value="" onchange="angular.element(this).scope().uploadFile(this);" id="uploadedFile"> -->
-				            </span>
-                            <span id="uploadedUri" ng-show="protocolForm.uriExternal=='false' && protocolForm.uri != null">
-			                    <a href="rest/protocol/download?fileId={{protocolForm.fileId}}">{{protocolForm.uri}}</a>
+                                <input type="file" ng-model="protocolForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
+                                <span ng-if="ie9">{{selectedFileName}}</span>
+                                <!-- <input type="button" value="Upload" ng-click="uploadFile()" ng-show="protocolForm.uriExternal=='false'">  -->
+                                <!-- <input type="file" file-model="localForm.uploadedFile" ng-model="localForm.uploadedFile" size="60" value="" onchange="angular.element(this).scope().uploadFile(this);" id="uploadedFile"> -->
                             </span>
-				            
+                            <span id="uploadedUri" ng-show="protocolForm.uriExternal=='false' && protocolForm.uri != null">
+                                <a href="rest/protocol/download?fileId={{protocolForm.fileId}}">{{protocolForm.uri}}</a>
+                            </span>
+                            
                     <label for="uploadedFile">&nbsp;&nbsp;</label>
-			                <span id="link" ng-show="protocolForm.uriExternal=='true'">
+                            <span id="link" ng-show="protocolForm.uriExternal=='true'">
                                 <input type="text" ng-model="protocolForm.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
-					        </span>
+                            </span>
                     <label for="externalUrl">&nbsp;</label>
                 </td>
             </tr>

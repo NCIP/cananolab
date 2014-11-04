@@ -398,11 +398,10 @@
                                     <td>
                                         <img ng-src="images/ajax-loader.gif" border="0" class="counts"
                                              id="loaderImg" style="display: none" alt="load existing samples">
-                                        <select ng-disabled="loader" id="matchedSampleSelect" ng-model="localForm.matchedSampleSelect" size="5" multiple="multiple">
-                                            <option ng-repeat="option in sampleResults track by $index" value="{{option}}">
-                                                {{option}}
-                                            </option>
-                                        </select>
+
+                                    <select ng-hide="loader" ng-hide="matchSampleSearch" data-ng-model="localForm.matchedSampleSelect" 
+                                    data-ng-options="option for option in sampleResults track by $index" ng-multiple="true" multiple id="matchedSampleSelect">
+                                    </select>                                        
                                     </td>
                                     <td><label for="matchedSampleSelect">
                                         <a href ng-click="updateAssociatedSamples()"
