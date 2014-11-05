@@ -229,12 +229,29 @@ var app = angular.module('angularApp')
     };    
 
     $scope.reset = function() {
-         var orgs = $scope.sampleData.organizationNamesForUser;
-         var roles = $scope.sampleData.contactRoles;
-         $scope.sampleData = angular.copy($scope.master);
-         $scope.sampleData.organizationNamesForUser = orgs;
-         $scope.sampleData.contactRoles = roles;
+        $scope.loader = true;
+         $http({method: 'GET', url: '/caNanoLab/rest/sample/submissionSetup'}).
+             success(function(data, status, headers, config, statusText) {
+                 $scope.sampleData = data;
+                 $scope.loader = false;
+             }).
+             error(function(data, status, headers, config, statusText) {
+                 // called asynchronously if an error occurs
+                 // or server returns response with an error status.
+                 var path = $location.path();
+                 $location.path("/login").search({'came_from':path}).replace();
+                 $scope.loader = false;
+         });
+ 
     };
+
+    // $scope.reset = function() {
+    //      var orgs = $scope.sampleData.organizationNamesForUser;
+    //      var roles = $scope.sampleData.contactRoles;
+    //      $scope.sampleData = angular.copy($scope.master);
+    //      $scope.sampleData.organizationNamesForUser = orgs;
+    //      $scope.sampleData.contactRoles = roles;
+    // };
 
     $scope.submitSample = function() {
         $scope.loader = true;
