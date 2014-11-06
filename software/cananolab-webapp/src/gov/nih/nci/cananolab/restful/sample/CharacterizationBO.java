@@ -722,16 +722,15 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		request.getSession().setAttribute("sampleId", String.valueOf(editBean.getParentSampleId()));
 		
-		//FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
-		FindingBean findingBean =  this.transferSimpleFinding(simpleFinding);
+		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
+		findingBean =  this.transferSimpleFinding(simpleFinding, findingBean);
 		
 		int theFileIndex = simpleFinding.getTheFileIndex();		
 		FileBean theFile = simpleFinding.transferToNewFileBean();
 		
 		simpleFinding.getErrors().clear();
 	
-		this.setServicesInSession(request);
-
+		CharacterizationService service = this.setServicesInSession(request);
 		// create a new copy before adding to finding
 		FileBean newFile = theFile.copy();
 		
@@ -772,14 +771,16 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			return simpleFinding;
 		
 		findingBean.addFile(newFile, theFileIndex);
+		findingBean.setupDomain(internalUriPath, user.getLoginName());
+		service.saveFinding(findingBean);
 				
 		achar.addFinding(findingBean);
 		simpleFinding.transferFromFindingBean(request, findingBean);
 		
 		request.setAttribute("anchor", "submitFinding");
 //		this.checkOpenForms(achar, theForm, request);
-		InitCharacterizationSetup.getInstance()
-			.persistCharacterizationDropdowns(request, achar);
+//		InitCharacterizationSetup.getInstance()
+//			.persistCharacterizationDropdowns(request, achar);
 		
 		request.getSession().removeAttribute("newFileData");
 		request.getSession().setAttribute("theChar", achar);
@@ -788,8 +789,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return simpleFinding;
 	}
 
-	private FindingBean transferSimpleFinding(SimpleFindingBean simpleFinding) {
-		FindingBean finding = new FindingBean();
+	private FindingBean transferSimpleFinding(SimpleFindingBean simpleFinding, FindingBean finding) {
+		//FindingBean finding = new FindingBean();
 		finding.setColumnHeaders(simpleFinding.getColumnHeaders());
 		FileBean theFile = new FileBean();
 		File file = new File();
@@ -798,6 +799,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		file.setId(simpleFinding.getTheFile().getId());
 		file.setTitle(simpleFinding.getTheFile().getTitle());
 		file.setType(simpleFinding.getTheFile().getType());
+		file.setDescription(simpleFinding.getTheFile().getDescription());
 		theFile.setKeywordsStr(simpleFinding.getTheFile().getKeywordsStr());
 		theFile.setDomainFile(file);
 		finding.setTheFile(theFile);
@@ -832,6 +834,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			file.setUriExternal(fileBean.getUriExternal());
 			file.setUri(fileBean.getUri());
 			file.setType(fileBean.getType());
+			file.setDescription(fileBean.getDescription());
 			theFile.setKeywordsStr(fileBean.getKeywordsStr());
 			
 			theFile.setExternalUrl(fileBean.getExternalUrl());
