@@ -546,6 +546,7 @@ var app = angular.module('angularApp')
     $scope.editFile = function(fileId) {
     	$scope.selectedFileName = ''; 
         for (var k = 0; k < $scope.currentFinding.files.length; ++k) {
+
             var element = $scope.currentFinding.files[k];
             if (element.id == fileId ) {
                 $scope.fileForm.externalUrl = element.externalUrl;

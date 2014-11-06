@@ -228,6 +228,7 @@ var app = angular.module('angularApp')
         });       
     };    
 
+    
     $scope.reset = function() {
         $scope.loader = true;
          $http({method: 'GET', url: '/caNanoLab/rest/sample/submissionSetup'}).
