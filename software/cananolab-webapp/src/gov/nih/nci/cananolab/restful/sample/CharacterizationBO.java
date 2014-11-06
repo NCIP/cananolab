@@ -8,10 +8,14 @@
 
 package gov.nih.nci.cananolab.restful.sample;
 
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.Row;
+import gov.nih.nci.cananolab.dto.common.TableCell;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
@@ -20,11 +24,13 @@ import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleCell;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationSummaryEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleRowBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
@@ -716,7 +722,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		request.getSession().setAttribute("sampleId", String.valueOf(editBean.getParentSampleId()));
 		
-		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
+		//FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
+		FindingBean findingBean =  this.transferSimpleFinding(simpleFinding);
 		
 		int theFileIndex = simpleFinding.getTheFileIndex();		
 		FileBean theFile = simpleFinding.transferToNewFileBean();
@@ -740,7 +747,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 						.getCharacterizationName());
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		newFile.setupDomainFile(internalUriPath, user.getLoginName());
-		
 		
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
@@ -766,6 +772,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			return simpleFinding;
 		
 		findingBean.addFile(newFile, theFileIndex);
+				
 		achar.addFinding(findingBean);
 		simpleFinding.transferFromFindingBean(request, findingBean);
 		
@@ -775,7 +782,64 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			.persistCharacterizationDropdowns(request, achar);
 		
 		request.getSession().removeAttribute("newFileData");
+		request.getSession().setAttribute("theChar", achar);
+		
+		/// save char to session
 		return simpleFinding;
+	}
+
+	private FindingBean transferSimpleFinding(SimpleFindingBean simpleFinding) {
+		FindingBean finding = new FindingBean();
+		finding.setColumnHeaders(simpleFinding.getColumnHeaders());
+		FileBean theFile = new FileBean();
+		File file = new File();
+		file.setCreatedBy(simpleFinding.getTheFile().getCreatedBy());
+		file.setCreatedDate(simpleFinding.getTheFile().getCreatedDate());
+		file.setId(simpleFinding.getTheFile().getId());
+		file.setTitle(simpleFinding.getTheFile().getTitle());
+		file.setType(simpleFinding.getTheFile().getType());
+		theFile.setKeywordsStr(simpleFinding.getTheFile().getKeywordsStr());
+		theFile.setDomainFile(file);
+		finding.setTheFile(theFile);
+		finding.setNumberOfColumns(simpleFinding.getNumberOfColumns());
+		finding.setNumberOfRows(simpleFinding.getNumberOfRows());
+		finding.setTheFileIndex(simpleFinding.getTheFileIndex());
+		
+		List<Row> rowList = new ArrayList<Row>();
+		for(SimpleRowBean rowBean : simpleFinding.getRows()){
+			Row row = new Row();
+			List<TableCell> cellList = new ArrayList<TableCell>();
+			for(SimpleCell cell : rowBean.getCells()){
+				TableCell tbCell = new TableCell();
+				tbCell.setColumnOrder(cell.getColumnOrder());
+				tbCell.setDatumOrCondition(cell.getDatumOrCondition());
+				tbCell.setCreatedDate(cell.getCreatedDate());
+				tbCell.setValue(cell.getValue());
+				cellList.add(tbCell);
+			}
+			row.setCells(cellList);
+			rowList.add(row);
+		}
+		finding.setRows(rowList);
+		List<FileBean> fileList = new ArrayList<FileBean>();
+		for(SimpleFileBean fileBean : simpleFinding.getFiles()){
+			file = new File();
+			theFile = new FileBean();
+			file.setCreatedBy(fileBean.getCreatedBy());
+			file.setCreatedDate(fileBean.getCreatedDate());
+			file.setId(fileBean.getId());
+			file.setTitle(fileBean.getTitle());
+			file.setUriExternal(fileBean.getUriExternal());
+			file.setUri(fileBean.getUri());
+			file.setType(fileBean.getType());
+			theFile.setKeywordsStr(fileBean.getKeywordsStr());
+			
+			theFile.setExternalUrl(fileBean.getExternalUrl());
+			theFile.setDomainFile(file);
+			fileList.add(theFile);
+		}
+		finding.setFiles(fileList);
+		return finding;
 	}
 
 	public SimpleFindingBean removeFile(HttpServletRequest request, SimpleFindingBean simpleFinding)
