@@ -134,6 +134,7 @@ var app = angular.module('angularApp')
         });
     }
     else {
+        alert("here");
         $scope.editSampleForm = true;
         $scope.loaderText = "Loading";
         $scope.updateButton = "Submit";
@@ -588,8 +589,8 @@ var app = angular.module('angularApp')
     
     /** End - Access Section **/        
 
-    $scope.master = angular.copy($scope.sampleData);
-    $scope.reset();
+    // $scope.master = angular.copy($scope.sampleData);
+    // $scope.reset();
 })
 
 .controller('modalCtrl', function ($scope, $modalInstance,id) {
