@@ -585,6 +585,7 @@ var app = angular.module('angularApp')
                 var element = $scope.currentFinding.files[k];
                 if (element.id == $scope.fileForm.id) {
                     $scope.currentFinding.files.splice(k,1);
+                    $scope.currentFinding.theFileIndex = k;
                 }
             }
             //$scope.currentFinding.files = $scope.files;
