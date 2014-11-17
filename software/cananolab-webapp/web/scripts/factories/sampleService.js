@@ -12,6 +12,7 @@ app.factory("sampleService", function($http){
 		isEdit: {data: null },
 		scratchPad: {data: null },
 		pocData: {data: null},
+		message: {data:null},
 		simpleDialog: function() {},
 		sampleName: function(sampleId) {
 			that.name = "";

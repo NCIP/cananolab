@@ -8,6 +8,7 @@ var app = angular.module('angularApp')
 
     $scope.sampleData = {};
     $scope.reviewBean = {}; 
+    $scope.sampleMessage = sampleService.message;
     $scope.submitForReviewButton=1;
     $scope.sampleId = sampleService.sampleId;
     $scope.pocData = sampleService.pocData;
@@ -204,6 +205,7 @@ var app = angular.module('angularApp')
 
                 $http({method: 'GET', url: '/caNanoLab/rest/sample/deleteSample',params: {"sampleId":$scope.sampleData.sampleId}}).
                 success(function(data, status, headers, config) {
+                    $scope.sampleMessage.data = data;
                     var b = $scope.sampleResultData['data'];
                     if (b) {
                         for (var g = 0;g<b.length;g++) {
@@ -218,7 +220,7 @@ var app = angular.module('angularApp')
                         $location.search('fromMyWorkspace', null); 
                         }
                 	else {
-                		$location.path("/sampleResults").replace();
+                		$location.path("/sampleDelete").replace();
                 	}
                 }).
                 error(function(data, status, headers, config) {

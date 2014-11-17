@@ -1,9 +1,9 @@
 'use strict';
 var app = angular.module('angularApp')
-    .controller('MyWorkspaceCtrl', function (navigationService, groupService, $rootScope,$scope,$http,$filter,$location,$routeParams) {
+    .controller('MyWorkspaceCtrl', function (navigationService, groupService, $rootScope,$scope,$http,$filter,$location,$routeParams,sampleService) {
         $rootScope.tabs = navigationService.get();
         $rootScope.groups = groupService.getGroups.data.get();
-
+        $scope.sampleMessage = sampleService.message.data;
         $scope.$on('$viewContentLoaded', function(){
             $scope.getSamples();
         }); 
