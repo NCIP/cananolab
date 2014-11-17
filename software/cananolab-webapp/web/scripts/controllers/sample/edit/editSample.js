@@ -135,7 +135,6 @@ var app = angular.module('angularApp')
         });
     }
     else {
-        alert("here");
         $scope.editSampleForm = true;
         $scope.loaderText = "Loading";
         $scope.updateButton = "Submit";
