@@ -26,7 +26,7 @@
 			{{row.publicationType}}
 		</td>
 		<td data-title="'Research Category'" sortable="'researchAreas'" width="13%">
-			{{row.researchAreas}}
+			<div ng-repeat="item in row.researchAreas track by $index">{{item}}</div>
 		</td>                     
 		<td data-title="'Associated Sample Names'" sortable="'sampleNames'" width="13%">
 		 <div ng-repeat="item in row.sampleNames track by $index">{{item}}</div>
