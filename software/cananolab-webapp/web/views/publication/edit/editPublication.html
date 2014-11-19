@@ -400,8 +400,8 @@
                                              id="loaderImg" style="display: none" alt="load existing samples">
 
                                     <select ng-hide="loader" ng-hide="matchSampleSearch" data-ng-model="localForm.matchedSampleSelect" 
-                                    data-ng-options="option for option in sampleResults track by $index" ng-multiple="true" multiple id="matchedSampleSelect">
-                                    </select>                                        
+                                    data-ng-options="option for option in sampleResults" ng-multiple="true" multiple id="matchedSampleSelect">
+                                    </select>                                                                            
                                     </td>
                                     <td><label for="matchedSampleSelect">
                                         <a href ng-click="updateAssociatedSamples()"
