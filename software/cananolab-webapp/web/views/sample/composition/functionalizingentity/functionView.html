@@ -1,0 +1,42 @@
+<table class="summaryViewNoGrid" align="left">
+    <tr>
+        <th scope="col" class="cellLabel">
+            Type
+        </th>
+        <th scope="col" class="cellLabel" ng-if="$parent.entityType.withImagingFunction">
+            Image Modality
+        </th>
+        <th scope="row" class="cellLabel" width="30%" ng-if="$parent.entityType.withTargetingFunction">
+            Targets
+        </th>
+        <th scope="row" class="cellLabel">
+            Description
+        </th>
+        <th>
+        </th>
+    </tr>
+    <!-- <c:forEach var="function" items="${entity.functions}"> -->
+        <tr ng-repeat="indFunction in $parent.entityType.Functions">
+            <td>
+                {{indFunction.Type}}
+            </td>
+                <td ng-if="indFunction.withImagingFunction">
+                    <span ng-if="">
+                        {{indFunction.Modality}}
+                    </span>
+                </td>
+                <td ng-if="indFunction.withTargettingFunction">
+                    <span ng-if="indFunction.TargetDisplayNames.length > 0">
+                        <span ng-repeat="targetDisplayName in indFunction.TargetDisplayNames">
+                            {{targetDisplayName}}
+                            <br />
+                            <br />
+                        </span>
+                    </span>
+                </td>
+            <td ng-if="indFunction.FunctionDescription">
+                    {{indFunction.FunctionDescriptionDisplayName}}
+            </td>
+        </tr>
+<!--    </c:forEach> -->
+</table>

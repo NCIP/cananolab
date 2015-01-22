@@ -56,12 +56,13 @@ L-->
 		</property>
 	</bean>
 
+<!--  
 	<bean name="/admin" class="gov.nih.nci.cananolab.ui.admin.AdministrationAction">
 		<property name="adminService">
 			<ref bean="adminServiceDAO" />
 		</property>
 	</bean>
-
+-->
 	<bean name="DataAvailabilityServiceJDBCImpl"
 		class="gov.nih.nci.cananolab.service.sample.impl.DataAvailabilityServiceJDBCImpl">
 		<property name="dataSource">
@@ -79,7 +80,7 @@ L-->
 			</list>
 		</property>
 	</bean>
-
+<!--  
 	<bean name="/searchSample" class="gov.nih.nci.cananolab.ui.sample.SearchSampleAction">
 		<property name="dataAvailabilityService">
 			<ref bean="dataAvailabilityServiceDAO" />
@@ -142,7 +143,7 @@ L-->
 			<ref bean="curationServiceDAO" />
 		</property>
 	</bean>
-
+-->
 	<bean name="curationServiceJDBCImpl"
 		class="gov.nih.nci.cananolab.service.curation.impl.CurationServiceJDBCImpl">
 		<property name="dataSource">
@@ -160,7 +161,7 @@ L-->
 			</list>
 		</property>
 	</bean>
-
+<!--  
 	<bean name="/reviewData" class="gov.nih.nci.cananolab.ui.curation.ReviewDataAction">
 		<property name="curationService">
 			<ref bean="curationServiceDAO" />
@@ -171,5 +172,5 @@ L-->
 			<ref bean="dataAvailabilityServiceDAO" />
 		</property>
 	</bean>
-
+-->
 </beans>

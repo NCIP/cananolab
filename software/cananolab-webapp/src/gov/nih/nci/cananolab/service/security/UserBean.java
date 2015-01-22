@@ -24,7 +24,10 @@ import java.util.TreeSet;
 public class UserBean {
 
 	private String userId;
-
+	/**
+	 * This string is used insupport of a rest call
+	 */
+	private String displayName;
 	/**
 	 * This string is used for login into the application.
 	 */

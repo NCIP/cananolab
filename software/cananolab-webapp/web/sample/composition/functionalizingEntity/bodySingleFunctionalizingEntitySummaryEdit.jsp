@@ -106,12 +106,12 @@ L--%>
 					</td>
 					<td>
 						<%
-							String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
-												.getInstance().getDetailPage(
-														(String) pageContext
-																.getAttribute("entityType"),
-														"functionalizingEntity");
-										pageContext.setAttribute("detailPage", detailPage);
+							String detailPage = gov.nih.nci.cananolab.restful.sample.InitCompositionSetup
+																.getInstance().getDetailPage(
+																		(String) pageContext
+																				.getAttribute("entityType"),
+																		"functionalizingEntity");
+														pageContext.setAttribute("detailPage", detailPage);
 						%>
 						<c:set var="functionalizingEntity"
 							value="${functionalizingEntity}" scope="session" />

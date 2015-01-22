@@ -1,0 +1,42 @@
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+      <tr>
+       <th scope="col" align="left">
+         Manage Publications
+       </th>
+        <td align="right" width="30%">
+          <a class="helpText" href=
+          "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-PublicationsOverview')">Help</a>   <a class=
+          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+        </td>
+      </tr>
+    </table>
+<br />
+This is the manage publications section. Publications can include book chapters, editorials, peer review articles, reports, reviews and other forms of documents. In this section, depending on your authorization level, you may submit a new publication or search for an existing publication.
+<div><br />
+	<table summary="layout" cellpadding="0" cellspacing="0" border="0"
+	width="40%" height="100%" class="sidebarSection">
+	<tr>
+		<th class="sidebarTitle" scope="col" align="left">PUBLICATION LINKS</th>
+	</tr>
+	
+		
+	<tr ng-if="tabs.userLoggedIn">
+		<td class="sidebarContent"><a href="#/submitPublication"> Submit
+				a New Publication </a> <br> Select to submit a new
+			publication.</td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>			
+	<tr>
+		<td class="sidebarContent"><a href="#/searchPublication">Search
+				Existing Publications </a> <br> Enter search
+			criteria to obtain information on publications of interest.</td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+		<td class="sidebarContent"><a href="#/searchSamplesByPublication">Search for Samples by Publication</a><br />Enter DOI/Pubmed Id to obtain the related sample information</td>
+	</tr>	
+	
+</table> 
+</div>	
+</div>

@@ -176,6 +176,18 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		return domainEntity;
 	}
 
+	public void setSmallMolecule(SmallMolecule smallMolecule) {
+		this.smallMolecule = smallMolecule;
+	}
+
+	public void setAntibody(Antibody antibody) {
+		this.antibody = antibody;
+	}
+
+	public void setBiopolymer(Biopolymer biopolymer) {
+		this.biopolymer = biopolymer;
+	}
+
 	public Antibody getAntibody() {
 		return antibody;
 	}
@@ -190,6 +202,10 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 
 	public List<FunctionBean> getFunctions() {
 		return functions;
+	}
+
+	public void setFunctions(List<FunctionBean> functions) {
+		this.functions = functions;
 	}
 
 	public String getMolecularFormula() {
@@ -234,6 +250,10 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 
 	public ActivationMethod getActivationMethod() {
 		return activationMethod;
+	}
+
+	public void setActivationMethod(ActivationMethod activationMethod) {
+		this.activationMethod = activationMethod;
 	}
 
 	public void setupDomainEntity(String createdBy) throws Exception {
@@ -495,6 +515,12 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		} else {
 			domainEntity.setPubChemId(null);
 		}
+	}
+//Added for setting up domainEntity using rest
+	public void setDomainEntity(FunctionalizingEntity domainEntity2) {
+		// TODO Auto-generated method stub
+		this.domainEntity = domainEntity2;
+		
 	}
 
 }

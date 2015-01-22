@@ -1,0 +1,22 @@
+<table width="100%" align="center" class="submissionView">
+    <tr>
+        <th colspan="4">
+            Liposome Properties
+        </th>
+    </tr>
+    <tr>
+        <td class="cellLabel">
+            <label for="liposomeIsPolymerized">Is Polymerized</label>
+        </td>
+        <td class="cellLabel">
+            <select ng-model="nanoEntityForm.domainEntity.isPolymerized" id="liposomeIsPolymerized" ng-options="key as value for (key , value) in $parent.yesNoOptions">
+            </select>
+        </td>
+        <td class="cellLabel">
+            <label for="liposomePolymerName">Polymer Name</label>
+        </td>
+        <td class="cellLabel">
+            <input type="text" ng-model="nanoEntityForm.domainEntity.polymerName" id="liposomePolymerName" />
+        </td>
+    </tr>
+</table>

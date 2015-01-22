@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBasicBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -102,4 +103,9 @@ public interface SampleService extends BaseService {
 
 	public List<String> findSampleIdsByOwner(String currentOwner)
 			throws SampleException;
+	
+	public SampleBasicBean findSWorkspaceSampleById(String sampleId, boolean loadAccessInfo)
+			throws SampleException, NoAccessException;
+	
+	public void loadAccessesForBasicSampleBean(SampleBasicBean sampleBean) throws Exception;
 }

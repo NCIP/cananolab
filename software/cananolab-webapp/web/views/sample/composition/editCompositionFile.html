@@ -1,0 +1,141 @@
+<div class="nanoPageContainer"  ng-class="{formFocus:loader}">
+    <div class="spacer">
+        <form novalidate>
+            <table class="contentTitle" width="100%" border="0" summary="layout">
+                <tbody>
+                <tr>
+                    <th scope="col" align="left">
+                        {{sampleName}} Sample Composition - Composition File
+                    </th>
+
+                    <td align="right" width="30%">
+                        <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/4+-+Managing+Sample+Composition+Annotations#id-4-ManagingSampleCompositionAnnotations-AddingCompositionFiles')">Help</a>
+                        &nbsp;
+                        <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+                        &nbsp;
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
+                <ul>
+                    <li ng-repeat="message in messages">
+                        {{message}}
+                    </li>
+                </ul>
+            </span>
+            <table width="100%" align="center" class="submissionView">
+                <tbody>
+                <tr>
+                    <td colspan="2">
+                        <div id="newFile">
+                            <table class="" width="85%" align="center">
+                                <tbody>
+                                <tr>
+                                    <td class="cellLabel" width="40%">
+                                        <input type="radio" ng-model="fileForm.uriExternal" value="false" ng-checked="externalUrlEnabled==false" id="external0">
+                                        <label for="external0">Upload</label>
+                                    </td>
+                                    <td class="cellLabel">
+                                        <input type="radio" ng-model="fileForm.uriExternal" value="true" ng-checked="externalUrlEnabled==true" id="external1">
+                                        <label for="external1">Enter File URL</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                            <span id="load" style="display: block;" ng-show="fileForm.uriExternal=='false'">
+        						<input type="file" ng-model="fileForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
+        						<span ng-if="ie9">{{selectedFileName}}</span>
+				            </span>
+                            <span id="uploadedUri" ng-show="fileForm.uriExternal=='false' && fileForm.id != null">
+			                    <a href="rest/composition/download?fileId={{fileForm.id}}">{{fileForm.uri}}</a>
+                            </span>
+                                        <label for="uploadedFile">&nbsp;&nbsp;</label>
+			                <span id="link" ng-show="fileForm.uriExternal=='true'">
+                                <input type="text" ng-model="fileForm.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
+					        </span>
+                                        <label for="externalUrl">&nbsp;</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cellLabel">
+                                        <label for="fileType">File Type*</label>
+                                    </td>
+                                    <td>
+                                        <div id="fileTypePrompt">
+                                            <select ng-model="fileForm.type" id="fileType">
+                                                <option value="">
+                                                </option>
+                                                <option ng-repeat="type in fileTypes track by $index" value="{{type}}" ng-selected="{{type==fileForm.type}}">
+                                                    {{type}}
+                                                </option>
+
+                                                <option value="other">
+                                                    [other]
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cellLabel">
+                                        <label for="fileTitle">File Title*</label>
+                                    </td>
+                                    <td>
+                                        <input type="text"  ng-model="fileForm.title" size="60" value="" id="fileTitle">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cellLabel" valign="top">
+                                        <label for="fileKeywords">Keywords</label>
+                                    </td>
+                                    <td>
+                                        <textarea  ng-model="fileForm.keywordsStr" cols="60" rows="3" id="fileKeywords"></textarea>
+                                        <br>
+                                        <em>(one word per line)</em>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cellLabel" valign="top">
+                                        <label for="fileDescription">Description</label>
+                                    </td>
+                                    <td>
+                                        <textarea  ng-model="fileForm.description" cols="60" rows="3" id="fileDescription"></textarea>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <br />
+            <table width="100%" class="invisibleTable" summary="layout">
+                <tbody><tr>
+                    <td align="left" width="600">
+                        <input type="button" value="Delete" ng-click="removeFile('{{fileForm.id}}');" id="deleteFile" ng-show="fileForm.id != null">
+                    </td>
+                    <td align="right" width="300">
+                        <input type="hidden" ng-model="fileForm.isPublic">
+            			<input type="hidden" ng-model="fileForm.theAccess">
+			           	<input type="hidden" ng-model="fileForm.createdBy">
+			           	<input type="hidden" ng-model="fileForm.createdDate">            			
+                        <input type="reset" value="Reset" ng-click="resetForm()">
+                        <input type="submit" value="Submit" ng-click="saveFile()" ng-if="compositionFileId == null">
+                        <input type="submit" value="Update" ng-click="saveFile()" ng-if="compositionFileId != null">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+<div id="loader" ng-show="loader">
+    <div id="loaderText">
+        Loading
+    </div>
+    <div id="loaderGraphic"></div>
+</div>

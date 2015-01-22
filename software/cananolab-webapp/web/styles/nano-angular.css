@@ -1,0 +1,110 @@
+.keywords-container {
+    width:500px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    margin-bottom: 15px;
+    overflow: auto;
+    border: 1px solid #cccccc;
+    color: #5c5c5c;
+    padding: 3px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    min-height: 26px;
+}
+.keywords-container ul {
+    padding: 0px;
+    margin: 0px;
+}
+
+.keywords li {
+    display: list-item;
+    background-image: none;
+    float: left;
+    list-style: none outside none;
+    -moz-user-select: none;
+    background-clip: padding-box;
+    background-color: #e4e4e4;
+    background-image: -moz-linear-gradient(center top , #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+    border: 1px solid #aaaaaa;
+    border-radius: 3px;
+    box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0, 0, 0, 0.05);
+    color: #333;
+    cursor: default;
+    line-height: 13px;
+    margin: 3px 0 3px 5px;
+    padding: 3px 5px 3px 18px;
+    position: relative;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 13px;
+}
+
+/*Testing input validation */
+.my-input {
+    -webkit-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+    background: transparent;
+}
+.my-input.ng-invalid {
+    color:white;
+    background: red;
+}
+
+.modal {
+    display: block;
+}
+.modal-body:before,
+.modal-body:after {
+    display: table;
+    content: " ";
+}
+.modal-header:before,
+.modal-header:after {
+    display: table;
+    content: " ";
+}
+.pointOfContact-modal-window .modal-dialog {
+    width:650px;
+}
+.pointOfContact-modal-window .summaryViewWithGrid td {
+    border-width:0px;
+}
+
+div.editSampleButtonBar {
+    padding:25px;
+}
+div.nanoPageContainer {
+    width:900px;
+}
+
+.btn-xxs {
+  padding:.2em .6em .3em;
+  font-size: 75%;
+  line-height: 1;
+  border-radius: .25em;
+  vertical-align: baseline;
+}
+
+#newKeyword {
+    width: 238px;
+    margin-bottom: 15px;
+}
+.select2-search-choice-close {
+    display: block;
+    width: 12px;
+    height: 13px;
+    position: absolute;
+    right: 3px;
+    top: 4px;
+    font-size: 1px;
+    outline: none;
+    background: url('../images/select2.png') right top no-repeat;
+    left: 3px;
+}
+.select2-search-choice-close:hover {
+  background-position: right -11px;
+  cursor:pointer;
+}
+.btn-modal {
+    margin-left:5px;
+    margin-right:5px;
+    float:right;
+}

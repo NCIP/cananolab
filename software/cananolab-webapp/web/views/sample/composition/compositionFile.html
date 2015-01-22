@@ -1,0 +1,80 @@
+<table id="summarySection${index}" width="100%" align="center"
+       style="display: block" class="summaryViewNoGrid dataTable">
+    <tr>
+        <th align="left" class="heading" style="padding: 0.5em;">
+            composition file
+        </th>
+    </tr>
+    <tr ng-repeat="(key, fileTypes) in $parent.compositionfile">
+        <td>
+                <a href="{{key}}"></a>
+                <table width="99%" align="center" class="summaryViewNoGrid"
+                       style="background-color:#dbdbdb;">
+                    <tr>
+                        <th align="left"  class="characterization">
+                            {{key}}
+                        </th>
+                    </tr>
+                    <tr ng-repeat="indFile in fileTypes">
+                        <td>
+                                <table class="summaryViewNoGrid" width="99%" align="center"
+                                       style="background-color:#F5F5f5;">
+                                    <tr>
+                                        <td class="cellLabel" width="20%">
+                                            Title and Download Link
+                                        </td>
+                                        <td>
+                                            <span ng-if="indFile.ExternalURI">
+                                                    <a
+                                                            ng-href="/caNanoLab/rest/sample/download?fileId={{indFile.fileId}}">
+                                                            {{indFile.URI}}
+                                                    </a>
+                                                    &nbsp;[<a class="disclaimerLink" href="/caNanoLab/html/cananoDisclaimer.html" target="new">Disclaimer</a>]
+                                            </span>
+                                            <span ng-if="indFile.isImage">
+                                                {{indFile.Title}}
+                                                <br />
+                                                <a href="" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}', '{{indFile.fileId}}');  return false;">
+                                                	<img src="/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}" border="0" width="150" alt="uploaded image"> 
+                                                </a>        
+                                                </span>
+                                                <span ng-if="!indFile.ExternalURI && !indFile.isImage">
+                                                    <a
+                                                            ng-href="/caNanoLab/rest/sample/download?fileId={{indFile.fileId}}">
+                                                        {{indFile.Title}} </a>
+                                                </span>
+                                        </td>
+                                    </tr>
+                                        <tr ng-if="indFile.KeywordStr != ''">
+                                            <td class="cellLabel" width="10%">
+                                                Keywords
+                                            </td>
+                                            <td>
+                                                {{indFile.KeyWordDisplayName}}
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="indFile.Description != ''">
+                                            <td class="cellLabel" width="10%">
+                                                Description
+                                            </td>
+                                            <td>
+                                                {{indFile.Description}}
+                                            </td>
+                                        </tr>
+                                </table>
+                                
+                                <br ng-if="$index < fileTypes.length"/>
+                                <br ng-if="$index < fileTypes.length"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th valign="top" align="left" height="6">
+                        </th>
+                    </tr>
+                </table>
+        </td>
+    </tr>
+</table>
+<div id="summarySeparator${index}">
+    <br />
+</div>

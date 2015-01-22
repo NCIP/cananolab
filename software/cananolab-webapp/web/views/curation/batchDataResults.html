@@ -1,0 +1,36 @@
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+        <tr>
+            <th scope="col" align="left">
+                Long Running Processes
+            </th>
+            <td align="right" width="30%">
+                <a class="helpText" href=
+                        "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SearchingPublications')">Help</a>   <a class=
+                                                                                                                                                                                                                          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table class="table publication" width="100%" cellpadding="0" cellspacing="0" ng-if="dataExists">
+        <tr>
+            <th>Process Type</th>
+            <th>Process Status</th>
+        </tr>
+        <tr ng-repeat="result in data">
+            <td>
+                <div>{{result.processType}}</div>
+            </td>
+            <td>
+                <div>{{result.statusMessage}}</div>
+            </td>
+        </tr>
+    </table>
+    <div class="welcomeContent" ng-if="! dataExists">There are currently no pending long running processes or pending results to view.</div>
+    <div id="loader" class="sample offset" ng-show="loader">
+        <div id="loaderText">
+            Loading
+        </div>
+        <div id="loaderGraphic"></div>
+    </div>
+</div>

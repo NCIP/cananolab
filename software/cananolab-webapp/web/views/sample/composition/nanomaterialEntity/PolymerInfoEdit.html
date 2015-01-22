@@ -1,0 +1,32 @@
+<table width="100%" align="center" class="submissionView">
+    <tr>
+        <th colspan="6">
+            Polymer Properties
+        </th>
+    </tr>
+    <tr>
+        <td class="cellLabel">
+            <label for="polymerInitiator">Initiator</label>
+        </td>
+        <td class="cellLabel">
+            <input type="text" ng-model="nanoEntityForm.domainEntity.initiator" id="polymerInitiator" />
+        </td>
+        <td class="cellLabel">
+            <label for="polymerIsCrossLinked">Is Cross Linked</label>
+        </td>
+        <td class="cellLabel">
+            <select ng-model="nanoEntityForm.domainEntity.isCrossLinked" id="polymerIsCrossLinked">
+                <option value="None"></option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </td>
+        <td class="cellLabel">
+            <label for="crossLinkDegree">Cross Link Degree</label>
+        </td>
+        <td class="cellLabel">
+            <input type="text" id="crossLinkDegree"
+                   ng-model="nanoEntityForm.domainEntity.crossLinkDegree" />
+        </td>
+    </tr>
+</table>

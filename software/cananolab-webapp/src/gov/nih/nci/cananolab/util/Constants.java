@@ -149,7 +149,8 @@ public class Constants {
 	// Maximum file size of site logo.
 	public static final int MAX_LOGO_SIZE = 65536;
 
-	public static final int DISPLAY_TAG_TABLE_SIZE = 25;
+	//TODO: temp change from 25 to 100000 for v2.0
+	public static final int DISPLAY_TAG_TABLE_SIZE = 100000;
 
 	public static final String PLACEHOLDER_DATUM_CONDITION_CREATED_BY = "place holder";
 

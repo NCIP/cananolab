@@ -34,6 +34,9 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonFilter;
+
 /**
  * This class represents shared properties of samples to be shown in the view
  * pages.
@@ -150,7 +153,7 @@ public class SampleBean extends SecuredDataBean {
 		} else {
 			domain.setKeywordCollection(new HashSet<Keyword>());
 		}
-		if (keywordsStr.length() > 0) {
+		if (keywordsStr != null && keywordsStr.length() > 0) {
 			String[] strs = keywordsStr.split("\r\n");
 			for (String str : strs) {
 				// change to upper case
@@ -233,6 +236,7 @@ public class SampleBean extends SecuredDataBean {
 		this.chemicalAssociationClassNames = chemicalAssociationClassNames;
 	}
 
+	//@JsonIgnore
 	public PointOfContactBean getPrimaryPOCBean() {
 		return primaryPOCBean;
 	}
@@ -314,6 +318,7 @@ public class SampleBean extends SecuredDataBean {
 		this.mincharScore = mincharScore;
 	}
 
+	@JsonIgnore
 	public PointOfContactBean getThePOC() {
 		return thePOC;
 	}

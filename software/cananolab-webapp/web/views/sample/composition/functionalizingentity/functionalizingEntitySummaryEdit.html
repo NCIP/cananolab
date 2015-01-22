@@ -1,0 +1,161 @@
+<table id="summarySection{{index}}" width="100%" align="center"
+       style="display: block; width:100em;" class="summaryViewNoGrid dataTable">
+    <tr>
+        <th align="left"  class="heading" style="padding: 0.5em;">
+            functionalizing entity
+            &nbsp;&nbsp;
+            <a href="/caNanoLab/#/editFunctionalizingEntity?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="btn btn-primary btn-xxs" style="color:white;text-decoration: none;">
+                Add
+            </a>
+        </th>
+    </tr>
+    <tr ng-repeat="(key, entityTypes) in $parent.functionalizingentity">
+        <td>
+            <a href="{{key}}"></a>
+            <div class="characterization" style="display: inline-block; overflow:hidden; width:97%">{{key}}</div>
+            <table width="99%" align="center" class="summaryViewNoGrid"
+                   style="background-color:#dbdbdb;" ng-repeat="entityType in entityTypes">
+                <tr>
+                    <td>
+                        <!-- <div style="margin-left:auto; margin-right:auto;text-align:right;width:99%;">
+                            <button ng-click="$parent.addAccess=true; $parent.showAddAccessButton=false;$parent.accessForm.theAccess.userBean.loginName='';$parent.accessForm.theAccess.groupName='';$parent.accessForm.theAccess.roleName='';" id="addNano" class="btn btn-primary btn-xxs">Edit</button>
+                        </div> -->
+                        <div style="margin-left:auto; margin-right:auto;text-align:right;width:99%;">
+                            <a href="/caNanoLab/#/editFunctionalizingEntity?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}&&funcEntityId={{entityType.dataId}}" class="btn btn-primary btn-xxs" style="color:white;text-decoration: none;">
+                                Edit
+                            </a>
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table class="summaryViewNoGrid" width="99%" align="center"
+                               style="background-color:#F5F5f5;">
+                            <tr ng-if="entityType.Name != ''">
+                                <th scope="row" class="cellLabel" width="10%">
+                                    Name
+                                </th>
+                                <td style="width:40em;">
+                                    {{entityType.Name}}
+                                </td>
+                            </tr>
+                            <tr ng-if="entityType.pubChemID != ''">
+                                <th scope="row" class="cellLabel" width="10%">
+                                    PubChem ID
+                                </th>
+                                <td>
+                                    <a href="{{entityType.pubChemLink}}"
+                                       target="caNanoLab - View PubChem">{{entityType.pubChemID}}
+                                    </a> &nbsp;(
+                                    {{entityType.pubChemDS}}
+                                    )
+                                </td>
+                            </tr>
+                            <tr ng-if="entityType.value != ''">
+                                <th scope="row" class="cellLabel" width="10%">
+                                    Amount
+                                </th>
+                                <td>
+                                    {{entityType.value}}
+                                    {{entityType.valueUnit}}
+                                </td>
+                            </tr>
+                            <tr ng-if="entityType.MolecularFormulaDisplayName != ''">
+                                <th scope="row" class="cellLabel" width="10%">
+                                    Molecular Formula
+                                </th>
+                                <td style="word-wrap: break-word; max-width: 280px;">
+                                    {{entityType.MolecularFormulaDisplayName}}
+                                </td>
+                            </tr>
+                            <!--                            <c:choose>
+                                                            <c:when test="${!empty entityDetailPage}">
+                                                                <tr>
+                                                                    <th scope="row" class="cellLabel" width="10%">
+                                                                        Properties
+                                                                    </th>
+                                                                    <td>
+                                                                        <c:set var="functionalizingEntity" value="${functionalizingEntity}"
+                                                                               scope="session" />
+                                                                        <jsp:include page="${entityDetailPage}">
+                                                                            <jsp:param name="summary" value="true" />
+                                                                        </jsp:include>
+                                                                    </td>
+                                                                </tr>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <c:if test="${functionalizingEntity.withProperties }">
+                                                                    <tr>
+                                                                        <th scope="row" class="cellLabel" width="10%">
+                                                                            Properties
+                                                                        </th>
+                                                                        <td>
+                                                                            <%
+                                                                            String detailPage = gov.nih.nci.cananolab.restful.sample.InitCompositionSetup
+                                                                            .getInstance().getDetailPage(
+                                                                            (String) pageContext
+                                                                            .getAttribute("entityType"),
+                                                                            "functionalizingEntity");
+                                                                            pageContext.setAttribute("detailPage", detailPage);
+                                                                            %>
+                                                                            <c:set var="functionalizingEntity"
+                                                                                   value="${functionalizingEntity}" scope="session" />
+                                                                            <jsp:include page="${detailPage}">
+                                                                                <jsp:param name="summary" value="true" />
+                                                                            </jsp:include>
+                                                                        </td>
+                                                                    </tr>
+                                                                </c:if>
+                                                            </c:otherwise>   -->
+                            <tr ng-if="entityType.isWithProperties != ''">
+                                <td class="cellLabel" width="10%">
+                                    Properties
+                                </td>
+                                <td colspan="2">
+                                    <ng-include src="entityType.detailsPage"></ng-include>
+                                </td>
+                            </tr>
+                            <tr ng-if="entityType.Functions != ''">
+                                <th scope="row" class="cellLabel" width="10%" valign="top">
+                                    Function(s)
+                                </th>
+                                <td>
+                                    <ng-include src="'/caNanoLab/views/sample/composition/functionalizingentity/functionView.html'"></ng-include>
+                                </td>
+                            </tr>
+                            <tr ng-if="entityType.ActivationMethod != ''">
+                                <th scope="row" class="cellLabel" width="10%">
+                                    Activation Method
+                                </th>
+                                <td>
+                                    {{entityType.ActivationMethod}}
+                                </td>
+                            </tr>
+                            <tr ng-if="entityType.description != ''">
+                                <th scope="row" class="cellLabel" width="10%">
+                                    Description
+                                </th>
+                                <td ng-bind-html="entityType.description">
+                                </td>
+                            </tr>
+                            <tr ng-if="entityType.Files.length > 0">
+                                <th class="cellLabel" width="10%">
+                                    Files
+                                </th>
+                                <td>
+                                    <ng-include src="'/caNanoLab/views/sample/composition/fileView.html'"></ng-include>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th valign="top" align="left" height="6">
+                    </th>
+                </tr>
+            </table>
+            <br/>
+        </td>
+    </tr>
+</table>

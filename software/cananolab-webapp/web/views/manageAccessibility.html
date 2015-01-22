@@ -1,0 +1,180 @@
+<!-- <c:if test="${isOwner || newData eq 'true'}"> -->
+<tr>
+    <td class="cellLabel" width="15%" id="addAccessLabel">
+        Access to the {{$parent.dataType}}
+    </td>
+    <td ng-if="$parent.showAddAccessButton">
+        <!-- <c:set var="newAddAccessButtonStyle" value="display:block" />
+        <a href="#"
+           onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'{{$parent.parentFormName}}\', \'{{$parent.dataType}}\')');"
+           id="addAccess" style="display:block"><img
+                align="top" src="images/btn_add.gif" border="0" alt="add accessibility"/></a> -->
+        <button ng-click="$parent.accessForm = {}; $parent.addAccess=true; $parent.showAddAccessButton=false;$parent.accessForm.theAccess.userBean.loginName='';$parent.accessForm.theAccess.groupName='';$parent.accessForm.theAccess.roleName='';" id="addAccess" class="btn btn-primary btn-xxs">Add</button>
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        <!-- <c:set var="edit" value="true" /> -->
+        <table class="editTableWithGrid" width="95%" align="center" ng-if="$parent.groupAccesses">
+            <tr>
+                <th width="40%" scope="col">
+                    Group Name
+                </th>
+                <th width="55%" scope="col">
+                    Access
+                </th>
+                <th></th>
+            </tr>
+            <tr valign="top" ng-repeat="access in $parent.groupAccesses track by $index">
+                <td>
+                    {{access.groupName}}
+                </td>
+                <td>
+                    {{access.roleDisplayName}}
+                </td>
+                <td>
+                    <!-- <div align="right" ng-if="access.groupName == 'Curator' || access.groupName == 'Public' && !$parent.user.curator" > -->
+                    <div align="right" ng-if="access.groupName != 'Curator' &&  $parent.isCurator.curator" >
+                        <button ng-click="$parent.accessForm.theAccess.userBean.loginName='';editGroupAccessSection('{{access.groupName}}','{{access.roleDisplayName}}');" class="btn btn-primary btn-xxs">Edit</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <br />
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        <!-- <c:set var="edit" value="true" /> -->
+        <table class="editTableWithGrid" width="95%" align="center" ng-if="$parent.userAccesses != ''">
+            <tr>
+                <th width="40%" scope="col">
+                    User Login Name
+                </th>
+                <th width="55%" scope="col">
+                    Access
+                </th>
+                <th></th>
+            </tr>
+            <tr valign="top" ng-repeat="access in $parent.userAccesses track by $index">
+                <td>
+                    {{access.userBean.loginName}}
+                </td>
+                <td>
+                    {{access.roleDisplayName}}
+                </td>
+                <td>
+                    <div align="right" ng-if="access.userBean.loginName != user.loginName">
+                        <button ng-click="$parent.accessForm.theAccess.groupName='';editUserAccessSection('{{access.userBean.loginName}}','{{access.roleDisplayName}}');" class="btn btn-primary btn-xxs">Edit</button>
+                        </c:otherwise>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <br />
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        <!-- <c:set var="newAccesstyle" value="display:none" />
+        <c:if test="${openAccess eq 'true'}">
+            <c:set var="newAccesstyle" value="display:block" />
+        </c:if> -->
+        <div id="newAccess" ng-if="$parent.addAccess">
+            <table class="subSubmissionView" width="85%" align="center" summary="layout">
+                <tr>
+                    <th colspan="4">
+                        Access Information
+                    </th>
+                </tr>
+                <tr>
+                    <td class="cellLabel" width="25%">
+                        Access by *
+                    </td>
+                    <td colspan="3">
+                        <input type="radio" ng-model="accessForm.theAccess.accessBy" value="group" checked="checked" ng-click="selectCgAccess();" id="byGroup">
+                        <label for="byGroup">Collaboration Group</label>
+                        <input type="radio" ng-model="accessForm.theAccess.accessBy" value="user" ng-click="selectUserAccess();" id="byUser">
+                        <label for="byUser">User&nbsp;&nbsp;</label>
+                        <input type="radio" ng-model="accessForm.theAccess.accessBy" value="public" ng-click="selectPublicAccess();" id="byPublic" ng-show="$parent.isCurator.curator">
+                        <label for="byPublic" ng-if="$parent.isCurator.curator">Public</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cellLabel" id="collabNameLabel" ng-if="$parent.showCollaborationGroup">
+                        Collaboration Group Name *
+                    </td>
+                    <td class="cellLabel" id="userNameLabel" ng-if="$parent.showAccessuser">
+                        User Login Name *
+                    </td>
+                    <td><label for="groupName" style="display:none">Group Name</label>
+                        <input type="text" ng-model="accessForm.theAccess.groupName" value="" id="groupName" ng-if="$parent.showCollaborationGroup" ng-disabled="accessForm.theAccess.accessBy == 'public'">
+                        <label for="userName" style="display:none">Login Name</label>
+                        <input type="text" ng-model="accessForm.theAccess.userBean.loginName" value="" id="userName" ng-if="$parent.showAccessuser">
+                    </td>
+                    <td><button id="browseIcon1" ng-if="$parent.showCollaborationGroup && accessForm.theAccess.accessBy != 'public'"
+                           ng-click="getCollabGroups();">Search</button>
+
+                        <button id="browseIcon2" ng-if="$parent.showAccessuser"
+                           ng-click="getAccessUsers();">Search</button>
+                    </td>
+                    <td width="50%">
+                        <table class="invisibleTable">
+                            <tr>
+                                <td>
+                                    <img src="images/ajax-loader.gif" border="0" class="counts"
+                                         id="loaderImg" style="display: none" alt="collaboration groups or user login names">
+                                </td>
+                                <td>
+                                    <label for="matchedUserNameSelect" style="display:none" id="userNameSelectLabel">Select a user</label>
+                                    <select ng-model="access.loginName" id="matchedUserNameSelect"  ng-change="$parent.accessForm.theAccess.userBean.loginName = $parent.access.loginName;" ng-if="getUserAccessSection()">
+                                        <option ng-repeat="(loginId, name) in $parent.accessUsers track by $index" value="{{loginId}}">
+                                            {{name}}
+                                        </option>
+                                    </select>
+                                    <label for="matchedGroupNameSelect" style="display:none">Select a group</label>
+                                    <select ng-model="access.groupName" id="matchedGroupNameSelect" ng-change="$parent.accessForm.theAccess.groupName = $parent.access.groupName;" ng-if="getCollabAccessSection()">
+                                        <option ng-repeat="group in $parent.collabGroups track by $index" value="{{group}}">
+                                            {{group}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <a id="cancelBrowse" style="display: none"
+                                       href="javascript:cancelBrowseSelect();">Cancel</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cellLabel" width="10%">
+                        Access to the {{$parent.dataType}} *
+                    </td>
+                    <td colspan="2">
+                        <select ng-disabled="accessForm.theAccess.accessBy == 'public'" ng-model="accessForm.theAccess.roleName" id="roleName" ng-options="key as value for (key , value) in $parent.csmRoleNames" >
+                        </select>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><input id="deleteAccess" type="button" value="Remove"
+                               ng-click="removeAccessSection()"
+                               ng-if="accessExists == true">
+                    </td>
+                    <td align="right" colspan="3">
+                        <div align="right">
+                            <!-- <html:hidden property="${accessParent}.theAccess.roleName"
+                                         styleId="hiddenRoleName" />
+                            <html:hidden property="${accessParent}.theAccess.groupName"
+                                         styleId="hiddenGroupName" />  -->
+                            <input type="button" value="Save" ng-click="saveAccessSection();" />
+                            <input type="button" value="Cancel" ng-click="hideAccessSection();" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </td>
+</tr>
+<!-- </c:if> -->

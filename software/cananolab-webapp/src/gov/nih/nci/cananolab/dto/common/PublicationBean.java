@@ -245,7 +245,7 @@ public class PublicationBean extends FileBean {
 		authors.remove(ind);
 	}
 
-	private String getAuthorsDisplayName() {
+	public String getAuthorsDisplayName() {
 		List<String> strs = new ArrayList<String>();
 		for (Author author : authors) {
 			List<String> authorStrs = new ArrayList<String>();
@@ -306,7 +306,8 @@ public class PublicationBean extends FileBean {
 
 	private String getUriDisplayName() {
 		Publication pub = (Publication) domainFile;
-		String link = "publication.do?dispatch=download&fileId=" + pub.getId();
+		String link = "rest/publication/download?fileId=" + pub.getId();
+	//	String link = "publication.do?dispatch=download&fileId=" + pub.getId();
 		if (!StringUtils.isEmpty(pub.getUri())) {
 			if (pub.getUriExternal()) {
 				link = pub.getUri();

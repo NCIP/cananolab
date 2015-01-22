@@ -78,6 +78,24 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		return protocolBean;
 	}
+	
+	public ProtocolBean findWorkspaceProtocolById(String protocolId)
+			throws ProtocolException, NoAccessException {
+		ProtocolBean protocolBean = null;
+		try {
+			Protocol protocol = helper.findProtocolById(protocolId);
+			if (protocol != null) {
+				protocolBean = loadProtocolBean(protocol, false);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Problem finding the protocol by id: " + protocolId;
+			logger.error(err, e);
+			throw new ProtocolException(err, e);
+		}
+		return protocolBean;
+	}
 
 	private ProtocolBean loadProtocolBean(Protocol protocol) throws Exception {
 		ProtocolBean protocolBean = new ProtocolBean(protocol);
@@ -86,6 +104,21 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findGroupAccessibilities(protocol.getId().toString());
 			List<AccessibilityBean> userAccesses = super
 					.findUserAccessibilities(protocol.getId().toString());
+
+			protocolBean.setUserAccesses(userAccesses);
+			protocolBean.setGroupAccesses(groupAccesses);
+			protocolBean.setUser(user);
+		}
+		return protocolBean;
+	}
+	
+	private ProtocolBean loadProtocolBean(Protocol protocol, boolean checkReadPermission) throws Exception {
+		ProtocolBean protocolBean = new ProtocolBean(protocol);
+		if (user != null) {
+			List<AccessibilityBean> groupAccesses = super
+					.findGroupAccessibilities(protocol.getId().toString(), checkReadPermission);
+			List<AccessibilityBean> userAccesses = super
+					.findUserAccessibilities(protocol.getId().toString(), checkReadPermission);
 
 			protocolBean.setUserAccesses(userAccesses);
 			protocolBean.setGroupAccesses(groupAccesses);

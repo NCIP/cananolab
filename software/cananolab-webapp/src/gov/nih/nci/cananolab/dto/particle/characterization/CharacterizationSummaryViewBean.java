@@ -10,6 +10,7 @@ package gov.nih.nci.cananolab.dto.particle.characterization;
 
 import gov.nih.nci.cananolab.util.Comparators;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,8 @@ public class CharacterizationSummaryViewBean {
 	private Map<String, SortedSet<CharacterizationBean>> charName2Characterizations = new HashMap<String, SortedSet<CharacterizationBean>>();
 
 	private Map<String, Integer> charName2Counts=new HashMap<String, Integer>();
+	
+	List<String> errors = new ArrayList<String>();
 	
 	public CharacterizationSummaryViewBean(List<CharacterizationBean> chars) {
 		SortedSet<CharacterizationBean> typeChars = null;
@@ -90,4 +93,13 @@ public class CharacterizationSummaryViewBean {
 	public Map<String, Integer> getCharName2Counts() {
 		return charName2Counts;
 	}
+
+	public List<String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
+	}
+	
 }

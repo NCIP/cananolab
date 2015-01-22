@@ -25,12 +25,25 @@ L-->
 	<property name="lib.dir" location="${basedir}/build/WEB-INF/lib" />
 	<property name="globus.dir" location="../cananolab-client/lib/globus" />
 	<property name="db.dir" location="../cananolab-db/lib" />
+	
+	<property name="test.dir"     value="test-rest"/>
+	<property name="test.src.dir"     value="${test.dir}/java"/>
+	<property name="report.dir" location="${test.dir}/junitreport" />
+
 	<!-- antcontrib task-->
 	<path id="common.classpath">
 		<fileset dir="${common.dir}">
 			<include name="**/*.jar" />
+			<exclude name="**/cglib-2.1.3.jar" />
+			<exclude name="**/spring.jar" />
 		</fileset>
 	</path>
+	
+	 <path id="test.classpath">
+			<fileset dir="${lib.dir}" includes="**/*.jar"/>
+			<fileset dir="${test.dir}/lib" includes="**/*.jar"/>
+	</path>
+	
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="common.classpath" />
 
 	<!-- maven ant task -->
@@ -88,10 +101,16 @@ L-->
 				<exclude name="caNanoLab.properties" />
 			</fileset>
 		</copy>
-
+	
 		<copy overwrite="true" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties" file="${src.dir}/caNanoLab.properties.template">
 			<!-- replace tokens with values from build properties -->
 			<filterset refid="properties.filterset" />
+		</copy>
+		
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src.dir}/gov/nih/nci/cananolab/resources">
+				<include name="**/*.properties" />
+			</fileset>
 		</copy>
 
 		<!-- copy web files and lib files -->
@@ -122,6 +141,8 @@ L-->
 		<copy todir="${build.dir}/WEB-INF/lib">
 			<fileset dir="${common.dir}/lib/sdk">
 				<include name="**/*.jar" />
+				<exclude name="**/cglib-2.1.3.jar" />
+				<exclude name="**/spring.jar" />
 			</fileset>
 		</copy>
 
@@ -145,7 +166,7 @@ L-->
 			</restrict>
 			<mapper classpathref="maven-ant-tasks.classpath" type="flatten" />
 		</copy>
-
+	
 		<!--copy mysql-ds.xml and replace database connection info-->
 		<copy overwrite="true" tofile="${common.dist.dir}/mysql-ds.xml" file="${common.dir}/resources/jboss-conf/mysql-ds.xml">
 			<!-- replace tokens with values from build properties -->
@@ -232,14 +253,11 @@ L-->
 				<include name="mysql-connector-java*.jar" />
 			</fileset>
 		</copy>
+		
 	</target>
 	
 	<target name="deploy_local" depends="dist">
-		<copy todir="${jboss.deploy.dir}" overwrite="true">
-			<fileset dir="${dist.dir}">
-				<include name="caNanoLab.war" />				
-			</fileset>
-		</copy>
+		<copy file="${dist.dir}/caNanoLab.war" todir="${jboss.deploy.dir}" overwrite="true" />
 	</target>	
 
 	<target name="jar:helpers" depends="compile">
@@ -306,4 +324,59 @@ L-->
 			<zipgroupfileset dir="${lib.dir}" includes="**/*.jar"/>
 			</jar>
 	</target>
+	
+	<target name="compile-test" depends="clean, init">
+			<echo message="*****************************************************" />
+			<echo message="**   Compiling Junit Java Classes ...          		  **" />
+			<echo message="*****************************************************" />
+			<path id="classpath">
+				<fileset refid="compiletime.dependency.fileset" />
+				<fileset dir="${common.dir}/lib">
+					<include name="**/sdk/*.jar" />
+					<exclude name="**/maven-ant-tasks-*.jar" />
+					<exclude name="**/ant-contrib-*.jar" />
+				</fileset>
+			</path>
+			<javac destdir="${build.dir}/WEB-INF/classes" debug="true">
+				<classpath refid="classpath" />
+				<classpath refid="test.classpath" />
+				<src path="${src.dir}" />
+				 <src path="${test.src.dir}" />
+			</javac>
+		</target>
+	
+	<target name="junit" depends="compile-test">
+		 <delete dir="${report.dir}" failonerror="true"/>
+		 <mkdir dir="${report.dir}"/>
+		 	
+		 	
+		 	<junit printsummary="true" failureproperty="junit.failure" haltonfailure='false'> 
+		 	     <classpath>
+		 	     	<path refid="test.classpath"/>
+		 	     	<path refid="classpath"/>
+		 	     	<!-- Do not put the following inside test.classpath-->
+		 	     	<pathelement path="${classes.dir}"/>
+		 	     	<!--
+		 	     	<pathelement path="${basedir}/WebContent/WEB-INF"/>
+		 	     	<pathelement path="${resources.dir}"/> -->
+		 	     	<pathelement path="${test.dir}/resources" />
+		 	     	
+		 		</classpath>
+		 	     
+		 		<batchtest fork="yes" todir="${report.dir}">
+		 			 <fileset dir="${test.src.dir}" includes="**/*Test.java" 
+		 			 	excludes="**/PropertyUtilTest.java, **/RestValidatorTest.java, 
+		 			 	**/SimplePublicationWithSamplesBeanTest.java, **/SearchSampleBOTest.java" />
+		 		</batchtest>
+		 		<formatter type="xml"/> 
+		 	 </junit>
+		  </target>	
+		
+		 <target name="junitreport" depends="junit">
+		        <junitreport todir="${report.dir}">
+		            <fileset dir="${report.dir}" includes="TEST-*.xml"/>
+		            <report todir="${report.dir}"/>
+		        </junitreport>
+		    </target>
+		
 </project>

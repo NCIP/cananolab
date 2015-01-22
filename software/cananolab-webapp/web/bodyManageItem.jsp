@@ -29,7 +29,7 @@ L--%>
 			<c:if test="${item eq 'Sample'}">
 				<tr>
 					<td class="sidebarContent"><a
-						href="sample.do?dispatch=setupClone&page=0">Copy an Existing
+						href="/caNanoLab/#/cloneSample">Copy an Existing
 							Sample</a> <br> Select to copy information from an existing
 						sample to a new sample.</td>
 				</tr>
@@ -42,12 +42,4 @@ L--%>
 			criteria to obtain information on <c:out
 				value="${fn:toLowerCase(item)}" />s of interest.</td>
 	</tr>
-	<c:if test="${item eq 'Sample'}">
-		<tr>
-			<td class="sidebarContent"><a
-				href="advancedSampleSearch.do?dispatch=setup&page=0">Advanced
-					Sample Search</a> <br> Enter advanced search criteria based on
-				caNanoLab metadata to obtain information on samples of interest.</td>
-		</tr>
-	</c:if>
 </table>

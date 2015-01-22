@@ -1,0 +1,65 @@
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+        <tr>
+            <th scope="col" align="left">
+                Manage Batch Data Availability
+            </th>
+            <td align="right" width="30%">
+                <a class="helpText" href=
+                        "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/7+-+Administration+in+caNanoLab#id-7-AdministrationincaNanoLab-ManagingBatchDataAvailability')">Help</a>
+                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            </td>
+        </tr>
+    </table>
+    <br />
+
+    <span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
+        <ul>
+            <li ng-repeat="message in messages">
+                {{message}}
+            </li>
+        </ul>
+    </span>
+
+    <form name="generateBatchDataAvailabilityForm" id="generateBatchDataAvailabilityForm">
+        <br>
+        <table width="100%" align="center" class="submissionView" summary="layout">
+            <tbody><tr>
+                <th>
+                    Please select an option
+                </th>
+            </tr>
+            <tr>
+                <td class="cellLabel">
+                    <input type="radio" name="option" ng-model="generateBatchDataAvailabilityForm.option" value="generate all" ng-checked id="option1">
+                    <label for="option1">Generate data availability for all samples</label>
+                    <br>
+                    <input type="radio" name="option" ng-model="generateBatchDataAvailabilityForm.option" value="regenerate old" id="option2">
+                    <label for="option2">Regenerate data availability for samples with existing data
+                        availability</label>
+                    <br>
+                    <input type="radio" name="option" ng-model="generateBatchDataAvailabilityForm.option" value="delete all" id="option3">
+                    <label for="option3">Delete existing data availability</label>
+                </td>
+            </tr>
+            </tbody></table>
+        <br>
+        <table width="100%" class="invisibleTable" summary="layout">
+            <tbody><tr>
+                <td align="left" width="600">
+                </td>
+                <td align="right" width="300">
+                    <input type="reset" value="Reset" ng-click="resetForm()">
+                    <input type="submit" value="Submit" ng-click="doSubmit()">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <div id="loader" ng-show="loader">
+	    <div id="loaderText">
+	        Loading
+	    </div>
+	    <div id="loaderGraphic"></div>
+	</div>
+    </div>

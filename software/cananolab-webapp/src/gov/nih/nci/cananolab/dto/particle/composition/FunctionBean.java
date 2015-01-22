@@ -106,6 +106,10 @@ public class FunctionBean {
 		return domainFunction;
 	}
 
+	public void setDomainFunction(Function domainFunction) {
+		this.domainFunction = domainFunction;
+	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}

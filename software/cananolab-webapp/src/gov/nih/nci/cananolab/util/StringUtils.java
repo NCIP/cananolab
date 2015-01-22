@@ -310,6 +310,26 @@ public class StringUtils {
 				firstLetter.toUpperCase()).replace(" ", "");
 		return oneWord;
 	}
+	
+	/**
+	 * Convert to upper case the first letter of each word in the input. Spaces are preserved.
+	 * @param strWithWords
+	 * @return
+	 */
+	public static String getCamelCaseFormatInWords(String strWithWords) {
+		if (strWithWords == null)
+			return strWithWords;
+		
+		String[] words = strWithWords.split(" ");
+		StringBuilder sb = new StringBuilder();
+		for (String word : words) {
+			char first = word.charAt(0);
+			String upper = word.replaceFirst(String.valueOf(first), String.valueOf(Character.toUpperCase(first)));
+			sb.append(upper).append(" ");
+		}
+
+		return sb.toString().trim();
+	}
 
 	/**
 	 * Parse the text into an array of words using white space as delimiter.

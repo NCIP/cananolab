@@ -1,0 +1,68 @@
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+      <tr>
+       <th scope="col" align="left">
+         Sample Information by Publication
+       </th>
+        <td align="right" width="30%">
+        <button class="btn back btn-xs" ng-click="goBack()">Back</button>            
+          <a class="helpText" href=
+          "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SearchingPublications')">Help</a>   <a class=
+          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a> 
+        </td>
+      </tr>
+    </table>
+<br />
+<table class="table publication" width="100%" cellpadding="0" cellspacing="0">
+	<tr>
+		<th>Publication REF</th>
+		<th>Authors</th>
+		<th>Title</th>
+		<th>Sample Composition</th>
+		<th>Sample Characterization</th>
+		<th>Journal</th>
+		<th>Year</th>
+		<th>Vol(lss)Pg</th>
+	</tr>
+	<tr>
+		<td class="columnOne">
+			<span ng-if="data.type=='DOI' && (data.externalUrl == null || data.externalUrl == '')">DOI Id: {{data.id}}</span>
+			<span ng-if="data.type=='DOI' && data.externalUrl != null && data.externalUrl != ''">
+				<a href="{{data.externalUrl}}" target="_blank">DOI Id: {{data.id}}</a>
+			</span>
+			<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.id}}" ng-if="data.type=='PubMed'" target="_blank">PubMed ID: {{data.id}}</a>
+		</td>
+		<td>
+			<div>{{data.authors}}</div>
+		</td>
+		<td>
+			<div>{{data.title}}</div>
+		</td>
+		<td>Samples curated in caNanoLab:
+			<div ng-repeat="(key,val) in data.samples">
+				<a href="#/composition?sampleId={{key}}">{{val}}</a>
+			</div>
+		</td>
+		<td>Samples curated in caNanoLab:
+			<div ng-repeat="(key,val) in data.samples">
+				<a href="#/characterization?sampleId={{key}}">{{val}}</a>
+			</div>
+		</td>
+		<td ng-bind-html="data.journal"></td>
+		<td>{{data.year}}</td>
+		<td>{{data.volumn}}</td>
+	</tr>
+	<tr>
+		<td colspan="8" class="columnOne abstract heading">{{data.description}}</td>
+	</tr>
+	<tr>
+		<td colspan="8" class="columnOne abstract body">{{data.abstract}}</td>
+	</tr>	
+</table> 
+  <div id="loader" class="sample offset" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>
+</div>

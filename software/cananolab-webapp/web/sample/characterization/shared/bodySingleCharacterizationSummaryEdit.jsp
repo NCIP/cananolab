@@ -96,11 +96,11 @@ L--%>
 			</td>
 			<td>
 				<%
-					String detailPage = gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup
-								.getInstance().getDetailPage(
-										(String) pageContext.getAttribute("charType"),
-										(String) pageContext.getAttribute("charName"));
-						pageContext.setAttribute("detailPage", detailPage);
+					String detailPage = gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup
+										.getInstance().getDetailPage(
+												(String) pageContext.getAttribute("charType"),
+												(String) pageContext.getAttribute("charName"));
+								pageContext.setAttribute("detailPage", detailPage);
 				%>
 				<c:set var="charBean" value="${charBean}" scope="session" />
 				<jsp:include page="${detailPage}">

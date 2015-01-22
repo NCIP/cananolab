@@ -266,8 +266,7 @@ public class CharacterizationBean {
 		} else {
 			domainChar.setPointOfContact(null);
 		}
-		domainChar.setDate(DateUtils.convertToDate(dateString,
-				Constants.DATE_FORMAT));
+		domainChar.setDate(this.getDomainChar().getDate());
 
 		if (domainChar.getExperimentConfigCollection() != null) {
 			domainChar.getExperimentConfigCollection().clear();
@@ -574,4 +573,10 @@ public class CharacterizationBean {
 			}
 		}
 	}
+
+	public void setProtocolBean(ProtocolBean protocolBean) {
+		this.protocolBean = protocolBean;
+	}
+	
+	
 }

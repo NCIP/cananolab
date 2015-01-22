@@ -1,0 +1,308 @@
+<table width="100%" align="center" class="submissionView" summary="layout">
+    <tbody>
+    <tr>
+        <td class="cellLabel">
+            Inherent Function
+        </td>
+        <td colspan="3">
+            <div id="functionSection" style="position: relative;">
+                <!-- <a style="display: block" id="addInherentFunction" href="javascript:confirmAddNew(null, 'InherentFunction', 'Inherent Function', 'clearInherentFunction()');">Add</a> -->
+                <button type="button" class="btn btn-primary btn-xxs" ng-click="openAddNewInherentFunction();" id="addInherentFunction">Add</button>
+                <br>
+                <table id="functionTable" class="editTableWithGrid" width="85%" ng-show="getShowInherentFunctionTable()">
+                    <tbody id="functionRows">
+                    <tr id="patternHeader">
+                        <td width="30%" class="cellLabel" scope="col">
+                            Function Type
+                        </td>
+                        <td width="30%" class="cellLabel" scope="col" ng-if="funcEntityForm.withImagingFunction">
+                            <div id="modalityHeader">
+                                Imaging Modality
+                            </div>
+                        </td>
+                        <td width="30%" class="cellLabel" scope="col" ng-if="funcEntityForm.withTargetingFunction">
+                            <div id="modalityHeader">
+                                Targets
+                            </div>
+                        </td>                        
+                        <td width="30%" class="cellLabel" scope="col">
+                            Description
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr id="inPattern" ng-repeat="inherentFunction in composingElementForm.inherentFunction">
+                        <td>
+                            <span id="functionTypeValue1">{{inherentFunction.type}}</span>
+                        </td>
+                        <td ng-if="funcEntityForm.withImagingFunction">
+                            <span id="functionModalityTypeValue1">{{inherentFunction.modality}}</span>
+                        </td>
+                        <td ng-if="funcEntityForm.withTargetingFunction">
+                            <div ng-repeat="target in inherentFunction.targets">{{target.type}} : {{target.name}} </div>
+                        </td>                        
+                        <td>
+                            <span id="functionDescriptionValue1">{{inherentFunction.description}}</span>
+                        </td>
+                        <td>
+                            <input class="noBorderButton" id="editInFunction" type="button" value="Edit" ng-click="editInherentFunction('{{inherentFunction.id}}');">
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table id="newInherentFunction" width="85%" class="promptbox" ng-show="getAddNewInherentFunction()">
+                    <tbody>
+                    <tr>
+                        <td class="cellLabel">
+                            <label for="functionType">Function Type</label>
+                        </td>
+                        <td>
+                            <div id="functionTypePrompt">
+                                <select ng-model="theInherentFunction.type" id="functionType" ng-click="checkFunctionType()">
+                                    <option value=""></option>
+                                    <option ng-repeat="type in $parent.functionTypes track by $index" value="{{type}}" ng-selected="{{type == theInherentFunction.type}}">
+                                        {{type}}
+                                    </option>
+                                    <option value="other">
+                                        [other]
+                                    </option>
+                                 </select>
+                                <div ng-if="theInherentFunction.type=='other'">
+                                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                        <tbody>
+                                        <tr>
+                                            <td class="cellLabel">
+                                                <label for="inhFunction" category="">New Function Type:</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="text" id="inhFunction" ng-model='localForm.otherCategoryText' class="promptbox">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">
+                                                <input type="button" class="promptButton" value="Add" ng-click="theInherentFunction.type=localForm.otherCategoryText; functionTypes.push(localForm.otherCategoryText);">
+                                                <input type="button" class="promptButton" value="Cancel" ng-click="theInherentFunction.type='';">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                 
+                            </div>
+                        </td>
+                        <td class="cellLabel">
+                            <div id="modalityLabel" ng-show="showModality">
+                                <label for="imagingModality">Imaging Modality Type</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="imagingModalityPrompt" ng-show="showModality">
+                                <select ng-model="theInherentFunction.modality" id="imagingModality">
+                                    <option value="">
+                                    </option>
+                                    <option ng-repeat="modality in $parent.modalityTypes track by $index" value="{{modality}}" ng-selected="{{modality == theInherentFunction.modality}}">
+                                        {{modality}}
+                                    </option>
+
+                                    <option value="other">
+                                        [other]
+                                    </option>
+                                 </select>
+                                 <div ng-if="theInherentFunction.modality=='other'">
+                                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                        <tbody>
+                                        <tr>
+                                            <td class="cellLabel">
+                                                <label for="imgModal" category="">New Imaging Modality:</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="text" id="imgModal" ng-model='localForm.otherCategoryText' class="promptbox">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">
+                                                <input type="button" class="promptButton" value="Add" ng-click="theInherentFunction.modality=localForm.otherCategoryText; modalityTypes.push(localForm.otherCategoryText);">
+                                                <input type="button" class="promptButton" value="Cancel" ng-click="theInherentFunction.modality='';">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                 
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cellLabel">
+                            <label for="functionDescription">Description</label>
+                        </td>
+                        <td colspan="3">
+                            <textarea ng-model="theInherentFunction.description" cols="50" rows="3" id="functionDescription"></textarea>
+                        </td>
+                    </tr>
+                    <tr ng-show="showTargetFunction">
+                        <td class="cellLabel">
+                            <div id="targetLabel" style="display: block;">
+                                Target
+                            </div>
+                        </td>
+                        <td colspan="3">
+                            <div id="targetSection" style="position: relative; display: block;">
+                                <a style="display: block;" id="addTarget" href ng-click="openAddNewTargetFunction();">Add</a>
+                                <br>
+                                <table id="targetTable" class="editTableWithGrid" width="85%" ng-show="getShowTargetFunctionTable();">
+                                    <tbody id="targetRows"><tr id="targetPatternHeader">
+                                        <th width="25%" class="cellLabel" scope="col">
+                                            Type
+                                        </th>
+                                        <th width="25%" class="cellLabel" scope="col">
+                                            <span id="antigenSpeciesHeader">Species</span>
+                                        </th>
+                                        <th width="25%" class="cellLabel" scope="col">
+                                            Name
+                                        </th>
+                                        <th class="cellLabel" scope="col">
+                                            Description
+                                        </th>
+                                        <th>
+                                        </th>
+                                    </tr><tr id="pattern" ng-repeat="targetFunction in theInherentFunction.targets">
+                                        <td>
+                                            <span id="targetTypeValue">{{targetFunction.type}}</span>
+                                        </td>
+                                        <td>
+                                            <span id="antigenSpeciesValue">{{targetFunction.species}}</span>
+                                        </td>
+                                        <td>
+                                            <span id="targetNameValue">{{targetFunction.name}}</span>
+                                        </td>
+                                        <td>
+                                            <span id="targetDescriptionValue">{{targetFunction.description}}</span>
+                                        </td>
+                                        <td>
+                                            <input class="noBorderButton" id="edit" type="button" value="Edit" ng-click="editTargetFunction('{{targetFunction.id}}');">
+                                        </td>
+                                    </tr></tbody>
+                                </table>
+                                <br>
+                                <table id="newTarget" class="promptbox" width="85%" ng-show="getAddNewTargetFunction()">
+                                    <tbody>
+                                    <tr>
+                                        <td class="cellLabel" width="15%">
+                                            <label for="targetType">Type *</label>
+                                        </td>
+                                        <td>
+                                            <div id="targetTypePrompt">
+                                                <select ng-model="theTargetFunction.type" id="targetType" ng-click="checkTargetFunctionType()">
+                                                    <option value=""></option>
+                                                    <option ng-repeat="type in $parent.targetTypes track by $index" value="{{type}}" ng-selected="{{type == theTargetFunction.type}}">
+                                                        {{type}}
+                                                    </option>
+
+                                                    <option value="other">
+                                                        [other]
+                                                    </option>
+                                                </select>
+                                                <div ng-if="theTargetFunction.type=='other'">
+                                                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td class="cellLabel">
+                                                                <label for="tgtFunc" category="">New Target Function:</label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" id="tgtFunc" ng-model='localForm.otherCategoryText' class="promptbox">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: right">
+                                                                <input type="button" class="promptButton" value="Add" ng-click="theTargetFunction.type=localForm.otherCategoryText; targetTypes.push(localForm.otherCategoryText);">
+                                                                <input type="button" class="promptButton" value="Cancel" ng-click="theTargetFunction.type='';">
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="showSpecies">
+                                        <td class="cellLabel" width="15%">
+                                            <div id="antigenSpeciesLabel">
+                                                <label for="antigenSpecies">Species</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div id="antigenSpeciesPrompt">
+                                                <select ng-model="theTargetFunction.species" id="antigenSpecies"><option value=""></option>
+                                                    <option ng-repeat="type in $parent.speciesTypes track by $index" value="{{type}}">
+                                                        {{type}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cellLabel" width="15%">
+                                            <label for="targetName">Name</label>
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="theTargetFunction.name" value="" id="targetName">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cellLabel" width="15%">
+                                            <label for="targetDescription">Description</label>
+                                        </td>
+                                        <td>
+                                            <textarea ng-model="theTargetFunction.description" cols="50" rows="3" id="targetDescription"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="15%" ng-show="theTargetFunction.id != null || theTargetFunction.id != ''">
+                                            <input class="promptButton" id="deleteTarget" type="button" value="Remove" ng-click="deleteTargetFunction()">
+                                        </td>
+                                        <td>
+                                            <div align="right">
+                                                <input class="promptButton" type="button" value="Save" ng-click="closeAddNewTargetFunction();addTargetFunction();">
+                                                <input class="promptButton" type="button" value="Cancel" ng-click="closeAddNewTargetFunction();">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td ng-show="theInherentFunction.id != null || theInherentFunction.id != ''">
+                            <input class="promptButton"
+                                   id="deleteInherentFunction" type="button" value="Remove"
+                                   ng-click="deleteInherentFunction()" />
+                        </td>
+                        <td colspan="3">
+                            <div align="right">
+                            	<input type="hidden" ng-model="theInherentFunction.createdBy">
+            					<input type="hidden" ng-model="theInherentFunction.createdDate">
+                                <input class="promptButton" type="button" value="Save"
+                                       ng-click="closeAddNewInherentFunction();addInherentFunction();" />
+                                <input class="promptButton" type="button" value="Cancel"
+                                       ng-click="closeAddNewInherentFunction();" />
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

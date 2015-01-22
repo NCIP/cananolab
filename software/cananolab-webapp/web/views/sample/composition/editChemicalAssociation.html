@@ -1,0 +1,226 @@
+<div class="nanoPageContainer"  ng-class="{formFocus:loader}">
+<div class="spacer">
+<form novalidate>
+<table class="contentTitle" width="100%" border="0" summary="layout">
+    <tbody>
+    <tr>
+        <th scope="col" align="left" ng-if="chemAssociationId!=null && chemAssociationId!=''">
+            {{sampleName}} Sample Composition - Chemical Association - {{chemAssociationForm.type}}
+        </th>
+
+        <th scope="col" align="left" ng-if="chemAssociationId==null">
+            {{sampleName}} Sample Composition - Chemical Association
+        </th>
+
+        <td align="right" width="30%">
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/4+-+Managing+Sample+Composition+Annotations#id-4-ManagingSampleCompositionAnnotations-AddingChemicalAssociationCompositionAnnotations')">Help</a>
+            &nbsp;
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            &nbsp;
+        </td>
+    </tr>
+    </tbody>
+</table>
+<span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
+    <ul>
+        <li ng-repeat="message in messages">
+            {{message}}
+        </li>
+    </ul>
+</span>
+<table width="100%" align="center" class="submissionView" summary="layout">
+    <tr ng-show="chemAssociationId == null">
+        <td class="cellLabel" width="100">
+            <label for="type">Association Type *</label>
+        </td>
+        <td>
+            <div id="categoryPrompt">
+                <select id="type" ng-model="chemAssociationForm.type" ng-change="showProperties();">
+                    <option ng-repeat="option in chemicalAssociationTypes" value="{{option}}" ng-selected="{{option==chemAssociationForm.type}}">
+                        {{option}}
+                    </option>
+                    <option value="other">
+                        [other]
+                    </option>
+                </select>
+                <div id="promptCategory" ng-if="chemAssociationForm.type=='other'">
+                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                        <tbody>
+                        <tr>
+                            <td class="cellLabel">
+                                <label for="textCategory" category="">New Association Type:</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" id="textCategory" ng-model='localForm.otherCategoryText' class="promptbox">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <input type="button" class="promptButton" value="Add" ng-click="chemAssociationForm.type=localForm.otherCategoryText; associationTypes.push(localForm.otherCategoryText);">
+                                <input type="button" class="promptButton" value="Cancel" ng-click="chemAssociationForm.type='';">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr ng-show="chemAssociationForm.type == 'attachment'">
+        <td class="cellLabel" width="100">
+            <label for="type">Bond Type *</label>
+        </td>
+        <td>
+            <div id="bondPrompt">
+                <select id="bondType" ng-model="chemAssociationForm.bondType">
+                    <option ng-repeat="option in bondTypes" value="{{option}}" ng-selected="{{option==chemAssociationForm.bondType}}">
+                        {{option}}
+                    </option>
+                    <option value="other">
+                        [other]
+                    </option>
+                </select>
+                <div id="promptCategory1" ng-if="chemAssociationForm.bondType=='other'">
+                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                        <tbody>
+                        <tr>
+                            <td class="cellLabel">
+                                <label for="textCategory1" category="">New Bond Type:</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" id="textCategory1" ng-model='localForm.otherCategoryText1' class="promptbox">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <input type="button" class="promptButton" value="Add" ng-click="chemAssociationForm.bondType=localForm.otherCategoryText1; bondTypes.push(localForm.otherCategoryText1);">
+                                <input type="button" class="promptButton" value="Cancel" ng-click="chemAssociationForm.bondType='';">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td class="cellLabel">
+            <label for="associationDescription">Description</label>
+        </td>
+        <td>
+            <textarea ng-model="chemAssociationForm.description" cols="60" rows="3" id="associationDescription"></textarea>
+        </td>
+    </tr>
+</table>
+<table width="100%" align="center" class="submissionView">
+    <tbody><tr>
+        <td valign="top">
+            <table>
+                <tbody><tr>
+                    <td class="cellLabel" width="40%">
+                        Element*
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top"><label for="compositionTypeA">&nbsp;</label>
+                        <select ng-model="chemAssociationForm.associatedElementA.compositionType" id="compositionTypeA" ng-change="loadAssociatedElements('A', chemAssociationForm.associatedElementA.compositionType);">
+                            <option value=""></option>
+                            <option ng-repeat="option in associationCompositionTypes" value="{{option}}" ng-selected="{{option==chemAssociationForm.associatedElementA.compositionType}}">
+                                {{option}}
+                            </option>
+                        </select>
+                        <div id="entitySelectA" ng-show="chemAssociationForm.associatedElementA.compositionType != null">
+                            <br>
+                            <label for="entityIdA">&nbsp;</label>
+                            <select ng-model="chemAssociationForm.associatedElementA.entityId" ng-change="loadComposingElements('A', chemAssociationForm.associatedElementA.compositionType, chemAssociationForm.associatedElementA.entityId);" id="entityIdA"
+                                    ng-options="element.domainId as element.type for element in associatedElementsA">
+                                <option value=""></option>
+                            </select>
+                        </div><br />  
+                        <div id="composingElementSelectA" ng-show="chemAssociationForm.associatedElementA.entityId != null && chemAssociationForm.associatedElementA.compositionType == 'nanomaterial entity'">
+                            <label for="composingElementIdA">&nbsp;</label>
+                            <select ng-model="chemAssociationForm.associatedElementA.composingElement.id" id="composingElementIdA" ng-options="element.id as element.type + ' (name: ' + element.name + ')' for element in composingElementsA">
+                                <option value=""></option>
+                            </select>
+                            <input type="hidden" name="chemAssociationForm.associatedElementA.entityDisplayName" value="" id="entityDisplayA">
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td valign="top">
+            <img src="images/arrow_left_right_gray.gif" id="assocImg" alt="associated with">
+            <br>
+            associated with
+        </td>
+        <td valign="top">
+            <table>
+                <tbody><tr>
+                    <td class="cellLabel" width="40%">
+                        Element*
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top"><label for="compositionTypeB">&nbsp;</label>
+                        <select ng-model="chemAssociationForm.associatedElementB.compositionType" ng-change="loadAssociatedElements('B', chemAssociationForm.associatedElementB.compositionType);" id="compositionTypeB">
+                            <option value=""></option>
+                            <option ng-repeat="option in associationCompositionTypes" value="{{option}}" ng-selected="{{option==chemAssociationForm.associatedElementB.compositionType}}">
+                                {{option}}
+                            </option>
+                        </select>
+                        <div id="entitySelectB" ng-show="chemAssociationForm.associatedElementB.compositionType != null">
+                            <br>
+                            <label for="entityIdB">&nbsp;</label>
+                            <select ng-model="chemAssociationForm.associatedElementB.entityId" ng-change="loadComposingElements('B', chemAssociationForm.associatedElementB.compositionType, chemAssociationForm.associatedElementB.entityId);" id="entityIdB"
+                                    ng-options="element.domainId as element.type for element in associatedElementsB">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div id="composingElementSelectB" ng-show="chemAssociationForm.associatedElementB.entityId != null && chemAssociationForm.associatedElementB.compositionType == 'nanomaterial entity'">
+                            <br>
+                            <label for="composingElementIdB">&nbsp;</label>
+                            <select ng-model="chemAssociationForm.associatedElementB.composingElement.id" id="composingElementIdB" ng-options="element.id as element.type + ' (name: ' + element.name + ')' for element in composingElementsB">
+                                <option value=""></option>
+                            </select>
+                            <input type="hidden" name="chemAssociationForm.associatedElementB.entityDisplayName" value="" id="entityDisplayB">
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<ng-include src="'/caNanoLab/views/sample/composition/manageFileEdit.html'"></ng-include>
+<br />
+<table width="100%" class="invisibleTable" summary="layout">
+    <tbody><tr>
+        <td align="left" width="600">
+            <input type="button" value="Delete" ng-click="doDelete()" ng-if="chemAssociationId != null">
+        </td>
+        <td align="right" width="300">
+           	<input type="hidden" ng-model="chemAssociationForm.associationId">
+           	<input type="hidden" ng-model="chemAssociationForm.createdBy">
+           	<input type="hidden" ng-model="chemAssociationForm.createdDate">
+            <input type="reset" value="Reset" ng-click="resetForm()">
+            <input type="submit" value="Submit" ng-click="doSubmit()" ng-if="chemAssociationId == null">
+            <input type="submit" value="Update" ng-click="doSubmit()" ng-if="chemAssociationId != null">
+        </td>
+    </tr>
+    </tbody>
+</table>
+</form>
+</div>
+</div>
+<div id="loader" ng-show="loader">
+    <div id="loaderText">
+        Loading
+    </div>
+    <div id="loaderGraphic"></div>
+</div>

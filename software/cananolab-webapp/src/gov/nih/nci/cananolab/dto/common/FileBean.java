@@ -10,10 +10,16 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.exception.FileException;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -21,7 +27,7 @@ import java.util.HashSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.struts.upload.FormFile;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
@@ -37,8 +43,6 @@ public class FileBean extends SecuredDataBean {
 	private String keywordsStr;
 
 	private String externalUrl; // url as an external link
-
-	private FormFile uploadedFile;
 
 	private byte[] newFileData; // data from uploadedFile if upload happened
 
@@ -113,14 +117,6 @@ public class FileBean extends SecuredDataBean {
 		return "_self";
 	}
 
-	public FormFile getUploadedFile() {
-		return uploadedFile;
-	}
-
-	public void setUploadedFile(FormFile uploadedFile) {
-		this.uploadedFile = uploadedFile;
-	}
-
 	public void setupDomainFile(String internalUriPath, String createdBy)
 			throws Exception {
 		if (domainFile.getId() != null && domainFile.getId() == 0) {
@@ -139,11 +135,12 @@ public class FileBean extends SecuredDataBean {
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFile.setCreatedBy(createdBy);
 		}
-		if (uploadedFile != null
-				&& !StringUtils.isEmpty(uploadedFile.getFileName())) {
-			domainFile.setName(uploadedFile.getFileName());
-			newFileData = uploadedFile.getFileData();
-		} else {
+
+		if(!StringUtils.isEmpty(domainFile.getUri())){
+			domainFile.setName(domainFile.getUri());
+
+		}
+		else {
 			newFileData = null;
 		}
 		// if entered external url
@@ -175,6 +172,7 @@ public class FileBean extends SecuredDataBean {
 			}
 		}
 	}
+	
 
 	public byte[] getNewFileData() {
 		return newFileData;
@@ -197,7 +195,6 @@ public class FileBean extends SecuredDataBean {
 		copy.getDomainFile().setDescription(domainFile.getDescription());
 		copy.getDomainFile().setUriExternal(domainFile.getUriExternal());
 		copy.setKeywordsStr(keywordsStr);
-		copy.setUploadedFile(uploadedFile);
 		copy.setExternalUrl(externalUrl);
 		copy.getDomainFile().setId(domainFile.getId());
 		copy.getDomainFile().setUri(domainFile.getUri());

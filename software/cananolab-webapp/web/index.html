@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+   <head>
+      <title>caNanoLab</title>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="keywords"
+         content="nanoinformatics, nanotechnology model, caNanoLab, nanotechnology, nanoparticle, nanomaterial, cancer, information model, portal, data portal, data repository, caBIG, caGRID, NCL, nano characterization, nanoparticle composition, Cancer Nanotechnology Excellence, Nanoparticle Ontology">
+      <meta name="description"
+         content="caNanoLab is a data sharing portal designed to facilitate information sharing in the biomedical nanotechnology research community to expedite and validate the use of nanotechnology in biomedicine">
+      <link rel="icon" href="images/favicon.ico" />
+      <link rel="shortcut icon" href="images/favicon.ico" />
+      <link rel="stylesheet" href="styles/bootstrap.css">
+      <link rel="stylesheet" href="styles/nano-angular.css">
+
+      <link rel="stylesheet" href="styles/main.css">
+      <link rel="stylesheet" href="css/promptBox.css">
+      <link rel="stylesheet" href="css/summaryView.css">
+      <link rel="stylesheet" href="plugins/ng-grid/ng-grid.css">
+      <link rel="stylesheet" href="plugins/ng-table/ng-table.min.css">
+      <script type="text/javascript" src="javascript/script.js"></script>
+      <script type='text/javascript' src='javascript/script.js'></script>
+      <script type='text/javascript' src='javascript/CountManager.js'></script>
+      <script type='text/javascript' src="javascript/addDropDownOptions.js"></script>
+   </head>
+   <body style="cursor: default" ng-app="angularApp">
+      <div class="container">
+         <table cellspacing="0" cellpadding="0" summary="layout"
+            border="0">
+            <!-- nci hdr begins -->
+            <tbody>
+               <tr>
+                  <td colspan="2">
+                     <table class="hdrBG" border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tbody>
+                           <tr>
+                              <th scope="row" align="left">
+                                 <a href="http://www.cancer.gov/"><img alt="National Cancer Institute" src="images/nci.jpg" border="0" height="37" width="283"></a>
+                              </th>
+                              <td>
+                                 &nbsp;
+                              </td>
+                              <td align="right">
+                                 <a href="http://www.cancer.gov/"><img alt="U.S. National Institutes of Health | www.cancer.gov" src="images/nih.jpg" border="0" height="37" width="295"></a>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table class="subhdrBG" cellspacing="0" cellpadding="0" width="100%" border="0" summary="layout">
+                        <tbody>
+                           <tr>
+                              <td class="subhdrBG" align="left">
+                                 <a href="/caNanoLab/#/" class="link"></a>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td class="sideMenu">
+                     <navigation></navigation>
+                  </td>
+                  <td class="mainContent">
+                     <table cellspacing="0" cellpadding="0" summary="layout" border="0" width="900px">
+                        <tbody>
+                           <tr>
+                              <td class="mainMenu">
+                                 <table cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                       <tr>
+                                          <td width="1">
+                                             <!-- anchor to skip main menu -->
+                                             <a href="#content"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
+                                          </td>
+                                             <th ng-repeat-start="t in tabs.tabs" scope="row" ng-class="{mainMenuItem: t[0]!='HOME', 'mainMenuItem home':t[0]=='HOME'}">
+                                             <a ng-if="t[0]=='GLOSSARY'||t[0]=='HELP'" ng-class="{mainMenuLink: t[0]!='HOME', 'mainMenuLink home':t[0]=='HOME'}" href="{{t[1]}}" target="_blank">{{t[0]}}
+                                             </a>
+                                             <a ng-if="t[0]!='GLOSSARY'&&t[0]!='HELP'" ng-class="{mainMenuLink: t[0]!='HOME', 'mainMenuLink home':t[0]=='HOME'}" href="{{t[1]}}">{{t[0]}}
+                                             </a>
+                                          </th>
+
+                                          <td ng-repeat-end><img height="16" alt="menu separator"
+                                             src="images/mainMenuSeparator.gif" width="1">
+                                          </td>
+                                          <!--
+<th class="mainMenuItem" onclick="openHelpWindow('https://wiki.nci.nih.gov/x/14CUBg')" scope="row"><a
+class="mainMenuLink" href="#">HELP</a>
+</th>
+<td><img height="16" alt="menu separator"
+src="images/mainMenuSeparator.gif" width="1">
+</td>
+<th class="mainMenuItem" onclick="openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab//caNanoLab+Glossary')" scope="row"><a
+class="mainMenuLink" href="#">GLOSSARY {{tabs}}</a>
+</th>
+<td><img height="16" alt="menu separator"
+src="images/mainMenuSeparator.gif" width="1">
+</td>
+-->
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td class="mainContent" ng-view="" autoscroll="true">
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td class="footerMenu">&nbsp;</td>
+                  <td class="footerMenu">
+                     <!-- application ftr begins -->
+                     <table cellspacing="0" cellpadding="0" border="0" align="center">
+                        <tbody>
+                           <tr>
+                              <th scope="row"><img height="16" alt=""
+                                 src="images/ftrMenuSeparator.gif" width="1">
+                              </th>
+                              <td class="footerMenuItem" onclick="document.location.href='#'"
+                                 height="20">&nbsp;&nbsp;<a class="footerMenuLink"
+                                 href="mailto:ncicb@pop.nci.nih.gov?subject=caNanoLab - cancer Nanotechnology Laboratory Analysis Bench"
+                                 target="new">CONTACT US</a>&nbsp;&nbsp;</td>
+                              <td><img height="16" alt="" src="images/ftrMenuSeparator.gif"
+                                 width="1">
+                              </td>
+                              <td class="footerMenuItem"
+                                 onclick="window.open('http://www.hhs.gov/Privacy.html', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes,location=yes,width=760,height=500,scrollbars=yes,resizable=yes')"
+                                 height="20">&nbsp;&nbsp;<a class="footerMenuLink"
+                                 href="http://www.hhs.gov/Privacy.html" target="new">PRIVACY
+                                 NOTICE</a>&nbsp;&nbsp;
+                              </td>
+                              <td><img height="16" alt="" src="images/ftrMenuSeparator.gif"
+                                 width="1">
+                              </td>
+                              <td class="footerMenuItem" onclick="document.location.href='#'"
+                                 height="20">&nbsp;&nbsp;<a class="footerMenuLink"
+                                 href="html/cananoDisclaimer.html" target="new">DISCLAIMER</a>&nbsp;&nbsp;
+                              </td>
+                              <td><img height="16" alt="" src="images/ftrMenuSeparator.gif"
+                                 width="1">
+                              </td>
+                              <td class="footerMenuItem"
+                                 onclick="window.open('http://www3.cancer.gov/accessibility/nci508.htm', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes,location=yes,width=760,height=500,scrollbars=yes,resizable=yes')"
+                                 height="20">&nbsp;&nbsp;<a class="footerMenuLink"
+                                 href="http://www3.cancer.gov/accessibility/nci508.htm" target="new">ACCESSIBILITY</a>&nbsp;&nbsp;
+                              </td>
+                              <td><img height="16" alt="" src="images/ftrMenuSeparator.gif"
+                                 width="1">
+                              </td>
+                              <td class="footerMenuItem"
+                                 onclick="window.open('http://ncicb.nci.nih.gov/NCICB/support', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes,location=yes,width=760,height=500,scrollbars=yes,resizable=yes')"
+                                 height="20">&nbsp;&nbsp;<a class="footerMenuLink"
+                                 href="http://ncicb.nci.nih.gov/NCICB/support" target="new">APPLICATION
+                                 SUPPORT</a>&nbsp;&nbsp;
+                              </td>
+                              <td><img height="16" alt="" src="images/ftrMenuSeparator.gif"
+                                 width="1">
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                     <!-- application ftr ends -->
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <!-- footer begins -->
+                     <div id="portal-footer">
+                        <div class="footerLinks">
+                           <a href="https://ncicbsupport.nci.nih.gov/" title="Home">Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://ncicb.nci.nih.gov/NCICB/support" title="Support">Support</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/global/web/policies" title="Policies">Policies</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/global/web/policies/accessibility" title="Accessibility">Accessibility</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://cancer.gov/global/viewing-files" target="_blank" title="Viewing Files">Viewing Files</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/global/web/policies/foia" title="FOIA">FOIA</a><br /><br />
+                           <a href="http://www.dhhs.gov/">Department of Health and Human Services</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.nih.gov/">National Institutes of Health</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/">National Cancer Institute</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.usa.gov/">USA.gov</a>
+                        </div>
+                        <br /><br />
+                        NIH...Turning Discovery Into Health<sup>&reg;</sup>
+                     </div>
+      </div>
+      <br>
+      <div class="footerVersion">caNanoLab Release 2.0 Build cananolab-2.0-rc-06</div><br /><br />
+      <!-- footer ends -->
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      <!--[if lt IE 9]>
+<script src="js/es5-shim.js"></script>
+<script src="js/json3.min.js"></script>
+<![endif]-->
+
+	<script>
+        //optional need to be loaded before angular-file-upload-shim(.min).js
+        FileAPI = {
+        		 debug: true
+            //only one of jsPath or jsUrl.
+            //jsPath: 'bower_components/ng-file-upload/FileAPI.min.js/folder/',
+
+            //only one of staticPath or flashUrl.
+            //staticPath: 'bower_components/ng-file-upload/FileAPI.flash.swf/folder/'
+
+            //forceLoad: true, html5: false //to debug flash in HTML5 browsers
+        }
+    </script>
+      <!-- build:js scripts/vendor.js -->
+      <!-- bower:js -->
+      <script src="bower_components/jquery/dist/jquery.js"></script>
+      <script src="bower_components/es5-shim/es5-shim.js"></script>
+	  <script src="bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
+      <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
+      <script src="bower_components/json3/lib/json3.min.js"></script>
+      <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+      <script src="bower_components/angular-resource/angular-resource.js"></script>
+      <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+      <script src="plugins/ng-grid/ng-grid-2.0.11.min.js"></script>
+      <script src="plugins/ng-grid/flexible-height.js"></script>
+      <script src="plugins/ng-table/ng-table.min.js"></script>
+      <script src="plugins/ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
+      <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+      <script src="bower_components/angular-animate/angular-animate.js"></script>
+      <script src="bower_components/angular-touch/angular-touch.js"></script>
+      <script src="bower_components/angular-route/angular-route.js"></script>
+      <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+      <!-- endbower -->
+      <!-- endbuild -->
+      <!-- build:js({.tmp,app}) scripts/scripts.js -->
+      <script src="scripts/app.js"></script>
+      <script src="scripts/factories/navigation.js"></script>
+      <script src="scripts/factories/groups.js"></script>
+      <script src="scripts/factories/sampleService.js"></script>
+      <script src="scripts/factories/publicationService.js"></script>
+      <script src="scripts/factories/protocolService.js"></script>
+      <script src="scripts/factories/utils.js"></script>
+      <script src="scripts/controllers/main.js"></script>
+      <script src="scripts/controllers/about.js"></script>
+      <script src="scripts/controllers/login.js"></script>
+      <script src="scripts/controllers/auth.js"></script>
+      <script src="scripts/controllers/logout.js"></script>
+      <script src="scripts/controllers/register.js"></script>
+      <script src="scripts/controllers/sample/view/sampleSearch.js"></script>
+      <script src="scripts/controllers/manageSample.js"></script>
+      <script src="scripts/controllers/sample/view/sampleResults.js"></script>
+      <script src="scripts/controllers/sample/view/viewSample.js"></script>
+      <script src="scripts/controllers/sample/edit/editSample.js"></script>
+      <script src="scripts/controllers/sample/edit/modal/pointOfContactModal.js"></script>
+      <script src="scripts/controllers/sample/edit/modal/editCharacterizationModal.js"></script>
+      <script src="scripts/controllers/sample/edit/setupCharacterization.js"></script>
+      <script src="scripts/controllers/sample/view/composition.js"></script>
+      <script src="scripts/controllers/sample/view/characterization.js"></script>
+      <script src="scripts/controllers/sample/edit/editCharacterization.js"></script>
+      <script src="scripts/controllers/sample/view/sampleDataAvailability.js"></script>
+      <script src="scripts/controllers/sample/view/publication.js"></script>
+      <script src="scripts/controllers/publication/view/publicationDescription.js"></script>
+      <script src="scripts/controllers/publication/view/publicationResults.js"></script>
+      <script src="scripts/controllers/publication/view/publicationSearch.js"></script>
+      <script src="scripts/controllers/publication/view/publicationSampleInformation.js"></script>
+      <script src="scripts/controllers/publication/view/publicationSampleSearch.js"></script>
+      <script src="scripts/controllers/publication/view/managePublications.js"></script>
+      <script src="scripts/directives/gridList.js"></script>
+      <script src="scripts/directives/navigation.js"></script>
+      <script src="scripts/controllers/publication/edit/editPublication.js"></script>
+      <script src="scripts/directives/ngModelOnblur.js"></script>
+      <script src="scripts/directives/fileModel.js"></script>
+      <script src="scripts/controllers/message.js"></script>
+      <script src="scripts/controllers/sample/edit/cloneSample.js"></script>
+      <script src="scripts/controllers/sample/edit/deleteSample.js"></script>
+      <script src="scripts/controllers/sample/view/manageSamples.js"></script>
+      <script src="scripts/controllers/myWorkspace.js"></script>
+      <script src="scripts/controllers/protocol/view/protocolSearch.js"></script>
+      <script src="scripts/controllers/protocol/view/protocolResults.js"></script>
+      <script src="scripts/controllers/protocol/edit/editProtocol.js"></script>
+      <script src="scripts/controllers/protocol/view/manageProtocols.js"></script>
+      <script src="scripts/controllers/curation/manageCuration.js"></script>
+      <script src="scripts/controllers/curation/reviewData.js"></script>
+      <script src="scripts/controllers/curation/batchDataAvailability.js"></script>
+      <script src="scripts/controllers/curation/batchDataResults.js"></script>
+      <script src="scripts/controllers/sample/edit/editComposition.js"></script>
+      <script src="scripts/controllers/sample/edit/editNanoMaterialEntity.js"></script>
+      <script src="scripts/controllers/sample/edit/editFunctionalizingEntity.js"></script>
+      <script src="scripts/controllers/sample/edit/editChemicalAssociation.js"></script>
+      <script src="scripts/controllers/sample/edit/editCompositionFile.js"></script>
+      <!-- endbuild -->
+      </div>
+   </body>
+</html>

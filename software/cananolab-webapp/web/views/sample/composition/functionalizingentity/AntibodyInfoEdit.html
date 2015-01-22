@@ -1,0 +1,59 @@
+<table width="100%" align="center" class="submissionView" summary="layout">
+    <tbody>
+    <tr>
+        <th colspan="6">
+            Antibody Properties
+        </th>
+    </tr>
+    <tr>
+    <td class="cellLabel">
+        <label for="antibodyType">Type</label>
+    </td>
+    <td>
+        <div id="antibodyTypePrompt">
+            <select ng-model="funcEntityForm.domainEntity.type" id="antibodyType">
+                <option value="">
+                </option>
+                <option ng-repeat="type in $parent.antibodyTypes track by $index" value="{{type}}" ng-selected="{{type==funcEntityForm.domainEntity.type}}">
+                    {{type}}
+                </option>
+                <option value="other">
+                    [other]
+                </option>
+            </select>
+        </div>
+    </td>
+    <td class="cellLabel">
+        <label for="antibodyIsotype">Isotype</label>
+    </td>
+    <td>
+        <div id="isotypePrompt">
+            <select ng-model="funcEntityForm.domainEntity.isoType" id="antibodyIsotype">
+                <option value="">
+                </option>
+                <option ng-repeat="type in $parent.antibodyIsotypes track by $index" value="{{type}}" ng-selected="{{type==funcEntityForm.domainEntity.isoType}}">
+                    {{type}}
+                </option>
+                <option value="other">
+                    [other]
+                </option>
+            </select>
+        </div>
+    </td>
+    <td class="cellLabel">
+        <label for="antibodySpecies">Species</label>
+    </td>
+    <td>
+        <div id="speciesPrompt">
+            <select ng-model="funcEntityForm.domainEntity.species" id="antibodySpecies">
+                <option value="">
+                </option>
+                <option ng-repeat="type in $parent.speciesTypes track by $index" value="{{type}}" ng-selected="{{type==funcEntityForm.domainEntity.species}}">
+                    {{type}}
+                </option>
+            </select>
+        </div>
+    </td>
+    </tr>
+    </tbody>
+</table>

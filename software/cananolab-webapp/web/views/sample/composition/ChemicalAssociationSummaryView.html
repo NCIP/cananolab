@@ -1,0 +1,94 @@
+<table id="summarySection${index}" width="100%" align="center"
+       style="display: block" class="summaryViewNoGrid dataTable">
+    <tr>
+        <th align="left"  class="heading" style="padding: 0.5em;">
+            chemical association
+        </th>
+    </tr>
+    <tr ng-repeat="(key, entityTypes) in $parent.chemicalassociation">
+        <td>
+            <a href="{{key}}"></a>
+            <div class="characterization" style="display: inline-block; overflow:hidden; width:97%">{{key}}</div>
+            <table width="99%" align="center" class="summaryViewNoGrid"
+                   style="background-color:#dbdbdb;" ng-repeat="entityType in entityTypes">
+                <tr>
+                    <td>
+                        <table class="summaryViewNoGrid" width="99%" align="center"
+                               style="background-color:#F5F5f5;">
+                            <tr ng-if="entityType.AttachmentId && entityType.BondType">
+                                <th scope="row" class="cellLabel" width="10%">
+                                    Bond Type
+                                </th>
+                                <td>
+                                    {{entityType.BondType}}
+                                </td>
+                            </tr>
+                            <tr ng-if="entityType.Description != ''">
+                                <th scope="row" class="cellLabel" width="10%">
+                                    Description
+                                </th>
+                                <td>
+                                    {{entityType.Description}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="cellLabel" width="10%">
+                                    Associated Elements
+                                </th>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <th scope="row" width="250">
+                                                {{entityType.AssocitedElements.CompositiontypeA}}
+                                                {{entityType.AssocitedElements.EntityDisplayNameA}}
+                                                    <span ng-if="entityType.AssocitedElements.ComposingElemetIdA != null">
+                                                        composing element of type {{entityType.AssocitedElements.ComposingElementTypeA}}
+                                                            <br>(name: {{entityType.AssocitedElements.ComposingElementNameA}})
+                                                    </span>
+                                                    <span ng-if="entityType.AssocitedElements.ComposingElemetIdA == null">
+                                                        <br>(name: {{entityType.AssocitedElements.DomainElementNameA}})
+                                                    </span>
+                                            </th>
+                                            <td style="border: 0; vertical-align: top; text-align: center;">
+                                                <img ng-src="/caNanoLab/images/arrow_left_right_gray.gif" id="assocImg" alt="{{entityType.DomainAssociationId}} association"/>
+                                                <br>
+                                                <strong>associated with</strong>
+                                            </td>
+                                            <td>
+                                                {{entityType.AssocitedElements.CompositiontypeB}}
+                                                {{entityType.AssocitedElements.EntityDisplayNameB}}
+                                                    <span ng-if="entityType.AssocitedElements.ComposingElemetIdB != null">
+                                                        composing element of type {{entityType.AssocitedElements.ComposingElementTypeB}}
+                                                            <br>(name: {{entityType.AssocitedElements.ComposingElementNameB}})
+                                                    </span>
+                                                    <span ng-if="entityType.AssocitedElements.ComposingElemetIdB == null">
+                                                        <br>(name: {{entityType.AssocitedElements.DomainElementNameB}})
+                                                    </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr ng-if="entityType.Files.length > 0">
+                                <th class="cellLabel" width="10%">
+                                    Files
+                                </th>
+                                <td>
+                                    <ng-include src="'/caNanoLab/views/sample/composition/fileView.html'"></ng-include>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th valign="top" align="left" height="6">
+                    </th>
+                </tr>
+            </table>
+            <br />
+        </td>
+    </tr>
+</table>
+<div id="summarySeparator${index}">
+    <br>
+</div>

@@ -191,6 +191,10 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	public List<ComposingElementBean> getComposingElements() {
 		return composingElements;
 	}
+	
+	public void setComposingElements(List<ComposingElementBean> composingElements) {
+		this.composingElements= composingElements;
+	}
 
 	public Emulsion getEmulsion() {
 		return emulsion;
@@ -210,6 +214,37 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	public NanomaterialEntity getDomainEntity() {
 		return domainEntity;
+	}
+	public void setDomainEntity(NanomaterialEntity nanoEntity) {
+		this.domainEntity = nanoEntity;
+	}
+
+	public void setPolymer(Polymer polymer) {
+		this.polymer = polymer;
+	}
+
+	public void setBiopolymer(Biopolymer biopolymer) {
+		this.biopolymer = biopolymer;
+	}
+
+	public void setDendrimer(Dendrimer dendrimer) {
+		this.dendrimer = dendrimer;
+	}
+
+	public void setCarbonNanotube(CarbonNanotube carbonNanotube) {
+		this.carbonNanotube = carbonNanotube;
+	}
+
+	public void setLiposome(Liposome liposome) {
+		this.liposome = liposome;
+	}
+
+	public void setEmulsion(Emulsion emulsion) {
+		this.emulsion = emulsion;
+	}
+
+	public void setFullerene(Fullerene fullerene) {
+		this.fullerene = fullerene;
 	}
 
 	public void setupDomainEntity(String createdBy) throws Exception {
@@ -251,6 +286,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 				&& domainEntity.getCreatedBy().contains(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainEntity.setCreatedBy(createdBy);
+			domainEntity.setCreatedDate(Calendar.getInstance().getTime());
 		}
 		domainEntity.setDescription(description);
 		if (domainEntity.getComposingElementCollection() != null) {

@@ -1,0 +1,68 @@
+<div class="spacer">
+      <div ng-class="{formFocus:loader}">
+
+<table border="0" class="contentTitle" summary="layout" width="100%">
+  <tr>
+    <th align="left" scope="col">
+      Sample {{sampleName.name}} Characterization
+    </th>
+    <td align="right" width="30%">
+
+    <a class="helpText" ng-click="print()" href="" target="_blank">Print</a> 
+    <!-- <a class="helpText" ng-click="print()" ng-href="views/printCharacterization.html?sampleId={{sampleId.data}}&type=all" target="_blank">Print</a>  -->    
+    <a class="helpText" href="/caNanoLab/rest/sample/exportCharacterizationView?sampleId={{sampleId.data}}" target="_blank">Export</a>         
+      <a class="helpText" href=
+      "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
+      "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+    </td>
+  </tr> 
+</table>
+<div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>   
+<tabset justified="true">
+  <tab heading="All" ng-click="select(-1)"></tab>
+  <tab ng-repeat="item in data" heading="{{item.type}}" ng-click="select({{$index}})"></tab>
+</tabset>
+
+
+<table border="0" ng-hide="show{{$index}}" cellspacing="0" cellpadding="0" style=""  width="100%" summary="layout" ng-repeat="type in data" border="0" class="dataTable">
+
+  <tr class="heading">
+      <td>
+        <!-- type -->
+            <div style="float:left;">{{type.type}}</div>
+            <div style="float:right;margin-right:10px;">
+                <button ng-click="addCharacterization(type.type)">Add</button>
+            </div>
+        <!-- type -->
+      </td>
+  </tr> 
+  <tr ng-repeat="(key,characterization) in type.charsByAssayType track by $index">
+      <td>
+        <table summary="layout" width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td class="characterization">
+
+                  <!-- characterization -->
+                  <div style="float:left;">{{key}}</div>
+                  <!-- characterization -->                  
+              </td>
+            </tr>
+            <tr>
+              <td><div ng-include="'views/assay.html'"></div>
+              </td>
+            </tr>
+        </table><br />
+      </td>
+  </tr>
+  <tr>
+    <td class="break">&nbsp;</td>
+  </tr> 
+</table>
+</div>
+</div>
+  <div id="loader" class="sample offset" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>

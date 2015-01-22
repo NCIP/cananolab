@@ -1,0 +1,49 @@
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+      <tr>
+       <th scope="col" align="left">
+         Publication Search Results
+       </th>
+        <td align="right" width="30%">
+          <a class="helpText" href=
+          "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SearchingPublications')">Help</a>   <a class=
+          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+        </td>
+      </tr>
+    </table>
+<br /><div ng-init="p=tableParams.$params;
+				length=publicationData.data.length;
+				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
+	</div><br />
+<table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
+	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
+		<td data-title="''" width="5%" class="columnOne">
+			<a ng-if="row.editable" href="#/editPublication?publicationId={{row.id}}">Edit</a>
+		</td>
+		<td data-title="'Bibliography Info'" sortable="'displayName'" width="25%" ng-bind-html="row.displayName">{{row.displayName}}
+		</td>
+		<td data-title="'Publication Type'" sortable="'publicationType'" width="10%">
+			{{row.publicationType}}
+		</td>
+		<td data-title="'Research Category'" sortable="'researchAreas'" width="13%">
+			<div ng-repeat="item in row.researchAreas track by $index">{{item}}</div>
+		</td>                     
+		<td data-title="'Associated Sample Names'" sortable="'sampleNames'" width="13%">
+		 <div ng-repeat="item in row.sampleNames track by $index">{{item}}</div>
+		</td>            
+		<td data-title="'Description'" width="15%">
+		 <a href="" ng-click="openDataAvailability(row.descriptionDetail)">View</a>
+		</td>            
+		<td data-title="'Publication Status'" sortable="'status'" width="13%">
+		 	{{row.status}}
+		</td>            
+<!-- 		<td data-title="'Data Availability'" sortable="'dataAvailability'" width="20%">
+		 <a href="" ng-click="openDataAvailability(row.sampleId)">{{row.dataAvailability}}</a>
+		</td>    -->         
+		<td data-title="'Created Date'" sortable="'createdDate'" width="13%">
+		 {{row.createdDate | date:'shortDate'}}
+		</td>            
+	</tr>
+</table> 
+
+</div>

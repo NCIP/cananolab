@@ -1,0 +1,105 @@
+<div class="spacer">
+  <div ng-class="{formFocus:loader}">
+
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+      <tr>
+        <th align="left" scope="col"><!-- {{data}}
+ -->          Sample {{sampleName.name}}
+        </th>
+        <td align="right" width="30%">
+        <button class="btn back btn-xs" ng-click="goBack()">Back</button>
+          <a class="helpText" href=
+          "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
+          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+        </td>
+      </tr>
+    </table>
+ <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>   
+
+
+ <ul class="liNav">
+    <li><a href="#/sample?sampleId={{sampleId.data}}">General Info</a></li>
+    <li><a href="#/composition?sampleId={{sampleId.data}}">Composition</a></li>
+    <li><a href="#/characterization?sampleId={{sampleId.data}}">Characterization</a></li>
+    <li><a href="#/publication?sampleId={{sampleId.data}}">Publication</a></li>
+</ul>
+ <table align="left" class="summaryViewNoGrid" summary="layout" width="99%" style="background-color:#dbdbdb;">
+   <tr>
+     <td>
+       <table align="left" class="summaryViewNoGrid" width="100%" style="background-color:#F5F5f5;">
+         <tr>
+           <th valign="top" class="cellLabel" scope="row" width="20%">
+             Sample Name
+           </th>
+           <td>
+             {{data.sampleName}}
+           </td>
+         </tr>
+         <tr>
+           <th valign="top" class="cellLabel" scope="row" width="20%">
+             Created Date
+           </th>
+           <td>{{data.createdDate | date:'shortDate'}}
+
+           </td>
+         </tr>
+         <tr>
+           <th valign="top" class="cellLabel" scope="row">
+             Keywords
+           </th>
+           <td>
+             <div ng-bind-html="data.keywords" />
+           </td>
+         </tr>
+         <tr>
+           <th valign="top" class="cellLabel" scope="row">
+             Point of Contact
+           </th>
+           <td>
+             <table align="left" class="invisibleTable">
+               <tr>
+                 <th class="cellLabel" scope="col">
+                   Primary Contact?
+                 </th>
+                 <th class="cellLabel" scope="col">
+                   Contact Person
+                 </th>
+                 <th class="cellLabel" scope="col">
+                   Organization
+                 </th>
+                 <th class="cellLabel" scope="col">
+                   Role
+                 </th>
+               </tr>
+               <tr ng-repeat="contact in data.pointOfContactMap.contactPerson track by $index">
+                <td>{{returnUserReadableBoolean(data.pointOfContactMap.primaryContact[$index])}}</td>
+                <td ng-bind-html="data.pointOfContactMap.contactPerson[$index]"></td>
+                <td ng-bind-html="data.pointOfContactMap.organizationDisplayName[$index]"></td>
+                <td>{{data.pointOfContactMap.role[$index]}}</td>
+               </tr>
+               <tr>
+                 <td>
+                   {{data.otherPOCBeans.personDisplayName}}
+                 </td>
+                 <td>
+                   {{data.otherPOCBeans.organizationDisplayName}}
+                 </td>
+                 <td>
+                   {{data.otherPOCBeans.domain.role}}
+                 </td>
+               </tr>
+             </table>
+           </td>
+         </tr>
+       </table>
+     </td>
+   </tr>
+ </table>
+</div>
+</div>
+  <div id="loader" class="sample" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>

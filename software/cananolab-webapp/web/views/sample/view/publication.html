@@ -1,0 +1,139 @@
+<div class="spacer">
+    <div ng-class="{formFocus:loader}"> 
+
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+      <tr>
+        <th align="left" scope="col">
+          Sample {{sampleName.name}} Publication
+        </th>
+        <td align="right" width="30%">
+        <a ng-disabled="loader" class="helpText" ng-click="print()" href="" target="_blank">Print</a>           
+        <!-- <a class="helpText" ng-href="views/printPublication.html?sampleId={{sampleId.data}}" target="_blank">Print</a>  --> 
+        <a ng-disabled="loader" class="helpText" ng-href="/caNanoLab/rest/publication/summaryExport?sampleId={{sampleId.data}}&type=all">Export</a>         
+          <a class="helpText" href=
+          "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
+          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+        </td>
+      </tr>
+    </table>
+ <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>   
+ <ul class="liNav" ng-if="!pubBean.userUpdatable == true">
+    <li><a href="#/sample?sampleId={{sampleId.data}}">General Info</a></li>
+    <li><a href="#/composition?sampleId={{sampleId.data}}">Composition</a></li>
+    <li><a href="#/characterization?sampleId={{sampleId.data}}">Characterization</a></li>
+    <li><a href="#/publication?sampleId={{sampleId.data}}">Publication</a></li>
+</ul>
+
+<div class="shadetabs" id="summaryTabALL">
+
+
+  <tabset justified="true">
+    <tab heading="All" ng-click="select(-1)"></tab>
+    <tab ng-repeat="p in masterPublicationCategories" heading="{{p}}" ng-click="select({{$index}})"></tab>
+  </tabset>
+</div>
+<div class="summaryBorder">
+<table  ng-hide="show{{$index}}" class="summaryViewNoTop" width="100%" summary="layout" ng-repeat="type in masterPublicationCategories">
+    <tr>
+        <td>
+                <table id="summarySection${{$index}}" class="summaryViewNoGrid"
+                       align="center" width="99%">
+                    <tr>
+                        <th align="left" scope="col">
+                            <a name="{{type}}" class="anchorLink"><span
+                                    class="summaryViewHeading">{{type}}</span> </a>
+                                &nbsp;&nbsp;
+                                <a href="/caNanoLab/#/submitPublication?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="addlink"  ng-if="tabs.userLoggedIn">
+                                    <img align="middle" src="images/btn_add.gif" border="0" alt="add new {{type}}">
+                                </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table width="99%" align="center" class="summaryViewNoGrid" ng-style="{'background-color':'#dbdbdb'}"
+                                   summary="layout">
+                                <tr>
+                                    <th valign="top" align="left" height="6">
+                                    </th>
+                                </tr>
+                                <tr  ng-repeat="pubBean in category2Publications[type]" ng-init="pubObj = pubBean.domainFile" ng-if="category2Publications[type] != null">
+                                    <td>
+	                                    	<div class="editButton" ng-if="pubBean.userUpdatable == true">
+												<a href="#/editPublication?sampleId={{sampleId.data}}&amp;publicationId={{pubBean.publicationId}}&amp;sampleName={{sampleName.name}}">Edit</a>
+											</div>
+                                            <table class="summaryViewNoGrid" width="99%" align="center" ng-style="{'background-color':'#F5F5f5'}">
+
+                                                <tr>
+                                                    <th scope="row" class="cellLabel" width="10%">
+                                                        Bibliography Info
+                                                    </th>
+                                                    <td ng-bind-html="pubBean.displayName">
+                                                        &nbsp;
+                                                    </td>
+                                                </tr>
+                                                    <tr ng-if="pubObj.researchAreas != null">
+                                                        <th scope="row" class="cellLabel" width="10%">
+                                                            Research Category
+                                                        </th>
+                                                        <td colspan="2">
+                                                            {{pubObj.researchAreas}}
+                                                            &nbsp;
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="pubObj.description != ''">
+                                                        <th scope="row" class="cellLabel" width="10%">
+                                                            Description
+                                                        </th>
+                                                        <td>
+                                                            {{pubBean.description}}
+                                                            &nbsp;
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="pubBean.keywordsStr != ''">
+                                                        <th scope="row" class="cellLabel" width="10%">
+                                                            Keywords
+                                                        </th>
+                                                        <td ng-bind-html="pubBean.keywordsDisplayName">
+                                                            &nbsp;
+                                                        </td>
+                                                    </tr>
+                                                <tr>
+                                                    <th scope="row" class="cellLabel" width="10%">
+                                                        Publication Status
+                                                    </th>
+                                                    <td>
+                                                        {{pubBean.status}}
+                                                        &nbsp;
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <br ng-if="$index < category2Publications.length"/>
+                                    </td>
+                                </tr>
+                                <tr ng-if="category2Publications[type] == null">
+                                        <td>N/A
+                                        </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top" align="left" height="6">
+                                    </th>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <div id="summarySeparator{{$index}}">
+                    <br />
+                </div>
+        </td>
+    </tr>
+</table>
+</div>
+</div>
+</div>
+  <div id="loader"  ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>

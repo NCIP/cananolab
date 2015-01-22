@@ -1,0 +1,44 @@
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+        <tr>
+            <th scope="col" align="left">
+                Protocol Search Results
+            </th>
+            <td align="right" width="30%">
+                <button class="btn back btn-xs" ng-click="goBack()">Back</button>
+                <a class="helpText" href=
+                        "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/2+-+Managing+Protocols+in+caNanoLab#id-2-ManagingProtocolsincaNanoLab-SearchingExistingProtocols')">Help</a>   <a class=
+                                                                                                                                                                                                                          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            </td>
+        </tr>
+    </table>
+    <br /><div ng-init="p=tableParams.$params;
+				length=protocolData.data.length;
+				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
+</div><br />
+    <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
+        <tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
+            <td data-title="''" width="5%" class="columnOne">
+                <a ng-if="row.editable" href="#/editProtocol?protocolId={{row.id}}">Edit</a>
+            </td>
+            <td data-title="'Protocol Type'" sortable="'protocolType'" width="15%">
+                {{row.type}}
+            </td>
+            <td data-title="'Protocol Name'" sortable="'protocolName'" width="20%">
+                {{row.viewName}}
+            </td>
+            <td data-title="'Protocol Abbreviation'" sortable="'protocolAbbreviation'" width="15%">
+                {{row.abbreviation}}
+            </td>
+            <td data-title="'Version'" sortable="'version'" width="15%">
+                {{row.version}}
+            </td>
+            <td data-title="'Protocol File'" sortable="'protocolFile'" width="25%" ng-bind-html="row.fileInfo">{{row.fileInfo}}
+            </td>
+            <td data-title="'Created Date'" sortable="'createdDate'" width="15%">
+                {{row.createdDate | date:'shortDate'}}
+            </td>
+        </tr>
+    </table>
+
+</div>

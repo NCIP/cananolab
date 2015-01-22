@@ -59,6 +59,10 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 		return domainAssociation;
 	}
 
+	public void setDomainAssociation(ChemicalAssociation domainAssociation) {
+		this.domainAssociation = domainAssociation;
+	}
+
 	public void setupDomainAssociation(String createdBy) throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = ClassUtils.getFullClass(className);
@@ -104,12 +108,24 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 		return attachment;
 	}
 
+	public void setAttachment(Attachment attachment) {
+		this.attachment = attachment;
+	}
+
 	public AssociatedElementBean getAssociatedElementA() {
 		return associatedElementA;
 	}
 
 	public AssociatedElementBean getAssociatedElementB() {
 		return associatedElementB;
+	}
+
+	public void setAssociatedElementA(AssociatedElementBean associatedElementA) {
+		this.associatedElementA = associatedElementA;
+	}
+
+	public void setAssociatedElementB(AssociatedElementBean associatedElementB) {
+		this.associatedElementB = associatedElementB;
 	}
 
 	private void updateType() {

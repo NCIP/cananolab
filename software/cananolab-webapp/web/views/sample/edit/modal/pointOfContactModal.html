@@ -1,0 +1,196 @@
+<div ng-class="{formFocus:loader}">
+<div class="modal-header">
+    <h3 class="modal-title pull-left">Point Of Contact Information</h3>
+    <div class="pull-right">
+        <a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
+        <a href="" ng-click="cancel()" class="help">Hide</a>
+    </div>
+    <div style="clear:both"></div>
+<!--     <h4 ng-if="poc.primaryContact" class="modal-title">Primary</h4>
+    <h4 ng-if="!poc.primaryContact" class="modal-title">Secondary</h4> -->
+</div>
+<div class="modal-body" width='750px'>
+    <div style="clear:both"></div>
+    <div>
+        <div class="message">
+            <div ng-repeat="i in message track by $index">{{i}}</div><br />
+        </div>
+        <div class="message">
+            <div ng-repeat="i in sampleData.errors track by $index">{{i}}</div><br />
+        </div>        
+
+        <table class="subSubmissionView" width="85%" align="center" summary="layout">
+            <tbody>
+                <tr>
+                    <td>
+                        <table>
+                            <tbody><tr>
+                                <td class="cellLabel">
+                                    <label for="organization-name">Organization Name*</label>
+                                </td>
+                                <td>
+                                    <div id="organization-name">
+                                        <select data-ng-model="poc.organization.name"
+                                        data-ng-options="orginization for orginization in organizations" ng-change="organizationDropdownChanged()">
+                                        </select>
+                                </div>
+                            </td>
+                            <td class="cellLabel" valign="top">
+                                <label for="role">Role</label>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <div id="role">
+                                    <select data-ng-model="poc.role" ng-change="organizationDropdownChanged()" data-ng-options="role for role in roles">
+                                    </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr ng-show="otherRow">
+                        <td><label ng-show="organizationOther" for="organization-name">Organization Name Other*</label></td>
+                        <td><input type="text" ng-show="organizationOther" ng-model="other.organization" name="organization2"></td>
+                        <td><label ng-show="roleOther" for="organization-name">Role Other*</label></td>
+                        <td><input type="text" ng-show="roleOther" ng-model="other.role" name="role2"></td>
+                    </tr>
+                </tbody></table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="cellLabel">
+                                <label for="address-line1">Address Line1</label>
+                            </td>
+                            <td colspan="5">
+                                <input type="text" ng-model="poc.address.line1" size="50" id="address-line1">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cellLabel">
+                                <label for="address-line2">Address Line2</label>
+                            </td>
+                            <td colspan="5">
+                                <input type="text" ng-model="poc.address.line2" size="50" id="address-line2">
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody><tr>
+                            <td class="cellLabel">
+                                <label for="address-city">City</label>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="poc.address.city" size="20" value="" id="address-city">
+                                &nbsp;
+                            </td>
+                            <td class="cellLabel">
+                                <label for="address-stateProvince">State/Province</label>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="poc.address.stateProvince" size="5" value="" id="address-stateProvince">
+                                &nbsp;
+                            </td>
+                            <td class="cellLabel">
+                                <label for="address-zip">Zip/Postal Code</label>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="poc.address.zip" size="10" value="" id="address-zip">
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody><tr>
+                            <td class="cellLabel">
+                                <label for="address-country">Country</label>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="poc.address.country" size="30" value="" id="address-country">
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody><tr>
+                            <td class="cellLabel" valign="top">
+                                <label for="firstName">First Name</label>
+                            </td>
+                            <td valign="top">
+                                <input type="text" ng-model="poc.firstName" size="15" value="" id="firstName">
+                            </td>
+                            <td class="cellLabel" valign="top">
+                                <label for="middleInitial">Middle Initial</label>
+                            </td>
+                            <td valign="top">
+                                <input type="text" ng-model="poc.middleInitial" size="5" value="" id="middleInitial">
+                            </td>
+                            <td class="cellLabel" valign="top">
+                                <label for="lastName">Last Name</label>
+                            </td>
+                            <td valign="top">
+                                <input type="text" ng-model="poc.lastName" size="15" id="lastName">
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tbody><tr>
+                            <td class="cellLabel" valign="top">
+                                <label for="phoneNumber">Phone Number</label>
+                            </td>
+                            <td valign="top">
+                                <input type="text" ng-model="poc.phoneNumber" size="30" id="phoneNumber">
+                            </td>
+                            <td class="cellLabel" valign="top">
+                                <label for="email">Email</label>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <input type="text" ng-model="poc.email" size="30" id="email">
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+        </tbody></table>
+    </div>
+<div style="padding-top:20px;margin-left:38px;width:300px" ng-show="deleteBlock" class="message">
+    Are you sure you wish to delete this contact?<br /><br />
+    <div>
+    <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(1,1)" class="btn btn-danger btn-sm">Yes</button>
+    <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn btn-warning btn-modal">No</button>
+</div>
+</div>
+
+</div>
+<div style="clear:both;"></div>
+<div class="modal-footer">
+    <button ng-click="cancel()" class="btn btn-warning btn-modal" ng-disabled="loader">Cancel</button>
+    <button ng-if="!poc.primaryContact&&type!='add'" ng-click="delete()" class="btn btn-warning btn-danger" ng-disabled="loader">Delete</button>    
+    <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="!poc.organization.name || loader">Save</button>
+</div>
+
+
+
+</div>
+  <div id="loaderPopup" style="top:-300px;left:300px" ng-show="loader">
+    <div id="loaderText">
+      {{loaderMessage}}
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>

@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />        
+      <link rel="stylesheet" href="../../../styles/bootstrap.css">
+      <link rel="stylesheet" href="../../../styles/main.css">
+      <link rel="stylesheet" href="../../../css/summaryView.css">
+      <script src="../../../bower_components/angular/angular.js"></script>
+      <script src="../../../bower_components/angular-route/angular-route.js"></script>
+
+</head>  
+
+<body ng-app="angularApp">
+    <div ng-controller="PrintCharacterizationCtrl">
+  <div id="loader" class="sample offset" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>
+  <table border="0" class="contentTitle" summary="layout" width="100%">
+  <tr>
+    <th align="left" scope="col">
+      Sample {{sampleName.name}} Characterization
+    </th>
+  </tr> 
+</table>
+<table border="0" ng-hide="show{{$index}}" cellspacing="0" cellpadding="0" style=""  width="100%" summary="layout" ng-repeat="type in data track by $index" border="0" class="dataTable">
+{{$location.search('sampleId')}}<br>
+  <tr class="heading">
+      <td>
+        <!-- type -->
+            <div>{{type.type}}</div>
+        <!-- type -->
+      </td>
+  </tr> 
+  <tr ng-repeat="(key,characterization) in type.charsByAssayType track by $index">
+      <td>
+        <table summary="layout" width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td class="characterization">
+                  <!-- characterization -->
+                  {{key}}
+                  <!-- characterization -->                  
+              </td>
+            </tr>
+            <tr>
+              <td><div ng-include="'../../assay.html'"></div>
+              </td>
+            </tr>
+        </table><br />
+      </td>
+  </tr>
+  <tr>
+    <td class="break">&nbsp;</td>
+  </tr> 
+</table>
+
+<script src="../../../scripts/controllers/sample/view/printCharacterization.js"></script>
+<script src="../../../bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="../../../scripts/factories/utils.js"></script>
+<script src="../../../scripts/factories/sampleService.js"></script>
+
+
+</div>
+
+</body>
+</html>

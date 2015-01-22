@@ -47,12 +47,12 @@ L--%>
 					</td>
 					<td colspan="2">
 						<%
-							String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
-												.getInstance().getDetailPage(
-														(String) pageContext
-																.getAttribute("entityType"),
-														"nanomaterialEntity");
-										pageContext.setAttribute("detailPage", detailPage);
+							String detailPage = gov.nih.nci.cananolab.restful.sample.InitCompositionSetup
+																.getInstance().getDetailPage(
+																		(String) pageContext
+																				.getAttribute("entityType"),
+																		"nanomaterialEntity");
+														pageContext.setAttribute("detailPage", detailPage);
 						%>
 						<c:set var="nanomaterialEntity" value="${nanomaterialEntity}"
 							scope="session" />
