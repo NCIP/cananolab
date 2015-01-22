@@ -27,7 +27,6 @@ import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceBean;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceItem;
-import gov.nih.nci.cananolab.service.common.helper.CommonServiceHelper;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
@@ -48,195 +47,194 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
-public class WorkspaceManager extends BaseAnnotationBO {
-	
+public class WorkspaceManager extends BaseAnnotationBO{
+
 	private static Logger logger = Logger.getLogger(WorkspaceManager.class);
+
+	CurationService curationService;
 	
 	private DataAvailabilityService dataAvailabilityService;
 
 
 	public SimpleWorkspaceBean getWorkspaceItems(HttpServletRequest request)
 			throws Exception {
-		
+
 		logger.info("In getWorkspaceItems");
-		
+
+		//return createDummy(new SimpleWorkspaceBean());
+
 		SecurityService securityService = getSecurityService(request);
 		UserBean user = (UserBean)request.getSession().getAttribute("user");
 		SimpleWorkspaceBean simpleWorkspace = new SimpleWorkspaceBean();
-		
+
 		List<SimpleWorkspaceItem> sampleItems =  getSampleItems(request, securityService, user);
 		simpleWorkspace.setSamples(sampleItems);
-		
+
 		List<SimpleWorkspaceItem> pubItems = getPublicationItems(request, securityService, user);
 		simpleWorkspace.setPublications(pubItems);
-	
+
 		List<SimpleWorkspaceItem> protoItems = getProtocolItems(request, securityService, user);
 		simpleWorkspace.setProtocols(protoItems);
-		
+
 		return simpleWorkspace;
 	}
 	
-	protected List<SimpleWorkspaceItem> getPublicationItems(HttpServletRequest request,
-			SecurityService securityService, UserBean user) 
+	public SimpleWorkspaceBean getWorkspaceItems(HttpServletRequest request, String type)
 			throws Exception {
-		CommonServiceHelper helper = new CommonServiceHelper();
-		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
+
+		logger.info("In getWorkspaceItems with type: " + type);
+
+		SecurityService securityService = getSecurityService(request);
+		UserBean user = (UserBean)request.getSession().getAttribute("user");
+		SimpleWorkspaceBean simpleWorkspace = new SimpleWorkspaceBean();
+
+		List<SimpleWorkspaceItem> items = null;
+		if (type.equals("sample")) {
+			items =  getSampleItems(request, securityService, user);
+			simpleWorkspace.setSamples(items);
+		} else if (type.equals("protocol")) {
+			items = getProtocolItems(request, securityService, user);
+			simpleWorkspace.setProtocols(items);
+		} else if (type.equals("publication")) {
+			items = getPublicationItems(request, securityService, user);
+			simpleWorkspace.setPublications(items);
+		}
 		
+		return simpleWorkspace;
+	}
+
+	protected List<SimpleWorkspaceItem> getPublicationItems(HttpServletRequest request,
+			SecurityService securityService, UserBean user)
+			throws Exception {
+		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
+
 		PublicationService service = this.getPublicationServiceInSession(request, securityService);
 		List<String> publicationIds = service.findPublicationIdsByOwner(user.getLoginName());
-		List<String> Ids = helper.findSharedPublications(user.getLoginName());
-		
 		if (publicationIds == null)
 			return items;
-		List<String> publicationIdList = new ArrayList<String>();
-		for(String pubId : publicationIds){
-			if(!Ids.contains(pubId))
-				publicationIdList.add(pubId);
-		}
-		for(String Id : Ids){
-			publicationIdList.add(Id);
-		}
-		for (String id : publicationIdList) {
+
+		for (String id : publicationIds) {
 			PublicationBean pubBean = service.findPublicationById(id, true);
 			if (pubBean == null) continue;
-			
+
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
 			item.setName(pubBean.getDomainFile().getTitle());
 			item.setId(pubBean.getDomainFile().getId());
 			item.setCreatedDate(pubBean.getDomainFile().getCreatedDate());
 			Publication pub = (Publication) pubBean.getDomainFile();
-			if(pub.getPubMedId()!=null)
-			item.setPubMedId(pub.getPubMedId().toString());
-			setCommonDataFields(id, item, pubBean, securityService, user);
 			
+			String pubId = (pub.getPubMedId() != null) ? pub.getPubMedId().toString() : "";
+			String val = "";
+			if (pubId.length() > 0) {
+				val = "<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/" + pubId + "\" target=\"_blank\">" + pubId + "</a>";
+			}
+			
+			val = (pub.getDigitalObjectId()!=null) ? val + "<br>" + pub.getDigitalObjectId().toString() : val;
+			item.setPubMedDOIId(val);
+			
+			setCommonDataFields(id, item, pubBean, securityService, user);
+
 			items.add(item);
 		}
-		
+
 		return items;
 	}
-	
+
 	protected List<SimpleWorkspaceItem> getProtocolItems(HttpServletRequest request,
-			SecurityService securityService, UserBean user) 
+			SecurityService securityService, UserBean user)
 			throws Exception {
-		CommonServiceHelper helper = new CommonServiceHelper();
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
 		ProtocolService protocolService = getProtocolServiceInSession(request, securityService);
 		List<String> protoIds = protocolService.findProtocolIdsByOwner(user.getLoginName());
-		List<String> Id = helper.findSharedProtocols(user.getLoginName());
-		
-		List<String> protoIdList = new ArrayList<String>();
-		
-		for(String ids : protoIds){
-			if(!Id.contains(ids))
-			protoIdList.add(ids);
-		}
-		for(String pid : Id){
-			protoIdList.add(pid);
-		}
-		if (protoIdList == null)
+
+		if (protoIds == null)
 			return items;
-		for (String id : protoIdList) {
-			ProtocolBean protoBean = protocolService.findProtocolById(id);
-			
-			
-		
+
+		for (String id : protoIds) {
+			//User this method so it won't check user read permission, since user owns this item
+			//Performance turning
+			ProtocolBean protoBean = protocolService.findWorkspaceProtocolById(id);
+
 			if (protoBean == null) continue;
-			
+
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
 			item.setName(protoBean.getDomain().getName());
 			item.setId(protoBean.getDomain().getId());
 			item.setCreatedDate(protoBean.getDomain().getCreatedDate());
-			
+
 			File domainFile = protoBean.getFileBean().getDomainFile();
-			if( domainFile != null && 
-					domainFile.getId() != null && 
+			if( domainFile != null &&
+					domainFile.getId() != null &&
 					!StringUtils.isEmpty(domainFile.getUri())) {
 				item.setFileId(protoBean.getFileBean().getDomainFile().getId().longValue());
 			}
-			
+
 			File file = protoBean.getDomain().getFile();
 			if (file != null && file.getUriExternal())
 				item.setExternalURL(file.getUri());
-				
+
 			setCommonDataFields(id, item, protoBean, securityService, user);
-			
+
 			items.add(item);
 		}
 		return items;
 	}
 
-	
+
 	protected List<SimpleWorkspaceItem> getSampleItems(HttpServletRequest request,
-			SecurityService securityService, UserBean user) 
+			SecurityService securityService, UserBean user)
 			throws Exception {
-		CommonServiceHelper helper = new CommonServiceHelper();
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
 		SampleService sampleService = this.getSampleServiceInSession(request, securityService);
 		String loginUser = user.getLoginName();
-		
-		List<String> sampleIds = sampleService.findSampleIdsByOwner(loginUser);
-		List<String> sharedByIds = helper.findSharedSampleIds(user.getLoginName());
-		
-		for (String sharedById : sharedByIds) {
-			if (!sampleIds.contains(sharedById))
-				sampleIds.add(sharedById);
-		}
 
-		//int num = 0;
+		List<String> sampleIds = sampleService.findSampleIdsByOwner(loginUser);
+		if (sampleIds == null)
+			return items;
+
 		for (String id : sampleIds) {
-//			num++;
-//			if (num > 10)
-//				break;
-			SampleBasicBean sampleBean = sampleService.findSampleBasicById(id, false);   //.findSampleById(id, true);
-			//SampleBean sampleBean = sampleService.findSampleById(id, true);
+			//Use this method so it won't check user read permission, since user owns this item
+			//Performance turning
+			SampleBasicBean sampleBean = sampleService.findSWorkspaceSampleById(id, true);
 			if (sampleBean == null) continue;
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
-			
+
 			item.setName(sampleBean.getDomain().getName());
 			item.setId(sampleBean.getDomain().getId());
 			item.setCreatedDate(sampleBean.getDomain().getCreatedDate());
 			
-			sampleService.loadAccessesForBasicSampleBean(sampleBean);
-			
 			setCommonDataFields(id, item, sampleBean, securityService, user);
-					
+
 			items.add(item);
 		}
-		
+
 		return items;
 	}
-	
-	protected String getAccessString(List<AccessibilityBean> groupAccesses, List<AccessibilityBean> userAccesses, 
+
+	protected String getAccessString(List<AccessibilityBean> groupAccesses, List<AccessibilityBean> userAccesses,
 			String loginUser, boolean isOwner) {
 		StringBuilder sb = new StringBuilder();
-		
+
 		if (groupAccesses != null) {
-			if(isOwner){
-				sb.append("Shared with: ");
-			}else{
-				sb.append("Shared by:");
-			}
+			sb.append("Shared by: ");
+
 			for (AccessibilityBean access : groupAccesses) {
 				sb.append(access.getGroupName()).append(", ");
 			}
 		}
-		
-		
+
 		if (userAccesses != null) {
 			for (AccessibilityBean access : userAccesses) {
 				UserBean ubean = access.getUserBean();
-				if(isOwner){
-					if (!loginUser.equals(ubean.getLoginName()))
-						sb.append(ubean.getLoginName()).append(", ");
-						//sb.append(ubean.getFirstName()).append(" ").append(ubean.getLastName()).append(", ");
-				}
+				if (!loginUser.equals(ubean.getLoginName()))
+					sb.append(ubean.getLoginName()).append(", ");
 			}
 		}
-		
+
 		String accessString = isOwner ? "(Owner, " : "(";
 		accessString += sb.subSequence(0, sb.lastIndexOf(","));
 		accessString += ")";
-		
+
 		return accessString;
 	}
 
@@ -251,9 +249,9 @@ public class WorkspaceManager extends BaseAnnotationBO {
 		}
 		return securityService;
 	}
-	
+
 	protected SimpleWorkspaceBean createDummy(SimpleWorkspaceBean workspaceBean) {
-		
+
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
 		for (int i = 0; i < 5; i++) {
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
@@ -266,9 +264,9 @@ public class WorkspaceManager extends BaseAnnotationBO {
 			item.setEditable(false);
 			items.add(item);
 		}
-		
+
 		workspaceBean.setProtocols(items);
-		
+
 		items = new ArrayList<SimpleWorkspaceItem>();
 		for (int i = 0; i < 4; i++) {
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
@@ -277,31 +275,30 @@ public class WorkspaceManager extends BaseAnnotationBO {
 			item.setCreatedDate(new Date());
 			item.setSubmisstionStatus("In Review");
 			List<String> actions = new ArrayList<String>();
-			
+
 			item.setAccess("Read Write Delete (Owner)");
 			item.setEditable(false);
-			item.setPubMedId("1868677" + i);
-			
+			//item.setPubMedId("1868677" + i);
+
 			items.add(item);
 		}
-		
+
 		workspaceBean.setPublications(items);
-		
-		
+
+
 		return workspaceBean;
 	}
-	
-	protected void setCommonDataFields(String itemId, SimpleWorkspaceItem item, 
+
+	protected void setCommonDataFields(String itemId, SimpleWorkspaceItem item,
 			SecuredDataBean dataBean, SecurityService securityService, UserBean user) {
-		
+
 		item.setEditable(dataBean.getUserUpdatable());
-		item.setOwner(dataBean.getUserIsOwner());
-		
+
 		if (dataBean.getPublicStatus())
-			item.setSubmisstionStatus("Approved"); 
+			item.setSubmisstionStatus("Approved");
 		else
 			item.setSubmisstionStatus("In Draft");
-		
+
 		try {
 			DataReviewStatusBean reviewBean =  this.curationService.findDataReviewStatusBeanByDataId(itemId, securityService);
 			if (reviewBean != null) {
@@ -310,44 +307,44 @@ public class WorkspaceManager extends BaseAnnotationBO {
 		} catch (Exception e) {
 			logger.debug("Exception while finding data review status due to curator role restriction. Ignore for now");
 		}
-		
+
 		List<AccessibilityBean> groupAccesses = dataBean.getGroupAccesses();
 		List<AccessibilityBean> userAccesses = dataBean.getUserAccesses();
-		
+
 		String access = this.getAccessString(groupAccesses, userAccesses, user.getLoginName(), dataBean.getUserIsOwner());
 		item.setAccess(access);
 	}
-	
+
 	private SampleService getSampleServiceInSession(HttpServletRequest request, SecurityService securityService) {
-		
+
 		SampleService sampleService = (SampleService)request.getSession().getAttribute("sampleService");
-		if (sampleService == null) {	
+		if (sampleService == null) {
 			sampleService = new SampleServiceLocalImpl(securityService);
 			request.getSession().setAttribute("sampleService", sampleService);
 		}
 		return sampleService;
 
 	}
-	
+
 	private PublicationService getPublicationServiceInSession(HttpServletRequest request, SecurityService securityService)
 			throws Exception {
 		PublicationService publicationService = (PublicationService)request.getSession().getAttribute("publicationService");
-			
+
 		if (publicationService == null) {
 			publicationService = new PublicationServiceLocalImpl(securityService);
 			request.getSession().setAttribute("publicationService", publicationService);
 		}
 		return publicationService;
 	}
-	
+
 	private ProtocolService getProtocolServiceInSession(HttpServletRequest request, SecurityService securityService)
 			throws Exception {
-		
+
 		ProtocolService protocolService = (ProtocolService)request.getSession().getAttribute("protocolService");
-		if (protocolService == null) {	
+		if (protocolService == null) {
 			protocolService =	new ProtocolServiceLocalImpl(securityService);
 			request.getSession().setAttribute("protocolService", protocolService);
-		}	
+		}
 		return protocolService;
 	}
 
@@ -358,7 +355,6 @@ public class WorkspaceManager extends BaseAnnotationBO {
 	public void setCurationService(CurationService curationService) {
 		this.curationService = curationService;
 	}
-	
 	public String deleteSample(String sampleId, HttpServletRequest request)
 			throws Exception {
 		
@@ -392,7 +388,7 @@ public class WorkspaceManager extends BaseAnnotationBO {
 		
 		return msg;
 	}
-
+	
 	public DataAvailabilityService getDataAvailabilityService() {
 		return dataAvailabilityService;
 	}
@@ -401,6 +397,5 @@ public class WorkspaceManager extends BaseAnnotationBO {
 			DataAvailabilityService dataAvailabilityService) {
 		this.dataAvailabilityService = dataAvailabilityService;
 	}
-	
 	
 }

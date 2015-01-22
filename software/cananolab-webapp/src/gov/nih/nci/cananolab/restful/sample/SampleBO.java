@@ -314,6 +314,14 @@ public class SampleBO extends BaseAnnotationBO {
 						.toLowerCase();
 			}
 		}
+		
+		//Set collaboration group names in session for later use. The list should never change
+		//unless a curator added new group
+		if (request.getSession().getAttribute("allGroupNames") == null) {
+			SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
+			List<String> availGroupNames = sampleService.findGroupNames("");
+			request.getSession().setAttribute("allGroupNames", availGroupNames);
+		}
 
 		sampleEdit.transferSampleBeanData(request, this.getCurationService(), sampleBean, availableEntityNames);
 		
@@ -498,6 +506,7 @@ public class SampleBO extends BaseAnnotationBO {
 			SimplePointOfContactBean simplePOC, HttpServletRequest request) 
 			throws Exception {
 
+		logger.debug("========== Start saving POC");
 		List<String> errors = validatePointOfContactInput(simplePOC);
 		if (errors.size() > 0) {
 			return wrapErrorsInEditBean(errors, "POC");
@@ -527,6 +536,7 @@ public class SampleBO extends BaseAnnotationBO {
 				return this.wrapErrorInEditBean("Current sample id doesn't match sample id in session");
 		}
 		
+		logger.debug("========== Resolving Input");
 		PointOfContactBean thePOC = resolveThePOCToSaveFromInput(sample, simplePOC, user.getLoginName());
 		Long oldPOCId = thePOC.getDomain().getId();
 		determinePrimaryPOC(thePOC, sample, newSample);
@@ -538,6 +548,8 @@ public class SampleBO extends BaseAnnotationBO {
 		// saved in the same session
 		service.savePointOfContact(thePOC);
 		sample.addPointOfContact(thePOC, oldPOCId);
+		
+		logger.debug("========== Done saving POC");
 
 		// if the oldPOCId is different from the one after POC save
 		if (oldPOCId != null && !oldPOCId.equals(thePOC.getDomain().getId())) {
@@ -550,7 +562,9 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		try {
 		// save sample
+			logger.debug("========== Saving Sample with POC");
 			saveSample(request, sample);
+			logger.debug("========== Done Saving Sample with POC");
 		} catch (NoAccessException e) {
 			if (newSample)
 				simpleSampleBean.getPointOfContacts().clear();
@@ -583,6 +597,7 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		InitSampleSetup.getInstance().persistPOCDropdowns(request, sample);
 		
+		logger.debug("========== Populating UpdateSample data");
 		return summaryEdit(sample.getDomain().getId().toString(), request);
 	}
 	
@@ -941,6 +956,19 @@ public class SampleBO extends BaseAnnotationBO {
 		simpleEditBean.populateDataForSavingSample(sample);
 		saveSample(request, sample);
 
+		//if (request.getSession().getAttribute("allGroupNames") == null) {
+		//refresh groupNames in case the new access was a "other"
+		
+		if (theAccess.getAccessBy().equals("group")) {
+			List<String> groupNames = (List<String>) request.getSession().getAttribute("allGroupNames");
+			if (groupNames == null || !groupNames.contains(theAccess.getGroupName())) {
+				SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
+				List<String> availGroupNames = sampleService.findGroupNames("");
+				request.getSession().setAttribute("allGroupNames", availGroupNames);
+			}
+		}
+		//}
+		
 		return summaryEdit(sample.getDomain().getId()
 				.toString(), request);
 	}

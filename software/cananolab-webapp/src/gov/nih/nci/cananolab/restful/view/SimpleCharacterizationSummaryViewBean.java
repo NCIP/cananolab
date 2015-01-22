@@ -160,7 +160,7 @@ public class SimpleCharacterizationSummaryViewBean {
 		
 		//Characterization Date
 		if (charBean.getDateString().length() > 0) {
-			logger.info("Characterization Date: " + charBean.getDateString());
+			logger.debug("Characterization Date: " + charBean.getDateString());
 			charBeanMap.put("Characterization Date", charBean.getDateString());
 			aUnit = new SimpleCharacterizationUnitBean("Characterization Date", charBean.getDateString());
 			
@@ -170,7 +170,7 @@ public class SimpleCharacterizationSummaryViewBean {
 		
 		//Protocol		
 		if (charBean.getProtocolBean().getDisplayName().length() > 0) {
-			logger.info("Protocol: " + charBean.getProtocolBean().getDisplayName());
+			logger.debug("Protocol: " + charBean.getProtocolBean().getDisplayName());
 			charBeanMap.put("Protocol", charBean.getProtocolBean().getDisplayName());
 			
 			aUnit = new SimpleCharacterizationUnitBean("Protocol", charBean.getProtocolBean().getDisplayName());
@@ -363,13 +363,13 @@ public class SimpleCharacterizationSummaryViewBean {
 			}
 			
 			if (fileBean.getKeywordsStr() != null && fileBean.getKeywordsStr().length() > 0) {
-				logger.info("keyword displayname: " + fileBean.getKeywordsDisplayName());
+				logger.debug("keyword displayname: " + fileBean.getKeywordsDisplayName());
 				aFile.put("keywordsString", fileBean.getKeywordsDisplayName());
 			}
 
 			
 			if (fileBean.getDomainFile().getDescription() != null && fileBean.getDomainFile().getDescription().length() > 0) {
-				logger.info("File description: " + fileBean.getDescription());
+				logger.debug("File description: " + fileBean.getDescription());
 				aFile.put("description", fileBean.getDescription());
 			}
 			
@@ -422,8 +422,6 @@ public class SimpleCharacterizationSummaryViewBean {
 	public void setErrors(List<String> errors) {
 		this.errors = errors;
 	}
-
-
 
 	public class SimpleCharacterizationViewBean {
 		

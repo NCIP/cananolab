@@ -53,11 +53,24 @@ var app = angular.module('angularApp')
         /* File Variables */
         $scope.usingFlash = FileAPI && FileAPI.upload != null;
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
+      $scope.selectedFileName = '';
         
         var uploadUrl = '/caNanoLab/rest/core/uploadFile';
-        if(navigator.appVersion.indexOf("MSIE 9.")!=-1)
+        $scope.ie9 = false;
+        if(navigator.appVersion.indexOf("MSIE 9.")!=-1){
             uploadUrl = '/caNanoLab/uploadFile';
-
+            $scope.ie9 = true;
+        }
+        
+        $scope.selectedFileName = '';
+        
+        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        $scope.ie9 = false;
+        if(navigator.appVersion.indexOf("MSIE 9.")!=-1){
+            uploadUrl = '/caNanoLab/uploadFile';
+            $scope.ie9 = true;
+        }
+        
         //$scope.$on('$viewContentLoaded', function(){
         $scope.loader = true;
         $http({method: 'GET', url: '/caNanoLab/rest/publication/setup'}).
@@ -236,12 +249,18 @@ var app = angular.module('angularApp')
         }
 
         $scope.searchMatchedSamples = function() {
+            $scope.matchSampleSearch = true;
+            $scope.loader = true;
             $http({method: 'GET', url: '/caNanoLab/rest/publication/getSamples?searchStr='}).
                 success(function(data, status, headers, config) {
                     $scope.sampleResults = data;
+                    $scope.matchSampleSearch = false;
+                    $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {
                     $scope.messages = data;
+                    $scope.matchSampleSearch = false;
+                    $scope.loader = false;
                 }); 
 
             //$scope.sampleResults = ["GATECH_UCSF-EDickersonCL2008-01","NCL-16","NCL-17","NCL-19","NCL-20-1","NCL-21-1","NCL-22-1","NCL-23-1","NCL-24-1","NCL-25-1","NCL-26-1","NCL-42","NCL-45","NCL-48","NCL-48-4","NCL-49","NCL-49-2","NCL-50-1","NCL-51-3","NCL-MGelderman-IJN2008-01","NCL-MGelderman-IJN2008-02","UMC_HSTVAMC_NCL_NB-NChandaNNBM2010-01","UMC_HSTVAMC_NCL_NB-NChandaNNBM2010-02"];
@@ -295,6 +314,9 @@ var app = angular.module('angularApp')
         $scope.onFileSelect = function($files) {
             $scope.selectedFiles = [];
             $scope.selectedFiles = $files;
+            
+            if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) 
+            	$scope.selectedFileName = $scope.selectedFiles[0].name;
         };
 
         $scope.doSubmit = function() {
@@ -320,22 +342,21 @@ var app = angular.module('angularApp')
                     $timeout(function() {
                         //$scope.uploadResult.push(response.data);
                     	//alert(response.data);
-                    	//For browsers other than IE 9
                     	$scope.publicationForm.uri = response.data;
                     	$scope.doSubmitData();
                     });
                 }, function(response) {
-                	 $timeout(function() {
-                     	//only for IE 9
-                         if(navigator.appVersion.indexOf("MSIE 9.")!=-1) {
-                         	$scope.publicationForm.uri = response.data;
-                        	$scope.doSubmitData();
-                         }
-                     });
-                    if (response.status > 0) {
-                    	$scope.messages = response.status + ': ' + response.data;
-                    	$scope.loader = false;
-                    }
+               $timeout(function() {
+	                  	//only for IE 9
+	                      if(navigator.appVersion.indexOf("MSIE 9.")!=-1) {
+	                      	$scope.publicationForm.uri = response.data;
+	                     	$scope.doSubmitData();
+	                      }
+	                  });
+	                 if (response.status > 0) {
+	                 	$scope.messages = response.status + ': ' + response.data;
+	                 	$scope.loader = false;
+	                 }
                 }, function(evt) {
                     // Math.min is to fix IE which reports 200% sometimes
                     // $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));

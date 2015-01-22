@@ -19,38 +19,44 @@ var app = angular.module('angularApp')
         $scope.externalUrlEnabled  = false; 
         
         // Access variables
-        $scope.protocolForm.theAccess = {};
-        $scope.accessForm = {};
-        $scope.dataType = 'Protocol';
-        $scope.parentFormName = 'protocolForm';
-        $scope.accessForm.theAcccess = {};
-        $scope.accessForm.theAcccess.userBean = {};
-        $scope.isCurator = groupService.isCurator();
-        $scope.groupAccesses = [];
-        $scope.userAccesses = [];
-        $scope.addAccess = false;
-        $scope.showAddAccessButton = true;
-        $scope.showCollaborationGroup = true;
-        $scope.showAccessuser = false;
-        $scope.showAccessSelection = false;
-        $scope.accessForm.theAccess = {};
-        $scope.accessForm.theAccess.groupName = '';
-        $scope.accessForm.theAccess.userBean = {};
-        $scope.accessForm.theAccess.userBean.loginName = '';
-        $scope.access = {};
-        $scope.access.groupName = '';
-        $scope.access.loginName = '';
-        $scope.protocolForm.isPublic = false;
-        $scope.accessForm.theAccess.accessBy = 'group';
-        $scope.accessExists = false;
-
+        $scope.defineAccessVariables = function() {
+            $scope.protocolForm.theAccess = {};
+            $scope.accessForm = {};
+            $scope.dataType = 'Protocol';
+            $scope.parentFormName = 'protocolForm';
+            $scope.accessForm.theAcccess = {};
+            $scope.accessForm.theAcccess.userBean = {};
+            $scope.isCurator = groupService.isCurator();
+            $scope.groupAccesses = [];
+            $scope.userAccesses = [];
+            $scope.addAccess = false;
+            $scope.showAddAccessButton = true;
+            $scope.showCollaborationGroup = true;
+            $scope.showAccessuser = false;
+            $scope.showAccessSelection = false;
+            $scope.accessForm.theAccess = {};
+            $scope.accessForm.theAccess.groupName = '';
+            $scope.accessForm.theAccess.userBean = {};
+            $scope.accessForm.theAccess.userBean.loginName = '';
+            $scope.access = {};
+            $scope.access.groupName = '';
+            $scope.access.loginName = '';
+            $scope.protocolForm.isPublic = false;
+            $scope.accessForm.theAccess.accessBy = 'group';
+            $scope.accessExists = false;
+        };
+        $scope.defineAccessVariables();
         /* File Variables */
         $scope.usingFlash = FileAPI && FileAPI.upload != null;
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
+        $scope.selectedFileName = '';
         
         var uploadUrl = '/caNanoLab/rest/core/uploadFile';
-        if(navigator.appVersion.indexOf("MSIE 9.")!=-1)
+        $scope.ie9 = false;
+        if(navigator.appVersion.indexOf("MSIE 9.")!=-1){
             uploadUrl = '/caNanoLab/uploadFile';
+            $scope.ie9 = true;
+        }
 
         $scope.loader = true;
         $scope.$on('$viewContentLoaded', function(){
@@ -185,6 +191,7 @@ var app = angular.module('angularApp')
 
         $scope.resetForm = function() {
             $scope.protocolForm = {};
+            $scope.defineAccessVariables();
         };
         
         $scope.fillProtocolInfo = function() {
@@ -252,6 +259,9 @@ var app = angular.module('angularApp')
         $scope.onFileSelect = function($files) {
             $scope.selectedFiles = [];
             $scope.selectedFiles = $files;
+            
+            if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) 
+            	$scope.selectedFileName = $scope.selectedFiles[0].name;
         };
 
         $scope.doSubmit = function() {
@@ -277,7 +287,6 @@ var app = angular.module('angularApp')
                     $timeout(function() {
                         //$scope.uploadResult.push(response.data);
                     	//alert(response.data);
-                    	//For browsers other than IE 9
                     	$scope.protocolForm.uri = response.data;
                     	$scope.doSubmitData();
                     });

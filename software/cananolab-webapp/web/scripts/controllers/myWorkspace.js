@@ -1,26 +1,53 @@
 'use strict';
 var app = angular.module('angularApp')
-    .controller('MyWorkspaceCtrl', function (navigationService, groupService, $rootScope,$scope,$http,$filter,$location,$routeParams) {
+    .controller('MyWorkspaceCtrl', function (navigationService, groupService, $rootScope,$scope,$http,$filter,$location,$routeParams,sampleService) {
         $rootScope.tabs = navigationService.get();
         $rootScope.groups = groupService.getGroups.data.get();
-
+        $scope.sampleMessage = sampleService.message.data;
         $scope.$on('$viewContentLoaded', function(){
+            $scope.getSamples();
+        }); 
+
+        $scope.getSamples = function() {
             $scope.loader = true;
-            $http({method: 'GET', url: '/caNanoLab/rest/core/getWorkspaceItems'}).
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getWorkspaceItems?type=sample'}).
                 success(function(data, status, headers, config) {
-                    $scope.data = data;
-                    $scope.samples = $scope.data.samples;
-                    $scope.protocols = $scope.data.protocols;
-                    $scope.publications = $scope.data.publications;                    
+                    $scope.samples = data;                
+                    $scope.getProtocols();
+                }).
+                error(function(data, status, headers, config) {
+                    $scope.message = data;
+                    $scope.loader = false;
+                });
+        };
+
+        $scope.getProtocols = function() {
+            $scope.loader = true;
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getWorkspaceItems?type=protocol'}).
+                success(function(data, status, headers, config) {
+                    $scope.protocols = data;                
+                    $scope.getPublications();
+
+                }).
+                error(function(data, status, headers, config) {
+                    $scope.message = data;
+                    $scope.loader = false;
+                });
+        };
+
+        $scope.getPublications = function() {
+            $scope.loader = true;
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getWorkspaceItems?type=publication'}).
+                success(function(data, status, headers, config) {
+                    $scope.publications = data;                
                     $scope.loader = false;
 
                 }).
                 error(function(data, status, headers, config) {
                     $scope.message = data;
                     $scope.loader = false;
-
                 });
-        }); 
+        };                
 
         $scope.mySamples = true;
         $scope.myProtocols = true;

@@ -313,16 +313,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throws SampleException, NoAccessException {
 		SampleBean sampleBean = null;
 		try {
-			logger.debug("Begin getting sample: " + System.currentTimeMillis());
 			Sample sample = helper.findSampleById(sampleId);
-			logger.debug("End getting sample: " + System.currentTimeMillis());
 			if (sample != null) {
 				if (loadAccessInfo) {
-					logger.debug("Begin load access: " + System.currentTimeMillis());
 					sampleBean = loadSampleBean(sample);
-					logger.debug("End load access: " + System.currentTimeMillis());
 				} else {
-					
 					sampleBean = new SampleBean(sample);
 				}
 			}
@@ -335,15 +330,20 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		return sampleBean;
 	}
-	
-	public SampleBasicBean findSampleBasicById(String sampleId, Boolean loadAccessInfo)
+
+	/**
+	 * Only load sample core data.
+	 * 
+	 * Do not check read permission because workspace items are owned by user.
+	 */
+	public SampleBasicBean findSWorkspaceSampleById(String sampleId, boolean loadAccessInfo)
 			throws SampleException, NoAccessException {
 		SampleBasicBean sampleBean = null;
 		try {
 			Sample sample = helper.findSampleBasicById(sampleId);
 			if (sample != null) {
 				if (loadAccessInfo) {
-					sampleBean = loadSampleBasicBean(sample);
+					sampleBean = loadSampleBean(sample, false);
 				} else {
 					sampleBean = new SampleBasicBean(sample);
 				}
@@ -511,10 +511,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return chars;
 	}
 
+	
 	private SampleBean loadSampleBean(Sample sample) throws Exception {
 		SampleBean sampleBean = new SampleBean(sample);
 		if (user != null) {
-			
 			List<AccessibilityBean> groupAccesses = super
 					.findGroupAccessibilities(sample.getId().toString());
 			List<AccessibilityBean> userAccesses = super
@@ -525,24 +525,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		return sampleBean;
 	}
-	
-	public void loadAccessesForSampleBean(SampleBean sampleBean) throws Exception {
-		String sampleId = sampleBean.getDomain().getId().toString();
-		logger.debug("Sample id to load accesseses for: " + sampleId);
-		if (user != null) {
-			List<AccessibilityBean> groupAccesses = super
-					.findGroupAccessibilities(sampleId);
-			List<AccessibilityBean> userAccesses = super
-					.findUserAccessibilities(sampleId);
-			sampleBean.setUserAccesses(userAccesses);
-			sampleBean.setGroupAccesses(groupAccesses);
-			sampleBean.setUser(user);
-			
-			logger.debug("Accesses loaded for sample " + sampleId + " for user: " + user.getLoginName());
-		}
-		
-	}
-	
+
 	public void loadAccessesForBasicSampleBean(SampleBasicBean sampleBean) throws Exception {
 		Sample sample = sampleBean.getDomain();
 		if (user != null) {
@@ -557,13 +540,18 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		
 	}
 	
-	private SampleBasicBean loadSampleBasicBean(Sample sample) throws Exception {
+	private SampleBasicBean loadSampleBean(Sample sample, boolean checkReadPermission) throws Exception {
 		SampleBasicBean sampleBean = new SampleBasicBean(sample);
 		if (user != null) {
+			logger.debug("=== Loading group accesses");
 			List<AccessibilityBean> groupAccesses = super
-					.findGroupAccessibilities(sample.getId().toString());
+					.findGroupAccessibilities(sample.getId().toString(), checkReadPermission);
+			logger.debug("=== Done Loading group accesses");
+			
+			logger.debug("=== Loading user accesses");
 			List<AccessibilityBean> userAccesses = super
-					.findUserAccessibilities(sample.getId().toString());
+					.findUserAccessibilities(sample.getId().toString(), checkReadPermission);
+			logger.debug("=== Done Loading user accesses");
 			sampleBean.setUserAccesses(userAccesses);
 			sampleBean.setGroupAccesses(groupAccesses);
 			sampleBean.setUser(user);
@@ -699,29 +687,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new SampleException(err, e);
 		}
 	}
-	
-	public Map<String, String> findSampleIdNamesByAdvancedSearch (AdvancedSampleSearchBean searchBean) 
-			throws SampleException {
-		try {
-			return advancedHelper.findSampleIdNamesByAdvancedSearch(searchBean);
-		} catch (Exception e) {
-			String err = "Problem finding samples with the given advanced search parameters.";
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
-	}
 
 	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
 			String sampleId, AdvancedSampleSearchBean searchBean)
 			throws SampleException {
 		try {
-			AdvancedSampleBean advSampleBean = advancedHelper.findAdvancedSampleByAdvancedSearch(sampleId,
+			return advancedHelper.findAdvancedSampleByAdvancedSearch(sampleId,
 					searchBean);
-//			if (loadAccess)
-//				this.loadAccessesFormAdvancedSampleBean(advSampleBean); 
-			
-			return advSampleBean;
-					
 		} catch (Exception e) {
 			String err = "Problem finding advanced sample details with the given advanced search parameters.";
 			logger.error(err, e);
@@ -1292,5 +1264,26 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new SampleException(error, e);
 		}
 		return ids;
+	}
+
+	@Override
+	public SampleBasicBean findSampleBasicById(String sampleId,
+			Boolean loadAccessInfo) throws SampleException, NoAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> findSampleIdNamesByAdvancedSearch(
+			AdvancedSampleSearchBean searchBean) throws SampleException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void loadAccessesForSampleBean(SampleBean sampleBean)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }

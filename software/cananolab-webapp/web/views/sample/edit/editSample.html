@@ -1,11 +1,10 @@
 <div class="nanoPageContainer">
 <div class="spacer">
   <div ng-class="{formFocus:loader||generateLoader}">
-
 <!-- Menu Bar -->
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
-            <th align="left" scope="col"><!-- {{sampleData}} -->
+            <th align="left" scope="col">
                 {{updateButton}} {{sampleName.name}} Sample
             </th>
             <td align="right" width="30%">
@@ -138,7 +137,7 @@
 
 				<tr ng-show="sampleData.pointOfContacts.length && sampleData.errors.length==0">
                     <td colspan="5">
-                        <table>
+                        <table width="600">
                             <ng-include src="'/caNanoLab/views/manageAccessibility.html'"></ng-include>
                         </table>
                     </td>

@@ -6,7 +6,7 @@
 	<div id="loaderGraphic"></div>
 </div>
 <div class="spacer">
-<div ng-class="{formFocus:loader}"> 
+<div ng-class="{formFocus:loader}">
 <table border="0" class="contentTitle" summary="layout" width="100%">
   <tr>
     <th align="left" scope="col">
@@ -34,8 +34,8 @@
 				</td>
 				<td>
 					<div id="charTypePrompt">
-						<select data-ng-model="data.type" 
-						data-ng-options="option for option in data.charTypesLookup" ng-change="characterizationTypeDropdownChanged()" id="charType">
+						<select ng-hide="loader" data-ng-model="data.type" 
+						data-ng-options="option for option in data.charTypesLookup" ng-change="characterizationTypeDropdownChanged()" id="charType" style="width:200px;">
 					</select>   
 					<div id="promptCategory" ng-if="data.type=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
@@ -66,7 +66,7 @@
 			</td>
 			<td>
 				<div id="charNamePrompt">
-					<select data-ng-model="data.name"
+					<select ng-hide="loader" data-ng-model="data.name"
 					data-ng-options="option for option in data.charNamesForCurrentType" ng-change="characterizationNameDropdownChanged()" id="charName">
 				</select>  
 					<div id="promptCategory" ng-if="data.name=='other'">
@@ -102,7 +102,7 @@
 		</td>
 		<td>
 			<div style="" id="assayTypePrompt">
-				<select data-ng-model="data.assayType"
+				<select ng-hide="loader" data-ng-model="data.assayType"
 				data-ng-options="option for option in data.assayTypesByCharNameLookup" id="assayType"><option value=""></option>	
 			</select>  
 					<div id="promptCategory" ng-if="data.assayType=='other'">
@@ -135,7 +135,7 @@
 	<!--         <input name="achar.protocolBean.fileBean.domainFile.uri" value="" id="updatedUri" type="hidden"> -->
 	<td colspan="3">
 
-		<select data-ng-model="data.protocolId"
+		<select ng-hide="loader" data-ng-model="data.protocolId"
 		data-ng-options="option.domainId as option.displayName for option in data.protocolLookup" id="protocolId" ng-change="getDomainFileUri()"><option value=""></option>
 	</select>  <br />
 
@@ -151,7 +151,7 @@
 		<label for="charSource">Characterization Source</label>
 	</td>
 	<td>
-		<select data-ng-model="data.characterizationSourceId"
+		<select ng-hide="loader" data-ng-model="data.characterizationSourceId"
 		data-ng-options="option.id as option.displayName for option in data.charSourceLookup" id="characterizationSourceId"><option value=""></option>
 	</select>
 </td>
@@ -186,7 +186,7 @@
 			<td>
 
 
-				<select data-ng-model="data.property.type" 
+				<select ng-hide="loader" data-ng-model="data.property.type" 
 				data-ng-options="option for option in data.property.typeOptions" id="type">
 					<option value=""></option>
 				</select>  
@@ -226,7 +226,7 @@
 				<strong><label for="type">Type</label></strong>
 			</td>
 			<td width="40%">
-				<select data-ng-model="data.property.type" 
+				<select ng-hide="loader" data-ng-model="data.property.type" 
 				data-ng-options="option for option in data.property.shapeTypeOptions" id="type">
 					<option value=""></option>
 				</select>  
@@ -266,7 +266,7 @@
 				<strong><label for="minDimension">Minimum Dimension</label></strong>
 			</td>
 			<td width="40%"><input type="text" id="minDimension" ng-model="data.property.minDimension">
-				<select data-ng-model="data.property.minDimensionUnit" 
+				<select ng-hide="loader" data-ng-model="data.property.minDimensionUnit" 
 				data-ng-options="option for option in data.property.unitOptions" id="type">
 					<option value=""></option>
 				</select>  
@@ -298,7 +298,7 @@
 			</td>
 			<td width="40%">
 				<input type="text" id="maxDimension" ng-model="data.property.maxDimension">
-				<select data-ng-model="data.property.maxDimensionUnit" 
+				<select ng-hide="loader" data-ng-model="data.property.maxDimensionUnit" 
 				data-ng-options="option for option in data.property.unitOptions" id="type">
 					<option value=""></option>
 				</select>  
@@ -338,7 +338,7 @@
 			</td>
 			<td width="40%">
 
-				<select data-ng-model="data.property.solvent" 
+				<select ng-hide="loader" data-ng-model="data.property.solvent" 
 				data-ng-options="option for option in data.property.solventOptions" id="type">
 					<option value=""></option>
 				</select>  
@@ -370,7 +370,7 @@
 			</td>
 			<td width="40%">
 
-				<select data-ng-model="data.property.isSoluble" 
+				<select ng-hide="loader" data-ng-model="data.property.isSoluble" 
 				data-ng-options="option for option in data.property.isSolubleOptions" id="type">
 					<option value=""></option>
 				</select>  
@@ -383,7 +383,7 @@
 			</td>
 			<td colspan="3">
 				<input type="text" ng-model="data.property.criticalConcentration">
-				<select data-ng-model="data.property.concentrationUnit" 
+				<select ng-hide="loader" data-ng-model="data.property.concentrationUnit" 
 				data-ng-options="option for option in data.property.concentrationUnitOptions" id="type">
 					<option value=""></option>
 				</select>  
@@ -422,7 +422,7 @@
 				<strong><label for="isHydrophobic">Is Hydrophobic</label></strong>
 			</td>
 			<td>
-				<select data-ng-model="data.property.isHydrophobic" 
+				<select ng-hide="loader" data-ng-model="data.property.isHydrophobic" 
 				data-ng-options="option for option in data.property.isHydrophobicOptions" id="isHydrophobic">
 					<option value=""></option>
 				</select>  			
@@ -454,7 +454,7 @@
 			</td>
 			<td width="90%">
 
-				<select data-ng-model="data.property.enzymeName" 
+				<select ng-hide="loader" data-ng-model="data.property.enzymeName" 
 				data-ng-options="option for option in data.property.enzymeNameOptions" id="enzymeName">
 					<option value=""></option>
 				</select> 
@@ -583,7 +583,7 @@
 						</td>
 						<td>
 							<div id="techniqueTypePrompt">
-		<select data-ng-model="techniqueInstrument.techniqueType"
+		<select ng-hide="loader" data-ng-model="techniqueInstrument.techniqueType"
 		data-ng-options="option for option in data.techniqueInstruments.techniqueTypeLookup" id="techniqueType" ng-change="techniqueTypeInstrumentDropdownChanged()"><option value=""></option></select>		
 
 					<div id="promptCategory" ng-if="techniqueInstrument.techniqueType=='other'">
@@ -671,7 +671,7 @@
 												<label for="manufacturer">Manufacturer</label>
 											</td>											<td>
 												<div id="manufacturerPrompt">
-												<select data-ng-model="instrument.manufacturer"
+												<select ng-hide="loader" data-ng-model="instrument.manufacturer"
 		data-ng-options="option for option in data.techniqueInstruments.manufacturerLookup" id="techniqueType"><option value=""></option></select>
 
 					<div id="promptCategory" ng-if="instrument.manufacturer=='other'">
@@ -714,7 +714,7 @@
 												</td>
 												<td>
 													<div id="instrumentTypePrompt">
-														<select data-ng-model="instrument.type"
+														<select ng-hide="loader" data-ng-model="instrument.type"
 		data-ng-options="option for option in instrumentTypesLookup" id="techniqueType"><option value=""></option></select>
 
 					<div id="promptCategory" ng-if="instrument.type=='other'">
@@ -906,7 +906,7 @@
 															<label for="columnType">Column Type *</label>
 														</td>
 														<td>
-															<select ng-model="findingsColumn.columnType" ng-change="onColumnTypeDropdownChange()">
+															<select ng-hide="loader" ng-model="findingsColumn.columnType" ng-change="onColumnTypeDropdownChange()">
 																<option value=""></option>
 																<option>datum</option>
 																<option>condition</option>		
@@ -918,7 +918,7 @@
 															<label for="columnName">Column Name *</label>
 														</td>
 														<td>
-                                                            <select ng-model="findingsColumn.columnName" ng-init="findingsColumn.columnName=findingsColumn.columnName" ng-change="onColumnNameDropdownChange()">
+                                                            <select ng-hide="loader" ng-model="findingsColumn.columnName" ng-init="findingsColumn.columnName=findingsColumn.columnName" ng-change="onColumnNameDropdownChange()">
 
 <!--                                                                 
 															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()"> -->
@@ -953,7 +953,7 @@
 													</tr>
 													<tr ng-if="findingsColumn.columnType=='condition'">
 														<td><label for="conditionProperty">Condition Property</label></td>
-														<td><select ng-model="findingsColumn.conditionProperty" data-ng-options="option for option in conditionTypeLookup"><option value=""></option></select>
+														<td><select ng-hide="loader" ng-model="findingsColumn.conditionProperty" data-ng-options="option for option in conditionTypeLookup"><option value=""></option></select>
 					<div id="promptCategory" ng-if="findingsColumn.columnType=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
                              <tbody>
@@ -980,7 +980,7 @@
 													</tr>
 													<tr>
 														<td><label for="valueType">Column Value Type</label></td>
-														<td><select ng-model="findingsColumn.valueType" data-ng-options="option for option in data.datumConditionValueTypeLookup"><option value=""></option></select>
+														<td><select ng-hide="loader" ng-model="findingsColumn.valueType" data-ng-options="option for option in data.datumConditionValueTypeLookup"><option value=""></option></select>
 					<div id="promptCategory" ng-if="findingsColumn.valueType=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
                              <tbody>
@@ -1011,7 +1011,7 @@
 													
 													<tr>
 														<td><label for="valueUnit">Column Value Unit</label></td>
-														<td><select ng-model="findingsColumn.valueUnit" data-ng-options="option for option in valueUnitsLookup"><option value=""></option></select>
+														<td><select ng-hide="loader" ng-model="findingsColumn.valueUnit" data-ng-options="option for option in valueUnitsLookup"><option value=""></option></select>
 
 					<div id="promptCategory" ng-if="findingsColumn.valueUnit=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
@@ -1118,7 +1118,7 @@
 					<td width="20%">
 
 
-						<select data-ng-model="data.selectedOtherSampleNames" 
+						<select ng-hide="loader" data-ng-model="data.selectedOtherSampleNames" 
 						data-ng-options="option for option in data.otherSampleNameLookup" id="selectedOtherSampleNames" ng-multiple="true" multiple>
 					</select>  
 					</td>

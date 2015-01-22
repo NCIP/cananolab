@@ -61,13 +61,13 @@ public class CoreServices {
     public Response initSetup(@Context HttpServletRequest httpRequest) {
 		System.out.println("In initSetup");		
 		
-		CustomPlugInBO customPlugInBO = (CustomPlugInBO)applicationContext.getBean("customPlugInBO");
+//		CustomPlugInBO customPlugInBO = (CustomPlugInBO)applicationContext.getBean("customPlugInBO");
 		ServletContext context = httpRequest.getSession(true).getServletContext();
-		try {
-			customPlugInBO.init(context);
-		} catch(Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-		}
+//		try {
+//			customPlugInBO.init(context);
+//		} catch(Exception e) {
+//			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+//		}
 		
 		InitSetup.getInstance().setPublicCountInContext(context);
 		return Response.ok(context.getAttribute("publicCounts")).build();
@@ -113,9 +113,9 @@ public class CoreServices {
 	}
 
 	@GET
-	@Path("/getWorkspaceItems")
+	@Path("/getAllWorkspaceItems")
 	@Produces ("application/json")
-    public Response getWorkspaceItems(@Context HttpServletRequest httpRequest) {
+    public Response getAllWorkspaceItems(@Context HttpServletRequest httpRequest) {
 				
 		try { 
 			WorkspaceManager manager = 
@@ -126,6 +126,32 @@ public class CoreServices {
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			SimpleWorkspaceBean value = manager.getWorkspaceItems(httpRequest);
+			return (value.getErrors().size() == 0) ?
+					Response.ok(value).build()
+					:
+						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(value.getErrors()).build();
+			//return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the workspace items: "+ e.getMessage()).build();
+		}
+	}
+	
+	@GET
+	@Path("/getWorkspaceItems")
+	@Produces ("application/json")
+    public Response getWorkspaceItems(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("type") String type) {
+				
+		try { 
+			WorkspaceManager manager = 
+					 (WorkspaceManager) applicationContext.getBean("workspaceManager");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			SimpleWorkspaceBean value = manager.getWorkspaceItems(httpRequest, type);
 			return (value.getErrors().size() == 0) ?
 					Response.ok(value).build()
 					:

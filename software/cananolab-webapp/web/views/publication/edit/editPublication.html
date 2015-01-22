@@ -353,6 +353,8 @@
                         <td colspan="2">
                             <span id="load" style="display: block;" ng-show="publicationForm.uriExternal=='false'">
         						<input type="file" ng-model="publicationForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
+        						<span ng-if="ie9">{{selectedFileName}}</span>
+        						
         						<!-- <input type="file" file-model="localForm.uploadedFile" ng-model="localForm.uploadedFile" size="60" value="" onchange="angular.element(this).scope().uploadFile(this);" id="uploadedFile"> -->
 				            </span>
                             <span id="uploadedUri" ng-show="publicationForm.uriExternal=='false' && publicationForm.fileId != null">
@@ -396,11 +398,10 @@
                                     <td>
                                         <img ng-src="images/ajax-loader.gif" border="0" class="counts"
                                              id="loaderImg" style="display: none" alt="load existing samples">
-                                        <select ng-disabled="loader" id="matchedSampleSelect" ng-model="localForm.matchedSampleSelect" size="5" multiple="multiple">
-                                            <option ng-repeat="option in sampleResults track by $index" value="{{option}}">
-                                                {{option}}
-                                            </option>
-                                        </select>
+                                        
+                                    <select ng-hide="loader" ng-hide="matchSampleSearch" data-ng-model="localForm.matchedSampleSelect" 
+                                    data-ng-options="option for option in sampleResults" ng-multiple="true" multiple id="matchedSampleSelect">
+                                    </select>                                                                            
                                     </td>
                                     <td><label for="matchedSampleSelect">
                                         <a href ng-click="updateAssociatedSamples()"
@@ -440,7 +441,7 @@
     </table>
 </div>
 <br>
-<table width="100%" align="center" class="submissionView" summary="layout" id="accessBlock">
+<table width="600" align="center" class="submissionView" summary="layout" id="accessBlock">
 <!-- 
         <c:set var="groupAccesses"
                value="${publicationForm.map.publication.groupAccesses}" />

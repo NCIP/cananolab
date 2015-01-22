@@ -8,6 +8,7 @@ var app = angular.module('angularApp')
 
     $scope.sampleData = {};
     $scope.reviewBean = {}; 
+    $scope.sampleMessage = sampleService.message;
     $scope.submitForReviewButton=1;
     $scope.sampleId = sampleService.sampleId;
     $scope.pocData = sampleService.pocData;
@@ -63,11 +64,11 @@ var app = angular.module('angularApp')
             $location.search('fromMyWorkspace', null);
         }        
         else {
-        if ($routeParams.fromFavorites=='true') {
-          $location.path("/myFavorites").replace();           
-        }
         if ($scope.isAdvancedSearch) {
           $location.path("/advancedSampleResults").replace();           
+        }
+        if ($routeParams.fromFavorites=='true') {
+          $location.path("/myFavorites").replace();           
         }        
         else {
           $location.path("/sampleResults").replace();           
@@ -94,7 +95,7 @@ var app = angular.module('angularApp')
     }
 
     // if sampleid exists do initial loading of rest data for sample, else this is new sample //
-
+    
     if ($scope.sampleId.data != null) {
         $scope.updateButton = "Update";
         $scope.loader = true;
@@ -203,6 +204,7 @@ var app = angular.module('angularApp')
 
                 $http({method: 'GET', url: '/caNanoLab/rest/sample/deleteSample',params: {"sampleId":$scope.sampleData.sampleId}}).
                 success(function(data, status, headers, config) {
+                    $scope.sampleMessage.data = data;
                     var b = $scope.sampleResultData['data'];
                     if (b) {
                         for (var g = 0;g<b.length;g++) {
@@ -217,7 +219,7 @@ var app = angular.module('angularApp')
                         $location.search('fromMyWorkspace', null); 
                         }
                 	else {
-                		$location.path("/sampleResults").replace();
+                		$location.path("/sampleDelete").replace();
                 	}
                 }).
                 error(function(data, status, headers, config) {
@@ -228,9 +230,31 @@ var app = angular.module('angularApp')
         });       
     };    
 
+    
     $scope.reset = function() {
-         $scope.sampleData = angular.copy($scope.master);
+        $scope.loader = true;
+         $http({method: 'GET', url: '/caNanoLab/rest/sample/submissionSetup'}).
+             success(function(data, status, headers, config, statusText) {
+                 $scope.sampleData = data;
+                 $scope.loader = false;
+             }).
+             error(function(data, status, headers, config, statusText) {
+                 // called asynchronously if an error occurs
+                 // or server returns response with an error status.
+                 var path = $location.path();
+                 $location.path("/login").search({'came_from':path}).replace();
+                 $scope.loader = false;
+         });
+ 
     };
+
+    // $scope.reset = function() {
+    //      var orgs = $scope.sampleData.organizationNamesForUser;
+    //      var roles = $scope.sampleData.contactRoles;
+    //      $scope.sampleData = angular.copy($scope.master);
+    //      $scope.sampleData.organizationNamesForUser = orgs;
+    //      $scope.sampleData.contactRoles = roles;
+    // };
 
     $scope.submitSample = function() {
         $scope.loader = true;
@@ -566,8 +590,8 @@ var app = angular.module('angularApp')
     
     /** End - Access Section **/        
 
-    $scope.master = angular.copy($scope.sampleData);
-    $scope.reset();
+    // $scope.master = angular.copy($scope.sampleData);
+    // $scope.reset();
 })
 
 .controller('modalCtrl', function ($scope, $modalInstance,id) {

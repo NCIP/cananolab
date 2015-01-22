@@ -84,6 +84,10 @@ app.config(function ($routeProvider, $httpProvider) {
        templateUrl: 'views/sample/view/viewSample.html',
        controller: 'IndSampleCtrl'
       })  
+      .when('/sampleDelete', {
+       templateUrl: 'views/sample/edit/sampleDelete.html',
+       controller: 'DelSampleCtrl'
+      })        
       .when('/submitSample', {
        templateUrl: 'views/sample/edit/editSample.html',
        controller: 'editSampleCtrl'

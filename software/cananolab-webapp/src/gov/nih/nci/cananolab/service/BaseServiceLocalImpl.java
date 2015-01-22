@@ -136,6 +136,60 @@ public class BaseServiceLocalImpl implements BaseService {
 			logger.debug("============= Starting getting all group: " + System.currentTimeMillis());
 			for (Map.Entry<String, String> entry : groupRoles.entrySet()) {
 				String groupName = entry.getKey();
+				Group group = securityService.getGroup(groupName);
+				logger.debug("Group name: " + groupName);
+				// include Public group, Curator group and groups that user has
+				// access to
+				if (group.getGroupName().equals(
+						AccessibilityBean.CSM_PUBLIC_GROUP)
+						|| group.getGroupName().equals(
+								AccessibilityBean.CSM_DATA_CURATOR)
+						|| securityService
+								.checkReadPermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+										+ group.getGroupId())) {
+					String roleName = entry.getValue();
+					AccessibilityBean access = new AccessibilityBean();
+					access.setRoleName(roleName);
+					access.setGroupName(groupName);
+					access.setAccessBy(AccessibilityBean.ACCESS_BY_GROUP);
+					groupAccesses.add(access);
+				}
+			}
+			
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error getting group access for protected data";
+			throw new SecurityException(error, e);
+		}
+		return groupAccesses;
+	}
+	
+	/**
+	 * Overloaded version 
+	 * 
+	 * @param protectedData
+	 * @param checkReadPermission
+	 * @return
+	 * @throws SecurityException
+	 * @throws NoAccessException
+	 */
+	public List<AccessibilityBean> findGroupAccessibilities(String protectedData, boolean checkReadPermission)
+			throws SecurityException, NoAccessException {
+		if (user == null) {
+			throw new NoAccessException();
+		}
+		List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
+		try {
+			if (checkReadPermission && !securityService.checkReadPermission(protectedData)) {
+				throw new NoAccessException();
+			}
+			Map<String, String> groupRoles = securityService
+					.getAllGroupRoles(protectedData);
+			
+
+			for (Map.Entry<String, String> entry : groupRoles.entrySet()) {
+				String groupName = entry.getKey();
 				
 				logger.debug("============= Getting a group: " + groupName + ": " + System.currentTimeMillis());
 				Group group = securityService.getGroup(groupName);
@@ -178,6 +232,37 @@ public class BaseServiceLocalImpl implements BaseService {
 		try {
 			
 			if (!securityService.checkReadPermission(protectedData)) {
+				throw new NoAccessException();
+			}
+			Map<String, String> userRoles = securityService
+					.getAllUserRoles(protectedData);
+			for (Map.Entry<String, String> entry : userRoles.entrySet()) {
+				String userLoginName = entry.getKey();
+				String roleName = entry.getValue();
+				AccessibilityBean access = new AccessibilityBean();
+				access.setRoleName(roleName);
+				access.setUserBean(new UserBean(userLoginName));
+				access.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
+				userAccesses.add(access);
+
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error getting user access for protected data";
+			throw new SecurityException(error, e);
+		}
+		return userAccesses;
+	}
+	
+	public List<AccessibilityBean> findUserAccessibilities(String protectedData, boolean checkReadPermission)
+			throws SecurityException, NoAccessException {
+		if (user == null) {
+			throw new NoAccessException();
+		}
+		List<AccessibilityBean> userAccesses = new ArrayList<AccessibilityBean>();
+		try {
+			if (checkReadPermission && !securityService.checkReadPermission(protectedData)) {
 				throw new NoAccessException();
 			}
 			Map<String, String> userRoles = securityService

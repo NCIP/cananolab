@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+>>>>>>> cananolab-2.0-phase1
 <!--L
    Copyright Ekagra Software Technologies Ltd.
    Copyright SAIC, SAIC-Frederick
@@ -66,5 +71,9 @@ L-->
 		</upt-application>
 </upt-application-list>
 	</backwards-compatibility>
+<<<<<<< HEAD
     
 </security-config>
+=======
+</security-config>
+>>>>>>> cananolab-2.0-phase1

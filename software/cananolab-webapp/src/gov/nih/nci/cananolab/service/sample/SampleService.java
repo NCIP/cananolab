@@ -105,6 +105,7 @@ public interface SampleService extends BaseService {
 	public List<String> findSampleIdsByOwner(String currentOwner)
 			throws SampleException;
 	
+
 	public SampleBasicBean findSampleBasicById(String sampleId, Boolean loadAccessInfo)
 			throws SampleException, NoAccessException;
 	
@@ -112,6 +113,9 @@ public interface SampleService extends BaseService {
 			throws SampleException;
 	
 	public void loadAccessesForSampleBean(SampleBean sampleBean) throws Exception;
+	
+	public SampleBasicBean findSWorkspaceSampleById(String sampleId, boolean loadAccessInfo)
+			throws SampleException, NoAccessException;
 	
 	public void loadAccessesForBasicSampleBean(SampleBasicBean sampleBean) throws Exception;
 }

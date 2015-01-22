@@ -57,7 +57,7 @@ public class LoginBO  {
 		} catch (Exception e) {
 			logger.error("Erro while logging in user: " + username + ". " + e.getMessage());
 			logger.debug(e.getMessage());
-			return "Erro while logging in user: " + username + ". " + e.getMessage();
+			return "Erro while logging in user: " + username  + ". " + e.getMessage();
 		}
 		
 		return RestfulConstants.SUCCESS;

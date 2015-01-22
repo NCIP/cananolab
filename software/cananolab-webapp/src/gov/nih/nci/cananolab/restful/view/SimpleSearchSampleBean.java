@@ -142,7 +142,11 @@ public class SimpleSearchSampleBean {
 		setCharacterizations(sampleBean.getCharacterizationClassNames());
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
 		setCreatedDate(sampleBean.getDomain().getCreatedDate());
-		
+
+		setCreatedDate(sampleBean.getDomain().getCreatedDate());
+
+		//editable = SecurityUtil.isEntityEditableForUser(sampleBean.getUserAccesses(), user);
+
 		editable = sampleBean.getUserUpdatable();
 	}
 	

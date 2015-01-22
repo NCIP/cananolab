@@ -264,7 +264,7 @@
 
 <table width="100%" align="center" class="submissionView">
     <tbody>
-    <tr ng-if="otherSampleNames != null">
+    <tr ng-hide="otherSampleNames == null">
         <td width="5%">
             <strong><label for="otherSamples">Copy to other samples with the same primary organization?</label></strong>
         </td>
@@ -277,7 +277,7 @@
         </td>
     </tr>
 
-    <tr ng-if="otherSampleNames == null">
+    <tr ng-show="otherSampleNames == null">
         <td colspan="3">
             There are no other samples to copy annotation to.
         </td>

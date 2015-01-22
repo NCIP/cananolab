@@ -8,10 +8,14 @@
 
 package gov.nih.nci.cananolab.restful.sample;
 
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.Row;
+import gov.nih.nci.cananolab.dto.common.TableCell;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
@@ -23,10 +27,13 @@ import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean.SimpleCharacterizationViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationUnitBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleCell;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationSummaryEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleRowBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
@@ -48,6 +55,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -101,7 +109,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		SimpleCharacterizationSummaryEditBean success = new SimpleCharacterizationSummaryEditBean();
 		success.getMessages().add("The characterization has been saved successfully");
-		//return summaryEdit(String.valueOf(simpleEdit.getParentSampleId()), request, null);
 		return success;
 	}
 
@@ -145,7 +152,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		setServicesInSession(request);
 		
 		//This method sets tons of lookups. Need to see what's needed and what's not
-		setupInputForm(request, sampleId, charType);
+		//setupInputForm(request, sampleId, charType);
 		
 		CharacterizationBean charBean = new CharacterizationBean();		
 		charBean.setCharacterizationType(charType);
@@ -205,12 +212,12 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		CharacterizationBean charBean = charService
 				.findCharacterizationById(charId);
 		
-		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
-				request, charBean.getCharacterizationType(),
-				charBean.getCharacterizationName(), charBean.getAssayType());
-		
-		//This method sets tons of lookups. Need to see what's needed and what's not
-		this.setupInputForm(request, sampleId, charType);	
+//
+//		// TODO: Find out usage of "charNameDatumNames", not used in any JSPs.
+//		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
+//				request, charBean.getCharacterizationType(),
+//				charBean.getCharacterizationName(), charBean.getAssayType());
+//			charBean.getCharacterizationName(), charBean.getAssayType());
 		
 		//SY: new
 		request.getSession().setAttribute("theChar", charBean);
@@ -239,10 +246,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			CharacterizationBean charBean, SimpleCharacterizationEditBean simpleEdit)
 			throws Exception {
 
-		//TODO: just get from session
-		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute("theSample");
-				
-			//	setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
+		SampleBean sampleBean = setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
 		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		charBean.setupDomain(user.getLoginName());
@@ -281,11 +285,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			simpleEdit.setSubmitNewChar(false);
 		}
 		
-//		sampleBean = setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
-//		request.setAttribute("sampleId", sampleBean.getDomain().getId()
-//				.toString());
-//		
-		
+		sampleBean = setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
+		request.setAttribute("sampleId", sampleBean.getDomain().getId()
+				.toString());
 		logger.debug("Done saving characterization: " + charBean.getDomainChar().getId());
 	}
 
@@ -398,19 +400,19 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 */
 	private CharacterizationSummaryViewBean prepareSummary(String sampleId, HttpServletRequest request)
 			throws Exception {
-		
 		// Remove previous result from session.
 		request.getSession().removeAttribute("characterizationSummaryView");
 
 		//DynaValidatorForm theForm = (DynaValidatorForm) form;
 		//String sampleId = form.getSampleId();  //.getString(SampleConstants.SAMPLE_ID);
+	
 		CharacterizationService service = this.setServicesInSession(request);
 		
 		List<CharacterizationBean> charBeans = service
 				.findCharacterizationsBySampleId(sampleId);
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
 				charBeans);
-		// Save result bean in session for later use - export/print.
+		
 		request.getSession().setAttribute("characterizationSummaryView",
 				summaryView);
 
@@ -591,8 +593,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		// return to setupUpdate to retrieve the data matrix in the correct
 		// form from database
 		// after saving to database.
-//		request.setAttribute("charId", achar.getDomainChar().getId().toString());
-//		request.setAttribute("charType", achar.getCharacterizationType());
+		request.setAttribute("charId", achar.getDomainChar().getId().toString());
+		request.setAttribute("charType", achar.getCharacterizationType());
 		
 		
 		return setupUpdate(request, String.valueOf(charEditBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
@@ -722,14 +724,14 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		request.getSession().setAttribute("sampleId", String.valueOf(editBean.getParentSampleId()));
 		
 		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
+		findingBean =  this.transferSimpleFinding(simpleFinding, findingBean);
 		
 		int theFileIndex = simpleFinding.getTheFileIndex();		
 		FileBean theFile = simpleFinding.transferToNewFileBean();
 		
 		simpleFinding.getErrors().clear();
 	
-		this.setServicesInSession(request);
-
+		CharacterizationService service = this.setServicesInSession(request);
 		// create a new copy before adding to finding
 		FileBean newFile = theFile.copy();
 		
@@ -745,7 +747,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 						.getCharacterizationName());
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		newFile.setupDomainFile(internalUriPath, user.getLoginName());
-		
 		
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
@@ -768,14 +769,78 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			return simpleFinding;
 		
 		findingBean.addFile(newFile, theFileIndex);
+		findingBean.setupDomain(internalUriPath, user.getLoginName());
+		service.saveFinding(findingBean);
+				
 		achar.addFinding(findingBean);
 		simpleFinding.transferFromFindingBean(request, findingBean);
 		
-		InitCharacterizationSetup.getInstance()
-			.persistCharacterizationDropdowns(request, achar);
+		request.setAttribute("anchor", "submitFinding");
+//		this.checkOpenForms(achar, theForm, request);
+//		InitCharacterizationSetup.getInstance()
+//			.persistCharacterizationDropdowns(request, achar);
 		
 		request.getSession().removeAttribute("newFileData");
+		request.getSession().setAttribute("theChar", achar);
+		
+		/// save char to session
 		return simpleFinding;
+	}
+
+	private FindingBean transferSimpleFinding(SimpleFindingBean simpleFinding, FindingBean finding) {
+		//FindingBean finding = new FindingBean();
+		finding.setColumnHeaders(simpleFinding.getColumnHeaders());
+		FileBean theFile = new FileBean();
+		File file = new File();
+		file.setCreatedBy(simpleFinding.getTheFile().getCreatedBy());
+		file.setCreatedDate(simpleFinding.getTheFile().getCreatedDate());
+		file.setId(simpleFinding.getTheFile().getId());
+		file.setTitle(simpleFinding.getTheFile().getTitle());
+		file.setType(simpleFinding.getTheFile().getType());
+		file.setDescription(simpleFinding.getTheFile().getDescription());
+		theFile.setKeywordsStr(simpleFinding.getTheFile().getKeywordsStr());
+		theFile.setDomainFile(file);
+		finding.setTheFile(theFile);
+		finding.setNumberOfColumns(simpleFinding.getNumberOfColumns());
+		finding.setNumberOfRows(simpleFinding.getNumberOfRows());
+		finding.setTheFileIndex(simpleFinding.getTheFileIndex());
+		
+		List<Row> rowList = new ArrayList<Row>();
+		for(SimpleRowBean rowBean : simpleFinding.getRows()){
+			Row row = new Row();
+			List<TableCell> cellList = new ArrayList<TableCell>();
+			for(SimpleCell cell : rowBean.getCells()){
+				TableCell tbCell = new TableCell();
+				tbCell.setColumnOrder(cell.getColumnOrder());
+				tbCell.setDatumOrCondition(cell.getDatumOrCondition());
+				tbCell.setCreatedDate(cell.getCreatedDate());
+				tbCell.setValue(cell.getValue());
+				cellList.add(tbCell);
+			}
+			row.setCells(cellList);
+			rowList.add(row);
+		}
+		finding.setRows(rowList);
+		List<FileBean> fileList = new ArrayList<FileBean>();
+		for(SimpleFileBean fileBean : simpleFinding.getFiles()){
+			file = new File();
+			theFile = new FileBean();
+			file.setCreatedBy(fileBean.getCreatedBy());
+			file.setCreatedDate(fileBean.getCreatedDate());
+			file.setId(fileBean.getId());
+			file.setTitle(fileBean.getTitle());
+			file.setUriExternal(fileBean.getUriExternal());
+			file.setUri(fileBean.getUri());
+			file.setType(fileBean.getType());
+			file.setDescription(fileBean.getDescription());
+			theFile.setKeywordsStr(fileBean.getKeywordsStr());
+			
+			theFile.setExternalUrl(fileBean.getExternalUrl());
+			theFile.setDomainFile(file);
+			fileList.add(theFile);
+		}
+		finding.setFiles(fileList);
+		return finding;
 	}
 
 	public SimpleFindingBean removeFile(HttpServletRequest request, SimpleFindingBean simpleFinding)
@@ -789,8 +854,12 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		int theFileIndex = simpleFinding.getTheFileIndex();
 		findingBean.removeFile(theFileIndex);
 		findingBean.setTheFile(new FileBean());
+		request.setAttribute("anchor", "submitFinding");
 		
 		simpleFinding.transferFilesFromFindingBean(request, findingBean.getFiles());
+		
+		//this.checkOpenForms(achar, theForm, request);
+		//return mapping.findForward("inputForm");
 		
 		return simpleFinding;
 	}
@@ -813,6 +882,19 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
 		simpleFinding.transferTableNumbersToFindingBean(findingBean);
 
+//		if (request.getParameter("removeColumn") != null) {
+//			int columnToRemove = Integer.parseInt(request
+//					.getParameter("removeColumn"));
+//			findingBean.removeColumn(columnToRemove);
+//			this.checkOpenForms(achar, theForm, request);
+//			return mapping.findForward("inputForm");
+//		} else if (request.getParameter("removeRow") != null) {
+//			int rowToRemove = Integer.parseInt(request
+//					.getParameter("removeRow"));
+//			findingBean.removeRow(rowToRemove);
+//			this.checkOpenForms(achar, theForm, request);
+//			return mapping.findForward("inputForm");
+//		}
 		int existingNumberOfColumns = findingBean.getColumnHeaders().size();
 		int existingNumberOfRows = findingBean.getRows().size();
 		
@@ -848,6 +930,14 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		simpleFinding.transferFromFindingBean(request, findingBean);
 		simpleFinding.setColumnHeaders(findingBean.getColumnHeaders());
 		simpleFinding.setDefaultValuesForNullHeaders();
+		
+		request.setAttribute("anchor", "submitFinding");
+		
+		//this.checkOpenForms(achar, theForm, request);
+		// set columnHeaders in the session so jsp can check duplicate columns
+		request.getSession().setAttribute("columnHeaders",
+				findingBean.getColumnHeaders());
+		//return mapping.findForward("inputForm");
 		
 		return simpleFinding;
 	}
@@ -923,6 +1013,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			SimpleFindingBean simpleFinding) throws Exception {
 		
 		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
+//		SimpleCharacterizationEditBean editBean = 
+//				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
 		
 		FindingBean findingBean = findMatchFindingBean(achar, simpleFinding);
 		simpleFinding.transferColumnOrderToFindingBean(findingBean);
@@ -931,6 +1023,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		simpleFinding.transferFromFindingBean(request, findingBean);
 
+		request.setAttribute("anchor", "submitFinding");
+		//this.checkOpenForms(achar, theForm, request);
 		InitCharacterizationSetup.getInstance()
 			.persistCharacterizationDropdowns(request, achar);
 
@@ -1201,22 +1295,13 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 	}
 
-	/**
-	 * Setup "isSoluble" property in achar from Solubility entity.
-	 * 
-	 * @param achar
-	 */
-//	private void setupIsSoluble(CharacterizationBean achar) {
-//		Boolean soluble = null;
-//		if ("Solubility".equals(achar.getClassName())) {
-//			soluble = achar.getSolubility().getIsSoluble();
-//		}
-//		if (soluble == null) {
-//			achar.setIsSoluble(null);
-//		} else {
-//			achar.setIsSoluble(soluble.toString());
-//		}
-//	}
+public Boolean canUserExecutePrivateDispatch(UserBean user)
+			throws SecurityException {
+		if (user == null) {
+			return false;
+		}
+		return true;
+	}
 
 
 	private CharacterizationService setServicesInSession(

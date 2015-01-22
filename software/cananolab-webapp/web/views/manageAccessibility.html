@@ -112,16 +112,11 @@
                         <label for="userName" style="display:none">Login Name</label>
                         <input type="text" ng-model="accessForm.theAccess.userBean.loginName" value="" id="userName" ng-if="$parent.showAccessuser">
                     </td>
-                    <td>
-                        <a href id="browseIcon1" ng-if="$parent.showCollaborationGroup && accessForm.theAccess.accessBy != 'public'"
-                           ng-click="getCollabGroups();"><img
-                                src="images/icon_browse.jpg" align="middle"
-                                alt="search existing collaboration groups" border="0" /></a>
+                    <td><button id="browseIcon1" ng-if="$parent.showCollaborationGroup && accessForm.theAccess.accessBy != 'public'"
+                           ng-click="getCollabGroups();">Search</button>
 
-                        <a href id="browseIcon2" ng-if="$parent.showAccessuser"
-                           ng-click="getAccessUsers();"><img
-                                src="images/icon_browse.jpg" align="middle"
-                                alt="search existing users" border="0" /></a>
+                        <button id="browseIcon2" ng-if="$parent.showAccessuser"
+                           ng-click="getAccessUsers();">Search</button>
                     </td>
                     <td width="50%">
                         <table class="invisibleTable">

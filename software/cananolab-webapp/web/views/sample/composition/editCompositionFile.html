@@ -45,6 +45,7 @@
                                     <td colspan="2">
                             <span id="load" style="display: block;" ng-show="fileForm.uriExternal=='false'">
         						<input type="file" ng-model="fileForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
+        						<span ng-if="ie9">{{selectedFileName}}</span>
 				            </span>
                             <span id="uploadedUri" ng-show="fileForm.uriExternal=='false' && fileForm.id != null">
 			                    <a href="rest/composition/download?fileId={{fileForm.id}}">{{fileForm.uri}}</a>
