@@ -5,7 +5,6 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is
 
 You will find more details about the caNanoLab in the following links:
  * [Community Wiki] (https://wiki.nci.nih.gov/x/F4V-AQ)
- * [Binaries packages] (http://gforge.nci.nih.gov/frs/?group_id=69)
  * [caNanoLab Users ListServ] (https://list.nih.gov/archives/cananolab-users-l.html)
  * [Issue Tracker] (https://tracker.nci.nih.gov/browse/caNanoLab)
  * [Code Repository] (https://github.com/NCIP/cananolab)
