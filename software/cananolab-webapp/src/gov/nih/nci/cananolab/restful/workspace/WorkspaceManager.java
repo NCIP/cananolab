@@ -262,8 +262,8 @@ public class WorkspaceManager extends BaseAnnotationBO{
 						sb.append(ubean.getLoginName()).append(", ");
 						//sb.append(ubean.getFirstName()).append(" ").append(ubean.getLastName()).append(", ");
 				}
-				if (!loginUser.equals(ubean.getLoginName()))
-					sb.append(ubean.getLoginName()).append(", ");
+//				if (!loginUser.equals(ubean.getLoginName()))
+//					sb.append(ubean.getLoginName()).append(", ");
 			}
 		}
 
