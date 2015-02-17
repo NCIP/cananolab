@@ -35,8 +35,11 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -48,6 +51,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Junction;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
@@ -75,7 +79,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	public AdvancedSampleServiceHelper(SecurityService securityService) {
 		super(securityService);
 	}
-
+	
 	/**
 	 * Find sample names based on advanced search parameters
 	 * 
@@ -197,6 +201,203 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			}
 		}
 		return filteredSampleIds;
+	}
+
+	/**
+	 * Find sample names based on advanced search parameters
+	 * 
+	 * @param searchBean
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, String> findSampleIdNamesByAdvancedSearch(
+			AdvancedSampleSearchBean searchBean) throws Exception {
+		List<String> sampleIds = new ArrayList<String>();
+		
+		Map<String, String> sampleIdNameMap = new HashMap<String, String>();
+		
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		
+		ProjectionList projList = Projections.projectionList();
+		projList.add(Property.forName("id"));
+		projList.add(Property.forName("name"));
+		
+		// AND or all empty
+		if (searchBean.getLogicalOperator().equals("and")
+				|| searchBean.getSampleQueries().isEmpty()
+				&& searchBean.getCharacterizationQueries().isEmpty()
+				&& searchBean.getCompositionQueries().isEmpty()) {
+			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+					"rootCrit").setProjection(
+							Projections.distinct(projList));
+					//Projections.distinct(Property.forName("id")));
+			setSampleCriteria(searchBean, crit);
+			setCompositionCriteria(searchBean, crit);
+			setCharacterizationCriteria(searchBean, crit);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				
+				Object[] row = (Object[]) obj;
+				String id = row[0].toString();
+				String name = row[1].toString();
+				
+				logger.debug("id is: " + id);
+				logger.debug("name is: " + name);
+				String sampleId = id;
+				
+				sampleIds.add(sampleId);
+				
+				sampleIdNameMap.put(id, name);
+				
+			}	
+		}
+		// OR union the results
+		else {
+			Set<String> sampleIdSet = new HashSet<String>();
+			// sample
+			if (!searchBean.getSampleQueries().isEmpty()) {
+				
+//				ProjectionList projList = Projections.projectionList();
+//				projList.add(Property.forName("id"));
+//				projList.add(Property.forName("name"));
+				
+				DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+						"rootCrit").setProjection(
+								Projections.distinct(projList));		
+						//Projections.distinct(Property.forName("id")));
+				setSampleCriteria(searchBean, crit);
+				List results = appService.query(crit);
+				for (Object obj : results) {
+					
+					Object[] row = (Object[]) obj;
+					String id = row[0].toString();
+					String name = row[1].toString();
+					logger.debug("id is: " + id);
+					logger.debug("name is: " + name);
+					String sampleId = id;
+					sampleIds.add(sampleId);
+					
+					sampleIdNameMap.put(id, name);
+				}
+			}
+			
+			
+//			// composition
+			if (!searchBean.getCompositionQueries().isEmpty()) {
+				if( searchBean.getCompositionLogicalOperator().equals("and") ) {
+					for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
+						List<String> subSampleIds = new ArrayList<String>();
+						DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+								"rootCrit").setProjection(
+										Projections.distinct(projList));
+								//Projections.distinct(Property.forName("id")));
+						setSampleCriteria(searchBean, crit);
+						setCharacterizationCriteria(searchBean, crit);
+						setCompositionCriteriaBase(searchBean, crit);
+						
+						if (query.getCompositionType().equals("function")) {
+							DetachedCriteria subCrit = getFunctionSubquery(query,
+									"inherentFunction.", "function.", "id");
+							crit.add(Subqueries.exists(subCrit));
+						} else if (query.getCompositionType().equals("nanomaterial entity")) {
+							DetachedCriteria subCrit = getNanomaterialEntitySubquery(query,
+									"nanoEntity.", "id");
+							crit.add(Subqueries.exists(subCrit));
+						} else if (query.getCompositionType().equals("functionalizing entity")) {
+							DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
+									query, "funcEntity.", "id");
+							crit.add(Subqueries.exists(subCrit));
+						}
+						
+						List results = appService.query(crit);
+						for (Object obj : results) {
+							Object[] row = (Object[]) obj;
+							String id = row[0].toString();
+							String name = row[1].toString();
+							logger.debug("id is: " + id);
+							logger.debug("name is: " + name);
+							String sampleId = id;
+							//String sampleId = obj.toString();
+							subSampleIds.add(sampleId);
+							
+							sampleIdNameMap.put(id, name);
+						}
+						
+						if ( sampleIds.size() > 0 )
+							sampleIds.retainAll(subSampleIds);
+						else
+							sampleIds.addAll(subSampleIds);
+					}
+				}
+				else {
+					DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+							"rootCrit").setProjection(
+									Projections.distinct(projList));
+							//Projections.distinct(Property.forName("id")));
+					setCompositionCriteria(searchBean, crit);
+					List results=appService.query(crit);
+					for (Object obj : results) {
+						
+						Object[] row = (Object[]) obj;
+						String id = row[0].toString();
+						String name = row[1].toString();
+						logger.debug("id is: " + id);
+						logger.debug("name is: " + name);
+						String sampleId = id;
+						//String sampleId = obj.toString();
+						sampleIds.add(sampleId);
+						
+						sampleIdNameMap.put(id, name);
+					}
+				}
+			}
+			if (!searchBean.getCharacterizationQueries().isEmpty()) {
+				// characterization
+				DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+						"rootCrit").setProjection(
+								Projections.distinct(projList));
+						//Projections.distinct(Property.forName("id")));
+				setCharacterizationCriteria(searchBean, crit);
+				List results=appService.query(crit);
+				for (Object obj : results) {
+					Object[] row = (Object[]) obj;
+					String id = row[0].toString();
+					String name = row[1].toString();
+					logger.debug("id is: " + id);
+					logger.debug("name is: " + name);
+					String sampleId = id;
+					//String sampleId = obj.toString();
+					sampleIds.add(sampleId);
+					sampleIdNameMap.put(id, name);
+				}
+			}
+		}
+		
+		Iterator<String> ite = sampleIdNameMap.keySet().iterator();
+		while (ite.hasNext()) {
+			String sampleId = ite.next();
+			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+				logger.debug("User doesn't have access to sample with id "
+						+ sampleId);
+				ite.remove();
+			}
+		}
+		
+		//filter out redundant ones and non-accessible ones
+//		List<String>filteredSampleIds=new ArrayList<String>();
+//		for (String sampleId: sampleIds) {
+//			if (!filteredSampleIds.contains(sampleId)
+//					&& StringUtils.containsIgnoreCase(getAccessibleData(),
+//							sampleId)) {
+//				filteredSampleIds.add(sampleId);
+//			} else { // ignore no access exception
+//				logger.debug("User doesn't have access to sample with id "
+//						+ sampleId);
+//			}
+//		}
+		
+		return sampleIdNameMap;
 	}
 
 	/**
@@ -1045,11 +1246,17 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		Criterion funcEntityCrit = null;
 		// other entity type
 		if (clazz == null) {
-			Criterion otherFuncCrit1 = Restrictions.eq(entityAlias + "class",
+			/*Criterion otherFuncCrit1 = Restrictions.eq(entityAlias + "class",
 					"OtherFunctionalizingEntity");
 			Criterion otherFuncCrit2 = Restrictions.eq(entityAlias + "type",
 					compQuery.getEntityType());
-			funcEntityCrit = Restrictions.and(otherFuncCrit1, otherFuncCrit2);
+			funcEntityCrit = Restrictions.and(otherFuncCrit1, otherFuncCrit2);*/
+		
+			Integer funcClassNameInteger = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
+					.get("OtherFunctionalizingEntity");
+			funcEntityCrit = Restrictions.eq(entityAlias + "class",
+							funcClassNameInteger);
+		
 		} else {
 			Integer funcClassNameInteger = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
 					.get(funcEntityClassName);

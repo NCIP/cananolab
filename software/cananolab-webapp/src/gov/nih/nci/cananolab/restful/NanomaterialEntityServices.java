@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleAdvacedSampleCompositionBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
@@ -228,5 +230,27 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 
 		}
 	}
+	@GET
+	@Path("/viewDetails")
+	@Produces ("application/json")
+    public Response viewDetails(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
+				
+		try { 
+			NanomaterialEntityBO nanomaterialEntityBO = 
+					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+						
+			NanomaterialEntityBean entityBean = nanomaterialEntityBO.setupNanoEntityForAdvSearch(sampleId, dataId, httpRequest);
+			
+			SimpleAdvacedSampleCompositionBean compBean = new SimpleAdvacedSampleCompositionBean();
+			compBean.transferNanomaterialEntityForAdvancedSampleSearch(entityBean, httpRequest);
+			
+			return Response.ok(compBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the NanoMaterial Entity" + e.getMessage())).build();
+
+		}
+	}
+	
 }
 

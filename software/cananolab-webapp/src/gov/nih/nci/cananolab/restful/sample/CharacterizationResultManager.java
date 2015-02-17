@@ -11,8 +11,8 @@ package gov.nih.nci.cananolab.restful.sample;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.util.Constants;
@@ -113,49 +113,62 @@ public class CharacterizationResultManager {
 		return nms;
 	}
 
-	//public List<LabelValueBean> getDecoratedDatumNameOptions(
-	public void getDecoratedDatumNameOptions(
+	/**
+	 * Get datum options based on char type, name and assay type for the 3rd drop down in 
+	 * Advanced Sample Search -> Characterization Criteria
+	 * 
+	 * @param request
+	 * @param characterizationType
+	 * @param characterizationName
+	 * @param assayType
+	 * @return
+	 * @throws Exception
+	 */
+	public List<LabelValueBean> getDecoratedDatumNameOptions(
+			HttpServletRequest request,
 			String characterizationType, String characterizationName,
 			String assayType) throws Exception {
 		// extract assayType from characterizationName
-//		if (characterizationName.contains(":")) {
-//			int ind = characterizationName.indexOf(":");
-//			assayType = characterizationName.substring(ind + 1);
-//			characterizationName = characterizationName.substring(0, ind);
-//		}
-//		List<LabelValueBean> allDatumNames = InitSetup.getInstance()
-//				.getDefaultAndOtherTypesByLookupAsOptions(characterizationName,
-//						"datumName", "otherDatumName");
-//		// if assayType is empty, use charName to look up datums, as well as
-//		// look up all assay types and use assay type to look up datum
-//		if (StringUtils.isEmpty(assayType)) {
-//			List<LabelValueBean> assayTypeBeans = InitSetup
-//					.getInstance()
-//					.getDefaultAndOtherTypesByLookupAsOptions(
-//							characterizationName, "assayType", "otherAssayType");
-//			if (assayTypeBeans != null && !assayTypeBeans.isEmpty()) {
-//				for (LabelValueBean bean : assayTypeBeans) {
-//					List<LabelValueBean> datumNamesByAssayTypes = InitSetup
-//							.getInstance()
-//							.getDefaultAndOtherTypesByLookupAsOptions(
-//									bean.getValue(), "datumName",
-//									"otherDatumName");
-//					for (LabelValueBean lv : datumNamesByAssayTypes) {
-//						if (!allDatumNames.contains(lv)) {
-//							allDatumNames.add(lv);
-//						}
-//					}
-//				}
-//			}
-//		} else {
-//			allDatumNames.addAll(InitSetup.getInstance()
-//					.getDefaultAndOtherTypesByLookupAsOptions(assayType,
-//							"datumName", "otherDatumName"));
-//		}
-//		return allDatumNames;
+		if (characterizationName.contains(":")) {
+			int ind = characterizationName.indexOf(":");
+			assayType = characterizationName.substring(ind + 1);
+			characterizationName = characterizationName.substring(0, ind);
+		}
+		
+		List<LabelValueBean> allDatumNames = InitSetup.getInstance()
+				.getDefaultAndOtherTypesByLookupAsOptions(characterizationName,
+						"datumName", "otherDatumName");
+		// if assayType is empty, use charName to look up datums, as well as
+		// look up all assay types and use assay type to look up datum
+		if (StringUtils.isEmpty(assayType)) {
+			List<LabelValueBean> assayTypeBeans = InitSetup
+					.getInstance()
+					.getDefaultAndOtherTypesByLookupAsOptions(
+							characterizationName, "assayType", "otherAssayType");
+			if (assayTypeBeans != null && !assayTypeBeans.isEmpty()) {
+				for (LabelValueBean bean : assayTypeBeans) {
+					List<LabelValueBean> datumNamesByAssayTypes = InitSetup
+							.getInstance()
+							.getDefaultAndOtherTypesByLookupAsOptions(
+									bean.getValue(), "datumName",
+									"otherDatumName");
+					for (LabelValueBean lv : datumNamesByAssayTypes) {
+						if (!allDatumNames.contains(lv)) {
+							allDatumNames.add(lv);
+						}
+					}
+				}
+			}
+		} else {
+			allDatumNames.addAll(InitSetup.getInstance()
+					.getDefaultAndOtherTypesByLookupAsOptions(assayType,
+							"datumName", "otherDatumName"));
+		}
+		return allDatumNames;
 	}
 
-	public List<String> getColumnValueUnitOptions(HttpServletRequest request, String name, String property)
+	public List<String> getColumnValueUnitOptions(HttpServletRequest request, 
+			String name, String property, boolean addOther)
 			throws Exception {
 		String valueName = name;
 		
@@ -176,7 +189,8 @@ public class CharacterizationResultManager {
 		
 		List<String> unitList = new ArrayList<String>();
 		unitList.addAll(units);
-		CommonUtil.addOtherToList(unitList);
+		if (addOther)
+			CommonUtil.addOtherToList(unitList);
 		return unitList;
 	}
 

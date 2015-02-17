@@ -23,6 +23,7 @@ import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 
 /**
@@ -103,6 +104,15 @@ public interface SampleService extends BaseService {
 
 	public List<String> findSampleIdsByOwner(String currentOwner)
 			throws SampleException;
+	
+
+	public SampleBasicBean findSampleBasicById(String sampleId, Boolean loadAccessInfo)
+			throws SampleException, NoAccessException;
+	
+	public Map<String, String> findSampleIdNamesByAdvancedSearch (AdvancedSampleSearchBean searchBean) 
+			throws SampleException;
+	
+	public void loadAccessesForSampleBean(SampleBean sampleBean) throws Exception;
 	
 	public SampleBasicBean findSWorkspaceSampleById(String sampleId, boolean loadAccessInfo)
 			throws SampleException, NoAccessException;

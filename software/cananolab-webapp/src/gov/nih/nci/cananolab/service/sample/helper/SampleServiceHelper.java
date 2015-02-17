@@ -33,8 +33,10 @@ import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
+import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.system.web.struts.action.Criteria;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,6 +60,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
 /**
  * Helper class providing implementations of search methods needed for both
@@ -659,6 +662,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			throw new NoAccessException("User has no access to the sample "
 					+ sampleId);
 		}
+		
+		logger.debug("===============Finding a sample by id: " + System.currentTimeMillis());
 		Sample sample = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -697,6 +702,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		}
 		return sample;
 	}
+	
 	
 	public Sample findSampleBasicById(String sampleId) throws Exception {
 		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {

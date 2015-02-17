@@ -521,7 +521,7 @@ var app = angular.module('angularApp')
     $scope.onFileSelect = function($files) {
         $scope.selectedFiles = [];
         $scope.selectedFiles = $files;
-        
+          
         
         if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) 
         	$scope.selectedFileName = $scope.selectedFiles[0].name;        

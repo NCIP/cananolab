@@ -23,9 +23,9 @@ public class CollaborationGroupBean extends SecuredDataBean {
 		}
 	}
 
-	public String getDescriptionDisplayName() {
-		return StringUtils.escapeXmlButPreserveLineBreaks(description);
-	}
+//	public String getDescriptionDisplayName() {
+//		return StringUtils.escapeXmlButPreserveLineBreaks(description);
+//	}
 
 	public CollaborationGroupBean(Group group) {
 		this.name = group.getGroupName();

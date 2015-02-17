@@ -16,9 +16,27 @@ public class SimpleSearchPublicationBean {
 	String[] sampleNames;
 	String descriptionDetail;
 	String status;
+	String title;
 	Date createdDate;
 	boolean userDeletable = false;
+	long pubmedId;
 	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public long getPubmedId() {
+		return pubmedId;
+	}
+
+	public void setPubmedId(long pubmedId) {
+		this.pubmedId = pubmedId;
+	}
+
 	public boolean getUserDeletable() {
 		return userDeletable;
 	}
@@ -122,18 +140,21 @@ public class SimpleSearchPublicationBean {
 		try{
 			if (bean == null) return;
 
-			setDisplayName(bean.getDisplayName());
+			this.setDisplayName(bean.getDisplayName());
 			Publication pub = (Publication) bean.getDomainFile();
-			setPublicationType(pub.getCategory());
-			setResearchAreas(bean.getResearchAreas());
-			setSampleNames(bean.getSampleNames());
-			setDescriptionDetail(pub.getDescription());
-			setStatus(pub.getStatus());
-			setCreatedDate(pub.getCreatedDate());
-			setUserDeletable(bean.getUserDeletable());
-			setEditable(bean.getUserUpdatable());
+			this.setPublicationType(pub.getCategory());
+			this.setResearchAreas(bean.getResearchAreas());
+			this.setSampleNames(bean.getSampleNames());
+			this.setDescriptionDetail(pub.getDescription());
+			this.setStatus(pub.getStatus());
+			this.setCreatedDate(pub.getCreatedDate());
+			this.setUserDeletable(bean.getUserDeletable());
+			this.setEditable(bean.getUserUpdatable());
+			this.setTitle(pub.getTitle());
+			if(pub.getPubMedId()!=null)
+				this.setPubmedId(pub.getPubMedId());
 		//	editable = SecurityUtil.isEntityEditableForUser(bean.getUserAccesses(), user);
-			id = bean.getDomainFile().getId();
+			this.setId(bean.getDomainFile().getId());
 		}catch(Exception e){
 			System.out.println("error while setting up simple bean  "+e);
 			e.printStackTrace();

@@ -188,7 +188,10 @@ public abstract class AbstractDispatchBO {
 	protected SecurityService getSecurityServiceFromSession(
 			HttpServletRequest request) throws SecurityException {
 		if (request.getSession().getAttribute("securityService") == null) {
-			UserBean user = (UserBean) request.getAttribute("user");
+			
+			//UserBean user = (UserBean) request.getAttribute("user");
+			UserBean user = (UserBean) request.getSession().getAttribute("user");
+			
 			SecurityService service = new SecurityService(
 					AccessibilityBean.CSM_APP_NAME, user);
 			return service;

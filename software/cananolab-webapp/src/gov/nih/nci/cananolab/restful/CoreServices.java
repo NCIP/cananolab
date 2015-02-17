@@ -2,16 +2,17 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Organization;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.FavoriteBean;
 import gov.nih.nci.cananolab.restful.core.AccessibilityManager;
-import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.core.CustomPlugInBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.core.PointOfContactManager;
 import gov.nih.nci.cananolab.restful.core.TabGenerationBO;
+import gov.nih.nci.cananolab.restful.favorites.FavoritesBO;
 import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleFavoriteBean;
 import gov.nih.nci.cananolab.restful.view.SimpleTabsBean;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleOrganizationBean;
@@ -23,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +79,7 @@ public class CoreServices {
     public Response getTabs(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("homePage") String homePage) {
 		
-		logger.debug("In getTabs. SessionId: " + httpRequest.getSession().getId());
+		logger.info("In getTabs service");
 		
 		
 		TabGenerationBO tabGen = (TabGenerationBO)applicationContext.getBean("tabGenerationBO");
@@ -235,5 +237,66 @@ public class CoreServices {
 		
 	}
 
+	@GET
+	@Path("/getFavorites")
+	@Produces ("application/json")
+    public Response getFavorites(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("id") Long id) {
+				
+		try { 
+			FavoritesBO favorite = 
+					 (FavoritesBO) applicationContext.getBean("favoritesBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			SimpleFavoriteBean simpleBean = favorite.findFavorites(httpRequest);
+			
+			return	Response.ok(simpleBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the favorites : "+ e.getMessage()).build();
+		}
+	}
 	
+	@POST
+	@Path("/addFavorite")
+	@Produces ("application/json")
+    public Response addFavorite(@Context HttpServletRequest httpRequest, FavoriteBean bean) {
+				
+		try { 
+			FavoritesBO favorite = 
+					 (FavoritesBO) applicationContext.getBean("favoritesBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			List<String> list = favorite.create(bean, httpRequest);
+				return	Response.ok(list).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem adding the favorites : "+ e.getMessage()).build();
+		}
+	}
+	@POST
+	@Path("/deleteFavorite")
+	@Produces ("application/json")
+    public Response deleteFavorite(@Context HttpServletRequest httpRequest, FavoriteBean bean) {
+				
+		try { 
+			FavoritesBO favorite = 
+					 (FavoritesBO) applicationContext.getBean("favoritesBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			SimpleFavoriteBean simpleBean = favorite.delete(bean, httpRequest);
+				return	Response.ok(simpleBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem while deleting the favorites from the list : "+ e.getMessage()).build();
+		}
+	}
 }

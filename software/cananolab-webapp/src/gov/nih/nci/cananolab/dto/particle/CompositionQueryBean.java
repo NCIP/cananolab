@@ -14,16 +14,55 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonTypeName;
+
 /**
  * Information for the composition query form
  * 
  * @author pansu
  * 
  */
+@JsonTypeName("CompositionQueryBean")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CompositionQueryBean extends BaseQueryBean {
 	private String compositionType = "";
 	private String entityType = "";
 	private String chemicalName = "";
+	
+	
+	private String id;
+	private String operand = "";
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getOperand() {
+		return operand;
+	}
+
+	public void setOperand(String operand) {
+		this.operand = operand;
+	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof BaseQueryBean) {
+			BaseQueryBean q = (BaseQueryBean) obj;
+			String thisId = this.getId();
+			if (thisId != null && thisId.equals(q.getId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
+	
+
 
 	public String getCompositionType() {
 		return compositionType;
@@ -68,4 +107,18 @@ public class CompositionQueryBean extends BaseQueryBean {
 			return compositionType+"<br>"+entityType;
 		}
 	}
+
+	@Override
+	public String getType() {
+		// TODO Auto-generated method stub
+		return "CompositionQueryBean";
+	}
+
+	@Override
+	public void setType(String type) {
+		// TODO Auto-generated method stub
+		super.setType(type);
+	}
+	
+	
 }

@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.restful.sample.FunctionalizingEntityBO;
 import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleAdvacedSampleCompositionBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionalizingEntityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
@@ -227,6 +228,27 @@ private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
 			
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the Functionalizing Entity" + e.getMessage())).build();
+
+		}
+	}
+	@GET
+	@Path("/viewDetails")
+	@Produces ("application/json")
+    public Response viewDetails(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
+				
+		try { 
+			FunctionalizingEntityBO functionalizingEntity = 
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
+			
+			FunctionalizingEntityBean entityBean = functionalizingEntity.setupFunctionalizingEntityForAdvancedSearch(sampleId, dataId, httpRequest);
+			
+			SimpleAdvacedSampleCompositionBean bean = new SimpleAdvacedSampleCompositionBean();
+			bean.transferFunctionalizingEntityForAdvancedSampleSearch(entityBean, httpRequest);
+			
+			return Response.ok(bean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the Functionalizing Entity" + e.getMessage())).build();
 
 		}
 	}

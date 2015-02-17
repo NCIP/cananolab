@@ -18,6 +18,15 @@ public class SimpleWorkspaceItem {
 	String comments;
 	String pubMedDOIId;
 	String access;
+	boolean isOwner;
+	
+	public boolean isOwner() {
+		return isOwner;
+	}
+
+	public void setOwner(boolean isOwner) {
+		this.isOwner = isOwner;
+	}
 
 	List<String> actions = new ArrayList<String>();
 	

@@ -6,7 +6,7 @@ var app = angular.module('angularApp')
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleData2 = sampleService.sampleData;
     $scope.utilsService = utilsService;
-    
+    $scope.loggedInUser = groupService.getUserName();
     
     $scope.goBack = function() {
       $location.path("/searchSample").replace();      
@@ -80,6 +80,30 @@ var app = angular.module('angularApp')
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
             } 
         }); 
+    
+    $scope.addToFavorites = function(sampleId, sampleName, editable) {
+        $scope.loader = true;
+        
+        $scope.favoriteBean = {"dataType" : "sample", "dataName" : sampleName, "dataId" : sampleId, "editable" : editable, "loginName" : $scope.loggedInUser.name};
+
+        $http({method: 'POST', url: '/caNanoLab/rest/core/addFavorite',data: $scope.favoriteBean}).
+            success(function(data, status, headers, config) {
+                 var hrefEl = document.getElementById('href' + sampleId);
+                 var msgEl = document.getElementById('msg' + sampleId);
+                 msgEl.innerHTML = data;
+                 hrefEl.style.visibility="hidden";
+                 $scope.loader = false;
+
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                // $rootScope.sampleData = data;
+                $scope.loader = false;
+                $scope.messages = data;
+            });
+    };        
+    
 
   
   });

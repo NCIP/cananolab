@@ -1,22 +1,24 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
-import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
+import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
+import gov.nih.nci.cananolab.restful.sample.AdvancedSampleSearchBO;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchResultView;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
-import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleAccessBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.restful.workspace.WorkspaceManager;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
 import java.io.FileInputStream;
@@ -26,16 +28,13 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
@@ -486,6 +485,35 @@ public class SampleServices {
 		}
 	}
 	
+	@GET
+	@Path("/deleteSampleFromWorkspace")
+	@Produces("application/json")
+	 public Response deleteSampleFromWorkspace(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+		logger.debug("In deleteSampleFromWorkspace");
+		try {
+			WorkspaceManager workspaceManager = 
+					(WorkspaceManager) applicationContext.getBean("workspaceManager");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			String msg = workspaceManager.deleteSample(sampleId, httpRequest);
+			logger.debug("Delete sample complete: " + msg);
+			return (msg == null || msg.startsWith("Error")) ?
+					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build()
+					:
+					Response.ok(msg).build();
+						
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while deleting sample: " + e.getMessage())).build();
+		}
+	}
+	
 	
 	@POST
 	@Path("/deletePOC")
@@ -671,6 +699,146 @@ public class SampleServices {
 			//return Response.ok("Error while viewing the search results").build();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	@GET
+	@Path("/setupAdvancedSearch")
+	@Produces ("application/json")
+    public Response setupAdvancedSearch(@Context HttpServletRequest httpRequest) {
+		logger.debug("In setupAdvancedSearch");		
+		
+		try { 
+			AdvancedSampleSearchBO searchSampleBO = 
+					(AdvancedSampleSearchBO) applicationContext.getBean("advancedSampleSearchBO");
+			
+			Map<String, Object> dropdownTypeLists = searchSampleBO.setup(httpRequest);
+			//AdvancedSampleSearchBean searchBean = searchSampleBO.setup(httpRequest);
+
+			return Response.ok(dropdownTypeLists).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists")).build();
+		}
+	}
+	
+	@GET
+	@Path("/getDecoratedCharacterizationOptions")
+	@Produces ("application/json")
+    public Response getDecoratedCharacterizationOptions(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("charType") String charType) {
+		logger.debug("In getDecoratedCharacterizationOptions");		
+		
+		try { 
+			CharacterizationManager characterizationMgr = 
+					(CharacterizationManager) applicationContext.getBean("characterizationManager");
+			
+			List<LabelValueBean> charOptions = characterizationMgr.getDecoratedCharacterizationOptions(httpRequest, charType);
+					//searchSampleBO.setup(httpRequest);
+
+			return Response.ok(charOptions).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while creating characterization options")).build();
+		}
+	}
+	
+	@GET
+	@Path("/getDecoratedDatumOptions")
+	@Produces ("application/json")
+    public Response getDecoratedDatumOptions(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("charType") String charType, 
+    		@DefaultValue("") @QueryParam("charName") String charName) {
+		logger.debug("In getDecoratedDatumOptions");		
+		
+		try { 
+			CharacterizationResultManager characterizationMgr = 
+					(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+			
+			List<LabelValueBean> datumOptions = characterizationMgr.getDecoratedDatumNameOptions(
+					httpRequest, charType, charName, null);
+
+			return Response.ok(datumOptions).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while creating characterization datum options")).build();
+		}
+	}
+	
+	@GET
+	@Path("/getDatumUnitOptions")
+	@Produces ("application/json")
+    public Response getDatumUnitOptions(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("datumName") String datumName) {
+		logger.debug("In getDatumUnitOptions");		
+		
+		try {
+			CharacterizationResultManager characterizationResultManager = 
+				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+			
+			List<String> names = characterizationResultManager
+					.getColumnValueUnitOptions(httpRequest, datumName, "", false);
+					
+			return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	@POST
+	@Path("/searchSampleAdvanced")
+	@Produces ("application/json")
+	public Response searchSampleAdvanced(@Context HttpServletRequest httpRequest, 
+			AdvancedSampleSearchBean searchBean ) {
+		
+		logger.debug("In searchSampleAdvanced");
+		
+		try {
+			AdvancedSampleSearchBO searchSampleBO = 
+					(AdvancedSampleSearchBO) applicationContext.getBean("advancedSampleSearchBO");
+			
+			SimpleAdvancedSearchResultView resultView = searchSampleBO.search(httpRequest, searchBean);
+			
+			
+			if (resultView.getErrors().size() > 0) {
+				logger.debug("Search sampel has error: " + resultView.getErrors().get(0));
+				return Response.status(Response.Status.NOT_FOUND).entity(resultView.getErrors()).build();
+			} else {
+				logger.debug("Sample search successful");
+				return Response.ok(resultView).build();
+			}
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while searching for samples: " + e.getMessage())).build();
+		}
+	}
+	
+	@GET
+	@Path("/isSampleEditable")
+	@Produces ("application/json")
+	 public Response isSampleEditable(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+		
+		try { 
+
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+
+			boolean editable = sampleBO.isSampleEditableByCurrentUser(httpRequest, sampleId);
+			
+			return Response.ok(editable).header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while evaluating if sample is editable by current user.")).build();
 		}
 	}
 }

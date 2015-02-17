@@ -20,8 +20,10 @@
 <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
 		<td data-title="''" width="5%" class="columnOne">	
-			<a ng-if="row.editable" href="#/editSample?sampleId={{row.sampleId}}">Edit</a>
-			<a ng-if="!row.editable"href="#/sample?sampleId={{row.sampleId}}">View</a>
+			<a ng-if="row.editable" ng-init="searchType='simple'" href="#/editSample?sampleId={{row.sampleId}}">Edit</a>
+			<a ng-if="!row.editable" ng-init="searchType='simple'" href="#/sample?sampleId={{row.sampleId}}">View</a> <br />
+            <a id="href{{row.sampleId}}" href="" ng-click="addToFavorites(row.sampleId, row.sampleName, row.editable)" ng-if="tabs.userLoggedIn">Add to Favorites</a>
+            <span id="msg{{row.sampleId}}" style="color:#2276ff;font-weight:bold;"></span>
 
 		</td>
 		<td data-title="'Sample Name'" sortable="'sampleName'" width="17%">

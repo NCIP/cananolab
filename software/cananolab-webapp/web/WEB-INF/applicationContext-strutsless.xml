@@ -96,6 +96,9 @@
 		<property name="curationService">
 			<ref bean="curationServiceDAO" />
 		</property>
+		<property name="dataAvailabilityService">
+			<ref bean="dataAvailabilityServiceDAO" />
+		</property>
 	</bean>
 	
 	<bean id="pointOfContactManager"
@@ -172,6 +175,25 @@
 		class="gov.nih.nci.cananolab.restful.core.QuartzScheduler">
 		<property name="csmCleanupIntervalInMinutes" value="1" />
 		<property name="publicCountPullIntervalInHours" value="24" />
+	</bean>
+	
+	
+	<bean id="advancedSampleSearchBO"
+		class="gov.nih.nci.cananolab.restful.sample.AdvancedSampleSearchBO">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+	
+	<bean id="favoritesBO"
+		class="gov.nih.nci.cananolab.restful.favorites.FavoritesBO">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+	
+	<bean id="collaborationGroupBO"
+		class="gov.nih.nci.cananolab.restful.community.CollaborationGroupBO">
 	</bean>
 	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />

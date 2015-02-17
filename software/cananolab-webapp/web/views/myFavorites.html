@@ -1,0 +1,84 @@
+<div class="spacer" ng-class="{formFocus:loader}">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+        <tr>
+            <th scope="col" align="left">
+                My Favorites
+            </th>
+            <td align="right" width="30%">
+                <!-- <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SearchingPublications')">Help</a>  -->
+                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>            
+             </td>
+        </tr>
+    </table>
+    <br />
+    <span ng-if="(samples != null && samples.length > 0) || (protocols != null && protocols.length > 0) || (publications != null && publications.length > 0)">
+	    <div>
+	        <input type="checkbox" ng-model="mySamples"><span style="font-size:16px;"> Samples </span>
+	        <input type="checkbox" ng-model="myProtocols"><span style="font-size:16px;"> Protocols </span>
+	        <input type="checkbox" ng-model="myPublications"><span style="font-size:16px;"> Publications </span>
+	    </div>
+	    <hr>
+	    <div style="font-size:18px;" ng-show="mySamples">My Samples</div>
+	    <table class="table publication" width="100%" cellpadding="0" cellspacing="0" ng-show="mySamples">
+	        <tr>
+	            <th>Actions</th>
+	            <th>Sample Name</th>
+	        </tr>
+	        <tr ng-repeat="data in samples">
+	            <td class="columnOne" width="20%">
+	                <a href="/caNanoLab/#/sample?sampleId={{data.dataId}}&amp;fromFavorites=true">View</a>&nbsp;
+	                <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromFavorites=true" ng-if="data.editable">Edit</a> <br/>
+					<a href="" ng-click="removeFromFavorites(data, 'sample')">Remove from Favorites</a>            </td>
+	            <td>
+	                <div>{{data.dataName}}</div>
+	            </td>
+	        </tr>
+	    </table>
+	    <br/>
+	    <div style="font-size:18px;" ng-show="myProtocols">My Protocols</div>
+	    <table class="table publication" width="100%" cellpadding="0" cellspacing="0" ng-show="myProtocols">
+	        <tr>
+	            <th>Actions</th>
+	            <th>Protocol Name</th>
+	        </tr>
+	        <tr ng-repeat="data in protocols">
+	            <td class="columnOne" width="20%">
+	                <a href="rest/protocol/download?fileId={{data.protocolFileId}}" target="_blank" ng-if="data.protocolFileId != null && data.protocolFileId != '0'">View</a>&nbsp;
+	                <a href="/caNanoLab/#/editProtocol?protocolId={{data.dataId}}" ng-if="data.editable">Edit</a> <br/>
+					<a href="" ng-click="removeFromFavorites(data, 'protocol')">Remove from Favorites</a>            
+				</td>
+	            <td>
+	                <div>{{data.dataName}}</div>
+	            </td>
+	        </tr>
+	    </table>
+	    <br/>
+	    <div style="font-size:18px;" ng-show="myPublications">My Publications</div>
+	    <table class="table publication" width="100%" cellpadding="0" cellspacing="0" ng-show="myPublications">
+	        <tr>
+	            <th>Actions</th>
+	            <th>Publication Title</th>
+	        </tr>
+	        <tr ng-repeat="data in publications">
+	            <td class="columnOne" width="20%">
+	                <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.pubmedId}}" target="_blank" ng-if="data.pubmedId != null && data.pubmedId != '0'">View</a>&nbsp;
+	                <a href="/caNanoLab/#/editPublication?publicationId={{data.dataId}}" ng-if="data.editable">Edit</a> <br/>
+	                <a href="" ng-click="removeFromFavorites(data, 'publication')">Remove from Favorites</a>
+	            </td>
+	            <td>
+	                <div>{{data.dataName}}</div>
+	            </td>
+	        </tr>
+	    </table>
+    </span>
+    <span ng-if="samples == null && protocols == null && publications == null &&!loader" style="font-size:1.5em; color:darkgreen">
+        <br />
+        No favorites currently available. If you want to add any Samples, Protocols or Publications as a favorite, please add them as favorites on the Search Results Page.
+    </span>    
+</div>
+<div id="loader" ng-show="loader">
+    <div id="loaderText">
+        Loading
+    </div>
+    <div id="loaderGraphic"></div>
+</div>

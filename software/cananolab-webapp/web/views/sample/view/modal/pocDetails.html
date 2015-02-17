@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <h3 class="modal-title pull-left">Point Of Contact Information</h3>
+    <div class="pull-right">
+        <a href="" ng-click="cancel()" class="help">Hide</a>
+    </div>
+    <div style="clear:both"></div>
+</div>
+<div class="modal-body">
+
+<table>
+         <tr>
+           <th valign="top" class="cellLabel" scope="row" width="20%">
+             Sample Name
+           </th>
+           <td>
+             {{sampleData.sampleName}}
+           </td>
+         </tr>
+         <tr>
+           <th valign="top" class="cellLabel" scope="row" width="20%">
+             Created Date
+           </th>
+           <td>{{sampleData.createdDate | date:'shortDate'}}
+
+           </td>
+         </tr>         
+         <tr>
+           <th valign="top" class="cellLabel" scope="row">
+             Keywords
+           </th>
+           <td>
+             <div ng-bind-html="sampleData.keywords" />
+           </td>
+         </tr>  
+         <tr>
+           <th valign="top" class="cellLabel" scope="row">
+             Point of Contact
+           </th>
+           <td>
+             <table align="left" class="invisibleTable">
+               <tr>
+                 <th class="cellLabel" scope="col">
+                   Primary Contact?
+                 </th>
+                 <th class="cellLabel" scope="col">
+                   Contact Person
+                 </th>
+                 <th class="cellLabel" scope="col">
+                   Organization
+                 </th>
+                 <th class="cellLabel" scope="col">
+                   Role
+                 </th>
+               </tr>
+               <tr ng-repeat="contact in sampleData.pointOfContactMap.contactPerson track by $index">
+                <td>{{returnUserReadableBoolean(sampleData.pointOfContactMap.primaryContact[$index])}}</td>
+                <td ng-bind-html="sampleData.pointOfContactMap.contactPerson[$index]"></td>
+                <td ng-bind-html="sampleData.pointOfContactMap.organizationDisplayName[$index]"></td>
+                <td>{{sampleData.pointOfContactMap.role[$index]}}</td>
+               </tr>
+               <tr>
+                 <td>
+                   {{sampleData.otherPOCBeans.personDisplayName}}
+                 </td>
+                 <td>
+                   {{sampleData.otherPOCBeans.organizationDisplayName}}
+                 </td>
+                 <td>
+                   {{sampleData.otherPOCBeans.domain.role}}
+                 </td>
+               </tr>
+             </table>
+           </td>
+         </tr>                
+</table>
+
+
+</div>

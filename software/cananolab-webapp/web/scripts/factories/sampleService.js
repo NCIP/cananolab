@@ -14,6 +14,9 @@ app.factory("sampleService", function($http){
 		pocData: {data: null},
 		message: {data:null},
 		simpleDialog: function() {},
+		sampleQueries: [],
+		compositionQueries: [],
+		characterizationQueries: [],	
 		sampleName: function(sampleId) {
 			that.name = "";
 			$http({method: 'GET', url: '/caNanoLab/rest/sample/getCurrentSampleName?sampleId='+sampleId}).

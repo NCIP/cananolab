@@ -12,10 +12,19 @@ var app = angular.module('angularApp')
     if ($routeParams.sampleId) {
       $scope.sampleId.data = $routeParams.sampleId;
     };
+
+    if ($routeParams.isAdvancedSearch) {
+      $scope.isAdvancedSearch = 1;
+    };      
     
 
     $scope.goBack = function() {
-      $location.path("/sampleResults").replace(); 
+        if ($scope.isAdvancedSearch) {
+          $location.path("/advancedSampleSearch").replace();           
+        }
+        else {
+          $location.path("/sampleResults").replace();           
+        }        
       $location.search('sampleId', null);      };
 
     $scope.select = function(tab) {

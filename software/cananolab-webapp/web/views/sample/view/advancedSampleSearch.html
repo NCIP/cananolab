@@ -1,0 +1,394 @@
+<div class="spacer">
+<div ng-class="{formFocus:loader}"> 
+<table class="contentTitle" summary="layout" width="100%" border="0">
+	<tbody><tr>
+		<th scope="col" align="left">
+			Advanced Sample Search
+		</th>
+		
+			<td width="30%" align="right">
+  
+
+	<a class="helpText" href="#/searchSample">Basic Search</a>
+	&nbsp;
+  
+<a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>
+&nbsp;				
+		
+  
+<a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+&nbsp;
+
+			</td>
+		
+	</tr>
+</tbody></table>
+<br>
+<br>
+
+	
+<span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
+    <ul>
+        <li ng-repeat="msg in message">
+            {{msg}}
+        </li>
+    </ul>
+</span>	
+
+	<table class="submissionView" width="100%" align="center">
+		<tbody><tr>
+			<th scope="col">
+				Sample Criteria
+			</th>
+		</tr>
+		<tr ng-show="searchSampleForm.sampleQueries.length">
+			<td>
+				<table id="sampleQueryTable" class="editTableWithGrid" summary="layout" width="85%">
+					<tbody id="sampleQueryRows">
+						<tr id="samplePattern" ng-repeat="sample in searchSampleForm.sampleQueries">
+							<td>
+								<span id="nameTypeValue">{{sample.nameType}}</span>
+							</td>
+							<td>
+								<span id="sampleOperandValue">{{sample.operand}}</span>
+							</td>
+							<td>
+								<span id="nameValue">{{sample.name}}</span>
+							</td>
+							<td>
+								<button ng-click="editSampleCriteria(sample)">Edit</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table id="newSampleQuery" style="display: block;" class="promptbox" summary="layout">
+					<tbody><tr>
+						<td>
+
+							<label for="nameType">&nbsp;</label>
+							<select ng-model="theSampleQuery.nameType" name="theSampleQuery.nameType" ng-init="theSampleQuery.nameType=''" id="nameType"><option value="">
+									-- Please Select --
+								</option>
+								<option value="sample name">
+									sample name
+								</option>
+								<option value="point of contact name">
+									point of contact name
+								</option></select>
+						</td>
+						<td>
+						    <label for="sampleOperand">&nbsp;</label>
+							<select ng-model="theSampleQuery.operand" name="theSampleQuery.operand" ng-init="theSampleQuery.operand=''" id="sampleOperand"><option value="">
+									-- Please Select --
+								</option>
+								<option value="contains">contains</option>
+								<option value="equals">equals</option></select>
+						</td>
+						<td>
+						    <label for="name">&nbsp;</label>
+							<input ng-model="theSampleQuery.name" name="theSampleQuery.name" size="50" value="" id="name" type="text">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<table summary="layout" cellspacing="0" align="left">
+								<tbody><tr>
+									<td>
+										<button ng-click="updateSampleCriteria()" ng-disabled="!theSampleQuery.nameType||!theSampleQuery.operand||!theSampleQuery.name">Add</button>	
+									</td>
+									<td>
+										<button class="promptButton" value="Reset" ng-click="clearSampleQuery();">Reset</button>
+									</td>
+									<td>
+										<button ng-show="!isNewSample" class="promptButton" ng-click="removeSample();">Remove</button>
+									</td>
+								</tr>
+							</tbody></table>
+						</td>
+					</tr>
+				</tbody></table>
+			</td>
+		</tr>
+		<tr ng-if="searchSampleForm.sampleQueries.length>1">
+			<td>
+				<div id="sampleLogicalOperator">
+					<input name="searchSampleForm.sampleLogicalOperator" value="and" ng-model="searchSampleForm.sampleLogicalOperator" id="sampleLogicalOperatorAnd" type="radio">
+					<label for="sampleLogicalOperatorAnd">AND</label>
+					<input name="searchSampleForm.sampleLogicalOperator" value="or" ng-model="searchSampleForm.sampleLogicalOperator" id="sampleLogicalOperatorAnd" type="radio">
+					<label for="sampleLogicalOperatorOr">OR</label>
+				</div>
+			</td>
+		</tr>
+	</tbody></table>
+	<br>
+	<table class="submissionView" width="100%" align="center">
+		<tbody><tr>
+			<th scope="col">
+				Composition Criteria
+			</th>
+		</tr>
+		<tr ng-show="searchSampleForm.compositionQueries.length">
+			<td>
+				<table id="compositionQueryTable" class="editTableWithGrid" summary="layout" width="85%">
+					<tbody id="compositionQueryRows">
+						<tr id="compPattern" ng-repeat="composition in searchSampleForm.compositionQueries">
+							<td width="25%">
+								<span id="compTypeValue">{{composition.compositionType}}</span>
+							</td>
+							<td width="20%">
+								<span id="entityTypeValue">{{composition.entityType}}</span>
+							</td>
+							<td width="20%">
+								<span id="compOperandValue">{{composition.operand}}</span>
+							</td>
+							<td width="20%">
+								<span id="chemicalNameValue">{{composition.chemicalName}}</span>
+							</td>
+							<td>
+								<button ng-click="editCompositionCriteria(composition)">Edit</button>
+							</td>
+						</tr></tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table id="newCompositionQuery" style="display: block;" class="promptbox" summary="layout">
+					<tbody><tr>
+						<td>
+							<label for="compType">&nbsp;</label>
+							<select name="theCompositionQuery.compositionType" ng-model="theCompositionQuery.compositionType" ng-change="setCompositionEntityOptions();" id="compType"><option value="">
+									-- Please Select --
+								</option>
+								<option value="nanomaterial entity">
+									nanomaterial entity
+								</option>
+								<option value="functionalizing entity">
+									functionalizing entity
+								</option>
+								<option value="function">
+									function
+								</option></select>
+						</td>
+						<td>
+							<label for="entityType">&nbsp;</label>
+							<select ng-options="option for option in entityTypes" ng-model="theCompositionQuery.entityType" id="entityType">
+								<option value="">
+									-- Please Select --
+								</option>
+							</select>
+						</td>
+						<td class="cellLabel" ng-show="theCompositionQuery.compositionType != 'function'">
+							<span id="compChemicalNameLabel"><label for="chemicalName">with chemical name</label></span>
+						</td>
+						<td ng-show="theCompositionQuery.compositionType != 'function'">
+							<label for="compOperand">&nbsp;</label>
+							<select name="theCompositionQuery.operand" ng-model="theCompositionQuery.operand" id="compOperand" ><option value="">
+									-- Please Select --
+								</option>
+								<option value="contains">contains</option>
+								<option value="equals">equals</option>
+							</select>
+						</td>
+						<td ng-show="theCompositionQuery.compositionType != 'function'">
+							<input name="theCompositionQuery.chemicalName" ng-model="theCompositionQuery.chemicalName" size="50" value="" id="chemicalName" type="text">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="5">
+							<table summary="layout" cellspacing="0" align="left">
+								<tbody><tr>
+									<td>
+										<button ng-click="updateCompositionCriteria()" ng-disabled="!theCompositionQuery.compositionType||!theCompositionQuery.entityType">Add</button>	
+									</td>
+									<td>
+										<button class="promptButton" value="Reset" ng-click="clearCompositionQuery();">Reset</button>
+									</td>
+									<td>
+										<button ng-show="!isNewComposition" class="promptButton" ng-click="removeComposition();">Remove</button>
+									</td>
+								</tr>
+							</tbody></table>
+						</td>
+					</tr>
+				</tbody></table>
+			</td>
+		</tr>
+		<tr ng-if="searchSampleForm.compositionQueries.length>1">
+			<td>
+				<div id="compositionLogicalOperator">
+					<input name="searchSampleForm.compositionLogicalOperator" value="and" ng-model="searchSampleForm.compositionLogicalOperator" id="compositionLogicalOperator" type="radio">
+					<label for="compositionLogicalOperatorAnd">AND</label>
+					<input name="searchSampleForm.compositionLogicalOperator" value="or" ng-model="searchSampleForm.compositionLogicalOperator" id="compositionLogicalOperator" type="radio">
+					<label for="compositionLogicalOperatorOr">OR</label>
+				</div>
+			</td>
+		</tr>
+	</tbody></table>
+	<br>
+	<table class="submissionView" width="100%" align="center">
+		<tbody><tr>
+			<th scope="col">
+				Characterization Criteria
+			</th>
+		</tr>
+		<tr ng-show="searchSampleForm.characterizationQueries.length">
+			<td>
+				<table id="characterizationQueryTable" class="editTableWithGrid" summary="layout" width="85%">
+					<tbody id="characterizationQueryRows">
+						<tr id="charPattern" ng-repeat="characterization in searchSampleForm.characterizationQueries">
+							<td width="15%">
+								<span id="charTypeValue">{{characterization.characterizationType}}</span>
+							</td>
+							<td width="15%">
+								<span id="charNameValue">{{characterization.characterizationName}}</span>
+							</td>
+							<td width="15%">
+								<span id="datumNameValue">{{characterization.datumName}}</span>
+							</td>
+							<td width="10%">
+								<span id="charOperandValue">{{characterization.operand}}</span>
+							</td>
+							<td width="15%">
+								<span id="datumValueValue">{{characterization.datumValue}}</span>
+							</td>
+							<td>
+								<span id="datumValueUnitValue">{{characterization.datumValueUnit}}</span>
+							</td>
+							<td>
+								<button ng-click="editCharacterizationCriteria(characterization)">Edit</button>
+							</td>
+						</tr></tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table id="newCharacterizationQuery" style="display: block;" class="promptbox" summary="layout">
+					<tbody><tr>
+						<td>
+							<label for="charType">&nbsp;</label>
+								<select data-ng-model="theCharacterizationQuery.characterizationType"
+								data-ng-options="option.value as option.label for option in data.characterizationTypes" id="charType" ng-change="setCharacterizationOptions()">
+								<option value="">-- Please Select --</option>
+								</select>
+						</td>
+						<td><label for="charName">&nbsp;</label>
+							<select data-ng-options="option.value as option.label for option in characterizationNameList" name="theCharacterizationQuery.characterizationName" ng-change="setDatumNameOptionsByCharName()" data-ng-model="theCharacterizationQuery.characterizationName" id="charName"><option value="">
+									-- Please Select --
+								</option></select>
+						</td>
+						<td><label for="datumName">&nbsp;</label>
+							<select name="theCharacterizationQuery.datumName" data-ng-options="option.value as option.label for option in datumNameList" ng-change="setDatumValueUnitOptions()" ng-model="theCharacterizationQuery.datumName" id="datumName"><option value="">
+									-- Please Select --
+								</option></select>
+						</td>
+						<td ng-show="theCharacterizationQuery.datumName"><label for="charOperand">&nbsp;</label>
+							<select ng-model="theCharacterizationQuery.operand" name="theCharacterizationQuery.operand" id="charOperand"><option value="">
+									-- Please Select --
+								</option>
+								<option value="=">=</option>
+<option value=">">&gt;</option>
+<option value=">=">&gt;=</option>
+<option value="<">&lt;</option>
+<option value="<=">&lt;=</option></select>
+						</td>
+						<td>
+							<div id="datumValueTextBlock" ng-if="theCharacterizationQuery.datumName">
+								<label for="datumValue">&nbsp;</label>
+								<input ng-model="theCharacterizationQuery.datumValue" name="theCharacterizationQuery.datumValue" size="10" value="" id="datumValue" type="text">
+								
+							</div>
+<!-- 							<div id="datumValueSelectBlock" style="display:none">
+								<label for="datumValueSelect">&nbsp;</label>
+								<select name="searchBean.theCharacterizationQuery.datumValue" id="datumValueSelect"><option value="">
+										-- Please Select --
+									</option>
+									<option value="1">true</option>
+<option value="0">false</option></select>
+							</div> -->
+						</td>
+						<td ng-show="datumUnitOptionsList.length">
+							<div id="datumValueUnitBlock">
+							    <label for="datumValueUnit">&nbsp;</label>
+								<select ng-init="theCharacterizationQuery.datumValueUnit=''" data-ng-options="option for option in datumUnitOptionsList" ng-model="theCharacterizationQuery.datumValueUnit" name="theCharacterizationQuery.datumValueUnit" id="datumValueUnit"><option value=""> -- Please Select --
+									</option></select>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							<table summary="layout" cellspacing="0" align="left">
+								<tbody><tr>
+									<td>
+										<button ng-click="updateCharacterizationCriteria()" ng-disabled="!theCharacterizationQuery.characterizationType||!theCharacterizationQuery.characterizationName">Add</button>	
+									</td>
+									<td>
+										<button class="promptButton" value="Reset" ng-click="clearCharacterizationQuery();">Reset</button>
+									</td>
+									<td>
+										<button ng-show="!isNewCharacterization" class="promptButton" ng-click="removeCharacterization();">Remove</button>
+									</td>
+								</tr>
+							</tbody></table>
+						</td>
+					</tr>
+				</tbody></table>
+			</td>
+		</tr>
+		<tr ng-if="searchSampleForm.characterizationQueries.length>1">
+			<td>
+				<div id="characterizationLogicalOperator">
+					<input name="searchSampleForm.characterizationLogicalOperator" value="and" ng-model="searchSampleForm.characterizationLogicalOperator" id="characterizationLogicalOperator" type="radio">
+					<label for="characterizationLogicalOperatorAnd">AND</label>
+					<input name="searchSampleForm.characterizationLogicalOperator" value="or" ng-model="searchSampleForm.characterizationLogicalOperator" id="characterizationLogicalOperator" type="radio">
+					<label for="characterizationLogicalOperatorOr">OR</label>
+				</div>
+			</td>
+		</tr>
+	</tbody></table>
+	<br>
+	<table class="submissionView" summary="layout" style="border: 0" width="100%" align="center">
+		<tbody><tr>
+			<td>
+				<div id="logicalOperator" style="display: block">
+					<input name="searchSampleForm.logicalOperator" ng-model="searchSampleForm.logicalOperator" value="and" id="masterLogicalOperatorAnd" type="radio">
+					<label for="masterLogicalOperatorAnd">AND</label>
+					<input name="searchSampleForm.logicalOperator" ng-model="searchSampleForm.logicalOperator" value="or" id="masterLogicalOperatorOr" type="radio">
+					<label for="masterLogicalOperatorOr">OR</label>
+				</div>
+			</td>
+		</tr>
+	</tbody></table>
+	<br>
+
+<table class="invisibleTable" summary="layout" width="100%">
+	<tbody><tr>
+		<td align="center">
+			<span class="formMessage"> <em>Searching without any
+					parameters returns all samples.</em> </span>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+
+					<button ng-click="resetForm()">Reset</button>
+				
+					<button ng-disabled="" ng-click="search()">Search</button>
+				
+			
+		</td>
+	</tr>
+</tbody></table>
+</div>
+<div id="loader" ng-show="loader">
+	<div id="loaderText">
+		Loading
+	</div>
+	<div id="loaderGraphic"></div>
+</div>	
+</div>

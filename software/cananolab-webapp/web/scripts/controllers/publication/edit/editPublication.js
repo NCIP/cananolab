@@ -53,6 +53,15 @@ var app = angular.module('angularApp')
         /* File Variables */
         $scope.usingFlash = FileAPI && FileAPI.upload != null;
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
+      $scope.selectedFileName = '';
+        
+        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        $scope.ie9 = false;
+        if(navigator.appVersion.indexOf("MSIE 9.")!=-1){
+            uploadUrl = '/caNanoLab/uploadFile';
+            $scope.ie9 = true;
+        }
+        
         $scope.selectedFileName = '';
         
         var uploadUrl = '/caNanoLab/rest/core/uploadFile';
@@ -337,7 +346,7 @@ var app = angular.module('angularApp')
                     	$scope.doSubmitData();
                     });
                 }, function(response) {
-	               	 $timeout(function() {
+               $timeout(function() {
 	                  	//only for IE 9
 	                      if(navigator.appVersion.indexOf("MSIE 9.")!=-1) {
 	                      	$scope.publicationForm.uri = response.data;

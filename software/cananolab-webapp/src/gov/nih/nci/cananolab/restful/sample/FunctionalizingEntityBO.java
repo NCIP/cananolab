@@ -807,4 +807,20 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 		return funcBean;
 	}
 
+	public FunctionalizingEntityBean setupFunctionalizingEntityForAdvancedSearch(String sampleId,
+			String dataId, HttpServletRequest request) throws Exception {
+		CompositionService compService = this.setServicesInSession(request);
+		// set up other particles with the same primary point of contact
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+		// dataId = super.validateId(request, "dataId");
+		FunctionalizingEntityBean entityBean = compService
+				.findFunctionalizingEntityById(dataId);
+		this.setLookups(request);
+		// clear copy to otherSamples
+		// form.setOtherSamples(new String[0]);
+		checkOpenForms(entityBean, request);
+		request.getSession().setAttribute("sampleId", sampleId);
+
+		return entityBean;
+	}
 }

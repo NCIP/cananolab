@@ -29,10 +29,11 @@
             <th>Created Date</th>
             <th>Sample Access</th>
         </tr>
-        <tr ng-repeat="data in samples.samples">
+        <tr ng-repeat="data in samples.samples" id="sample{{data.id}}" ng-class="{greenShade: !data.owner}">
             <td class="columnOne">
             	<a href="/caNanoLab/#/sample?sampleId={{data.id}}&amp;fromMyWorkspace=true">View</a>&nbsp;
             	<a href="/caNanoLab/#/editSample?sampleId={{data.id}}&amp;fromMyWorkspace=true" ng-if="data.editable">Edit</a>
+            	<a href="" ng-click="doDeleteSample(data.id)" ng-if="data.editable">Delete</a>
             </td>
             <td>
                 <div ng-bind="data.name">{{data.name}}</div>
@@ -60,10 +61,11 @@
             <th>Created Date</th>
             <th>Protocol Access</th>
         </tr>
-        <tr ng-repeat="data in protocols.protocols">
+        <tr ng-repeat="data in protocols.protocols" id="protocol{{data.id}}" ng-class="{greenShade: !data.owner}">
             <td class="columnOne">
             	<a href="rest/protocol/download?fileId={{data.fileId}}" target="_blank" ng-if="data.fileId != null && data.fileId != ''">View</a>&nbsp;
             	<a href="/caNanoLab/#/editProtocol?protocolId={{data.id}}" ng-if="data.editable">Edit</a>
+            	<a href="" ng-click="doDeleteProtocol(data.id)" ng-if="data.editable">Delete</a>
             </td>
             <td>
                 <div ng-bind-html="data.name">{{data.name}}</div>
@@ -92,10 +94,11 @@
             <th>Created Date</th>
             <th>Publication Access</th>
         </tr>
-        <tr ng-repeat="data in publications.publications">
+        <tr ng-repeat="data in publications.publications" id="publication{{data.id}}" ng-class="{greenShade: !data.owner}">
             <td class="columnOne">
             	<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.pubMedId}}" ng-if="data.pubMedId!=null" target="_blank">View</a>&nbsp;
             	<a href="/caNanoLab/#/editPublication?publicationId={{data.id}}" ng-if="data.editable">Edit</a>
+            	<a href="" ng-click="doDeletePublication(data.id)" ng-if="data.editable">Delete</a>
             </td>
             <td>
                 <div ng-bind-html="data.pubMedDOIId">{{data.pubMedDOIId}}</div>

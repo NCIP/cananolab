@@ -23,6 +23,9 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean.SimpleCharacterizationViewBean;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationUnitBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCell;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
@@ -214,6 +217,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
 //				request, charBean.getCharacterizationType(),
 //				charBean.getCharacterizationName(), charBean.getAssayType());
+//			charBean.getCharacterizationName(), charBean.getAssayType());
 		
 		//SY: new
 		request.getSession().setAttribute("theChar", charBean);
@@ -398,6 +402,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			throws Exception {
 		// Remove previous result from session.
 		request.getSession().removeAttribute("characterizationSummaryView");
+
+		//DynaValidatorForm theForm = (DynaValidatorForm) form;
+		//String sampleId = form.getSampleId();  //.getString(SampleConstants.SAMPLE_ID);
 	
 		CharacterizationService service = this.setServicesInSession(request);
 		
@@ -408,6 +415,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		request.getSession().setAttribute("characterizationSummaryView",
 				summaryView);
+
+		// Save sample bean in session for sample name in export/print.
+		//request.getSession().setAttribute("theSample", sampleBean);
 		
 		return summaryView;
 	}
@@ -554,15 +564,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		
 		simpleExpConfig.transferToExperimentConfigBean(configBean);
-		
-		
-//		///duck tapping
-//		if (achar.getCharacterizationName() == null || achar.getCharacterizationName().length() == 0)
-//			achar.setCharacterizationName(simpleExpConfig.getParentCharName());
-//		
-//		if (achar.getCharacterizationType() == null || achar.getCharacterizationType().length() == 0)
-//			achar.setCharacterizationType(simpleExpConfig.getParentCharType());
-//		///duck tapping
 		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		configBean.setupDomain(user.getLoginName());
@@ -754,9 +755,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		if(!theFile.getDomainFile().getUriExternal()){
 			if(newFileData!=null){
 				newFile.setNewFileData((byte[]) request.getSession().getAttribute("newFileData"));
-
-//				newFile.getDomainFile().setUri(internalUriPath + "/" + timestamp + "_"
-//						+ newFile.getDomainFile().getName());
 				
 				logger.debug("File path: " + newFile.getDomainFile().getUri());
 			} else if(theFile.getDomainFile().getId()!=null){
@@ -1297,13 +1295,14 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 	}
 
-	public Boolean canUserExecutePrivateDispatch(UserBean user)
+public Boolean canUserExecutePrivateDispatch(UserBean user)
 			throws SecurityException {
 		if (user == null) {
 			return false;
 		}
 		return true;
 	}
+
 
 	private CharacterizationService setServicesInSession(
 			HttpServletRequest request) throws Exception {
@@ -1347,5 +1346,30 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		
 		return valid;
+	}
+	
+	/**
+	 * Set up the input form for editing existing characterization
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public List<SimpleCharacterizationUnitBean> setupView(HttpServletRequest request, String sampleId, String charId, 
+			String charClassName, String charType)
+			throws Exception {
+		CharacterizationService charService = this.setServicesInSession(request);
+		charId = super.validateCharId(charId);
+		
+		CharacterizationBean charBean = charService
+				.findCharacterizationById(charId);
+		
+		SimpleCharacterizationSummaryViewBean viewHelper = new SimpleCharacterizationSummaryViewBean();
+		List<SimpleCharacterizationUnitBean> aBeanUnitList = viewHelper.tranferCharacterizationBeanData(request, charBean);
+		
+		return aBeanUnitList;
 	}
 }

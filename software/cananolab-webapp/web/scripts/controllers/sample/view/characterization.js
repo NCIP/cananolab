@@ -10,14 +10,25 @@ app.controller('CharacterizationCtrl', function (sampleService,utilsService,navi
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleId = sampleService.sampleId;
 
+    if ($routeParams.isAdvancedSearch) {
+      $scope.isAdvancedSearch = 1;
+    }; 
+
     $scope.goBack = function() {
-      $location.path("/sampleResults").replace(); 
-      $location.search('sampleId', null);
+        if ($scope.isAdvancedSearch) {
+          $location.path("/advancedSampleSearch").replace();           
+        }
+        else {
+          $location.path("/sampleResults").replace();           
+        }
+        $location.search('sampleId', null);
     };  
 
     if ($routeParams.sampleId) {
       $scope.sampleId.data = $routeParams.sampleId;
     };   
+
+     
 
     $scope.select = function(tab) {
         var size = 0, key;

@@ -60,6 +60,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -329,7 +330,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		return sampleBean;
 	}
-	
+
 	/**
 	 * Only load sample core data.
 	 * 
@@ -524,7 +525,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		return sampleBean;
 	}
-	
+
 	public void loadAccessesForBasicSampleBean(SampleBasicBean sampleBean) throws Exception {
 		Sample sample = sampleBean.getDomain();
 		if (user != null) {
@@ -1263,5 +1264,26 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new SampleException(error, e);
 		}
 		return ids;
+	}
+
+	@Override
+	public SampleBasicBean findSampleBasicById(String sampleId,
+			Boolean loadAccessInfo) throws SampleException, NoAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> findSampleIdNamesByAdvancedSearch(
+			AdvancedSampleSearchBean searchBean) throws SampleException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void loadAccessesForSampleBean(SampleBean sampleBean)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -120,14 +120,20 @@ public class BaseServiceLocalImpl implements BaseService {
 		if (user == null) {
 			throw new NoAccessException();
 		}
+		
+		logger.debug("====Start loaind group access: " + System.currentTimeMillis());
 		List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
 		try {
+			logger.debug("============= checkReadPermission: " + System.currentTimeMillis());
 			if (!securityService.checkReadPermission(protectedData)) {
 				throw new NoAccessException();
 			}
+			logger.debug("============= End checkReadPermission: " + System.currentTimeMillis());
 			Map<String, String> groupRoles = securityService
 					.getAllGroupRoles(protectedData);
+			logger.debug("============= Done with getAllGroupRoles: " + System.currentTimeMillis());
 			
+			logger.debug("============= Starting getting all group: " + System.currentTimeMillis());
 			for (Map.Entry<String, String> entry : groupRoles.entrySet()) {
 				String groupName = entry.getKey();
 				Group group = securityService.getGroup(groupName);
@@ -181,10 +187,12 @@ public class BaseServiceLocalImpl implements BaseService {
 			Map<String, String> groupRoles = securityService
 					.getAllGroupRoles(protectedData);
 			
+
 			for (Map.Entry<String, String> entry : groupRoles.entrySet()) {
 				String groupName = entry.getKey();
-				Group group = securityService.getGroup(groupName);
 				
+				logger.debug("============= Getting a group: " + groupName + ": " + System.currentTimeMillis());
+				Group group = securityService.getGroup(groupName);
 				// include Public group, Curator group and groups that user has
 				// access to
 				if (group.getGroupName().equals(
@@ -201,8 +209,11 @@ public class BaseServiceLocalImpl implements BaseService {
 					access.setAccessBy(AccessibilityBean.ACCESS_BY_GROUP);
 					groupAccesses.add(access);
 				}
+				logger.debug("============= Done Getting a group: " + groupName + ": " + System.currentTimeMillis());
+				
 			}
-			
+			logger.debug("============= Done getting all group: " + System.currentTimeMillis());
+			logger.debug("==== End loaind group access: " + System.currentTimeMillis());
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -219,6 +230,7 @@ public class BaseServiceLocalImpl implements BaseService {
 		}
 		List<AccessibilityBean> userAccesses = new ArrayList<AccessibilityBean>();
 		try {
+			
 			if (!securityService.checkReadPermission(protectedData)) {
 				throw new NoAccessException();
 			}
