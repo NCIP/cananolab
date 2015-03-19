@@ -94,8 +94,8 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 		}
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
-		for (Object obj : results) {
-			Protocol protocol = (Protocol) obj;
+		for(int i=0;i< results.size();i++){
+			Protocol protocol = (Protocol) results.get(i);
 			if (getAccessibleData().contains(protocol.getId().toString())) {
 				protocols.add(protocol);
 			} else {
@@ -166,8 +166,8 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 				"select id from gov.nih.nci.cananolab.domain.common.Protocol");
 		List results = appService.query(crit);
 		List<String> publicIds = new ArrayList<String>();
-		for (Object obj : results) {
-			String id = (String) obj.toString();
+		for(int i = 0; i< results.size();i++){
+			String id = (String) results.get(i).toString();
 			if (getAccessibleData().contains(id)) {
 				publicIds.add(id);
 			}
@@ -233,8 +233,8 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
-		for (Object obj : results) {
-			String protocolId = obj.toString();
+		for(int i = 0; i < results.size(); i++){
+			String protocolId = results.get(i).toString();
 			if (getAccessibleData().contains(protocolId)) {
 				protocolIds.add(protocolId);
 			} else {

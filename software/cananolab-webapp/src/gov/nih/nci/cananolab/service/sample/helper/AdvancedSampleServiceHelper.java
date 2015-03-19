@@ -104,8 +104,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			setCompositionCriteria(searchBean, crit);
 			setCharacterizationCriteria(searchBean, crit);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				String sampleId = obj.toString();
+			for(int i = 0; i < results.size(); i++){
+				String sampleId = results.get(i).toString();
 				sampleIds.add(sampleId);
 			}
 		}
@@ -119,8 +119,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						Projections.distinct(Property.forName("id")));
 				setSampleCriteria(searchBean, crit);
 				List results = appService.query(crit);
-				for (Object obj : results) {
-					String sampleId = obj.toString();
+				for (int i = 0; i < results.size(); i++) {
+					String sampleId = results.get(i).toString();
 					sampleIds.add(sampleId);
 				}
 			}
@@ -151,8 +151,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						}
 						
 						List results = appService.query(crit);
-						for (Object obj : results) {
-							String sampleId = obj.toString();
+						for (int i = 0; i < results.size(); i++) {
+							String sampleId = results.get(i).toString();
 							subSampleIds.add(sampleId);
 						}
 						
@@ -168,8 +168,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 							Projections.distinct(Property.forName("id")));
 					setCompositionCriteria(searchBean, crit);
 					List results=appService.query(crit);
-					for (Object obj : results) {
-						String sampleId = obj.toString();
+					for (int i = 0; i < results.size(); i++) {
+						String sampleId = results.get(i).toString();
 						sampleIds.add(sampleId);
 					}
 				}
@@ -181,8 +181,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						Projections.distinct(Property.forName("id")));
 				setCharacterizationCriteria(searchBean, crit);
 				List results=appService.query(crit);
-				for (Object obj : results) {
-					String sampleId = obj.toString();
+				for (int i = 0; i < results.size(); i++) {
+					String sampleId = results.get(i).toString();
 					sampleIds.add(sampleId);
 				}
 			}
@@ -236,9 +236,9 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			setCompositionCriteria(searchBean, crit);
 			setCharacterizationCriteria(searchBean, crit);
 			List results = appService.query(crit);
-			for (Object obj : results) {
+			for (int i = 0; i < results.size(); i++) {
 				
-				Object[] row = (Object[]) obj;
+				Object[] row = (Object[]) results.get(i);
 				String id = row[0].toString();
 				String name = row[1].toString();
 				
@@ -268,9 +268,9 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						//Projections.distinct(Property.forName("id")));
 				setSampleCriteria(searchBean, crit);
 				List results = appService.query(crit);
-				for (Object obj : results) {
+				for (int i = 0; i < results.size(); i++) {
 					
-					Object[] row = (Object[]) obj;
+					Object[] row = (Object[]) results.get(i);
 					String id = row[0].toString();
 					String name = row[1].toString();
 					logger.debug("id is: " + id);
@@ -311,8 +311,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						}
 						
 						List results = appService.query(crit);
-						for (Object obj : results) {
-							Object[] row = (Object[]) obj;
+						for (int i = 0; i < results.size(); i++) {
+							Object[] row = (Object[]) results.get(i);
 							String id = row[0].toString();
 							String name = row[1].toString();
 							logger.debug("id is: " + id);
@@ -337,9 +337,9 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 							//Projections.distinct(Property.forName("id")));
 					setCompositionCriteria(searchBean, crit);
 					List results=appService.query(crit);
-					for (Object obj : results) {
+					for (int i = 0; i < results.size(); i++) {
 						
-						Object[] row = (Object[]) obj;
+						Object[] row = (Object[]) results.get(i);
 						String id = row[0].toString();
 						String name = row[1].toString();
 						logger.debug("id is: " + id);
@@ -360,8 +360,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						//Projections.distinct(Property.forName("id")));
 				setCharacterizationCriteria(searchBean, crit);
 				List results=appService.query(crit);
-				for (Object obj : results) {
-					Object[] row = (Object[]) obj;
+				for (int i = 0; i < results.size(); i++) {
+					Object[] row = (Object[]) results.get(i);
 					String id = row[0].toString();
 					String name = row[1].toString();
 					logger.debug("id is: " + id);
@@ -499,8 +499,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				Characterization achar = (Characterization) obj;
+			for (int i = 0; i < results.size(); i++) {
+				Characterization achar = (Characterization) results.get(i);
 				chars.add(achar);
 			}
 		} else {
@@ -518,8 +518,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 				crit
 						.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 				List results = appService.query(crit);
-				for (Object obj : results) {
-					Characterization achar = (Characterization) obj;
+				for (int i = 0; i < results.size(); i++) {
+					Characterization achar = (Characterization) results.get(i);
 					if (!chars.contains(achar)) {
 						chars.add(achar);
 					}
@@ -622,8 +622,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				Datum datum = (Datum) obj;
+			for (int i = 0; i < results.size(); i++) {
+				Datum datum = (Datum) results.get(i);
 				if (sampleData.contains(datum)) {
 					data.add(datum);
 				}
@@ -642,8 +642,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					crit
 							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 					List results = appService.query(crit);
-					for (Object obj : results) {
-						Datum datum = (Datum) obj;
+					for (int i = 0; i < results.size(); i++) {
+						Datum datum = (Datum) results.get(i);
 						if (sampleData.contains(datum)) {
 							data.add(datum);
 						}
@@ -684,8 +684,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				FunctionalizingEntity entity = (FunctionalizingEntity) obj;
+			for (int i = 0; i < results.size(); i++) {
+				FunctionalizingEntity entity = (FunctionalizingEntity) results.get(i);
 				entities.add(entity);
 			}
 		} else if (searchBean.getFuncEntityCount() > 1) {
@@ -712,8 +712,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					crit
 							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 					List results = appService.query(crit);
-					for (Object obj : results) {
-						FunctionalizingEntity entity = (FunctionalizingEntity) obj;
+					for (int i = 0; i < results.size(); i++) {
+						FunctionalizingEntity entity = (FunctionalizingEntity) results.get(i);
 						if (!entities.contains(entity)) {
 							entities.add(entity);
 						}
@@ -756,8 +756,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			crit.setFetchMode("targetCollection", FetchMode.JOIN);
 
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				Function function = (Function) obj;
+			for (int i = 0; i < results.size(); i++) {
+				Function function = (Function) results.get(i);
 				functions.add(function);
 			}
 		} else if (searchBean.getFuncCount() > 1) {
@@ -789,8 +789,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					crit
 							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 					List results = appService.query(crit);
-					for (Object obj : results) {
-						Function function = (Function) obj;
+					for (int i = 0; i < results.size(); i++) {
+						Function function = (Function) results.get(i);
 						if (!functions.contains(function)) {
 							functions.add(function);
 						}
@@ -840,8 +840,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				NanomaterialEntity entity = (NanomaterialEntity) obj;
+			for (int i = 0; i < results.size(); i++) {
+				NanomaterialEntity entity = (NanomaterialEntity) results.get(i);
 				entities.add(entity);
 			}
 		} else if (searchBean.getNanoEntityCount() > 1) {
@@ -878,8 +878,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					crit
 							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 					List results = appService.query(crit);
-					for (Object obj : results) {
-						NanomaterialEntity entity = (NanomaterialEntity) obj;
+					for (int i = 0; i < results.size(); i++) {
+						NanomaterialEntity entity = (NanomaterialEntity) results.get(i);
 						if (!entities.contains(entity)) {
 							entities.add(entity);
 						}
@@ -912,8 +912,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			crit.add(getPointOfContactDisjunction(searchBean, "", ""));
 			crit.setFetchMode("organization", FetchMode.JOIN);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				PointOfContact poc = (PointOfContact) obj;
+			for (int i = 0; i < results.size(); i++) {
+				PointOfContact poc = (PointOfContact) results.get(i);
 				// check if in sample POCs
 				if (!samplePOCs.contains(poc)) {
 					pocs.remove(poc);
@@ -930,8 +930,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					crit.add(Subqueries.exists(subCrit));
 					crit.setFetchMode("organization", FetchMode.JOIN);
 					List results = appService.query(crit);
-					for (Object obj : results) {
-						PointOfContact poc = (PointOfContact) obj;
+					for (int i = 0; i < results.size(); i++) {
+						PointOfContact poc = (PointOfContact) results.get(i);
 						// check if in sample POCs
 						if (!samplePOCs.contains(poc)) {
 							pocs.remove(poc);

@@ -78,8 +78,9 @@ public class FavoritesServiceHelper extends BaseServiceHelper{
 			crit.add(Restrictions.ilike("loginName", user.getLoginName(), MatchMode.EXACT));
 
 			List result = appService.query(crit);
-			for (Object obj : result) {
-				FavoriteBean bean = (FavoriteBean) obj;
+//			for (Object obj : result) {
+			for(int i = 0; i < result.size(); i++){
+				FavoriteBean bean = (FavoriteBean) result.get(i);
 				list.add(bean);
 			}
 		} catch (Exception e) {

@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful;
 import java.io.FileInputStream;
 
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.sample.CompositionBO;
 import gov.nih.nci.cananolab.restful.view.SimpleCompositionBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
@@ -39,7 +40,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 			form.setSampleId(sampleId);
 
 		 CompositionBO compositionBO = 
-					(CompositionBO) applicationContext.getBean("compositionBO");
+					(CompositionBO) SpringApplicationContext.getBean("compositionBO");
 
 		 CompositionBean compBean = compositionBO.summaryView(form, httpRequest);
 			SimpleCompositionBean view = new SimpleCompositionBean();
@@ -62,7 +63,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 			form.setSampleId(sampleId);
 
 			CompositionBO compositionBO = 
-					(CompositionBO) applicationContext.getBean("compositionBO");
+					(CompositionBO) SpringApplicationContext.getBean("compositionBO");
 
 			CompositionBean compBean = compositionBO.summaryPrint(form, httpRequest);
 			SimpleCompositionBean view = new SimpleCompositionBean();
@@ -88,7 +89,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 			
 			
 			CompositionBO compositionBO = 
-					(CompositionBO) applicationContext.getBean("compositionBO");
+					(CompositionBO) SpringApplicationContext.getBean("compositionBO");
 
 			 String result = compositionBO.summaryExport(form, type, httpRequest, httpResponse);
 				
@@ -106,7 +107,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 		    		@DefaultValue("") @QueryParam("fileId") String fileId){
 			try {
 				CompositionBO compositionBO = 
-						(CompositionBO) applicationContext.getBean("compositionBO");
+						(CompositionBO) SpringApplicationContext.getBean("compositionBO");
 				java.io.File file = compositionBO.download(fileId, httpRequest);
 				
 				return Response.ok(new FileInputStream(file)).build();
@@ -124,7 +125,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 		    		@DefaultValue("") @QueryParam("fileId") String fileId){
 			try {
 				CompositionBO compositionBO = 
-						(CompositionBO) applicationContext.getBean("compositionBO");
+						(CompositionBO) SpringApplicationContext.getBean("compositionBO");
 				
 				String result = compositionBO.download(fileId, httpRequest, httpResponse);
 				return Response.ok(result).build();

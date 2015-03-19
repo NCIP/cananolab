@@ -504,8 +504,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 
-		for (Object obj : results) {
-			Characterization achar = (Characterization) obj;
+		for (int i = 0; i < results.size(); i++){
+			Characterization achar = (Characterization) results.get(i);
 			chars.add(achar);
 		}
 		return chars;
@@ -632,8 +632,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
 			List<PointOfContactBean> pointOfContactCollection = new ArrayList<PointOfContactBean>();
-			for (Object obj : results) {
-				Sample particle = (Sample) obj;
+			for (int i = 0; i < results.size(); i++){
+				Sample particle = (Sample) results.get(i);
 				PointOfContact primaryPOC = particle.getPrimaryPointOfContact();
 				Collection<PointOfContact> otherPOCs = particle
 						.getOtherPointOfContactCollection();
@@ -664,8 +664,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			
 			
 			logger.debug("Completed select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
-			for (Object obj : results) {
-				String name = ((String) obj).trim();
+			for (int i = 0; i < results.size(); i++){
+				String name = ((String) results.get(i)).trim();
 				names.add(name);
 			}
 			return names;
@@ -1056,8 +1056,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				Characterization achar = (Characterization) obj;
+			for (int i = 0; i < results.size(); i++){
+				Characterization achar = (Characterization) results.get(i);
 				// update POC to the new ID
 				achar.getPointOfContact().setId(newPOCId);
 				appService.saveOrUpdate(achar);

@@ -16,6 +16,7 @@
     <tx:annotation-driven transaction-manager = "transactionManager" />
     <tx:annotation-driven proxy-target-class="true"/>
     -->
+    <bean class="gov.nih.nci.cananolab.restful.context.SpringApplicationContext"></bean>
     
     <bean id="loginBO"
 		class="gov.nih.nci.cananolab.restful.security.LoginBO">

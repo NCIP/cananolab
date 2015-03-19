@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.sample.ChemicalAssociationBO;
 import gov.nih.nci.cananolab.restful.sample.CompositionManager;
 import gov.nih.nci.cananolab.restful.sample.FunctionalizingEntityBO;
@@ -44,7 +45,7 @@ private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 				
 		try { 
 			ChemicalAssociationBO chem = 
-					(ChemicalAssociationBO) applicationContext.getBean("chemicalAssociationBO");
+					(ChemicalAssociationBO) SpringApplicationContext.getBean("chemicalAssociationBO");
 			Map<String, Object> dropdownMap = chem.setupNew(sampleId, httpRequest);
 			List<String> errors = (List<String>) dropdownMap.get("errors");
 			return (errors == null || errors.size() == 0) ?
@@ -64,7 +65,7 @@ private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 				
 		try { 
 			ChemicalAssociationBO chem = 
-					(ChemicalAssociationBO) applicationContext.getBean("chemicalAssociationBO");
+					(ChemicalAssociationBO) SpringApplicationContext.getBean("chemicalAssociationBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -90,7 +91,7 @@ private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 				
 		try { 
 			CompositionManager comp = 
-					(CompositionManager) applicationContext.getBean("compositionManager");
+					(CompositionManager) SpringApplicationContext.getBean("compositionManager");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -118,7 +119,7 @@ private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 				
 		try { 
 			CompositionManager comp = 
-					(CompositionManager) applicationContext.getBean("compositionManager");
+					(CompositionManager) SpringApplicationContext.getBean("compositionManager");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -146,7 +147,7 @@ private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 				
 		try { 
 			ChemicalAssociationBO chem = 
-					(ChemicalAssociationBO) applicationContext.getBean("chemicalAssociationBO");
+					(ChemicalAssociationBO) SpringApplicationContext.getBean("chemicalAssociationBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -172,7 +173,7 @@ private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 				
 		try { 
 			ChemicalAssociationBO chem = 
-					(ChemicalAssociationBO) applicationContext.getBean("chemicalAssociationBO");
+					(ChemicalAssociationBO) SpringApplicationContext.getBean("chemicalAssociationBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -198,7 +199,7 @@ private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 				
 		try { 
 			ChemicalAssociationBO chem = 
-					(ChemicalAssociationBO) applicationContext.getBean("chemicalAssociationBO");
+					(ChemicalAssociationBO) SpringApplicationContext.getBean("chemicalAssociationBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -224,7 +225,7 @@ private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 				
 		try { 
 			ChemicalAssociationBO chem = 
-					(ChemicalAssociationBO) applicationContext.getBean("chemicalAssociationBO");
+					(ChemicalAssociationBO) SpringApplicationContext.getBean("chemicalAssociationBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)

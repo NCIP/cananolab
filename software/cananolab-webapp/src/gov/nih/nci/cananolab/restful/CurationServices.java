@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.core.ManageResultBO;
 import gov.nih.nci.cananolab.restful.curation.BatchDataAvailabilityBO;
 import gov.nih.nci.cananolab.restful.curation.ReviewDataBO;
@@ -36,7 +37,7 @@ private Logger logger = Logger.getLogger(CurationServices.class);
 				
 		try { 
 			ReviewDataBO reviewDataBO = 
-					(ReviewDataBO) applicationContext.getBean("reviewDataBO");
+					(ReviewDataBO) SpringApplicationContext.getBean("reviewDataBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -58,7 +59,7 @@ private Logger logger = Logger.getLogger(CurationServices.class);
 	
 		try {
 			BatchDataAvailabilityBO batchDataAvailabilityBO = 
-					(BatchDataAvailabilityBO) applicationContext.getBean("batchDataAvailabilityBO");
+					(BatchDataAvailabilityBO) SpringApplicationContext.getBean("batchDataAvailabilityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 
 			if (user == null) 
@@ -80,7 +81,7 @@ private Logger logger = Logger.getLogger(CurationServices.class);
 				
 		try { 
 			ManageResultBO manageResultBO = 
-					(ManageResultBO) applicationContext.getBean("manageResultBO");
+					(ManageResultBO) SpringApplicationContext.getBean("manageResultBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 

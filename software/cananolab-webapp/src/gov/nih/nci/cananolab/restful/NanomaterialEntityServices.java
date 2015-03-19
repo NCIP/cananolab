@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvacedSampleCompositionBean;
@@ -42,7 +43,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+					(NanomaterialEntityBO) SpringApplicationContext.getBean("nanomaterialEntityBO");
 			Map<String, Object> dropdownMap = nanomaterialEntityBO.setupNew(sampleId, httpRequest);
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
@@ -59,7 +60,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+					(NanomaterialEntityBO) SpringApplicationContext.getBean("nanomaterialEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -85,7 +86,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+					(NanomaterialEntityBO) SpringApplicationContext.getBean("nanomaterialEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -111,7 +112,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+					(NanomaterialEntityBO) SpringApplicationContext.getBean("nanomaterialEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -135,7 +136,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+					(NanomaterialEntityBO) SpringApplicationContext.getBean("nanomaterialEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -163,7 +164,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+					(NanomaterialEntityBO) SpringApplicationContext.getBean("nanomaterialEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -191,7 +192,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+					(NanomaterialEntityBO) SpringApplicationContext.getBean("nanomaterialEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -214,7 +215,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+					(NanomaterialEntityBO) SpringApplicationContext.getBean("nanomaterialEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -237,7 +238,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+					(NanomaterialEntityBO) SpringApplicationContext.getBean("nanomaterialEntityBO");
 						
 			NanomaterialEntityBean entityBean = nanomaterialEntityBO.setupNanoEntityForAdvSearch(sampleId, dataId, httpRequest);
 			

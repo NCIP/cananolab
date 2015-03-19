@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.dto.common.FavoriteBean;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.core.AccessibilityManager;
 import gov.nih.nci.cananolab.restful.core.CustomPlugInBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
@@ -43,15 +44,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+//import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+//import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.springframework.context.ApplicationContext;
 
 @Path("/core")
 public class CoreServices {
 	
 	@Inject
-	ApplicationContext applicationContext;
+	SpringApplicationContext applicationContext;
 	
 	private Logger logger = Logger.getLogger(CoreServices.class);
 	
@@ -81,8 +83,7 @@ public class CoreServices {
 		
 		logger.info("In getTabs service");
 		
-		
-		TabGenerationBO tabGen = (TabGenerationBO)applicationContext.getBean("tabGenerationBO");
+		TabGenerationBO tabGen = (TabGenerationBO)SpringApplicationContext.getBean("tabGenerationBO");
 		SimpleTabsBean tabs = tabGen.getTabs(httpRequest, homePage);
 		
 		return Response.ok(tabs).build();
@@ -96,7 +97,7 @@ public class CoreServices {
 				
 		try { 
 			AccessibilityManager accManager = 
-					 (AccessibilityManager) applicationContext.getBean("accessibilityManager");
+					 (AccessibilityManager) SpringApplicationContext.getBean("accessibilityManager");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -119,7 +120,7 @@ public class CoreServices {
 				
 		try { 
 			WorkspaceManager manager = 
-					 (WorkspaceManager) applicationContext.getBean("workspaceManager");
+					 (WorkspaceManager) SpringApplicationContext.getBean("workspaceManager");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -145,7 +146,7 @@ public class CoreServices {
 				
 		try { 
 			WorkspaceManager manager = 
-					 (WorkspaceManager) applicationContext.getBean("workspaceManager");
+					 (WorkspaceManager) SpringApplicationContext.getBean("workspaceManager");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -171,7 +172,7 @@ public class CoreServices {
 				
 		try { 
 			AccessibilityManager accManager = 
-					 (AccessibilityManager) applicationContext.getBean("accessibilityManager");
+					 (AccessibilityManager) SpringApplicationContext.getBean("accessibilityManager");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -194,7 +195,7 @@ public class CoreServices {
 		logger.info("In getOrganizationByName");
 		try { 
 			PointOfContactManager manager = 
-					 (PointOfContactManager) applicationContext.getBean("pointOfContactManager");
+					 (PointOfContactManager) SpringApplicationContext.getBean("pointOfContactManager");
 			if (manager == null)
 				logger.info("manager is null" );
 			
@@ -214,37 +215,37 @@ public class CoreServices {
 		}
 	}
 	
-	@POST
-	@Path("/uploadFile")
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	@Produces ("application/json")
-	public Response uploadFile(@Context HttpServletRequest httpRequest, @FormDataParam("myFile") InputStream fileInputStream,
-            @FormDataParam("myFile") FormDataContentDisposition contentDispositionHeader) {
-	
-		try {
-			ProtocolBO protocolBO = 
-					(ProtocolBO) applicationContext.getBean("protocolBO");
-			String fileName = contentDispositionHeader.getFileName();
-			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
-			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-
-					
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the protocol file " + e.getMessage())).build();
-		}
-		
-	}
+//	@POST
+//	@Path("/uploadFile")
+//	@Consumes(MediaType.MULTIPART_FORM_DATA)
+//	@Produces ("application/json")
+//	public Response uploadFile(@Context HttpServletRequest httpRequest, @MultipartForm("myFile") InputStream fileInputStream,
+//			@MultipartForm("myFile") FormDataContentDisposition contentDispositionHeader) {
+//	
+//		try {
+//			ProtocolBO protocolBO = 
+//					(ProtocolBO) applicationContext.getBean("protocolBO");
+//			String fileName = contentDispositionHeader.getFileName();
+//			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
+//			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+//
+//					
+//		} catch (Exception e) {
+//			logger.error(e.getMessage());
+//			e.printStackTrace();
+//			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the protocol file " + e.getMessage())).build();
+//		}
+//		
+//	}
 
 	@GET
 	@Path("/getFavorites")
 	@Produces ("application/json")
-    public Response getFavorites(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("id") Long id) {
+    public Response getFavorites(@Context HttpServletRequest httpRequest, @QueryParam("id") Long id) {
 				
 		try { 
 			FavoritesBO favorite = 
-					 (FavoritesBO) applicationContext.getBean("favoritesBO");
+					 (FavoritesBO) SpringApplicationContext.getBean("favoritesBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -286,7 +287,7 @@ public class CoreServices {
 				
 		try { 
 			FavoritesBO favorite = 
-					 (FavoritesBO) applicationContext.getBean("favoritesBO");
+					 (FavoritesBO) SpringApplicationContext.getBean("favoritesBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)

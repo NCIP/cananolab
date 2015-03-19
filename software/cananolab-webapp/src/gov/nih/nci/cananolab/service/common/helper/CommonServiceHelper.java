@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Hibernate;
+//import org.hibernate.type.StandardBasicTypes;
 
 public class CommonServiceHelper {
 
@@ -32,9 +33,9 @@ public class CommonServiceHelper {
 		String[] columns = new String[] { "protocol_pk_id" };
 		Object[] columnTypes = new Object[] { Hibernate.STRING };
 		List results = appService.directSQL(query, columns, columnTypes);
-		for (Object obj : results) {
-			if (obj != null) {
-				data.add(((String) obj));
+		for (int i = 0; i < results.size(); i++) {
+			if (results.get(i) != null) {
+				data.add(((String) results.get(i)));
 			}
 		}
 	}catch(Exception e){
@@ -64,9 +65,9 @@ public class CommonServiceHelper {
 		String[] columns = new String[] { "publication_pk_id" };
 		Object[] columnTypes = new Object[] { Hibernate.STRING };
 		List results = appService.directSQL(query, columns, columnTypes);
-		for (Object obj : results) {
-			if (obj != null) {
-				data.add(((String) obj));
+		for (int i = 0; i < results.size(); i++) {
+			if (results.get(i) != null) {
+				data.add(((String) results.get(i)));
 			}
 		}
 	}catch(Exception e){
@@ -96,9 +97,9 @@ public class CommonServiceHelper {
 		String[] columns = new String[] { "sample_pk_id" };
 		Object[] columnTypes = new Object[] { Hibernate.STRING };
 		List results = appService.directSQL(query, columns, columnTypes);
-		for (Object obj : results) {
-			if (obj != null) {
-				data.add(((String) obj));
+		for (int i = 0; i < results.size(); i++) {
+			if (results.get(i) != null) {
+				data.add(((String) results.get(i)));
 			}
 		}
 

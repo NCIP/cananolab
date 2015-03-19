@@ -234,8 +234,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			dummy.setGroupName("*");
 			SearchCriteria sc = new GroupSearchCriteria(dummy);
 			List results = authManager.getObjects(sc);
-			for (Object obj : results) {
-				Group doGroup = (Group) obj;
+			for (int  i = 0;i < results.size(); i++) {
+				Group doGroup = (Group) results.get(i);
 				CollaborationGroupBean cGroup = new CollaborationGroupBean(
 						doGroup);
 				if (securityService

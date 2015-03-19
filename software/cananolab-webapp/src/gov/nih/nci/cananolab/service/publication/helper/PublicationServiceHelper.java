@@ -193,8 +193,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
-		for (Object obj : results) {
-			Object[] row = (Object[]) obj;
+		for(int i = 0; i < results.size(); i++){
+			Object[] row = (Object[]) results.get(i);
 			// otherPublicationIds.add(obj.toString());
 			Publication publication = new Publication();
 			publication.setId((Long) row[0]);
@@ -296,8 +296,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 				"select id from gov.nih.nci.cananolab.domain.common.Publication");
 		List results = appService.query(crit);
 		int count = 0;
-		for (Object obj : results) {
-			String id = (String) obj.toString();
+		for(int i = 0; i< results.size(); i++){
+			String id = (String) results.get(i).toString();
 			if (getAccessibleData().contains(id)) {
 				count++;
 			}
@@ -320,8 +320,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 				.getApplicationService();
 		List results = appService.query(crit);
 		SortedSet<String> names = new TreeSet<String>();
-		for (Object obj : results) {
-			Object[] row = (Object[]) obj;
+		for (int i = 0; i < results.size(); i++) {
+			Object[] row = (Object[]) results.get(i);
 			String sampleName = row[0].toString();
 			String sampleId = row[1].toString();
 			if (StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
@@ -620,8 +620,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		crit.add(Restrictions.isNull("digitalObjectId"));
 		List results = appService.query(crit);
 		Publication publication = null;
-		for (Object obj : results) {
-			publication = (Publication) obj;
+		for (int i = 0; i < results.size(); i++) {
+			publication = (Publication) results.get(i);
 			if (getAccessibleData().contains(publication.getId().toString())) {
 				return publication;
 			} else {
@@ -647,8 +647,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
-		for (Object obj : results) {
-			String publicationId = obj.toString();
+		for(int i = 0; i < results.size(); i++){
+			String publicationId = results.get(i).toString();
 			if (getAccessibleData().contains(publicationId)) {
 				publicationIds.add(publicationId);
 			} else {
@@ -694,10 +694,10 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 
 		List results = appService.query(crit);
 		Set<Sample> samples = new HashSet<Sample>();
-		for (Object obj : results) {
+		for (int i = 0; i < results.size(); i++) {
 
 			try {
-				Object[] row = (Object[]) obj;
+				Object[] row = (Object[]) results.get(i);
 
 				Long sampleId = (Long) row[0];
 

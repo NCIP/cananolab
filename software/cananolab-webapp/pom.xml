@@ -30,15 +30,21 @@ L-->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.0.7</version>
+			<version>5.1.26</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.3</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+	<groupId>javax.servlet</groupId>
+	<artifactId>jsp-api</artifactId>
+	<version>2.0</version>
+	<scope>provided</scope>
+</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
@@ -153,13 +159,13 @@ L-->
 		</dependency>
 
 <!-- For Jersery -->
-		<dependency>
+	<!-- 	<dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet-core</artifactId>
-            <version>2.6</version>
+            <version>2.6</version>-->
             <!-- use the following artifactId if you don't need servlet 2.x compatibility -->
             <!-- artifactId>jersey-container-servlet</artifactId -->
-        </dependency>
+   <!--      </dependency>
        
           
         <dependency>
@@ -172,10 +178,11 @@ L-->
 		<dependency>
   <groupId>org.glassfish.jersey.media</groupId>
   <artifactId>jersey-media-multipart</artifactId>
+  <scope>provided</scope>
   <version>2.6</version>
-</dependency>
+</dependency>   -->
 
-        <dependency>
+         <dependency>
  		 	<groupId>org.springframework</groupId>
  			 <artifactId>spring-core</artifactId>
   			<version>3.2.0.RELEASE</version>
@@ -185,14 +192,14 @@ L-->
   		<dependency>
  		 	<groupId>org.springframework</groupId>
   			<artifactId>spring-aop</artifactId>
-  			<version>3.2.0.RELEASE</version>
-   			<exclusions>
+  			<version>3.2.0.RELEASE</version> 
+   			<!-- <exclusions>
   				<exclusion> 
           		<groupId>aopalliance</groupId>
           		<artifactId>aopalliance</artifactId>
-   				</exclusion>
-     		</exclusions>
-		</dependency>       
+   				</exclusion>  
+     		</exclusions>  -->
+	</dependency>       
 
 		<dependency>
  		 	<groupId>org.springframework</groupId>
@@ -205,8 +212,7 @@ L-->
  		 	<groupId>org.springframework</groupId>
   			<artifactId>spring-context</artifactId>
   			<version>3.2.0.RELEASE</version>
-  
-		</dependency>
+  		</dependency>
 
 		<dependency>
  		 	<groupId>org.springframework</groupId>
@@ -261,13 +267,13 @@ L-->
           <artifactId>aopalliance</artifactId>
    </exclusion>
      </exclusions>
-</dependency>
+</dependency>    
 
-<dependency>
+<!-- <dependency>
 	<groupId>org.glassfish.jersey.ext</groupId>
 	<artifactId>jersey-spring3</artifactId>
 	<version>2.6</version>
-</dependency>
+</dependency>   -->
 <!--
 
 		<dependency>
@@ -288,6 +294,149 @@ L-->
 </dependency>
 -->
 
-	</dependencies>
+
+<!-- Rest easy configuration -->
+
+<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>3.0.10.Final</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jackson-provider</artifactId>
+			<version>3.0.10.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-multipart-provider</artifactId>
+			<version>3.0.10.Final</version>
+		</dependency>
+		
+		<dependency>
+        <groupId>javax</groupId>
+        <artifactId>javaee-api</artifactId>
+        <version>7.0</version>
+        <scope>provided</scope>
+    </dependency>
+		
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		
+		<dependency>
+	<groupId>javax.inject</groupId>
+	<artifactId>javax.inject</artifactId>
+	<version>1</version>
+</dependency>
+
+<dependency>
+	<groupId>javax.ws.rs</groupId>
+	<artifactId>javax.ws.rs-api</artifactId>
+	<version>2.0.1</version>
+</dependency>
+
+		<dependency>
+	<groupId>javax.annotation</groupId>
+	<artifactId>javax.annotation-api</artifactId>
+	<version>1.2</version>
+</dependency>
+
+
+<!-- <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>4.1.3.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>4.1.3.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>4.1.3.RELEASE</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>4.1.3.RELEASE</version>
+		</dependency>
+		
+		<dependency>
+ 		 	<groupId>org.springframework</groupId>
+  		<artifactId>spring-beans</artifactId>
+  		<version>4.1.3.RELEASE</version>
+		</dependency>
+
+ 
+        <dependency>
+ 		 	<groupId>org.springframework</groupId>
+  			<artifactId>spring-context</artifactId>
+  			<version>4.1.3.RELEASE</version>
+  		</dependency>
+
+		<dependency>
+ 		 	<groupId>org.springframework</groupId>
+  			<artifactId>spring-expression</artifactId>
+  			<version>4.1.3.RELEASE</version>
+		</dependency>
+
+		<dependency>
+ 		 	<groupId>org.springframework</groupId>
+  			<artifactId>spring-jdbc</artifactId>
+  			<version>4.1.3.RELEASE</version>
+		</dependency>
+		
+ 		<dependency>
+ 		 <groupId>org.springframework</groupId>
+  <artifactId>spring-orm</artifactId>
+  <version>4.1.3.RELEASE</version>
+  </dependency>     -->
+  
+ <!--  <dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.1.3.Final</version>
+		</dependency> -->
+		<!-- <dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>4.3.7.Final</version>
+		</dependency>     -->
+		
+	<!-- 	<dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate</artifactId>
+	<version>3.2.3.ga</version>
+	<scope>provided</scope>
+</dependency>   
+		
+		
+		<dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-core</artifactId>
+	<version>3.3.0.GA</version>
+</dependency>   --> 
+
+
+<dependency>
+    <groupId>antlr</groupId>
+    <artifactId>antlr</artifactId>
+    <version>2.7.7</version>
+</dependency>
+
+<dependency>
+	<groupId>org.jboss</groupId>
+	<artifactId>jboss-vfs</artifactId>
+	<version>3.0.1.GA</version>
+</dependency>
+</dependencies>
 	
 </project>

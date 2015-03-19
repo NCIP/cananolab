@@ -48,7 +48,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.jvnet.hk2.config.Changed.TYPE;
+//import org.jvnet.hk2.config.Changed.TYPE;
 
 public class FunctionalizingEntityBO extends BaseAnnotationBO {
 	public List<String> create(SimpleFunctionalizingEntityBean bean,

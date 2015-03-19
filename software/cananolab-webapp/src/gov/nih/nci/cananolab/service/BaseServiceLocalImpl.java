@@ -1240,8 +1240,8 @@ public class BaseServiceLocalImpl implements BaseService {
 				dummy.setLoginName("*");
 				SearchCriteria sc = new UserSearchCriteria(dummy);
 				List results = authManager.getObjects(sc);
-				for (Object obj : results) {
-					User doUser = (User) obj;
+				for (int i = 0; i < results.size(); i++) {
+					User doUser = (User) results.get(i);
 					users.add(new UserBean(doUser));
 				}
 				return users;
@@ -1264,8 +1264,8 @@ public class BaseServiceLocalImpl implements BaseService {
 				dummy.setLoginName("*");
 				SearchCriteria sc = new UserSearchCriteria(dummy);
 				List results = authManager.getObjects(sc);
-				for (Object obj : results) {
-					User doUser = (User) obj;
+				for (int i = 0; i < results.size(); i++) {
+					User doUser = (User) results.get(i);
 					userLogins.add(doUser.getLoginName());
 				}
 				return userLogins;
@@ -1288,8 +1288,8 @@ public class BaseServiceLocalImpl implements BaseService {
 				dummy.setGroupName("*");
 				SearchCriteria sc = new GroupSearchCriteria(dummy);
 				List results = authManager.getObjects(sc);
-				for (Object obj : results) {
-					Group doGroup = (Group) obj;
+				for (int i = 0; i < results.size(); i++) {
+					Group doGroup = (Group) results.get(i);
 					groups.add(doGroup);
 				}
 				return groups;

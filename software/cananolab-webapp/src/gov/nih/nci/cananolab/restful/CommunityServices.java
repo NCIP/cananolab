@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.restful.community.CollaborationGroupBO;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
 
@@ -35,7 +36,7 @@ public class CommunityServices {
 				
 		try { 
 			CollaborationGroupBO collGroupBO = 
-					 (CollaborationGroupBO) applicationContext.getBean("collaborationGroupBO");
+					 (CollaborationGroupBO) SpringApplicationContext.getBean("collaborationGroupBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -62,7 +63,7 @@ public class CommunityServices {
 				
 		try { 
 			CollaborationGroupBO collGroupBO = 
-					 (CollaborationGroupBO) applicationContext.getBean("collaborationGroupBO");
+					 (CollaborationGroupBO) SpringApplicationContext.getBean("collaborationGroupBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)

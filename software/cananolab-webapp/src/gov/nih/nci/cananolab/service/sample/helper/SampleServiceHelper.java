@@ -344,7 +344,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		
 		List results = appService.query(crit);
 		Set<Sample> samples = new HashSet<Sample>();
-		for (Object obj : results) {
+		for(int i = 0; i < results.size(); i++){
 			
 			try {
 				/*
@@ -352,7 +352,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				 * whould trigger a ClassCastException. Reason unknow but suspected to be reaching
 				 * the last row of a dataset. 
 				 */
-				Object[] row = (Object[]) obj;
+//				Object[] row = (Object[]) obj;
+				Object[] row = (Object[]) results.get(i);
 
 				Long sampleId = (Long) row[0];
 
@@ -623,8 +624,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 		PointOfContact poc = null;
-		for (Object obj : results) {
-			Sample sample = (Sample) obj;
+		for(int i = 0; i < results.size(); i++){
+			Sample sample = (Sample) results.get(i);
 			poc = sample.getPrimaryPointOfContact();
 		}
 		return poc;
@@ -646,8 +647,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 		List<PointOfContact> pointOfContacts = new ArrayList<PointOfContact>();
-		for (Object obj : results) {
-			Sample sample = (Sample) obj;
+		for(int i = 0; i < results.size(); i++){
+			Sample sample = (Sample) results.get(i);
 			Collection<PointOfContact> otherPOCs = sample
 					.getOtherPointOfContactCollection();
 			for (PointOfContact poc : otherPOCs) {
@@ -733,8 +734,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				"select id from gov.nih.nci.cananolab.domain.particle.Sample");
 		List results = appService.query(crit);
 		List<String> publicIds = new ArrayList<String>();
-		for (Object obj : results) {
-			String id = (String) obj.toString();
+		for(int i = 0; i< results.size(); i++){
+			String id = (String) results.get(i).toString();
 			if (StringUtils.containsIgnoreCase(publicData, id)) {
 				publicIds.add(id);
 			}
@@ -751,8 +752,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		List results = appService.query(crit);
 		// get organizations associated with public point of contacts
 		List<PointOfContact> publicPOCs = new ArrayList<PointOfContact>();
-		for (Object obj : results) {
-			PointOfContact poc = (PointOfContact) obj;
+		for(int i = 0; i< results.size(); i++){
+			PointOfContact poc = (PointOfContact) results.get(i);
 			if (StringUtils.containsIgnoreCase(publicData, poc.getId()
 					.toString())) {
 				publicPOCs.add(poc);
@@ -818,8 +819,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 		List results = appService.query(crit);
 		Organization org = null;
-		for (Object obj : results) {
-			org = (Organization) obj;
+		for(int i = 0; i < results.size(); i++){
+			org = (Organization) results.get(i);
 		}
 		return org;
 	}
@@ -833,8 +834,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				.add(Property.forName("id").eq(new Long(pocId)));
 		crit.setFetchMode("organization", FetchMode.JOIN);
 		List results = appService.query(crit);
-		for (Object obj : results) {
-			poc = (PointOfContact) obj;
+		for(int i = 0; i < results.size(); i++){
+			poc = (PointOfContact) results.get(i);
 		}
 		return poc;
 	}
@@ -857,8 +858,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 		List<PointOfContact> pointOfContacts = new ArrayList<PointOfContact>();
-		for (Object obj : results) {
-			Sample sample = (Sample) obj;
+		for(int i = 0; i < results.size(); i++){
+			Sample sample = (Sample) results.get(i);
 			PointOfContact primaryPOC = sample.getPrimaryPointOfContact();
 			pointOfContacts.add(primaryPOC);
 			Collection<PointOfContact> otherPOCs = sample
@@ -899,8 +900,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		}
 		List results = appService.query(crit);
 		List<String> sampleNames = new ArrayList<String>();
-		for (Object obj : results) {
-			Sample sample = (Sample) obj;
+		for(int i = 0; i < results.size(); i++){
+			Sample sample = (Sample) results.get(i);
 			if (StringUtils.containsIgnoreCase(getAccessibleData(), sample
 					.getId().toString())) {
 				sampleNames.add(sample.getName());
@@ -925,8 +926,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 						+ "where sample.primaryPointOfContact.organization.name=other.primaryPointOfContact.organization.name and sample.id="
 						+ sampleId + " and other.name!=sample.name)");
 		List results = appService.query(crit);
-		for (Object obj : results) {
-			Object[] row = (Object[]) obj;
+		for(int i = 0; i < results.size(); i++){
+			Object[] row = (Object[]) results.get(i);
 			String name = row[0].toString();
 			String id = row[1].toString();
 			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
@@ -956,8 +957,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List results = appService.query(crit);
-		for (Object obj : results) {
-			poc = (PointOfContact) obj;
+		for(int i = 0; i < results.size(); i++){
+			poc = (PointOfContact) results.get(i);
 		}
 		return poc;
 	}
@@ -982,8 +983,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				.getApplicationService();
 
 		List results = appService.query(crit);
-		for (Object obj : results) {
-			String id = obj.toString();
+		for(int i = 0; i < results.size(); i++){
+			String id = results.get(i).toString();
 			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
 				sampleIds.add(id);
 			} else {

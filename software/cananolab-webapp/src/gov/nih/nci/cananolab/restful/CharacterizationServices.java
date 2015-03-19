@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
@@ -51,7 +52,7 @@ public class CharacterizationServices {
 		
 		try {
 		CharacterizationBO characterizationBO = 
-				(CharacterizationBO) applicationContext.getBean("characterizationBO");
+				(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 
 		SimpleCharacterizationSummaryEditBean editBean = characterizationBO.summaryEdit(sampleId, httpRequest, 
 				null);
@@ -83,7 +84,7 @@ public class CharacterizationServices {
 		
 		try {
 		CharacterizationBO characterizationBO = 
-				(CharacterizationBO) applicationContext.getBean("characterizationBO");
+				(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 
 		SimpleCharacterizationEditBean charView = characterizationBO.setupNew(httpRequest, sampleId, charType);
 //		SimpleCharacterizationSummaryEditBean editBean = new SimpleCharacterizationSummaryEditBean();
@@ -116,7 +117,7 @@ public class CharacterizationServices {
 		
 		try {
 		CharacterizationBO characterizationBO = 
-				(CharacterizationBO) applicationContext.getBean("characterizationBO");
+				(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 
 		SimpleCharacterizationEditBean charView = characterizationBO.setupUpdate(httpRequest, sampleId, charId, charClassName, charType);
 
@@ -139,7 +140,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationManager characterizationMgr = 
-				(CharacterizationManager) applicationContext.getBean("characterizationManager");
+				(CharacterizationManager) SpringApplicationContext.getBean("characterizationManager");
 
 		List<String> charNames = characterizationMgr.getCharacterizationNames(httpRequest, charType);
 
@@ -161,7 +162,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationManager characterizationMgr = 
-				(CharacterizationManager) applicationContext.getBean("characterizationManager");
+				(CharacterizationManager) SpringApplicationContext.getBean("characterizationManager");
 
 		List<String> assayTypes = characterizationMgr.getAssayTypes(httpRequest, charName);
 
@@ -183,7 +184,7 @@ public class CharacterizationServices {
 		
 		try {
 			ExperimentConfigManager experimentMgr = 
-				(ExperimentConfigManager) applicationContext.getBean("experimentConfigManager");
+				(ExperimentConfigManager) SpringApplicationContext.getBean("experimentConfigManager");
 
 		String abbr = experimentMgr.getTechniqueAbbreviation(httpRequest, techniqueType);
 
@@ -209,7 +210,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 			
 			SimpleCharacterizationEditBean editBean = characterizationBO.saveExperimentConfig(httpRequest, charEditBean);
 			List<String> errors = editBean.getErrors();
@@ -240,7 +241,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 			
 			SimpleCharacterizationEditBean editBean = characterizationBO.deleteExperimentConfig(httpRequest, simpleExpConfig);
 
@@ -262,7 +263,7 @@ public class CharacterizationServices {
 		
 		try {
 			ExperimentConfigManager experimentMgr = 
-				(ExperimentConfigManager) applicationContext.getBean("experimentConfigManager");
+				(ExperimentConfigManager) SpringApplicationContext.getBean("experimentConfigManager");
 
 			List<String> types = experimentMgr.getInstrumentTypesByTechniqueType(httpRequest, techniqueType);
 
@@ -289,7 +290,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 			
 			SimpleFindingBean simpleFindingBean = characterizationBO.drawMatrix(httpRequest, simpleFinding);
 
@@ -315,7 +316,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 			
 			SimpleFindingBean simpleFindingBean = characterizationBO.updateColumnOrder(httpRequest, simpleFinding);
 
@@ -341,7 +342,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationResultManager characterizationResultManager = 
-				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+				(CharacterizationResultManager) SpringApplicationContext.getBean("characterizationResultManager");
 
 			List<String> names = characterizationResultManager
 					.getColumnNameOptionsByType(httpRequest, columnType, charType, charName, assayType);
@@ -366,7 +367,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationResultManager characterizationResultManager = 
-				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+				(CharacterizationResultManager) SpringApplicationContext.getBean("characterizationResultManager");
 			
 			List<String> names = characterizationResultManager
 					.getColumnValueUnitOptions(httpRequest, columnName, conditionProperty, true);
@@ -390,7 +391,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationResultManager characterizationResultManager = 
-				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+				(CharacterizationResultManager) SpringApplicationContext.getBean("characterizationResultManager");
 			
 			List<String> names = characterizationResultManager.getConditionPropertyOptions(httpRequest, columnName);
 					
@@ -417,7 +418,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 			logger.debug("Finding id to delete: " + simpleFinding.getFindingId());
 			SimpleCharacterizationEditBean editBean = characterizationBO.deleteFinding(httpRequest, simpleFinding);
 			List<String> errors = editBean.getErrors();
@@ -449,7 +450,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 			
 			SimpleCharacterizationEditBean editBean = characterizationBO.saveFinding(httpRequest, charEditBean);
 			List<String> errors = editBean.getErrors();
@@ -480,7 +481,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 			
 			SimpleCharacterizationSummaryEditBean summaryView = characterizationBO.submitOrUpdate(httpRequest, editBean);
 			List<String> errors = summaryView.getErrors();
@@ -519,7 +520,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 			
 			SimpleCharacterizationSummaryEditBean summaryView = characterizationBO.delete(httpRequest, editBean);
 			List<SimpleCharacterizationsByTypeBean> finalBeans = summaryView.getCharByTypeBeans();
@@ -546,7 +547,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 			
 			SimpleFindingBean editBean = characterizationBO.saveFile(httpRequest, simpleFinding);
 			List<String> errors = editBean.getErrors();
@@ -577,7 +578,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 			
 			SimpleFindingBean editBean = characterizationBO.removeFile(httpRequest, simpleFinding);
 			List<String> errors = editBean.getErrors();
@@ -604,7 +605,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationManager characterizationMgr = 
-				(CharacterizationManager) applicationContext.getBean("characterizationManager");
+				(CharacterizationManager) SpringApplicationContext.getBean("characterizationManager");
 
 		SimpleCharacterizationProperty simpleProp = characterizationMgr.getCharacterizationProperties(httpRequest, charName);
 
@@ -627,7 +628,7 @@ public class CharacterizationServices {
 		
 		try {
 		CharacterizationBO characterizationBO = 
-				(CharacterizationBO) applicationContext.getBean("characterizationBO");
+				(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 
 		List<SimpleCharacterizationUnitBean> charDisplayables = characterizationBO.setupView(
 				httpRequest, "", charId, "", "");

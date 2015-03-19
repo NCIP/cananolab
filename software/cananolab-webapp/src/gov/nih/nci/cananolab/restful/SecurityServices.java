@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.security.LoginBO;
 import gov.nih.nci.cananolab.restful.security.LogoutBO;
 import gov.nih.nci.cananolab.restful.security.RegisterUserBO;
@@ -29,7 +30,7 @@ public class SecurityServices {
 	private Logger logger = Logger.getLogger(SecurityServices.class);
 	
 	@Inject
-	ApplicationContext applicationContext;
+	SpringApplicationContext applicationContext;
 	
 	/*
 	 * TODO: Need input validation logic
@@ -49,7 +50,7 @@ public class SecurityServices {
 		if (username.length() == 0 || password.length() == 0)
 			return Response.serverError().entity("User name or password can't be blank").build();
 		
-		LoginBO loginBo = (LoginBO) applicationContext.getBean("loginBO");
+		LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
 		
 		String result = loginBo.login(username, password, httpRequest);
 		logger.info("login sessionid: " + httpRequest.getSession().getId());
@@ -74,7 +75,7 @@ public class SecurityServices {
         
 		logger.info("In register service");
 		
-		RegisterUserBO registerBo = (RegisterUserBO) applicationContext.getBean("registerUserBO");
+		RegisterUserBO registerBo = (RegisterUserBO) SpringApplicationContext.getBean("registerUserBO");
 		List<String> errors = registerBo.register(title, firstName, lastName, email, phone, organization, fax, comment, registerToUserList);
 		
 		return (errors == null || errors.size() == 0) ? Response.ok("success").build() : 
@@ -87,7 +88,7 @@ public class SecurityServices {
     public Response logout(@Context HttpServletRequest httpRequest) {
 		logger.info("In logout service");
 		
-		LogoutBO logoutBo = (LogoutBO) applicationContext.getBean("logoutBO");
+		LogoutBO logoutBo = (LogoutBO) SpringApplicationContext.getBean("logoutBO");
 		String result = logoutBo.logout(httpRequest);
 		return Response.ok(result).build();
 	}
@@ -121,6 +122,6 @@ public class SecurityServices {
 		}
 		
 		return Response.status(Response.Status.NOT_FOUND)
-				.entity("Unable to get userGroup due to unknow reason.").build();
+				.entity("Unable to get userGroup due to unknown reason.").build();
 	}
 }

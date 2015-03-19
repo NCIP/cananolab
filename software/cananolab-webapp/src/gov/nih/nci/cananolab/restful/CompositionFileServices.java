@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.sample.ChemicalAssociationBO;
 import gov.nih.nci.cananolab.restful.sample.CompositionFileBO;
 import gov.nih.nci.cananolab.restful.sample.FunctionalizingEntityBO;
@@ -40,7 +41,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 				
 		try { 
 			CompositionFileBO compBO = 
-					(CompositionFileBO) applicationContext.getBean("compositionFileBO");
+					(CompositionFileBO) SpringApplicationContext.getBean("compositionFileBO");
 			Map<String, Object> dropdownMap = compBO.setupNew(httpRequest);
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
@@ -57,7 +58,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 				
 		try { 
 			CompositionFileBO compBO = 
-					(CompositionFileBO) applicationContext.getBean("compositionFileBO");
+					(CompositionFileBO) SpringApplicationContext.getBean("compositionFileBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -83,7 +84,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 				
 		try { 
 			CompositionFileBO compBO = 
-					(CompositionFileBO) applicationContext.getBean("compositionFileBO");
+					(CompositionFileBO) SpringApplicationContext.getBean("compositionFileBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -109,7 +110,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 				
 		try { 
 			CompositionFileBO compBO = 
-					(CompositionFileBO) applicationContext.getBean("compositionFileBO");
+					(CompositionFileBO) SpringApplicationContext.getBean("compositionFileBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)

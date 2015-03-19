@@ -17,6 +17,8 @@ import java.io.ObjectOutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,11 +50,13 @@ public class ClassUtils {
 		Class clazz = gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer.class;
 		boolean packedWar = false;
 		URL url = clazz.getResource(clazz.getSimpleName() + ".class");
-		int ind = url.getPath().indexOf(".jar");
+		String path = getRealPath(url);
+		int ind = path.indexOf(".jar");
 		String jarPath = null, warPath = null;
+		
 		if (ind != -1) {
-			jarPath = url.getPath().substring(0, ind + 4);
-			int ind2 = jarPath.indexOf(".war");
+			jarPath = path.substring(0, ind + 21);
+     		int ind2 = jarPath.indexOf(".war");
 			if (ind2 != -1) {
 				File warFile = (new File(jarPath)).getParentFile()
 						.getParentFile().getParentFile();
@@ -97,8 +101,12 @@ public class ClassUtils {
 			if (jarPath.startsWith("file:")) {
 				jarPath=jarPath.replace("file:", "");
 			}
-			JarFile file = new JarFile(jarPath);
-			Enumeration e = file.entries();
+			//wildfly deployment path is different from jboss 5.1, so retrieved the jar file first
+			File file = new File(jarPath);
+			File[] children = file.listFiles();
+			
+			JarFile jarFile = new JarFile(children[0].getPath());
+			Enumeration e = jarFile.entries();
 			while (e.hasMoreElements()) {
 				JarEntry o = (JarEntry) e.nextElement();
 				if (!o.isDirectory()) {
@@ -112,6 +120,31 @@ public class ClassUtils {
 			}
 		}
 		return list;
+	}
+/*
+ * Wildfly deployment path returns a fake path with getResource, so added this function to get realPath.
+ */
+	
+	private static String getRealPath(URL url) {
+		org.jboss.vfs.VirtualFile vFile = null;
+		try {
+			vFile = org.jboss.vfs.VFS.getChild(url);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	     URI fileNameDecodedTmp = null;
+		try {
+			fileNameDecodedTmp = org.jboss.vfs.VFSUtils.getPhysicalURI(vFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+
+	     String path = fileNameDecodedTmp.getPath();
+	     return path; 
+		
 	}
 
 	/**

@@ -27,10 +27,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
+
 
 /**
  * The service returns prepopulated lookup data that are shared across different
@@ -59,8 +61,8 @@ public class LookupService {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(CommonLookup.class);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				CommonLookup lookup = (CommonLookup) obj;
+			for(int i =0 ;i < results.size(); i++){
+				CommonLookup lookup = (CommonLookup) results.get(i);
 				String name = lookup.getName();
 				String attribute = lookup.getAttribute();
 				String value = lookup.getValue();
@@ -103,10 +105,14 @@ public class LookupService {
 					.forClass(CommonLookup.class);
 			crit.add(Property.forName("name").eq(name).ignoreCase());
 			crit.add(Property.forName("attribute").eq(attribute).ignoreCase());
-			Collection results = appService.query(crit);
-			for (Object obj : results) {
-				lookupValues.add(((CommonLookup) obj).getValue());
+			List<CommonLookup> results = appService.query(crit);
+			
+			for(int i = 0; i < results.size();i++){
+				lookupValues.add(results.get(i).getValue());
 			}
+//			for (Object obj : results) {
+//				lookupValues.add(((CommonLookup) obj).getValue());
+//			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving common lookup values for name "
 					+ name + " and attribute " + attribute, e);
@@ -124,9 +130,9 @@ public class LookupService {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(CommonLookup.class);
 			crit.add(Property.forName("attribute").eq(attribute));
-			Collection results = appService.query(crit);
-			for (Object obj : results) {
-				lookup.put(((CommonLookup) obj).getName(), ((CommonLookup) obj)
+			List results = appService.query(crit);
+			for (int i = 0; i < results.size(); i++) {
+				lookup.put(((CommonLookup) results.get(i)).getName(), ((CommonLookup) results.get(i))
 						.getValue());
 			}
 		} catch (Exception e) {
@@ -165,23 +171,23 @@ public class LookupService {
 					.getApplicationService();
 			Class clazz = Class.forName(fullClassName);
 			List results = appService.getAll(clazz);
-			for (Object obj : results) {
-				if (obj instanceof OtherFunction) {
-					types.add(((OtherFunction) obj).getType());
-				} else if (obj instanceof OtherNanomaterialEntity) {
-					types.add(((OtherNanomaterialEntity) obj).getType());
-				} else if (obj instanceof OtherNanomaterialEntity) {
-					types.add(((OtherNanomaterialEntity) obj).getType());
-				} else if (obj instanceof OtherFunctionalizingEntity) {
-					types.add(((OtherFunctionalizingEntity) obj).getType());
-				} else if (obj instanceof OtherChemicalAssociation) {
-					types.add(((OtherChemicalAssociation) obj).getType());
-				} else if (obj instanceof OtherCharacterization) {
-					types.add(((OtherCharacterization) obj).getAssayCategory());
-				} else if (obj instanceof OtherFunction) {
-					types.add(((OtherFunction) obj).getType());
-				} else if (obj instanceof OtherTarget) {
-					types.add(((OtherTarget) obj).getType());
+			for (int i = 0; i < results.size(); i++) {
+				if (results.get(i) instanceof OtherFunction) {
+					types.add(((OtherFunction) results.get(i)).getType());
+				} else if (results.get(i) instanceof OtherNanomaterialEntity) {
+					types.add(((OtherNanomaterialEntity) results.get(i)).getType());
+				} else if (results.get(i) instanceof OtherNanomaterialEntity) {
+					types.add(((OtherNanomaterialEntity) results.get(i)).getType());
+				} else if (results.get(i) instanceof OtherFunctionalizingEntity) {
+					types.add(((OtherFunctionalizingEntity) results.get(i)).getType());
+				} else if (results.get(i) instanceof OtherChemicalAssociation) {
+					types.add(((OtherChemicalAssociation) results.get(i)).getType());
+				} else if (results.get(i) instanceof OtherCharacterization) {
+					types.add(((OtherCharacterization) results.get(i)).getAssayCategory());
+				} else if (results.get(i) instanceof OtherFunction) {
+					types.add(((OtherFunction) results.get(i)).getType());
+				} else if (results.get(i) instanceof OtherTarget) {
+					types.add(((OtherTarget) results.get(i)).getType());
 				}
 			}
 			return types;
