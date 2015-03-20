@@ -21,6 +21,10 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
 import gov.nih.nci.cananolab.restful.workspace.WorkspaceManager;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartInput;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,8 +45,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 //import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -215,28 +221,52 @@ public class CoreServices {
 		}
 	}
 	
-//	@POST
-//	@Path("/uploadFile")
-//	@Consumes(MediaType.MULTIPART_FORM_DATA)
-//	@Produces ("application/json")
-//	public Response uploadFile(@Context HttpServletRequest httpRequest, @MultipartForm("myFile") InputStream fileInputStream,
-//			@MultipartForm("myFile") FormDataContentDisposition contentDispositionHeader) {
-//	
-//		try {
-//			ProtocolBO protocolBO = 
-//					(ProtocolBO) applicationContext.getBean("protocolBO");
-//			String fileName = contentDispositionHeader.getFileName();
-//			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
-//			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-//
-//					
-//		} catch (Exception e) {
-//			logger.error(e.getMessage());
-//			e.printStackTrace();
-//			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the protocol file " + e.getMessage())).build();
-//		}
-//		
-//	}
+	@POST
+	@Path("/uploadFile")
+	@Consumes("multipart/form-data")
+	@Produces ("application/json")
+	public Response uploadFile(@Context HttpServletRequest httpRequest, MultipartInput input) {
+	
+		try {
+			ProtocolBO protocolBO = 
+					(ProtocolBO) applicationContext.getBean("protocolBO");
+			String fileName = null;
+			InputStream fileInputStream = null;
+			
+			List<InputPart> parts = input.getParts();
+
+			for (InputPart inputPart : parts) {
+				
+				MultivaluedMap<String, String> headers = inputPart.getHeaders();
+				fileName = parseFileName(headers);
+				fileInputStream = inputPart.getBody(InputStream.class,null);
+			}
+			
+			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
+			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+					
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the protocol file " + e.getMessage())).build();
+		}
+		
+	}
+	
+	private String parseFileName(MultivaluedMap<String, String> headers) {
+		
+		String[] contentDispositionHeader = headers.getFirst("Content-Disposition").split(";");
+		String fileName = "";
+		        for (String name : contentDispositionHeader) {
+		        	if ((name.trim().startsWith("filename"))) {
+		        		String[] tmp = name.split("=");
+		        		fileName = tmp[1].trim().replaceAll("\"","");	
+		        	}
+		        }
+		        return fileName;
+		    }
+
 
 	@GET
 	@Path("/getFavorites")

@@ -437,6 +437,7 @@ L-->
 	<artifactId>jboss-vfs</artifactId>
 	<version>3.0.1.GA</version>
 </dependency>
+
 </dependencies>
 	
 </project>
