@@ -1,0 +1,6 @@
+#caNanoLab Wildfly setup scripts
+
+connect localhost:9990
+
+#1 add the jdbc module it doesn't matter if it's already there
+module add --name=com.mysql --resources=/local/content/caNanoLab/artifacts/mysql-connector-java-5.1.26.jar --dependencies=javax.api,javax.transaction.api
