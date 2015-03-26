@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
 <!--L
    Copyright SAIC
@@ -11,6 +11,20 @@ L-->
 <security-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<upt-context-name>csmupt</upt-context-name>
 	<application-list>
+<application>
+			<context-name>caNanoLab</context-name>
+			<authentication>
+				<authentication-provider-class>
+					<!-- Fully qualified class name-->
+				</authentication-provider-class>
+			</authentication>
+			<authorization>
+				<authorization-provider-class>
+					<!-- Fully qualified class name-->
+				</authorization-provider-class>
+				<hibernate-config-file>csmupt.csm.new.hibernate.cfg.xml</hibernate-config-file>
+			</authorization>
+		</application>
 		<application>
 			<context-name>csmupt</context-name>
 			<authentication>
@@ -22,7 +36,7 @@ L-->
 			<authorization>
 				<authorization-provider-class>
 				</authorization-provider-class>
-				<hibernate-config-file>csmupt423.csm.new.hibernate.cfg.xml</hibernate-config-file>
+				<hibernate-config-file>csmupt.csm.new.hibernate.cfg.xml</hibernate-config-file>
 			</authorization>
 		</application>
 	</application-list>
@@ -35,7 +49,7 @@ L-->
 				<url-context-name>upt423</url-context-name>
 				<authorization>
 					<authorization-provider-class>String</authorization-provider-class>
-					<hibernate-config-file>csmupt423.csm.new.hibernate.cfg.xml</hibernate-config-file>
+					<hibernate-config-file>csmupt.csm.new.hibernate.cfg.xml</hibernate-config-file>
 				</authorization>
 			</upt-application>
 		</upt-application-list>

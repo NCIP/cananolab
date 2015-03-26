@@ -16,7 +16,7 @@ end-if
 
 
 /system-property=gov.nih.nci.security.configFile:add(value=/local/content/caNanoLab/config/ApplicationSecurityConfig.xml)
-/system-property=gov.nih.nci.rembrandt.wikihelpProperties:add(value=/local/content/caNanoLab/config/wikihelp.properties)
+/system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=/local/content/caNanoLab/config/wikihelp.properties)
 
 ##############################################################
 #             datasource configuration                      
