@@ -227,6 +227,12 @@ L-->
 		<!--copy uptEAR.ear -->
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/uptEAR.ear" />
 		
+		<!--copy csmapi-5.2.jar -->
+		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/lib/sdk/csmapi-5.2.jar" />
+		
+		<!--copy bcprov-jdk15on-1.47.jar -->
+		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/lib/sdk/bcprov-jdk15on-1.47.jar" />
+		
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/help/wikihelp.properties" />
 	</target>
 
