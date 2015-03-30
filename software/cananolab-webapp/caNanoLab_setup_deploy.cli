@@ -2,6 +2,7 @@
 
 connect localhost:9990
 
+
 ##############################################################
 #             System Properties                      
 ##############################################################
@@ -19,7 +20,7 @@ end-if
 /system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=/local/content/caNanoLab/config/wikihelp.properties)
 
 ##############################################################
-#             datasource configuration                      
+#             Datasource Configuration                      
 ##############################################################
 
 if (outcome != success) of /subsystem=datasources/jdbc-driver=mysql:read-resource 
@@ -63,10 +64,18 @@ end-if
 
 reload
 
+##############################################################
+#              Deploy War Files                            
+##############################################################
+
+deploy --force /local/content/caNanoLab/artifacts/caNanoLab.war
+deploy --force /local/content/caNanoLab/artifacts/uptEAR.ear
+
 
 ##############################################################
-#               CSM configuration                             
+#               CSM Configuration                             
 ##############################################################
+
 #module add --name=gov.nih.nci.security --resources=artifacts\csm\csmapi-4.2.3.jar --dependencies=org.apache.log4j,org.hibernate,org.jdom,org.slf4j.jcl-over-slf4j
 
 if (outcome != success) of /subsystem=security/security-domain=caNanoLab:read-resource 
