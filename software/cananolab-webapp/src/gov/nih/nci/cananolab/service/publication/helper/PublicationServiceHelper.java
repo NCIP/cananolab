@@ -647,9 +647,10 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
+		List<String> accessibleData = getAccessibleData();
 		for(int i = 0; i < results.size(); i++){
 			String publicationId = results.get(i).toString();
-			if (getAccessibleData().contains(publicationId)) {
+			if (accessibleData.contains(publicationId)) {
 				publicationIds.add(publicationId);
 			} else {
 				logger.debug("User doesn't have access to publication of ID: "

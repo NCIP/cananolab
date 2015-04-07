@@ -113,19 +113,21 @@ public class WorkspaceManager extends BaseAnnotationBO{
 
 		PublicationService service = this.getPublicationServiceInSession(request, securityService);
 		List<String> publicationIds = service.findPublicationIdsByOwner(user.getLoginName());
-		List<String> Ids = helper.findSharedPublications(user.getLoginName());
+		List<String> Ids = new ArrayList<String>();
+		if(!user.isCurator()){
+			Ids = helper.findSharedPublications(user.getLoginName());
+			
+			for(String pubId : publicationIds){
+				if(!Ids.contains(pubId))
+					publicationIds.add(pubId);
+			}
+		}
+		
 		if (publicationIds == null)
 			return items;
-		List<String> publicationIdList = new ArrayList<String>();
-		for(String pubId : publicationIds){
-			if(!Ids.contains(pubId))
-				publicationIdList.add(pubId);
-		}
-		for(String Id : Ids){
-			publicationIdList.add(Id);
-		}
+		
 		for (String id : publicationIds) {
-			PublicationBean pubBean = service.findPublicationById(id, true);
+			PublicationBean pubBean = service.findPublicationByIdWorkspace(id, true);
 			if (pubBean == null) continue;
 
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
@@ -157,16 +159,14 @@ public class WorkspaceManager extends BaseAnnotationBO{
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
 		ProtocolService protocolService = getProtocolServiceInSession(request, securityService);
 		List<String> protoIds = protocolService.findProtocolIdsByOwner(user.getLoginName());
-		List<String> Id = helper.findSharedProtocols(user.getLoginName());
 		
-		List<String> protoIdList = new ArrayList<String>();
-		
-		for(String ids : protoIds){
-			if(!Id.contains(ids))
-			protoIdList.add(ids);
-		}
-		for(String pid : Id){
-			protoIdList.add(pid);
+		if(!user.isCurator()){
+			List<String> Id = helper.findSharedProtocols(user.getLoginName());
+						
+			for(String ids : protoIds){
+				if(!Id.contains(ids))
+				protoIds.add(ids);
+			}
 		}
 		if (protoIds == null)
 			return items;
@@ -210,14 +210,18 @@ public class WorkspaceManager extends BaseAnnotationBO{
 		String loginUser = user.getLoginName();
 
 		List<String> sampleIds = sampleService.findSampleIdsByOwner(loginUser);
-		List<String> sharedByIds = helper.findSharedSampleIds(user.getLoginName());
-		
-		for (String sharedById : sharedByIds) {
-			if (!sampleIds.contains(sharedById))
-				sampleIds.add(sharedById);
+		List<String> sharedByIds = new ArrayList<String>();
+		//Only Researchers have shared items, not curators.
+		if(!user.isCurator()){
+			sharedByIds = helper.findSharedSampleIds(user.getLoginName());
+			
+			for (String sharedById : sharedByIds) {
+				if (!sampleIds.contains(sharedById))
+					sampleIds.add(sharedById);
+			}
 		}
 		if (sampleIds == null)
-			return items;
+			return items;	
 
 		for (String id : sampleIds) {
 			//Use this method so it won't check user read permission, since user owns this item

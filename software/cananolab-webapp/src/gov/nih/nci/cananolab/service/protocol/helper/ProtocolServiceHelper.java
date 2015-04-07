@@ -233,9 +233,10 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
+		List<String> accessibleData = getAccessibleData();
 		for(int i = 0; i < results.size(); i++){
 			String protocolId = results.get(i).toString();
-			if (getAccessibleData().contains(protocolId)) {
+			if (accessibleData.contains(protocolId)) {
 				protocolIds.add(protocolId);
 			} else {
 				logger.debug("User doesn't have access to protocol of ID: "

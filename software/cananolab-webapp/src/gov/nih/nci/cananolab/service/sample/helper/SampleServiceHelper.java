@@ -983,9 +983,10 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				.getApplicationService();
 
 		List results = appService.query(crit);
+		List<String> accessibleData = getAccessibleData();
 		for(int i = 0; i < results.size(); i++){
 			String id = results.get(i).toString();
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
+			if (StringUtils.containsIgnoreCase(accessibleData, id)) {
 				sampleIds.add(id);
 			} else {
 				logger.debug("User doesn't have access to sample of ID: " + id);
