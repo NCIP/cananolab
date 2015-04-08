@@ -395,39 +395,6 @@ public class WorkspaceManager extends BaseAnnotationBO{
 	public void setCurationService(CurationService curationService) {
 		this.curationService = curationService;
 	}
-	public String deleteSample(String sampleId, HttpServletRequest request)
-			throws Exception {
-		
-		SecurityService securityService = getSecurityService(request);
-		UserBean user = (UserBean)request.getSession().getAttribute("user");
-		SampleService sampleService = this.getSampleServiceInSession(request, securityService);
-		
-		SampleBean sampleBean = sampleService.findSampleById(sampleId, true);
-		if (sampleBean == null)
-			return "Error: unable to find a valid sample in session with id . Sample deletion failed";
-		
-		String sampleName = sampleBean.getDomain().getName();
-
-		// remove all access associated with sample takes too long. Set up the
-		// delete job in scheduler
-		InitSampleSetup.getInstance().updateCSMCleanupEntriesInContext(
-				sampleBean.getDomain(), request);
-
-		// update data review status to "DELETED"
-		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
-				sampleBean.getDomain().getId().toString(), sampleBean
-						.getDomain().getName(), "sample");
-		if (sampleBean.getHasDataAvailability()) {
-			dataAvailabilityService.deleteDataAvailability(sampleBean
-					.getDomain().getId().toString(), securityService);
-		}
-		sampleService.deleteSample(sampleBean.getDomain().getName());
-		request.getSession().removeAttribute("theSample");
-		
-		String msg = PropertyUtil.getPropertyReplacingToken("sample", "message.deleteSample", "0", sampleName);
-		
-		return msg;
-	}
 	
 	public DataAvailabilityService getDataAvailabilityService() {
 		return dataAvailabilityService;

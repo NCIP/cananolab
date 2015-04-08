@@ -493,14 +493,14 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		logger.debug("In deleteSampleFromWorkspace");
 		try {
-			WorkspaceManager workspaceManager = 
-					(WorkspaceManager) SpringApplicationContext.getBean("workspaceManager");
+			SampleBO sampleBO = 
+					(SampleBO) SpringApplicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
-			String msg = workspaceManager.deleteSample(sampleId, httpRequest);
+			String msg = sampleBO.deleteSampleById(sampleId, httpRequest);
 			logger.debug("Delete sample complete: " + msg);
 			return (msg == null || msg.startsWith("Error")) ?
 					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build()
