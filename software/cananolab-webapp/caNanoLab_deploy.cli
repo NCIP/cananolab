@@ -1,0 +1,12 @@
+
+#caNanoLab Wildfly deploy scripts
+
+connect localhost:9990
+
+##############################################################
+#              Deploy War Files                            
+##############################################################
+
+deploy --force /local/content/caNanoLab/artifacts/caNanoLab.war
+deploy --force /local/content/caNanoLab/artifacts/uptEAR.ear
+
