@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 public class CoreServicesTest {
 	
 	String urlbase = "http://localhost:8080/caNanoLab/rest/";
-	
+	Client client;
 	@Before
 	public void setUp() throws Exception {
 		
@@ -34,10 +34,7 @@ public class CoreServicesTest {
 
 	@Test
 	public void testInitSetup() {
-		Client client = ClientBuilder.newClient(new ClientConfig()
-		//.register(MyClientResponseFilter.class)
-		//.register(new AnotherClientFilter())
-				);
+		client = ClientBuilder.newClient();
 
 		String jsonString = client.target(urlbase)
 				.register(CoreServices.class)
@@ -55,10 +52,7 @@ public class CoreServicesTest {
 	
 	@Test
 	public void testGetTabs() {
-		Client client = ClientBuilder.newClient(new ClientConfig()
-		//.register(MyClientResponseFilter.class)
-		//.register(new AnotherClientFilter())
-				);
+		client = ClientBuilder.newClient();
 
 		String jsonString = client.target(urlbase)
 				.register(CoreServices.class)
@@ -76,7 +70,7 @@ public class CoreServicesTest {
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 				.expect()
-				.body("samples.dataName", equalToIgnoringCase("Sample 1"))
+				.body("samples.dataName", equalToIgnoringCase("test_HJ_11"))
 						.when().get("http://localhost:8080/caNanoLab/rest/core/getFavorites");
 		
 		RestTestLoginUtil.logoutTest();
@@ -87,8 +81,8 @@ public class CoreServicesTest {
 		String jsessionId = RestTestLoginUtil.loginTest();
 		FavoriteBean form = new FavoriteBean();
 		form.setDataType("sample");
-		form.setDataId("57835520");
-		form.setDataName("TestSample_Harika");
+		form.setDataId("56229901");
+		form.setDataName("test_HJ_12");
 		Response res =
 				given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(form)
 				.expect().statusCode(200)
@@ -101,8 +95,8 @@ public class CoreServicesTest {
 		String jsessionId = RestTestLoginUtil.loginTest();
 		FavoriteBean form = new FavoriteBean();
 		form.setDataType("sample");
-		form.setDataId("94699520");
-		form.setDataName("Test_HJ_DEV_01");
+		form.setDataId("56229895");
+		form.setDataName("test_HJ-10");
 		form.setId(new Long(105283586));
 		Response res =
 				given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(form)

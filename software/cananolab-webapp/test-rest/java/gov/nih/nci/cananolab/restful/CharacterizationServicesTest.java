@@ -41,7 +41,7 @@ public class CharacterizationServicesTest {
 
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameter("sampleId", "69500928").expect()
+				.parameter("sampleId", "57442308").expect()
 				.body("type", hasItems("physico-chemical characterization",
 						"in vitro characterization",
 						"ex vivo"))

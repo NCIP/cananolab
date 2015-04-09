@@ -16,10 +16,7 @@ public class SecurityServicesTest {
 
 	@Before
 	public void setUp() throws Exception {
-		client = ClientBuilder.newClient(new ClientConfig()
-		//.register(MyClientResponseFilter.class)
-		//.register(new AnotherClientFilter())
-				);
+		client = ClientBuilder.newClient();
 	}
 
 	@Test

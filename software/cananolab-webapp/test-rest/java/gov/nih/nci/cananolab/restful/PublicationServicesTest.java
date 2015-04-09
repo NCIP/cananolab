@@ -28,7 +28,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,10 +40,7 @@ public class PublicationServicesTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		client = ClientBuilder.newClient(new ClientConfig()
-		//.register(MyClientResponseFilter.class)
-		//.register(new AnotherClientFilter())
-				);
+		client = ClientBuilder.newClient();
 	}
 	@Test
 	public void testSummaryView() {
@@ -63,7 +59,7 @@ public class PublicationServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(PublicationServices.class)
 				.path("publication/download")
-				.queryParam("fileId", "23178496") 
+				.queryParam("fileId", "59768833") 
 				.request("application/pdf")
 				.header("some-header", "true")
 				.get(String.class);
@@ -108,7 +104,6 @@ public class PublicationServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -143,7 +138,6 @@ public class PublicationServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -202,13 +196,23 @@ public class PublicationServicesTest {
 	@Test
 	public void testGetSamples() {
 		try{
-		String jsonString = client.target(urlbase)
-				.register(PublicationServices.class)
-				.path("publication/getSamples")
-				.queryParam("searchStr", "ncl-24-1") 
-				.request("application/json")
-				.header("some-header", "true")
-				.get(String.class);
+			String jsessionId = RestTestLoginUtil.loginTest();
+			Map<String, String> parameters = new HashMap<String, String>();
+			parameters.put("searchStr", "ncl-24-1");
+			
+			com.jayway.restassured.response.Response res =
+					given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+					.parameters(parameters).expect()
+					.body("category", equalToIgnoringCase("Test Pub Type"))
+							.when().get("http://localhost:8080/caNanoLab/rest/publication/getSamples");
+
+//		String jsonString = client.target(urlbase)
+//				.register(PublicationServices.class)
+//				.path("publication/getSamples")
+//				.queryParam("searchStr", "ncl-24-1") 
+//				.request("application/json")
+//				.header("some-header", "true")
+//				.get(String.class);
 		}catch(Exception e){
 			assertTrue("NotAuthorizedException", e.toString().contains("Unauthorized"));
 		}
@@ -264,7 +268,6 @@ public class PublicationServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -318,7 +321,6 @@ public class PublicationServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -360,7 +362,6 @@ public class PublicationServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -391,7 +392,6 @@ public class PublicationServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");

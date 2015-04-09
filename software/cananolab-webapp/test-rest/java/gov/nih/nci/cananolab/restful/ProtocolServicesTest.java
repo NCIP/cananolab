@@ -18,7 +18,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +32,7 @@ public class ProtocolServicesTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		client = ClientBuilder.newClient(new ClientConfig());
+		client = ClientBuilder.newClient();
 						
 	}
 	
@@ -63,7 +62,6 @@ public class ProtocolServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -93,7 +91,7 @@ public class ProtocolServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(ProtocolServices.class)
 				.path("protocol/download")
-				.queryParam("fileId", "23178496") 
+				.queryParam("fileId", "59768832") 
 				.request("application/pdf")
 				.header("some-header", "true")
 				.get(String.class);
@@ -110,7 +108,6 @@ public class ProtocolServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -168,7 +165,6 @@ public class ProtocolServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -221,7 +217,6 @@ public class ProtocolServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -262,7 +257,6 @@ public class ProtocolServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -309,7 +303,6 @@ public class ProtocolServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");

@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 
-import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,10 +15,7 @@ public class CompositionServicesTest {
 
 	@Before
 	public void setUp() throws Exception {
-		client = ClientBuilder.newClient(new ClientConfig()
-		//.register(MyClientResponseFilter.class)
-		//.register(new AnotherClientFilter())
-				);
+		client = ClientBuilder.newClient();
 	}
 	@Test
 	public void testSummaryView() {
