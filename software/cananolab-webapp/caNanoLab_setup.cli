@@ -38,10 +38,10 @@ if (outcome != success) of /subsystem=datasources/data-source=caNanoLab:read-res
 data-source add \
     --name=caNanoLab \
     --driver-name=mysql \
-    --connection-url=jdbc:mysql://cbiodb590.nci.nih.gov:3634/canano \
+    --connection-url=jdbc:mysql://@database.server@:@database.port@/canano \
     --jndi-name=java:/caNanoLab \
-    --user-name=nanouser \
-    --password=naNo#805 \
+    --user-name=@database.user@ \
+    --password=@database.password@ \
     --use-ccm=true \
     --max-pool-size=100 \
     --blocking-timeout-wait-millis=5000 
@@ -52,10 +52,10 @@ if (outcome != success) of /subsystem=datasources/data-source=csmupt:read-resour
 data-source add \
     --name=csmupt \
     --driver-name=mysql \
-    --connection-url=jdbc:mysql://cbiodb590.nci.nih.gov:3634/canano \
+    --connection-url=jdbc:mysql://@database.server@:@database.port@/canano \
     --jndi-name=java:/csmupt \
-    --user-name=nanouser \
-    --password=naNo#805 \
+    --user-name=@database.user@ \
+    --password=@database.password@ \
     --use-ccm=true \
     --max-pool-size=100 \
     --blocking-timeout-wait-millis=5000 
