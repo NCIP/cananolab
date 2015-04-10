@@ -1,10 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -24,15 +20,6 @@ import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 
-
-
-
-
-
-
-
-
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
