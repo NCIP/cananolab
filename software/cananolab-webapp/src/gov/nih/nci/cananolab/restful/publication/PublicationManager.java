@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
@@ -293,6 +294,7 @@ public class PublicationManager {
 		
 		String key;
 		Object val;
+		SimplePublicationWithSamplesBean simplePubBean = new SimplePublicationWithSamplesBean();
 		
 		if (type.equals("PubMed")) {
 			key = "pubMedId";
@@ -311,8 +313,13 @@ public class PublicationManager {
 			PublicationServiceLocalImpl service = new PublicationServiceLocalImpl(securityService);
 			pubBean = service.findPublicationByKey(key, val, false);
 		
-			if (pubBean == null) 
-				throw new Exception("No publication found with id \"" + id + "\" of type \"" + type + "\"");
+			if (pubBean == null) {
+				List<String> errors = new ArrayList<String>();
+				errors.add("No publication found with id \"" + id + "\" of type \"" + type + "\"");
+				simplePubBean = new SimplePublicationWithSamplesBean();
+				simplePubBean.setErrors(errors);
+				return simplePubBean;
+			}
 			
 			long pubId = pubBean.getDomainFile().getId().longValue();
 			samples = service.getHelper().findSamplesByPublicationId(pubId);
@@ -325,7 +332,7 @@ public class PublicationManager {
 			throw e;
 		}
 		
-		SimplePublicationWithSamplesBean simplePubBean = new SimplePublicationWithSamplesBean();
+		simplePubBean = new SimplePublicationWithSamplesBean();
 		simplePubBean.transferDataFromPublication(pubBean);
 		simplePubBean.transferSampleDataFromSampleList(samples);
 		simplePubBean.setType(type);

@@ -1,5 +1,10 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +26,13 @@ import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 
 
 
+
+
+
+
+
+
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -507,27 +519,29 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	@Path("/searchByIdImage")
 	@Produces("text/plain")
 	 public Response searchByIdImage(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("id") String id, @QueryParam("type") String type){
+	    		@DefaultValue("") @QueryParam("type") String type, @QueryParam("id") String id){
 		
 		PublicationManager pubManager = 
 				(PublicationManager) SpringApplicationContext.getBean("publicationManager");
-
-		//String fileRoot = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 		
-		//java.io.File fileSuccess = new java.io.File(fileRoot + java.io.File.separator +"appLogo-nanolab.gif");
-		//java.io.File fileError = new java.io.File(fileRoot + java.io.File.separator +"shim.gif");
+
+		File fileError = null; File fileSuccess = null;
+		
 		try {
 			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
-			
+			if(result.getErrors().size()>0){
+				fileError = CommonUtil.retrieveImage(httpRequest, true);
+			}else{
+				fileSuccess = CommonUtil.retrieveImage(httpRequest, false);
+			}	
 			
 			return (result.getErrors().size() > 0) ?
-					Response.ok("/caNanoLab/images/doi-transparent.png").build()
+					Response.ok(fileError).build()
 						:
-						Response.ok("/caNanoLab/images/canano_logo_mini.jpg").build();
-		} 
-
+						Response.ok(fileSuccess).build();
+			} 
 		catch (Exception e) {
-			return Response.ok("/caNanoLab/images/doi-transparent.png").build();
+			return Response.ok(fileError).build();
 		}
 	}	
 

@@ -5,7 +5,7 @@ angular.module('angularApp',['ngRoute','ngSanitize','ngRoute'])
     $scope.type = utilsService.getParameterFromURL('type'); 
 
         $scope.loader = true;      
-        $http({method: 'GET', url: '/caNanoLab/rest/publication/searchByIdImage?id='+$scope.id+'&type='+$scope.type}).
+        $http({method: 'GET', url: '/caNanoLab/rest/publication/searchByIdImage?type='+$scope.type+'&id='+$scope.id}).
         success(function(data, status, headers, config) {
         	$scope.fileInfo = data;
         	$scope.loader = false;
