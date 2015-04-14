@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -504,7 +505,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 	@GET
 	@Path("/searchByIdImage")
-	@Produces("text/plain")
+	@Produces("image/png")
 	 public Response searchByIdImage(@Context HttpServletRequest httpRequest, 
 	    		@DefaultValue("") @QueryParam("type") String type, @QueryParam("id") String id){
 		
@@ -523,9 +524,9 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			}	
 			
 			return (result.getErrors().size() > 0) ?
-					Response.ok(fileError).build()
+					Response.ok(new FileInputStream(fileError)).build()
 						:
-						Response.ok(fileSuccess).build();
+						Response.ok(new FileInputStream(fileSuccess)).build();
 			} 
 		catch (Exception e) {
 			return Response.ok(fileError).build();
