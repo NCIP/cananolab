@@ -104,8 +104,12 @@ public class ClassUtils {
 			//wildfly deployment path is different from jboss 5.1, so retrieved the jar file first
 			File file = new File(jarPath);
 			File[] children = file.listFiles();
-			
-			JarFile jarFile = new JarFile(children[0].getPath());
+			JarFile jarFile = null;;
+			for(int i = 0; i < children.length; i++){
+				if(!(children[i].isDirectory()))
+				jarFile = new JarFile(children[i].getPath());
+			}
+	 
 			Enumeration e = jarFile.entries();
 			while (e.hasMoreElements()) {
 				JarEntry o = (JarEntry) e.nextElement();
