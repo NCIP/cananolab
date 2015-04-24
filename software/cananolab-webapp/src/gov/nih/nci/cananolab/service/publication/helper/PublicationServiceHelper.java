@@ -727,5 +727,20 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 
 		return orderedSamples;
 	}
+	
+	public List<String> getAllPublications() throws Exception {
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select id from gov.nih.nci.cananolab.domain.common.Publication");
+		List results = appService.query(crit);
+		List<String> publicationIds = new ArrayList<String>();
+		for(int i = 0; i< results.size(); i++){
+			String id = (String) results.get(i).toString();
+			publicationIds.add(id);
+			
+		}
+		return publicationIds;
+	}
 
 }

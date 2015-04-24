@@ -438,6 +438,25 @@ L-->
 	<version>3.0.1.GA</version>
 </dependency>
 
+<!-- lucene dependencies -->
+	  <dependency>
+		<groupId>org.apache.lucene</groupId>
+		<artifactId>lucene-core</artifactId>
+		<version>4.10.0</version>
+	  </dependency>
+	  
+	  <dependency>
+		<groupId>org.apache.lucene</groupId>
+		<artifactId>lucene-analyzers-common</artifactId>
+		<version>4.10.0</version>
+	 </dependency>
+	 
+	 <dependency>
+		<groupId>org.apache.lucene</groupId>
+		<artifactId>lucene-queryparser</artifactId>
+		<version>4.10.0</version>
+	</dependency>
+
 </dependencies>
 	
 </project>

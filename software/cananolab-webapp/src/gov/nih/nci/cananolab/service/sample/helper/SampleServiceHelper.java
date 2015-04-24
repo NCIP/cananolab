@@ -994,4 +994,18 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		}
 		return sampleIds;
 	}
+	
+	public List<String> getAllSamples() throws Exception {
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select id from gov.nih.nci.cananolab.domain.particle.Sample");
+		List results = appService.query(crit);
+		List<String> publicIds = new ArrayList<String>();
+		for(int i = 0; i< results.size(); i++){
+			String id = (String) results.get(i).toString();
+			publicIds.add(id);	
+		}
+		return publicIds;
+	}
 }

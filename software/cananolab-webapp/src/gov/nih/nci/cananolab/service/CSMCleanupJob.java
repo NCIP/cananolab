@@ -52,7 +52,7 @@ public class CSMCleanupJob implements Job {
 		}
 		for (String securedData : secureObjectsToRemove) {
 			service.accessUtils.removeCSMEntries(securedData);
-			entries.remove(securedData);
+			entries.remove(securedData);			
 		}
 		secureObjectsToRemove = entries;
 	}

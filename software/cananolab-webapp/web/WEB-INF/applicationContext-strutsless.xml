@@ -197,6 +197,13 @@
 		class="gov.nih.nci.cananolab.restful.community.CollaborationGroupBO">
 	</bean>
 	
+	<bean id="customSearchBO"
+		class="gov.nih.nci.cananolab.restful.customsearch.CustomSearchBO">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+	
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 
