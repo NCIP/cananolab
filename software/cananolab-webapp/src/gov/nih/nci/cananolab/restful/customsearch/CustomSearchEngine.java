@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,34 +61,34 @@ public class CustomSearchEngine extends BaseServiceHelper {
 									Property.forName("id").eq(id));
 
 					sampleCriteria.setFetchMode("primaryPointOfContact",
-							FetchMode.JOIN);
+							FetchMode.EAGER);
 					sampleCriteria.setFetchMode("sampleComposition",
-							FetchMode.JOIN);
+							FetchMode.EAGER);
 					sampleCriteria.setFetchMode(
 							"sampleComposition.nanomaterialEntityCollection",
-							FetchMode.JOIN);
+							FetchMode.EAGER);
 					sampleCriteria
 							.setFetchMode(
 									"sampleComposition.functionalizingEntityCollection",
-									FetchMode.JOIN);
+									FetchMode.EAGER);
 					sampleCriteria
 							.setFetchMode(
 									"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
-									FetchMode.JOIN);
+									FetchMode.EAGER);
 					sampleCriteria
 							.setFetchMode(
 									"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-									FetchMode.JOIN);
+									FetchMode.EAGER);
 					sampleCriteria
 							.setFetchMode(
 									"sampleComposition.functionalizingEntityCollection.functionCollection",
-									FetchMode.JOIN);
+									FetchMode.EAGER);
 					sampleCriteria.setFetchMode("keywordCollection",
-							FetchMode.JOIN);
+							FetchMode.EAGER);
 					sampleCriteria.setFetchMode("publicationCollection",
-							FetchMode.JOIN);
+							FetchMode.EAGER);
 					sampleCriteria.setFetchMode("characterizationCollection",
-							FetchMode.JOIN);
+							FetchMode.EAGER);
 
 					sampleCriteria
 							.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -98,7 +99,6 @@ public class CustomSearchEngine extends BaseServiceHelper {
 					}
 
 					SampleSearchableFieldsBean sampleFieldsBean = new SampleSearchableFieldsBean();
-					sampleFieldsBean.setType("sample");
 					sampleFieldsBean.setSampleId(sample.getId().toString());
 					sampleFieldsBean.setSampleName(sample.getName());
 					sampleFieldsBean.setCreatedDate(sample.getCreatedDate());
@@ -177,6 +177,7 @@ public class CustomSearchEngine extends BaseServiceHelper {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("sample Results size ==="+sampleResults.size());
 		return sampleResults;
 	}
 
@@ -212,7 +213,6 @@ public class CustomSearchEngine extends BaseServiceHelper {
 						protocol = (Protocol) result.get(0);
 					}
 					ProtocolSearchableFieldsBean protocolFieldsBean = new ProtocolSearchableFieldsBean();
-					protocolFieldsBean.setType("protocol");
 					protocolFieldsBean.setCreatedDate(protocol.getCreatedDate());
 					protocolFieldsBean.setProtocolId(protocol.getId().toString());
 					protocolFieldsBean.setProtocolName(protocol.getName());
@@ -259,14 +259,35 @@ public class CustomSearchEngine extends BaseServiceHelper {
 					if (!result.isEmpty()) {
 						pub = (Publication) result.get(0);
 					}
+					
+					//Getting associated sample names
+					
+					String query = "select sample.name, sample.id from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
+							+ id + "'";
+					HQLCriteria crit = new HQLCriteria(query);
+					CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+							.getApplicationService();
+					List results = appService.query(crit);
+					List<String> sampleNames = new ArrayList<String>();
+					for (int j = 0; j < results.size(); j++) {
+						Object[] row = (Object[]) results.get(j);
+						String sampleName = row[0].toString();
+						String sampleId = row[1].toString();
+						if (StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+							sampleNames.add(sampleName);
+						} else {
+							logger.debug("User doesn't have access to sample " + sampleName);
+						}
+					}
 
 					PublicationSearchableFieldsBean publicationFieldsBean = new PublicationSearchableFieldsBean();
-					publicationFieldsBean.setType("publication");
 					publicationFieldsBean.setCreatedDate(pub.getCreatedDate());
 					publicationFieldsBean.setPublicationId(pub.getId().toString());
 					publicationFieldsBean.setPubTitle(pub.getTitle());
 					publicationFieldsBean.setPubDesc(pub.getDescription());
-					publicationFieldsBean.setPubmedId(pub.getPubMedId().toString());
+					publicationFieldsBean.setSampleName(sampleNames);
+					if(pub.getPubMedId()!=null)
+						publicationFieldsBean.setPubmedId(pub.getPubMedId().toString());
 					publicationFieldsBean.setDoiId(pub.getDigitalObjectId());
 
 					if (pub.getAuthorCollection() != null) {

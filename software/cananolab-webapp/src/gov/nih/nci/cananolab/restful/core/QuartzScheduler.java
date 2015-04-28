@@ -51,8 +51,8 @@ public class QuartzScheduler implements InitializingBean {
 			scheduler = new StdSchedulerFactory().getScheduler();
 			if (scheduler != null) {
 				scheduler.start();
-				int csmnMinutes = getInterval("csm", csmCleanupIntervalInMinutes);
-				initialiseCSMCleanupJob(csmnMinutes);
+//				int csmnMinutes = getInterval("csm", csmCleanupIntervalInMinutes);
+//				initialiseCSMCleanupJob(csmnMinutes);
 
 				int publicCountInHours = getInterval("publicCount", publicCountPullIntervalInHours);
 				initialisePublicCountPullJob(publicCountInHours);

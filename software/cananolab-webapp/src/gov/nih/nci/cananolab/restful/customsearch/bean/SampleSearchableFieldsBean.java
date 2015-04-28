@@ -14,15 +14,8 @@ public class SampleSearchableFieldsBean {
 	private String function;
 	private String characterization;
 	private String sampleId;
-	private String type;
 	private Date createdDate;
-	
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
+
 	public String getSampleName() {
 		return sampleName;
 	}

@@ -10,13 +10,12 @@ public class PublicationSearchableFieldsBean {
 	private String doiId;
 	private List<String> authors;
 	private List<String> pubKeywords;
-	private String sampleName;
+	private List<String> sampleName;
 	private String pubDesc;
 	private String nanoEntity;
 	private String funcEntity;
 	private String function;
 	private String publicationId;
-	private String type;
 	private Date createdDate; 
 	
 	public String getPubTitle() {
@@ -50,10 +49,10 @@ public class PublicationSearchableFieldsBean {
 	public void setPubKeywords(List<String> pubKeywords) {
 		this.pubKeywords = pubKeywords;
 	}
-	public String getSampleName() {
+	public List<String> getSampleName() {
 		return sampleName;
 	}
-	public void setSampleName(String sampleName) {
+	public void setSampleName(List<String> sampleName) {
 		this.sampleName = sampleName;
 	}
 	public String getPubDesc() {
@@ -85,12 +84,6 @@ public class PublicationSearchableFieldsBean {
 	}
 	public void setPublicationId(String publicationId) {
 		this.publicationId = publicationId;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
 	}
 	public Date getCreatedDate() {
 		return createdDate;

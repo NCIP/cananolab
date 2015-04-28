@@ -28,9 +28,10 @@ private IndexWriter indexWriter = null;
     
     public IndexWriter getIndexWriter(boolean create) throws IOException {
         if (indexWriter == null) {
-            Directory indexDir = FSDirectory.open(new File("IndexDirectory"));
+            Directory indexDir = FSDirectory.open(new File("indexDir"));
             IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_4_10_0, new StandardAnalyzer());
             indexWriter = new IndexWriter(indexDir, config);
+            indexWriter.deleteAll();
         }
         return indexWriter;
    }    
@@ -42,11 +43,9 @@ private IndexWriter indexWriter = null;
    }
     public void indexSampleSearchableFieldsBean(SampleSearchableFieldsBean sampleFieldsBean) throws IOException {
 
-        System.out.println("Indexing SampleFieldsBean: " + sampleFieldsBean.getSampleName());
         IndexWriter writer = getIndexWriter(false);
         Document doc = new Document();
         doc.add(new StringField("sampleId", sampleFieldsBean.getSampleId(), Field.Store.YES));
-        doc.add(new StringField("type", sampleFieldsBean.getType(), Field.Store.YES));
         doc.add(new StringField("sampleName", sampleFieldsBean.getSampleName(), Field.Store.YES));
         if(sampleFieldsBean.getSamplePocName()!=null)
         	doc.add(new StringField("samplePocName", sampleFieldsBean.getSamplePocName(), Field.Store.YES));
@@ -62,7 +61,17 @@ private IndexWriter indexWriter = null;
         	doc.add(new StringField("characterization", sampleFieldsBean.getCharacterization(), Field.Store.YES));
         if(sampleFieldsBean.getCreatedDate()!=null)
         	doc.add(new Field("createdDate", DateTools.dateToString(sampleFieldsBean.getCreatedDate(), DateTools.Resolution.MINUTE), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        if(sampleFieldsBean.getSampleKeywords().size()>0)
+        	for(int i = 0; i < sampleFieldsBean.getSampleKeywords().size();i++){
+        		doc.add(new StringField("sampleKeywords", sampleFieldsBean.getSampleKeywords().get(i), Field.Store.YES));
+        	}
         String fullSearchableText = sampleFieldsBean.getSampleName() + " " + sampleFieldsBean.getSamplePocName() + " " + sampleFieldsBean.getNanoEntityName() + " " + sampleFieldsBean.getNanoEntityDesc() + " " + sampleFieldsBean.getFuncEntityName() + " " + sampleFieldsBean.getFunction() + " " + sampleFieldsBean.getCharacterization();
+        String keywords = "";
+        for( int i = 0; i < sampleFieldsBean.getSampleKeywords().size(); i++){
+        	String keyword = sampleFieldsBean.getSampleKeywords().get(i);
+        	keywords = keywords + " " + keyword;
+        }
+        fullSearchableText = fullSearchableText + " " + keywords;
         doc.add(new TextField("content", fullSearchableText, Field.Store.NO));
         writer.addDocument(doc);
         
@@ -72,7 +81,6 @@ private IndexWriter indexWriter = null;
 
         IndexWriter writer = getIndexWriter(false);
         Document doc = new Document();
-        doc.add(new StringField("type", protocolFieldsBean.getType(), Field.Store.YES));
         doc.add(new StringField("protocolId", protocolFieldsBean.getProtocolId(), Field.Store.YES));
         doc.add(new StringField("protocolFileDesc", protocolFieldsBean.getProtocolFileDesc(), Field.Store.YES));
         doc.add(new StringField("protocolName", protocolFieldsBean.getProtocolName(), Field.Store.YES));
@@ -80,6 +88,7 @@ private IndexWriter indexWriter = null;
         if(protocolFieldsBean.getCreatedDate()!=null)
         	doc.add(new Field("createdDate", DateTools.dateToString(protocolFieldsBean.getCreatedDate(), DateTools.Resolution.MINUTE), Field.Store.YES, Field.Index.NOT_ANALYZED));
         String fullSearchableText = protocolFieldsBean.getProtocolName() + " " + protocolFieldsBean.getProtocolFileName();
+
         doc.add(new TextField("content", fullSearchableText, Field.Store.NO));
         writer.addDocument(doc);
         
@@ -87,25 +96,45 @@ private IndexWriter indexWriter = null;
     
     public void indexPublicationSearchableFieldsBean(PublicationSearchableFieldsBean pubFieldsBean) throws IOException {
 
-        System.out.println("Indexing SampleFieldsBean: " + pubFieldsBean.getPubTitle());
         IndexWriter writer = getIndexWriter(false);
         Document doc = new Document();
-        doc.add(new StringField("publicationId", pubFieldsBean.getPublicationId(), Field.Store.NO));
-        doc.add(new StringField("pubTitle", pubFieldsBean.getPubTitle(), Field.Store.YES));
+        doc.add(new StringField("publicationId", pubFieldsBean.getPublicationId(), Field.Store.YES));
+        if(pubFieldsBean.getPubTitle()!=null)
+        	doc.add(new StringField("pubTitle", pubFieldsBean.getPubTitle(), Field.Store.YES));
         if(pubFieldsBean.getPubmedId()!=null)
         	doc.add(new StringField("pubmedId", pubFieldsBean.getPubmedId(), Field.Store.YES));
         if(pubFieldsBean.getDoiId()!=null)
         	doc.add(new StringField("doiId", pubFieldsBean.getDoiId(), Field.Store.YES));
         if(pubFieldsBean.getPubDesc()!=null)
         	doc.add(new StringField("pubDesc", pubFieldsBean.getPubDesc(), Field.Store.YES));
-        if(pubFieldsBean.getSampleName()!=null)
-        	doc.add(new StringField("sampleName", pubFieldsBean.getSampleName(), Field.Store.YES));
         if(pubFieldsBean.getCreatedDate()!=null)
         	doc.add(new Field("createdDate", DateTools.dateToString(pubFieldsBean.getCreatedDate(), DateTools.Resolution.MINUTE), Field.Store.YES, Field.Index.NOT_ANALYZED));
-//        doc.add(new StringField("funcEntityName", pubFieldsBean.getDoiId(), Field.Store.YES));
-//        doc.add(new StringField("function", pubFieldsBean.getFunction(), Field.Store.YES));
-//        doc.add(new StringField("characterization", pubFieldsBean.getCharacterization(), Field.Store.YES));
+        String keywords = "";
         String fullSearchableText = pubFieldsBean.getSampleName() + " " + pubFieldsBean.getPubDesc() + " " + pubFieldsBean.getPubTitle() + " " + pubFieldsBean.getPubmedId() + " " + pubFieldsBean.getDoiId();
+        if(pubFieldsBean.getPubKeywords()!=null){
+	        for(int i = 0; i < pubFieldsBean.getPubKeywords().size(); i++){
+	        	String keyword = pubFieldsBean.getPubKeywords().get(i);
+	        	keywords = keywords + " " + keyword;
+	        }
+    	}
+        fullSearchableText = fullSearchableText + " " + keywords;
+        String authors = "";
+        if(pubFieldsBean.getAuthors()!=null){
+	        for ( int j = 0; j < pubFieldsBean.getAuthors().size(); j++){
+	        	String author = pubFieldsBean.getAuthors().get(j);
+	        	authors = authors + " " + author;
+	        }
+        }
+        fullSearchableText = fullSearchableText + " " + authors;
+        String sampleNames = "";
+        if(pubFieldsBean.getSampleName()!=null){
+        	for(int k = 0; k < pubFieldsBean.getSampleName().size(); k++){
+        		String sampleName = pubFieldsBean.getSampleName().get(k);
+        		sampleNames = sampleNames + " " + sampleName;
+        	}
+        }
+        fullSearchableText = fullSearchableText + " " + sampleNames;
+
         doc.add(new TextField("content", fullSearchableText, Field.Store.NO));
         writer.addDocument(doc);
         
@@ -123,10 +152,10 @@ private IndexWriter indexWriter = null;
         for(ProtocolSearchableFieldsBean protocolBean : protocols){
         	indexProtocolSearchableFieldsBean(protocolBean);
         }
-//        List<PublicationSearchableFieldsBean> publications = searchEngine.retrievePublicationForIndexing();
-//        for(PublicationSearchableFieldsBean publicationBean : publications){
-//        	indexPublicationSearchableFieldsBean(publicationBean);
-//        }
+        List<PublicationSearchableFieldsBean> publications = searchEngine.retrievePublicationForIndexing();
+        for(PublicationSearchableFieldsBean publicationBean : publications){
+        	indexPublicationSearchableFieldsBean(publicationBean);
+        }
         List<SampleSearchableFieldsBean> samples = searchEngine.retrieveSamplesForIndexing();
         for(SampleSearchableFieldsBean sampleBean : samples){
         	indexSampleSearchableFieldsBean(sampleBean);

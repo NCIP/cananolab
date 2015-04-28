@@ -42,7 +42,7 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		try {
 			results = new ArrayList<CustomSearchBean>();	
 			  
-		    IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("IndexDirectory"))));
+		    IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("indexDir"))));
 		    QueryParser parser = new QueryParser("content", new StandardAnalyzer());
 		    Query query = parser.parse(keyword);        
 		    TopDocs topDocs = searcher.search(query, 1000);
@@ -53,7 +53,7 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            CustomSearchBean searchBean = new CustomSearchBean();
 	            searchBean.setId(doc.get("protocolId"));
 	            searchBean.setName(doc.get("protocolName"));
-	            searchBean.setType(doc.get("type"));
+	            searchBean.setType("protocol");
 	            searchBean.setDescription(doc.get("protocolFileDesc"));
 	            searchBean.setCreatedDate(doc.get("createdDate"));
 	            results.add(searchBean);
@@ -71,7 +71,7 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		try {
 			results = new ArrayList<CustomSearchBean>();	
 			  
-		    IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("IndexDirectory"))));
+		    IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("indexDir"))));
 		    QueryParser parser = new QueryParser("content", new StandardAnalyzer());
 		    Query query = parser.parse(keyword);        
 		    TopDocs topDocs = searcher.search(query, 100);
@@ -82,7 +82,7 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            CustomSearchBean searchBean = new CustomSearchBean();
 	            searchBean.setId(doc.get("sampleId"));
 	            searchBean.setName(doc.get("sampleName"));
-	            searchBean.setType(doc.get("type"));
+	            searchBean.setType("sample");
 	            searchBean.setDescription(doc.get("nanoEntityDesc"));
 	            searchBean.setCreatedDate(doc.get("createdDate"));
 	            results.add(searchBean);
@@ -100,7 +100,7 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		try {
 			results = new ArrayList<CustomSearchBean>();	
 			  
-		    IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("IndexDirectory"))));
+		    IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("indexDir"))));
 		    QueryParser parser = new QueryParser("content", new StandardAnalyzer());
 		    Query query = parser.parse(keyword);        
 		    TopDocs topDocs = searcher.search(query, 100);
@@ -111,7 +111,7 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            CustomSearchBean searchBean = new CustomSearchBean();
 	            searchBean.setId(doc.get("publicationId"));
 	            searchBean.setName(doc.get("pubTitle"));
-	            searchBean.setType(doc.get("type"));
+	            searchBean.setType("publication");
 	            searchBean.setDescription(doc.get("pubDesc"));
 	            searchBean.setCreatedDate(doc.get("createdDate"));
 	            results.add(searchBean);
