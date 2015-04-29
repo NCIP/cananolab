@@ -19,13 +19,14 @@
 	    </div>
 	    <hr>
 	    <div style="font-size:18px;" ng-show="mySamples">My Samples</div>
-	    <table class="table sample" width="100%" cellpadding="0" cellspacing="0" ng-show="mySamples">
+	    <div ng-if="!samples">No sample favorites selected</div>
+	    <table ng-if="samples" class="table sample" width="100%" cellpadding="0" cellspacing="0" ng-show="mySamples">
 	        <tr>
 	            <th>Actions</th>
 	            <th>Sample Name</th>
 	        </tr>
 	        <tr ng-repeat="data in samples">
-	            <td class="columnOne" width="20%">
+	            <td class="columnOne" width="20%">{{samples}}
 	                <a href="/caNanoLab/#/sample?sampleId={{data.dataId}}&amp;fromFavorites=true">View</a>&nbsp;
 	                <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromFavorites=true" ng-if="data.editable">Edit</a> <br/>
 					<a href="" ng-click="removeFromFavorites(data, 'sample')"><span class="fa fa-trash-o"></span>&nbsp;Remove from Favorites</a>            </td>
@@ -36,7 +37,8 @@
 	    </table>
 	    <br/>
 	    <div style="font-size:18px;" ng-show="myProtocols">My Protocols</div>
-	    <table class="table protocol" width="100%" cellpadding="0" cellspacing="0" ng-show="myProtocols">
+	    <div ng-if="!protocols">No protocol favorites selected</div>
+	    <table ng-if="protocols" class="table protocol" width="100%" cellpadding="0" cellspacing="0" ng-show="myProtocols">
 	        <tr>
 	            <th>Actions</th>
 	            <th>Protocol Name</th>
@@ -54,7 +56,8 @@
 	    </table>
 	    <br/>
 	    <div style="font-size:18px;" ng-show="myPublications">My Publications</div>
-	    <table class="table publication" width="100%" cellpadding="0" cellspacing="0" ng-show="myPublications">
+	    <div ng-if="!publications">No sample favorites selected</div>
+	    <table ng-if="publications" class="table publication" width="100%" cellpadding="0" cellspacing="0" ng-show="myPublications">
 	        <tr>
 	            <th>Actions</th>
 	            <th>Publication Title</th>
