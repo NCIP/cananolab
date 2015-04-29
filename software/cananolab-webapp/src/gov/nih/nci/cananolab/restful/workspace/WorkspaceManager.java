@@ -134,6 +134,7 @@ public class WorkspaceManager extends BaseAnnotationBO{
 			item.setName(pubBean.getDomainFile().getTitle());
 			item.setId(pubBean.getDomainFile().getId());
 			item.setCreatedDate(pubBean.getDomainFile().getCreatedDate());
+			
 			Publication pub = (Publication) pubBean.getDomainFile();
 			
 			String pubId = (pub.getPubMedId() != null) ? pub.getPubMedId().toString() : "";
@@ -333,6 +334,7 @@ public class WorkspaceManager extends BaseAnnotationBO{
 			SecuredDataBean dataBean, SecurityService securityService, UserBean user) {
 
 		item.setEditable(dataBean.getUserUpdatable());
+		item.setOwner(dataBean.getUserIsOwner());
 
 		if (dataBean.getPublicStatus())
 			item.setSubmisstionStatus("Approved");

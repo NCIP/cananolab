@@ -29,7 +29,7 @@ public class FavoritesBO extends BaseAnnotationBO {
 				return msgs;
 			} else {
 				service.addFavorite(bean, request);
-				msgs.add("success");
+				msgs.add("Added to Favorites");
 			}
 		}
 		return msgs;

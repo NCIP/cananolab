@@ -12,6 +12,7 @@ public class FavoriteBean {
 	String pubmedId;
 	String protocolFileId;
 	boolean editable;
+	String description;
 	
 	
 	public boolean getEditable() {
@@ -62,6 +63,12 @@ public class FavoriteBean {
 	}
 	public void setProtocolFileId(String protocolFileId) {
 		this.protocolFileId = protocolFileId;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }

@@ -107,7 +107,7 @@ public class TabGenerationBO {
 			tabs.add(tabWithLink);
 			
 			tabWithLink = new String[2];
-			tabWithLink[0] = "FAVORITES";
+			tabWithLink[0] = "MY FAVORITES";
 			tabWithLink[1] =  urlBase + "#/myFavorites";;
 			tabs.add(tabWithLink);
 			
