@@ -26,7 +26,7 @@
 	            <th>Sample Name</th>
 	        </tr>
 	        <tr ng-repeat="data in samples">
-	            <td class="columnOne" width="20%">{{samples}}
+	            <td class="columnOne" width="20%">
 	                <a href="/caNanoLab/#/sample?sampleId={{data.dataId}}&amp;fromFavorites=true">View</a>&nbsp;
 	                <a href="/caNanoLab/#/editSample?sampleId={{data.dataId}}&amp;fromFavorites=true" ng-if="data.editable">Edit</a> <br/>
 					<a href="" ng-click="removeFromFavorites(data, 'sample')"><span class="fa fa-trash-o"></span>&nbsp;Remove from Favorites</a>            </td>
