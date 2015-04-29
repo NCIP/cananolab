@@ -74,10 +74,9 @@
 	        </tr>
 	    </table>
     </span>
-    <span ng-if="samples == null && protocols == null && publications == null &&!loader" style="font-size:1.5em; color:darkgreen">
-        <br />
-        No favorites currently available. If you want to add any Samples, Protocols or Publications as a favorite, please add them as favorites on the Search Results Page.
-    </span>    
+    <h2 ng-if="samples == null && protocols == null && publications == null &&!loader">
+No favorites currently available. To add any samples, protocols, or publications as a favorite, please add them as favorites on the respective Search Results page
+    </h2>    
 </div>
 <div id="loader" ng-show="loader">
     <div id="loaderText">
