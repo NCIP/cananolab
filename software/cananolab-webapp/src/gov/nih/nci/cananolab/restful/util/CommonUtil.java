@@ -46,7 +46,7 @@ public class CommonUtil {
 	
 	public static String getServerDir(HttpServletRequest httpRequest){
 		String serverDir = "";
-		if(httpRequest.getServerName().contains("localhost")){
+		if((httpRequest.getServerName().contains("localhost"))||(httpRequest.getServerName().contains("127.0.0.1"))){
 			serverDir = "http://"+httpRequest.getServerName()+":"+httpRequest.getServerPort()+httpRequest.getContextPath();
 		}else{
 			serverDir = "https://"+httpRequest.getServerName()+":"+httpRequest.getServerPort()+httpRequest.getContextPath();
@@ -61,11 +61,11 @@ public class CommonUtil {
 		String serverDir = getServerDir(httpRequest);
 				
 		try {
-			urlSuccess = new URL(serverDir + java.io.File.separator +"images/canano_logo_mini.jpg");
-			imageSuccess = ImageIO.read(urlSuccess);
+			urlSuccess = new URL(serverDir + "/images/canano_logo_mini.jpg");
+			imageSuccess = ImageIO.read(urlSuccess.openStream());
 			ImageIO.write(imageSuccess, "jpg", fileSuccess);
-			urlError = new URL(serverDir + java.io.File.separator +"images/doi-transparent.png");
-			imageError = ImageIO.read(urlError);
+			urlError = new URL(serverDir + "/images/doi-transparent.png");
+			imageError = ImageIO.read(urlError.openStream());
 			ImageIO.write(imageError, "png", fileError);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
