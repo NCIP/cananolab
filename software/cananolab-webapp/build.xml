@@ -17,6 +17,7 @@ L-->
 	<property file="project.properties" />
 	<property name="src.dir" location="${basedir}/src" />
 	<property name="webroot.dir" location="${basedir}/web" />
+	<property name="image.dir" location="${webroot.dir}/images" />
 	<property name="build.dir" location="${basedir}/build" />
 	<property name="common.dir" location="${basedir}/../common" />
 	<property name="dist.dir" location="${basedir}/target/dist" />
@@ -234,6 +235,11 @@ L-->
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/lib/sdk/bcprov-jdk15on-1.47.jar" />
 		
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/help/wikihelp.properties" />
+		
+		<!--copy images -->
+		<copy overwrite="true" todir="${common.dist.dir}" file="${image.dir}/canano_logo_mini.jpg" />
+				
+		<copy overwrite="true" todir="${common.dist.dir}" file="${image.dir}/doi-transparent.png" />
 	</target>
 
 	<target name="deploy" depends="dist">

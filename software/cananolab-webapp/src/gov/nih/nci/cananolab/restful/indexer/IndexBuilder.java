@@ -83,6 +83,7 @@ private IndexWriter indexWriter = null;
         Document doc = new Document();
         doc.add(new StringField("protocolId", protocolFieldsBean.getProtocolId(), Field.Store.YES));
         doc.add(new StringField("protocolFileDesc", protocolFieldsBean.getProtocolFileDesc(), Field.Store.YES));
+        doc.add(new StringField("protocolFileId", protocolFieldsBean.getProtocolFileId(), Field.Store.YES));
         doc.add(new StringField("protocolName", protocolFieldsBean.getProtocolName(), Field.Store.YES));
         doc.add(new StringField("protocolFileName", protocolFieldsBean.getProtocolFileName(), Field.Store.YES));
         if(protocolFieldsBean.getCreatedDate()!=null)

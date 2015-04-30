@@ -20,6 +20,8 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -512,16 +514,14 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		PublicationManager pubManager = 
 				(PublicationManager) SpringApplicationContext.getBean("publicationManager");
 		
-
-		File fileError = null; File fileSuccess = null;
+		String fileRoot = PropertyUtils.getProperty(
+								Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
+				 		
+		java.io.File fileSuccess = new java.io.File(fileRoot + java.io.File.separator +"canano_logo_mini.jpg");
+		java.io.File fileError = new java.io.File(fileRoot + java.io.File.separator +"doi-transparent.png");
 		
 		try {
 			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
-			if(result.getErrors().size()>0){
-				fileError = CommonUtil.retrieveImage(httpRequest, true);
-			}else{
-				fileSuccess = CommonUtil.retrieveImage(httpRequest, false);
-			}	
 			
 			return (result.getErrors().size() > 0) ?
 					Response.ok(new FileInputStream(fileError)).build()

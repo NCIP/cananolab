@@ -42,17 +42,17 @@ public class CustomSearchServiceLocalImpl extends BaseServiceLocalImpl implement
 	public List<CustomSearchBean> customSearchByKeyword(
 			HttpServletRequest httpRequest, String keyword) throws CustomSearchException, NoAccessException {
 		List<CustomSearchBean> results = new ArrayList<CustomSearchBean>();
-		List<CustomSearchBean> protocolResults = helper.customSearchByKeywordByProtocol(keyword);
+		List<CustomSearchBean> protocolResults = helper.customSearchByKeywordByProtocol(httpRequest, keyword);
 		for(int i = 0; i < protocolResults.size(); i++){
 			if(protocolResults.get(i).getName()!=null)
 				results.add(protocolResults.get(i));
 		}
-		List<CustomSearchBean> sampleResults = helper.customSearchByKeywordBySample(keyword);
+		List<CustomSearchBean> sampleResults = helper.customSearchByKeywordBySample(httpRequest, keyword);
 		for(int i = 0; i < sampleResults.size(); i++){
 			if(sampleResults.get(i).getName()!=null)
 				results.add(sampleResults.get(i));
 		}
-		List<CustomSearchBean> pubResults = helper.customSearchByKeywordByPub(keyword);
+		List<CustomSearchBean> pubResults = helper.customSearchByKeywordByPub(httpRequest, keyword);
 		for(int i = 0; i < pubResults.size(); i++){
 			if(pubResults.get(i).getName()!=null)
 				results.add(pubResults.get(i));

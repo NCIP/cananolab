@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import gov.nih.nci.cananolab.restful.customsearch.bean.CustomSearchBean;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.QueryParser;
@@ -37,8 +40,9 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		super(securityService);
 	}
 
-	public List<CustomSearchBean> customSearchByKeywordByProtocol(String keyword) {
+	public List<CustomSearchBean> customSearchByKeywordByProtocol(HttpServletRequest httpRequest, String keyword) {
 		List<CustomSearchBean> results = null;
+		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 		try {
 			results = new ArrayList<CustomSearchBean>();	
 			  
@@ -55,7 +59,11 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            searchBean.setName(doc.get("protocolName"));
 	            searchBean.setType("protocol");
 	            searchBean.setDescription(doc.get("protocolFileDesc"));
+	            searchBean.setFileId(doc.get("protocolFileId"));
 	            searchBean.setCreatedDate(doc.get("createdDate"));
+	            if((user!=null)&&(user.isCurator())){
+	            	searchBean.setEditable(true);
+	            }
 	            results.add(searchBean);
 	            }
 		  
@@ -66,8 +74,9 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		return results;
 	}
 
-	public List<CustomSearchBean> customSearchByKeywordBySample(String keyword) {
+	public List<CustomSearchBean> customSearchByKeywordBySample(HttpServletRequest httpRequest, String keyword) {
 		List<CustomSearchBean> results = null;
+		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 		try {
 			results = new ArrayList<CustomSearchBean>();	
 			  
@@ -85,6 +94,9 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            searchBean.setType("sample");
 	            searchBean.setDescription(doc.get("nanoEntityDesc"));
 	            searchBean.setCreatedDate(doc.get("createdDate"));
+	            if((user!=null)&&(user.isCurator())){
+	            	searchBean.setEditable(true);
+	            }
 	            results.add(searchBean);
 	            }
 		  
@@ -95,8 +107,9 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		return results;
 	}
 
-	public List<CustomSearchBean> customSearchByKeywordByPub(String keyword) {
+	public List<CustomSearchBean> customSearchByKeywordByPub(HttpServletRequest httpRequest, String keyword) {
 		List<CustomSearchBean> results = null;
+		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 		try {
 			results = new ArrayList<CustomSearchBean>();	
 			  
@@ -113,7 +126,11 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            searchBean.setName(doc.get("pubTitle"));
 	            searchBean.setType("publication");
 	            searchBean.setDescription(doc.get("pubDesc"));
+	            searchBean.setPubmedId(doc.get("pubmedId"));
 	            searchBean.setCreatedDate(doc.get("createdDate"));
+	            if((user!=null)&&(user.isCurator())){
+	            	searchBean.setEditable(true);
+	            }
 	            results.add(searchBean);
 	            }
 		  

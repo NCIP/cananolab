@@ -8,6 +8,9 @@ public class CustomSearchBean {
 	private String createdDate;
 	private String description;
 	private String id;
+	private boolean isEditable;
+	private String pubmedId;
+	private String fileId;
 	
 	public String getType() {
 		return type;
@@ -39,5 +42,23 @@ public class CustomSearchBean {
 	public void setId(String id) {
 		this.id = id;
 	}
-
+	public boolean isEditable() {
+		return isEditable;
+	}
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
+	}
+	public String getPubmedId() {
+		return pubmedId;
+	}
+	public void setPubmedId(String pubmedId) {
+		this.pubmedId = pubmedId;
+	}
+	public String getFileId() {
+		return fileId;
+	}
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
+	}
+	
 }

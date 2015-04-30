@@ -212,13 +212,14 @@ public class CustomSearchEngine extends BaseServiceHelper {
 					if (!result.isEmpty()) {
 						protocol = (Protocol) result.get(0);
 					}
-					ProtocolSearchableFieldsBean protocolFieldsBean = new ProtocolSearchableFieldsBean();
+					ProtocolSearchableFieldsBean protocolFieldsBean = new ProtocolSearchableFieldsBean();					
 					protocolFieldsBean.setCreatedDate(protocol.getCreatedDate());
 					protocolFieldsBean.setProtocolId(protocol.getId().toString());
 					protocolFieldsBean.setProtocolName(protocol.getName());
 					protocolFieldsBean.setProtocolFileName(protocol.getFile()
 							.getName());
 					protocolFieldsBean.setProtocolFileDesc(protocol.getFile().getDescription());
+					protocolFieldsBean.setProtocolFileId(protocol.getFile().getId().toString());
 					protocolResults.add(protocolFieldsBean);
 				}
 			}
