@@ -19,7 +19,7 @@
 
 <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
-		<td data-title="''" width="5%" class="columnOne">	
+		<td data-title="'Actions'" width="5%" class="columnOne">	
 			<a ng-if="row.editable" ng-init="searchType='simple'" href="#/editSample?sampleId={{row.sampleId}}">Edit</a>
 			<a ng-if="!row.editable" ng-init="searchType='simple'" href="#/sample?sampleId={{row.sampleId}}">View</a> <br />
             <a id="href{{row.sampleId}}" href="" ng-click="addToFavorites(row.sampleId, row.sampleName, row.editable)" ng-if="tabs.userLoggedIn"><i class="fa fa-plus fa-1"></i>&nbsp;Add to Favorites</a>
