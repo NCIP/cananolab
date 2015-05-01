@@ -9,6 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import gov.nih.nci.cananolab.restful.customsearch.bean.CustomSearchBean;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -27,6 +33,7 @@ import org.apache.lucene.store.FSDirectory;
 public class CustomSearchServiceHelper extends BaseServiceHelper {
 	private static Logger logger = Logger
 			.getLogger(CustomSearchServiceHelper.class);
+	SecurityService securityService = getSecurityService();
 
 	public CustomSearchServiceHelper() {
 		super();
@@ -44,6 +51,8 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		List<CustomSearchBean> results = null;
 		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 		try {
+			ProtocolService protocolService = getProtocolServiceInSession(httpRequest, securityService);
+			
 			results = new ArrayList<CustomSearchBean>();	
 			  
 		    IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("indexDir"))));
@@ -60,9 +69,20 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            searchBean.setType("protocol");
 	            searchBean.setDescription(doc.get("protocolFileDesc"));
 	            searchBean.setFileId(doc.get("protocolFileId"));
-	            searchBean.setCreatedDate(doc.get("createdDate"));
-	            if((user!=null)&&(user.isCurator())){
-	            	searchBean.setEditable(true);
+	            searchBean.setCreatedDate(doc.get("createdDate"));	 
+	            if(user!=null){
+	            	if(user.isCurator()){
+	            		searchBean.setEditable(true);
+	            	}
+	            	else{
+	            		List<String> protoIds = protocolService.findProtocolIdsByOwner(user.getLoginName());
+	            		if((searchBean.getId()!=null)&&(StringUtils.containsIgnoreCase(protoIds,
+	    						searchBean.getId()))){
+	    	            	searchBean.setEditable(true);
+	    	            }else{
+	    	            	searchBean.setEditable(false);
+	    	            }
+	            	}	            	
 	            }
 	            results.add(searchBean);
 	            }
@@ -78,6 +98,7 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		List<CustomSearchBean> results = null;
 		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 		try {
+			SampleService sampleService = this.getSampleServiceInSession(httpRequest, securityService);			
 			results = new ArrayList<CustomSearchBean>();	
 			  
 		    IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("indexDir"))));
@@ -94,8 +115,19 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            searchBean.setType("sample");
 	            searchBean.setDescription(doc.get("nanoEntityDesc"));
 	            searchBean.setCreatedDate(doc.get("createdDate"));
-	            if((user!=null)&&(user.isCurator())){
-	            	searchBean.setEditable(true);
+	            if(user!=null){
+	            	if(user.isCurator()){
+	            		searchBean.setEditable(true);
+	            	}
+	            	else{
+	            		List<String> sampleIds = sampleService.findSampleIdsByOwner(user.getLoginName());
+	            		if((searchBean.getId()!=null)&&(StringUtils.containsIgnoreCase(sampleIds,
+	    						searchBean.getId()))){
+	    	            	searchBean.setEditable(true);
+	    	            }else{
+	    	            	searchBean.setEditable(false);
+	    	            }
+	            	}	            	
 	            }
 	            results.add(searchBean);
 	            }
@@ -110,7 +142,10 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	public List<CustomSearchBean> customSearchByKeywordByPub(HttpServletRequest httpRequest, String keyword) {
 		List<CustomSearchBean> results = null;
 		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+		
 		try {
+			
+			PublicationService publicationService = this.getPublicationServiceInSession(httpRequest, securityService);				
 			results = new ArrayList<CustomSearchBean>();	
 			  
 		    IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("indexDir"))));
@@ -128,8 +163,19 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            searchBean.setDescription(doc.get("pubDesc"));
 	            searchBean.setPubmedId(doc.get("pubmedId"));
 	            searchBean.setCreatedDate(doc.get("createdDate"));
-	            if((user!=null)&&(user.isCurator())){
-	            	searchBean.setEditable(true);
+	            if(user!=null){
+	            	if(user.isCurator()){
+	            		searchBean.setEditable(true);
+	            	}
+	            	else{
+	            		List<String> publicationIds = publicationService.findPublicationIdsByOwner(user.getLoginName());	
+	            		if((searchBean.getId()!=null)&&(StringUtils.containsIgnoreCase(publicationIds,
+	    						searchBean.getId()))){
+	    	            	searchBean.setEditable(true);
+	    	            }else{
+	    	            	searchBean.setEditable(false);
+	    	            }
+	            	}	            	
 	            }
 	            results.add(searchBean);
 	            }
@@ -139,5 +185,38 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 			e.printStackTrace();
 		}
 		return results;
+	}
+	
+	private SampleService getSampleServiceInSession(HttpServletRequest request, SecurityService securityService) {
+
+		SampleService sampleService = (SampleService)request.getSession().getAttribute("sampleService");
+		if (sampleService == null) {
+			sampleService = new SampleServiceLocalImpl(securityService);
+			request.getSession().setAttribute("sampleService", sampleService);
+		}
+		return sampleService;
+
+	}
+
+	private PublicationService getPublicationServiceInSession(HttpServletRequest request, SecurityService securityService)
+			throws Exception {
+		PublicationService publicationService = (PublicationService)request.getSession().getAttribute("publicationService");
+
+		if (publicationService == null) {
+			publicationService = new PublicationServiceLocalImpl(securityService);
+			request.getSession().setAttribute("publicationService", publicationService);
+		}
+		return publicationService;
+	}
+
+	private ProtocolService getProtocolServiceInSession(HttpServletRequest request, SecurityService securityService)
+			throws Exception {
+
+		ProtocolService protocolService = (ProtocolService)request.getSession().getAttribute("protocolService");
+		if (protocolService == null) {
+			protocolService =	new ProtocolServiceLocalImpl(securityService);
+			request.getSession().setAttribute("protocolService", protocolService);
+		}
+		return protocolService;
 	}
 }
