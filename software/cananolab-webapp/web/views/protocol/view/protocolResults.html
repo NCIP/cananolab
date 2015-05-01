@@ -20,7 +20,7 @@
         <tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
             <td data-title="'Actions'" width="5%" class="columnOne">
                 <a ng-if="row.editable" href="#/editProtocol?protocolId={{row.id}}">Edit</a><br/><br/>
-                <a id="href{{row.id}}" href="" ng-click="addToFavorites(row.id, row.viewName, row.fileId, row.editable, row.protocolFileTitle)" ng-if="tabs.userLoggedIn"><i class="fa fa-plus fa-1"></i>&nbsp;Add to Favorites</a>
+                <a id="href{{row.id}}" href="" ng-click="addToFavorites(row.id, row.viewName, row.fileId, row.editable, row.fileTitle)" ng-if="tabs.userLoggedIn"><i class="fa fa-plus fa-1"></i>&nbsp;Add to Favorites</a>
                 <span id="msg{{row.id}}" style="color:#2276ff;font-weight:bold;"></span>
             </td>
             <td data-title="'Protocol Type'" sortable="'protocolType'" width="15%">
