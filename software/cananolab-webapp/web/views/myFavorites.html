@@ -24,6 +24,7 @@
 	        <tr>
 	            <th>Actions</th>
 	            <th>Sample Name</th>
+	            <th>Nanomaterial Entity Description</th>
 	        </tr>
 	        <tr ng-repeat="data in samples">
 	            <td class="columnOne" width="20%">
@@ -33,6 +34,9 @@
 	            <td>
 	                <div>{{data.dataName}}</div>
 	            </td>
+	            <td>
+	                <div>{{data.description}}</div>
+	            </td>	            
 	        </tr>
 	    </table>
 	    <br/>
@@ -42,6 +46,7 @@
 	        <tr>
 	            <th>Actions</th>
 	            <th>Protocol Name</th>
+	            <th>Protocol File Title</th>
 	        </tr>
 	        <tr ng-repeat="data in protocols">
 	            <td class="columnOne" width="20%">
@@ -52,6 +57,9 @@
 	            <td>
 	                <div>{{data.dataName}}</div>
 	            </td>
+	            <td>
+	                <div>{{data.protocolFileTitle}}</div>
+	            </td>	            
 	        </tr>
 	    </table>
 	    <br/>
