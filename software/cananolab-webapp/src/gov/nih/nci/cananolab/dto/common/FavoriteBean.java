@@ -13,8 +13,15 @@ public class FavoriteBean {
 	String protocolFileId;
 	boolean editable;
 	String description;
+	String protocolFileTitle;
 	
 	
+	public String getProtocolFileTitle() {
+		return protocolFileTitle;
+	}
+	public void setProtocolFileTitle(String protocolFileTitle) {
+		this.protocolFileTitle = protocolFileTitle;
+	}
 	public boolean getEditable() {
 		return editable;
 	}
