@@ -36,6 +36,7 @@ public class SimpleSearchSampleBean {
 	String dataAvailability;
 	Date createdDate;
 	boolean editable;
+	String nanoEntityDesc;
 
 	public boolean isEditable() {
 		return editable;
@@ -109,6 +110,14 @@ public class SimpleSearchSampleBean {
 		this.createdDate = createdDate;
 	}
 
+	public String getNanoEntityDesc() {
+		return nanoEntityDesc;
+	}
+
+	public void setNanoEntityDesc(String nanoEntityDesc) {
+		this.nanoEntityDesc = nanoEntityDesc;
+	}
+
 	public void transferSampleBeanForBasicResultView(SampleBean sampleBean,
 			UserBean user) {
 
@@ -132,7 +141,7 @@ public class SimpleSearchSampleBean {
 				String cn = ClassUtils.getShortClassName(n.getClass().getName());
 				if (n instanceof OtherNanomaterialEntity)
 					cn = ((OtherNanomaterialEntity)n).getType();
-						
+				setNanoEntityDesc(n.getDescription());		
 				v[i++] = cn;
 			}
 			setComposition(v);

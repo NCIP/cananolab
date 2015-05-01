@@ -27,6 +27,7 @@ L-->
 		<property name="protocolFileId" type="string" column="protocol_file_id"/>
 		<property name="editable" type="boolean" column="editable" />
 		<property name="description" type="string" column="description"/>
+		<property name="protocolFileTitle" type="string" column="protocol_file_title"/>
 	</class>
 </hibernate-mapping>
  
