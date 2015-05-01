@@ -22,7 +22,7 @@
       <script type='text/javascript' src='javascript/CountManager.js'></script>
       <script type='text/javascript' src="javascript/addDropDownOptions.js"></script>
    </head>
-   <body style="cursor: default" ng-app="angularApp">
+   <body style="cursor: default" ng-app="angularApp" ng-controller="TemplateCtrl">
       <div class="container">
 
          <table cellspacing="0" cellpadding="0" summary="layout"
@@ -55,6 +55,9 @@
                            <tr>
                               <td class="subhdrBG" align="left">
                                  <a href="/caNanoLab/#/" class="link"></a>
+                              </td>
+                              <td align="right"><b>Keyword Search</b>
+                                 <input type="text" ng-model="keyword_search_text" name="keyword_search_text">&nbsp;<button class="btn btn-success btn-xs" ng-click="doKeywordSearch()">Go</button>
                               </td>
                            </tr>
                         </tbody>
@@ -243,6 +246,7 @@ src="images/mainMenuSeparator.gif" width="1">
       <script src="scripts/factories/sampleService.js"></script>
       <script src="scripts/factories/publicationService.js"></script>
       <script src="scripts/factories/protocolService.js"></script>
+      <script src="scripts/factories/keywordService.js"></script>
       <script src="scripts/factories/utils.js"></script>
       <script src="scripts/controllers/main.js"></script>
       <script src="scripts/controllers/about.js"></script>
@@ -297,6 +301,7 @@ src="images/mainMenuSeparator.gif" width="1">
       <script src="scripts/controllers/sample/edit/editFunctionalizingEntity.js"></script>
       <script src="scripts/controllers/sample/edit/editChemicalAssociation.js"></script>
       <script src="scripts/controllers/sample/edit/editCompositionFile.js"></script>    
+      <script src="scripts/controllers/template.js"></script>    
       <script src="scripts/controllers/myFavorites.js"></script>
       <!-- endbuild --> 
       </div>

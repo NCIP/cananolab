@@ -1,21 +1,18 @@
 'use strict';
 var app = angular.module('angularApp')
 
-  .controller('TemplateCtrl', function ($scope,$rootScope,navigationService, groupService, $location) {
-    $scope.test="Put a and groups in here. ALSO GET RID OF navTree left nav and put in here";
-    // if ($location.path()!='/') {
-    	alert("hello");
-    // $scope.tabs = navigationService.query();	
+  .controller('TemplateCtrl', function ($scope, $location, $http, keywordService) {
+  $scope.keywordData = keywordService.keywordData;    
+  $scope.doKeywordSearch = function() {
+    $http({method: 'GET', url: '/caNanoLab/rest/customsearch/search?keyword=' + $scope.keyword_search_text}).
 
-
-    // }
-
-    	// window.rs = $rootScope;
-	// if ($route.current.controller=='MainCtrl') {
-	//     $scope.tabs = navigationService.query({'homePage':'true'});	
-	// }    
-	// else {
-	//     $scope.tabs = navigationService.query();			
-	// }
-    $scope.groups = groupService.getGroups.data.get();    
+        success(function(data, status, headers, config) {
+          $scope.keywordData = data;
+        }).
+        error(function(data, status, headers, config) {
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+         });
+            console.log("keyword search");
+  }
   });
