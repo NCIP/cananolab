@@ -35,10 +35,10 @@ var app = angular.module('angularApp')
                 }
             });
         
-        $scope.addToFavorites = function(protocolId, protocolName, fileId, editable) {
+        $scope.addToFavorites = function(protocolId, protocolName, fileId, editable, protocolFileTitle) {
             $scope.loader = true;
             
-            $scope.favoriteBean = {"dataType" : "protocol", "dataName" : protocolName, "dataId" : protocolId, "protocolFileId" : fileId, "editable" : editable, "loginName" : $scope.loggedInUser.name};
+            $scope.favoriteBean = {"dataType" : "protocol", "dataName" : protocolName, "dataId" : protocolId, "protocolFileId" : fileId, "editable" : editable, "protocolFileTitle":protocolFileTitle, "loginName" : $scope.loggedInUser.name};
 
             $http({method: 'POST', url: '/caNanoLab/rest/core/addFavorite',data: $scope.favoriteBean}).
                 success(function(data, status, headers, config) {
