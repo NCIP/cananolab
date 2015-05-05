@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -124,4 +125,27 @@ public class SecurityServices {
 		return Response.status(Response.Status.NOT_FOUND)
 				.entity("Unable to get userGroup due to unknown reason.").build();
 	}
+	
+	@GET
+	@Path("/resetPassword")
+	@Produces ("application/json")
+    public Response resetPassword(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("username") String username, 
+    		@DefaultValue("") @QueryParam("oldPassword") String oldPassword,
+    		@DefaultValue("") @QueryParam("newPassword") String newPassword) {
+		
+		logger.info("In login service");
+		
+		if (username.length() == 0 || newPassword.length() == 0)
+			return Response.serverError().entity("username or password can't be blank").build();
+		
+		LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
+		
+		String result = loginBo.updatePassword(username, oldPassword, newPassword);
+		logger.info("login sessionid: " + httpRequest.getSession().getId());
+		if (!result.equals(RestfulConstants.SUCCESS)) 
+			return Response.status(Response.Status.NOT_FOUND).entity("Password reset failed").build();
+		return Response.ok(httpRequest.getSession().getId()).build();
+    }
+	
 }
