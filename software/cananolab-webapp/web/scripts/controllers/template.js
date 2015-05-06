@@ -3,9 +3,9 @@ var app = angular.module('angularApp')
 
   .controller('TemplateCtrl', function ($route,$scope, $location, $http, keywordService) {
   $scope.keywordData = keywordService.keywordData;    
-    $scope.isSearching = true;
   $scope.doKeywordSearch = function() {
     $http({method: 'GET', url: '/caNanoLab/rest/customsearch/search?keyword=' + $scope.keyword_search_text}).
+    $scope.isSearching = true;
 
         success(function(data, status, headers, config) {
           $scope.keywordData.data = data;
