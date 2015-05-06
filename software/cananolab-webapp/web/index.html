@@ -56,8 +56,9 @@
                               <td class="subhdrBG" align="left">
                                  <a href="/caNanoLab/#/" class="link"></a>
                               </td>
-                              <td align="right"><b>Keyword Search</b>
-                                 <input type="text" ng-model="keyword_search_text" name="keyword_search_text">&nbsp;<button class="btn btn-success btn-xs" ng-click="doKeywordSearch()">Go</button>
+                              <td id="keywordSearch"><b>Keyword Search</b>  
+                                 <input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" name="keyword_search_text">&nbsp;<button class="btn btn-success btn-xs" ng-click="doKeywordSearch()" ng-disabled="isSearching">Go</button>
+                                 <div ng-show="isSearching" id="searching">Searching</div>
                               </td>
                            </tr>
                         </tbody>
@@ -303,6 +304,7 @@ src="images/mainMenuSeparator.gif" width="1">
       <script src="scripts/controllers/sample/edit/editCompositionFile.js"></script>    
       <script src="scripts/controllers/template.js"></script>    
       <script src="scripts/controllers/myFavorites.js"></script>
+      <script src="scripts/controllers/keywordSearch/keywordSearchResults.js"></script>
       <!-- endbuild --> 
       </div>
    </body>

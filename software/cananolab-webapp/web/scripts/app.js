@@ -35,7 +35,11 @@ app.config(function ($routeProvider, $httpProvider) {
      .when('/register', {
        templateUrl: 'views/register.html',
        controller: 'RegisterCtrl'
-     })       
+     }) 
+     .when('/keywordSearchResults', {
+       templateUrl: 'views/keywordSearch/keywordSearchResults.html',
+       controller: 'KeywordSearchCtrl'
+     })            
       .when('/home', {
         templateUrl: 'views/loggedIn.html',
         controller: 'AuthCtrl'

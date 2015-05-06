@@ -1777,4 +1777,13 @@ text-shadow: 0px 0px 0px !important;
 .sampleSearchLookup{
 width:150px;
 }
+#keywordSearch {
+padding-left:440px;
+}
 
+#keywordSearch #searching {
+padding-top:5px;
+    background: url(../images/ajax-loader.gif);
+    background-repeat: no-repeat;
+    background-position: 30% 100%;
+}
