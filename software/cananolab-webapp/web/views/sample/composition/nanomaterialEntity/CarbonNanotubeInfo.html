@@ -15,17 +15,17 @@
     </tr>
     <tr>
         <td>
-            {{$parent.entityType.Properties.AverageLength}}
-            {{$parent.entityType.Properties.AverageLengthUnit}}
+            <span ng-bind-html="$parent.entityType.Properties.AverageLength">{{$parent.entityType.Properties.AverageLength}}</span>
+            <span ng-bind-html="$parent.entityType.Properties.AverageLengthUnit">{{$parent.entityType.Properties.AverageLengthUnit}}</span>
         </td>
-        <td>
+        <td ng-bind-html="$parent.entityType.Properties.chirality">
             {{$parent.entityType.Properties.chirality}}
         </td>
         <td>
-            {{$parent.entityType.Properties.Diameter}}
-            {{$parent.entityType.Properties.DiameterUnit}}
+            <span ng-bind-html="$parent.entityType.Properties.Diameter">{{$parent.entityType.Properties.Diameter}}</span>
+            <span ng-bind-html="$parent.entityType.Properties.DiameterUnit">{{$parent.entityType.Properties.DiameterUnit}}</span>
         </td>
-        <td>
+        <td ng-bind-html="$parent.entityType.Properties.WallType">
             {{$parent.entityType.Properties.WallType}}
         </td>
     </tr>

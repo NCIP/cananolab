@@ -17,24 +17,24 @@
     </tr>
     <!-- <c:forEach var="function" items="${entity.functions}"> -->
         <tr ng-repeat="indFunction in $parent.entityType.Functions">
-            <td>
+            <td ng-bind-html="indFunction.Type">
                 {{indFunction.Type}}
             </td>
                 <td ng-if="indFunction.withImagingFunction">
-                    <span ng-if="">
+                    <span ng-if="" ng-bind-html="indFunction.Modality">
                         {{indFunction.Modality}}
                     </span>
                 </td>
                 <td ng-if="indFunction.withTargettingFunction">
                     <span ng-if="indFunction.TargetDisplayNames.length > 0">
                         <span ng-repeat="targetDisplayName in indFunction.TargetDisplayNames">
-                            {{targetDisplayName}}
+                            <span ng-bind-html="targetDisplayName">{{targetDisplayName}}</span>
                             <br />
                             <br />
                         </span>
                     </span>
                 </td>
-            <td ng-if="indFunction.FunctionDescription">
+            <td ng-if="indFunction.FunctionDescription" ng-bind-html="indFunction.FunctionDescriptionDisplayName">
                     {{indFunction.FunctionDescriptionDisplayName}}
             </td>
         </tr>

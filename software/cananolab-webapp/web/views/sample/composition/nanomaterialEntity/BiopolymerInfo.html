@@ -11,13 +11,13 @@
         </th>
     </tr>
     <tr>
-        <td>
+        <td ng-bind-html="$parent.entityType.Properties.Name">
             {{$parent.entityType.Properties.Name}}
         </td>
-        <td>
+        <td ng-bind-html="$parent.entityType.Properties.Type">
             {{$parent.entityType.Properties.Type}}
         </td>
-        <td>
+        <td ng-bind-html="$parent.entityType.Properties.Sequence">
             {{$parent.entityType.Properties.Sequence}}
         </td>
     </tr>
