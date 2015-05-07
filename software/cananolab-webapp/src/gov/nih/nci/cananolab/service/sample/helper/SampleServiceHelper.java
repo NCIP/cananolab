@@ -344,6 +344,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		
 		List results = appService.query(crit);
 		Set<Sample> samples = new HashSet<Sample>();
+		List<String> accessibleData = getAccessibleData();
 		for(int i = 0; i < results.size(); i++){
 			
 			try {
@@ -356,8 +357,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				Object[] row = (Object[]) results.get(i);
 
 				Long sampleId = (Long) row[0];
-
-				if (StringUtils.containsIgnoreCase(getAccessibleData(),
+				if (StringUtils.containsIgnoreCase(accessibleData,
 						sampleId.toString())) {
 					Sample sample = new Sample();
 					sample.setId(sampleId);

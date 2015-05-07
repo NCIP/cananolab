@@ -25,10 +25,13 @@ import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchResultView;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchSampleBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.impl.SampleExporter;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.ui.form.AdvancedSampleSearchForm;
 import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.util.ExportUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,6 +41,7 @@ import java.util.Map;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -65,9 +69,22 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
 		
-		searchBean.updateQueries();
+//		searchBean.updateQueries();
+//		
+//		List<AdvancedSampleBean> sampleBeans = querySamples(request, searchBean);
 		
-		List<AdvancedSampleBean> sampleBeans = querySamples(request, searchBean);
+		searchBean.updateQueries();
+		// retrieve from session if it's not null
+		List<AdvancedSampleBean> sampleBeans = (List<AdvancedSampleBean>) session
+				.getAttribute("advancedSampleSearchResults");
+		if (sampleBeans == null) {
+			sampleBeans = querySamples(request, searchBean);
+			if (sampleBeans != null && !sampleBeans.isEmpty()) {
+				session
+						.setAttribute("advancedSampleSearchResults",
+								sampleBeans);
+			}
+		}
 		
 		if (sampleBeans == null || sampleBeans.isEmpty()) {
 			SimpleAdvancedSearchResultView empty = new SimpleAdvancedSearchResultView();
@@ -116,7 +133,9 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public void export(HttpServletRequest request, AdvancedSampleSearchBean searchBean)
+	
+	public String export(AdvancedSampleSearchBean searchBean,
+			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		// 1.retrieve search bean from session - form.
 		HttpSession session = request.getSession();
@@ -124,7 +143,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 //				.getAttribute("advancedSampleSearchForm");
 
 //		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) searchForm
-//				.get("searchBean");
+//				.getSearchBean();
 
 		// 2.retrieve full list of sample name from session.
 		List<AdvancedSampleBean> sampleSearchResult = (List<AdvancedSampleBean>) session
@@ -153,17 +172,12 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 			}
 
 			// Export all advanced sample search report.
-//			ExportUtils.prepareReponseForExcel(response, getExportFileName());
-//			SampleExporter.exportSummary(searchBean, samplesFullList,
-//					getViewSampleURL(request), response.getOutputStream());
-//			return null;
+			ExportUtils.prepareReponseForExcel(response, getExportFileName());
+			SampleExporter.exportSummary(searchBean, samplesFullList,
+					getViewSampleURL(request), response.getOutputStream());
+			return null;
 		} else {
-//			ActionMessages msgs = new ActionMessages();
-//			ActionMessage msg = new ActionMessage("error.session.expired",
-//					"Session has timed out, please run your search again");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			saveMessages(request, msgs);
-//			return mapping.getInputForward();
+			return "seaaion has expired, please try again";
 		}
 	}
 

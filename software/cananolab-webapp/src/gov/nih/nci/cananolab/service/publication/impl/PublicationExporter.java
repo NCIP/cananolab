@@ -78,8 +78,8 @@ public class PublicationExporter {
 			HSSFWorkbook wb = new HSSFWorkbook();
 			exportSummarySheet(summaryBean, wb);
 			wb.write(out);
-			out.flush();
-			out.close();
+//			out.flush();
+//			out.close();
 		}
 	}
 

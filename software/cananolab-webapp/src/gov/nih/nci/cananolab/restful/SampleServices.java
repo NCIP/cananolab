@@ -19,7 +19,6 @@ import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
-import gov.nih.nci.cananolab.restful.workspace.WorkspaceManager;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
 import java.io.FileInputStream;
@@ -39,7 +38,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
 
 @Path("/sample")
 public class SampleServices {
@@ -840,6 +838,25 @@ public class SampleServices {
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while evaluating if sample is editable by current user.")).build();
+		}
+	}
+	
+	@POST
+	@Path("/summaryExport")
+	@Produces ("application/vnd.ms-excel")
+	 public Response summaryExport(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse, AdvancedSampleSearchBean searchBean){
+		
+		try { 			
+			AdvancedSampleSearchBO searchSampleBO = 
+					(AdvancedSampleSearchBO) SpringApplicationContext.getBean("advancedSampleSearchBO");
+			
+			 String result = searchSampleBO.export(searchBean, httpRequest, httpResponse);
+				
+			return Response.ok("").build();
+			
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while exporting the file" + e.getMessage())).build();
+
 		}
 	}
 }

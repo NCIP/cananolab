@@ -50,8 +50,8 @@ public class SampleExporter {
 			HSSFWorkbook wb = new HSSFWorkbook();
 			outputSummarySheet(searchBean, sampleBeans, viewSampleUrl, wb);
 			wb.write(out);
-			out.flush();
-			out.close();
+//			out.flush();
+//			out.close();
 		}
 	}
 
