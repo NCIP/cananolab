@@ -6,7 +6,6 @@
        </th>
       </tr>
     </table>
-
 <br /><div ng-if="keywordData.length>0" ng-init="p=tableParams.$params;
 				length=keywordData.length;
 				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
@@ -14,11 +13,9 @@
 <div ng-if="keywordData.length==0">No Search Results</div>
 <span ng-if="keywordData.length>0"><br />
 <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
-	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
-		<td data-title="'Actions'" width="5%" class="columnOne" ng-init="actions=getLink(row)">	
-			<a ng-init="searchType='simple'" href="{{actions.link}}">{{actions.actionType}}</a>
-<!-- 			<a ng-if="!row.editable" ng-init="searchType='simple'" href="#/sample?sampleId={{row.sampleId}}">View</a> <br /> -->
-
+	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}" ng-init="actions=getLink(row)">
+		<td data-title="'Actions'" width="5%" class="columnOne">	
+			<a ng-init="searchType='simple'" target="{{getLink(row).target}}" href="{{getLink(row).link}}">{{getLink(row).actionType}}</a>
 		</td>
 		<td data-title="'Type'" sortable="'type'">
 		 {{row.type}}
@@ -30,7 +27,8 @@
 		 {{row.createdDate | date:'shortDate'}}
 		</td>  
 		<td data-title="'Description'" sortable="'description'">
-			{{row.description}}
+			<a href="" ng-if="row.type=='publication'" ng-click="openDataAvailability(row.description)">View</a>
+			<span ng-if="row.type!='publication'">{{row.description}}</span>
 		</td> 
 	</tr>
 </table> 
