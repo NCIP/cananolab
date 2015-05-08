@@ -126,7 +126,7 @@ public class SecurityServices {
 				.entity("Unable to get userGroup due to unknown reason.").build();
 	}
 	
-	@GET
+	@POST
 	@Path("/resetPassword")
 	@Produces ("application/json")
     public Response resetPassword(@Context HttpServletRequest httpRequest, 
