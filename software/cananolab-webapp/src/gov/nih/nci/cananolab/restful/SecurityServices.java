@@ -134,7 +134,7 @@ public class SecurityServices {
     		@DefaultValue("") @QueryParam("oldPassword") String oldPassword,
     		@DefaultValue("") @QueryParam("newPassword") String newPassword) {
 		
-		logger.info("In login service");
+		logger.info("In password reset service");
 		
 		if (username.length() == 0 || newPassword.length() == 0)
 			return Response.serverError().entity("username or password can't be blank").build();
@@ -145,7 +145,7 @@ public class SecurityServices {
 		logger.info("login sessionid: " + httpRequest.getSession().getId());
 		if (!result.equals(RestfulConstants.SUCCESS)) 
 			return Response.status(Response.Status.NOT_FOUND).entity("Password reset failed").build();
-		return Response.ok(httpRequest.getSession().getId()).build();
+		return Response.ok(result).build();
     }
 	
 }
