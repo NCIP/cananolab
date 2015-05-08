@@ -125,7 +125,8 @@ var app = angular.module('angularApp')
           success(function(data, status, headers, config) {
             // this callback will be called asynchronously
             // when the response is available
-            $location.path("/home").replace();
+            $location.path("/").replace();
+            $route.reload();
 
             //Set tabs here.. Delete on logout. Use variable instead of rest call
 

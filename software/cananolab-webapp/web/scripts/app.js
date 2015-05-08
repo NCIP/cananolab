@@ -44,6 +44,10 @@ app.config(function ($routeProvider, $httpProvider) {
         templateUrl: 'views/loggedIn.html',
         controller: 'AuthCtrl'
       }) 
+      .when('/workflow', {
+        templateUrl: 'views/workflow.html',
+        controller: 'WorkflowCtrl'
+      })       
       .when('/searchSample', {
         templateUrl: 'views/sample/view/sampleSearch.html',
         controller: 'SampleSearchCtrl'
