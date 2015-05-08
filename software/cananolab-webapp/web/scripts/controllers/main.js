@@ -93,16 +93,25 @@ var app = angular.module('angularApp')
         }   
         if (!$scope.confirm_new_password) {
           $scope.errorMessages.push("CONFIRM NEW PASSWORD is required")
-        }      
+        }     
+        if ($scope.new_password==$scope.old_password) {
+          $scope.errorMessages.push("NEW PASSWORD and OLD PASSWORD must not be the same")
+        }              
 
         if (!$scope.errorMessages.length) {
+          $scope.resettingPassword = 1;
           var bean = {'username':$scope.reset_loginId,'oldPassword':$scope.old_password,'newPassword':$scope.new_password}
           $http({method: 'POST', url: '/caNanoLab/rest/security/resetPassword',data: bean}).
           success(function(data, status, headers, config) {
-            console.log("SUCCESS");
+            $scope.loginShow = 1;
+            $scope.resetPasswordShow = 0;
+            $scope.authErrors = "Password successfully changed"; // piggybacking authErrors as they show up nicely below login form
+            $scope.resettingPassword = 0;
           }).
           error(function(data, status, headers, config) {
-            console.log("FAIL");
+            $scope.errorMessages = [];
+            $scope.errorMessages.push(data);
+            $scope.resettingPassword = 0;
           }); 
         }
     }

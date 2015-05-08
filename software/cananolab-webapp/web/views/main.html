@@ -229,7 +229,7 @@
                      
                     </td>
                     <td align="left">
-                      <input type="submit" value="Reset Password" ng-click="resetDo()" />
+                      <input type="submit" ng-disabled="resettingPassword" value="Reset Password" ng-click="resetDo()" />
                     </td>
                   </tr>
                 </table><!-- </form> -->
@@ -237,6 +237,8 @@
                 <div id="authErrors" ng-model="authErrors" ng-show="authErrors">
                   {{authErrors}}
                 </div>
+
+                <div id="authErrors" ng-show="resettingPassword">Please Wait</div>
               </div><br />              
             </td>
           </tr>
