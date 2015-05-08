@@ -188,7 +188,56 @@
                 <div id="authErrors" ng-model="authErrors" ng-show="authErrors">
                   {{authErrors}}
                 </div>
-              </div><br />
+              </div>
+              <div id="resetBlock" ng-show="resetPasswordShow">
+                <div class="spacer"></div><!-- <form name="loginForm" id="loginForm" method="post" action="/caNanoLab/login.do;jsessionid=9944D3BC5DD5C7F3DB8EC210CC50424C"> -->
+                <table class="resetBlock" summary="layout">
+                  <tr>
+                    <td>
+                      <label for="login ID">LOGIN ID</label>
+                    </td>
+                    <td>
+                      <input type="text" name="reset_loginId" ng-model="reset_loginId" size="14" id="login ID" ng-init="reset_loginId=''" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="old_password">OLD PASSWORD</label>
+                    </td>
+                    <td>
+                      <input type="password" name="old_password" size="14" id="old_password" autocomplete="off" ng-model="old_password" ng-init="old_password=''" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="new_password">NEW PASSWORD</label>
+                    </td>
+                    <td>
+                      <input type="password" name="new_password" size="14" id="new_password" autocomplete="off" ng-model="new_password" ng-init="new_password=''" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="confirm_new_password">CONFIRM NEW PASSWORD</label>
+                    </td>
+                    <td>
+                      <input type="password" name="confirm_new_password" size="14" id="confirm_new_password" autocomplete="off" ng-model="confirm_new_password" ng-init="confirm_new_password=''" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                     
+                    </td>
+                    <td align="left">
+                      <input type="submit" value="Reset Password" ng-click="resetDo()" />
+                    </td>
+                  </tr>
+                </table><!-- </form> -->
+                <div id="resetErrors" ng-repeat="e in errorMessages track by $index">{{e}}</div>
+                <div id="authErrors" ng-model="authErrors" ng-show="authErrors">
+                  {{authErrors}}
+                </div>
+              </div><br />              
             </td>
           </tr>
           <tr>

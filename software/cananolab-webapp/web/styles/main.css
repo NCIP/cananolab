@@ -565,6 +565,11 @@ SIDEBAR BEGINS
     text-align: right
 }
 
+.resetBlock {
+    margin-left: 1.2em;
+    text-align: left;
+}
+
 td.sidebarTitle {
     height: 20px;
     padding-top: 5px; padding-bottom: 5px; padding-left: 8px;
@@ -1168,6 +1173,13 @@ ol {
     padding: 1em;
     color: red;
     font-weight: 700
+}
+
+#resetErrors {
+color:red;
+font-weight:bold;
+padding-left:1em;
+padding-top:.2em;
 }
 
 .userMessage {

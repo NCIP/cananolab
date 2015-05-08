@@ -508,6 +508,11 @@ SIDEBAR BEGINS
   text-align: right;
   margin-left: 1em;
 }
+.resetBlock {
+  text-align: left;
+  margin-left: 10em !important;
+  border:1px solid red;
+}
 
 td.sidebarTitle {
   /* for the subtitle elements of the sub menu (left-side) */
@@ -1130,6 +1135,12 @@ ul,ol {
 color:red;
 font-weight:bold;
 padding:1em;
+}
+
+#resetErrors {
+color:red;
+font-weight:bold;
+padding:.2em;
 }
 
 .userMessage {
