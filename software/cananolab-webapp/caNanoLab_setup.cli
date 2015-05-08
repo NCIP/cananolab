@@ -1,6 +1,6 @@
 #caNanoLab Wildfly setup scripts
 
-connect localhost:9990
+connect localhost:19990
 
 
 
