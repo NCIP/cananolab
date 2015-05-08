@@ -136,9 +136,6 @@ public class SecurityServices {
 		
 		logger.info("In password reset service");
 		
-		if (username.length() == 0 || newPassword.length() == 0)
-			return Response.serverError().entity("username or password can't be blank").build();
-		
 		LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
 		
 		String result = loginBo.updatePassword(username, oldPassword, newPassword);
