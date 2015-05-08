@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.security.LoginBO;
 import gov.nih.nci.cananolab.restful.security.LogoutBO;
 import gov.nih.nci.cananolab.restful.security.RegisterUserBO;
+import gov.nih.nci.cananolab.service.security.PasswordResetBean;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
@@ -129,16 +130,13 @@ public class SecurityServices {
 	@POST
 	@Path("/resetPassword")
 	@Produces ("application/json")
-    public Response resetPassword(@Context HttpServletRequest httpRequest, 
-    		@DefaultValue("") @QueryParam("username") String username, 
-    		@DefaultValue("") @QueryParam("oldPassword") String oldPassword,
-    		@DefaultValue("") @QueryParam("newPassword") String newPassword) {
+    public Response resetPassword(@Context HttpServletRequest httpRequest, PasswordResetBean passwordBean) {
 		
 		logger.info("In password reset service");
 		
 		LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
 		
-		String result = loginBo.updatePassword(username, oldPassword, newPassword);
+		String result = loginBo.updatePassword(passwordBean.getUsername(), passwordBean.getOldPassword(), passwordBean.getNewPassword());
 		logger.info("login sessionid: " + httpRequest.getSession().getId());
 		if (!result.equals(RestfulConstants.SUCCESS)) 
 			return Response.status(Response.Status.NOT_FOUND).entity("Password reset failed").build();
