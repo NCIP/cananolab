@@ -134,6 +134,12 @@ var app = angular.module('angularApp')
           error(function(data, status, headers, config) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
+            var re = /changed/; 
+            var str = data;
+            if (re.exec(str)) {
+              $scope.loginShow = 0
+              $scope.resetPasswordShow = 1;
+            }
             $scope.authErrors=data;
           });
         }      
