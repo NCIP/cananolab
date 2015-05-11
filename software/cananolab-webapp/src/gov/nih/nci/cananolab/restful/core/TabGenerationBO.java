@@ -112,7 +112,7 @@ public class TabGenerationBO {
 			tabs.add(tabWithLink);
 			
 			tabWithLink = new String[2];
-			tabWithLink[0] = "WORKFLOW DIAGRAM";
+			tabWithLink[0] = "WORKFLOW";
 			tabWithLink[1] =  urlBase + "#/workflow";;
 			tabs.add(tabWithLink);
 			
