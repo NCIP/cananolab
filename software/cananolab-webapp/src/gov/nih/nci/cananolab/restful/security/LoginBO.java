@@ -57,7 +57,10 @@ public class LoginBO  {
 		} catch (Exception e) {
 			logger.error("Erro while logging in user: " + username + ". " + e.getMessage());
 			logger.debug(e.getMessage());
-			return "Erro while logging in user: " + username  + ". " + e.getMessage();
+			if(e.getMessage().contains("User logging in first time, Password should be changed"))
+				return "User logging in first time, Password should be changed";
+			else
+				return "Erro while logging in user: " + username + ". " + e.getMessage();
 		}
 		
 		return RestfulConstants.SUCCESS;

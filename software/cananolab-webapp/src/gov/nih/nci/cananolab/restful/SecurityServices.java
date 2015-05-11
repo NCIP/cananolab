@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.security.LoginBO;
 import gov.nih.nci.cananolab.restful.security.LogoutBO;
 import gov.nih.nci.cananolab.restful.security.RegisterUserBO;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.service.security.PasswordResetBean;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
@@ -48,17 +49,21 @@ public class SecurityServices {
     		@DefaultValue("") @QueryParam("password") String password) {
 		
 		logger.info("In login service");
-		
-		if (username.length() == 0 || password.length() == 0)
-			return Response.serverError().entity("User name or password can't be blank").build();
-		
-		LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
-		
-		String result = loginBo.login(username, password, httpRequest);
-		logger.info("login sessionid: " + httpRequest.getSession().getId());
-		if (!result.equals(RestfulConstants.SUCCESS)) 
-			return Response.status(Response.Status.NOT_FOUND).entity("Login ID or password is invalid").build();
-		return Response.ok(httpRequest.getSession().getId()).build();
+		try{
+			if (username.length() == 0 || password.length() == 0)
+				return Response.serverError().entity("User name or password can't be blank").build();
+			
+			LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
+			
+			String result = loginBo.login(username, password, httpRequest);
+			logger.info("login sessionid: " + httpRequest.getSession().getId());
+			if (!result.equals(RestfulConstants.SUCCESS)) 
+				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
+			return Response.ok(httpRequest.getSession().getId()).build();
+		}catch(Exception e){
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while logging in: " + e.getMessage())).build();
+		}
     }
 	
 	@GET
