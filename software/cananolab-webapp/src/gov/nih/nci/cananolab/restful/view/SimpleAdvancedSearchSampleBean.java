@@ -48,7 +48,6 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		
 		setSampleId(sampleBean.getDomainSample().getId());
 		setSampleName(sampleBean.getDomainSample().getName());
-		System.out.println("Nano entities size ==="+sampleBean.getNanomaterialEntities().size());
 		if(sampleBean.getNanomaterialEntities().size() > 0){
 			for(int i =0; i < sampleBean.getNanomaterialEntities().size(); i++){
 				if(sampleBean.getNanomaterialEntities().get(i).getDescription()!=null)
