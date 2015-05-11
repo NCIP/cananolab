@@ -21,8 +21,15 @@ public class SimpleAdvancedResultRow {
 	List<String> invivoChar;
 	List<String> invitroChar;
 	List<String> exvivoChar;
+	String nanoEntityDesc;
 	
 	
+	public String getNanoEntityDesc() {
+		return nanoEntityDesc;
+	}
+	public void setNanoEntityDesc(String nanoEntityDesc) {
+		this.nanoEntityDesc = nanoEntityDesc;
+	}
 	public long getSampleId() {
 		return sampleId;
 	}

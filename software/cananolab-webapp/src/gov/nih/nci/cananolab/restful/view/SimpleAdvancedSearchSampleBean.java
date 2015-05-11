@@ -32,7 +32,6 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	@JsonIgnore
 	SimpleAdvancedResultRow dataRow = new SimpleAdvancedResultRow();
 	
-	
 	public List<SimpleAdvancedResultCellBean> getColumns() {
 		return columns;
 	}
@@ -49,7 +48,13 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		
 		setSampleId(sampleBean.getDomainSample().getId());
 		setSampleName(sampleBean.getDomainSample().getName());
-
+		System.out.println("Nano entities size ==="+sampleBean.getNanomaterialEntities().size());
+		if(sampleBean.getNanomaterialEntities().size() > 0){
+			for(int i =0; i < sampleBean.getNanomaterialEntities().size(); i++){
+				if(sampleBean.getNanomaterialEntities().get(i).getDescription()!=null)
+					setNanoEntityDesc(sampleBean.getNanomaterialEntities().get(i).getDescription());
+			}
+		}
 		Map<String, List<LinkableItem>> dataMap = sampleBean.getAttributeMap();
 		
 		for (LabelValueBean col : colNames) {
@@ -59,6 +64,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			if (colName.contains("Sample")) {			
 				this.dataRow.setSampleId(this.sampleId);
 				this.dataRow.setSampleName(this.sampleName);
+				this.dataRow.setNanoEntityDesc(this.getNanoEntityDesc());
 			} else {
 				List<LinkableItem> items = dataMap.get(colName);
 				populateColumnContent(colName, items);

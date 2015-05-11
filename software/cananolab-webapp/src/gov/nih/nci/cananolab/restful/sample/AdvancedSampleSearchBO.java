@@ -191,33 +191,58 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public void print(HttpServletRequest request)
+	public SimpleAdvancedSearchResultView print(HttpServletRequest request, AdvancedSampleSearchBean searchBean)
 			throws Exception {
 		HttpSession session = request.getSession();
+
+		this.setServiceInSession(request);
+		SampleService service = (SampleService) request.getSession()
+				.getAttribute("sampleService");
+		
 		// 1.Get total sample list from session for total result size.
-		List<AdvancedSampleBean> sampleTotalList = (List<AdvancedSampleBean>) session
+		List<AdvancedSampleBean> sampleBeans = (List<AdvancedSampleBean>) session
 				.getAttribute("advancedSampleSearchResults");
 
 		// 2.Get current page sample list from session for display tab.
 		List<AdvancedSampleBean> sampleResultList = (List<AdvancedSampleBean>) session
 				.getAttribute("samplesResultList");
 
-		if (sampleTotalList != null && sampleResultList != null) {
-			request.setAttribute("resultSize", Integer.valueOf((sampleTotalList
-					.size())));
-			request.setAttribute("advancedSamples", sampleResultList);
-			request.setAttribute("printView", Boolean.TRUE);
+		
+		if (sampleBeans == null || sampleBeans.isEmpty()) {
+			SimpleAdvancedSearchResultView empty = new SimpleAdvancedSearchResultView();
+			List<String> messages = new ArrayList<String>();
+			empty.getErrors().add(PropertyUtil.getProperty("sample", "message.advancedSampleSearch.noresult"));
+			return empty;
 
-			//return mapping.findForward("print");
-		} else {
-//			ActionMessages msgs = new ActionMessages();
-//			ActionMessage msg = new ActionMessage("error.session.expired",
-//					"Session has timed out, please run your search again");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			saveMessages(request, msgs);
-//
-//			return mapping.getInputForward();
 		}
+			
+		logger.debug("Got " + sampleBeans.size() + " sample ids from adv. queries");
+		
+		
+		//Load full objects
+		List<AdvancedSampleBean> loadedSampleBeans = new ArrayList<AdvancedSampleBean>();
+		
+		int idx = 0;
+		for (AdvancedSampleBean sampleBean : sampleBeans) {
+
+			String sampleId = sampleBean.getSampleId();
+			AdvancedSampleBean loadedAdvancedSample = service
+					.findAdvancedSampleByAdvancedSearch(sampleId,
+							searchBean);
+			loadedSampleBeans.add(loadedAdvancedSample);
+			
+			logger.debug("Processing sample #: " + idx++);
+
+		}
+		
+		// save sample result set in session for printing.
+		//session.setAttribute("samplesResultList", sampleBeansPerPage);
+		//return mapping.findForward("success");
+		SimpleAdvancedSearchResultView resultView = 
+				transfertoSimpleSampleBeans(loadedSampleBeans, (UserBean)session.getAttribute("user"),
+						searchBean);
+		
+		return resultView;
 	}
 
 	private List<AdvancedSampleBean> querySamples(HttpServletRequest request, AdvancedSampleSearchBean searchBean) 
