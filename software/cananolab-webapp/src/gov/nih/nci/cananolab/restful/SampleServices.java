@@ -841,7 +841,7 @@ public class SampleServices {
 		}
 	}
 	
-	@GET
+	@POST
 	@Path("/summaryExport")
 	@Produces ("application/vnd.ms-excel")
 	 public Response summaryExport(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse, AdvancedSampleSearchBean searchBean){
