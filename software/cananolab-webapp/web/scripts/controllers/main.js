@@ -100,7 +100,7 @@ var app = angular.module('angularApp')
 
         if (!$scope.errorMessages.length) {
           $scope.resettingPassword = 1;
-          var bean = {'username':$scope.reset_loginId,'oldPassword':$scope.old_password,'newPassword':$scope.new_password}
+          var bean = {'username':$scope.reset_loginId,'oldPassword':$scope.old_password,'newPassword':$scope.new_password,'confirmPassword':$scope.confirm_new_password}
           $http({method: 'POST', url: '/caNanoLab/rest/security/resetPassword',data: bean}).
           success(function(data, status, headers, config) {
             $scope.loginShow = 1;

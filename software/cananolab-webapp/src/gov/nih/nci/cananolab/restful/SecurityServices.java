@@ -136,19 +136,23 @@ public class SecurityServices {
 	@Path("/resetPassword")
 	@Produces ("application/json")
     public Response resetPassword(@Context HttpServletRequest httpRequest, PasswordResetBean passwordBean) {
-		
-		logger.info("In password reset service");
-		
-		LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
-		
-		if(passwordBean.getOldPassword().equals(passwordBean.getNewPassword()))
-			return Response.serverError().entity("old password and new password can't be same").build();
-		
-		String result = loginBo.updatePassword(passwordBean.getUsername(), passwordBean.getOldPassword(), passwordBean.getNewPassword());
-		logger.info("login sessionid: " + httpRequest.getSession().getId());
-		if (!result.equals(RestfulConstants.SUCCESS)) 
-			return Response.status(Response.Status.NOT_FOUND).entity("Password reset failed").build();
-		return Response.ok(result).build();
+		try{
+			logger.info("In password reset service");
+			
+			LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
+			
+			if(passwordBean.getOldPassword().equals(passwordBean.getNewPassword()))
+				return Response.serverError().entity("old password and new password can't be same").build();
+			
+			String result = loginBo.updatePassword(passwordBean.getUsername(), passwordBean.getOldPassword(), passwordBean.getNewPassword(), passwordBean.getConfirmPassword());
+			logger.info("login sessionid: " + httpRequest.getSession().getId());
+			if (!result.equals(RestfulConstants.SUCCESS)) 
+				return Response.status(Response.Status.NOT_FOUND).entity("Password reset failed").build();
+			return Response.ok(result).build();
+		}catch(Exception e){
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while logging in: " + e.getMessage())).build();
+		}
     }
 	
 }

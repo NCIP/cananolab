@@ -67,23 +67,20 @@ public class LoginBO  {
 		
 	}
 	
-	public String updatePassword(String loginId, String password, String newPassword) {
+	public String updatePassword(String loginId, String password, String newPassword, String confirmPassword) {
 
 		UserBean user = new UserBean(loginId, password);
+		boolean flag = false;
 		try {
 			SecurityService service = new SecurityService(
-					AccessibilityBean.CSM_APP_NAME, user);
+					AccessibilityBean.CSM_APP_NAME);
 			if (user != null) {
-				service.updatePassword(newPassword);				
-//				ActionMessage message = new ActionMessage("message.password");
-//				messages.add("message", message);
-//				saveMessages(request, messages);
+				flag = service.resetPassword(loginId, password, newPassword, confirmPassword);				
 			}
-			return RestfulConstants.SUCCESS;
+			if(flag)
+				return RestfulConstants.SUCCESS;
+			return "Password reset failed";
 		} catch (Exception e) {
-//			ActionMessage msg = new ActionMessage("erros.login.failed");
-//			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			saveErrors(request, messages);
 			logger.error("Password change failed. " + e.getMessage());
 			return e.getMessage();
 		}

@@ -871,4 +871,16 @@ public class SecurityService {
 			System.exit(1);
 		}
 	}
+
+	public boolean resetPassword(String loginId, String password,
+			String newPassword, String confirmPassword) {
+		boolean flag = false;
+		try{
+			flag = authenticationManager.changePassword(loginId, password, newPassword, confirmPassword);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return flag;
+		
+	}
 }
