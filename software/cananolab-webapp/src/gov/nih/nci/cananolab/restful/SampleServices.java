@@ -841,16 +841,16 @@ public class SampleServices {
 		}
 	}
 	
-	@POST
+	@GET
 	@Path("/summaryExport")
 	@Produces ("application/vnd.ms-excel")
-	 public Response summaryExport(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse, AdvancedSampleSearchBean searchBean){
+	 public Response summaryExport(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse){
 		
 		try { 			
 			AdvancedSampleSearchBO searchSampleBO = 
 					(AdvancedSampleSearchBO) SpringApplicationContext.getBean("advancedSampleSearchBO");
 			
-			 String result = searchSampleBO.export(searchBean, httpRequest, httpResponse);
+			 String result = searchSampleBO.export(httpRequest, httpResponse);
 				
 			return Response.ok("").build();
 			

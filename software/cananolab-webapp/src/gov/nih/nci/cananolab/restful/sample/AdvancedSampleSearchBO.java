@@ -64,7 +64,9 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 			throws Exception {
 		
 		HttpSession session = request.getSession();
-
+		session
+		.setAttribute("advancedSampleSearchBean",
+				searchBean);
 		this.setServiceInSession(request);
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
@@ -134,16 +136,15 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 	 * @throws Exception
 	 */
 	
-	public String export(AdvancedSampleSearchBean searchBean,
-			HttpServletRequest request, HttpServletResponse response)
+	public String export(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		// 1.retrieve search bean from session - form.
 		HttpSession session = request.getSession();
 //		DynaValidatorForm searchForm = (DynaValidatorForm) session
 //				.getAttribute("advancedSampleSearchForm");
 
-//		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) searchForm
-//				.getSearchBean();
+		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) session
+				.getAttribute("advancedSampleSearchBean");
 
 		// 2.retrieve full list of sample name from session.
 		List<AdvancedSampleBean> sampleSearchResult = (List<AdvancedSampleBean>) session
@@ -177,7 +178,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 					getViewSampleURL(request), response.getOutputStream());
 			return null;
 		} else {
-			return "seaaion has expired, please try again";
+			return "session has expired, please try again";
 		}
 	}
 

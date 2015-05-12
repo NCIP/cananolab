@@ -141,6 +141,9 @@ public class SecurityServices {
 		
 		LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
 		
+		if(passwordBean.getOldPassword().equals(passwordBean.getNewPassword()))
+			return Response.serverError().entity("old password and new password can't be same").build();
+		
 		String result = loginBo.updatePassword(passwordBean.getUsername(), passwordBean.getOldPassword(), passwordBean.getNewPassword());
 		logger.info("login sessionid: " + httpRequest.getSession().getId());
 		if (!result.equals(RestfulConstants.SUCCESS)) 
