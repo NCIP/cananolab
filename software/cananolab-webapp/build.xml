@@ -240,6 +240,20 @@ L-->
 		<copy overwrite="true" todir="${common.dist.dir}" file="${image.dir}/canano_logo_mini.jpg" />
 				
 		<copy overwrite="true" todir="${common.dist.dir}" file="${image.dir}/doi-transparent.png" />
+		
+		<!--copy caNanoLab_setup.cli and replace database connection info-->
+				<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_setup.cli" file="${basedir}/caNanoLab_setup.cli">
+					<!-- replace tokens with values from build properties -->
+					<filterset id="db.filterset">
+						<filter token="database.url" value="${database.url}" />
+						<filter token="database.user" value="${database.user}" />
+						<filter token="database.password" value="${database.password}" />
+					</filterset>
+				</copy>
+		
+			<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_modules.cli" file="${basedir}/caNanoLab_modules.cli"> </copy>
+			<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_deploy.cli" file="${basedir}/caNanoLab_deploy.cli"> </copy>
+				
 	</target>
 
 	<target name="deploy" depends="dist">

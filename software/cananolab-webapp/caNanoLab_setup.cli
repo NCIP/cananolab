@@ -38,7 +38,7 @@ if (outcome != success) of /subsystem=datasources/data-source=caNanoLab:read-res
 data-source add \
     --name=caNanoLab \
     --driver-name=mysql \
-    --connection-url=jdbc:mysql://@database.server@:@database.port@/canano \
+    --connection-url=@database.url@ \
     --jndi-name=java:/caNanoLab \
     --user-name=@database.user@ \
     --password=@database.password@ \
@@ -52,7 +52,7 @@ if (outcome != success) of /subsystem=datasources/data-source=csmupt:read-resour
 data-source add \
     --name=csmupt \
     --driver-name=mysql \
-    --connection-url=jdbc:mysql://@database.server@:@database.port@/canano \
+    --connection-url=@database.url@ \
     --jndi-name=java:/csmupt \
     --user-name=@database.user@ \
     --password=@database.password@ \
@@ -88,7 +88,7 @@ if (outcome != success) of /subsystem=security/security-domain=caNanoLab/authent
             "code" => "gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule", \
             "flag" => "required", \
             "module" => "gov.nih.nci.security", \
-            "module-options" => [("driver"=>"com.mysql.jdbc.Driver"), ("url"=>"jdbc:mysql://cbiodb590.nci.nih.gov:3634/canano"), ("user"=>"nanouser"), ("passwd"=>"naNo#805"), ("query"=>"SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?"), ("encryption-enabled"=>"YES")] \
+            "module-options" => [("driver"=>"com.mysql.jdbc.Driver"), ("url"=>"@database.url@"), ("user"=>"@database.user@"), ("passwd"=>"@database.password@"), ("query"=>"SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?"), ("encryption-enabled"=>"YES")] \
         } \     
     ] \
 ) {allow-resource-service-restart=true}
@@ -115,7 +115,7 @@ if (outcome != success) of /subsystem=security/security-domain=csmupt/authentica
             "code" => "gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule", \
             "flag" => "required", \
             "module" => "gov.nih.nci.security", \
-            "module-options" => [("driver"=>"com.mysql.jdbc.Driver"), ("url"=>"jdbc:mysql://cbiodb590.nci.nih.gov:3634/canano"), ("user"=>"nanouser"), ("passwd"=>"naNo#805"), ("query"=>"SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?"), ("encryption-enabled"=>"YES")] \
+            "module-options" => [("driver"=>"com.mysql.jdbc.Driver"), ("url"=>"@database.url@"), ("user"=>"@database.user@"), ("passwd"=>"@database.password@"), ("query"=>"SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?"), ("encryption-enabled"=>"YES")] \
         } \     
     ] \
 ) {allow-resource-service-restart=true}
