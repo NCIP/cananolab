@@ -217,7 +217,7 @@ public class CustomSearchEngine extends BaseServiceHelper {
 					protocolFieldsBean.setProtocolId(protocol.getId().toString());
 					protocolFieldsBean.setProtocolName(protocol.getName());
 					protocolFieldsBean.setProtocolFileName(protocol.getFile()
-							.getName());
+							.getTitle());
 					protocolFieldsBean.setProtocolFileDesc(protocol.getFile().getDescription());
 					protocolFieldsBean.setProtocolFileId(protocol.getFile().getId().toString());
 					protocolResults.add(protocolFieldsBean);

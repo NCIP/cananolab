@@ -11,6 +11,7 @@ public class CustomSearchBean {
 	private boolean isEditable;
 	private String pubmedId;
 	private String fileId;
+	private String fileTitle;
 	
 	public String getType() {
 		return type;
@@ -59,6 +60,12 @@ public class CustomSearchBean {
 	}
 	public void setFileId(String fileId) {
 		this.fileId = fileId;
+	}
+	public String getFileTitle() {
+		return fileTitle;
+	}
+	public void setFileTitle(String fileTitle) {
+		this.fileTitle = fileTitle;
 	}
 	
 }

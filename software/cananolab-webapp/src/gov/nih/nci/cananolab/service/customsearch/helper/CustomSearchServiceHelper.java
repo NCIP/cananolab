@@ -69,7 +69,8 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            searchBean.setType("protocol");
 	            searchBean.setDescription(doc.get("protocolFileDesc"));
 	            searchBean.setFileId(doc.get("protocolFileId"));
-	            searchBean.setCreatedDate(doc.get("createdDate"));	 
+	            searchBean.setCreatedDate(doc.get("createdDate"));	
+	            searchBean.setFileTitle(doc.get("protocolFileName"));
 	            if(user!=null){
 	            	if(user.isCurator()){
 	            		searchBean.setEditable(true);
