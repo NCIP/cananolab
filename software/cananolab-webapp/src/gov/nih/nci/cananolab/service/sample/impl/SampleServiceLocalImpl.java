@@ -1286,4 +1286,29 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public List<Sample> findSamplesBy(String sampleName,
+			String samplePointOfContact, String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes,
+			String[] characterizationClassNames,
+			String[] otherCharacterizationTypes, String[] wordList)
+			throws SampleException {
+		try {
+			List<Sample> samples = helper.findSamplesBy(sampleName,
+					samplePointOfContact, nanomaterialEntityClassNames,
+					otherNanomaterialEntityTypes,
+					functionalizingEntityClassNames,
+					otherFunctionalizingEntityTypes, functionClassNames,
+					otherFunctionTypes, characterizationClassNames,
+					otherCharacterizationTypes, wordList);
+			return samples;
+		} catch (Exception e) {
+			String err = "Problem finding samples with the given search parameters.";
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+	}
 }

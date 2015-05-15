@@ -82,4 +82,32 @@ public class CommunityServices {
 					.entity("Problem creating the collaboration groups: "+ e.getMessage()).build();
 		}
 	}
+	
+	@POST
+	@Path("/deleteCollaborationGroups")
+	@Produces ("application/json")
+    public Response deleteCollaborationGroups(@Context HttpServletRequest httpRequest, CollaborationGroupBean groupBean) {
+		logger.info("In getCollaborationGroups");
+				
+		try { 
+			CollaborationGroupBO collGroupBO = 
+					 (CollaborationGroupBO) SpringApplicationContext.getBean("collaborationGroupBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			 
+						
+			List<CollaborationGroupBean> beans = collGroupBO.delete(groupBean, httpRequest);
+			
+			return Response.ok(beans).header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity("Problem creating the collaboration groups: "+ e.getMessage()).build();
+		}
+	}
 }

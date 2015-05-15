@@ -118,4 +118,14 @@ public interface SampleService extends BaseService {
 			throws SampleException, NoAccessException;
 	
 	public void loadAccessesForBasicSampleBean(SampleBasicBean sampleBean) throws Exception;
+	
+	public List<Sample> findSamplesBy(String sampleName,
+			String samplePointOfContact, String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes,
+			String[] characterizationClassNames,
+			String[] otherCharacterizationTypes, String[] wordList)
+			throws SampleException;
 }

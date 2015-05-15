@@ -345,23 +345,45 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		for (SampleBean sampleBean : sampleBeans) {
 			sampleIds.add(sampleBean.getDomain().getId().toString());
 		}
-		SecurityService securityService = getSecurityServiceFromSession(request);
-		Map<String, List<String>> privilegeMap = securityService
-				.getPrivilegeMap(sampleIds);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		for (SampleBean sampleBean : sampleBeans) {
-			List<String> privileges = privilegeMap.get(sampleBean.getDomain()
-					.getId().toString());
-			if (privileges.contains(AccessibilityBean.CSM_UPDATE_PRIVILEGE)) {
+			if(user.isCurator()){
 				sampleBean.setUserUpdatable(true);
-			} else {
-				sampleBean.setUserUpdatable(false);
-			}
-			if (privileges.contains(AccessibilityBean.CSM_DELETE_PRIVILEGE)) {
 				sampleBean.setUserDeletable(true);
-			} else {
-				sampleBean.setUserDeletable(false);
+			}else{
+				SampleService service = null;
+				if (request.getSession().getAttribute("sampleService") != null) {
+					service = (SampleService) request.getSession().getAttribute(
+							"sampleService");
+				List<String> sampleIdList = service.findSampleIdsByOwner(user.getLoginName());
+        		if((sampleBean.getDomain().getId()!=null)&&(StringUtils.containsIgnoreCase(sampleIdList,
+						sampleBean.getDomain().getId().toString()))){
+        			sampleBean.setUserUpdatable(true);
+    				sampleBean.setUserDeletable(true);
+	            }else{
+	            	sampleBean.setUserUpdatable(false);
+					sampleBean.setUserDeletable(false);
+	            }
 			}
 		}
+		}
+//		SecurityService securityService = getSecurityServiceFromSession(request);
+//		Map<String, List<String>> privilegeMap = securityService
+//				.getPrivilegeMap(sampleIds);
+//		for (SampleBean sampleBean : sampleBeans) {
+//			List<String> privileges = privilegeMap.get(sampleBean.getDomain()
+//					.getId().toString());
+//			if (privileges.contains(AccessibilityBean.CSM_UPDATE_PRIVILEGE)) {
+//				sampleBean.setUserUpdatable(true);
+//			} else {
+//				sampleBean.setUserUpdatable(false);
+//			}
+//			if (privileges.contains(AccessibilityBean.CSM_DELETE_PRIVILEGE)) {
+//				sampleBean.setUserDeletable(true);
+//			} else {
+//				sampleBean.setUserDeletable(false);
+//			}
+//		}
 	}
 
 	public Map<String, List<String>> setup(HttpServletRequest request)
