@@ -56,8 +56,8 @@
                               <td class="subhdrBG" align="left">
                                  <a href="/caNanoLab/#/" class="link"></a>
                               </td>
-                              <td id="keywordSearch"><b>Keyword Search</b>  
-                                 <input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" name="keyword_search_text">&nbsp;<button class="btn btn-success btn-xs" ng-click="doKeywordSearch()" ng-disabled="isSearching">Go</button>
+                              <td id="keywordSearch"><b>Search</b>  
+                                 <input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" name="keyword_search_text">&nbsp;<button class="btn btn-success btn-xs keyword_search" ng-click="doKeywordSearch()" ng-disabled="isSearching">Go</button>
                                  <div ng-show="isSearching" id="searching">Searching</div>
                               </td>
                            </tr>
