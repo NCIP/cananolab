@@ -68,8 +68,14 @@ public class TabGenerationBO {
 			String[] tabWithLink = new String[2];
 			
 			tabWithLink[0] = "HOME";
-			tabWithLink[1] = urlBase + "#/home";
+			tabWithLink[1] = urlBase + "#/";
 			tabs.add(tabWithLink.clone());
+			
+			tabWithLink = new String[2];
+			tabWithLink[0] = "WORKFLOW";
+			tabWithLink[1] =  urlBase + "#/workflow";;
+			tabs.add(tabWithLink);
+			
 
 			tabWithLink = new String[2];
 			tabWithLink[0] = "PROTOCOLS";
@@ -109,11 +115,6 @@ public class TabGenerationBO {
 			tabWithLink = new String[2];
 			tabWithLink[0] = "MY FAVORITES";
 			tabWithLink[1] =  urlBase + "#/myFavorites";;
-			tabs.add(tabWithLink);
-			
-			tabWithLink = new String[2];
-			tabWithLink[0] = "WORKFLOW";
-			tabWithLink[1] =  urlBase + "#/workflow";;
 			tabs.add(tabWithLink);
 			
 			tabWithLink = new String[2];
