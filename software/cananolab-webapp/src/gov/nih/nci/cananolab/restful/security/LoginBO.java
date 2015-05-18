@@ -55,12 +55,12 @@ public class LoginBO  {
 			session.setAttribute("user", service.getUserBean());
 			
 		} catch (Exception e) {
-			logger.error("Erro while logging in user: " + username + ". " + e.getMessage());
+			logger.error("Error while logging in user: " + username + ". " + e.getMessage());
 			logger.debug(e.getMessage());
 			if(e.getMessage().contains("User logging in first time, Password should be changed"))
 				return "User logging in first time, Password should be changed";
 			else
-				return "Erro while logging in user: " + username + ". " + e.getMessage();
+				return "Username or Password inavalid";
 		}
 		
 		return RestfulConstants.SUCCESS;
