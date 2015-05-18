@@ -94,6 +94,13 @@ public class TabGenerationBO {
 			
 			if (userBean.isCurator()) {
 				tabWithLink = new String[2];
+				tabWithLink[0] = "COMMUNITY";
+				tabWithLink[1] =  urlBase + "#/manageCommunity";
+				tabs.add(tabWithLink);
+			}
+			
+			if (userBean.isCurator()) {
+				tabWithLink = new String[2];
 				tabWithLink[0] = "CURATION";
 				tabWithLink[1] =  urlBase + "#/manageCuration";
 				tabs.add(tabWithLink);
@@ -117,15 +124,15 @@ public class TabGenerationBO {
 			tabWithLink[1] =  urlBase + "#/myFavorites";;
 			tabs.add(tabWithLink);
 			
-			tabWithLink = new String[2];
-			tabWithLink[0] = "HELP";
-			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+User%27s+Guide";
-			tabs.add(tabWithLink);
-			
-			tabWithLink = new String[2];
-			tabWithLink[0] = "GLOSSARY";
-			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary";
-			tabs.add(tabWithLink);
+//			tabWithLink = new String[2];
+//			tabWithLink[0] = "HELP";
+//			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+User%27s+Guide";
+//			tabs.add(tabWithLink);
+//			
+//			tabWithLink = new String[2];
+//			tabWithLink[0] = "GLOSSARY";
+//			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary";
+//			tabs.add(tabWithLink);
 			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "LOGOUT";
