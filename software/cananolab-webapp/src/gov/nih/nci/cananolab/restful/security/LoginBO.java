@@ -60,7 +60,7 @@ public class LoginBO  {
 			if(e.getMessage().contains("User logging in first time, Password should be changed"))
 				return "User logging in first time, Password should be changed";
 			else
-				return "Username or Password inavalid";
+				return "Username or Password invalid";
 		}
 		
 		return RestfulConstants.SUCCESS;
