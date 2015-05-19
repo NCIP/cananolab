@@ -22,7 +22,7 @@ var app = angular.module('angularApp')
             $location.path($scope.came_from).search({}).replace();            
           }
           else {
-            $location.path("/home").replace();            
+            $location.path("/").replace();            
           };
 
 

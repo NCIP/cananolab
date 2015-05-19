@@ -59,7 +59,6 @@ var app = angular.module('angularApp')
 				actionList.push(edit_actions);
 			}	
 		}
-		console.log(actionList)
 		return actionList;
 	};
 

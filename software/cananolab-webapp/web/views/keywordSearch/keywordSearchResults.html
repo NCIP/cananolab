@@ -14,12 +14,13 @@
 <span ng-if="keywordData.length>0"><br />
 <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
-		<td data-title="'Actions'" width="5%" class="columnOne" ng-init="actions=getLink(row)">{{loggedIn}}
-			<div ng-repeat="a in actions">
-				<a ng-init="searchType='simple'" target="{{a.target}}" href="{{a.link}}">{{a.actionType}}</a>
+		<td data-title="'Actions'" width="5%" class="columnOne">
+			<div ng-init="actions=getLink(row)">
+				<div><a ng-init="searchType='simple'" target="{{getLink(row)[0].target}}" href="{{getLink(row)[0].link}}">{{getLink(row)[0].actionType}}</a></div>
+				<div><a ng-init="searchType='simple'" target="{{getLink(row)[1].target}}" href="{{getLink(row)[1].link}}">{{getLink(row)[1].actionType}}</a></div>				
 			</div>
 
-            <a ng-if="!row.favoriteAdded" id="href{{row.id}}" href="" ng-click="addToFavorites(row)" ng-if="tabs.userLoggedIn"><i class="fa fa-plus fa-1"></i>&nbsp;Add to Favorites</a>  
+            <a ng-if="!row.favoriteAdded&&loggedInUser.name!=''" id="href{{row.id}}" href="" ng-click="addToFavorites(row)"><i class="fa fa-plus fa-1"></i>&nbsp;Add to Favorites</a>  
             <span ng-if="row.favoriteAdded" style="color:#2276ff;font-weight:bold;">Added to Favorites</span>  
                 
 		</td>
