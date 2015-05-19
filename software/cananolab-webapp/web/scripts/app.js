@@ -40,10 +40,6 @@ app.config(function ($routeProvider, $httpProvider) {
        templateUrl: 'views/keywordSearch/keywordSearchResults.html',
        controller: 'KeywordSearchCtrl'
      })            
-      .when('/home', {
-        templateUrl: 'views/loggedIn.html',
-        controller: 'AuthCtrl'
-      }) 
       .when('/workflow', {
         templateUrl: 'views/workflow.html',
         controller: 'WorkflowCtrl'
