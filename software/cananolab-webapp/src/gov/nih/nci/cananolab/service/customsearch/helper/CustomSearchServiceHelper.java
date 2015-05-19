@@ -1,9 +1,11 @@
 package gov.nih.nci.cananolab.service.customsearch.helper;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -69,7 +71,9 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            searchBean.setType("protocol");
 	            searchBean.setDescription(doc.get("protocolFileDesc"));
 	            searchBean.setFileId(doc.get("protocolFileId"));
-	            searchBean.setCreatedDate(doc.get("createdDate"));	
+	            //searchBean.setCreatedDate(doc.get("createdDate"));	
+	            String date = this.parseDate(doc.get("createdDate"));
+	            searchBean.setCreatedDate(date);
 	            searchBean.setFileTitle(doc.get("protocolFileName"));
 	            if(user!=null){
 	            	if(user.isCurator()){
@@ -95,6 +99,39 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		return results;
 	}
 
+	private String parseDate(String date) {
+		String month = date.substring(4, 7);
+		String day = date.substring(8, 10);
+		String year = date.substring(24);
+		String createdDate = "";
+		if(month.equalsIgnoreCase("jan"))
+			month = "1";
+		if(month.equalsIgnoreCase("feb"))
+			month = "2";
+		if(month.equalsIgnoreCase("mar"))
+			month = "3";
+		if(month.equalsIgnoreCase("apr"))
+			month = "4";
+		if(month.equalsIgnoreCase("may"))
+			month = "5";
+		if(month.equalsIgnoreCase("jun"))
+			month = "6";
+		if(month.equalsIgnoreCase("jul"))
+			month = "7";
+		if(month.equalsIgnoreCase("aug"))
+			month = "8";
+		if(month.equalsIgnoreCase("sep"))
+			month = "9";
+		if(month.equalsIgnoreCase("oct"))
+			month = "10";
+		if(month.equalsIgnoreCase("nov"))
+			month = "11";
+		if(month.equalsIgnoreCase("dec"))
+			month = "12";
+		createdDate = month+"/"+day+"/"+year;
+		return createdDate;
+	}
+
 	public List<CustomSearchBean> customSearchByKeywordBySample(HttpServletRequest httpRequest, String keyword) {
 		List<CustomSearchBean> results = null;
 		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
@@ -115,7 +152,8 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            searchBean.setName(doc.get("sampleName"));
 	            searchBean.setType("sample");
 	            searchBean.setDescription(doc.get("nanoEntityDesc"));
-	            searchBean.setCreatedDate(doc.get("createdDate"));
+	            String date = this.parseDate(doc.get("createdDate"));
+	            searchBean.setCreatedDate(date);
 	            if(user!=null){
 	            	if(user.isCurator()){
 	            		searchBean.setEditable(true);
@@ -163,7 +201,8 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            searchBean.setType("publication");
 	            searchBean.setDescription(doc.get("pubDesc"));
 	            searchBean.setPubmedId(doc.get("pubmedId"));
-	            searchBean.setCreatedDate(doc.get("createdDate"));
+	            String date = this.parseDate(doc.get("createdDate"));
+	            searchBean.setCreatedDate(date);
 	            if(user!=null){
 	            	if(user.isCurator()){
 	            		searchBean.setEditable(true);

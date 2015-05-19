@@ -7,7 +7,10 @@ import gov.nih.nci.cananolab.restful.customsearch.bean.SampleSearchableFieldsBea
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -17,6 +20,7 @@ import org.apache.lucene.util.Version;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.document.DateTools;
+import org.apache.lucene.document.DateTools.Resolution;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.LongField;
@@ -60,7 +64,11 @@ private IndexWriter indexWriter = null;
         if(sampleFieldsBean.getCharacterization()!=null)
         	doc.add(new StringField("characterization", sampleFieldsBean.getCharacterization(), Field.Store.YES));
         if(sampleFieldsBean.getCreatedDate()!=null)
-        	doc.add(new Field("createdDate", DateTools.dateToString(sampleFieldsBean.getCreatedDate(), DateTools.Resolution.MINUTE), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        	try{
+        		doc.add(new Field("createdDate", DateTools.stringToDate(DateTools.dateToString(sampleFieldsBean.getCreatedDate(),Resolution.SECOND)).toString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        	}catch(ParseException e){
+        		e.printStackTrace();
+        	}
         if(sampleFieldsBean.getSampleKeywords().size()>0)
         	for(int i = 0; i < sampleFieldsBean.getSampleKeywords().size();i++){
         		doc.add(new StringField("sampleKeywords", sampleFieldsBean.getSampleKeywords().get(i), Field.Store.YES));
@@ -86,8 +94,13 @@ private IndexWriter indexWriter = null;
         doc.add(new StringField("protocolFileId", protocolFieldsBean.getProtocolFileId(), Field.Store.YES));
         doc.add(new StringField("protocolName", protocolFieldsBean.getProtocolName(), Field.Store.YES));
         doc.add(new StringField("protocolFileName", protocolFieldsBean.getProtocolFileName(), Field.Store.YES));
-        if(protocolFieldsBean.getCreatedDate()!=null)
-        	doc.add(new Field("createdDate", DateTools.dateToString(protocolFieldsBean.getCreatedDate(), DateTools.Resolution.MINUTE), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        if(protocolFieldsBean.getCreatedDate()!=null){
+        	try{
+        		doc.add(new Field("createdDate", DateTools.stringToDate(DateTools.dateToString(protocolFieldsBean.getCreatedDate(),Resolution.SECOND)).toString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        	}catch(ParseException e){
+        		e.printStackTrace();
+        	}
+        }
         String fullSearchableText = protocolFieldsBean.getProtocolName() + " " + protocolFieldsBean.getProtocolFileName();
 
         doc.add(new TextField("content", fullSearchableText, Field.Store.NO));
@@ -109,7 +122,11 @@ private IndexWriter indexWriter = null;
         if(pubFieldsBean.getPubDesc()!=null)
         	doc.add(new StringField("pubDesc", pubFieldsBean.getPubDesc(), Field.Store.YES));
         if(pubFieldsBean.getCreatedDate()!=null)
-        	doc.add(new Field("createdDate", DateTools.dateToString(pubFieldsBean.getCreatedDate(), DateTools.Resolution.MINUTE), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        	try{
+        		doc.add(new Field("createdDate", DateTools.stringToDate(DateTools.dateToString(pubFieldsBean.getCreatedDate(),Resolution.SECOND)).toString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        	}catch(ParseException e){
+        		e.printStackTrace();
+        	}
         String keywords = "";
         String fullSearchableText = pubFieldsBean.getSampleName() + " " + pubFieldsBean.getPubDesc() + " " + pubFieldsBean.getPubTitle() + " " + pubFieldsBean.getPubmedId() + " " + pubFieldsBean.getDoiId();
         if(pubFieldsBean.getPubKeywords()!=null){
@@ -166,5 +183,6 @@ private IndexWriter indexWriter = null;
         // Don't forget to close the index writer when done
         //
         closeIndexWriter();
-   }    
+   } 
+    
 }
