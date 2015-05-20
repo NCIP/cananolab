@@ -6,9 +6,8 @@
          Sample Search Results
        </th>
         <td align="right" width="30%">
-        <button class="btn back btn-xs" ng-click="goBack()">Back</button>   
-        <a class=
-          "helpText" href="javascript:openHelpWindow('http://localhost:8080/caNanoLab/rest/sample/summaryExport')">Excel Export</a>           
+        <button class="btn back btn-xs" ng-click="goBack()">Back</button> 
+        <a ng-disabled="loader" class="helpText" ng-href="/caNanoLab/rest/sample/summaryExport">Export</a>             
           <a class="helpText" href=
           "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
           "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  

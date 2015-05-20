@@ -94,8 +94,8 @@ public class TabGenerationBO {
 			
 			if (userBean.isCurator()) {
 				tabWithLink = new String[2];
-				tabWithLink[0] = "COMMUNITY";
-				tabWithLink[1] =  urlBase + "#/manageCommunity";
+				tabWithLink[0] = "GROUPS";
+				tabWithLink[1] =  urlBase + "#/manageGroups";
 				tabs.add(tabWithLink);
 			}
 			
