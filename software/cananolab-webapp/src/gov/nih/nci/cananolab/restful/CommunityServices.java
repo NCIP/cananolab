@@ -1,7 +1,10 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.restful.community.CollaborationGroupBO;
+import gov.nih.nci.cananolab.restful.community.CollaborationGroupManager;
 import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
@@ -10,10 +13,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
@@ -110,4 +115,86 @@ public class CommunityServices {
 					.entity("Problem creating the collaboration groups: "+ e.getMessage()).build();
 		}
 	}
+	
+	@GET
+	@Path("/editCollaborationGroup")
+	@Produces ("application/json")
+    public Response editCollaborationGroup(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("groupId") String groupId) {
+		logger.info("In editCollaborationGroup");
+				
+		try { 
+			CollaborationGroupManager collGroupManager = 
+					 (CollaborationGroupManager) SpringApplicationContext.getBean("collaborationGroupManger");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			CollaborationGroupBean collaborationBean = collGroupManager.getCollaborationGroupById(httpRequest, groupId);
+			
+			return Response.ok(collaborationBean).header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity("Problem getting the collaboration group by ID: "+ e.getMessage()).build();
+		}
+	}
+	
+	@GET
+	@Path("/addUserAccess")
+	@Produces ("application/json")
+    public Response addUserAccess(@Context HttpServletRequest httpRequest, AccessibilityBean userAccess) {
+		logger.info("In addUserAccess for Collaboration group");
+				
+		try { 
+			CollaborationGroupManager collGroupManager = 
+					 (CollaborationGroupManager) SpringApplicationContext.getBean("collaborationGroupManger");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			CollaborationGroupBean collaborationBean = collGroupManager.addUserAccess(httpRequest, userAccess);
+			
+			return Response.ok(collaborationBean).header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity("Problem getting the collaboration group by ID: "+ e.getMessage()).build();
+		}
+	}
+	
+	@GET
+	@Path("/deleteUserAccess")
+	@Produces ("application/json")
+    public Response deleteUserAccess(@Context HttpServletRequest httpRequest, AccessibilityBean userAccess) {
+		logger.info("In addUserAccess for Collaboration group");
+				
+		try { 
+			CollaborationGroupManager collGroupManager = 
+					 (CollaborationGroupManager) SpringApplicationContext.getBean("collaborationGroupManger");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			CollaborationGroupBean collaborationBean = collGroupManager.deleteUserAccess(httpRequest, userAccess);
+			
+			return Response.ok(collaborationBean).header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity("Problem getting the collaboration group by ID: "+ e.getMessage()).build();
+		}
+	}
+
 }

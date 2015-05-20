@@ -197,6 +197,10 @@
 		class="gov.nih.nci.cananolab.restful.community.CollaborationGroupBO">
 	</bean>
 	
+	<bean id="collaborationGroupManger"
+		class="gov.nih.nci.cananolab.restful.community.CollaborationGroupManager">
+	</bean>
+	
 	<bean id="customSearchBO"
 		class="gov.nih.nci.cananolab.restful.customsearch.CustomSearchBO">
 		<property name="curationService">
