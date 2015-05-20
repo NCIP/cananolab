@@ -139,6 +139,8 @@ var app = angular.module('angularApp')
             if (re.exec(str)) {
               $scope.loginShow = 0
               $scope.resetPasswordShow = 1;
+              $scope.loginId = '';
+              $scope.password = '';
             }
             $scope.authErrors=data;
           });
