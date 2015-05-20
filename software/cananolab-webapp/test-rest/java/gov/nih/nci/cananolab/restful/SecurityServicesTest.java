@@ -25,7 +25,7 @@ public class SecurityServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("security/login")
-				.queryParam("username", "canano_res").queryParam("password", "sfsfasf")
+				.queryParam("username", "canano_res").queryParam("password", "Quality@4")
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);

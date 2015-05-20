@@ -143,7 +143,7 @@ public class CommunityServices {
 		}
 	}
 	
-	@GET
+	@POST
 	@Path("/addUserAccess")
 	@Produces ("application/json")
     public Response addUserAccess(@Context HttpServletRequest httpRequest, AccessibilityBean userAccess) {
@@ -170,7 +170,7 @@ public class CommunityServices {
 		}
 	}
 	
-	@GET
+	@POST
 	@Path("/deleteUserAccess")
 	@Produces ("application/json")
     public Response deleteUserAccess(@Context HttpServletRequest httpRequest, AccessibilityBean userAccess) {
