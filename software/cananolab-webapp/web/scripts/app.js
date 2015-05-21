@@ -80,7 +80,7 @@ app.config(function ($routeProvider, $httpProvider) {
        templateUrl: 'views/collaborationGroup.html',
        controller: 'CollaborationGroupCtrl'
       })       
-      .when('/manageCommunity', {
+      .when('/manageGroups', {
        templateUrl: 'views/manageCommunity.html',
        controller: 'ManageCommunityCtrl'
       })       

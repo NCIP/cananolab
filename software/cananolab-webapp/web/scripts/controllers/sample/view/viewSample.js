@@ -24,7 +24,10 @@ var app = angular.module('angularApp')
         }
         if ($routeParams.fromFavorites=='true') {
           $location.path("/myFavorites").replace();           
-        }        
+        }  
+        if ($routeParams.fromKeyword=='true') {
+          $location.path("/keywordSearchResults").replace();           
+        }          
         else {
           $location.path("/sampleResults").replace();           
         }

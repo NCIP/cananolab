@@ -69,7 +69,7 @@
 		</tr>
 
 		<tr ng-show="editCollaborationGroup">
-			<td colspan="2">{{groupBean}}<br /><br />{{groupBeanCopy}}
+			<td colspan="2">{{collaborationGroup}}
 				<table class="subSubmissionView" summary="layout" align="center" width="85%">
 					<tbody>
 						<tr>	
@@ -82,7 +82,7 @@
 								<label for="groupName">Name*</label>
 							</td>
 							<td>
-								<input name="name" size="30" value="" id="groupName" type="text" ng-model="groupBean.name">
+								<input name="name" size="30" value="" id="groupName" type="text" ng-model="collaborationGroup.name">
 							</td>
 						</tr>	
 						<tr>
@@ -90,7 +90,7 @@
 								<label for="groupDescription">Description</label>
 							</td>
 							<td>
-								<textarea name="description" ng-model="groupBean.description" cols="70" rows="5" id="groupDescription"></textarea>
+								<textarea name="description" ng-model="collaborationGroup.description" cols="70" rows="5" id="groupDescription"></textarea>
 							</td>
 						</tr>	
 
@@ -115,7 +115,7 @@
 												<td>
 												</td>
 											</tr>
-											<tr ng-repeat="access in groupBean.userAccesses" style="">
+											<tr ng-repeat="access in collaborationGroup.userAccesses" style="">
 												<td>
 													{{access.userBean.loginName}}
 												</td>
@@ -138,7 +138,7 @@
 											<td class="cellLabel" width="30%">
 												<label for="loginName">User Login Name*</label>
 											</td>
-											<td width="30%">
+											<td width="30%">**{{theAccess}}**
 												<input name="loginName" value="" id="loginName" ng-model="userInfoBean.userBean.loginName" type="text">
 											</td>
 											<td>
@@ -166,9 +166,14 @@
 															<label for="roleName">Access to the Group*</label>
 														</td>
 														<td colspan="3">
-																<select name="group.theAccess.roleDisplayName" onchange="" id="roleName"><option></option>
-																<option value="R">read</option>
-								<option value="CURD">read update delete</option></select>
+															<select id="roleName" ng-change="changeRole()" ng-model="userInfoBean.roleName">
+                													<option ng-selected="{{option==userInfoBean.roleName}}"></option>
+                <option value="R" ng-model="userInfoBean.roleDisplayName" ng-selected="{{option==userInfoBean.roleName}}">
+                    read
+                </option>    
+                <option value="CURD" ng-model="userInfoBean.roleDisplayName" ng-selected="{{option==userInfoBean.roleName}}">
+                    read update delete
+                </option>                                					</select>
 														</td>
 													</tr>
 													<tr>

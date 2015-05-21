@@ -16,7 +16,8 @@ var app = angular.module('angularApp')
 			error(function(data, status, headers, config) {
 			$scope.message = data;
 			$scope.loader = false;
-		});       
+		}); 			
+      
 	});
 
 	$scope.addGroupCollaboration = function() {
@@ -27,9 +28,19 @@ var app = angular.module('angularApp')
 	};
 
 	$scope.editGroupCollaboration = function(item) {
+		$scope.loader = true;
+		$scope.loaderText = "Loading";
+		$http({method: 'GET', url: '/caNanoLab/rest/community/editCollaborationGroup?groupId='+item.id}).
+			success(function(data, status, headers, config) {
+			$scope.collaborationGroup = data;
+			$scope.editCollaborationGroup = true;
+			$scope.loader = false;
+		}).
+			error(function(data, status, headers, config) {
+			$scope.loader = false;
+		}); 			
 		$scope.hideRemoveGroupButton = false;
 		$scope.groupBean = item;
-		$scope.editCollaborationGroup = true;
 		$scope.groupBeanCopy = angular.copy($scope.groupBean);
 	};
 
@@ -46,6 +57,7 @@ var app = angular.module('angularApp')
 	$scope.openUserInfo = function(access) {
 		$scope.userInfo = true;
 		$scope.showUsers = false;
+		$scope.theAccess = access;
 		if (access) {
 			$scope.isUserInfoAdd = false;			
 			$scope.userInfoBean = access;			
@@ -60,13 +72,25 @@ var app = angular.module('angularApp')
 	};
 
 	$scope.saveUserInfo = function(access) {
-		$scope.userInfo = false;
-		if ($scope.isUserInfoAdd) {
-			$scope.groupBean.userAccesses.push($scope.userInfoBean);			
-		}
-		else {
-			alert("edit");
-		};
+		$scope.loader = true;
+		$scope.loaderText = "Editing User Info";
+		$http({method: 'POST', url: '/caNanoLab/rest/community/addUserAccess',data: $scope.theAccess}).
+		success(function(data, status, headers, config) {    
+		  $scope.loader = false;
+		  $scope.userInfo = false;
+		  $scope.collaborationGroup = data;
+
+		}).
+		error(function(data, status, headers, config) {
+		  $scope.loader = false;
+		});		
+		// $scope.userInfo = false;
+		// if ($scope.isUserInfoAdd) {
+		// 	$scope.groupBean.userAccesses.push($scope.userInfoBean);			
+		// }
+		// else {
+		// 	alert("edit");
+		// };
 	};
 
 	$scope.cancelUserInfo = function(access) {
@@ -78,8 +102,18 @@ var app = angular.module('angularApp')
 	};
 
 	$scope.removeUserInfo = function(access) {
-		$scope.userInfo = false;
-		$scope.groupBean.userAccesses.splice($scope.groupBean.userAccesses.indexOf($scope.userInfoBean),1);		
+		$scope.loader = true;
+		$scope.loaderText = "Deleting User Info";
+		$http({method: 'POST', url: '/caNanoLab/rest/community/deleteUserAccess',data: $scope.theAccess}).
+		success(function(data, status, headers, config) {    
+		  $scope.loader = false;
+  		$scope.userInfo = false;
+  		$scope.collaborationGroup = data;
+
+		}).
+		error(function(data, status, headers, config) {
+		  $scope.loader = false;
+		});		
 	};	
 
 	$scope.submit = function(item) {
@@ -101,6 +135,15 @@ var app = angular.module('angularApp')
 		error(function(data, status, headers, config) {
 		  $scope.loader = false;
 		});		
+	};
+	$scope.changeRole = function() {
+		console.log($scope.userInfoBean);
+		if ($scope.userInfoBean.roleName=='R') {
+			$scope.userInfoBean.roleDisplayName = 'read'
+		}
+		else {
+			$scope.userInfoBean.roleDisplayName = 'read update delete'
+		}
 	};
 
 	$scope.searchLoginName = function() {

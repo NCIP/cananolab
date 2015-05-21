@@ -24,7 +24,7 @@ var app = angular.module('angularApp')
 		// check type and set link action and action type
 		if (row.type=='sample') {
 			view_actions.actionType = 'View';
-			view_actions.link = '#/sample?sampleId=' + row.id;
+			view_actions.link = '#/sample?sampleId=' + row.id  + '&amp;fromKeyword=true';
 			actionList.push(view_actions);			
 			if (row.editable==true) { 		
 				edit_actions.link = '#/editSample?sampleId=' + row.id;
