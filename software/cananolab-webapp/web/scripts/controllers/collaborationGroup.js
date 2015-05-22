@@ -75,7 +75,7 @@ var app = angular.module('angularApp')
 		}
 		else {
 			$scope.isUserInfoAdd = true;
-			$scope.userInfoBean = {"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"};
+			$scope.userInfoBean = {"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":$scope.collaborationGroup.name,"roleName":"","roleDisplayName":"","accessBy":"group"};
 			$scope.theAccess = $scope.userInfoBean;
 
 			// $scope.theAccess.userBean = {};
@@ -138,6 +138,11 @@ var app = angular.module('angularApp')
 		$scope.editCollaborationGroup = false;
 		$scope.loader = true;
 		$scope.loaderText = "Saving";
+		// for (key in $scope.collaborationGroup.userAccesses) {
+		// 	$scope.collaborationGroup.userAccesses[key].groupName = $scope.collaborationGroup.name;
+		// 	console.log($scope.collaborationGroup.userAccesses[key]);
+		// }
+		
 		$http({method: 'POST', url: '/caNanoLab/rest/community/addCollaborationGroups',data: $scope.collaborationGroup}).
 		success(function(data, status, headers, config) {    
 			$scope.data = data;
