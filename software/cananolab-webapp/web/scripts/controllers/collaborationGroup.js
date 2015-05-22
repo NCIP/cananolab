@@ -23,8 +23,9 @@ var app = angular.module('angularApp')
 	$scope.addGroupCollaboration = function() {
 		$scope.hideRemoveGroupButton = true;
 		$scope.editCollaborationGroup = true;
-		$scope.groupBean = {"userAccesses":[]};
-		$scope.groupBeanCopy = angular.copy($scope.groupBean);		
+		$scope.collaborationGroup = {};
+		// $scope.groupBean = {"userAccesses":[]};
+		// $scope.groupBeanCopy = angular.copy($scope.groupBean);		
 	};
 
 	$scope.editGroupCollaboration = function(item) {
@@ -50,8 +51,18 @@ var app = angular.module('angularApp')
 	};
 
 	$scope.removeGroupCollaboration = function(item) {
-		$scope.editCollaborationGroup = false;		
-		$scope.data.splice($scope.data.indexOf($scope.groupBean),1);
+		$scope.loader = true;
+		$scope.loaderText = "Deleting Collaboration Group";
+		$http({method: 'POST', url: '/caNanoLab/rest/community/deleteCollaborationGroups',data: $scope.collaborationGroup}).
+		success(function(data, status, headers, config) {    
+		  $scope.loader = false;
+		  $scope.data = data;
+		  $scope.editCollaborationGroup = false;		  
+		}).
+		error(function(data, status, headers, config) {
+		  $scope.loader = false;
+		});			
+		
 	};	
 
 	$scope.openUserInfo = function(access) {
@@ -64,9 +75,11 @@ var app = angular.module('angularApp')
 		}
 		else {
 			$scope.isUserInfoAdd = true;
-			$scope.userInfoBean = {};
-			$scope.userInfoBean.userBean = {};
-			$scope.userInfoBean.userBean.loginName = '';
+			$scope.userInfoBean = {"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"};
+			$scope.theAccess = $scope.userInfoBean;
+
+			// $scope.theAccess.userBean = {};
+			// $scope.theAccess.userBean.loginName = '';
 		};
 		$scope.userInfoBeanCopy = angular.copy($scope.userInfoBean);
 	};
@@ -125,8 +138,9 @@ var app = angular.module('angularApp')
 		$scope.editCollaborationGroup = false;
 		$scope.loader = true;
 		$scope.loaderText = "Saving";
-		$http({method: 'POST', url: '/caNanoLab/rest/community/addCollaborationGroups',data: $scope.groupBean}).
+		$http({method: 'POST', url: '/caNanoLab/rest/community/addCollaborationGroups',data: $scope.collaborationGroup}).
 		success(function(data, status, headers, config) {    
+			$scope.data = data;
 			$scope.someData = data;
 			// leData.dirty = false;			
 		  $scope.loader = false;
