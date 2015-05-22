@@ -47,7 +47,7 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 	 */
 	public List<CollaborationGroupBean> setupNew(HttpServletRequest request)
 			throws Exception {
-		//theForm.set("group", new CollaborationGroupBean());
+		request.getSession().setAttribute("group", new CollaborationGroupBean());
 		request.getSession().removeAttribute("openCollaborationGroup");
 		List<CollaborationGroupBean> beans = getExistingGroups(request);
 		
