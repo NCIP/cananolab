@@ -112,7 +112,7 @@ public class CommunityServices {
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity("Problem creating the collaboration groups: "+ e.getMessage()).build();
+					.entity("Problem deleting the collaboration groups: "+ e.getMessage()).build();
 		}
 	}
 	
@@ -166,7 +166,7 @@ public class CommunityServices {
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND)
-					.entity("Problem getting the collaboration group by ID: "+ e.getMessage()).build();
+					.entity("Problem adding the user to collaboration group : "+ e.getMessage()).build();
 		}
 	}
 	
@@ -193,7 +193,7 @@ public class CommunityServices {
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND)
-					.entity("Problem getting the collaboration group by ID: "+ e.getMessage()).build();
+					.entity("Problem removing user from the collaboration group : "+ e.getMessage()).build();
 		}
 	}
 
