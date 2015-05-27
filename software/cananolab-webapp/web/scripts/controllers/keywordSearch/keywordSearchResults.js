@@ -24,10 +24,10 @@ var app = angular.module('angularApp')
 		// check type and set link action and action type
 		if (row.type=='sample') {
 			view_actions.actionType = 'View';
-			view_actions.link = '#/sample?sampleId=' + row.id  + '&amp;fromKeyword=true';
+			view_actions.link = '#/sample?sampleId=' + row.id  + '&fromKeyword=true';
 			actionList.push(view_actions);			
 			if (row.editable==true) { 		
-				edit_actions.link = '#/editSample?sampleId=' + row.id;
+				edit_actions.link = '#/editSample?sampleId=' + row.id + '&fromKeyword=true';
 				edit_actions.actionType = 'Edit';
 				actionList.push(edit_actions);
 			}
@@ -41,7 +41,7 @@ var app = angular.module('angularApp')
 				actionList.push(view_actions);	
 			}
 			if (row.editable==true) { 	
-				edit_actions.link = '#/editPublication?publicationId=' + row.id;
+				edit_actions.link = '#/editPublication?publicationId=' + row.id + '&fromKeyword=true';
 				edit_actions.actionType = 'Edit';
 				actionList.push(edit_actions);
 			}		
@@ -54,7 +54,7 @@ var app = angular.module('angularApp')
 				actionList.push(view_actions);				
 			}			
 			if (row.editable==true) { 		
-				edit_actions.link = '#/editProtocol?protocolId=' + row.id;
+				edit_actions.link = '#/editProtocol?protocolId=' + row.id + '&fromKeyword=true';
 				edit_actions.actionType = 'Edit';
 				actionList.push(edit_actions);
 			}	

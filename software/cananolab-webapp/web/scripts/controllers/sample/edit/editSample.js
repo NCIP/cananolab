@@ -54,27 +54,38 @@ var app = angular.module('angularApp')
     //goBack
     //Change location if user hits the Back button
     $scope.goBack = function() {
+                    console.log($routeParams);
+
         if ($scope.updateButton=='Submit') {
+            console.log("SUBMIT");
             $location.path("/manageSamples").replace();
             $location.search('sampleId', null);
         }
         else if($scope.updateButton=='Update' && $routeParams.fromMyWorkspace=='true') {
+            console.log("update");
             $location.path("/myWorkspace").replace();
             $location.search('sampleId', null);
             $location.search('fromMyWorkspace', null);
         }        
         else {
-        if ($scope.isAdvancedSearch) {
-          $location.path("/advancedSampleResults").replace();           
-        }
-        if ($routeParams.fromFavorites=='true') {
-          $location.path("/myFavorites").replace();           
-        }        
-        else {
-          $location.path("/sampleResults").replace();           
+            if ($scope.isAdvancedSearch) {
+                            console.log("isAdvanced");
+              $location.path("/advancedSampleResults").replace();           
+            }
+            else if ($routeParams.fromFavorites=='true') {
+                            console.log("myFavorites");
+              $location.path("/myFavorites").replace();           
+            }        
+            else if ($routeParams.fromKeyword=='true') {
+                            console.log("keywordSearch");
+              $location.path("/keywordSearchResults").replace();           
+            }         
+            else {
+                            console.log("sample Results");
+              $location.path("/sampleResults").replace();           
+            }
         }
             $location.search('sampleId', null);
-        }
 
     };
 

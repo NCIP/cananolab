@@ -10,7 +10,8 @@
 				length=keywordData.length;
 				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
 	</div>
-<div ng-if="keywordData.length==0">No Search Results</div>
+<div ng-if="keywordData.length==0&&keyword_search_text==''">No Search Criteria</div>
+<div ng-if="keywordData.length==0&&keyword_search_text!=''">No Search Results</div>
 <span ng-if="keywordData.length>0"><br />
 <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
