@@ -196,5 +196,31 @@ public class CommunityServices {
 					.entity("Problem removing user from the collaboration group : "+ e.getMessage()).build();
 		}
 	}
+	@GET
+	@Path("/setupNew")
+	@Produces ("application/json")
+    public Response setupNew(@Context HttpServletRequest httpRequest) {
+		logger.info("setup new CollaborationGroups");
+				
+		try { 
+			CollaborationGroupBO collGroupBO = 
+					 (CollaborationGroupBO) SpringApplicationContext.getBean("collaborationGroupBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			collGroupBO.setupNew(httpRequest);
+			
+			return Response.ok("").header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity("Problem setting up the new collaboration groups: "+ e.getMessage()).build();
+		}
+	}
 
 }

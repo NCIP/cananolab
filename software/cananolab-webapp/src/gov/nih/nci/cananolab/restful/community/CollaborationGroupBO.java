@@ -45,13 +45,13 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<CollaborationGroupBean> setupNew(HttpServletRequest request)
+	public void setupNew(HttpServletRequest request)
 			throws Exception {
 		request.getSession().setAttribute("group", new CollaborationGroupBean());
 		request.getSession().removeAttribute("openCollaborationGroup");
-		List<CollaborationGroupBean> beans = getExistingGroups(request);
-		
-		return beans;
+//		List<CollaborationGroupBean> beans = getExistingGroups(request);
+//		
+//		return beans;
 	}
 
 	public List<CollaborationGroupBean> getExistingGroups(HttpServletRequest request) throws Exception {
@@ -135,8 +135,11 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 		// update user's groupNames
 		UserBean user = ((CommunityServiceLocalImpl) service).getUser();
 		request.getSession().setAttribute("user", user);
-
-		return setupNew(request);
+		
+		List<CollaborationGroupBean> beans = getExistingGroups(request);
+		request.getSession().removeAttribute("group");
+		return beans;
+		//return setupNew(request);
 	}
 
 	private CommunityService setServiceInSession(HttpServletRequest request)
@@ -158,6 +161,9 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 		CommunityService service = setServiceInSession(request);
 		service.deleteCollaborationGroup(group);
 //		resetToken(request);
-		return setupNew(request);
+//		return setupNew(request);
+		List<CollaborationGroupBean> beans = getExistingGroups(request);
+		request.getSession().removeAttribute("group");
+		return beans;
 	}
 }
