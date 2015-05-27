@@ -71,6 +71,9 @@ public class CollaborationGroupManager {
 			throws Exception {
 
 		CollaborationGroupBean group = (CollaborationGroupBean) (request.getSession().getAttribute("group"));
+		if(group == null){
+			group = new CollaborationGroupBean();
+		}
 		// check whether user is a valid user
 		getService(request);
 		String userLogin = userAccess.getUserBean().getLoginName();
