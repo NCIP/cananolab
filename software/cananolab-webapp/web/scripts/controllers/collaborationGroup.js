@@ -75,7 +75,7 @@ var app = angular.module('angularApp')
 		}
 		else {
 			$scope.isUserInfoAdd = true;
-			$scope.userInfoBean = {"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":$scope.collaborationGroup.name,"roleName":"","roleDisplayName":"","accessBy":"group"};
+			$scope.userInfoBean = {"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":$scope.collaborationGroup.name,"roleName":"","roleDisplayName":"","accessBy":"user"};
 			$scope.theAccess = $scope.userInfoBean;
 
 			// $scope.theAccess.userBean = {};
