@@ -44,15 +44,19 @@ var app = angular.module('angularApp')
         }
         else if ($scope.userActions==2) {
           $scope.loginShow = 1;
+          $scope.loginId = '';
+          $scope.password = '';
           $scope.resetPasswordShow = 0;        
           $scope.authErrors = 0;
         }
         else if ($scope.userActions==3) {
           $scope.loginShow = 0;
+          $scope.authErrors = 0;
           $scope.resetPasswordShow = 0;        
           $location.path("/register").replace();
         }
         else {
+          $scope.authErrors = 0;
           $scope.loginShow = 0;        
           $scope.resetPasswordShow = 1;
           $scope.reset_loginId = "";
@@ -136,11 +140,11 @@ var app = angular.module('angularApp')
             // or server returns response with an error status.
             var re = /changed/; 
             var str = data;
+            $scope.password = '';            
             if (re.exec(str)) {
               $scope.loginShow = 0
               $scope.resetPasswordShow = 1;
               $scope.loginId = '';
-              $scope.password = '';
             }
             $scope.authErrors=data;
           });
