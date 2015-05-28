@@ -80,12 +80,14 @@ public class CollaborationGroupManager {
 		CollaborationGroupBean bogusGroup=new CollaborationGroupBean();
 		if (!securityService.isUserValid(userLogin)) {
 			bogusGroup.setName("!!invalid user");
-			return bogusGroup;
+			throw new Exception("!!invalid user");
+			//return bogusGroup;
 		}
 		// if the user is already a curator, don't add the user
 		else if (securityService.isCurator(userLogin)) {
 			bogusGroup.setName("!!user is a curator");
-			return bogusGroup;
+			throw new Exception("!!user is a curator");
+			//return bogusGroup;
 		}
 		group.addUserAccess(userAccess);
 		return group;

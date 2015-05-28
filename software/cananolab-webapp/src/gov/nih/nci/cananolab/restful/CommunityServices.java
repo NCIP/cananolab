@@ -166,7 +166,7 @@ public class CommunityServices {
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND)
-					.entity("Problem adding the user to collaboration group : "+ e.getMessage()).build();
+					.entity("Error while adding the user to collaboration group : "+ e.getMessage()).build();
 		}
 	}
 	
@@ -193,7 +193,7 @@ public class CommunityServices {
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND)
-					.entity("Problem removing user from the collaboration group : "+ e.getMessage()).build();
+					.entity("Error while removing user from the collaboration group : "+ e.getMessage()).build();
 		}
 	}
 	@GET
