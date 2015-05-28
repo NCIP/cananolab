@@ -58,14 +58,19 @@ public class CollaborationGroupBean extends SecuredDataBean {
 	}
 
 	public void addUserAccess(AccessibilityBean userAccess) {
-		int index = this.getUserAccesses().indexOf(userAccess);
-		if (index != -1) {
-			this.getUserAccesses().remove(userAccess);
-			// retain the original order
-			this.getUserAccesses().add(index, userAccess);
-		} else {
-			this.getUserAccesses().add(userAccess);
+		
+		for(int i = 0 ; i < this.getUserAccesses().size() ; i++){
+			if(this.getUserAccesses().get(i).getUserBean().getUserId().equals(userAccess.getUserBean().getUserId())){
+				this.getUserAccesses().remove(i);
+			}
 		}
+//		if (index != -1) {
+//			this.getUserAccesses().remove(userAccess);
+//			// retain the original order
+//			this.getUserAccesses().add(index, userAccess);
+//		} else {
+			this.getUserAccesses().add(userAccess);
+//		}
 	}
 
 	public void removeUserAccess(AccessibilityBean userAccess) {
