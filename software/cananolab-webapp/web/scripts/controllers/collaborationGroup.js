@@ -20,10 +20,22 @@ var app = angular.module('angularApp')
       
 	});
 
-	$scope.addGroupCollaboration = function() {
-		$scope.hideRemoveGroupButton = true;
-		$scope.editCollaborationGroup = true;
-		$scope.collaborationGroup = {};
+	$scope.addGroupCollaboration = function() {		
+		$scope.loader = true;
+		$scope.loaderText = "Loading";
+		$http({method: 'GET', url: '/caNanoLab/rest/community/setupNew'}).
+			success(function(data, status, headers, config) {
+			$scope.hideRemoveGroupButton = true;
+			$scope.editCollaborationGroup = true;
+			$scope.collaborationGroup = {};
+			$scope.loader = false;
+
+		}).
+			error(function(data, status, headers, config) {
+			$scope.loader = false;
+		});
+
+			window.scope = $scope;
 		// $scope.groupBean = {"userAccesses":[]};
 		// $scope.groupBeanCopy = angular.copy($scope.groupBean);		
 	};
@@ -66,6 +78,7 @@ var app = angular.module('angularApp')
 	};	
 
 	$scope.openUserInfo = function(access) {
+		$scope.eMessage = '';
 		$scope.userInfo = true;
 		$scope.showUsers = false;
 		$scope.theAccess = access;
@@ -75,7 +88,7 @@ var app = angular.module('angularApp')
 		}
 		else {
 			$scope.isUserInfoAdd = true;
-			$scope.userInfoBean = {"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":$scope.collaborationGroup.name,"roleName":"","roleDisplayName":"","accessBy":"user"};
+			$scope.userInfoBean = {"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":$scope.collaborationGroup.name,"roleName":"R","roleDisplayName":"read","accessBy":"user"};
 			$scope.theAccess = $scope.userInfoBean;
 
 			// $scope.theAccess.userBean = {};
@@ -96,6 +109,7 @@ var app = angular.module('angularApp')
 		}).
 		error(function(data, status, headers, config) {
 		  $scope.loader = false;
+		  $scope.eMessage = data;
 		});		
 		// $scope.userInfo = false;
 		// if ($scope.isUserInfoAdd) {
