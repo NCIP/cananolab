@@ -60,7 +60,9 @@ public class CollaborationGroupBean extends SecuredDataBean {
 	public void addUserAccess(AccessibilityBean userAccess) {
 		
 		for(int i = 0 ; i < this.getUserAccesses().size() ; i++){
-			if(this.getUserAccesses().get(i).getUserBean().getUserId().equals(userAccess.getUserBean().getUserId())){
+			if((userAccess.getUserBean().getUserId()!=null)&&(this.getUserAccesses().get(i).getUserBean().getUserId().equals(userAccess.getUserBean().getUserId()))){
+				this.getUserAccesses().remove(i);
+			}else if(this.getUserAccesses().get(i).getUserBean().getDisplayName().equalsIgnoreCase(userAccess.getUserBean().getDisplayName())){
 				this.getUserAccesses().remove(i);
 			}
 		}
