@@ -24,7 +24,6 @@
    </head>
    <body style="cursor: default" ng-app="angularApp" ng-controller="TemplateCtrl">
       <div class="container">
-
          <table cellspacing="0" cellpadding="0" summary="layout"
             border="0">
             <!-- nci hdr begins -->
@@ -35,6 +34,8 @@
                         <tbody>
                            <tr>
                               <th scope="row" align="left">
+                                          <!-- anchor to skip main menu -->
+                                 <a href="#content" style="background-color:#A90101"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
                                  <a href="http://www.cancer.gov/"><img alt="National Cancer Institute" src="images/nci.jpg" border="0" height="37" width="283"></a>
                               </th>
                               <td>
@@ -54,10 +55,10 @@
                         <tbody>
                            <tr>
                               <td class="subhdrBG" align="left">
-                                 <a href="/caNanoLab/#/" class="link"></a>
+                                 <a href="/caNanoLab/#/" class="link" alt="caNanoLab" title="caNanoLab" description="caNanoLab"></a>
                               </td>
                               <td id="keywordSearch"> 
-                                 <input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" name="keyword_search_text">&nbsp;<button class="btn btn-success btn-xs keyword_search" ng-click="doKeywordSearch()" ng-disabled="isSearching">Search</button>
+                                 <label for="keywordsearch" style="color:white;">Search</label><input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" id="keywordsearch" name="keyword_search_text">&nbsp;<button class="btn btn-success btn-xs keyword_search" ng-click="doKeywordSearch()" ng-disabled="isSearching">Search</button>
                                  <div ng-show="isSearching" id="searching">Searching</div>
                               </td>
                            </tr>
@@ -78,8 +79,7 @@
                                     <tbody>
                                        <tr>
                                           <td width="1">
-                                             <!-- anchor to skip main menu -->
-                                             <a href="#content"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
+
                                           </td>
                                              <th ng-repeat-start="t in tabs.tabs" scope="row" ng-class="{mainMenuItem: t[0]!='HOME', 'mainMenuItem home':t[0]=='HOME'}">
                                              <a ng-if="t[0]=='GLOSSARY'||t[0]=='HELP'" ng-class="{mainMenuLink: t[0]!='HOME', 'mainMenuLink home':t[0]=='HOME'}" href="{{t[1]}}" target="_blank">{{t[0]}}
