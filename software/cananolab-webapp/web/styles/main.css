@@ -573,7 +573,7 @@ SIDEBAR BEGINS
 td.sidebarTitle {
     height: 20px;
     padding-top: 5px; padding-bottom: 5px; padding-left: 8px;
-    background-color: #00b533; color: #fff;
+    background-color: #005518; color: #fff;
     font-weight: 700;
     /* for the subtitle elements of the sub menu (left-side) */
     font-family: arial,helvetica,verdana,sans-serif;
@@ -1165,7 +1165,7 @@ ol {
 
 #userActionsButton {
     margin-left: 10px;
-    background-color: #009E2D; color: #fff;
+    background-color: #005518; color: #fff;
     font-size: 14px
 }
 
@@ -1208,7 +1208,7 @@ select#nanomaterialEntityTypes,
 }
 
 th.mainMenuItem.home {
-    background-color: #009E2D /* constant: dark gray ;;;;;
+    background-color: #005518 /* constant: dark gray ;;;;;
     /* for the off state of the main menu (top) cells */:
 }
 
@@ -1347,7 +1347,7 @@ a:hover.mainMenuLink.home {
 td.subMenuSecondaryTitleSample {
     height: 20px;
     padding-top: 2px; padding-bottom: 2px; padding-left: 15px;
-    background-color: #009E2D; color: #fff;
+    background-color: #005518; color: #fff;
     border-bottom: 1px solid #88BCE2;
     font-weight: 700
 }
@@ -1454,7 +1454,7 @@ table.summaryViewNoGrid {
 .btn.back  {
     margin-right:15px;
     font-weight:700;
-    background-color:#009E2D !important;
+    background-color:#005518 !important;
     color:#fff;
     box-shadow: 0px 0px 0px 1px #fff;    
 }
@@ -1636,12 +1636,12 @@ table.table {
     }    
 
     .header.sortable.sort-desc {
-        background-color:#009E2D !important; 
+        background-color:#005518 !important; 
         color:#fff;
       }
 
     .header.sortable.sort-asc {
-        background-color:#009E2D !important; 
+        background-color:#005518 !important; 
         color:#fff;
       }      
 
@@ -1683,7 +1683,7 @@ ul.pagination li.disabled a,ul.pagination li.disabled a:hover{
 }
 
     .dataTable .heading {
-        background-color:#009E2D;
+        background-color:#005518;
         color:#fff;
         text-transform:capitalize;
     }
