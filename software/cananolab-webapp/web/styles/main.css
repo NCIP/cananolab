@@ -224,7 +224,7 @@ th.subMenuPrimaryTitle {
 td.subMenuPrimarySubTitle {
     height: 20px;
     padding: 5px;
-    background-color: #0089bb; color: #fff /* constant: white */;;;;;
+    background-color: #005d7e; color: #fff /* constant: white */;;;;;
     font-weight: 700;
     nowhitespace: afterproperty;
     nowhitespace: afterproperty; /* for the subtitle elements of the sub menu (left-side) */
@@ -573,7 +573,7 @@ SIDEBAR BEGINS
 td.sidebarTitle {
     height: 20px;
     padding-top: 5px; padding-bottom: 5px; padding-left: 8px;
-    background-color: #009E2D; color: #fff;
+    background-color: #00b533; color: #fff;
     font-weight: 700;
     /* for the subtitle elements of the sub menu (left-side) */
     font-family: arial,helvetica,verdana,sans-serif;
@@ -585,7 +585,7 @@ td.sidebarTitle {
 th.sidebarTitle {
     height: 20px;
     padding-top: .2em; padding-bottom: .2em; padding-left: .8em;
-    background-color: #acc4c4; color: #4c5b5b;
+    background-color: #ccc; color: #000;
     font-weight: 700;
     /* for the subtitle elements of the sub menu (left-side) */
     font-family: arial,helvetica,verdana,sans-serif;
@@ -1394,7 +1394,7 @@ td:hover.subMenuSecondaryTitleSelectedSample {
 .contentTitle {
     padding-left: .2em;
     padding: 3px;
-    background-color: #0089BB; color: white;
+    background-color: #005d7e; color: white;
     font-size: 1.1em; font-weight: 700
 }
 
