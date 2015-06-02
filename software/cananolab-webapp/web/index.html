@@ -33,11 +33,11 @@
                      <table class="hdrBG" border="0" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
                            <tr>
-                              <th scope="row" align="left">
+                              <td align="left">
                                           <!-- anchor to skip main menu -->
-                                 <a href="#content" style="background-color:#A90101"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
+                                 <a href="#maincontent" style="background-color:#A90101" tabindex="0"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
                                  <a href="http://www.cancer.gov/"><img alt="National Cancer Institute" src="images/nci.jpg" border="0" height="37" width="283"></a>
-                              </th>
+                              </td>
                               <td>
                                  &nbsp;
                               </td>
@@ -58,7 +58,7 @@
                                  <a href="/caNanoLab/#/" class="link" alt="caNanoLab" title="caNanoLab" description="caNanoLab"></a>
                               </td>
                               <td id="keywordSearch"> 
-                                 <label for="keywordsearch" style="color:white;">Search</label><input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" id="keywordsearch" name="keyword_search_text">&nbsp;<button class="btn btn-success btn-xs keyword_search" ng-click="doKeywordSearch()" ng-disabled="isSearching">Search</button>
+                                 <label for="keywordsearch" style="color:white;">Search</label><input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" id="keywordsearch" name="keyword_search_text" role="search">&nbsp;<button class="btn btn-success btn-xs keyword_search" ng-click="doKeywordSearch()" ng-disabled="isSearching" >Search</button>
                                  <div ng-show="isSearching" id="searching">Searching</div>
                               </td>
                            </tr>
@@ -70,7 +70,7 @@
                   <td class="sideMenu">
                      <navigation></navigation>
                   </td>
-                  <td class="mainContent">
+                  <td class="mainContent" id="maincontent" role="main">
                      <table cellspacing="0" cellpadding="0" summary="layout" border="0" width="900px">
                         <tbody>
                            <tr>
@@ -111,7 +111,7 @@ src="images/mainMenuSeparator.gif" width="1">
                               </td>
                            </tr>
                            <tr>
-                              <td class="mainContent" ng-view="" autoscroll="true">
+                              <td class="mainContent" ng-view="" autoscroll="true" >
                               </td>
                            </tr>
                         </tbody>
@@ -125,9 +125,9 @@ src="images/mainMenuSeparator.gif" width="1">
                      <table cellspacing="0" cellpadding="0" border="0" align="center">
                         <tbody>
                            <tr>
-                              <th scope="row"><img height="16" alt=""
+                              <tr><img height="16" alt=""
                                  src="images/ftrMenuSeparator.gif" width="1">
-                              </th>
+                              </tr>
                               <td class="footerMenuItem" onclick="document.location.href='#'"
                                  height="20">&nbsp;&nbsp;<a class="footerMenuLink"
                                  href="mailto:ncicb@pop.nci.nih.gov?subject=caNanoLab - cancer Nanotechnology Laboratory Analysis Bench"
@@ -179,15 +179,15 @@ src="images/mainMenuSeparator.gif" width="1">
                      <!-- footer begins -->
                      <div id="portal-footer">
                         <div class="footerLinks">
-                           <a href="https://ncicbsupport.nci.nih.gov/" title="Home">Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://ncicb.nci.nih.gov/NCICB/support" title="Support">Support</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.cancer.gov/global/web/policies" title="Policies">Policies</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.cancer.gov/global/web/policies/accessibility" title="Accessibility">Accessibility</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://cancer.gov/global/viewing-files" target="_blank" title="Viewing Files">Viewing Files</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.cancer.gov/global/web/policies/foia" title="FOIA">FOIA</a><br /><br />
-                           <a href="http://www.dhhs.gov/">Department of Health and Human Services</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.nih.gov/">National Institutes of Health</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.cancer.gov/">National Cancer Institute</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.usa.gov/">USA.gov</a>
+                           <a href="https://ncicbsupport.nci.nih.gov/" title="Home" tabindex="0">Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://ncicb.nci.nih.gov/NCICB/support" title="Support" tabindex="0">Support</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/global/web/policies" title="Policies" tabindex="0">Policies</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/global/web/policies/accessibility" title="Accessibility" tabindex="0">Accessibility</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://cancer.gov/global/viewing-files" target="_blank" title="Viewing Files" tabindex="0">Viewing Files</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/global/web/policies/foia" title="FOIA" tabindex="0">FOIA</a><br /><br />
+                           <a href="http://www.dhhs.gov/" tabindex="0">Department of Health and Human Services</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.nih.gov/" tabindex="0">National Institutes of Health</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/" tabindex="0">National Cancer Institute</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.usa.gov/">USA.gov</a>
                         </div>
                         <br /><br />
                         NIH...Turning Discovery Into Health<sup>&reg;</sup>
