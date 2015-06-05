@@ -9,7 +9,8 @@
             </th>
             <td align="right" width="30%">
                 <button class="btn back btn-xs" ng-click="goBack()">Back</button>
-                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample')">Help</a>
+                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-SubmitSample')" ng-if="updateButton=='Submit'">Help</a>
+                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-EditSample')" ng-if="updateButton!='Submit'">Help</a>                
                 <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
             </td>
         </tr>

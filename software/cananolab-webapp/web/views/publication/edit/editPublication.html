@@ -21,7 +21,8 @@
         </th>    
 
         <td align="right" width="30%">
-            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SubmittingaPublication')">Help</a>
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Publications+in+caNanoLab#ManagingPublicationsincaNanoLab-SubmitPublication')" ng-if="(sampleId==null || sampleId=='') && publicationId==null">Help</a>
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Publications+in+caNanoLab#ManagingPublicationsincaNanoLab-EditPublication')" ng-if="(sampleId==null || sampleId=='') && publicationId!=null">Help</a>            
             &nbsp;
             <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
             &nbsp;
