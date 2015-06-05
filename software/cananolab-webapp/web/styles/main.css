@@ -745,7 +745,7 @@ div.logindiv {
     border-width: 0;
 }
 
-    .gridtableHomePage th {
+    .gridtableHomePage td {
         padding: 5px 30px 10px;
         font-family: arial,helvetica,verdana,sans-serif;
         border-style: solid;
@@ -762,7 +762,7 @@ div.logindiv {
         vertical-align: top;
     }
 
-th.dataTypeHomePage {
+td.dataTypeHomePage {
     width: 70%
 }
 
