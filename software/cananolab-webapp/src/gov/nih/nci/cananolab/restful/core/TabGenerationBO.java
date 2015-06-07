@@ -50,11 +50,11 @@ public class TabGenerationBO {
 			}
 			tabWithLink = new String[2];
 			tabWithLink[0] = "HELP";
-			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+User%27s+Guide";
+			tabWithLink[1] = "https://wiki.nci.nih.gov/x/14CUBg";
 			tabs.add(tabWithLink);
 			tabWithLink = new String[2];
 			tabWithLink[0] = "GLOSSARY";
-			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary";
+			tabWithLink[1] = "https://wiki.nci.nih.gov/x/9ICUBg";
 			tabs.add(tabWithLink);
 			
 			if (homePage.length() == 0 || !homePage.startsWith("true")) {
