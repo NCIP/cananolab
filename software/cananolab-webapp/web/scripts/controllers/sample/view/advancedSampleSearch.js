@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('angularApp')
 
-  .controller('AdvancedSampleSearchCtrl', function (sampleService,navigationService,groupService,$rootScope,$scope,$http,$location) {
+  .controller('AdvancedSampleSearchCtrl', function (sampleService,navigationService,groupService,$rootScope,$scope,$http,$location,$routeParams) {
     $scope.sampleData = sampleService.sampleData;
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();   
@@ -18,7 +18,13 @@ var app = angular.module('angularApp')
       $scope.searchSampleForm.logicalOperator = "and";
 
       //define array placeholders for samples, compositions and characterizations //
+    if ($routeParams.search) {
       $scope.searchSampleForm.sampleQueries = sampleService.sampleQueries;
+    }
+    else {
+      $scope.searchSampleForm.sampleQueries = sampleService.sampleQueries;      
+      $scope.searchSampleForm.sampleQueries = [];
+    };  
       $scope.searchSampleForm.compositionQueries = sampleService.compositionQueries;
       $scope.searchSampleForm.characterizationQueries = sampleService.characterizationQueries;
       

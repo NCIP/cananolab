@@ -18,7 +18,7 @@ var app = angular.module('angularApp')
     // $scope.pocDetails ={"sampleId":20917507,"sampleName":"NCL-23-1","pointOfContact":null,"composition":null,"functions":null,"characterizations":null,"dataAvailability":null,"createdDate":1407951881000,"keywords":"MAGNEVIST<br>MRI<br>NCL-23<br>QA<br>TEST","pointOfContactMap":{"organizationDisplayName":["C-Sixty (CNI)","DC<br>23098","CP_UCLA_CalTech"],"primaryContact":["true","false","false"],"role":["","",""],"contactPerson":["John Doe","",""]},"pocBeanDomainId":52985856,"availableEntityNames":null,"caNanoLabScore":null,"mincharScore":null,"chemicalAssocs":null,"physicoChars":null,"invitroChars":null,"invivoChars":null,"caNano2MINChar":null,"errors":[],"caNanoMINChar":null};
     // go back to search form //
     $scope.goBack = function() {
-      $location.path("/advancedSampleSearch").replace();      
+      $location.path("/advancedSampleSearch").search({'search':1});      
     }; 
 
 
