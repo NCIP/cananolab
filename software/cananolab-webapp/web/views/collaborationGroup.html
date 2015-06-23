@@ -139,22 +139,22 @@
 												<td colspan="3"><div id="authErrors">{{eMessage}}</div></td>
 											</tr>
 											<tr>
-											<td class="cellLabel" width="30%">
+											<td valign="top" class="cellLabel" width="30%">
 												<label for="loginName">User Login Name*</label>
 											</td>
-											<td width="30%">
+											<td valign="top" width="30%">
 												<input name="loginName" value="" id="loginName" ng-model="userInfoBean.userBean.loginName" type="text">
 											</td>
-											<td>
+											<td valign="top">
 												<button style="width:140px" ng-click="searchLoginName()">Search For User</button>
 											</td>
-											<td>
+											<td valign="top">
 												<table class="invisibleTable" summary="layout">
 													<tbody><tr>
-														<td>
+														<td valign="top">
 															<img src="images/ajax-loader.gif" class="counts" id="loaderImg" style="display: none;" alt="load existing users" border="0">
 														</td>
-														<td ng-show="showUsers"><label for="matchedUserNameSelect">&nbsp;</label>
+														<td valign="top" ng-show="showUsers">
 															
 															
 														<select data-ng-model="userInfoBean.userBean.loginName"
