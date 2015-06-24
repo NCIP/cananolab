@@ -1141,7 +1141,8 @@ ol {
 }
 
     .invisibleTable td {
-        padding: 0 15px 0 0;
+        padding:0px !important;
+        margin:0px !important;
         border-collapse: collapse;
         border-spacing: 0;
     }
