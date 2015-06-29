@@ -99,13 +99,18 @@ var app = angular.module('angularApp')
 
 	$scope.saveUserInfo = function(access) {
 		$scope.loader = true;
+		$scope.tempCollaborationGroup = {};
+     	$scope.tempCollaborationGroup.name = $scope.collaborationGroup.name;
+		$scope.tempCollaborationGroup.description = $scope.collaborationGroup.description;
+
 		$scope.loaderText = "Editing User Info";
 		$http({method: 'POST', url: '/caNanoLab/rest/community/addUserAccess',data: $scope.theAccess}).
 		success(function(data, status, headers, config) {    
 		  $scope.loader = false;
 		  $scope.userInfo = false;
 		  $scope.collaborationGroup = data;
-
+		  $scope.collaborationGroup.name = $scope.tempCollaborationGroup.name;
+		  $scope.collaborationGroup.description = $scope.tempCollaborationGroup.description;
 		}).
 		error(function(data, status, headers, config) {
 		  $scope.loader = false;
