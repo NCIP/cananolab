@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful.customsearch;
 
 import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
@@ -53,8 +54,8 @@ public class CustomSearchEngine extends BaseServiceHelper {
 			for (int i = 0; i < publicSamples.size(); i++) {
 				Long id = Long.valueOf(publicSamples.get(i));
 
-				if (StringUtils.containsIgnoreCase(getAccessibleData(),
-						publicSamples.get(i))) {
+//				if (StringUtils.containsIgnoreCase(getAccessibleData(),
+//						publicSamples.get(i))) {
 
 					DetachedCriteria sampleCriteria = DetachedCriteria
 							.forClass(Sample.class).add(
@@ -171,7 +172,7 @@ public class CustomSearchEngine extends BaseServiceHelper {
 					}
 
 					sampleResults.add(sampleFieldsBean);
-				}
+				//}
 
 			}
 		} catch (Exception e) {
@@ -193,8 +194,8 @@ public class CustomSearchEngine extends BaseServiceHelper {
 
 			for (int i = 0; i < publicProtocols.size(); i++) {
 				Long id = Long.valueOf(publicProtocols.get(i));
-				if (StringUtils.containsIgnoreCase(getAccessibleData(),
-						publicProtocols.get(i))) {
+//				if (StringUtils.containsIgnoreCase(getAccessibleData(),
+//						publicProtocols.get(i))) {
 
 					DetachedCriteria protocolCriteria = DetachedCriteria
 							.forClass(Protocol.class).add(
@@ -216,12 +217,18 @@ public class CustomSearchEngine extends BaseServiceHelper {
 					protocolFieldsBean.setCreatedDate(protocol.getCreatedDate());
 					protocolFieldsBean.setProtocolId(protocol.getId().toString());
 					protocolFieldsBean.setProtocolName(protocol.getName());
-					protocolFieldsBean.setProtocolFileName(protocol.getFile()
-							.getTitle());
-					protocolFieldsBean.setProtocolFileDesc(protocol.getFile().getDescription());
-					protocolFieldsBean.setProtocolFileId(protocol.getFile().getId().toString());
+					File file = protocol.getFile();
+					if(file!=null){
+						if(file.getTitle()!=null)
+							protocolFieldsBean.setProtocolFileName(protocol.getFile()
+								.getTitle());
+						if(file.getDescription()!=null)
+							protocolFieldsBean.setProtocolFileDesc(protocol.getFile().getDescription());
+						if(file.getId()!=null)
+							protocolFieldsBean.setProtocolFileId(protocol.getFile().getId().toString());
+					}
 					protocolResults.add(protocolFieldsBean);
-				}
+				//}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -240,8 +247,8 @@ public class CustomSearchEngine extends BaseServiceHelper {
 
 			for (int i = 0; i < publicPublications.size(); i++) {
 				Long id = Long.valueOf(publicPublications.get(i));
-				if (StringUtils.containsIgnoreCase(getAccessibleData(),
-						publicPublications.get(i))) {
+//				if (StringUtils.containsIgnoreCase(getAccessibleData(),
+//						publicPublications.get(i))) {
 					DetachedCriteria publicationCrit = DetachedCriteria
 							.forClass(Publication.class).add(
 									Property.forName("id").eq(id));
@@ -315,7 +322,7 @@ public class CustomSearchEngine extends BaseServiceHelper {
 						}
 					}
 					pubResults.add(publicationFieldsBean);
-				}
+				//}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

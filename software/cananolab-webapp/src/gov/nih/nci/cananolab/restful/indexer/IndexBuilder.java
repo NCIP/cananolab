@@ -90,10 +90,13 @@ private IndexWriter indexWriter = null;
         IndexWriter writer = getIndexWriter(false);
         Document doc = new Document();
         doc.add(new StringField("protocolId", protocolFieldsBean.getProtocolId(), Field.Store.YES));
-        doc.add(new StringField("protocolFileDesc", protocolFieldsBean.getProtocolFileDesc(), Field.Store.YES));
-        doc.add(new StringField("protocolFileId", protocolFieldsBean.getProtocolFileId(), Field.Store.YES));
+        if(protocolFieldsBean.getProtocolFileDesc()!=null)
+        	doc.add(new StringField("protocolFileDesc", protocolFieldsBean.getProtocolFileDesc(), Field.Store.YES));
+        if(protocolFieldsBean.getProtocolFileId()!=null)
+        	doc.add(new StringField("protocolFileId", protocolFieldsBean.getProtocolFileId(), Field.Store.YES));
         doc.add(new StringField("protocolName", protocolFieldsBean.getProtocolName(), Field.Store.YES));
-        doc.add(new StringField("protocolFileName", protocolFieldsBean.getProtocolFileName(), Field.Store.YES));
+        if(protocolFieldsBean.getProtocolFileName()!=null)
+        	doc.add(new StringField("protocolFileName", protocolFieldsBean.getProtocolFileName(), Field.Store.YES));
         if(protocolFieldsBean.getCreatedDate()!=null){
         	try{
         		doc.add(new Field("createdDate", DateTools.stringToDate(DateTools.dateToString(protocolFieldsBean.getCreatedDate(),Resolution.SECOND)).toString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
