@@ -7,7 +7,7 @@ var app = angular.module('angularApp')
     $rootScope.groups = groupService.getGroups.data.get();   
     $scope.isAdvancedSearch = 1;
     // define logical operators for each section and overall query //
-    $scope.defineSampleForm = function() {
+    $scope.defineSampleForm = function(reset) {
       // setup object where all data is stored //
       $scope.searchSampleForm = {};      
 
@@ -19,14 +19,23 @@ var app = angular.module('angularApp')
 
       //define array placeholders for samples, compositions and characterizations //
     if ($routeParams.search) {
-      $scope.searchSampleForm.sampleQueries = sampleService.sampleQueries;
+      if (reset) {
+        $scope.searchSampleForm.sampleQueries = [];                
+        $scope.searchSampleForm.compositionQueries = [];                
+        $scope.searchSampleForm.characterizationQueries = [];                
+      }
+      else {
+        $scope.searchSampleForm.sampleQueries = sampleService.sampleQueries;   
+      $scope.searchSampleForm.compositionQueries = sampleService.compositionQueries;
+      $scope.searchSampleForm.characterizationQueries = sampleService.characterizationQueries;             
+      }
+
     }
     else {
       $scope.searchSampleForm.sampleQueries = sampleService.sampleQueries;      
       $scope.searchSampleForm.sampleQueries = [];
     };  
-      $scope.searchSampleForm.compositionQueries = sampleService.compositionQueries;
-      $scope.searchSampleForm.characterizationQueries = sampleService.characterizationQueries;
+
       
       // setup initial objects where individual temporary objects will be stored //
       // on add or remove they get pushed or removed from the searchSampleForm //
@@ -97,6 +106,7 @@ var app = angular.module('angularApp')
     // resets sample criteria //
     $scope.clearSampleQuery = function() {
       $scope.theSampleQuery = {};
+      $scope.searchSampleForm.sampleQueries = []; 
       $scope.isNewSample = true;
     };
 
@@ -144,13 +154,16 @@ var app = angular.module('angularApp')
     // resets composition criteria //
     $scope.clearCompositionQuery = function() {
       $scope.theCompositionQuery = {};
+      $scope.searchSampleForm.compositionQueries = []; 
       $scope.isNewComposition = true;
     };    
 
-    // resets overall form //
-    $scope.resetForm = function() {
-      $scope.searchSampleForm = {};
-    };
+    // // resets overall form //
+    // $scope.resetForm = function() {
+    //   $scope.searchSampleForm = {};
+    //   console.log($scope);
+    //   window.scope = $scope;
+    // };
 
 //// Characterization Criteria ////
 
@@ -251,7 +264,8 @@ var app = angular.module('angularApp')
       $scope.theCharacterizationQuery = {};
       $scope.datumUnitOptionsList = [];
       $scope.datumNameList = [];
-      $scope.characterizationNameList = [];      
+      $scope.characterizationNameList = [];  
+      $scope.searchSampleForm.characterizationQueries = [];     
       $scope.isNewCharacterization = true;
     };    
 
@@ -277,7 +291,10 @@ var app = angular.module('angularApp')
     // resets overall form //
     $scope.resetForm = function() {
       $scope.searchSampleForm = {};
-      $scope.defineSampleForm();    
+      $scope.searchSampleForm.sampleQueries = [];      
+      $scope.defineSampleForm(1);    
+      console.log($scope);
+      window.scope = $scope;      
     };
 
   });
