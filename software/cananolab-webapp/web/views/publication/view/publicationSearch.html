@@ -29,7 +29,7 @@
                 <label for="researchArea">Research Category</label>
             </td>
             <td colspan="2">
-                    <input ng-repeat-start="(key,val) in researchArea track by $index" ng-disabled="loader" ng-model="researchArea[key]" type="checkbox" id="researchArea"><span style="padding-left:1px;padding-right:5px;" ng-repeat-end>{{key}}</span>
+                    <label style="padding-left:1px;padding-right:5px;"><input ng-repeat-start="(key,val) in researchArea track by $index" ng-disabled="loader" ng-model="researchArea[key]" type="checkbox" id="researchArea"><span style="padding-left:1px;padding-right:5px;" ng-repeat-end>{{key}}</span></label>
                     </td>
         </tr>
         <tr id="pubMedRow" ng-hide="pubMed">
@@ -54,7 +54,7 @@
             <td class="cellLabel">
                 <label for="title">Publication Title</label>
             </td>
-            <td colspan="2">
+            <td colspan="2" style="padding-left:7px;">
                 <table class="invisibleTable" summary="layout">
                     <tr>
                         <td><label for="titleOperand" style="display:none">Title Operand</label>
@@ -68,7 +68,7 @@
                         </select>
                         </td>
                         <td align="left">
-                            <input type="text" name="title" size="80" value="" id="title" ng-model="searchPublicationForm.title" ng-disabled="loader">
+                            <input type="text" name="title" size="61" value="" id="title" ng-model="searchPublicationForm.title" ng-disabled="loader">
                         </td>
                     </tr>
                 </table>
