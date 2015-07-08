@@ -1800,3 +1800,11 @@ padding-top:5px;
     background-repeat: no-repeat;
     background-position: 30% 100%;
 }
+
+.invisibleTable.sample {
+margin:4px;
+}
+
+.invisibleTable.sample td{
+padding:4px !important;
+}
