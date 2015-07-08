@@ -36,11 +36,11 @@ public class QuartzScheduler implements InitializingBean {
 	private static Scheduler scheduler = null;
 	private static final int DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS = 15;
 	private static final int DEFAULT_PUBLIC_COUNT_PULL_INTERVAL_IN_HOURS = 24;
-	private static final int DEFAULT_INDEX_INTERVAL_IN_HOURS = 4;
+	private static final int DEFAULT_INDEX_INTERVAL_IN_HOURS = 24;
 
 	int csmCleanupIntervalInMinutes = 15;
 	int publicCountPullIntervalInHours = 24;
-	int indexIntervalInHours = 4;
+	int indexIntervalInHours = 24;
 	
 	
 	@Override
