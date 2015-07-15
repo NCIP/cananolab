@@ -41,13 +41,14 @@ public class SecurityServices {
 	 *    Ref. to validation.xml
 	 */
 
-	@GET
+	@POST
 	@Path("/login")
 	@Produces ("application/json")
     public Response login(@Context HttpServletRequest httpRequest, 
-    		@DefaultValue("") @QueryParam("username") String username, 
-    		@DefaultValue("") @QueryParam("password") String password) {
+    		UserBean userBean) {
 		
+		String username = userBean.getUserId();
+		String password = userBean.getPassword();
 		logger.info("In login service");
 		try{
 			if (username.length() == 0 || password.length() == 0)
