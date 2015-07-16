@@ -14,7 +14,7 @@ var app = angular.module('angularApp')
         $scope.authErrors="Username and Password are required";
       }
       else {                
-        $http({method: 'GET', url: '/caNanoLab/rest/security/login', params: {"username":$scope.loginId,"password":$scope.password} }).
+        $http({method: 'POST', url: '/caNanoLab/rest/security/login', data: {"userId":$scope.loginId,"password":$scope.password} }).
         success(function(data, status, headers, config) {
           // this callback will be called asynchronously
           // when the response is available
