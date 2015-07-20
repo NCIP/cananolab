@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.restful.security.LoginBO;
 import gov.nih.nci.cananolab.restful.security.LogoutBO;
 import gov.nih.nci.cananolab.restful.security.RegisterUserBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.service.security.LoginBean;
 import gov.nih.nci.cananolab.service.security.PasswordResetBean;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
@@ -45,9 +46,9 @@ public class SecurityServices {
 	@Path("/login")
 	@Produces ("application/json")
     public Response login(@Context HttpServletRequest httpRequest, 
-    		UserBean userBean) {
+    		LoginBean userBean) {
 		
-		String username = userBean.getUserId();
+		String username = userBean.getUserName();
 		String password = userBean.getPassword();
 		logger.info("In login service");
 		try{
