@@ -35,7 +35,7 @@
                     </td>
                     <td>
                         <div id="categoryPrompt">
-                            <select ng-disabled="loader" id="type" ng-model="nanoEntityForm.type" ng-click="showProperties();">
+                            <select ng-disabled="loader" id="type" ng-model="nanoEntityForm.type" ng-change="showProperties();">
                                 <option ng-repeat="option in nanoEntityTypes" value="{{option}}" ng-selected="{{option==nanoEntityForm.type}}">
                                     {{option}}
                                 </option>

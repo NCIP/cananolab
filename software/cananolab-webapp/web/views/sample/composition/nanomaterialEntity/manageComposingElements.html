@@ -311,7 +311,7 @@
                         </td>
                         <td>
                             <div id="functionTypePrompt">
-                                <select ng-model="theInherentFunction.type" id="functionType" ng-click="checkFunctionType()">
+                                <select ng-model="theInherentFunction.type" id="functionType" ng-change="checkFunctionType()">
                                     <option value=""></option>
                                     <option ng-repeat="type in $parent.functionTypes track by $index" value="{{type}}" ng-selected="{{type == theInherentFunction.type}}">
                                         {{type}}

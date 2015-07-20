@@ -35,7 +35,7 @@
         </td>
         <td>
             <div id="categoryPrompt">
-                <select ng-disabled="loader" id="type" ng-model="funcEntityForm.type" ng-click="showProperties();">
+                <select ng-disabled="loader" id="type" ng-model="funcEntityForm.type" ng-change="showProperties();">
                     <option ng-repeat="option in funcEntityTypes" value="{{option}}" ng-selected="{{option==funcEntityForm.type}}">
                         {{option}}
                     </option>

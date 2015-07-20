@@ -60,7 +60,7 @@
                         </td>
                         <td>
                             <div id="functionTypePrompt">
-                                <select ng-model="theInherentFunction.type" id="functionType" ng-click="checkFunctionType()">
+                                <select ng-model="theInherentFunction.type" id="functionType" ng-change="checkFunctionType()">
                                     <option value=""></option>
                                     <option ng-repeat="type in $parent.functionTypes track by $index" value="{{type}}" ng-selected="{{type == theInherentFunction.type}}">
                                         {{type}}
@@ -199,7 +199,7 @@
                                         </td>
                                         <td>
                                             <div id="targetTypePrompt">
-                                                <select ng-model="theTargetFunction.type" id="targetType" ng-click="checkTargetFunctionType()">
+                                                <select ng-model="theTargetFunction.type" id="targetType" ng-change="checkTargetFunctionType()">
                                                     <option value=""></option>
                                                     <option ng-repeat="type in $parent.targetTypes track by $index" value="{{type}}" ng-selected="{{type == theTargetFunction.type}}">
                                                         {{type}}

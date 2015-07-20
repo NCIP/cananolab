@@ -57,7 +57,7 @@
                     <td>
                         <img ng-src="images/ajax-loader.gif" border="0" class="counts" ng-if="loader"
                              id="loaderImg" alt="load existing samples">
-                        <select ng-disabled="loader" id="matchedSampleSelect" ng-model="matchedSampleSelect" size="5" ng-click="updateCloningSample()">
+                        <select ng-disabled="loader" id="matchedSampleSelect" ng-model="matchedSampleSelect" size="5" ng-change="updateCloningSample()">
                             <option ng-repeat="option in sampleResults" value="{{option}}">
                                 {{option}}
                             </option>
