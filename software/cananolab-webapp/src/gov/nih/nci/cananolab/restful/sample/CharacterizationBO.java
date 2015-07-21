@@ -274,7 +274,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		
 		// save to other samples (only when user click [Submit] button.)
-		if (simpleEdit.isSubmitNewChar()) {
+		if (simpleEdit.getSelectedOtherSampleNames().size()>0) {
 			SampleBean[] otherSampleBeans = prepareCopy(request, simpleEdit.getSelectedOtherSampleNames(),
 					sampleBean);
 			if (otherSampleBeans != null) {
