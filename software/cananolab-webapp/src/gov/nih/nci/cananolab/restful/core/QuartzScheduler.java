@@ -19,9 +19,13 @@ import org.apache.log4j.Logger;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.quartz.SimpleScheduleBuilder;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.quartz.TriggerUtils;
+import org.quartz.impl.JobDetailImpl;
+import org.quartz.JobBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -73,12 +77,22 @@ private void initialiseLuceneIndexing(int indexInHours) {
 			// default is 24 hours
 			indexInHours = DEFAULT_INDEX_INTERVAL_IN_HOURS;
 		}
-		JobDetail jobDetail = new JobDetail("luceneIndexJob", null,
-				IndexWriter.class);
+		JobDetail jobDetail = JobBuilder.newJob(IndexWriter.class)
+				.withIdentity("luceneIndexJob", "indexJobGroup").build();
+//		JobDetail jobDetail = new JobDetail("luceneIndexJob", null,
+//				IndexWriter.class);
 
-		Trigger trigger = TriggerUtils.makeHourlyTrigger(
-				"luceneIndexJobTrigger", indexInHours,
-				SimpleTrigger.REPEAT_INDEFINITELY);
+		Trigger trigger = TriggerBuilder
+				.newTrigger()
+				.withIdentity("luceneIndexJobTrigger", "indexJobGroup")
+				.withSchedule(
+					SimpleScheduleBuilder.simpleSchedule()
+						.withIntervalInHours(indexInHours).repeatForever())
+				.build();
+		
+//		Trigger trigger = TriggerUtils.makeHourlyTrigger(
+//				"luceneIndexJobTrigger", indexInHours,
+//				SimpleTrigger.REPEAT_INDEFINITELY);
 
 		scheduler.scheduleJob(jobDetail, trigger);
 		logger.info("Lucene Index scheduler started......");
@@ -193,12 +207,23 @@ private void initialiseLuceneIndexing(int indexInHours) {
 				// default is 1 minute
 				intervalInMinutes = DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS;
 			}
-
-			JobDetail jobDetail = new JobDetail("CSMCleanupJob", null,
-					CSMCleanupJob.class);
-			Trigger trigger = TriggerUtils.makeMinutelyTrigger(
-					"CSMCleanupJobTrigger", intervalInMinutes,
-					SimpleTrigger.REPEAT_INDEFINITELY);
+			JobDetail jobDetail = JobBuilder.newJob(CSMCleanupJob.class)
+					.withIdentity("CSMCleanupJob", "CsmCleanupGroup").build();
+			
+//			JobDetail jobDetail = new JobDetail("CSMCleanupJob", null,
+//					CSMCleanupJob.class);
+			Trigger trigger = TriggerBuilder
+					.newTrigger()
+					.withIdentity("CSMCleanupJobTrigger", "CsmCleanupGroup")
+					.withSchedule(
+						SimpleScheduleBuilder.simpleSchedule()
+							.withIntervalInHours(intervalInMinutes).repeatForever())
+					.build();
+			
+//			Trigger trigger = TriggerUtils.makeMinutelyTrigger(
+//					"CSMCleanupJobTrigger", intervalInMinutes,
+//					SimpleTrigger.REPEAT_INDEFINITELY);
+			
 			scheduler.scheduleJob(jobDetail, trigger);
 			logger.info("CSM clean up scheduler started......");
 		} catch (Exception e) {
@@ -212,12 +237,22 @@ private void initialiseLuceneIndexing(int indexInHours) {
 				// default is 24 hours
 				intervalInHours = DEFAULT_PUBLIC_COUNT_PULL_INTERVAL_IN_HOURS;
 			}
-			JobDetail jobDetail = new JobDetail("publicCountJob", null,
-					PublicDataCountJob.class);
+			JobDetail jobDetail = JobBuilder.newJob(PublicDataCountJob.class)
+					.withIdentity("publicCountJob", "publicCountGroup").build();
+//			JobDetail jobDetail = new JobDetail("publicCountJob", null,
+//					PublicDataCountJob.class);
 
-			Trigger trigger = TriggerUtils.makeHourlyTrigger(
-					"publicCountJobTrigger", intervalInHours,
-					SimpleTrigger.REPEAT_INDEFINITELY);
+			Trigger trigger = TriggerBuilder
+					.newTrigger()
+					.withIdentity("publicCountJobTrigger", "publicCountGroup")
+					.withSchedule(
+						SimpleScheduleBuilder.simpleSchedule()
+							.withIntervalInHours(publicCountPullIntervalInHours).repeatForever())
+					.build();
+			
+//			Trigger trigger = TriggerUtils.makeHourlyTrigger(
+//					"publicCountJobTrigger", intervalInHours,
+//					SimpleTrigger.REPEAT_INDEFINITELY);
 
 			scheduler.scheduleJob(jobDetail, trigger);
 			logger.info("Public data count scheduler started......");

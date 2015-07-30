@@ -47,6 +47,7 @@ public class TabGenerationBO {
 				tabWithLink[1] =  urlBase + "#/managePublications";;
 				tabs.add(tabWithLink);
 				
+				
 			}
 			tabWithLink = new String[2];
 			tabWithLink[0] = "HELP";
@@ -92,12 +93,11 @@ public class TabGenerationBO {
 			tabWithLink[1] =  urlBase + "#/managePublications";;
 			tabs.add(tabWithLink);
 			
-			if (userBean.isCurator()) {
-				tabWithLink = new String[2];
-				tabWithLink[0] = "GROUPS";
-				tabWithLink[1] =  urlBase + "#/manageGroups";
-				tabs.add(tabWithLink);
-			}
+			tabWithLink = new String[2];
+			tabWithLink[0] = "GROUPS";
+			tabWithLink[1] =  urlBase + "#/manageGroups";
+			tabs.add(tabWithLink);
+			
 			
 			if (userBean.isCurator()) {
 				tabWithLink = new String[2];
