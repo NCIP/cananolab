@@ -76,6 +76,12 @@
 </div>
 </td>
 <td valign="top">
+	<b>Keywords</b>
+	<div ng-repeat="file in val.Files">
+		{{file.keywordsString}}
+	</div>
+</td>
+<td valign="top">
 	<div ng-repeat="file in val.Files">
 		{{file.description}}
 	</div>
