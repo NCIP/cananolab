@@ -290,7 +290,7 @@ var app = angular.module('angularApp')
     // opens new finding dialog //
     $scope.addNewFinding = function() {
         var old = $location.hash();
-        $scope.currentFinding = {};
+        $scope.currentFinding = {'columnHeaders':[]};
         $scope.currentFinding.dirty = 1;
         $scope.updateFinding = 1;
         $scope.finding = {};
