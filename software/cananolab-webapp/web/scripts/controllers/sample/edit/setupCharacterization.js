@@ -351,6 +351,7 @@ var app = angular.module('angularApp')
                 var curCell = $scope.currentFinding.rows[x].cells[columnIndex];
                 if ($scope.findingsColumn.constantValue!='') {
                     curCell.value=$scope.findingsColumn.constantValue;
+                    curCell.datumOrCondition = $scope.findingsColumn.columnType;                    
                 }
             };
             var headerName = $scope.findingsColumn.columnName;
