@@ -49,7 +49,7 @@ public class CommunityServices {
 			
 			List<CollaborationGroupBean> existingGroups = collGroupBO.getExistingGroups(httpRequest);
 			
-			return Response.ok(existingGroups).header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(existingGroups).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -77,7 +77,7 @@ public class CommunityServices {
 						
 			List<CollaborationGroupBean> beans = collGroupBO.create(groupBean, httpRequest);
 			
-			return Response.ok(beans).header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(beans).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -105,7 +105,7 @@ public class CommunityServices {
 						
 			List<CollaborationGroupBean> beans = collGroupBO.delete(groupBean, httpRequest);
 			
-			return Response.ok(beans).header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(beans).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -132,7 +132,7 @@ public class CommunityServices {
 			
 			CollaborationGroupBean collaborationBean = collGroupManager.getCollaborationGroupById(httpRequest, groupId);
 			
-			return Response.ok(collaborationBean).header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(collaborationBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -159,7 +159,7 @@ public class CommunityServices {
 			
 			CollaborationGroupBean collaborationBean = collGroupManager.addUserAccess(httpRequest, userAccess);
 			
-			return Response.ok(collaborationBean).header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(collaborationBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -186,7 +186,7 @@ public class CommunityServices {
 			
 			CollaborationGroupBean collaborationBean = collGroupManager.deleteUserAccess(httpRequest, userAccess);
 			
-			return Response.ok(collaborationBean).header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(collaborationBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -212,7 +212,7 @@ public class CommunityServices {
 			
 			collGroupBO.setupNew(httpRequest);
 			
-			return Response.ok("").header("Access-Control-Allow-Credentials", "true")
+			return Response.ok("").header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();

@@ -46,7 +46,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 			SimpleCompositionBean view = new SimpleCompositionBean();
 			view.transferCompositionBeanForSummaryView(compBean);
 			
-			return Response.ok(view).build();
+			return Response.ok(view).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			
 		} catch (Exception e) {
 			return Response.ok("Error while viewing the composition results" +e).build();
@@ -70,7 +70,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 			view.transferCompositionBeanForSummaryView(compBean);
 		
 			
-			return Response.ok(view).build();
+			return Response.ok(view).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			
 		} catch (Exception e) {
 			return Response.ok("Error while printing the file").build();
@@ -93,7 +93,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 
 			 String result = compositionBO.summaryExport(form, type, httpRequest, httpResponse);
 				
-			return Response.ok("").build();
+			return Response.ok("").header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			
 		} catch (Exception e) {
 			return Response.ok("Error while exporting the file").build();
@@ -110,7 +110,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 						(CompositionBO) SpringApplicationContext.getBean("compositionBO");
 				java.io.File file = compositionBO.download(fileId, httpRequest);
 				
-				return Response.ok(new FileInputStream(file)).build();
+				return Response.ok(new FileInputStream(file)).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 				
 
 			} catch (Exception e) {
@@ -128,7 +128,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 						(CompositionBO) SpringApplicationContext.getBean("compositionBO");
 				
 				String result = compositionBO.download(fileId, httpRequest, httpResponse);
-				return Response.ok(result).build();
+				return Response.ok(result).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			} 
 			
 			catch (Exception e) {

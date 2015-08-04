@@ -61,7 +61,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			view.transferPublicationBeanForSummaryView(pubBean);
 			
 			// return Response.ok(view).build();
-			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(view).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for publication " + e.getMessage())).build();
@@ -81,7 +81,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 
 			String result = publicationBO.download(fileId, httpRequest, httpResponse);
 		
-			return Response.ok(result).build();
+			return Response.ok(result).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while downloading the file" + e.getMessage())).build();
@@ -105,7 +105,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				view.transferPublicationBeanForSummaryView(summaryBean);
 		
 			
-			return Response.ok(view).build();
+			return Response.ok(view).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while printing the file" + e.getMessage())).build();
@@ -126,7 +126,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 
 			 String result = publicationBO.summaryExport(sampleId, type, httpRequest, httpResponse);
 				
-			return Response.ok("").build();
+			return Response.ok("").header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while exporting the file" + e.getMessage())).build();
@@ -149,7 +149,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		 SimplePublicationSummaryViewBean pubBean = publicationBO.summaryEdit(sampleId, httpRequest);
 			
 			// return Response.ok(view).build();
-			return Response.ok(pubBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(pubBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the publication results" + e.getMessage())).build();
@@ -166,7 +166,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			SearchPublicationBO searchPublicationBO = 
 					(SearchPublicationBO) SpringApplicationContext.getBean("searchPublicationBO");
 			Map<String, Object> dropdownMap = searchPublicationBO.setup(httpRequest);
-			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(dropdownMap).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
@@ -191,7 +191,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			if (result instanceof String) {
 				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
 			} else
-			return Response.ok(results).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(results).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -219,7 +219,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(view).build() :
+					Response.ok(view).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 		
 		} catch (Exception e) {
@@ -245,7 +245,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 						.entity("Session expired").build();
 			
 			String[] sampleList = pubBO.getMatchedSampleNames(searchStr, httpRequest);
-			return Response.ok(sampleList).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(sampleList).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
@@ -270,7 +270,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			
 			List<String> msgs = pubBO.create(form, httpRequest);
 			 
-			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(msgs).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 					
 		} catch (Exception e) {
@@ -296,7 +296,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 					Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 						.entity(result.getErrors()).build()
 						:
-						Response.ok(result).build();
+						Response.ok(result).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 		} 
 
 		catch (Exception ioe) {
@@ -323,7 +323,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			return (value == null) ?
 					Response.status(Response.Status.NOT_FOUND).entity("No pub found").build()
 					:
-					Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+					Response.ok(value).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
@@ -352,7 +352,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			form.setPublicationBean(pubBean);
 			
 			PublicationBean pBean = pubManager.retrievePubMedInfo(pubmedId, form, httpRequest);
-			return Response.ok(pBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(pBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
@@ -379,7 +379,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(view).build() :
+					Response.ok(view).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 			
@@ -407,7 +407,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			List<String> msgs = pubBO.delete(form, httpRequest);
 			 
 			
-			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(msgs).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -436,7 +436,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			
 			List<String> errors = bean.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(bean).build() :
+					Response.ok(bean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 
@@ -467,7 +467,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			
 			List<String> errors = bean.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(bean).build() :
+					Response.ok(bean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 
@@ -495,7 +495,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			
 			String result = publicationBO.submitForReview(httpRequest, dataReviewStatusBean);
 			 
-			return Response.ok(result).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(result).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			
 		} catch (Exception e) {
@@ -524,9 +524,9 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
 			
 			return (result.getErrors().size() > 0) ?
-					Response.ok(new FileInputStream(fileError)).build()
+					Response.ok(new FileInputStream(fileError)).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build()
 						:
-						Response.ok(new FileInputStream(fileSuccess)).build();
+						Response.ok(new FileInputStream(fileSuccess)).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			} 
 		catch (Exception e) {
 			return Response.ok(fileError).build();
@@ -551,7 +551,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			List<String> msgs = pubBO.deletePublicationById(publicationId, httpRequest);
 			 
 			
-			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(msgs).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());

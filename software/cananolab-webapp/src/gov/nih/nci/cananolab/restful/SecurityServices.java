@@ -61,7 +61,7 @@ public class SecurityServices {
 			logger.info("login sessionid: " + httpRequest.getSession().getId());
 			if (!result.equals(RestfulConstants.SUCCESS)) 
 				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
-			return Response.ok(httpRequest.getSession().getId()).build();
+			return Response.ok(httpRequest.getSession().getId()).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 		}catch(Exception e){
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while logging in: " + e.getMessage())).build();
@@ -87,7 +87,7 @@ public class SecurityServices {
 		RegisterUserBO registerBo = (RegisterUserBO) SpringApplicationContext.getBean("registerUserBO");
 		List<String> errors = registerBo.register(title, firstName, lastName, email, phone, organization, fax, comment, registerToUserList);
 		
-		return (errors == null || errors.size() == 0) ? Response.ok("success").build() : 
+		return (errors == null || errors.size() == 0) ? Response.ok("success").header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() : 
 			Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
     }
 	
@@ -99,7 +99,7 @@ public class SecurityServices {
 		
 		LogoutBO logoutBo = (LogoutBO) SpringApplicationContext.getBean("logoutBO");
 		String result = logoutBo.logout(httpRequest);
-		return Response.ok(result).build();
+		return Response.ok(result).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 	}
 	
 	@GET
@@ -122,7 +122,7 @@ public class SecurityServices {
 				
 				Map<String, List<String>> userGroups = new HashMap<String, List<String>>();
 				userGroups.put(user.getLoginName(), groups);
-				return Response.ok(userGroups).build();
+				return Response.ok(userGroups).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			} catch (Exception e) {
 				//logger.error("Erro while logging in user: " + username + "|" + password + ". " + e.getMessage());
 				return Response.status(Response.Status.NOT_FOUND)
@@ -150,7 +150,7 @@ public class SecurityServices {
 			logger.info("login sessionid: " + httpRequest.getSession().getId());
 			if (!result.equals(RestfulConstants.SUCCESS)) 
 				return Response.status(Response.Status.NOT_FOUND).entity("Password reset failed").build();
-			return Response.ok(result).build();
+			return Response.ok(result).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 		}catch(Exception e){
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while logging in: " + e.getMessage())).build();

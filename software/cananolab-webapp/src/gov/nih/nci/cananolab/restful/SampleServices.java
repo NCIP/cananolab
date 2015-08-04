@@ -57,7 +57,7 @@ public class SampleServices {
 					(SearchSampleBO) SpringApplicationContext.getBean("searchSampleBO");
 			Map<String, List<String>> dropdownTypeLists = searchSampleBO.setup(httpRequest);
 
-			return Response.ok(dropdownTypeLists).build();
+			return Response.ok(dropdownTypeLists).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists")).build();
@@ -77,7 +77,7 @@ public class SampleServices {
 		
 		try {
 			List<String> characterizations = searchSampleBO.getCharacterizationByType(httpRequest, type);
-			return Response.ok(characterizations).build();
+			return Response.ok(characterizations).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while getting characterization by type")).build();
@@ -101,7 +101,7 @@ public class SampleServices {
 				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
 			} else {
 				logger.debug("Sample search successful");
-				return Response.ok(results).build();
+				return Response.ok(results).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			}
 
 		} catch (Exception e) {
@@ -127,7 +127,7 @@ public class SampleServices {
 			SimpleSampleBean sampleBean = sampleBO.summaryView(sampleId,httpRequest);
 			
 			return (sampleBean.getErrors().size() == 0) ?
-					Response.ok(sampleBean).header("Access-Control-Allow-Credentials", "true")
+					Response.ok(sampleBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build()
@@ -158,7 +158,7 @@ public class SampleServices {
 			//SimpleSampleBean view = new SimpleSampleBean();
 			//view.transferSampleBeanForSummaryView(sampleBean);
 			
-			return Response.ok(sampleBean).build();
+			return Response.ok(sampleBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -187,7 +187,7 @@ public class SampleServices {
 			return (finalBean.size() == 0) ? Response.status(Response.Status.NOT_FOUND)
 					.entity(CommonUtil.wrapErrorMessageInList("There is no characterization with your sample.")).build()
 							: 
-							Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true")
+							Response.ok(finalBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
 							.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 							.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
@@ -210,7 +210,7 @@ public class SampleServices {
 			
 			java.io.File file = characterizationBO.download(fileId, httpRequest);
 			
-			return Response.ok(new FileInputStream(file)).build();
+			return Response.ok(new FileInputStream(file)).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			
 		} catch (Exception ioe) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -228,7 +228,7 @@ public class SampleServices {
 					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 			
 			String result = characterizationBO.download(fileId, httpRequest, httpResponse);
-			return Response.ok(result).build();
+			return Response.ok(result).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 		} 
 		
 		catch (Exception ioe) {
@@ -248,7 +248,7 @@ public class SampleServices {
 					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 			
 			String result = characterizationBO.summaryExport(sampleId, type, httpRequest, httpResponse);
-			return Response.ok(result).build();
+			return Response.ok(result).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 		} 
 		
 		catch (Exception ioe) {
@@ -276,7 +276,7 @@ public class SampleServices {
 		try {
 			SampleEditGeneralBean sampleBean = sampleBO.summaryEdit(sampleId,httpRequest);
 			return (sampleBean.getErrors().size() == 0) ?
-					Response.ok(sampleBean).build()
+					Response.ok(sampleBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build()
 					:
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
 		} 
@@ -309,7 +309,7 @@ public class SampleServices {
 			//return Response.ok(editBean).build();
 			return (errors == null || errors.size() == 0 || 
 					(errors.size() > 0 && !editBean.getErrorType().equals("POC"))) ?
-					Response.ok(editBean).build() :
+					Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
@@ -335,7 +335,7 @@ public class SampleServices {
 			SampleEditGeneralBean editBean = sampleBO.saveAccess(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(editBean).build() :
+					Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
@@ -361,7 +361,7 @@ public class SampleServices {
 		try {
 			SampleEditGeneralBean simpleBean = sampleBO.updateDataAvailability(sampleId.trim(), httpRequest);
 			return (simpleBean.getErrors().size() == 0) ?
-					Response.ok(simpleBean).build()
+					Response.ok(simpleBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build()
 					:
 					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(simpleBean.getErrors()).build();
 		} catch (Exception ioe) {
@@ -386,7 +386,7 @@ public class SampleServices {
 			SampleEditGeneralBean editBean = sampleBO.update(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(editBean).build() :
+					Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
@@ -415,7 +415,7 @@ public class SampleServices {
 			logger.debug("Sumbit sample completed with " + errors.size() + " errors");
 			logger.debug("Submitted sample id: " + editBean.getSampleId());
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(editBean).build() :
+					Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
@@ -445,7 +445,7 @@ public class SampleServices {
 			SampleEditGeneralBean editBean = sampleBO.clone(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(editBean).build() :
+					Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
@@ -474,7 +474,7 @@ public class SampleServices {
 			return (msg == null || msg.startsWith("Error")) ?
 					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build()
 					:
-					Response.ok(msg).build();
+					Response.ok(msg).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 						
 
 		} catch (Exception e) {
@@ -503,7 +503,7 @@ public class SampleServices {
 			return (msg == null || msg.startsWith("Error")) ?
 					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build()
 					:
-					Response.ok(msg).build();
+					Response.ok(msg).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 						
 
 		} catch (Exception e) {
@@ -531,7 +531,7 @@ public class SampleServices {
 			List<String> errors = editBean.getErrors();
 			
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(editBean).build() :
+					Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
@@ -558,7 +558,7 @@ public class SampleServices {
 			List<String> errors = editBean.getErrors();
 			
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(editBean).build() :
+					Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
@@ -586,7 +586,7 @@ public class SampleServices {
 		try {
 			SampleEditGeneralBean sampleBean = sampleBO.setupNew(httpRequest);
 			return (sampleBean.getErrors().size() == 0) ?
-					Response.ok(sampleBean).build()
+					Response.ok(sampleBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build()
 					:
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
 		} 
@@ -613,7 +613,7 @@ public class SampleServices {
 			
 			List<String> names = sampleBO.getMatchedSampleNames(httpRequest, "");
 			
-			return 	Response.ok(names).build();
+			return 	Response.ok(names).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 						
 
 		} catch (Exception e) {
@@ -640,7 +640,7 @@ public class SampleServices {
 			List<String> errors = editBean.getErrors();
 			
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(editBean).build() :
+					Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
@@ -665,7 +665,7 @@ public class SampleServices {
 			
 			String message = sampleBO.submitForReview(httpRequest, reviewBean);
 			
-			return Response.ok(message).build();
+			return Response.ok(message).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -688,7 +688,7 @@ public class SampleServices {
 			String sampelName = sampleBO.getCurrentSampleNameInSession(httpRequest, sampleId);
 			
 			return 
-					Response.ok(sampelName).header("Access-Control-Allow-Credentials", "true")
+					Response.ok(sampelName).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -714,7 +714,7 @@ public class SampleServices {
 			Map<String, Object> dropdownTypeLists = searchSampleBO.setup(httpRequest);
 			//AdvancedSampleSearchBean searchBean = searchSampleBO.setup(httpRequest);
 
-			return Response.ok(dropdownTypeLists).build();
+			return Response.ok(dropdownTypeLists).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists")).build();
@@ -735,7 +735,7 @@ public class SampleServices {
 			List<LabelValueBean> charOptions = characterizationMgr.getDecoratedCharacterizationOptions(httpRequest, charType);
 					//searchSampleBO.setup(httpRequest);
 
-			return Response.ok(charOptions).build();
+			return Response.ok(charOptions).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while creating characterization options")).build();
@@ -757,7 +757,7 @@ public class SampleServices {
 			List<LabelValueBean> datumOptions = characterizationMgr.getDecoratedDatumNameOptions(
 					httpRequest, charType, charName, null);
 
-			return Response.ok(datumOptions).build();
+			return Response.ok(datumOptions).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while creating characterization datum options")).build();
@@ -778,7 +778,7 @@ public class SampleServices {
 			List<String> names = characterizationResultManager
 					.getColumnValueUnitOptions(httpRequest, datumName, "", false);
 					
-			return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(names).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -807,7 +807,7 @@ public class SampleServices {
 				return Response.status(Response.Status.NOT_FOUND).entity(resultView.getErrors()).build();
 			} else {
 				logger.debug("Sample search successful");
-				return Response.ok(resultView).build();
+				return Response.ok(resultView).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			}
 
 		} catch (Exception e) {
@@ -830,7 +830,8 @@ public class SampleServices {
 
 			boolean editable = sampleBO.isSampleEditableByCurrentUser(httpRequest, sampleId);
 			
-			return Response.ok(editable).header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(editable).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure")
+					.header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -852,7 +853,7 @@ public class SampleServices {
 			
 			 String result = searchSampleBO.export(httpRequest, httpResponse);
 				
-			return Response.ok("").build();
+			return Response.ok("").header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while exporting the file" + e.getMessage())).build();

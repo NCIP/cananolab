@@ -43,7 +43,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 			CompositionFileBO compBO = 
 					(CompositionFileBO) SpringApplicationContext.getBean("compositionFileBO");
 			Map<String, Object> dropdownMap = compBO.setupNew(httpRequest);
-			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(dropdownMap).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
@@ -68,7 +68,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 			
 			List<String> errors = bean.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(bean).build() :
+					Response.ok(bean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 			
 		} catch (Exception e) {
@@ -92,7 +92,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 			
 			List<String> msgs = compBO.create(fileBean, httpRequest);
 			
-			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(msgs).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			
 			
@@ -118,7 +118,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 			
 			List<String> msgs = compBO.delete(fileBean, httpRequest);
 			
-			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(msgs).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			
 			

@@ -88,11 +88,6 @@ L-->
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>   -->
    
-    <session-config>
- 		<cookie-config>
- 	 		<http-only>true</http-only>
- 		</cookie-config>
-	</session-config>
    
     <context-param>
         <param-name>contextConfigLocation</param-name>

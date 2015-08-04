@@ -44,7 +44,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 			SearchProtocolBO searchProtocolBO = 
 					(SearchProtocolBO) SpringApplicationContext.getBean("searchProtocolBO");
 			Map<String, Object> dropdownMap = searchProtocolBO.setup(httpRequest);
-			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(dropdownMap).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
@@ -69,7 +69,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 			if (result instanceof String) {
 				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
 			} else
-			return Response.ok(results).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(results).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -90,7 +90,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 
 			String result = protocolBO.download(fileId, httpRequest, httpResponse);
 		
-			return Response.ok(result).build();
+			return Response.ok(result).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 			
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while downloading the file" + e.getMessage())).build();
@@ -116,7 +116,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 			List<String> msgs = protocolBO.create(form, httpRequest);
 			 
 			
-			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(msgs).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 					
 		} catch (Exception e) {
@@ -146,7 +146,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 			
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(view).build() :
+					Response.ok(view).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 		
 		} catch (Exception e) {
@@ -175,7 +175,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 			
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(view).build() :
+					Response.ok(view).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 			
@@ -203,7 +203,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 			List<String> msgs = protocolBO.delete(form, httpRequest);
 			 
 			
-			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(msgs).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -232,7 +232,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 			
 			List<String> errors = bean.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(bean).build() :
+					Response.ok(bean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 
@@ -263,7 +263,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 		 SimpleSubmitProtocolBean view = new SimpleSubmitProtocolBean();
 		 view.transferProtocolBeanForEdit(bean,httpRequest);
 			
-					return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+					return Response.ok(view).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		
 		} catch (Exception e) {
@@ -289,7 +289,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 			
 			String result = protocolBO.submitForReview(httpRequest, reviewBean);
 			 
-			return Response.ok(result).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(result).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			
 		} catch (Exception e) {
@@ -317,7 +317,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 			List<String> msgs = protocolBO.deleteProtocolById(protocolId, httpRequest);
 			 
 			
-			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(msgs).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());

@@ -78,7 +78,7 @@ public class CoreServices {
 //		}
 		
 		InitSetup.getInstance().setPublicCountInContext(context);
-		return Response.ok(context.getAttribute("publicCounts")).build();
+		return Response.ok(context.getAttribute("publicCounts")).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 	}
 	
 	@GET
@@ -92,7 +92,7 @@ public class CoreServices {
 		TabGenerationBO tabGen = (TabGenerationBO)SpringApplicationContext.getBean("tabGenerationBO");
 		SimpleTabsBean tabs = tabGen.getTabs(httpRequest, homePage);
 		
-		return Response.ok(tabs).build();
+		return Response.ok(tabs).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build();
 	}
 	
 	@GET
@@ -111,7 +111,7 @@ public class CoreServices {
 						.entity("Session expired").build();
 			
 			String[] value = accManager.getMatchedGroupNames(searchStr, httpRequest);
-			return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(value).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND)
@@ -134,7 +134,7 @@ public class CoreServices {
 			
 			SimpleWorkspaceBean value = manager.getWorkspaceItems(httpRequest);
 			return (value.getErrors().size() == 0) ?
-					Response.ok(value).build()
+					Response.ok(value).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build()
 					:
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(value.getErrors()).build();
 			//return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -160,7 +160,7 @@ public class CoreServices {
 			
 			SimpleWorkspaceBean value = manager.getWorkspaceItems(httpRequest, type);
 			return (value.getErrors().size() == 0) ?
-					Response.ok(value).build()
+					Response.ok(value).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build()
 					:
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(value.getErrors()).build();
 			//return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -186,7 +186,7 @@ public class CoreServices {
 						.entity("Session expired").build();
 			
 			Map<String, String> value = accManager.getMatchedUsers(dataOwner, searchStr, httpRequest);
-			return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(value).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the users"+ e.getMessage()).build();
@@ -213,7 +213,7 @@ public class CoreServices {
 			SimpleOrganizationBean simpleOrg = new SimpleOrganizationBean();
 			simpleOrg.transferOrganizationData(domainOrg);
 			
-			return Response.ok(simpleOrg).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(simpleOrg).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND)
@@ -243,7 +243,7 @@ public class CoreServices {
 			}
 			
 			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
-			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(fileName).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 					
 		} catch (Exception e) {
@@ -283,7 +283,7 @@ public class CoreServices {
 			
 			SimpleFavoriteBean simpleBean = favorite.findFavorites(httpRequest);
 			
-			return	Response.ok(simpleBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return	Response.ok(simpleBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the favorites : "+ e.getMessage()).build();
@@ -304,7 +304,7 @@ public class CoreServices {
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			List<String> list = favorite.create(bean, httpRequest);
-				return	Response.ok(list).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+				return	Response.ok(list).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND).entity("Problem adding the favorites : "+ e.getMessage()).build();
@@ -324,7 +324,7 @@ public class CoreServices {
 						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 			
 			SimpleFavoriteBean simpleBean = favorite.delete(bean, httpRequest);
-				return	Response.ok(simpleBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+				return	Response.ok(simpleBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND).entity("Problem while deleting the favorites from the list : "+ e.getMessage()).build();
