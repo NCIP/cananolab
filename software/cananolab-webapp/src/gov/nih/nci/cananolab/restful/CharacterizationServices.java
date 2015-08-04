@@ -61,7 +61,7 @@ public class CharacterizationServices {
 		
 		logger.debug("Set up " + finalBean.size() + " characterization types for sample: " + sampleId);
 		
-		return Response.ok(finalBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -93,7 +93,7 @@ public class CharacterizationServices {
 //		
 //		logger.debug("Set up " + finalBean.size() + " characterization types for sample: " + sampleId);
 		
-		return Response.ok(charView).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(charView).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -121,7 +121,7 @@ public class CharacterizationServices {
 
 		SimpleCharacterizationEditBean charView = characterizationBO.setupUpdate(httpRequest, sampleId, charId, charClassName, charType);
 
-		return Response.ok(charView).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(charView).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -144,7 +144,7 @@ public class CharacterizationServices {
 
 		List<String> charNames = characterizationMgr.getCharacterizationNames(httpRequest, charType);
 
-		return Response.ok(charNames).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(charNames).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -166,7 +166,7 @@ public class CharacterizationServices {
 
 		List<String> assayTypes = characterizationMgr.getAssayTypes(httpRequest, charName);
 
-		return Response.ok(assayTypes).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(assayTypes).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -188,7 +188,7 @@ public class CharacterizationServices {
 
 		String abbr = experimentMgr.getTechniqueAbbreviation(httpRequest, techniqueType);
 
-		return Response.ok(abbr).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(abbr).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -219,7 +219,7 @@ public class CharacterizationServices {
 						.entity(errors).build();
 			}
 
-		return Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -245,7 +245,7 @@ public class CharacterizationServices {
 			
 			SimpleCharacterizationEditBean editBean = characterizationBO.deleteExperimentConfig(httpRequest, simpleExpConfig);
 
-		return Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -267,7 +267,7 @@ public class CharacterizationServices {
 
 			List<String> types = experimentMgr.getInstrumentTypesByTechniqueType(httpRequest, techniqueType);
 
-		return Response.ok(types).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(types).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -294,7 +294,7 @@ public class CharacterizationServices {
 			
 			SimpleFindingBean simpleFindingBean = characterizationBO.drawMatrix(httpRequest, simpleFinding);
 
-		return Response.ok(simpleFindingBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(simpleFindingBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -320,7 +320,7 @@ public class CharacterizationServices {
 			
 			SimpleFindingBean simpleFindingBean = characterizationBO.updateColumnOrder(httpRequest, simpleFinding);
 
-			return Response.ok(simpleFindingBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(simpleFindingBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -347,7 +347,7 @@ public class CharacterizationServices {
 			List<String> names = characterizationResultManager
 					.getColumnNameOptionsByType(httpRequest, columnType, charType, charName, assayType);
 
-			return Response.ok(names).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -372,7 +372,7 @@ public class CharacterizationServices {
 			List<String> names = characterizationResultManager
 					.getColumnValueUnitOptions(httpRequest, columnName, conditionProperty, true);
 					
-			return Response.ok(names).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -395,7 +395,7 @@ public class CharacterizationServices {
 			
 			List<String> names = characterizationResultManager.getConditionPropertyOptions(httpRequest, columnName);
 					
-			return Response.ok(names).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -427,7 +427,7 @@ public class CharacterizationServices {
 						.entity(errors).build();
 			}
 
-		return Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -459,7 +459,7 @@ public class CharacterizationServices {
 						.entity(errors).build();
 			}
 
-		return Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -492,7 +492,7 @@ public class CharacterizationServices {
 
 
 
-			return Response.ok(summaryView.getMessages()).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(summaryView.getMessages()).header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 				//			List<SimpleCharacterizationsByTypeBean> finalBeans = summaryView.getCharByTypeBeans();
@@ -525,7 +525,7 @@ public class CharacterizationServices {
 			SimpleCharacterizationSummaryEditBean summaryView = characterizationBO.delete(httpRequest, editBean);
 			List<SimpleCharacterizationsByTypeBean> finalBeans = summaryView.getCharByTypeBeans();
 				
-			return Response.ok(finalBeans).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+			return Response.ok(finalBeans).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -556,7 +556,7 @@ public class CharacterizationServices {
 						.entity(errors).build();
 			}
 
-		return Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -587,7 +587,7 @@ public class CharacterizationServices {
 						.entity(errors).build();
 			}
 
-		return Response.ok(editBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -610,7 +610,7 @@ public class CharacterizationServices {
 		SimpleCharacterizationProperty simpleProp = characterizationMgr.getCharacterizationProperties(httpRequest, charName);
 
 		return (simpleProp == null) ? Response.ok(null).build() :
-				Response.ok(simpleProp).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+				Response.ok(simpleProp).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -633,7 +633,7 @@ public class CharacterizationServices {
 		List<SimpleCharacterizationUnitBean> charDisplayables = characterizationBO.setupView(
 				httpRequest, "", charId, "", "");
 		
-		return Response.ok(charDisplayables).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true")
+		return Response.ok(charDisplayables).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {

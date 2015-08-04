@@ -45,7 +45,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			NanomaterialEntityBO nanomaterialEntityBO = 
 					(NanomaterialEntityBO) SpringApplicationContext.getBean("nanomaterialEntityBO");
 			Map<String, Object> dropdownMap = nanomaterialEntityBO.setupNew(sampleId, httpRequest);
-			return Response.ok(dropdownMap).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
@@ -70,7 +70,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			
 			List<String> errors = nano.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(nano).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
+					Response.ok(nano).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 			
 		} catch (Exception e) {
@@ -96,7 +96,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			
 			List<String> errors = nano.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(nano).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
+					Response.ok(nano).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 					
 		} catch (Exception e) {
@@ -121,7 +121,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.removeComposingElement(nanoBean, httpRequest);
 			List<String> errors = nano.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(nano).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
+					Response.ok(nano).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the composing element" + e.getMessage())).build();
@@ -148,7 +148,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			
 			List<String> errors = nano.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(nano).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
+					Response.ok(nano).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 					
 		} catch (Exception e) {
@@ -176,7 +176,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			
 			List<String> errors = nano.getErrors();
 			return (errors == null || errors.size() == 0) ?
-					Response.ok(nano).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").build() :
+					Response.ok(nano).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 					
 		} catch (Exception e) {
@@ -200,7 +200,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 				
 			List<String> msgs = nanomaterialEntityBO.create(nanoBean, httpRequest);
 			
-			return Response.ok(msgs).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 	
 					
 		} catch (Exception e) {
@@ -223,7 +223,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 				
 			List<String> msgs = nanomaterialEntityBO.delete(nanoBean, httpRequest);
 			
-			return Response.ok(msgs).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 	
 					
 		} catch (Exception e) {
@@ -245,7 +245,7 @@ private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 			SimpleAdvacedSampleCompositionBean compBean = new SimpleAdvacedSampleCompositionBean();
 			compBean.transferNanomaterialEntityForAdvancedSampleSearch(entityBean, httpRequest);
 			
-			return Response.ok(compBean).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(compBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the NanoMaterial Entity" + e.getMessage())).build();

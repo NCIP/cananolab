@@ -41,7 +41,7 @@ public class CustomSearchServices {
 						(CustomSearchBO) SpringApplicationContext.getBean("customSearchBO");
 				
 				List<CustomSearchBean> results = customSearchBO.search(httpRequest, keyword);
-				return Response.ok(results).header("SET-COOKIE", "JSESSIONID=" + httpRequest.getSession().getId() + "; secure").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+				return Response.ok(results).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 				// return Response.ok(dropdownMap).build();
 			} catch (Exception e) {
