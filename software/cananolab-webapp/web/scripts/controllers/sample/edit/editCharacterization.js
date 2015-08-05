@@ -8,6 +8,8 @@ app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,
 	$rootScope.groups = groupService.getGroups.data.get();   
 	$scope.sampleData = sampleService.sampleData;
 	$scope.sampleId = sampleService.sampleId;
+	$scope.sampleMessage = sampleService.message.data;
+
 	$scope.sampleName = sampleService.sampleName;
 	$scope.isEdit = sampleService.isEdit;
 	$scope.charId = sampleService.charId;
@@ -20,6 +22,11 @@ app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,
       $scope.isAdvancedSearch = 1;
     };  
 
+    if ($routeParams.charMessage) {
+      $scope.charMessage = $routeParams.charMessage;
+
+    }    
+
 	$scope.goBack = function() {
         if ($scope.isAdvancedSearch) {
           $location.path("/advancedSampleSearch").replace();           
@@ -30,10 +37,10 @@ app.controller('EditCharacterizationCtrl', function (sampleService,utilsService,
 		$location.search('sampleId', null);
 	};  
 
+	
 	if ($routeParams.sampleId) {
 		$scope.sampleId.data = $routeParams.sampleId;
-	};
-	
+	};	
 
 	$scope.select = function(tab) {
 		var size = 0, key;

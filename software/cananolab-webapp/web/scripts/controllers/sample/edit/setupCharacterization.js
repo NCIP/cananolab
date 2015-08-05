@@ -7,6 +7,8 @@ var app = angular.module('angularApp')
     $scope.sampleId = sampleService.sampleId.data;
     $scope.domainFileUri = "";
     $scope.data = {};  
+    $scope.sampleMessage = sampleService.message.data;
+
     $scope.PE = {};
     // can remove this after done testing local data
     $scope.dataCopy = angular.copy($scope.data);
@@ -490,8 +492,9 @@ var app = angular.module('angularApp')
         $scope.loader = true;    
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveCharacterization',data: $scope.data}).
         success(function(data, status, headers, config) {  
-            $location.path("/editCharacterization").search({'sampleId':$scope.sampleId}).replace();
+            $location.path("/editCharacterization").search({'sampleId':$scope.sampleId,'charMessage':'Characterization Saved'}).replace();
             $scope.loader = false;
+            $scope.sampleMessage = 'Characterization Saved';
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
