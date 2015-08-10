@@ -34,6 +34,10 @@ var app = angular.module('angularApp')
     else {
       $scope.searchSampleForm.sampleQueries = sampleService.sampleQueries;      
       $scope.searchSampleForm.sampleQueries = [];
+      $scope.searchSampleForm.compositionQueries = sampleService.compositionQueries;      
+      $scope.searchSampleForm.compositionQueries = [];
+      $scope.searchSampleForm.characterizationQueries = sampleService.characterizationQueries;      
+      $scope.searchSampleForm.characterizationQueries = [];            
     };  
 
       
