@@ -14,7 +14,7 @@ public class InputValidationUtil {
 	public static boolean isRelaxedAlphabetic(String input) {
 		if(input == null || input == "")
 			return true;
-		String reg = "^[a-zA-Z\\s\\-\\.\\'\\é\\Ė\\Á\\Ä\\á\\ë\\ú\\ý\\ÿ]*$";
+		String reg = "^[a-zA-Z\\s\\-\\.\\'\\é\\Ė\\Á\\Ä\\á\\ë\\ú\\ý\\ÿ\\ğ\\ü\\ç]*$";
 		
 		if(input.matches(reg))
 			return true;
