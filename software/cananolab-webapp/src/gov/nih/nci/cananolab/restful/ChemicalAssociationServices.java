@@ -35,8 +35,8 @@ public class ChemicalAssociationServices {
 
 private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 	
-	@Inject
-	ApplicationContext applicationContext;
+//	@Inject
+//	ApplicationContext applicationContext;
 	
 	@GET
 	@Path("/setup")

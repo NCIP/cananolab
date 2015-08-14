@@ -9,17 +9,16 @@ public class SpringApplicationContext implements ApplicationContextAware {
 	private static ApplicationContext appContext;
  
 	// Private constructor prevents instantiation from other classes
-        private SpringApplicationContext() {}
+    	private SpringApplicationContext() {}
  
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
-		appContext = applicationContext;
- 
+		appContext = applicationContext; 
+
 	}
  
 	public static Object getBean(String beanName) {
 		return appContext.getBean(beanName);
 	}
- 
 }

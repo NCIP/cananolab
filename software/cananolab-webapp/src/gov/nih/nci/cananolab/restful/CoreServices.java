@@ -58,8 +58,8 @@ import org.springframework.context.ApplicationContext;
 @Path("/core")
 public class CoreServices {
 	
-	@Inject
-	SpringApplicationContext applicationContext;
+//	@Inject
+//	SpringApplicationContext applicationContext;
 	
 	private Logger logger = Logger.getLogger(CoreServices.class);
 	
@@ -229,7 +229,7 @@ public class CoreServices {
 	
 		try {
 			ProtocolBO protocolBO = 
-					(ProtocolBO) applicationContext.getBean("protocolBO");
+					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
 			String fileName = null;
 			InputStream fileInputStream = null;
 			
@@ -297,7 +297,7 @@ public class CoreServices {
 				
 		try { 
 			FavoritesBO favorite = 
-					 (FavoritesBO) applicationContext.getBean("favoritesBO");
+					 (FavoritesBO) SpringApplicationContext.getBean("favoritesBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)

@@ -1268,7 +1268,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		
 		List results = appService.query(crit);
 		List<Sample> samples = new ArrayList<Sample>();
-		List<String> accessibleData = getAccessibleData();
+//		List<String> accessibleData = getAccessibleData();
 		for(int i = 0; i < results.size(); i++){
 			
 			try {

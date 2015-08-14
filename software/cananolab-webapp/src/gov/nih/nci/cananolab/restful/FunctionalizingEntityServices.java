@@ -30,11 +30,11 @@ import org.springframework.context.ApplicationContext;
 @Path("/functionalizingEntity")
 public class FunctionalizingEntityServices {
 
-private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
-	
-	@Inject
-	ApplicationContext applicationContext;
-	
+	private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
+		
+//	@Inject
+//	ApplicationContext applicationContext;
+
 	@GET
 	@Path("/setup")
 	@Produces ("application/json")

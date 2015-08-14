@@ -33,15 +33,15 @@ public class NanomaterialEntityServices {
 	
 private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 	
-	@Inject
-	ApplicationContext applicationContext;
+//	@Inject
+//	ApplicationContext applicationContext;
 	
 	@GET
 	@Path("/setup")
 	@Produces ("application/json")
     public Response setup(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId) {
 				
-		try { 
+		try {
 			NanomaterialEntityBO nanomaterialEntityBO = 
 					(NanomaterialEntityBO) SpringApplicationContext.getBean("nanomaterialEntityBO");
 			Map<String, Object> dropdownMap = nanomaterialEntityBO.setupNew(sampleId, httpRequest);

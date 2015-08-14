@@ -43,8 +43,8 @@ import org.apache.log4j.Logger;
 public class SampleServices {
 	private Logger logger = Logger.getLogger(SampleServices.class);
 	
-	@Inject
-	SpringApplicationContext applicationContext;
+//	@Inject
+//	SpringApplicationContext applicationContext;
 
 	@GET
 	@Path("/setup")
@@ -120,7 +120,6 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean("sampleBO");
 
@@ -173,7 +172,6 @@ public class SampleServices {
 	 public Response characterizationView(@Context HttpServletRequest httpRequest, 
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		try { 
-
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
 
@@ -210,7 +208,7 @@ public class SampleServices {
 			
 			java.io.File file = characterizationBO.download(fileId, httpRequest);
 			
-			return Response.ok(new FileInputStream(file)).build();
+			return Response.ok((Object) file).build();
 			
 		} catch (Exception ioe) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -269,7 +267,6 @@ public class SampleServices {
 			return Response.status(Response.Status.UNAUTHORIZED)
 					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 		}
-		
 		SampleBO sampleBO = 
 				(SampleBO) SpringApplicationContext.getBean("sampleBO");
 
@@ -579,7 +576,6 @@ public class SampleServices {
 			return Response.status(Response.Status.UNAUTHORIZED)
 					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 		}
-		
 		SampleBO sampleBO = 
 				(SampleBO) SpringApplicationContext.getBean("sampleBO");
 
@@ -604,6 +600,7 @@ public class SampleServices {
 	 public Response getSampleNames(@Context HttpServletRequest httpRequest){
 		logger.debug("In getSortedSampleNames");
 		try {
+
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean("sampleBO");
 			
@@ -629,6 +626,7 @@ public class SampleServices {
 	 public Response deleteAccess(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleSampleBean){
 		logger.debug("In deleteAccess");
 		try {
+
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean("sampleBO");
 			
@@ -656,6 +654,7 @@ public class SampleServices {
 	 public Response submitForReview(@Context HttpServletRequest httpRequest, DataReviewStatusBean reviewBean){
 		logger.debug("In submitForReview");
 		try {
+
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean("sampleBO");
 			
@@ -681,7 +680,6 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean("sampleBO");
 
@@ -824,7 +822,6 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean("sampleBO");
 
@@ -847,7 +844,7 @@ public class SampleServices {
 	@Produces ("application/vnd.ms-excel")
 	 public Response summaryExport(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse){
 		
-		try { 			
+		try { 
 			AdvancedSampleSearchBO searchSampleBO = 
 					(AdvancedSampleSearchBO) SpringApplicationContext.getBean("advancedSampleSearchBO");
 			

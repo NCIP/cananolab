@@ -16,8 +16,9 @@
     <tx:annotation-driven transaction-manager = "transactionManager" />
     <tx:annotation-driven proxy-target-class="true"/>
     -->
-    <bean class="gov.nih.nci.cananolab.restful.context.SpringApplicationContext"></bean>
     
+    <bean class="gov.nih.nci.cananolab.restful.context.SpringApplicationContext"></bean>
+  
     <bean id="loginBO"
 		class="gov.nih.nci.cananolab.restful.security.LoginBO">
 	</bean>
@@ -174,8 +175,9 @@
 	
 	<bean id="quartzScheduler"
 		class="gov.nih.nci.cananolab.restful.core.QuartzScheduler">
-		<property name="csmCleanupIntervalInMinutes" value="1" />
+		<property name="csmCleanupIntervalInMinutes" value="15" />
 		<property name="publicCountPullIntervalInHours" value="24" />
+		<property name="indexIntervalInHours" value="24" />
 	</bean>
 	
 	

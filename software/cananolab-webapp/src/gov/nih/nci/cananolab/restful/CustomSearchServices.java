@@ -29,8 +29,8 @@ public class CustomSearchServices {
 
 	private Logger logger = Logger.getLogger(CustomSearchServices.class);
 		
-		@Inject
-		SpringApplicationContext applicationContext;
+//		@Inject
+//		SpringApplicationContext applicationContext;
 		@GET
 		@Path("/search")
 		@Produces ("application/json")

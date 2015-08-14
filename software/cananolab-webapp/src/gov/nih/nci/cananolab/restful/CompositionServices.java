@@ -27,8 +27,8 @@ public class CompositionServices {
 
 private Logger logger = Logger.getLogger(CompositionServices.class);
 	
-	@Inject
-	ApplicationContext applicationContext;
+//	@Inject
+//	ApplicationContext applicationContext;
 	@GET
 	@Path("/summaryView")
 	@Produces ("application/json")
@@ -38,7 +38,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 		try { 
 			CompositionForm form = new CompositionForm();
 			form.setSampleId(sampleId);
-
+			
 		 CompositionBO compositionBO = 
 					(CompositionBO) SpringApplicationContext.getBean("compositionBO");
 
@@ -61,7 +61,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 		try { 
 			CompositionForm form = new CompositionForm();
 			form.setSampleId(sampleId);
-
+			
 			CompositionBO compositionBO = 
 					(CompositionBO) SpringApplicationContext.getBean("compositionBO");
 
@@ -87,7 +87,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 			CompositionForm form = new CompositionForm();
 			form.setSampleId(sampleId);
 			
-			
+
 			CompositionBO compositionBO = 
 					(CompositionBO) SpringApplicationContext.getBean("compositionBO");
 
@@ -110,7 +110,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 						(CompositionBO) SpringApplicationContext.getBean("compositionBO");
 				java.io.File file = compositionBO.download(fileId, httpRequest);
 				
-				return Response.ok(new FileInputStream(file)).build();
+				return Response.ok((Object) file).build();
 				
 
 			} catch (Exception e) {

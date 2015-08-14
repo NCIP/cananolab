@@ -28,8 +28,8 @@ import org.springframework.context.ApplicationContext;
 @Path("/community")
 public class CommunityServices {
 	
-	@Inject
-	ApplicationContext applicationContext;
+//	@Inject
+//	ApplicationContext applicationContext;
 	
 	private Logger logger = Logger.getLogger(CommunityServices.class);
 	

@@ -36,15 +36,15 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
 
 @Path("/publication")
 public class PublicationServices {
 
 private Logger logger = Logger.getLogger(PublicationServices.class);
-	
-	@Inject
-	ApplicationContext applicationContext;
+
+//	@Inject
+//	SpringApplicationContext applicationContext;
+
 	@GET
 	@Path("/summaryView")
 	@Produces ("application/json")
@@ -52,7 +52,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-
 		 PublicationBO publicationBO = 
 					(PublicationBO) SpringApplicationContext.getBean("publicationBO");
 
@@ -75,7 +74,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
 		
 		try { 
-
 			 PublicationBO publicationBO = 
 						(PublicationBO) SpringApplicationContext.getBean("publicationBO");
 
@@ -96,7 +94,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-
 			 PublicationBO publicationBO = 
 						(PublicationBO) SpringApplicationContext.getBean("publicationBO");
 
@@ -120,7 +117,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("type") String type){
 		
 		try { 
-			
 				 PublicationBO publicationBO = 
 						(PublicationBO) SpringApplicationContext.getBean("publicationBO");
 
@@ -140,7 +136,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-
 		 PublicationBO publicationBO = 
 					(PublicationBO) SpringApplicationContext.getBean("publicationBO");
 
@@ -207,7 +202,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("publicationId") String publicationId,@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-			 
 		 PublicationBO publicationBO = 
 					(PublicationBO) SpringApplicationContext.getBean("publicationBO");
 
@@ -259,7 +253,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	public Response submitPublication(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form) {
 	
 		try {
-			
 			PublicationBO pubBO = 
 					 (PublicationBO) SpringApplicationContext.getBean("publicationBO");
 			
@@ -395,7 +388,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	public Response deletePublication(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form) {
 	
 		try {
-			
 			PublicationBO pubBO = 
 					 (PublicationBO) SpringApplicationContext.getBean("publicationBO");
 			
@@ -422,7 +414,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	public Response deleteAccess(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form) {
 	
 		try {
-			
 			PublicationBO pubBO = 
 					 (PublicationBO) SpringApplicationContext.getBean("publicationBO");
 			
@@ -453,7 +444,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	public Response removeFromSample(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form) {
 	
 		try {
-			
 			PublicationBO pubBO = 
 					 (PublicationBO) SpringApplicationContext.getBean("publicationBO");
 			
@@ -484,7 +474,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	public Response submitForReview(@Context HttpServletRequest httpRequest, DataReviewStatusBean dataReviewStatusBean) {
 	
 		try {
-			
 			PublicationBO publicationBO = 
 					(PublicationBO) SpringApplicationContext.getBean("publicationBO");
 			
@@ -524,9 +513,9 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
 			
 			return (result.getErrors().size() > 0) ?
-					Response.ok(new FileInputStream(fileError)).build()
+					Response.ok((Object) fileError).build()
 						:
-						Response.ok(new FileInputStream(fileSuccess)).build();
+						Response.ok((Object) fileSuccess).build();
 			} 
 		catch (Exception e) {
 			return Response.ok(fileError).build();
@@ -539,7 +528,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	public Response deletePublicationById(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("publicationId") String publicationId) {
 	
 		try {
-			
 			PublicationBO pubBO = 
 					 (PublicationBO) SpringApplicationContext.getBean("publicationBO");
 			

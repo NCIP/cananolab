@@ -36,8 +36,8 @@ public class CharacterizationServices {
 
 	private Logger logger = Logger.getLogger(CharacterizationServices.class);
 	
-	@Inject
-	ApplicationContext applicationContext;
+//	@Inject
+//	ApplicationContext applicationContext;
 	
 	@GET
 	@Path("/setupEdit")

@@ -27,15 +27,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
 
 @Path("/security")
 public class SecurityServices {
 	private Logger logger = Logger.getLogger(SecurityServices.class);
 	
-	@Inject
-	SpringApplicationContext applicationContext;
-	
+//	@Inject
+//	SpringApplicationContext applicationContext;
 	/*
 	 * TODO: Need input validation logic
 	 * 
@@ -53,10 +51,10 @@ public class SecurityServices {
 		logger.info("In login service");
 		try{
 			if (username.length() == 0 || password.length() == 0)
-				return Response.serverError().entity("User name or password can't be blank").build();
+				return Response.serverError().entity("User name or password can't be blank").build();		
 			
 			LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
-			
+
 			String result = loginBo.login(username, password, httpRequest);
 			logger.info("login sessionid: " + httpRequest.getSession().getId());
 			if (!result.equals(RestfulConstants.SUCCESS)) 
@@ -83,7 +81,7 @@ public class SecurityServices {
     		@DefaultValue("") @QueryParam("registerToUserList") String registerToUserList) {
         
 		logger.info("In register service");
-		
+
 		RegisterUserBO registerBo = (RegisterUserBO) SpringApplicationContext.getBean("registerUserBO");
 		List<String> errors = registerBo.register(title, firstName, lastName, email, phone, organization, fax, comment, registerToUserList);
 		
@@ -96,7 +94,7 @@ public class SecurityServices {
 	@Produces ("application/json")
     public Response logout(@Context HttpServletRequest httpRequest) {
 		logger.info("In logout service");
-		
+			
 		LogoutBO logoutBo = (LogoutBO) SpringApplicationContext.getBean("logoutBO");
 		String result = logoutBo.logout(httpRequest);
 		return Response.ok(result).build();
@@ -140,7 +138,6 @@ public class SecurityServices {
     public Response resetPassword(@Context HttpServletRequest httpRequest, PasswordResetBean passwordBean) {
 		try{
 			logger.info("In password reset service");
-			
 			LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
 			
 			if(passwordBean.getOldPassword().equals(passwordBean.getNewPassword()))

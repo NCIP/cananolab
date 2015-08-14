@@ -31,8 +31,8 @@ public class CompositionFileServices {
 
 private Logger logger = Logger.getLogger(CompositionFileServices.class);
 	
-	@Inject
-	ApplicationContext applicationContext;
+//	@Inject
+//	ApplicationContext applicationContext;
 	
 	@GET
 	@Path("/setup")

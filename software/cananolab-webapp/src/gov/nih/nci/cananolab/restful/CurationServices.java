@@ -27,9 +27,9 @@ import org.springframework.context.ApplicationContext;
 @Path("/curation")
 public class CurationServices {
 private Logger logger = Logger.getLogger(CurationServices.class);
-	
-	@Inject
-	ApplicationContext applicationContext;
+
+//	@Inject
+//	ApplicationContext applicationContext;
 	@GET
 	@Path("/reviewData")
 	@Produces ("application/json")

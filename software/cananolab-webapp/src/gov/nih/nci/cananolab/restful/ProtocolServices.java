@@ -27,20 +27,20 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
 
 @Path("/protocol")
 public class ProtocolServices {
 private Logger logger = Logger.getLogger(ProtocolServices.class);
 	
-	@Inject
-	SpringApplicationContext applicationContext;
+//	@Inject
+//	SpringApplicationContext applicationContext;
 	@GET
 	@Path("/setup")
 	@Produces ("application/json")
     public Response setup(@Context HttpServletRequest httpRequest) {
 				
 		try { 
+			
 			SearchProtocolBO searchProtocolBO = 
 					(SearchProtocolBO) SpringApplicationContext.getBean("searchProtocolBO");
 			Map<String, Object> dropdownMap = searchProtocolBO.setup(httpRequest);
@@ -84,7 +84,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
 		
 		try { 
-
 			 ProtocolBO protocolBO = 
 						(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
 
@@ -104,7 +103,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	public Response submitProtocol(@Context HttpServletRequest httpRequest, SimpleSubmitProtocolBean form) {
 	
 		try {
-			
 			ProtocolBO protocolBO = 
 					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
 			
@@ -133,7 +131,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	    		@DefaultValue("") @QueryParam("protocolId") String protocolId){
 		
 		try { 
-			 
 			ProtocolBO protocolBO = 
 					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
 
@@ -191,7 +188,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	public Response deleteProtocol(@Context HttpServletRequest httpRequest, SimpleSubmitProtocolBean form) {
 	
 		try {
-			
 			ProtocolBO protocolBO = 
 					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
 			
@@ -218,7 +214,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	public Response deleteAccess(@Context HttpServletRequest httpRequest, SimpleSubmitProtocolBean form) {
 	
 		try {
-			
 			ProtocolBO protocolBO = 
 					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
 			
@@ -250,7 +245,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	    		@DefaultValue("") @QueryParam("protocolType") String protocolType, @DefaultValue("") @QueryParam("protocolName") String protocolName, @DefaultValue("") @QueryParam("protocolVersion") String protocolVersion){
 		
 		try { 
-			 
 			ProtocolManager protocolManager = 
 					(ProtocolManager) SpringApplicationContext.getBean("protocolManager");
 
@@ -278,7 +272,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	public Response submitForReview(@Context HttpServletRequest httpRequest, DataReviewStatusBean reviewBean) {
 	
 		try {
-			
 			ProtocolBO protocolBO = 
 					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
 			
@@ -305,7 +298,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	public Response deleteProtocolById(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("protocolId") String protocolId) {
 	
 		try {
-			
 			ProtocolBO protocolBO = 
 					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
 			
