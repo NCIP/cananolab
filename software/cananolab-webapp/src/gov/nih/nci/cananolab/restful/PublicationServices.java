@@ -515,9 +515,9 @@ ApplicationContext applicationContext = new ClassPathXmlApplicationContext("appl
 			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
 			
 			return (result.getErrors().size() > 0) ?
-					Response.ok((Object) fileError).build()
+					Response.ok(new FileInputStream(fileError)).build()
 						:
-						Response.ok((Object) fileSuccess).build();
+						Response.ok(new FileInputStream(fileSuccess)).build();
 			} 
 		catch (Exception e) {
 			return Response.ok(fileError).build();
