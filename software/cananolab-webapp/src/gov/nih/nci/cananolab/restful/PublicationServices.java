@@ -36,6 +36,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/publication")
 public class PublicationServices {
@@ -44,7 +46,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 
 //	@Inject
 //	SpringApplicationContext applicationContext;
-
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@GET
 	@Path("/summaryView")
 	@Produces ("application/json")
@@ -53,7 +55,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		
 		try { 
 		 PublicationBO publicationBO = 
-					(PublicationBO) SpringApplicationContext.getBean("publicationBO");
+					(PublicationBO) applicationContext.getBean("publicationBO");
 
 		 PublicationSummaryViewBean pubBean = publicationBO.summaryView(sampleId, httpRequest);
 			SimplePublicationSummaryViewBean view = new SimplePublicationSummaryViewBean();
@@ -75,7 +77,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		
 		try { 
 			 PublicationBO publicationBO = 
-						(PublicationBO) SpringApplicationContext.getBean("publicationBO");
+						(PublicationBO) applicationContext.getBean("publicationBO");
 
 			String result = publicationBO.download(fileId, httpRequest, httpResponse);
 		
@@ -95,7 +97,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		
 		try { 
 			 PublicationBO publicationBO = 
-						(PublicationBO) SpringApplicationContext.getBean("publicationBO");
+						(PublicationBO) applicationContext.getBean("publicationBO");
 
 			 PublicationSummaryViewBean summaryBean = publicationBO.summaryView(sampleId, httpRequest);
 			 SimplePublicationSummaryViewBean view = new SimplePublicationSummaryViewBean();
@@ -118,7 +120,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		
 		try { 
 				 PublicationBO publicationBO = 
-						(PublicationBO) SpringApplicationContext.getBean("publicationBO");
+						(PublicationBO) applicationContext.getBean("publicationBO");
 
 			 String result = publicationBO.summaryExport(sampleId, type, httpRequest, httpResponse);
 				
@@ -137,7 +139,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		
 		try { 
 		 PublicationBO publicationBO = 
-					(PublicationBO) SpringApplicationContext.getBean("publicationBO");
+					(PublicationBO) applicationContext.getBean("publicationBO");
 
 		 PublicationForm form = new PublicationForm();
 		 form.setSampleId(sampleId);
@@ -159,7 +161,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				
 		try { 
 			SearchPublicationBO searchPublicationBO = 
-					(SearchPublicationBO) SpringApplicationContext.getBean("searchPublicationBO");
+					(SearchPublicationBO) applicationContext.getBean("searchPublicationBO");
 			Map<String, Object> dropdownMap = searchPublicationBO.setup(httpRequest);
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
@@ -177,7 +179,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 		try {
 			SearchPublicationBO searchPublicationBO = 
-					(SearchPublicationBO) SpringApplicationContext.getBean("searchPublicationBO");
+					(SearchPublicationBO) applicationContext.getBean("searchPublicationBO");
 			
 						
 			List results = searchPublicationBO.search(searchForm, httpRequest);
@@ -203,7 +205,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 		
 		try { 
 		 PublicationBO publicationBO = 
-					(PublicationBO) SpringApplicationContext.getBean("publicationBO");
+					(PublicationBO) applicationContext.getBean("publicationBO");
 
 		 UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -231,7 +233,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				
 		try { 
 			PublicationBO pubBO = 
-					 (PublicationBO) SpringApplicationContext.getBean("publicationBO");
+					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -254,7 +256,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 		try {
 			PublicationBO pubBO = 
-					 (PublicationBO) SpringApplicationContext.getBean("publicationBO");
+					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -280,7 +282,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("id") String id, @QueryParam("type") String type){
 		
 		PublicationManager pubManager = 
-				(PublicationManager) SpringApplicationContext.getBean("publicationManager");
+				(PublicationManager) applicationContext.getBean("publicationManager");
 
 		try {
 			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
@@ -305,7 +307,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				
 		try { 
 			PublicationManager pubManager = 
-					 (PublicationManager) SpringApplicationContext.getBean("publicationManager");
+					 (PublicationManager) applicationContext.getBean("publicationManager");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -331,7 +333,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 				
 		try { 
 			PublicationManager pubManager = 
-					 (PublicationManager) SpringApplicationContext.getBean("publicationManager");
+					 (PublicationManager) applicationContext.getBean("publicationManager");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -360,7 +362,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 		try {
 			PublicationBO pubBO = 
-					 (PublicationBO) SpringApplicationContext.getBean("publicationBO");
+					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -389,7 +391,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 		try {
 			PublicationBO pubBO = 
-					 (PublicationBO) SpringApplicationContext.getBean("publicationBO");
+					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -415,7 +417,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 		try {
 			PublicationBO pubBO = 
-					 (PublicationBO) SpringApplicationContext.getBean("publicationBO");
+					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -445,7 +447,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 		try {
 			PublicationBO pubBO = 
-					 (PublicationBO) SpringApplicationContext.getBean("publicationBO");
+					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -475,7 +477,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 		try {
 			PublicationBO publicationBO = 
-					(PublicationBO) SpringApplicationContext.getBean("publicationBO");
+					(PublicationBO) applicationContext.getBean("publicationBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -501,7 +503,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("type") String type, @QueryParam("id") String id){
 		
 		PublicationManager pubManager = 
-				(PublicationManager) SpringApplicationContext.getBean("publicationManager");
+				(PublicationManager) applicationContext.getBean("publicationManager");
 		
 		String fileRoot = PropertyUtils.getProperty(
 								Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
@@ -529,7 +531,7 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 		try {
 			PublicationBO pubBO = 
-					 (PublicationBO) SpringApplicationContext.getBean("publicationBO");
+					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 

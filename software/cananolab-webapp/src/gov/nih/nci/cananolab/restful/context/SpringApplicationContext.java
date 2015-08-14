@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContextAware;
 
 public class SpringApplicationContext implements ApplicationContextAware {
 	 
-	private static ApplicationContext appContext;
+	private ApplicationContext appContext;
  
 	// Private constructor prevents instantiation from other classes
     	private SpringApplicationContext() {}
@@ -18,7 +18,11 @@ public class SpringApplicationContext implements ApplicationContextAware {
 
 	}
  
-	public static Object getBean(String beanName) {
+	public Object getBean(String beanName) {
 		return appContext.getBean(beanName);
+	}
+	
+	public ApplicationContext getContext(){
+		return appContext;
 	}
 }

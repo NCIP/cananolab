@@ -54,6 +54,7 @@ import org.apache.log4j.Logger;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/core")
 public class CoreServices {
@@ -62,7 +63,7 @@ public class CoreServices {
 //	SpringApplicationContext applicationContext;
 	
 	private Logger logger = Logger.getLogger(CoreServices.class);
-	
+	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@GET
 	@Path("/initSetup")
 	@Produces ("application/json")
@@ -89,7 +90,7 @@ public class CoreServices {
 		
 		logger.info("In getTabs service");
 		
-		TabGenerationBO tabGen = (TabGenerationBO)SpringApplicationContext.getBean("tabGenerationBO");
+		TabGenerationBO tabGen = (TabGenerationBO)applicationContext.getBean("tabGenerationBO");
 		SimpleTabsBean tabs = tabGen.getTabs(httpRequest, homePage);
 		
 		return Response.ok(tabs).build();
@@ -103,7 +104,7 @@ public class CoreServices {
 				
 		try { 
 			AccessibilityManager accManager = 
-					 (AccessibilityManager) SpringApplicationContext.getBean("accessibilityManager");
+					 (AccessibilityManager) applicationContext.getBean("accessibilityManager");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -126,7 +127,7 @@ public class CoreServices {
 				
 		try { 
 			WorkspaceManager manager = 
-					 (WorkspaceManager) SpringApplicationContext.getBean("workspaceManager");
+					 (WorkspaceManager) applicationContext.getBean("workspaceManager");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -152,7 +153,7 @@ public class CoreServices {
 				
 		try { 
 			WorkspaceManager manager = 
-					 (WorkspaceManager) SpringApplicationContext.getBean("workspaceManager");
+					 (WorkspaceManager) applicationContext.getBean("workspaceManager");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -178,7 +179,7 @@ public class CoreServices {
 				
 		try { 
 			AccessibilityManager accManager = 
-					 (AccessibilityManager) SpringApplicationContext.getBean("accessibilityManager");
+					 (AccessibilityManager) applicationContext.getBean("accessibilityManager");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -201,7 +202,7 @@ public class CoreServices {
 		logger.info("In getOrganizationByName");
 		try { 
 			PointOfContactManager manager = 
-					 (PointOfContactManager) SpringApplicationContext.getBean("pointOfContactManager");
+					 (PointOfContactManager) applicationContext.getBean("pointOfContactManager");
 			if (manager == null)
 				logger.info("manager is null" );
 			
@@ -229,7 +230,7 @@ public class CoreServices {
 	
 		try {
 			ProtocolBO protocolBO = 
-					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
+					(ProtocolBO) applicationContext.getBean("protocolBO");
 			String fileName = null;
 			InputStream fileInputStream = null;
 			
@@ -275,7 +276,7 @@ public class CoreServices {
 				
 		try { 
 			FavoritesBO favorite = 
-					 (FavoritesBO) SpringApplicationContext.getBean("favoritesBO");
+					 (FavoritesBO) applicationContext.getBean("favoritesBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -297,7 +298,7 @@ public class CoreServices {
 				
 		try { 
 			FavoritesBO favorite = 
-					 (FavoritesBO) SpringApplicationContext.getBean("favoritesBO");
+					 (FavoritesBO) applicationContext.getBean("favoritesBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -317,7 +318,7 @@ public class CoreServices {
 				
 		try { 
 			FavoritesBO favorite = 
-					 (FavoritesBO) SpringApplicationContext.getBean("favoritesBO");
+					 (FavoritesBO) applicationContext.getBean("favoritesBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)

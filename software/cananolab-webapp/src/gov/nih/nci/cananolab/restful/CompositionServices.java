@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/composition")
 public class CompositionServices {
@@ -29,6 +30,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 	
 //	@Inject
 //	ApplicationContext applicationContext;
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@GET
 	@Path("/summaryView")
 	@Produces ("application/json")
@@ -40,7 +42,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 			form.setSampleId(sampleId);
 			
 		 CompositionBO compositionBO = 
-					(CompositionBO) SpringApplicationContext.getBean("compositionBO");
+					(CompositionBO) applicationContext.getBean("compositionBO");
 
 		 CompositionBean compBean = compositionBO.summaryView(form, httpRequest);
 			SimpleCompositionBean view = new SimpleCompositionBean();
@@ -63,7 +65,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 			form.setSampleId(sampleId);
 			
 			CompositionBO compositionBO = 
-					(CompositionBO) SpringApplicationContext.getBean("compositionBO");
+					(CompositionBO) applicationContext.getBean("compositionBO");
 
 			CompositionBean compBean = compositionBO.summaryPrint(form, httpRequest);
 			SimpleCompositionBean view = new SimpleCompositionBean();
@@ -89,7 +91,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 			
 
 			CompositionBO compositionBO = 
-					(CompositionBO) SpringApplicationContext.getBean("compositionBO");
+					(CompositionBO) applicationContext.getBean("compositionBO");
 
 			 String result = compositionBO.summaryExport(form, type, httpRequest, httpResponse);
 				
@@ -107,7 +109,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 		    		@DefaultValue("") @QueryParam("fileId") String fileId){
 			try {
 				CompositionBO compositionBO = 
-						(CompositionBO) SpringApplicationContext.getBean("compositionBO");
+						(CompositionBO) applicationContext.getBean("compositionBO");
 				java.io.File file = compositionBO.download(fileId, httpRequest);
 				
 				return Response.ok((Object) file).build();
@@ -125,7 +127,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 		    		@DefaultValue("") @QueryParam("fileId") String fileId){
 			try {
 				CompositionBO compositionBO = 
-						(CompositionBO) SpringApplicationContext.getBean("compositionBO");
+						(CompositionBO) applicationContext.getBean("compositionBO");
 				
 				String result = compositionBO.download(fileId, httpRequest, httpResponse);
 				return Response.ok(result).build();

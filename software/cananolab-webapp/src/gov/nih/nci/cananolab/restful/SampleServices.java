@@ -38,6 +38,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/sample")
 public class SampleServices {
@@ -45,6 +47,7 @@ public class SampleServices {
 	
 //	@Inject
 //	SpringApplicationContext applicationContext;
+	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 
 	@GET
 	@Path("/setup")
@@ -54,7 +57,7 @@ public class SampleServices {
 		
 		try { 
 			SearchSampleBO searchSampleBO = 
-					(SearchSampleBO) SpringApplicationContext.getBean("searchSampleBO");
+					(SearchSampleBO) applicationContext.getBean("searchSampleBO");
 			Map<String, List<String>> dropdownTypeLists = searchSampleBO.setup(httpRequest);
 
 			return Response.ok(dropdownTypeLists).build();
@@ -73,7 +76,7 @@ public class SampleServices {
     		@DefaultValue("") @QueryParam("type") String type) {
 		
 		SearchSampleBO searchSampleBO = 
-				(SearchSampleBO) SpringApplicationContext.getBean("searchSampleBO");
+				(SearchSampleBO) applicationContext.getBean("searchSampleBO");
 		
 		try {
 			List<String> characterizations = searchSampleBO.getCharacterizationByType(httpRequest, type);
@@ -91,7 +94,7 @@ public class SampleServices {
 		
 		try {
 			SearchSampleBO searchSampleBO = 
-					(SearchSampleBO) SpringApplicationContext.getBean("searchSampleBO");
+					(SearchSampleBO) applicationContext.getBean("searchSampleBO");
 			
 			List results = searchSampleBO.search(searchForm, httpRequest);
 			
@@ -121,7 +124,7 @@ public class SampleServices {
 		
 		try { 
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 
 			SimpleSampleBean sampleBean = sampleBO.summaryView(sampleId,httpRequest);
 			
@@ -150,7 +153,7 @@ public class SampleServices {
 		try { 
 
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 
 			SimpleSampleBean sampleBean = sampleBO.dataAvailabilityView(sampleId,httpRequest);
 			
@@ -173,7 +176,7 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		try { 
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
 
 			CharacterizationSummaryViewBean charView = characterizationBO.summaryView(sampleId,httpRequest);
 			SimpleCharacterizationSummaryViewBean viewBean = new SimpleCharacterizationSummaryViewBean();
@@ -204,7 +207,7 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
 			
 			java.io.File file = characterizationBO.download(fileId, httpRequest);
 			
@@ -223,7 +226,7 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
 			
 			String result = characterizationBO.download(fileId, httpRequest, httpResponse);
 			return Response.ok(result).build();
@@ -243,7 +246,7 @@ public class SampleServices {
 	
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) SpringApplicationContext.getBean("characterizationBO");
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
 			
 			String result = characterizationBO.summaryExport(sampleId, type, httpRequest, httpResponse);
 			return Response.ok(result).build();
@@ -268,7 +271,7 @@ public class SampleServices {
 					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 		}
 		SampleBO sampleBO = 
-				(SampleBO) SpringApplicationContext.getBean("sampleBO");
+				(SampleBO) applicationContext.getBean("sampleBO");
 
 		try {
 			SampleEditGeneralBean sampleBean = sampleBO.summaryEdit(sampleId,httpRequest);
@@ -293,7 +296,7 @@ public class SampleServices {
 		SampleEditGeneralBean editBean = null;
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -323,7 +326,7 @@ public class SampleServices {
 		logger.debug("In saveAccess");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -349,7 +352,7 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		SampleBO sampleBO = 
-				(SampleBO) SpringApplicationContext.getBean("sampleBO");
+				(SampleBO) applicationContext.getBean("sampleBO");
 		
 		if (! SecurityUtil.isUserLoggedIn(httpRequest))
 			return Response.status(Response.Status.UNAUTHORIZED)
@@ -374,7 +377,7 @@ public class SampleServices {
 		logger.info("In updateSample");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -400,7 +403,7 @@ public class SampleServices {
 		logger.debug("In submitSample");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -429,7 +432,7 @@ public class SampleServices {
 		logger.debug("In copySample");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -460,7 +463,7 @@ public class SampleServices {
 		logger.debug("In deleteSample");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -489,7 +492,7 @@ public class SampleServices {
 		logger.debug("In deleteSampleFromWorkspace");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -518,7 +521,7 @@ public class SampleServices {
 		logger.debug("In deleteSample");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -545,7 +548,7 @@ public class SampleServices {
 		logger.debug("In deleteDataAvailability");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -577,7 +580,7 @@ public class SampleServices {
 					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
 		}
 		SampleBO sampleBO = 
-				(SampleBO) SpringApplicationContext.getBean("sampleBO");
+				(SampleBO) applicationContext.getBean("sampleBO");
 
 		try {
 			SampleEditGeneralBean sampleBean = sampleBO.setupNew(httpRequest);
@@ -602,7 +605,7 @@ public class SampleServices {
 		try {
 
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -628,7 +631,7 @@ public class SampleServices {
 		try {
 
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -656,7 +659,7 @@ public class SampleServices {
 		try {
 
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -681,7 +684,7 @@ public class SampleServices {
 		
 		try { 
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 
 			String sampelName = sampleBO.getCurrentSampleNameInSession(httpRequest, sampleId);
 			
@@ -707,7 +710,7 @@ public class SampleServices {
 		
 		try { 
 			AdvancedSampleSearchBO searchSampleBO = 
-					(AdvancedSampleSearchBO) SpringApplicationContext.getBean("advancedSampleSearchBO");
+					(AdvancedSampleSearchBO) applicationContext.getBean("advancedSampleSearchBO");
 			
 			Map<String, Object> dropdownTypeLists = searchSampleBO.setup(httpRequest);
 			//AdvancedSampleSearchBean searchBean = searchSampleBO.setup(httpRequest);
@@ -728,7 +731,7 @@ public class SampleServices {
 		
 		try { 
 			CharacterizationManager characterizationMgr = 
-					(CharacterizationManager) SpringApplicationContext.getBean("characterizationManager");
+					(CharacterizationManager) applicationContext.getBean("characterizationManager");
 			
 			List<LabelValueBean> charOptions = characterizationMgr.getDecoratedCharacterizationOptions(httpRequest, charType);
 					//searchSampleBO.setup(httpRequest);
@@ -750,7 +753,7 @@ public class SampleServices {
 		
 		try { 
 			CharacterizationResultManager characterizationMgr = 
-					(CharacterizationResultManager) SpringApplicationContext.getBean("characterizationResultManager");
+					(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
 			
 			List<LabelValueBean> datumOptions = characterizationMgr.getDecoratedDatumNameOptions(
 					httpRequest, charType, charName, null);
@@ -771,7 +774,7 @@ public class SampleServices {
 		
 		try {
 			CharacterizationResultManager characterizationResultManager = 
-				(CharacterizationResultManager) SpringApplicationContext.getBean("characterizationResultManager");
+				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
 			
 			List<String> names = characterizationResultManager
 					.getColumnValueUnitOptions(httpRequest, datumName, "", false);
@@ -795,7 +798,7 @@ public class SampleServices {
 		
 		try {
 			AdvancedSampleSearchBO searchSampleBO = 
-					(AdvancedSampleSearchBO) SpringApplicationContext.getBean("advancedSampleSearchBO");
+					(AdvancedSampleSearchBO) applicationContext.getBean("advancedSampleSearchBO");
 			
 			SimpleAdvancedSearchResultView resultView = searchSampleBO.search(httpRequest, searchBean);
 			
@@ -823,7 +826,7 @@ public class SampleServices {
 		
 		try { 
 			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean("sampleBO");
+					(SampleBO) applicationContext.getBean("sampleBO");
 
 			boolean editable = sampleBO.isSampleEditableByCurrentUser(httpRequest, sampleId);
 			
@@ -846,7 +849,7 @@ public class SampleServices {
 		
 		try { 
 			AdvancedSampleSearchBO searchSampleBO = 
-					(AdvancedSampleSearchBO) SpringApplicationContext.getBean("advancedSampleSearchBO");
+					(AdvancedSampleSearchBO) applicationContext.getBean("advancedSampleSearchBO");
 			
 			 String result = searchSampleBO.export(httpRequest, httpResponse);
 				

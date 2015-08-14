@@ -26,6 +26,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/functionalizingEntity")
 public class FunctionalizingEntityServices {
@@ -34,6 +35,7 @@ public class FunctionalizingEntityServices {
 		
 //	@Inject
 //	ApplicationContext applicationContext;
+	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 
 	@GET
 	@Path("/setup")
@@ -42,7 +44,7 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) SpringApplicationContext.getBean("functionalizingEntityBO");
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
 			Map<String, Object> dropdownMap = functionalizingEntity.setupNew(sampleId, httpRequest);
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
@@ -59,7 +61,7 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) SpringApplicationContext.getBean("functionalizingEntityBO");
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -85,7 +87,7 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) SpringApplicationContext.getBean("functionalizingEntityBO");
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -111,7 +113,7 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) SpringApplicationContext.getBean("functionalizingEntityBO");
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -137,7 +139,7 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) SpringApplicationContext.getBean("functionalizingEntityBO");
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -163,7 +165,7 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) SpringApplicationContext.getBean("functionalizingEntityBO");
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -189,7 +191,7 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) SpringApplicationContext.getBean("functionalizingEntityBO");
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -215,7 +217,7 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) SpringApplicationContext.getBean("functionalizingEntityBO");
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -239,7 +241,7 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) SpringApplicationContext.getBean("functionalizingEntityBO");
+					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
 			
 			FunctionalizingEntityBean entityBean = functionalizingEntity.setupFunctionalizingEntityForAdvancedSearch(sampleId, dataId, httpRequest);
 			

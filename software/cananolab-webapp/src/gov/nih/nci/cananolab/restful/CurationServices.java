@@ -23,6 +23,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/curation")
 public class CurationServices {
@@ -30,6 +31,7 @@ private Logger logger = Logger.getLogger(CurationServices.class);
 
 //	@Inject
 //	ApplicationContext applicationContext;
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@GET
 	@Path("/reviewData")
 	@Produces ("application/json")
@@ -37,7 +39,7 @@ private Logger logger = Logger.getLogger(CurationServices.class);
 				
 		try { 
 			ReviewDataBO reviewDataBO = 
-					(ReviewDataBO) SpringApplicationContext.getBean("reviewDataBO");
+					(ReviewDataBO) applicationContext.getBean("reviewDataBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -59,7 +61,7 @@ private Logger logger = Logger.getLogger(CurationServices.class);
 	
 		try {
 			BatchDataAvailabilityBO batchDataAvailabilityBO = 
-					(BatchDataAvailabilityBO) SpringApplicationContext.getBean("batchDataAvailabilityBO");
+					(BatchDataAvailabilityBO) applicationContext.getBean("batchDataAvailabilityBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 
 			if (user == null) 
@@ -81,7 +83,7 @@ private Logger logger = Logger.getLogger(CurationServices.class);
 				
 		try { 
 			ManageResultBO manageResultBO = 
-					(ManageResultBO) SpringApplicationContext.getBean("manageResultBO");
+					(ManageResultBO) applicationContext.getBean("manageResultBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 

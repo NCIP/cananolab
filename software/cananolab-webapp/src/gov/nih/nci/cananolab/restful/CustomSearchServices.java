@@ -24,6 +24,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 @Path("/customsearch")
 public class CustomSearchServices {
 
@@ -31,6 +33,7 @@ public class CustomSearchServices {
 		
 //		@Inject
 //		SpringApplicationContext applicationContext;
+	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 		@GET
 		@Path("/search")
 		@Produces ("application/json")
@@ -38,7 +41,7 @@ public class CustomSearchServices {
 					
 			try { 
 				CustomSearchBO customSearchBO = 
-						(CustomSearchBO) SpringApplicationContext.getBean("customSearchBO");
+						(CustomSearchBO) applicationContext.getBean("customSearchBO");
 				
 				List<CustomSearchBean> results = customSearchBO.search(httpRequest, keyword);
 				return Response.ok(results).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();

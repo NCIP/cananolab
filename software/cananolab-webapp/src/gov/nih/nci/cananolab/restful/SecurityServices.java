@@ -27,6 +27,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/security")
 public class SecurityServices {
@@ -39,7 +41,7 @@ public class SecurityServices {
 	 * 
 	 *    Ref. to validation.xml
 	 */
-
+	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@POST
 	@Path("/login")
 	@Produces ("application/json")
@@ -53,7 +55,7 @@ public class SecurityServices {
 			if (username.length() == 0 || password.length() == 0)
 				return Response.serverError().entity("User name or password can't be blank").build();		
 			
-			LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
+			LoginBO loginBo = (LoginBO) applicationContext.getBean("loginBO");
 
 			String result = loginBo.login(username, password, httpRequest);
 			logger.info("login sessionid: " + httpRequest.getSession().getId());
@@ -82,7 +84,7 @@ public class SecurityServices {
         
 		logger.info("In register service");
 
-		RegisterUserBO registerBo = (RegisterUserBO) SpringApplicationContext.getBean("registerUserBO");
+		RegisterUserBO registerBo = (RegisterUserBO) applicationContext.getBean("registerUserBO");
 		List<String> errors = registerBo.register(title, firstName, lastName, email, phone, organization, fax, comment, registerToUserList);
 		
 		return (errors == null || errors.size() == 0) ? Response.ok("success").build() : 
@@ -95,7 +97,7 @@ public class SecurityServices {
     public Response logout(@Context HttpServletRequest httpRequest) {
 		logger.info("In logout service");
 			
-		LogoutBO logoutBo = (LogoutBO) SpringApplicationContext.getBean("logoutBO");
+		LogoutBO logoutBo = (LogoutBO) applicationContext.getBean("logoutBO");
 		String result = logoutBo.logout(httpRequest);
 		return Response.ok(result).build();
 	}
@@ -138,7 +140,7 @@ public class SecurityServices {
     public Response resetPassword(@Context HttpServletRequest httpRequest, PasswordResetBean passwordBean) {
 		try{
 			logger.info("In password reset service");
-			LoginBO loginBo = (LoginBO) SpringApplicationContext.getBean("loginBO");
+			LoginBO loginBo = (LoginBO) applicationContext.getBean("loginBO");
 			
 			if(passwordBean.getOldPassword().equals(passwordBean.getNewPassword()))
 				return Response.serverError().entity("old password and new password can't be same").build();

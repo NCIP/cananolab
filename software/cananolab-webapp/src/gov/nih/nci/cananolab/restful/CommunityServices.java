@@ -24,13 +24,14 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/community")
 public class CommunityServices {
 	
 //	@Inject
 //	ApplicationContext applicationContext;
-	
+	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	private Logger logger = Logger.getLogger(CommunityServices.class);
 	
 	@GET
@@ -41,7 +42,7 @@ public class CommunityServices {
 				
 		try { 
 			CollaborationGroupBO collGroupBO = 
-					 (CollaborationGroupBO) SpringApplicationContext.getBean("collaborationGroupBO");
+					 (CollaborationGroupBO) applicationContext.getBean("collaborationGroupBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -68,7 +69,7 @@ public class CommunityServices {
 				
 		try { 
 			CollaborationGroupBO collGroupBO = 
-					 (CollaborationGroupBO) SpringApplicationContext.getBean("collaborationGroupBO");
+					 (CollaborationGroupBO) applicationContext.getBean("collaborationGroupBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -96,7 +97,7 @@ public class CommunityServices {
 				
 		try { 
 			CollaborationGroupBO collGroupBO = 
-					 (CollaborationGroupBO) SpringApplicationContext.getBean("collaborationGroupBO");
+					 (CollaborationGroupBO) applicationContext.getBean("collaborationGroupBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -124,7 +125,7 @@ public class CommunityServices {
 				
 		try { 
 			CollaborationGroupManager collGroupManager = 
-					 (CollaborationGroupManager) SpringApplicationContext.getBean("collaborationGroupManger");
+					 (CollaborationGroupManager) applicationContext.getBean("collaborationGroupManger");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -151,7 +152,7 @@ public class CommunityServices {
 				
 		try { 
 			CollaborationGroupManager collGroupManager = 
-					 (CollaborationGroupManager) SpringApplicationContext.getBean("collaborationGroupManger");
+					 (CollaborationGroupManager) applicationContext.getBean("collaborationGroupManger");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -178,7 +179,7 @@ public class CommunityServices {
 				
 		try { 
 			CollaborationGroupManager collGroupManager = 
-					 (CollaborationGroupManager) SpringApplicationContext.getBean("collaborationGroupManger");
+					 (CollaborationGroupManager) applicationContext.getBean("collaborationGroupManger");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -204,7 +205,7 @@ public class CommunityServices {
 				
 		try { 
 			CollaborationGroupBO collGroupBO = 
-					 (CollaborationGroupBO) SpringApplicationContext.getBean("collaborationGroupBO");
+					 (CollaborationGroupBO) applicationContext.getBean("collaborationGroupBO");
 			
 			if (! SecurityUtil.isUserLoggedIn(httpRequest))
 				return Response.status(Response.Status.UNAUTHORIZED)

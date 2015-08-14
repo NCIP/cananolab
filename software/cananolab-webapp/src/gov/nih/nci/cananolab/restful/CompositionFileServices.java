@@ -26,6 +26,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 @Path("/compositionFile")
 public class CompositionFileServices {
 
@@ -33,7 +34,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 	
 //	@Inject
 //	ApplicationContext applicationContext;
-	
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@GET
 	@Path("/setup")
 	@Produces ("application/json")
@@ -41,7 +42,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 				
 		try { 
 			CompositionFileBO compBO = 
-					(CompositionFileBO) SpringApplicationContext.getBean("compositionFileBO");
+					(CompositionFileBO) applicationContext.getBean("compositionFileBO");
 			Map<String, Object> dropdownMap = compBO.setupNew(httpRequest);
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
@@ -58,7 +59,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 				
 		try { 
 			CompositionFileBO compBO = 
-					(CompositionFileBO) SpringApplicationContext.getBean("compositionFileBO");
+					(CompositionFileBO) applicationContext.getBean("compositionFileBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -84,7 +85,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 				
 		try { 
 			CompositionFileBO compBO = 
-					(CompositionFileBO) SpringApplicationContext.getBean("compositionFileBO");
+					(CompositionFileBO) applicationContext.getBean("compositionFileBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -110,7 +111,7 @@ private Logger logger = Logger.getLogger(CompositionFileServices.class);
 				
 		try { 
 			CompositionFileBO compBO = 
-					(CompositionFileBO) SpringApplicationContext.getBean("compositionFileBO");
+					(CompositionFileBO) applicationContext.getBean("compositionFileBO");
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)

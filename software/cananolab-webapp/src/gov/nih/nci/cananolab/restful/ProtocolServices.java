@@ -27,13 +27,16 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/protocol")
 public class ProtocolServices {
 private Logger logger = Logger.getLogger(ProtocolServices.class);
 	
 //	@Inject
-//	SpringApplicationContext applicationContext;
+//	applicationContext applicationContext;
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@GET
 	@Path("/setup")
 	@Produces ("application/json")
@@ -42,7 +45,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 		try { 
 			
 			SearchProtocolBO searchProtocolBO = 
-					(SearchProtocolBO) SpringApplicationContext.getBean("searchProtocolBO");
+					(SearchProtocolBO) applicationContext.getBean("searchProtocolBO");
 			Map<String, Object> dropdownMap = searchProtocolBO.setup(httpRequest);
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
@@ -60,7 +63,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	
 		try {
 			SearchProtocolBO searchProtocolBO = 
-					(SearchProtocolBO) SpringApplicationContext.getBean("searchProtocolBO");
+					(SearchProtocolBO) applicationContext.getBean("searchProtocolBO");
 			
 						
 			List results = searchProtocolBO.search(searchForm, httpRequest);
@@ -85,7 +88,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 		
 		try { 
 			 ProtocolBO protocolBO = 
-						(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
+						(ProtocolBO) applicationContext.getBean("protocolBO");
 
 			String result = protocolBO.download(fileId, httpRequest, httpResponse);
 		
@@ -104,7 +107,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	
 		try {
 			ProtocolBO protocolBO = 
-					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
+					(ProtocolBO) applicationContext.getBean("protocolBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -132,7 +135,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 		
 		try { 
 			ProtocolBO protocolBO = 
-					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
+					(ProtocolBO) applicationContext.getBean("protocolBO");
 
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -160,7 +163,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	
 		try {
 			ProtocolBO protocolBO = 
-					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
+					(ProtocolBO) applicationContext.getBean("protocolBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -189,7 +192,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	
 		try {
 			ProtocolBO protocolBO = 
-					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
+					(ProtocolBO) applicationContext.getBean("protocolBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -215,7 +218,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	
 		try {
 			ProtocolBO protocolBO = 
-					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
+					(ProtocolBO) applicationContext.getBean("protocolBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -246,7 +249,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 		
 		try { 
 			ProtocolManager protocolManager = 
-					(ProtocolManager) SpringApplicationContext.getBean("protocolManager");
+					(ProtocolManager) applicationContext.getBean("protocolManager");
 
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -273,7 +276,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	
 		try {
 			ProtocolBO protocolBO = 
-					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
+					(ProtocolBO) applicationContext.getBean("protocolBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 
@@ -299,7 +302,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	
 		try {
 			ProtocolBO protocolBO = 
-					(ProtocolBO) SpringApplicationContext.getBean("protocolBO");
+					(ProtocolBO) applicationContext.getBean("protocolBO");
 			
 			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
 			if (user == null) 

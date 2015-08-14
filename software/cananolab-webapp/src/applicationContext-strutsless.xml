@@ -17,8 +17,8 @@
     <tx:annotation-driven proxy-target-class="true"/>
     -->
     
-  <!--   <bean id="appContext"
-    	class="gov.nih.nci.cananolab.restful.context.SpringApplicationContext"></bean>--> 
+   <!--   <bean id="appContext"
+    	class="gov.nih.nci.cananolab.restful.context.SpringApplicationContext"></bean>  -->
   
     <bean id="loginBO"
 		class="gov.nih.nci.cananolab.restful.security.LoginBO">
@@ -174,12 +174,12 @@
 		class="gov.nih.nci.cananolab.restful.sample.CompositionManager">
 	</bean>
 	
-	<bean id="quartzScheduler"
+<!--  	<bean id="quartzScheduler"
 		class="gov.nih.nci.cananolab.restful.core.QuartzScheduler">
 		<property name="csmCleanupIntervalInMinutes" value="15" />
 		<property name="publicCountPullIntervalInHours" value="24" />
 		<property name="indexIntervalInHours" value="24" />
-	</bean>
+	</bean>  -->
 	
 	
 	<bean id="advancedSampleSearchBO"
