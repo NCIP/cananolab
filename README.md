@@ -10,6 +10,7 @@ You will find more details about the caNanoLab in the following links:
  * [Code Repository] (https://github.com/NCIP/cananolab)
  * [ICR Nanotech Working Group] (https://wiki.nci.nih.gov/x/HgiG)
  * [Release Notes] (https://wiki.nci.nih.gov/x/mYEFCw)
+ * [FAQ] (https://wiki.nci.nih.gov/x/UKml)
  * [NCI Hosted Instance] (https://cananolab.nci.nih.gov/caNanoLab/)
 
 Please join us in further developing and improving caNanoLab.
