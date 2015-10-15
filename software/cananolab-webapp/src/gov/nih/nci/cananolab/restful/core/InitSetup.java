@@ -8,20 +8,17 @@
 
 package gov.nih.nci.cananolab.restful.core;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
-import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.service.PublicDataCountJob;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -229,10 +226,31 @@ public class InitSetup {
 		SortedSet<String> types = null;
 		if (updateSession) {
 			types = new TreeSet<String>(defaultTypes);
+			
+			if (contextAttributeForDefaults.equals("defaultFunctionalizingEntityTypes")) {
+				Iterator<String> ite = types.iterator();
+				while (ite.hasNext())
+					System.out.println("DefaultType: " + ite.next());
+			}
+			
 			SortedSet<String> otherTypes = LookupService
 					.getAllOtherObjectTypes(otherFullParentClassName);
+			
+			if (otherTypes != null && contextAttributeForDefaults.equals("defaultFunctionalizingEntityTypes")) {
+				Iterator<String> ite = otherTypes.iterator();
+				while (ite.hasNext())
+					System.out.println("otherTypes: " + ite.next());
+			}
+			
 			if (otherTypes != null)
 				types.addAll(otherTypes);
+			
+			if (contextAttributeForDefaults.equals("defaultFunctionalizingEntityTypes")) {
+				Iterator<String> ite = types.iterator();
+				while (ite.hasNext())
+					System.out.println("Combined types: " + ite.next());
+			}
+			
 			request.getSession().setAttribute(sessionAttribute, types);
 		} else {
 			types = new TreeSet<String>((SortedSet<? extends String>) (request
@@ -305,86 +323,90 @@ public class InitSetup {
 		}
 	}
 
-	//public List<LabelValueBean> getDefaultAndOtherTypesByLookupAsOptions(
-	public void getDefaultAndOtherTypesByLookupAsOptions(
+	public List<LabelValueBean> getDefaultAndOtherTypesByLookupAsOptions(
+	
 			String lookupName, String lookupAttribute, String otherTypeAttribute)
 			throws Exception {
-//		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
-//		SortedSet<String> defaultValues = LookupService.findLookupValues(
-//				lookupName, lookupAttribute);
-//		// annotate the label of the default ones with *s.
-//		for (String name : defaultValues) {
-//			LabelValueBean lv = new LabelValueBean(name, name);
-//			lvBeans.add(lv);
-//		}
-//		SortedSet<String> otherValues = LookupService.findLookupValues(
-//				lookupName, otherTypeAttribute);
-//		for (String name : otherValues) {
-//			LabelValueBean lv = new LabelValueBean("[" + name + "]", name);
-//			lvBeans.add(lv);
-//		}
-//		return lvBeans;
+		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
+		SortedSet<String> defaultValues = LookupService.findLookupValues(
+				lookupName, lookupAttribute);
+		// annotate the label of the default ones with *s.
+		for (String name : defaultValues) {
+			LabelValueBean lv = new LabelValueBean(name, name);
+			lvBeans.add(lv);
+		}
+		SortedSet<String> otherValues = LookupService.findLookupValues(
+				lookupName, otherTypeAttribute);
+		for (String name : otherValues) {
+			LabelValueBean lv = new LabelValueBean("[" + name + "]", name);
+			lvBeans.add(lv);
+		}
+		return lvBeans;
 	}
 
 	//public List<LabelValueBean> getDefaultAndOtherTypesByReflectionAsOptions(
-			public void getDefaultAndOtherTypesByReflectionAsOptions(
+	public List<LabelValueBean> getDefaultAndOtherTypesByReflectionAsOptions(
 			ServletContext appContext, String contextAttributeForDefaults,
 			String fullParentClassName, String otherFullParentClassName)
 			throws Exception {
-//		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
-//		SortedSet<String> defaultTypes = getDefaultTypesByReflection(
-//				appContext, contextAttributeForDefaults, fullParentClassName);
-//		for (String type : defaultTypes) {
-//			LabelValueBean lv = new LabelValueBean(type, type);
-//			lvBeans.add(lv);
-//		}
-//
-//		SortedSet<String> otherTypes = LookupService
-//				.getAllOtherObjectTypes(otherFullParentClassName);
-//		if (otherTypes != null) {
-//			for (String type : otherTypes) {
-//				LabelValueBean lv = new LabelValueBean("[" + type + "]", type);
-//				lvBeans.add(lv);
-//			}
-//		}
-//		return lvBeans;
+		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
+		SortedSet<String> defaultTypes = getDefaultTypesByReflection(
+				appContext, contextAttributeForDefaults, fullParentClassName);
+		for (String type : defaultTypes) {
+			LabelValueBean lv = new LabelValueBean(type, type);
+			lvBeans.add(lv);
+		}
+
+		SortedSet<String> otherTypes = LookupService
+				.getAllOtherObjectTypes(otherFullParentClassName);
+		if (otherTypes != null) {
+			for (String type : otherTypes) {
+				LabelValueBean lv = new LabelValueBean("[" + type + "]", type);
+				lvBeans.add(lv);
+			}
+		}
+		return lvBeans;
 	}
 
 	public void setStaticOptions(ServletContext appContext) {
-//		LabelValueBean[] booleanOptions = new LabelValueBean[] {
-//				new LabelValueBean("true", "1"),
-//				new LabelValueBean("false", "0") };
-//		appContext.setAttribute("booleanOptions", booleanOptions);
-//
+		LabelValueBean[] booleanOptions = new LabelValueBean[] {
+				new LabelValueBean("true", "1"),
+				new LabelValueBean("false", "0") };
+		appContext.setAttribute("booleanOptions", booleanOptions);
+
 //		LabelValueBean[] stringOperands = new LabelValueBean[] {
 //				new LabelValueBean(Constants.STRING_OPERAND_CONTAINS,
 //						Constants.STRING_OPERAND_CONTAINS),
 //				new LabelValueBean(Constants.STRING_OPERAND_EQUALS,
 //						Constants.STRING_OPERAND_EQUALS) };
 //		appContext.setAttribute("stringOperands", stringOperands);
-//
-//		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean(
-//				"equals", "is") };
-//		appContext.setAttribute("booleanOperands", booleanOperands);
-//
-//		LabelValueBean[] numberOperands = new LabelValueBean[] {
-//				new LabelValueBean("=", "="), new LabelValueBean(">", ">"),
-//				new LabelValueBean(">=", ">="), new LabelValueBean("<", "<"),
-//				new LabelValueBean("<=", "<=") };
-//		appContext.setAttribute("numberOperands", numberOperands);
-//
+
+		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean(
+				"equals", "is") };
+		appContext.setAttribute("booleanOperands", booleanOperands);
+
+		List<LabelValueBean> numberOperands = new ArrayList<LabelValueBean>();
+		numberOperands.add(new LabelValueBean("=", "="));
+		numberOperands.add( new LabelValueBean(">", ">"));
+		numberOperands.add(new LabelValueBean(">=", ">="));
+		numberOperands.add(new LabelValueBean("<=", "<="));
+		
+		
+			
+		appContext.setAttribute("numberOperands", numberOperands);
+
 //		appContext.setAttribute("allCompositionSections",
 //				CompositionBean.ALL_COMPOSITION_SECTIONS);
-//
-//		// register page
-//		LabelValueBean[] titleOperands = new LabelValueBean[] {
-//				new LabelValueBean(" ", " "), new LabelValueBean("Dr.", "Dr."),
-//				new LabelValueBean("Mr.", "Mr."),
-//				new LabelValueBean("Mrs.", "Mrs."),
-//				new LabelValueBean("Miss", "Miss"),
-//				new LabelValueBean("Ms.", "Ms.") };
-//		appContext.setAttribute("titleOperands", titleOperands);
-//
+
+		// register page
+		LabelValueBean[] titleOperands = new LabelValueBean[] {
+				new LabelValueBean(" ", " "), new LabelValueBean("Dr.", "Dr."),
+				new LabelValueBean("Mr.", "Mr."),
+				new LabelValueBean("Mrs.", "Mrs."),
+				new LabelValueBean("Miss", "Miss"),
+				new LabelValueBean("Ms.", "Ms.") };
+		appContext.setAttribute("titleOperands", titleOperands);
+
 //		LabelValueBean[] csmRoleNames = new LabelValueBean[] {
 //				new LabelValueBean(AccessibilityBean.R_ROLE_DISPLAY_NAME,
 //						AccessibilityBean.CSM_READ_ROLE),

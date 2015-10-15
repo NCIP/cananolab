@@ -10,13 +10,14 @@
         <a class="helpText" ng-click="print()" href="" target="_blank">Print</a>   
         <!-- <a class="helpText" ng-href="views/sample/composition/printComposition.html?sampleId={{sampleId.data}}" target="_blank">Print</a> -->
         <a class="helpText" ng-href="/caNanoLab/rest/composition/summaryExport?sampleId={{sampleId.data}}&type=all">Export</a>
-          <a class="helpText" ng-href=
-          "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
+
+   <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-Composition')">Help</a> 
+
+  <a class=
           "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
         </td>
       </tr>
     </table>
- <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>
 <!-- 
 <div class="shadetabs" id="summaryTabALL">
     <ul>
@@ -52,7 +53,7 @@
         </li>
     </ul>
 </span>
-<table ng-hide="show0" class="summaryViewNoTop" width="100%" summary="layout">
+<table ng-hide="show0" class="nanomaterial_entity" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
     <tr>
         <td>
@@ -68,7 +69,7 @@
         </td>
     </tr>
 </table>
-<table ng-hide="show1" class="summaryViewNoTop" width="100%" summary="layout">
+<table ng-hide="show1" class="functionalizing_entity" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
     <tr>
         <td>
@@ -84,7 +85,7 @@
         </td>
     </tr>
 </table>
-<table ng-hide="show2" class="summaryViewNoTop" width="100%" summary="layout">
+<table ng-hide="show2" class="chemical_association" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
     <tr>
         <td>
@@ -99,7 +100,7 @@
         </td>
     </tr>
 </table>
-<table ng-hide="show3" class="summaryViewNoTop" width="100%" summary="layout">
+<table ng-hide="show3" class="composition_file" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
     <tr>
         <td>

@@ -1,0 +1,127 @@
+#caNanoLab Wildfly setup scripts
+
+connect localhost:19990
+
+
+
+##############################################################
+#             System Properties                      
+##############################################################
+
+if (outcome == success) of /system-property=gov.nih.nci.security.configFile:read-resource
+/system-property=gov.nih.nci.security.configFile:remove
+end-if
+
+if (outcome == success) of /system-property=gov.nih.nci.caNanoLab.wikihelpProperties:read-resource
+/system-property=gov.nih.nci.caNanoLab.wikihelpProperties:remove
+end-if
+
+
+/system-property=gov.nih.nci.security.configFile:add(value=/local/content/caNanoLab/config/ApplicationSecurityConfig.xml)
+/system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=/local/content/caNanoLab/config/wikihelp.properties)
+
+
+##############################################################
+#             Datasource Configuration                      
+##############################################################
+
+if (outcome != success) of /subsystem=datasources/jdbc-driver=mysql:read-resource 
+    /subsystem=datasources/jdbc-driver=mysql:add( \
+    driver-name=mysql, \
+    driver-module-name=com.mysql, \
+    driver-xa-datasource-class-name=com.mysql.jdbc.Driver \
+	) {allow-resource-service-restart=true}
+end-if
+
+#caNanoLab, csmupt datasource configuration
+if (outcome != success) of /subsystem=datasources/data-source=caNanoLab:read-resource
+data-source add \
+    --name=caNanoLab \
+    --driver-name=mysql \
+    --connection-url=@database.url@ \
+    --jndi-name=java:/caNanoLab \
+    --user-name=@database.user@ \
+    --password=@database.password@ \
+    --use-ccm=true \
+    --max-pool-size=100 \
+    --blocking-timeout-wait-millis=5000 
+#data-source enable --name=caNanoLab
+end-if
+
+if (outcome != success) of /subsystem=datasources/data-source=csmupt:read-resource
+data-source add \
+    --name=csmupt \
+    --driver-name=mysql \
+    --connection-url=@database.url@ \
+    --jndi-name=java:/csmupt \
+    --user-name=@database.user@ \
+    --password=@database.password@ \
+    --use-ccm=true \
+    --max-pool-size=100 \
+    --blocking-timeout-wait-millis=5000 
+#data-source enable --name=csmupt
+end-if
+
+# References: (http://www.mastertheboss.com/jboss-server/jboss-script/installing-a-jboss-as-7-module-using-the-cli)
+
+reload
+
+##############################################################
+#               CSM Login Module                             
+##############################################################
+if (outcome == success) of /subsystem=security/security-domain=caNanoLab:read-resource
+	/subsystem=security/security-domain=caNanoLab:remove
+end-if
+
+if (outcome == success) of /subsystem=security/security-domain=caNanoLab/authentication=classic:read-resource 
+   /subsystem=security/security-domain=caNanoLab/authentication=classic:remove()
+end-if
+
+if (outcome != success) of /subsystem=security/security-domain=caNanoLab:read-resource
+/subsystem=security/security-domain=caNanoLab/:add(cache-type=default)
+end-if
+
+if (outcome != success) of /subsystem=security/security-domain=caNanoLab/authentication=classic:read-resource 
+/subsystem=security/security-domain=caNanoLab/authentication=classic:add( \
+    login-modules=[ \   
+        { \
+            "code" => "gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule", \
+            "flag" => "required", \
+            "module" => "gov.nih.nci.security", \
+            "module-options" => [("driver"=>"com.mysql.jdbc.Driver"), ("url"=>"@database.url@"), ("user"=>"@database.user@"), ("passwd"=>"@database.password@"), ("query"=>"SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?"), ("encryption-enabled"=>"YES")] \
+        } \     
+    ] \
+) {allow-resource-service-restart=true}
+end-if
+
+# csmupt login module configuration
+
+if (outcome == success) of /subsystem=security/security-domain=csmupt:read-resource
+	/subsystem=security/security-domain=csmupt:remove
+end-if
+
+if (outcome == success) of /subsystem=security/security-domain=csmupt/authentication=classic:read-resource 
+   /subsystem=security/security-domain=csmupt/authentication=classic:remove()
+end-if
+
+if (outcome != success) of /subsystem=security/security-domain=csmupt:read-resource
+/subsystem=security/security-domain=csmupt/:add(cache-type=default)
+end-if
+
+if (outcome != success) of /subsystem=security/security-domain=csmupt/authentication=classic:read-resource 
+/subsystem=security/security-domain=csmupt/authentication=classic:add( \
+    login-modules=[ \   
+        { \
+            "code" => "gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule", \
+            "flag" => "required", \
+            "module" => "gov.nih.nci.security", \
+            "module-options" => [("driver"=>"com.mysql.jdbc.Driver"), ("url"=>"@database.url@"), ("user"=>"@database.user@"), ("passwd"=>"@database.password@"), ("query"=>"SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?"), ("encryption-enabled"=>"YES")] \
+        } \     
+    ] \
+) {allow-resource-service-restart=true}
+end-if
+
+# Execute and reload
+reload
+
+

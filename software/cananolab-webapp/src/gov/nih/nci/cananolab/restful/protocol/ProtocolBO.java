@@ -428,4 +428,30 @@ public class ProtocolBO extends BaseAnnotationBO{
 			e.printStackTrace();
 		}		
 	}
+	
+	/**
+	 * Delete a protocol from MyWorkSpace
+	 * 
+	 * @param mapping
+	 * @param protocolId
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> deleteProtocolById(String protocolId,
+			HttpServletRequest request)
+			throws Exception {
+		List<String> msgs = new ArrayList<String>();
+		ProtocolService service = this.setServiceInSession(request);
+		ProtocolBean protocolBean = service.findProtocolById(protocolId);
+		// update data review status to "DELETED"
+		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
+				protocolBean.getDomain().getId().toString(), protocolBean
+						.getDomain().getName(), "protocol");
+		service.deleteProtocol(protocolBean.getDomain());
+		
+		msgs.add("success");
+	
+		return msgs;
+	}
 }

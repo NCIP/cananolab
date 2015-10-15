@@ -530,4 +530,26 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		return publicationIds;
 	}
+
+	@Override
+	public PublicationBean findPublicationByIdWorkspace(String id, boolean loadAccessInfo)
+			throws PublicationException {
+		PublicationBean publicationBean = null;
+		try {
+			Publication publication = helper.findPublicationByKey("id",
+					new Long(id));
+			if (publication != null) {
+				if (loadAccessInfo) {
+					publicationBean = loadPublicationBean(publication);
+				} else {
+					publicationBean = new PublicationBean(publication);
+				}
+			}
+		} catch (Exception e) {
+			String err = "Problem finding the publication by key: " + id;
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
+		return publicationBean;
+	}
 }

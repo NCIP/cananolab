@@ -19,9 +19,27 @@ public class SimpleSearchProtocolBean {
 	Date createdDate;
 	String fileInfo;
 	long id;
+	long fileId;
 	boolean editable = false;
 	boolean userDeletable = false;
+	String fileTitle;
 	
+	public String getFileTitle() {
+		return fileTitle;
+	}
+
+	public void setFileTitle(String fileTitle) {
+		this.fileTitle = fileTitle;
+	}
+
+	public long getFileId() {
+		return fileId;
+	}
+
+	public void setFileId(long fileId) {
+		this.fileId = fileId;
+	}
+
 	public boolean getUserDeletable() {
 		return userDeletable;
 	}
@@ -81,15 +99,16 @@ public class SimpleSearchProtocolBean {
 	public void transferProtocolBeanForBasicResultView(ProtocolBean bean,
 			UserBean user) {
 		
-		setType(bean.getDomain().getType());
-		setViewName(bean.getDomain().getName());
-		setAbbreviation(bean.getDomain().getAbbreviation());
-		setVersion(bean.getDomain().getVersion());
+		this.setType(bean.getDomain().getType());
+		this.setViewName(bean.getDomain().getName());
+		this.setAbbreviation(bean.getDomain().getAbbreviation());
+		this.setVersion(bean.getDomain().getVersion());
 		String fileInformation = fileInfo(bean);
-		setFileInfo(fileInformation);
-		setCreatedDate(bean.getDomain().getCreatedDate());
-		setUserDeletable(bean.getUserDeletable());
-		setEditable(bean.getUserUpdatable()); //SecurityUtil.isEntityEditableForUser(bean.getAllAccesses(), user);
+		this.setFileInfo(fileInformation);
+		this.setCreatedDate(bean.getDomain().getCreatedDate());
+		this.setUserDeletable(bean.getUserDeletable());
+		this.setEditable(bean.getUserUpdatable()); //SecurityUtil.isEntityEditableForUser(bean.getAllAccesses(), user);
+		this.setFileTitle(bean.getFileBean().getDomainFile().getTitle());
 		id = bean.getDomain().getId();
 	}
 	private String fileInfo(ProtocolBean protocol) {
@@ -97,6 +116,7 @@ public class SimpleSearchProtocolBean {
 		FileBean file = protocol.getFileBean();
 		StringBuilder sb = new StringBuilder();
 		if (file != null && file.getDomainFile() != null) {
+			
 			// file uri is null, not a valid file return empty string
 			if (StringUtils.isEmpty(file.getDomainFile().getUri())) {
 				return "";
@@ -115,6 +135,8 @@ public class SimpleSearchProtocolBean {
 								.escapeXmlButPreserveLineBreaks(description)).append("<br>");
 			}
 			if (file.getDomainFile().getId() != null) {
+				// set fileId for favorites section
+				this.setFileId(file.getDomainFile().getId());
 				String link = "rest/protocol/download?fileId="
 						+ file.getDomainFile().getId();
 				String linkText = "View";

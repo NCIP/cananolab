@@ -57,7 +57,7 @@ public class SimpleCharacterizationSummaryViewBean {
 			CharacterizationSummaryViewBean viewBean, String sampleId) 
 	throws Exception {
 		
-		logger.info("============ SimpleCharacterizationSummaryViewBean.transferData ==================");
+		logger.debug("============ SimpleCharacterizationSummaryViewBean.transferData ==================");
 		if (viewBean == null) return null;
 		
 		Map<String, SortedSet<CharacterizationBean>> name2CharBeans = viewBean.getCharName2Characterizations();
@@ -99,7 +99,7 @@ public class SimpleCharacterizationSummaryViewBean {
 			charByTypeBean.setCharsByAssayType(charsByAssayType);
 			charByTypeBeans.add(charByTypeBean);
 			
-			logger.info("End of Processing type: " + type);
+			logger.debug("End of Processing type: " + type);
 		}		
 
 		return charByTypeBeans;

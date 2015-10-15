@@ -9,6 +9,7 @@
 package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.CharacterizationPropertyUtil;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleCharacterizationProperty;
@@ -66,44 +67,49 @@ public class CharacterizationManager {
 		return charNameList;
 	}
 
-	//public List<LabelValueBean> getDecoratedCharacterizationOptions(
-	public void getDecoratedCharacterizationOptions(
+	/**
+	 * Get characterization options in Advanced Sample Search page, based on characterization type.
+	 * The options include char names and assay types
+	 */
+	public List<LabelValueBean> getDecoratedCharacterizationOptions(HttpServletRequest request,
 			String characterizationType) throws Exception {
-//		if (StringUtils.isEmpty(characterizationType)) {
-//			return null;
-//		}
-//		WebContext wctx = WebContextFactory.get();
-//		List<LabelValueBean> charNames = InitCharacterizationSetup
-//				.getInstance().getDecoratedCharNamesByCharType(
-//						wctx.getHttpServletRequest(), characterizationType);
-//		List<LabelValueBean> charNamesWithAssayTypes = new ArrayList<LabelValueBean>();
-//		for (LabelValueBean bean : charNames) {
-//			String charName = bean.getValue();
-//			// setup Assay Type drop down.
-//			List<LabelValueBean> assayTypes = InitSetup.getInstance()
-//					.getDefaultAndOtherTypesByLookupAsOptions(charName,
-//							"assayType", "otherAssayType");
-//			if (!assayTypes.isEmpty()) {
-//				charNamesWithAssayTypes.add(bean);
-//				for (LabelValueBean assayTypeBean : assayTypes) {
-//					LabelValueBean labelValueWithAssay = new LabelValueBean(
-//							" --" + assayTypeBean.getLabel(), charName + ":"
-//									+ assayTypeBean.getValue());
-//					charNamesWithAssayTypes.add(labelValueWithAssay);
-//				}
-//			} else {
-//				SortedSet<String> datumNames = InitCharacterizationSetup
-//						.getInstance().getDatumNamesByCharName(
-//								wctx.getHttpServletRequest(),
-//								characterizationType, charName, null);
-//				// do not include if char name doesn't have any predefined datum
-//				// names
-//				if (datumNames != null && !datumNames.isEmpty()) {
-//					charNamesWithAssayTypes.add(bean);
-//				}
-//			}
-//		}
-//		return charNamesWithAssayTypes;
+		if (StringUtils.isEmpty(characterizationType)) {
+			return null;
+		}
+		
+		List<LabelValueBean> charNames = InitCharacterizationSetup
+				.getInstance().getDecoratedCharNamesByCharType(
+						request, characterizationType);
+		
+		List<LabelValueBean> charNamesWithAssayTypes = new ArrayList<LabelValueBean>();
+		
+		for (LabelValueBean bean : charNames) {
+			String charName = bean.getValue();
+			// setup Assay Type drop down.
+			List<LabelValueBean> assayTypes = InitSetup.getInstance()
+					.getDefaultAndOtherTypesByLookupAsOptions(charName,
+							"assayType", "otherAssayType");
+			if (!assayTypes.isEmpty()) {
+				charNamesWithAssayTypes.add(bean);
+				for (LabelValueBean assayTypeBean : assayTypes) {
+					LabelValueBean labelValueWithAssay = new LabelValueBean(
+							" --" + assayTypeBean.getLabel(), charName + ":"
+									+ assayTypeBean.getValue());
+					charNamesWithAssayTypes.add(labelValueWithAssay);
+				}
+			} else {
+				SortedSet<String> datumNames = InitCharacterizationSetup
+						.getInstance().getDatumNamesByCharName(
+								request,
+								characterizationType, charName, null);
+				// do not include if char name doesn't have any predefined datum
+				// names
+				if (datumNames != null && !datumNames.isEmpty()) {
+					charNamesWithAssayTypes.add(bean);
+				}
+			}
+		}
+		return charNamesWithAssayTypes;
 	}
 
 	public List<String> getAssayTypes(HttpServletRequest request, String characterizationName)

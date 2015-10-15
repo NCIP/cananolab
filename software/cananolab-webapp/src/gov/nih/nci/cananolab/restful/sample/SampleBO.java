@@ -117,7 +117,7 @@ public class SampleBO extends BaseAnnotationBO {
 			
 		}
 		
-		request.getSession().setAttribute("updateSample", "true");
+		//request.getSession().setAttribute("updateSample", "true");
 	
 		return summaryEdit(String.valueOf(sampleBean.getDomain().getId()), request);
 	}
@@ -201,7 +201,10 @@ public class SampleBO extends BaseAnnotationBO {
 		SimpleSampleBean simpleBean = new SimpleSampleBean();
 		
 		// "setupSample()" will retrieve and return the SampleBean.
-		SampleBean sampleBean = setupSample(form, request);
+		//SampleBean sampleBean = setupSample(form, request);
+		
+		SampleBean sampleBean = setupSampleById(sampleId, request);
+		
 		if (hasNullPOC(request, sampleBean, simpleBean.getErrors())) {
 			return simpleBean;
 		}
@@ -227,16 +230,16 @@ public class SampleBO extends BaseAnnotationBO {
 		super.checkOpenAccessForm(request);
 	}
 
-	public SampleBean setupView(SampleForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		this.setServiceInSession(request);
-		// "setupSample()" will retrieve and return the SampleBean.
-		SampleBean sampleBean = setupSample(form, request);
-		form.setSampleBean(sampleBean);
-		return sampleBean;
-	}
+//	public SampleBean setupView(SampleForm form,
+//			HttpServletRequest request, HttpServletResponse response)
+//			throws Exception {
+//	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		this.setServiceInSession(request);
+//		// "setupSample()" will retrieve and return the SampleBean.
+//		SampleBean sampleBean = setupSample(form, request);
+//		form.setSampleBean(sampleBean);
+//		return sampleBean;
+//	}
 
 	/**
 	 * 
@@ -280,17 +283,18 @@ public class SampleBO extends BaseAnnotationBO {
 	public SampleEditGeneralBean summaryEdit(String sampleId, HttpServletRequest request)
 			throws Exception {
 	
-		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
-		
+		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();	
 		this.setServiceInSession(request);
-		SecurityService securityService = (SecurityService) request.getSession().getAttribute("securityService");
-		
-		logger.debug("========== Setting up sample in summaryEdit");
-		SampleBean sampleBean = setupSampleById(sampleId, request);
-		logger.debug("========== Done Setting up sample in summaryEdit");
 
+		SecurityService securityService = (SecurityService) request
+				.getSession().getAttribute("securityService");
 		
-		logger.debug("====== Finding data availability");
+		SampleBean sampleBean = setupSampleById(sampleId, request);
+		
+		if (hasNullPOC(request, sampleBean, sampleEdit.getErrors())) {
+			return sampleEdit;
+		}
+		
 		Set<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
 						.toString(), securityService);
@@ -319,9 +323,10 @@ public class SampleBO extends BaseAnnotationBO {
 			request.getSession().setAttribute("allGroupNames", availGroupNames);
 		}
 
-		logger.debug("========== Done Setting up all data for sample in summaryEdit");
 		sampleEdit.transferSampleBeanData(request, this.getCurationService(), sampleBean, availableEntityNames);
-		logger.debug("========== Done transforming sample summaryEdit");
+		
+		//request.getSession().setAttribute("updateSample", "true");
+		
 		//need to save sampleBean in session for other edit feature.
 		//new in rest implement
 		request.getSession().setAttribute("theSample", sampleBean);
@@ -587,16 +592,9 @@ public class SampleBO extends BaseAnnotationBO {
 			return simpleSampleBean;
 		}
 		
-		//logger.debug("========== Done saving POC Sample");
-		
-		//if (newSample != null && newSampleName.length() > 0)
-		if (newSample) {
-			logger.debug("========== Setting access for new sample");
+		if (newSample)
 			this.setAccesses(request, sample); //this will assign default curator access to this sample.
-			logger.debug("========== Done Setting access for new sample");
-		}
 		
-		//This is needed when user chose "[other]" in Org. Name dropdown
 		InitSampleSetup.getInstance().persistPOCDropdowns(request, sample);
 		
 		logger.debug("========== Populating UpdateSample data");
@@ -881,17 +879,6 @@ public class SampleBO extends BaseAnnotationBO {
 				availEntityNames[i++] = bean.getAvailableEntityName()
 						.toLowerCase();
 			}
-			
-			//setAvailableEntityNames(availEntityNames);
-			//request.setAttribute("availableEntityNames", availableEntityNames);
-		}
-		request.setAttribute("sampleBean", sampleBean);
-		
-		String styleId = request.getParameter("styleId");
-		if (styleId != null) {
-	//		return mapping.findForward("dataAvailabilityView");
-		} else {
-	//		return mapping.findForward("dataAvailabilityEdit");
 		}
 		
 		SimpleSampleBean simpleBean = transferDataAvailabilityToSimpleSampleBean(sampleBean, request, availEntityNames);
@@ -1006,20 +993,6 @@ public class SampleBO extends BaseAnnotationBO {
 		SampleService service = this.setServiceInSession(request);
 		service.removeAccessibility(theAccess, sample.getDomain());
 
-		//Don't know what are the following lines for. To delete...
-		
-//		ActionForward forward = null;
-//		String updateSample = (String) request.getSession().getAttribute(
-//				"updateSample");
-//		if (updateSample == null) {
-//	//		forward = mapping.findForward("createInput");
-//			setupLookups(request);
-//			this.setAccesses(request, sample);
-//		} else {
-//			request.setAttribute("sampleId", sample.getDomain().getId()
-//					.toString());
-//	//		forward = summaryEdit(mapping, form, request, response);
-//		}
 		return summaryEdit(String.valueOf(sample.getDomain().getId()), request);
 	}
 
@@ -1320,8 +1293,62 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		return sampleBean.getDomain().getName();
 		
+	}
+	
+	public boolean isSampleEditableByCurrentUser(HttpServletRequest request, String sampleId) 
+	throws Exception {
 		
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (user == null)
+			return false;
 		
+		if (sampleId == null || sampleId.length() == 0)
+			return false;
+		
+		SampleBean sampleBean = new SampleBean();
+		sampleBean.getDomain().setId(Long.parseLong(sampleId));
+		
+		SampleService service = this.setServiceInSession(request);
+		service.loadAccessesForSampleBean(sampleBean);
+		
+		sampleBean.setUser(user);
+		return sampleBean.getUserUpdatable();
+		
+	}
+	
+	public String deleteSampleById(String sampleId, HttpServletRequest request)
+			throws Exception {
+		
+		SecurityService securityService = (SecurityService) request
+				.getSession().getAttribute("securityService");
+		UserBean user = (UserBean)request.getSession().getAttribute("user");
+		SampleService sampleService = this.setServiceInSession(request);
+		
+		SampleBean sampleBean = sampleService.findSampleById(sampleId, true);
+		if (sampleBean == null)
+			return "Error: unable to find a valid sample in session with id . Sample deletion failed";
+		
+		String sampleName = sampleBean.getDomain().getName();
+
+		// remove all access associated with sample takes too long. Set up the
+		// delete job in scheduler
+		InitSampleSetup.getInstance().updateCSMCleanupEntriesInContext(
+				sampleBean.getDomain(), request);
+
+		// update data review status to "DELETED"
+		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
+				sampleBean.getDomain().getId().toString(), sampleBean
+						.getDomain().getName(), "sample");
+		if (sampleBean.getHasDataAvailability()) {
+			dataAvailabilityService.deleteDataAvailability(sampleBean
+					.getDomain().getId().toString(), securityService);
+		}
+		sampleService.deleteSample(sampleBean.getDomain().getName());
+		request.getSession().removeAttribute("theSample");
+		
+		String msg = PropertyUtil.getPropertyReplacingToken("sample", "message.deleteSample", "0", sampleName);
+		
+		return msg;
 	}
 	
 }

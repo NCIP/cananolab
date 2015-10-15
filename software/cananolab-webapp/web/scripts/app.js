@@ -35,11 +35,15 @@ app.config(function ($routeProvider, $httpProvider) {
      .when('/register', {
        templateUrl: 'views/register.html',
        controller: 'RegisterCtrl'
-     })       
-      .when('/home', {
-        templateUrl: 'views/loggedIn.html',
-        controller: 'AuthCtrl'
-      }) 
+     }) 
+     .when('/keywordSearchResults', {
+       templateUrl: 'views/keywordSearch/keywordSearchResults.html',
+       controller: 'KeywordSearchCtrl'
+     })            
+      .when('/workflow', {
+        templateUrl: 'views/workflow.html',
+        controller: 'WorkflowCtrl'
+      })       
       .when('/searchSample', {
         templateUrl: 'views/sample/view/sampleSearch.html',
         controller: 'SampleSearchCtrl'
@@ -76,7 +80,7 @@ app.config(function ($routeProvider, $httpProvider) {
        templateUrl: 'views/collaborationGroup.html',
        controller: 'CollaborationGroupCtrl'
       })       
-      .when('/manageCommunity', {
+      .when('/manageGroups', {
        templateUrl: 'views/manageCommunity.html',
        controller: 'ManageCommunityCtrl'
       })       

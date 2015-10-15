@@ -14,6 +14,8 @@ import gov.nih.nci.cananolab.util.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class SecuredDataBean {
 	private List<AccessibilityBean> userAccesses = new ArrayList<AccessibilityBean>();
 
@@ -21,10 +23,12 @@ public class SecuredDataBean {
 
 	private AccessibilityBean theAccess = new AccessibilityBean();
 
+	@JsonIgnore
 	private List<AccessibilityBean> allAccesses = new ArrayList<AccessibilityBean>();
 
 	private Boolean publicStatus = false;
 
+	@JsonIgnore
 	private UserBean user;
 
 	protected String createdBy;

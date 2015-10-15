@@ -1,0 +1,36 @@
+<div class="spacer">
+  <table class="contentTitle" summary="layout" border="0" width="100%" ng-init="tabs=getTabs()">
+   <tbody>
+     <tr>
+       <th scope="col" align="left">
+         Workflow
+       </th>
+       <td align="right" width="30%">
+         <a class="helpText" href=
+         "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Getting+Started+in+caNanoLab#GettingStartedincaNanoLab-UsingtheWorkflowtoGetStarted')">Help</a>  
+         <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+       </td>
+     </tr>
+   </tbody>
+ </table><br />
+ <div class="welcomeContent">
+   The diagram below illustrates the caNanoLab functionality and workflow. Active links are provided for directly navigating to the appropriate function based on the authorization level of the user. In particular, the Sample Submission workflow allows direct launching points to develop caNanoLab data files from a user's input. To assist in the data submission process, a <a href="https://cbiit-download.nci.nih.gov/icr/cananolab/2.0/Gaheen_cananolab_demo.mp4" target="_blank">caNanoLab Data Submission Video</a> is available. Navigation is also available through the menus above.
+
+ </div><br />
+ <br />
+
+ <img id="funcMap" src="images/Home_Page_Workflow.png" border="0" width="750" height="520" usemap="#funcMap" alt="rectangle" />
+<map class="ng-scope" name="funcMap" id="funcMap">
+ <area href="#/login" alt="login" shape="rect" coords="65,176,206,238" />
+ <area href="#/submitProtocol" alt="submit protocols" shape="rect" coords="294,72,435,134" />
+ <area href="#/submitSample" alt="submit samples" shape="rect" coords="291,165,435,244" />
+ <area href="#/submitPublication" alt="submit publications" shape="rect" coords="291,277,435,333" />
+<!--  <area href="" alt="submit general information" shape="rect" coords="518,94,662,153" />
+ <area href="" alt="submit composition" shape="rect" coords="519,174,663,233" />
+ <area href="" alt="submit characterizations" shape="rect" coords="516,251,662,311" />
+ --> <area href="#/searchProtocol" alt="search protocols" shape="rect" coords="177,379,326,467" />
+ <area href="#/searchSample" alt="search samples" shape="rect" coords="346,379,494,465" />
+ <area href="#/searchPublication" alt="search publications" shape="rect" coords="512,380,660,466" />
+</map>
+
+</div>

@@ -11,7 +11,7 @@
       <link rel="shortcut icon" href="images/favicon.ico" />
       <link rel="stylesheet" href="styles/bootstrap.css">
       <link rel="stylesheet" href="styles/nano-angular.css">
-
+      <link rel="stylesheet" href="css/font-awesome.min.css">
       <link rel="stylesheet" href="styles/main.css">
       <link rel="stylesheet" href="css/promptBox.css">
       <link rel="stylesheet" href="css/summaryView.css">
@@ -22,7 +22,7 @@
       <script type='text/javascript' src='javascript/CountManager.js'></script>
       <script type='text/javascript' src="javascript/addDropDownOptions.js"></script>
    </head>
-   <body style="cursor: default" ng-app="angularApp">
+   <body style="cursor: default" ng-app="angularApp" ng-controller="TemplateCtrl">
       <div class="container">
          <table cellspacing="0" cellpadding="0" summary="layout"
             border="0">
@@ -33,9 +33,11 @@
                      <table class="hdrBG" border="0" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
                            <tr>
-                              <th scope="row" align="left">
+                              <td align="left">
+                                          <!-- anchor to skip main menu -->
+                                 <a href="#maincontent" style="background-color:#A90101" tabindex="0"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
                                  <a href="http://www.cancer.gov/"><img alt="National Cancer Institute" src="images/nci.jpg" border="0" height="37" width="283"></a>
-                              </th>
+                              </td>
                               <td>
                                  &nbsp;
                               </td>
@@ -53,7 +55,11 @@
                         <tbody>
                            <tr>
                               <td class="subhdrBG" align="left">
-                                 <a href="/caNanoLab/#/" class="link"></a>
+                                 <a href="/caNanoLab/#/" class="link" alt="caNanoLab" title="caNanoLab" description="caNanoLab"></a>
+                              </td>
+                              <td id="keywordSearch"> 
+                                 <label for="keywordsearch" style="color:white;">Search</label><input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" id="keywordsearch" name="keyword_search_text" role="search">&nbsp;<button class="btn btn-success btn-xs keyword_search" ng-click="doKeywordSearch()" ng-disabled="isSearching" >Search</button>
+                                 <div ng-show="isSearching" id="searching">Searching</div>
                               </td>
                            </tr>
                         </tbody>
@@ -64,7 +70,7 @@
                   <td class="sideMenu">
                      <navigation></navigation>
                   </td>
-                  <td class="mainContent">
+                  <td class="mainContent" id="maincontent" role="main">
                      <table cellspacing="0" cellpadding="0" summary="layout" border="0" width="900px">
                         <tbody>
                            <tr>
@@ -73,11 +79,10 @@
                                     <tbody>
                                        <tr>
                                           <td width="1">
-                                             <!-- anchor to skip main menu -->
-                                             <a href="#content"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
+
                                           </td>
                                              <th ng-repeat-start="t in tabs.tabs" scope="row" ng-class="{mainMenuItem: t[0]!='HOME', 'mainMenuItem home':t[0]=='HOME'}">
-                                             <a ng-if="t[0]=='GLOSSARY'||t[0]=='HELP'" ng-class="{mainMenuLink: t[0]!='HOME', 'mainMenuLink home':t[0]=='HOME'}" href="{{t[1]}}" target="_blank">{{t[0]}}
+                                             <a tabindex="0" ng-if="t[0]=='GLOSSARY'||t[0]=='HELP'" ng-class="{mainMenuLink: t[0]!='HOME', 'mainMenuLink home':t[0]=='HOME'}" href="{{t[1]}}" target="_blank">{{t[0]}}
                                              </a>
                                              <a ng-if="t[0]!='GLOSSARY'&&t[0]!='HELP'" ng-class="{mainMenuLink: t[0]!='HOME', 'mainMenuLink home':t[0]=='HOME'}" href="{{t[1]}}">{{t[0]}}
                                              </a>
@@ -106,7 +111,7 @@ src="images/mainMenuSeparator.gif" width="1">
                               </td>
                            </tr>
                            <tr>
-                              <td class="mainContent" ng-view="" autoscroll="true">
+                              <td class="mainContent" ng-view="" autoscroll="true" >
                               </td>
                            </tr>
                         </tbody>
@@ -120,9 +125,9 @@ src="images/mainMenuSeparator.gif" width="1">
                      <table cellspacing="0" cellpadding="0" border="0" align="center">
                         <tbody>
                            <tr>
-                              <th scope="row"><img height="16" alt=""
+                              <td><img height="16" alt=""
                                  src="images/ftrMenuSeparator.gif" width="1">
-                              </th>
+                              </td>
                               <td class="footerMenuItem" onclick="document.location.href='#'"
                                  height="20">&nbsp;&nbsp;<a class="footerMenuLink"
                                  href="mailto:ncicb@pop.nci.nih.gov?subject=caNanoLab - cancer Nanotechnology Laboratory Analysis Bench"
@@ -174,22 +179,22 @@ src="images/mainMenuSeparator.gif" width="1">
                      <!-- footer begins -->
                      <div id="portal-footer">
                         <div class="footerLinks">
-                           <a href="https://ncicbsupport.nci.nih.gov/" title="Home">Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://ncicb.nci.nih.gov/NCICB/support" title="Support">Support</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.cancer.gov/global/web/policies" title="Policies">Policies</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.cancer.gov/global/web/policies/accessibility" title="Accessibility">Accessibility</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://cancer.gov/global/viewing-files" target="_blank" title="Viewing Files">Viewing Files</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.cancer.gov/global/web/policies/foia" title="FOIA">FOIA</a><br /><br />
-                           <a href="http://www.dhhs.gov/">Department of Health and Human Services</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.nih.gov/">National Institutes of Health</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.cancer.gov/">National Cancer Institute</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.usa.gov/">USA.gov</a>
+                           <a href="https://ncicbsupport.nci.nih.gov/" title="Home" tabindex="0">Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://ncicb.nci.nih.gov/NCICB/support" title="Support" tabindex="0">Support</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/global/web/policies" title="Policies" tabindex="0">Policies</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/global/web/policies/accessibility" title="Accessibility" tabindex="0">Accessibility</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://cancer.gov/global/viewing-files" target="_blank" title="Viewing Files" tabindex="0">Viewing Files</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/global/web/policies/foia" title="FOIA" tabindex="0">FOIA</a><br /><br />
+                           <a href="http://www.dhhs.gov/" tabindex="0">Department of Health and Human Services</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.nih.gov/" tabindex="0">National Institutes of Health</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/" tabindex="0">National Cancer Institute</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.usa.gov/">USA.gov</a>
                         </div>
                         <br /><br />
                         NIH...Turning Discovery Into Health<sup>&reg;</sup>
                      </div>
       </div>
       <br>
-      <div class="footerVersion">caNanoLab Release 2.0 Build cananolab-2.0-rc-06</div><br /><br />
+      <div class="footerVersion">caNanoLab Release 2.1 Build cananolab-2.1-rc-04</div><br /><br />
       <!-- footer ends -->
       </td>
       </tr>
@@ -226,7 +231,7 @@ src="images/mainMenuSeparator.gif" width="1">
       <script src="bower_components/angular-cookies/angular-cookies.js"></script>
       <script src="plugins/ng-grid/ng-grid-2.0.11.min.js"></script>
       <script src="plugins/ng-grid/flexible-height.js"></script>
-      <script src="plugins/ng-table/ng-table.min.js"></script>
+      <script src="plugins/ng-table/ng-table.js"></script>
       <script src="plugins/ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
       <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
       <script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -242,21 +247,26 @@ src="images/mainMenuSeparator.gif" width="1">
       <script src="scripts/factories/sampleService.js"></script>
       <script src="scripts/factories/publicationService.js"></script>
       <script src="scripts/factories/protocolService.js"></script>
+      <script src="scripts/factories/keywordService.js"></script>
       <script src="scripts/factories/utils.js"></script>
       <script src="scripts/controllers/main.js"></script>
       <script src="scripts/controllers/about.js"></script>
       <script src="scripts/controllers/login.js"></script>
-      <script src="scripts/controllers/auth.js"></script>
       <script src="scripts/controllers/logout.js"></script>
       <script src="scripts/controllers/register.js"></script>
       <script src="scripts/controllers/sample/view/sampleSearch.js"></script>
       <script src="scripts/controllers/manageSample.js"></script>
+      <script src="scripts/controllers/manageCommunity.js"></script>
+      <script src="scripts/controllers/collaborationGroup.js"></script>
       <script src="scripts/controllers/sample/view/sampleResults.js"></script>
+      <script src="scripts/controllers/sample/view/advancedSampleResults.js"></script>
+      <script src="scripts/controllers/sample/view/advancedSampleSearch.js"></script>
       <script src="scripts/controllers/sample/view/viewSample.js"></script>
       <script src="scripts/controllers/sample/edit/editSample.js"></script>
       <script src="scripts/controllers/sample/edit/modal/pointOfContactModal.js"></script>
       <script src="scripts/controllers/sample/edit/modal/editCharacterizationModal.js"></script>
       <script src="scripts/controllers/sample/edit/setupCharacterization.js"></script>
+      <script src="scripts/controllers/sample/view/modal/advancedSearchModal.js"></script>
       <script src="scripts/controllers/sample/view/composition.js"></script>
       <script src="scripts/controllers/sample/view/characterization.js"></script>
       <script src="scripts/controllers/sample/edit/editCharacterization.js"></script>
@@ -290,8 +300,12 @@ src="images/mainMenuSeparator.gif" width="1">
       <script src="scripts/controllers/sample/edit/editNanoMaterialEntity.js"></script>
       <script src="scripts/controllers/sample/edit/editFunctionalizingEntity.js"></script>
       <script src="scripts/controllers/sample/edit/editChemicalAssociation.js"></script>
-      <script src="scripts/controllers/sample/edit/editCompositionFile.js"></script>
-      <!-- endbuild -->
+      <script src="scripts/controllers/sample/edit/editCompositionFile.js"></script>    
+      <script src="scripts/controllers/template.js"></script>    
+      <script src="scripts/controllers/myFavorites.js"></script>
+      <script src="scripts/controllers/keywordSearch/keywordSearchResults.js"></script>
+      <script src="scripts/controllers/workflow.js"></script>
+      <!-- endbuild --> 
       </div>
    </body>
 </html>

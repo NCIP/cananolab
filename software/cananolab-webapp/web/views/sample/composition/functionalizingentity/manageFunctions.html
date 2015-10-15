@@ -33,16 +33,16 @@
                     </tr>
                     <tr id="inPattern" ng-repeat="inherentFunction in composingElementForm.inherentFunction">
                         <td>
-                            <span id="functionTypeValue1">{{inherentFunction.type}}</span>
+                            <span id="functionTypeValue1" ng-bind-html="inherentFunction.type">{{inherentFunction.type}}</span>
                         </td>
                         <td ng-if="funcEntityForm.withImagingFunction">
-                            <span id="functionModalityTypeValue1">{{inherentFunction.modality}}</span>
+                            <span id="functionModalityTypeValue1" ng-bind-html="inherentFunction.modality">{{inherentFunction.modality}}</span>
                         </td>
                         <td ng-if="funcEntityForm.withTargetingFunction">
-                            <div ng-repeat="target in inherentFunction.targets">{{target.type}} : {{target.name}} </div>
+                            <div ng-repeat="target in inherentFunction.targets"><span ng-bind-html="target.type">{{target.type}}</span> : <span ng-bind-html="target.name">{{target.name}}</span> </div>
                         </td>                        
                         <td>
-                            <span id="functionDescriptionValue1">{{inherentFunction.description}}</span>
+                            <span id="functionDescriptionValue1" ng-bind-html="inherentFunction.description">{{inherentFunction.description}}</span>
                         </td>
                         <td>
                             <input class="noBorderButton" id="editInFunction" type="button" value="Edit" ng-click="editInherentFunction('{{inherentFunction.id}}');">
@@ -60,7 +60,7 @@
                         </td>
                         <td>
                             <div id="functionTypePrompt">
-                                <select ng-model="theInherentFunction.type" id="functionType" ng-click="checkFunctionType()">
+                                <select ng-model="theInherentFunction.type" id="functionType" ng-change="checkFunctionType()">
                                     <option value=""></option>
                                     <option ng-repeat="type in $parent.functionTypes track by $index" value="{{type}}" ng-selected="{{type == theInherentFunction.type}}">
                                         {{type}}
@@ -199,7 +199,7 @@
                                         </td>
                                         <td>
                                             <div id="targetTypePrompt">
-                                                <select ng-model="theTargetFunction.type" id="targetType" ng-click="checkTargetFunctionType()">
+                                                <select ng-model="theTargetFunction.type" id="targetType" ng-change="checkTargetFunctionType()">
                                                     <option value=""></option>
                                                     <option ng-repeat="type in $parent.targetTypes track by $index" value="{{type}}" ng-selected="{{type == theTargetFunction.type}}">
                                                         {{type}}

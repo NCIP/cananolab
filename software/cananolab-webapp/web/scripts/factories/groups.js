@@ -25,5 +25,20 @@ app.factory('groupService', function($resource,$http){
 			return that;
 
 		},
+		getUserName: function() {
+			that.name = '';
+			$http({method: 'GET', url: '/caNanoLab/rest/security/getUserGroups' }).
+				success(function(data, status, headers, config) {
+				var x = data;
+				for (var key in x) {
+				  that.name = key;
+				}
+			}).
+			error(function(data, status, headers, config) {
+				that.name = '';
+			});
+			return that;
+
+		}
 	}	
 });

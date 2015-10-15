@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.dto.common" auto-import="false">
+	<class name="FavoriteBean" table="favorite_data" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="favorite_data_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<!-- Attributes mapping for the Favorite class -->
+		<property name="loginName" type="string" column="login_name"/>
+		<property name="dataName" type="string" column="data_name"/>
+		<property name="dataType" type="string" column="data_type"/>
+		<property name="dataId" type="string" column="data_id"/>
+		<property name="pubmedId" type="string" column="pubmed_id"/>
+		<property name="protocolFileId" type="string" column="protocol_file_id"/>
+		<property name="editable" type="boolean" column="editable" />
+		<property name="description" type="string" column="description"/>
+		<property name="protocolFileTitle" type="string" column="protocol_file_title"/>
+	</class>
+</hibernate-mapping>
+ 

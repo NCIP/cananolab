@@ -27,7 +27,7 @@ var app = angular.module('angularApp')
         $scope.externalUrlEnabled = false;
         $scope.addNewFile = false;
         $scope.selectedFileName = '';
-        
+       
         var uploadUrl = '/caNanoLab/rest/core/uploadFile';
         $scope.ie9 = false;
         if(navigator.appVersion.indexOf("MSIE 9.")!=-1){
@@ -507,7 +507,7 @@ var app = angular.module('angularApp')
         $scope.onFileSelect = function($files) {
             $scope.selectedFiles = [];
             $scope.selectedFiles = $files;
-            
+         
             
             if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) 
             	$scope.selectedFileName = $scope.selectedFiles[0].name;            
@@ -526,7 +526,7 @@ var app = angular.module('angularApp')
     					}
     				}(fileReader, i);
     			}
-    		}             
+    		}               
         };
 
         $scope.editFile = function(fileId) {

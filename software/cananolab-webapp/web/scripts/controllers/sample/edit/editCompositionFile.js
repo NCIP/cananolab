@@ -26,7 +26,7 @@ var app = angular.module('angularApp')
         $scope.externalUrlEnabled = false;
         $scope.addNewFile = false;
         $scope.selectedFileName = '';
-        
+         
         var uploadUrl = '/caNanoLab/rest/core/uploadFile';
         $scope.ie9 = false;
         if(navigator.appVersion.indexOf("MSIE 9.")!=-1){
@@ -103,6 +103,25 @@ var app = angular.module('angularApp')
         $scope.onFileSelect = function($files) {
             $scope.selectedFiles = [];
             $scope.selectedFiles = $files;
+                  
+            if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) 
+            	$scope.selectedFileName = $scope.selectedFiles[0].name;
+            
+            $scope.dataUrls = [];
+    		for ( var i = 0; i < $files.length; i++) {
+    			var $file = $files[i];
+    			if ($scope.fileReaderSupported && $file.type.indexOf('image') > -1) {
+    				var fileReader = new FileReader();
+    				fileReader.readAsDataURL($files[i]);
+    				var loadFile = function(fileReader, index) {
+    					fileReader.onload = function(e) {
+    						$timeout(function() {
+    							$scope.dataUrls[index] = e.target.result;
+    						});
+    					}
+    				}(fileReader, i);
+    			}
+    		}            
             
             if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) 
             	$scope.selectedFileName = $scope.selectedFiles[0].name;

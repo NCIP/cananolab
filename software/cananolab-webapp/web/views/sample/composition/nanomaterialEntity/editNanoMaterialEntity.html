@@ -13,7 +13,7 @@
                     </th>
 
                     <td align="right" width="30%">
-                        <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/4+-+Managing+Sample+Composition+Annotations#id-4-ManagingSampleCompositionAnnotations-AddingNanomaterialEntityCompositionAnnotations')">Help</a>
+                        <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-NanomaterialAddingNanomaterialEntityCompositionAnnotations')">Help</a>
                         &nbsp;
                         <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
                         &nbsp;
@@ -35,7 +35,7 @@
                     </td>
                     <td>
                         <div id="categoryPrompt">
-                            <select ng-disabled="loader" id="type" ng-model="nanoEntityForm.type" ng-click="showProperties();">
+                            <select ng-disabled="loader" id="type" ng-model="nanoEntityForm.type" ng-change="showProperties();">
                                 <option ng-repeat="option in nanoEntityTypes" value="{{option}}" ng-selected="{{option==nanoEntityForm.type}}">
                                     {{option}}
                                 </option>

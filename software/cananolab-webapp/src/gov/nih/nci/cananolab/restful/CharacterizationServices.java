@@ -1,11 +1,13 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
 import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationUnitBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleCharacterizationProperty;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
@@ -28,14 +30,17 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/characterization")
 public class CharacterizationServices {
 
 	private Logger logger = Logger.getLogger(CharacterizationServices.class);
 	
-	@Inject
-	ApplicationContext applicationContext;
+//	@Inject
+//	ApplicationContext applicationContext;
+	
+	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	
 	@GET
 	@Path("/setupEdit")
@@ -368,7 +373,7 @@ public class CharacterizationServices {
 				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
 			
 			List<String> names = characterizationResultManager
-					.getColumnValueUnitOptions(httpRequest, columnName, conditionProperty);
+					.getColumnValueUnitOptions(httpRequest, columnName, conditionProperty, true);
 					
 			return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
@@ -487,11 +492,13 @@ public class CharacterizationServices {
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 						.entity(errors).build();
 			}
+
+
+
 			return Response.ok(summaryView.getMessages()).header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-			
-//			List<SimpleCharacterizationsByTypeBean> finalBeans = summaryView.getCharByTypeBeans();
+				//			List<SimpleCharacterizationsByTypeBean> finalBeans = summaryView.getCharByTypeBeans();
 //			logger.debug("Save characterization successful.");
 //
 //			return Response.ok(finalBeans).header("Access-Control-Allow-Credentials", "true")
@@ -607,6 +614,29 @@ public class CharacterizationServices {
 
 		return (simpleProp == null) ? Response.ok(null).build() :
 				Response.ok(simpleProp).header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+	
+	@GET
+	@Path("/viewCharacterization")
+	@Produces ("application/json")
+    public Response viewCharacterization(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("charId") String charId) {
+		logger.debug("In setupEdit");		
+		
+		try {
+		CharacterizationBO characterizationBO = 
+				(CharacterizationBO) applicationContext.getBean("characterizationBO");
+
+		List<SimpleCharacterizationUnitBean> charDisplayables = characterizationBO.setupView(
+				httpRequest, "", charId, "", "");
+		
+		return Response.ok(charDisplayables).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {

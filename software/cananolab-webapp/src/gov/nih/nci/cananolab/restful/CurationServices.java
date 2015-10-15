@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.core.ManageResultBO;
 import gov.nih.nci.cananolab.restful.curation.BatchDataAvailabilityBO;
 import gov.nih.nci.cananolab.restful.curation.ReviewDataBO;
@@ -22,13 +23,15 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/curation")
 public class CurationServices {
 private Logger logger = Logger.getLogger(CurationServices.class);
-	
-	@Inject
-	ApplicationContext applicationContext;
+
+//	@Inject
+//	ApplicationContext applicationContext;
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@GET
 	@Path("/reviewData")
 	@Produces ("application/json")

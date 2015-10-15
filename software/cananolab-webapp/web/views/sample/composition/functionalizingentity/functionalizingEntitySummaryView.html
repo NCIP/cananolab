@@ -1,5 +1,5 @@
 <table id="summarySection{{index}}" width="100%" align="center"
-       style="display: block; width:100em;" class="summaryViewNoGrid dataTable">
+       style="display: block;" class="summaryViewNoGrid dataTable">
     <tr>
         <th align="left"  class="heading" style="padding: 0.5em;">
             functionalizing entity
@@ -8,7 +8,7 @@
     <tr ng-repeat="(key, entityTypes) in $parent.functionalizingentity">
         <td>
             <a href="{{key}}"></a>
-            <div class="characterization" style="display: inline-block; overflow:hidden; width:97%">{{key}}</div>
+            <div class="characterization" style="display: inline-block; overflow:hidden; width:97%" ng-bind-html="key">{{key}}</div>
             <table width="99%" align="center" class="summaryViewNoGrid"
                    style="background-color:#dbdbdb;" ng-repeat="entityType in entityTypes">
                 <tr>
@@ -19,7 +19,7 @@
                                 <th scope="row" class="cellLabel" width="10%">
                                     Name
                                 </th>
-                                <td style="width:40em;">
+                                <td style="width:40em;" ng-bind-html="entityType.Name">
                                     {{entityType.Name}}
                                 </td>
                             </tr>
@@ -29,9 +29,9 @@
                                 </th>
                                 <td>
                                     <a href="{{entityType.pubChemLink}}"
-                                       target="caNanoLab - View PubChem">{{entityType.pubChemID}}
+                                       target="caNanoLab - View PubChem" ng-bind-html="entityType.pubChemID">{{entityType.pubChemID}}
                                     </a> &nbsp;(
-                                    {{entityType.pubChemDS}}
+                                    <span ng-bind-html="entityType.pubChemDS">{{entityType.pubChemDS}}</span>
                                     )
                                 </td>
                             </tr>
@@ -40,15 +40,15 @@
                                     Amount
                                 </th>
                                 <td>
-                                    {{entityType.value}}
-                                    {{entityType.valueUnit}}
+                                    <span ng-bind-html="entityType.value">{{entityType.value}}</span>
+                                    <span ng-bind-html="entityType.valueUnit">{{entityType.valueUnit}}</span>
                                 </td>
                             </tr>
                             <tr ng-if="entityType.MolecularFormulaDisplayName != ''">
                                 <th scope="row" class="cellLabel" width="10%">
                                     Molecular Formula
                                 </th>
-                                <td style="word-wrap: break-word; max-width: 280px;">
+                                <td style="word-wrap: break-word; max-width: 280px;" ng-bind-html="entityType.MolecularFormulaDisplayName">
                                     {{entityType.MolecularFormulaDisplayName}}
                                 </td>
                             </tr>
@@ -111,7 +111,7 @@
                                 <th scope="row" class="cellLabel" width="10%">
                                     Activation Method
                                 </th>
-                                <td>
+                                <td ng-bind-html="entityType.ActivationMethod">
                                     {{entityType.ActivationMethod}}
                                 </td>
                             </tr>

@@ -2,16 +2,18 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Organization;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.FavoriteBean;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.core.AccessibilityManager;
-import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.core.CustomPlugInBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.core.PointOfContactManager;
 import gov.nih.nci.cananolab.restful.core.TabGenerationBO;
+import gov.nih.nci.cananolab.restful.favorites.FavoritesBO;
 import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.util.SecurityUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleFavoriteBean;
 import gov.nih.nci.cananolab.restful.view.SimpleTabsBean;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleOrganizationBean;
@@ -19,10 +21,15 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
 import gov.nih.nci.cananolab.restful.workspace.WorkspaceManager;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartInput;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,21 +45,25 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+//import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+//import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/core")
 public class CoreServices {
 	
-	@Inject
-	ApplicationContext applicationContext;
+//	@Inject
+//	SpringApplicationContext applicationContext;
 	
 	private Logger logger = Logger.getLogger(CoreServices.class);
-	
+	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@GET
 	@Path("/initSetup")
 	@Produces ("application/json")
@@ -77,8 +88,7 @@ public class CoreServices {
     public Response getTabs(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("homePage") String homePage) {
 		
-		logger.debug("In getTabs. SessionId: " + httpRequest.getSession().getId());
-		
+		logger.info("In getTabs service");
 		
 		TabGenerationBO tabGen = (TabGenerationBO)applicationContext.getBean("tabGenerationBO");
 		SimpleTabsBean tabs = tabGen.getTabs(httpRequest, homePage);
@@ -214,15 +224,25 @@ public class CoreServices {
 	
 	@POST
 	@Path("/uploadFile")
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Consumes("multipart/form-data")
 	@Produces ("application/json")
-	public Response uploadFile(@Context HttpServletRequest httpRequest, @FormDataParam("myFile") InputStream fileInputStream,
-            @FormDataParam("myFile") FormDataContentDisposition contentDispositionHeader) {
+	public Response uploadFile(@Context HttpServletRequest httpRequest, MultipartInput input) {
 	
 		try {
 			ProtocolBO protocolBO = 
 					(ProtocolBO) applicationContext.getBean("protocolBO");
-			String fileName = contentDispositionHeader.getFileName();
+			String fileName = null;
+			InputStream fileInputStream = null;
+			
+			List<InputPart> parts = input.getParts();
+
+			for (InputPart inputPart : parts) {
+				
+				MultivaluedMap<String, String> headers = inputPart.getHeaders();
+				fileName = parseFileName(headers);
+				fileInputStream = inputPart.getBody(InputStream.class,null);
+			}
+			
 			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
 			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
@@ -234,6 +254,81 @@ public class CoreServices {
 		}
 		
 	}
-
 	
+	private String parseFileName(MultivaluedMap<String, String> headers) {
+		
+		String[] contentDispositionHeader = headers.getFirst("Content-Disposition").split(";");
+		String fileName = "";
+		        for (String name : contentDispositionHeader) {
+		        	if ((name.trim().startsWith("filename"))) {
+		        		String[] tmp = name.split("=");
+		        		fileName = tmp[1].trim().replaceAll("\"","");	
+		        	}
+		        }
+		        return fileName;
+		    }
+
+
+	@GET
+	@Path("/getFavorites")
+	@Produces ("application/json")
+    public Response getFavorites(@Context HttpServletRequest httpRequest, @QueryParam("id") Long id) {
+				
+		try { 
+			FavoritesBO favorite = 
+					 (FavoritesBO) applicationContext.getBean("favoritesBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			SimpleFavoriteBean simpleBean = favorite.findFavorites(httpRequest);
+			
+			return	Response.ok(simpleBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the favorites : "+ e.getMessage()).build();
+		}
+	}
+	
+	@POST
+	@Path("/addFavorite")
+	@Produces ("application/json")
+    public Response addFavorite(@Context HttpServletRequest httpRequest, FavoriteBean bean) {
+				
+		try { 
+			FavoritesBO favorite = 
+					 (FavoritesBO) applicationContext.getBean("favoritesBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			List<String> list = favorite.create(bean, httpRequest);
+				return	Response.ok(list).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem adding the favorites : "+ e.getMessage()).build();
+		}
+	}
+	@POST
+	@Path("/deleteFavorite")
+	@Produces ("application/json")
+    public Response deleteFavorite(@Context HttpServletRequest httpRequest, FavoriteBean bean) {
+				
+		try { 
+			FavoritesBO favorite = 
+					 (FavoritesBO) applicationContext.getBean("favoritesBO");
+			
+			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			
+			SimpleFavoriteBean simpleBean = favorite.delete(bean, httpRequest);
+				return	Response.ok(simpleBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Problem while deleting the favorites from the list : "+ e.getMessage()).build();
+		}
+	}
 }

@@ -21,7 +21,9 @@
         </th>    
 
         <td align="right" width="30%">
-            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SubmittingaPublication')">Help</a>
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Publications+in+caNanoLab#ManagingPublicationsincaNanoLab-SubmitPublication')" ng-if="(sampleId==null || sampleId=='') && publicationId==null">Help</a>
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Publications+in+caNanoLab#ManagingPublicationsincaNanoLab-EditPublication')" ng-if="(sampleId==null || sampleId=='') && publicationId!=null">Help</a>
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Publications+in+caNanoLab#ManagingPublicationsincaNanoLab-SubmitPublication')" ng-if="(sampleId!=null || sampleId!='')">Help</a>                        
             &nbsp;
             <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
             &nbsp;
@@ -385,7 +387,6 @@
                 <table class="invisibleTable" summary="layout">
                     <tr>
                         <td>
-                            <br>
                             <textarea ng-model="publicationForm.sampleNamesStr" cols="60" rows="5" id="publicationForm.associatedSampleNames"></textarea>
                             <em>one name per line</em>
                         </td>
@@ -398,7 +399,7 @@
                                     <td>
                                         <img ng-src="images/ajax-loader.gif" border="0" class="counts"
                                              id="loaderImg" style="display: none" alt="load existing samples">
-
+                                        
                                     <select ng-hide="loader" ng-hide="matchSampleSearch" data-ng-model="localForm.matchedSampleSelect" 
                                     data-ng-options="option for option in sampleResults" ng-multiple="true" multiple id="matchedSampleSelect">
                                     </select>                                                                            

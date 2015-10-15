@@ -884,8 +884,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 
-		for (Object obj : results) {
-			Characterization achar = (Characterization) obj;
+		for (int i = 0; i < results.size(); i++) {
+			Characterization achar = (Characterization) results.get(i);
 			chars.add(achar);
 		}
 		return chars;

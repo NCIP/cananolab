@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.sample.ChemicalAssociationBO;
 import gov.nih.nci.cananolab.restful.sample.CompositionManager;
 import gov.nih.nci.cananolab.restful.sample.FunctionalizingEntityBO;
@@ -29,14 +30,15 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 @Path("/chemicalAssociation")
 public class ChemicalAssociationServices {
 
 private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 	
-	@Inject
-	ApplicationContext applicationContext;
-	
+//	@Inject
+//	ApplicationContext applicationContext;
+	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@GET
 	@Path("/setup")
 	@Produces ("application/json")

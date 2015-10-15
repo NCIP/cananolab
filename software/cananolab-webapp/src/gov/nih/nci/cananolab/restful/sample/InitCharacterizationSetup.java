@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
@@ -67,27 +68,29 @@ public class InitCharacterizationSetup {
 		return types;
 	}
 
-	//public List<LabelValueBean> getDecoratedCharacterizationTypes(
-	public void getDecoratedCharacterizationTypes(
+	public List<LabelValueBean> getDecoratedCharacterizationTypes(
+	//public List<String> getDecoratedCharacterizationTypes(
 			HttpServletRequest request) throws Exception {
-//		List<LabelValueBean> charTypes = new ArrayList<LabelValueBean>();
-//		List<String> types = getDefaultCharacterizationTypes(request
-//				.getSession().getServletContext());
-//		for (String type : types) {
-//			LabelValueBean bean = new LabelValueBean(type, type);
-//			charTypes.add(bean);
-//		}
-//		SortedSet<String> otherTypes = LookupService
-//				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.characterization.OtherCharacterization");
-//		for (String type : otherTypes) {
-//			if (!types.contains(type)) {
-//				LabelValueBean bean = new LabelValueBean("[" + type + "]", type);
-//				charTypes.add(bean);
-//			}
-//		}
+		List<LabelValueBean> charTypes = new ArrayList<LabelValueBean>();
+		List<String> types = getDefaultCharacterizationTypes(request
+				.getSession().getServletContext());
+		
+		for (String type : types) {
+			LabelValueBean bean = new LabelValueBean(type, type);
+			charTypes.add(bean);
+		}
+		SortedSet<String> otherTypes = LookupService
+				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.characterization.OtherCharacterization");
+		for (String type : otherTypes) {
+			if (!types.contains(type)) {
+				LabelValueBean bean = new LabelValueBean("[" + type + "]", type);
+				charTypes.add(bean);
+				//types.add("[" + type + "]");
+			}
+		}
 //		request.getSession().setAttribute("decoratedCharacterizationTypes",
 //				charTypes);
-//		return charTypes;
+		return charTypes;
 	}
 
 	/**
@@ -235,44 +238,43 @@ public class InitCharacterizationSetup {
 		return charNames;
 	}
 
-	//public List<LabelValueBean> getDecoratedCharNamesByCharType(
-	public void getDecoratedCharNamesByCharType(
+	public List<LabelValueBean> getDecoratedCharNamesByCharType(
 			HttpServletRequest request, String charType) throws Exception {
-//		if (StringUtils.isEmpty(charType)) {
-//			return null;
-//		}
-//		SortedSet<String> charNames = new TreeSet<String>();
-//		List<LabelValueBean> charNameBeans = new ArrayList<LabelValueBean>();
-//		String shortClassNameForCharType = ClassUtils
-//				.getShortClassNameFromDisplayName(charType);
-//		Class clazz = ClassUtils.getFullClass(shortClassNameForCharType);
-//		if (clazz != null) {
-//			if (clazz != null) {
-//				charNames = InitSetup.getInstance()
-//						.getDefaultTypesByReflection(
-//								request.getSession().getServletContext(),
-//								"defaultCharTypeChars", clazz.getName());
-//				for (String name : charNames) {
-//					LabelValueBean bean = new LabelValueBean(name, name);
-//					charNameBeans.add(bean);
-//				}
-//			}
-//		}
-//		CharacterizationService service = this
-//				.getCharacterizationServiceFromSession(request);
-//		List<String> otherCharNames = service
-//				.findOtherCharacterizationByAssayCategory(charType);
-//		if (!otherCharNames.isEmpty()) {
-//			for (String name : otherCharNames) {
-//				if (!charNames.contains(name)) {
-//					LabelValueBean bean = new LabelValueBean("[" + name + "]",
-//							name);
-//					charNameBeans.add(bean);
-//				}
-//			}
-//		}
-//
-//		return charNameBeans;
+		if (StringUtils.isEmpty(charType)) {
+			return null;
+		}
+		SortedSet<String> charNames = new TreeSet<String>();
+		List<LabelValueBean> charNameBeans = new ArrayList<LabelValueBean>();
+		String shortClassNameForCharType = ClassUtils
+				.getShortClassNameFromDisplayName(charType);
+		Class clazz = ClassUtils.getFullClass(shortClassNameForCharType);
+		if (clazz != null) {
+			if (clazz != null) {
+				charNames = InitSetup.getInstance()
+						.getDefaultTypesByReflection(
+								request.getSession().getServletContext(),
+								"defaultCharTypeChars", clazz.getName());
+				for (String name : charNames) {
+					LabelValueBean bean = new LabelValueBean(name, name);
+					charNameBeans.add(bean);
+				}
+			}
+		}
+		CharacterizationService service = this
+				.getCharacterizationServiceFromSession(request);
+		List<String> otherCharNames = service
+				.findOtherCharacterizationByAssayCategory(charType);
+		if (!otherCharNames.isEmpty()) {
+			for (String name : otherCharNames) {
+				if (!charNames.contains(name)) {
+					LabelValueBean bean = new LabelValueBean("[" + name + "]",
+							name);
+					charNameBeans.add(bean);
+				}
+			}
+		}
+
+		return charNameBeans;
 	}
 
 	public SortedSet<String> getDatumNamesByCharName(

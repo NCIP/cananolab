@@ -16,10 +16,7 @@ public class SecurityServicesTest {
 
 	@Before
 	public void setUp() throws Exception {
-		client = ClientBuilder.newClient(new ClientConfig()
-		//.register(MyClientResponseFilter.class)
-		//.register(new AnotherClientFilter())
-				);
+		client = ClientBuilder.newClient();
 	}
 
 	@Test
@@ -28,7 +25,7 @@ public class SecurityServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("security/login")
-				.queryParam("username", "canano_res").queryParam("password", "sfsfasf")
+				.queryParam("username", "canano_res").queryParam("password", "Quality@4")
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);

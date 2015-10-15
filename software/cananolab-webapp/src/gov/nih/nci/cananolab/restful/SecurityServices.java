@@ -1,8 +1,12 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.security.LoginBO;
 import gov.nih.nci.cananolab.restful.security.LogoutBO;
 import gov.nih.nci.cananolab.restful.security.RegisterUserBO;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.service.security.LoginBean;
+import gov.nih.nci.cananolab.service.security.PasswordResetBean;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
@@ -15,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -23,37 +28,44 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/security")
 public class SecurityServices {
 	private Logger logger = Logger.getLogger(SecurityServices.class);
 	
-	@Inject
-	ApplicationContext applicationContext;
-	
+//	@Inject
+//	SpringApplicationContext applicationContext;
 	/*
 	 * TODO: Need input validation logic
 	 * 
 	 *    Ref. to validation.xml
 	 */
-
-	@GET
+	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
+	@POST
 	@Path("/login")
 	@Produces ("application/json")
     public Response login(@Context HttpServletRequest httpRequest, 
-    		@DefaultValue("") @QueryParam("username") String username, 
-    		@DefaultValue("") @QueryParam("password") String password) {
+    		LoginBean userBean) {
 		
-		if (username.length() == 0 || password.length() == 0)
-			return Response.serverError().entity("User name or password can't be blank").build();
-		
-		LoginBO loginBo = (LoginBO) applicationContext.getBean("loginBO");
-		
-		String result = loginBo.login(username, password, httpRequest);
-		logger.info("login sessionid: " + httpRequest.getSession().getId());
-		if (!result.equals(RestfulConstants.SUCCESS)) 
-			return Response.status(Response.Status.NOT_FOUND).entity("Login ID or password is invalid").build();
-		return Response.ok(httpRequest.getSession().getId()).build();
+		String username = userBean.getUserName();
+		String password = userBean.getPassword();
+		logger.info("In login service");
+		try{
+			if (username.length() == 0 || password.length() == 0)
+				return Response.serverError().entity("User name or password can't be blank").build();		
+			
+			LoginBO loginBo = (LoginBO) applicationContext.getBean("loginBO");
+
+			String result = loginBo.login(username, password, httpRequest);
+			logger.info("login sessionid: " + httpRequest.getSession().getId());
+			if (!result.equals(RestfulConstants.SUCCESS)) 
+				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
+			return Response.ok(httpRequest.getSession().getId()).build();
+		}catch(Exception e){
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while logging in: " + e.getMessage())).build();
+		}
     }
 	
 	@GET
@@ -71,7 +83,7 @@ public class SecurityServices {
     		@DefaultValue("") @QueryParam("registerToUserList") String registerToUserList) {
         
 		logger.info("In register service");
-		
+
 		RegisterUserBO registerBo = (RegisterUserBO) applicationContext.getBean("registerUserBO");
 		List<String> errors = registerBo.register(title, firstName, lastName, email, phone, organization, fax, comment, registerToUserList);
 		
@@ -84,7 +96,7 @@ public class SecurityServices {
 	@Produces ("application/json")
     public Response logout(@Context HttpServletRequest httpRequest) {
 		logger.info("In logout service");
-		
+			
 		LogoutBO logoutBo = (LogoutBO) applicationContext.getBean("logoutBO");
 		String result = logoutBo.logout(httpRequest);
 		return Response.ok(result).build();
@@ -119,6 +131,29 @@ public class SecurityServices {
 		}
 		
 		return Response.status(Response.Status.NOT_FOUND)
-				.entity("Unable to get userGroup due to unknow reason.").build();
+				.entity("Unable to get userGroup due to unknown reason.").build();
 	}
+	
+	@POST
+	@Path("/resetPassword")
+	@Produces ("application/json")
+    public Response resetPassword(@Context HttpServletRequest httpRequest, PasswordResetBean passwordBean) {
+		try{
+			logger.info("In password reset service");
+			LoginBO loginBo = (LoginBO) applicationContext.getBean("loginBO");
+			
+			if(passwordBean.getOldPassword().equals(passwordBean.getNewPassword()))
+				return Response.serverError().entity("old password and new password can't be same").build();
+			
+			String result = loginBo.updatePassword(passwordBean.getUsername(), passwordBean.getOldPassword(), passwordBean.getNewPassword(), passwordBean.getConfirmPassword());
+			logger.info("login sessionid: " + httpRequest.getSession().getId());
+			if (!result.equals(RestfulConstants.SUCCESS)) 
+				return Response.status(Response.Status.NOT_FOUND).entity("Password reset failed").build();
+			return Response.ok(result).build();
+		}catch(Exception e){
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while logging in: " + e.getMessage())).build();
+		}
+    }
+	
 }

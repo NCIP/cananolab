@@ -22,7 +22,6 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 
 import org.apache.commons.collections.map.HashedMap;
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
 import com.jayway.restassured.response.Response;
@@ -35,7 +34,7 @@ public class NanomaterialEntityServiceTest {
 		Response res =
 				given().contentType("application/json")
 				.parameter("sampleId", "20917510").expect()
-				.body("nanomaterialEntityTypes", hasItems("biopolymer","carbon","carbon black","carbon nanotube","dendrimer","emulsion","fullerene","liposome","metal oxide","metal particle","metalloid","nanohorn","nanolipogel","nanorod","nanoshell","polymer","quantum dot","silica"))
+				.body("nanomaterialEntityTypes", hasItems("biopolymer", "carbon", "carbon black", "carbon nanotube", "dendrimer", "emulsion", "fullerene", "liposome", "metal oxide", "metal particle", "metalloid", "nanohorn", "nanorod", "nanoshell", "polymer", "quantum dot", "silica"))
 						.when().get("http://localhost:8080/caNanoLab/rest/nanomaterialEntity/setup");
 
 		System.out.println(res.getBody().asString());
@@ -106,7 +105,6 @@ public class NanomaterialEntityServiceTest {
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -148,7 +146,6 @@ public class NanomaterialEntityServiceTest {
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -190,7 +187,6 @@ public class NanomaterialEntityServiceTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -232,7 +228,6 @@ public class NanomaterialEntityServiceTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -283,7 +278,6 @@ public class NanomaterialEntityServiceTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -333,7 +327,6 @@ public class NanomaterialEntityServiceTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");

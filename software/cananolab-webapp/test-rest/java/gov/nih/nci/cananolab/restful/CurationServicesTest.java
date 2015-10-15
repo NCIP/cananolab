@@ -11,7 +11,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +23,7 @@ public class CurationServicesTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		client = ClientBuilder.newClient(new ClientConfig());
+		client = ClientBuilder.newClient();
 						
 	}
 	@Test
@@ -50,7 +49,6 @@ public class CurationServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");

@@ -9,6 +9,7 @@
 package gov.nih.nci.cananolab.service.security;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+//import org.hibernate.type.StandardBasicTypes;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
@@ -31,6 +32,7 @@ import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.security.exceptions.CSFirstTimeLoginException;
 import gov.nih.nci.security.exceptions.CSInputException;
 import gov.nih.nci.security.exceptions.CSLoginException;
 import gov.nih.nci.system.applicationservice.ApplicationException;
@@ -132,7 +134,11 @@ public class SecurityService {
 			} else {
 				throw new SecurityException("Invalid Credentials");
 			}
-		} catch (CSConfigurationException e) {
+		} catch (CSFirstTimeLoginException e){
+			String error = "User logging in first time, Password should be changed";
+			logger.error(e);
+			throw new SecurityException(error, e);
+		}catch (CSConfigurationException e) {
 			String error = "Error in logging";
 			logger.error(e);
 			throw new SecurityException(error, e);
@@ -153,7 +159,6 @@ public class SecurityService {
 			logger.error(e);
 			throw new SecurityException(error, e);
 		}
-
 	}
 
 	/**
@@ -320,10 +325,14 @@ public class SecurityService {
 		if (protectionElementObjectId == null) {
 			return false;
 		}
+		logger.debug("============= checkReadPermission isPublic: " + System.currentTimeMillis());
+		
 		boolean publicStatus = isPublic(protectionElementObjectId);
+		logger.debug("============= Done checkReadPermission isPublic: " + System.currentTimeMillis());
 		if (publicStatus) {
 			return true;
 		} else {
+			logger.debug("============= checkReadPermission again: " + System.currentTimeMillis());
 			return checkPermission(protectionElementObjectId,
 					AccessibilityBean.CSM_READ_PRIVILEGE);
 		}
@@ -355,8 +364,8 @@ public class SecurityService {
 		SearchCriteria sc = new GroupSearchCriteria(group);
 		List results = this.authorizationManager.getObjects(sc);
 		Group doGroup = null;
-		for (Object obj : results) {
-			doGroup = (Group) obj;
+		for (int i = 0; i < results.size(); i++) {
+			doGroup = (Group) results.get(i);
 			break;
 		}
 		return doGroup;
@@ -374,8 +383,8 @@ public class SecurityService {
 		SearchCriteria sc = new RoleSearchCriteria(role);
 		List results = this.authorizationManager.getObjects(sc);
 		Role doRole = null;
-		for (Object obj : results) {
-			doRole = (Role) obj;
+		for (int i = 0; i < results.size(); i++) {
+			doRole = (Role) results.get(i);
 			break;
 		}
 		return doRole;
@@ -397,8 +406,8 @@ public class SecurityService {
 			SearchCriteria sc = new ProtectionElementSearchCriteria(pe);
 			List results = this.authorizationManager.getObjects(sc);
 			ProtectionElement doPE = null;
-			for (Object obj : results) {
-				doPE = (ProtectionElement) obj;
+			for (int i = 0; i < results.size(); i++) {
+				doPE = (ProtectionElement) results.get(i);
 				break;
 			}
 			if (doPE == null) {
@@ -429,8 +438,8 @@ public class SecurityService {
 			SearchCriteria sc = new ProtectionGroupSearchCriteria(pg);
 			List results = this.authorizationManager.getObjects(sc);
 			ProtectionGroup doPG = null;
-			for (Object obj : results) {
-				doPG = (ProtectionGroup) obj;
+			for (int i = 0; i < results.size(); i++) {
+				doPG = (ProtectionGroup) results.get(i);
 				break;
 			}
 			if (doPG == null) {
@@ -546,9 +555,9 @@ public class SecurityService {
 			String[] columns = new String[] { "protection_group_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
-			for (Object obj : results) {
-				if (obj != null) {
-					data.add(((String) obj));
+			for (int i = 0; i < results.size(); i++) {
+				if (results.get(i) != null) {
+					data.add(((String) results.get(i)));
 				}
 			}
 		} catch (Exception e) {
@@ -618,9 +627,9 @@ public class SecurityService {
 			Object[] columnTypes = new Object[] { Hibernate.STRING,
 					Hibernate.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
-			for (Object obj : results) {
-				if (obj != null) {
-					String[] row = (String[]) obj;
+			for (int i = 0; i < results.size(); i++) {
+				if (results.get(i) != null) {
+					String[] row = (String[]) results.get(i);
 					String data = row[0];
 					String role = row[1];
 					data2role.put(data, role);
@@ -681,8 +690,8 @@ public class SecurityService {
 			Object[] columnTypes = new Object[] { Hibernate.STRING,
 					Hibernate.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
-			for (Object obj : results) {
-				Object[] row = (Object[]) obj;
+			for (int i = 0; i < results.size(); i++) {
+				Object[] row = (Object[]) results.get(i);
 				String user = row[0].toString();
 				String role = row[1].toString();
 				user2Role.put(user, role);
@@ -713,8 +722,8 @@ public class SecurityService {
 			Object[] columnTypes = new Object[] { Hibernate.STRING,
 					Hibernate.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
-			for (Object obj : results) {
-				Object[] row = (Object[]) obj;
+			for (int i = 0; i < results.size(); i++) {
+				Object[] row = (Object[]) results.get(i);
 				String group = row[0].toString();
 				String role = row[1].toString();
 				group2Role.put(group, role);
@@ -744,8 +753,8 @@ public class SecurityService {
 			String[] columns = new String[] { "role_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
-			for (Object obj : results) {
-				roleName = obj.toString();
+			for (int i = 0; i < results.size(); i++) {
+				roleName = results.get(i).toString();
 			}
 		} catch (Exception e) {
 			logger
@@ -773,8 +782,8 @@ public class SecurityService {
 			String[] columns = new String[] { "role_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
-			for (Object obj : results) {
-				roleName = obj.toString();
+			for (int i = 0; i < results.size(); i++) {
+				roleName = results.get(i).toString();
 			}
 		} catch (Exception e) {
 			logger
@@ -861,5 +870,17 @@ public class SecurityService {
 			e.printStackTrace();
 			System.exit(1);
 		}
+	}
+
+	public boolean resetPassword(String loginId, String password,
+			String newPassword, String confirmPassword) {
+		boolean flag = false;
+		try{
+			flag = authenticationManager.changePassword(loginId, password, newPassword, confirmPassword);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return flag;
+		
 	}
 }

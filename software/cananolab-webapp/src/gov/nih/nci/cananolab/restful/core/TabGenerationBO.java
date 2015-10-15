@@ -47,14 +47,15 @@ public class TabGenerationBO {
 				tabWithLink[1] =  urlBase + "#/managePublications";;
 				tabs.add(tabWithLink);
 				
+				
 			}
 			tabWithLink = new String[2];
 			tabWithLink[0] = "HELP";
-			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+User%27s+Guide";
+			tabWithLink[1] = "https://wiki.nci.nih.gov/x/14CUBg";
 			tabs.add(tabWithLink);
 			tabWithLink = new String[2];
 			tabWithLink[0] = "GLOSSARY";
-			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary";
+			tabWithLink[1] = "https://wiki.nci.nih.gov/x/9ICUBg";
 			tabs.add(tabWithLink);
 			
 			if (homePage.length() == 0 || !homePage.startsWith("true")) {
@@ -68,8 +69,14 @@ public class TabGenerationBO {
 			String[] tabWithLink = new String[2];
 			
 			tabWithLink[0] = "HOME";
-			tabWithLink[1] = urlBase + "#/home";
+			tabWithLink[1] = urlBase + "#/";
 			tabs.add(tabWithLink.clone());
+			
+			tabWithLink = new String[2];
+			tabWithLink[0] = "WORKFLOW";
+			tabWithLink[1] =  urlBase + "#/workflow";;
+			tabs.add(tabWithLink);
+			
 
 			tabWithLink = new String[2];
 			tabWithLink[0] = "PROTOCOLS";
@@ -85,6 +92,12 @@ public class TabGenerationBO {
 			tabWithLink[0] = "PUBLICATIONS";
 			tabWithLink[1] =  urlBase + "#/managePublications";;
 			tabs.add(tabWithLink);
+			
+			tabWithLink = new String[2];
+			tabWithLink[0] = "GROUPS";
+			tabWithLink[1] =  urlBase + "#/manageGroups";
+			tabs.add(tabWithLink);
+			
 			
 			if (userBean.isCurator()) {
 				tabWithLink = new String[2];
@@ -107,14 +120,19 @@ public class TabGenerationBO {
 			tabs.add(tabWithLink);
 			
 			tabWithLink = new String[2];
-			tabWithLink[0] = "HELP";
-			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+User%27s+Guide";
+			tabWithLink[0] = "MY FAVORITES";
+			tabWithLink[1] =  urlBase + "#/myFavorites";;
 			tabs.add(tabWithLink);
 			
-			tabWithLink = new String[2];
-			tabWithLink[0] = "GLOSSARY";
-			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary";
-			tabs.add(tabWithLink);
+//			tabWithLink = new String[2];
+//			tabWithLink[0] = "HELP";
+//			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+User%27s+Guide";
+//			tabs.add(tabWithLink);
+//			
+//			tabWithLink = new String[2];
+//			tabWithLink[0] = "GLOSSARY";
+//			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary";
+//			tabs.add(tabWithLink);
 			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "LOGOUT";

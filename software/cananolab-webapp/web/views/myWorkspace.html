@@ -6,7 +6,7 @@
             </th>
             <td align="right" width="30%">
                 <a class="helpText" href=
-                        "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/6+-+Managing+Publications+in+caNanoLab#id-6-ManagingPublicationsincaNanoLab-SearchingPublications')">Help</a>   <a class=
+                        "javascript:openHelpWindow('https://wiki.nci.nih.gov/x/fYQfEQ')">Help</a>   <a class=
                                                                                                                                                                                                                           "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
             </td>
         </tr>
@@ -21,7 +21,7 @@
     </div>
     <hr>
     <div style="font-size:18px;" ng-show="mySamples">My Samples</div>
-    <table class="table publication" width="100%" cellpadding="0" cellspacing="0" ng-show="mySamples">
+    <table class="table sample" width="100%" cellpadding="0" cellspacing="0" ng-show="mySamples">
         <tr>
             <th>Actions</th>
             <th>Sample Name</th>
@@ -29,10 +29,11 @@
             <th>Created Date</th>
             <th>Sample Access</th>
         </tr>
-        <tr ng-repeat="data in samples.samples">
+        <tr ng-repeat="data in samples.samples" id="sample{{data.id}}" ng-class="{greenShade: !data.owner}">
             <td class="columnOne">
             	<a href="/caNanoLab/#/sample?sampleId={{data.id}}&amp;fromMyWorkspace=true">View</a>&nbsp;
             	<a href="/caNanoLab/#/editSample?sampleId={{data.id}}&amp;fromMyWorkspace=true" ng-if="data.editable">Edit</a>
+            	<a href="" ng-click="doDeleteSample(data.id)" ng-if="data.editable">Delete</a>
             </td>
             <td>
                 <div ng-bind="data.name">{{data.name}}</div>
@@ -52,7 +53,7 @@
     </table>
     <br/>
     <div style="font-size:18px;" ng-show="myProtocols">My Protocols</div>
-    <table class="table publication" width="100%" cellpadding="0" cellspacing="0" ng-show="myProtocols">
+    <table class="table protocol" width="100%" cellpadding="0" cellspacing="0" ng-show="myProtocols">
         <tr>
             <th>Actions</th>
             <th>Protocol Name</th>
@@ -60,10 +61,11 @@
             <th>Created Date</th>
             <th>Protocol Access</th>
         </tr>
-        <tr ng-repeat="data in protocols.protocols">
+        <tr ng-repeat="data in protocols.protocols" id="protocol{{data.id}}" ng-class="{greenShade: !data.owner}">
             <td class="columnOne">
             	<a href="rest/protocol/download?fileId={{data.fileId}}" target="_blank" ng-if="data.fileId != null && data.fileId != ''">View</a>&nbsp;
             	<a href="/caNanoLab/#/editProtocol?protocolId={{data.id}}" ng-if="data.editable">Edit</a>
+            	<a href="" ng-click="doDeleteProtocol(data.id)" ng-if="data.editable">Delete</a>
             </td>
             <td>
                 <div ng-bind-html="data.name">{{data.name}}</div>
@@ -92,10 +94,11 @@
             <th>Created Date</th>
             <th>Publication Access</th>
         </tr>
-        <tr ng-repeat="data in publications.publications">
+        <tr ng-repeat="data in publications.publications" id="publication{{data.id}}" ng-class="{greenShade: !data.owner}">
             <td class="columnOne">
             	<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{data.pubMedId}}" ng-if="data.pubMedId!=null" target="_blank">View</a>&nbsp;
             	<a href="/caNanoLab/#/editPublication?publicationId={{data.id}}" ng-if="data.editable">Edit</a>
+            	<a href="" ng-click="doDeletePublication(data.id)" ng-if="data.editable">Delete</a>
             </td>
             <td>
                 <div ng-bind-html="data.pubMedDOIId">{{data.pubMedDOIId}}</div>

@@ -6,7 +6,7 @@
 
                 <td align="right" width="30%">
                     <a class="helpText" href=
-                            "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/2+-+Managing+Protocols+in+caNanoLab#id-2-ManagingProtocolsincaNanoLab-SearchingExistingProtocols')">
+                            "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-SearchProtocols')">
                         Help</a> &nbsp; <a class="helpText" href=
                         "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">
                     Glossary</a> &nbsp;
@@ -20,11 +20,15 @@
                     <label for="type">Protocol Type</label>
                 </td>
                 <td>
+                <table class="invisibleTable" summary="layout">
+                                        <tbody><tr>
+                                            <td>                    
                     <select ng-disabled="loader" id="type" ng-model="searchProtocolForm.protocolType">
                         <option ng-repeat="option in protocolTypes" value="{{option}}" ng-selected="{{option==protocolForm.type}}">
                             {{option}}
                         </option>
                     </select>
+                </td></tr></tbody></table>
                 </td>
             </tr>
             <tr>

@@ -69,8 +69,8 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 				+ characterizationId;
 		HQLCriteria crit = new HQLCriteria(hql);
 		List results = appService.query(crit);
-		for (Object obj : results) {
-			protocol = (Protocol) obj;
+		for (int i = 0; i < results.size(); i++) {
+			protocol = (Protocol) results.get(i);
 			if (getAccessibleData().contains(protocol.getId().toString())) {
 				return protocol;
 			} else {
@@ -189,8 +189,8 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 
-		for (Object obj : results) {
-			Characterization achar = (Characterization) obj;
+		for (int i = 0; i < results.size(); i++) {
+			Characterization achar = (Characterization) results.get(i);
 			if (getAccessibleData().contains(achar.getId().toString())) {
 				checkAssociatedVisibility(achar);
 				chars.add(achar);
@@ -291,8 +291,8 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 				.setProjection(Projections.distinct(Property.forName("id")));
 		List results = appService.query(crit);
 		int count = 0;
-		for (Object obj : results) {
-			String id = (String) obj.toString();
+		for (int i = 0; i < results.size(); i++) {
+			String id = (String) results.get(i).toString();
 			if (getAccessibleData().contains(id)) {
 				count++;
 			}

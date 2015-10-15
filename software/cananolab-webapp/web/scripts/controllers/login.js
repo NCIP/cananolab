@@ -13,8 +13,10 @@ var app = angular.module('angularApp')
       if (!$scope.password || !$scope.loginId) {
         $scope.authErrors="Username and Password are required";
       }
-      else {                
-        $http({method: 'GET', url: '/caNanoLab/rest/security/login', params: {"username":$scope.loginId,"password":$scope.password} }).
+      else {      	  
+    	  $scope.bean = {"userName" : $scope.loginId, "password" : $scope.password};
+    	  
+        $http({method: 'POST', url: '/caNanoLab/rest/security/login', data: $scope.bean}).
         success(function(data, status, headers, config) {
           // this callback will be called asynchronously
           // when the response is available
@@ -22,7 +24,7 @@ var app = angular.module('angularApp')
             $location.path($scope.came_from).search({}).replace();            
           }
           else {
-            $location.path("/home").replace();            
+            $location.path("/").replace();            
           };
 
 

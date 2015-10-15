@@ -61,5 +61,97 @@ var app = angular.module('angularApp')
         //$scope.samples = [{'sampleName':'NCL-25-1', 'status':'in preparation', 'createdDate':'01/01/2014', 'user' : []}];
         //$scope.protocols = [{'protocolName':'Protocol 1', 'status':'in preparation', 'createdDate':'01/01/2014', 'user' : []}];
         //$scope.publications = [{'id':'1','publicationTitle':'Pub 1', 'status':'in preparation', 'createdDate':'01/01/2014', 'user' : []}];
+        
+        $scope.doDeleteSample = function(sampleId) {
+            if (confirm("Are you sure you want to delete the Sample?")) {
+                $scope.loader = true;
+
+                $http({method: 'GET', url: '/caNanoLab/rest/sample/deleteSampleFromWorkspace',params: {"sampleId":sampleId}}).
+                success(function(data, status, headers, config) {
+                	//var sampleRow = document.getElementById('sample' + sampleId);
+                    //sampleRow.parentNode.removeChild(sampleRow);
+                    for (var k = 0; k < $scope.samples.length; ++k)
+                    {
+                        var sample = $scope.samples[k];
+                        if (sampleId == sample.id ) {
+                            $scope.samples.splice(k,1);
+                        }
+                    }
+                    $scope.loader = false;
+                }).
+                error(function(data, status, headers, config) {
+                    $scope.loader = false;
+                    $scope.message = data;
+                }); 
+            }
+        };
+        
+        $scope.doDeleteProtocol = function(protocolId) {
+            if (confirm("Are you sure you want to delete the Protocol?")) {
+                $scope.loader = true;
+
+                $http({method: 'GET', url: '/caNanoLab/rest/protocol/deleteProtocolById',params: {"protocolId":protocolId}}).
+                    success(function(data, status, headers, config) {
+                        if (data == "success") {
+                        	//var protocolRow = document.getElementById('protocol' + protocolId);
+                        	//protocolRow.parentNode.removeChild(protocolRow);
+                        	for (var k = 0; k < $scope.protocols.length; ++k)
+                            {
+                                var protocol = $scope.protocols[k];
+                                if (protocolId == protocol.id ) {
+                                    $scope.protocols.splice(k,1);
+                                }
+                            }
+                        	$scope.loader = false;
+                        }
+                        else {
+                            $scope.loader = false;
+                            $scope.messages = data;
+                        }
+
+                    }).
+                    error(function(data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        // $rootScope.sampleData = data;
+                        $scope.loader = false;
+                        $scope.messages = data;
+                    });
+            }
+        };        
+        
+        $scope.doDeletePublication = function(publicationId) {
+            if (confirm("Are you sure you want to delete  the Publication?")) {
+            	$scope.loader = true;
+
+            	$http({method: 'GET', url: '/caNanoLab/rest/publication/deletePublicationById',params: {"publicationId":publicationId}}).
+	                success(function(data, status, headers, config) {
+	                	if (data == "success") {
+	                		//var publicationRow = document.getElementById('publication' + publicationId);
+	                		//publicationRow.parentNode.removeChild(publicationRow);
+	                		for (var k = 0; k < $scope.publications.length; ++k)
+                            {
+                                var publication = $scope.publications[k];
+                                if (publicationId == publication.id ) {
+                                    $scope.publications.splice(k,1);
+                                }
+                            }
+	                		$scope.loader = false;
+	                	}
+	                	else {
+	                		$scope.loader = false;
+	                		$scope.messages = data;
+	                	}
+	
+	                }).
+	                error(function(data, status, headers, config) {
+	                    // called asynchronously if an error occurs
+	                    // or server returns response with an error status.
+	                    // $rootScope.sampleData = data;
+	                    $scope.loader = false;
+	                    $scope.messages = data;
+	                });
+            }
+        };         
 
     });

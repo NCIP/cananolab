@@ -21,13 +21,19 @@ import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBasicBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceBean;
 import gov.nih.nci.cananolab.restful.view.SimpleWorkspaceItem;
+import gov.nih.nci.cananolab.service.common.helper.CommonServiceHelper;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -42,11 +48,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
-public class WorkspaceManager {
+public class WorkspaceManager extends BaseAnnotationBO{
 
 	private static Logger logger = Logger.getLogger(WorkspaceManager.class);
 
 	CurationService curationService;
+	
+	private DataAvailabilityService dataAvailabilityService;
+	
+	CommonServiceHelper helper = new CommonServiceHelper();
 
 
 	public SimpleWorkspaceBean getWorkspaceItems(HttpServletRequest request)
@@ -103,17 +113,28 @@ public class WorkspaceManager {
 
 		PublicationService service = this.getPublicationServiceInSession(request, securityService);
 		List<String> publicationIds = service.findPublicationIdsByOwner(user.getLoginName());
+		List<String> Ids = new ArrayList<String>();
+		if(!user.isCurator()){
+			Ids = helper.findSharedPublications(user.getLoginName());
+			
+			for(String pubId : publicationIds){
+				if(!Ids.contains(pubId))
+					publicationIds.add(pubId);
+			}
+		}
+		
 		if (publicationIds == null)
 			return items;
-
+		
 		for (String id : publicationIds) {
-			PublicationBean pubBean = service.findPublicationById(id, true);
+			PublicationBean pubBean = service.findPublicationByIdWorkspace(id, true);
 			if (pubBean == null) continue;
 
 			SimpleWorkspaceItem item = new SimpleWorkspaceItem();
 			item.setName(pubBean.getDomainFile().getTitle());
 			item.setId(pubBean.getDomainFile().getId());
 			item.setCreatedDate(pubBean.getDomainFile().getCreatedDate());
+			
 			Publication pub = (Publication) pubBean.getDomainFile();
 			
 			String pubId = (pub.getPubMedId() != null) ? pub.getPubMedId().toString() : "";
@@ -139,7 +160,15 @@ public class WorkspaceManager {
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
 		ProtocolService protocolService = getProtocolServiceInSession(request, securityService);
 		List<String> protoIds = protocolService.findProtocolIdsByOwner(user.getLoginName());
-
+		
+		if(!user.isCurator()){
+			List<String> Id = helper.findSharedProtocols(user.getLoginName());
+						
+			for(String ids : protoIds){
+				if(!Id.contains(ids))
+				protoIds.add(ids);
+			}
+		}
 		if (protoIds == null)
 			return items;
 
@@ -182,8 +211,18 @@ public class WorkspaceManager {
 		String loginUser = user.getLoginName();
 
 		List<String> sampleIds = sampleService.findSampleIdsByOwner(loginUser);
+		List<String> sharedByIds = new ArrayList<String>();
+		//Only Researchers have shared items, not curators.
+		if(!user.isCurator()){
+			sharedByIds = helper.findSharedSampleIds(user.getLoginName());
+			
+			for (String sharedById : sharedByIds) {
+				if (!sampleIds.contains(sharedById))
+					sampleIds.add(sharedById);
+			}
+		}
 		if (sampleIds == null)
-			return items;
+			return items;	
 
 		for (String id : sampleIds) {
 			//Use this method so it won't check user read permission, since user owns this item
@@ -209,7 +248,11 @@ public class WorkspaceManager {
 		StringBuilder sb = new StringBuilder();
 
 		if (groupAccesses != null) {
-			sb.append("Shared by: ");
+		if(isOwner){
+				sb.append("Shared with: ");
+			}else{
+				sb.append("Shared by:");
+			}
 
 			for (AccessibilityBean access : groupAccesses) {
 				sb.append(access.getGroupName()).append(", ");
@@ -219,8 +262,13 @@ public class WorkspaceManager {
 		if (userAccesses != null) {
 			for (AccessibilityBean access : userAccesses) {
 				UserBean ubean = access.getUserBean();
-				if (!loginUser.equals(ubean.getLoginName()))
-					sb.append(ubean.getLoginName()).append(", ");
+				if(isOwner){
+					if (!loginUser.equals(ubean.getLoginName()))
+						sb.append(ubean.getLoginName()).append(", ");
+						//sb.append(ubean.getFirstName()).append(" ").append(ubean.getLastName()).append(", ");
+				}
+//				if (!loginUser.equals(ubean.getLoginName()))
+//					sb.append(ubean.getLoginName()).append(", ");
 			}
 		}
 
@@ -286,6 +334,7 @@ public class WorkspaceManager {
 			SecuredDataBean dataBean, SecurityService securityService, UserBean user) {
 
 		item.setEditable(dataBean.getUserUpdatable());
+		item.setOwner(dataBean.getUserIsOwner());
 
 		if (dataBean.getPublicStatus())
 			item.setSubmisstionStatus("Approved");
@@ -348,4 +397,14 @@ public class WorkspaceManager {
 	public void setCurationService(CurationService curationService) {
 		this.curationService = curationService;
 	}
+	
+	public DataAvailabilityService getDataAvailabilityService() {
+		return dataAvailabilityService;
+	}
+
+	public void setDataAvailabilityService(
+			DataAvailabilityService dataAvailabilityService) {
+		this.dataAvailabilityService = dataAvailabilityService;
+	}
+	
 }

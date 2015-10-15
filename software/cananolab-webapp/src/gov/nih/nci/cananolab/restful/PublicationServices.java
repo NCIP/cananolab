@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +9,7 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
 import gov.nih.nci.cananolab.restful.publication.PublicationManager;
 import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
@@ -17,7 +20,8 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
-
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -33,14 +37,16 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/publication")
 public class PublicationServices {
 
 private Logger logger = Logger.getLogger(PublicationServices.class);
-	
-	@Inject
-	ApplicationContext applicationContext;
+
+//	@Inject
+//	SpringApplicationContext applicationContext;
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@GET
 	@Path("/summaryView")
 	@Produces ("application/json")
@@ -48,7 +54,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-
 		 PublicationBO publicationBO = 
 					(PublicationBO) applicationContext.getBean("publicationBO");
 
@@ -71,7 +76,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
 		
 		try { 
-
 			 PublicationBO publicationBO = 
 						(PublicationBO) applicationContext.getBean("publicationBO");
 
@@ -92,7 +96,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-
 			 PublicationBO publicationBO = 
 						(PublicationBO) applicationContext.getBean("publicationBO");
 
@@ -116,7 +119,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("type") String type){
 		
 		try { 
-			
 				 PublicationBO publicationBO = 
 						(PublicationBO) applicationContext.getBean("publicationBO");
 
@@ -136,7 +138,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-
 		 PublicationBO publicationBO = 
 					(PublicationBO) applicationContext.getBean("publicationBO");
 
@@ -203,7 +204,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	    		@DefaultValue("") @QueryParam("publicationId") String publicationId,@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-			 
 		 PublicationBO publicationBO = 
 					(PublicationBO) applicationContext.getBean("publicationBO");
 
@@ -255,7 +255,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	public Response submitPublication(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form) {
 	
 		try {
-			
 			PublicationBO pubBO = 
 					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
@@ -391,7 +390,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	public Response deletePublication(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form) {
 	
 		try {
-			
 			PublicationBO pubBO = 
 					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
@@ -418,7 +416,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	public Response deleteAccess(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form) {
 	
 		try {
-			
 			PublicationBO pubBO = 
 					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
@@ -449,7 +446,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	public Response removeFromSample(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form) {
 	
 		try {
-			
 			PublicationBO pubBO = 
 					 (PublicationBO) applicationContext.getBean("publicationBO");
 			
@@ -480,7 +476,6 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	public Response submitForReview(@Context HttpServletRequest httpRequest, DataReviewStatusBean dataReviewStatusBean) {
 	
 		try {
-			
 			PublicationBO publicationBO = 
 					(PublicationBO) applicationContext.getBean("publicationBO");
 			
@@ -503,32 +498,58 @@ private Logger logger = Logger.getLogger(PublicationServices.class);
 	
 	@GET
 	@Path("/searchByIdImage")
-	@Produces("text/plain")
+	@Produces("image/png")
 	 public Response searchByIdImage(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("id") String id, @QueryParam("type") String type){
+	    		@DefaultValue("") @QueryParam("type") String type, @QueryParam("id") String id){
 		
 		PublicationManager pubManager = 
 				(PublicationManager) applicationContext.getBean("publicationManager");
-
-		//String fileRoot = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 		
-		//java.io.File fileSuccess = new java.io.File(fileRoot + java.io.File.separator +"appLogo-nanolab.gif");
-		//java.io.File fileError = new java.io.File(fileRoot + java.io.File.separator +"shim.gif");
+		String fileRoot = PropertyUtils.getProperty(
+								Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
+				 		
+		java.io.File fileSuccess = new java.io.File(fileRoot + java.io.File.separator +"canano_logo_mini.jpg");
+		java.io.File fileError = new java.io.File(fileRoot + java.io.File.separator +"doi-transparent.png");
+		
 		try {
 			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
 			
-			
 			return (result.getErrors().size() > 0) ?
-					Response.ok("/caNanoLab/images/doi-transparent.png").build()
+					Response.ok(new FileInputStream(fileError)).build()
 						:
-						Response.ok("/caNanoLab/images/canano_logo_mini.jpg").build();
-		} 
-
+						Response.ok(new FileInputStream(fileSuccess)).build();
+			} 
 		catch (Exception e) {
-			return Response.ok("/caNanoLab/images/doi-transparent.png").build();
+			return Response.ok(fileError).build();
 		}
 	}	
 
+	@GET
+	@Path("/deletePublicationById")
+	@Produces ("application/json")
+	public Response deletePublicationById(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("publicationId") String publicationId) {
+	
+		try {
+			PublicationBO pubBO = 
+					 (PublicationBO) applicationContext.getBean("publicationBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			List<String> msgs = pubBO.deletePublicationById(publicationId, httpRequest);
+			 
+			
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the publication " + e.getMessage())).build();
+		}
+	}
+	
 	
 }
 	

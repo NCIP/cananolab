@@ -55,32 +55,32 @@ public class LoginBO  {
 			session.setAttribute("user", service.getUserBean());
 			
 		} catch (Exception e) {
-			logger.error("Erro while logging in user: " + username + ". " + e.getMessage());
+			logger.error("Error while logging in user: " + username + ". " + e.getMessage());
 			logger.debug(e.getMessage());
-			return "Erro while logging in user: " + username  + ". " + e.getMessage();
+			if(e.getMessage().contains("User logging in first time, Password should be changed"))
+				return "User logging in first time, Password should be changed";
+			else
+				return "Username or Password invalid";
 		}
 		
 		return RestfulConstants.SUCCESS;
 		
 	}
 	
-	public String updatePassword(String loginId, String password, String newPassword) {
+	public String updatePassword(String loginId, String password, String newPassword, String confirmPassword) {
 
 		UserBean user = new UserBean(loginId, password);
+		boolean flag = false;
 		try {
 			SecurityService service = new SecurityService(
-					AccessibilityBean.CSM_APP_NAME, user);
+					AccessibilityBean.CSM_APP_NAME);
 			if (user != null) {
-				service.updatePassword(newPassword);				
-//				ActionMessage message = new ActionMessage("message.password");
-//				messages.add("message", message);
-//				saveMessages(request, messages);
+				flag = service.resetPassword(loginId, password, newPassword, confirmPassword);				
 			}
-			return RestfulConstants.SUCCESS;
+			if(flag)
+				return RestfulConstants.SUCCESS;
+			return "Password reset failed";
 		} catch (Exception e) {
-//			ActionMessage msg = new ActionMessage("erros.login.failed");
-//			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			saveErrors(request, messages);
 			logger.error("Password change failed. " + e.getMessage());
 			return e.getMessage();
 		}

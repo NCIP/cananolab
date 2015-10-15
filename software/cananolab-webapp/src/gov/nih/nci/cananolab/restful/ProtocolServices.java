@@ -5,6 +5,7 @@ import java.util.Map;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.protocol.ProtocolManager;
 import gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO;
@@ -27,19 +28,22 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/protocol")
 public class ProtocolServices {
 private Logger logger = Logger.getLogger(ProtocolServices.class);
 	
-	@Inject
-	ApplicationContext applicationContext;
+//	@Inject
+//	applicationContext applicationContext;
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@GET
 	@Path("/setup")
 	@Produces ("application/json")
     public Response setup(@Context HttpServletRequest httpRequest) {
 				
 		try { 
+			
 			SearchProtocolBO searchProtocolBO = 
 					(SearchProtocolBO) applicationContext.getBean("searchProtocolBO");
 			Map<String, Object> dropdownMap = searchProtocolBO.setup(httpRequest);
@@ -72,7 +76,7 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while searching for publication " + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while searching for protocol " + e.getMessage())).build();
 		}
 	}
 	
@@ -83,7 +87,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
 		
 		try { 
-
 			 ProtocolBO protocolBO = 
 						(ProtocolBO) applicationContext.getBean("protocolBO");
 
@@ -103,7 +106,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	public Response submitProtocol(@Context HttpServletRequest httpRequest, SimpleSubmitProtocolBean form) {
 	
 		try {
-			
 			ProtocolBO protocolBO = 
 					(ProtocolBO) applicationContext.getBean("protocolBO");
 			
@@ -132,7 +134,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	    		@DefaultValue("") @QueryParam("protocolId") String protocolId){
 		
 		try { 
-			 
 			ProtocolBO protocolBO = 
 					(ProtocolBO) applicationContext.getBean("protocolBO");
 
@@ -190,7 +191,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	public Response deleteProtocol(@Context HttpServletRequest httpRequest, SimpleSubmitProtocolBean form) {
 	
 		try {
-			
 			ProtocolBO protocolBO = 
 					(ProtocolBO) applicationContext.getBean("protocolBO");
 			
@@ -217,7 +217,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	public Response deleteAccess(@Context HttpServletRequest httpRequest, SimpleSubmitProtocolBean form) {
 	
 		try {
-			
 			ProtocolBO protocolBO = 
 					(ProtocolBO) applicationContext.getBean("protocolBO");
 			
@@ -249,7 +248,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	    		@DefaultValue("") @QueryParam("protocolType") String protocolType, @DefaultValue("") @QueryParam("protocolName") String protocolName, @DefaultValue("") @QueryParam("protocolVersion") String protocolVersion){
 		
 		try { 
-			 
 			ProtocolManager protocolManager = 
 					(ProtocolManager) applicationContext.getBean("protocolManager");
 
@@ -277,7 +275,6 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 	public Response submitForReview(@Context HttpServletRequest httpRequest, DataReviewStatusBean reviewBean) {
 	
 		try {
-			
 			ProtocolBO protocolBO = 
 					(ProtocolBO) applicationContext.getBean("protocolBO");
 			
@@ -298,4 +295,29 @@ private Logger logger = Logger.getLogger(ProtocolServices.class);
 		}
 	}
 	
+	@GET
+	@Path("/deleteProtocolById")
+	@Produces ("application/json")
+	public Response deleteProtocolById(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("protocolId") String protocolId) {
+	
+		try {
+			ProtocolBO protocolBO = 
+					(ProtocolBO) applicationContext.getBean("protocolBO");
+			
+			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+			if (user == null) 
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+			
+			List<String> msgs = protocolBO.deleteProtocolById(protocolId, httpRequest);
+			 
+			
+			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the protocol " + e.getMessage())).build();
+		}
+	}
 	}

@@ -35,8 +35,11 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -48,6 +51,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Junction;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
@@ -75,7 +79,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	public AdvancedSampleServiceHelper(SecurityService securityService) {
 		super(securityService);
 	}
-
+	
 	/**
 	 * Find sample names based on advanced search parameters
 	 * 
@@ -100,8 +104,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			setCompositionCriteria(searchBean, crit);
 			setCharacterizationCriteria(searchBean, crit);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				String sampleId = obj.toString();
+			for(int i = 0; i < results.size(); i++){
+				String sampleId = results.get(i).toString();
 				sampleIds.add(sampleId);
 			}
 		}
@@ -115,8 +119,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						Projections.distinct(Property.forName("id")));
 				setSampleCriteria(searchBean, crit);
 				List results = appService.query(crit);
-				for (Object obj : results) {
-					String sampleId = obj.toString();
+				for (int i = 0; i < results.size(); i++) {
+					String sampleId = results.get(i).toString();
 					sampleIds.add(sampleId);
 				}
 			}
@@ -147,8 +151,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						}
 						
 						List results = appService.query(crit);
-						for (Object obj : results) {
-							String sampleId = obj.toString();
+						for (int i = 0; i < results.size(); i++) {
+							String sampleId = results.get(i).toString();
 							subSampleIds.add(sampleId);
 						}
 						
@@ -164,8 +168,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 							Projections.distinct(Property.forName("id")));
 					setCompositionCriteria(searchBean, crit);
 					List results=appService.query(crit);
-					for (Object obj : results) {
-						String sampleId = obj.toString();
+					for (int i = 0; i < results.size(); i++) {
+						String sampleId = results.get(i).toString();
 						sampleIds.add(sampleId);
 					}
 				}
@@ -177,8 +181,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						Projections.distinct(Property.forName("id")));
 				setCharacterizationCriteria(searchBean, crit);
 				List results=appService.query(crit);
-				for (Object obj : results) {
-					String sampleId = obj.toString();
+				for (int i = 0; i < results.size(); i++) {
+					String sampleId = results.get(i).toString();
 					sampleIds.add(sampleId);
 				}
 			}
@@ -197,6 +201,203 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			}
 		}
 		return filteredSampleIds;
+	}
+
+	/**
+	 * Find sample names based on advanced search parameters
+	 * 
+	 * @param searchBean
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, String> findSampleIdNamesByAdvancedSearch(
+			AdvancedSampleSearchBean searchBean) throws Exception {
+		List<String> sampleIds = new ArrayList<String>();
+		
+		Map<String, String> sampleIdNameMap = new HashMap<String, String>();
+		
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		
+		ProjectionList projList = Projections.projectionList();
+		projList.add(Property.forName("id"));
+		projList.add(Property.forName("name"));
+		
+		// AND or all empty
+		if (searchBean.getLogicalOperator().equals("and")
+				|| searchBean.getSampleQueries().isEmpty()
+				&& searchBean.getCharacterizationQueries().isEmpty()
+				&& searchBean.getCompositionQueries().isEmpty()) {
+			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+					"rootCrit").setProjection(
+							Projections.distinct(projList));
+					//Projections.distinct(Property.forName("id")));
+			setSampleCriteria(searchBean, crit);
+			setCompositionCriteria(searchBean, crit);
+			setCharacterizationCriteria(searchBean, crit);
+			List results = appService.query(crit);
+			for (int i = 0; i < results.size(); i++) {
+				
+				Object[] row = (Object[]) results.get(i);
+				String id = row[0].toString();
+				String name = row[1].toString();
+				
+				logger.debug("id is: " + id);
+				logger.debug("name is: " + name);
+				String sampleId = id;
+				
+				sampleIds.add(sampleId);
+				
+				sampleIdNameMap.put(id, name);
+				
+			}	
+		}
+		// OR union the results
+		else {
+			Set<String> sampleIdSet = new HashSet<String>();
+			// sample
+			if (!searchBean.getSampleQueries().isEmpty()) {
+				
+//				ProjectionList projList = Projections.projectionList();
+//				projList.add(Property.forName("id"));
+//				projList.add(Property.forName("name"));
+				
+				DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+						"rootCrit").setProjection(
+								Projections.distinct(projList));		
+						//Projections.distinct(Property.forName("id")));
+				setSampleCriteria(searchBean, crit);
+				List results = appService.query(crit);
+				for (int i = 0; i < results.size(); i++) {
+					
+					Object[] row = (Object[]) results.get(i);
+					String id = row[0].toString();
+					String name = row[1].toString();
+					logger.debug("id is: " + id);
+					logger.debug("name is: " + name);
+					String sampleId = id;
+					sampleIds.add(sampleId);
+					
+					sampleIdNameMap.put(id, name);
+				}
+			}
+			
+			
+//			// composition
+			if (!searchBean.getCompositionQueries().isEmpty()) {
+				if( searchBean.getCompositionLogicalOperator().equals("and") ) {
+					for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
+						List<String> subSampleIds = new ArrayList<String>();
+						DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+								"rootCrit").setProjection(
+										Projections.distinct(projList));
+								//Projections.distinct(Property.forName("id")));
+						setSampleCriteria(searchBean, crit);
+						setCharacterizationCriteria(searchBean, crit);
+						setCompositionCriteriaBase(searchBean, crit);
+						
+						if (query.getCompositionType().equals("function")) {
+							DetachedCriteria subCrit = getFunctionSubquery(query,
+									"inherentFunction.", "function.", "id");
+							crit.add(Subqueries.exists(subCrit));
+						} else if (query.getCompositionType().equals("nanomaterial entity")) {
+							DetachedCriteria subCrit = getNanomaterialEntitySubquery(query,
+									"nanoEntity.", "id");
+							crit.add(Subqueries.exists(subCrit));
+						} else if (query.getCompositionType().equals("functionalizing entity")) {
+							DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
+									query, "funcEntity.", "id");
+							crit.add(Subqueries.exists(subCrit));
+						}
+						
+						List results = appService.query(crit);
+						for (int i = 0; i < results.size(); i++) {
+							Object[] row = (Object[]) results.get(i);
+							String id = row[0].toString();
+							String name = row[1].toString();
+							logger.debug("id is: " + id);
+							logger.debug("name is: " + name);
+							String sampleId = id;
+							//String sampleId = obj.toString();
+							subSampleIds.add(sampleId);
+							
+							sampleIdNameMap.put(id, name);
+						}
+						
+						if ( sampleIds.size() > 0 )
+							sampleIds.retainAll(subSampleIds);
+						else
+							sampleIds.addAll(subSampleIds);
+					}
+				}
+				else {
+					DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+							"rootCrit").setProjection(
+									Projections.distinct(projList));
+							//Projections.distinct(Property.forName("id")));
+					setCompositionCriteria(searchBean, crit);
+					List results=appService.query(crit);
+					for (int i = 0; i < results.size(); i++) {
+						
+						Object[] row = (Object[]) results.get(i);
+						String id = row[0].toString();
+						String name = row[1].toString();
+						logger.debug("id is: " + id);
+						logger.debug("name is: " + name);
+						String sampleId = id;
+						//String sampleId = obj.toString();
+						sampleIds.add(sampleId);
+						
+						sampleIdNameMap.put(id, name);
+					}
+				}
+			}
+			if (!searchBean.getCharacterizationQueries().isEmpty()) {
+				// characterization
+				DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+						"rootCrit").setProjection(
+								Projections.distinct(projList));
+						//Projections.distinct(Property.forName("id")));
+				setCharacterizationCriteria(searchBean, crit);
+				List results=appService.query(crit);
+				for (int i = 0; i < results.size(); i++) {
+					Object[] row = (Object[]) results.get(i);
+					String id = row[0].toString();
+					String name = row[1].toString();
+					logger.debug("id is: " + id);
+					logger.debug("name is: " + name);
+					String sampleId = id;
+					//String sampleId = obj.toString();
+					sampleIds.add(sampleId);
+					sampleIdNameMap.put(id, name);
+				}
+			}
+		}
+		
+		Iterator<String> ite = sampleIdNameMap.keySet().iterator();
+		while (ite.hasNext()) {
+			String sampleId = ite.next();
+			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+				logger.debug("User doesn't have access to sample with id "
+						+ sampleId);
+				ite.remove();
+			}
+		}
+		
+		//filter out redundant ones and non-accessible ones
+//		List<String>filteredSampleIds=new ArrayList<String>();
+//		for (String sampleId: sampleIds) {
+//			if (!filteredSampleIds.contains(sampleId)
+//					&& StringUtils.containsIgnoreCase(getAccessibleData(),
+//							sampleId)) {
+//				filteredSampleIds.add(sampleId);
+//			} else { // ignore no access exception
+//				logger.debug("User doesn't have access to sample with id "
+//						+ sampleId);
+//			}
+//		}
+		
+		return sampleIdNameMap;
 	}
 
 	/**
@@ -298,8 +499,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				Characterization achar = (Characterization) obj;
+			for (int i = 0; i < results.size(); i++) {
+				Characterization achar = (Characterization) results.get(i);
 				chars.add(achar);
 			}
 		} else {
@@ -317,8 +518,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 				crit
 						.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 				List results = appService.query(crit);
-				for (Object obj : results) {
-					Characterization achar = (Characterization) obj;
+				for (int i = 0; i < results.size(); i++) {
+					Characterization achar = (Characterization) results.get(i);
 					if (!chars.contains(achar)) {
 						chars.add(achar);
 					}
@@ -421,8 +622,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				Datum datum = (Datum) obj;
+			for (int i = 0; i < results.size(); i++) {
+				Datum datum = (Datum) results.get(i);
 				if (sampleData.contains(datum)) {
 					data.add(datum);
 				}
@@ -441,8 +642,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					crit
 							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 					List results = appService.query(crit);
-					for (Object obj : results) {
-						Datum datum = (Datum) obj;
+					for (int i = 0; i < results.size(); i++) {
+						Datum datum = (Datum) results.get(i);
 						if (sampleData.contains(datum)) {
 							data.add(datum);
 						}
@@ -483,8 +684,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				FunctionalizingEntity entity = (FunctionalizingEntity) obj;
+			for (int i = 0; i < results.size(); i++) {
+				FunctionalizingEntity entity = (FunctionalizingEntity) results.get(i);
 				entities.add(entity);
 			}
 		} else if (searchBean.getFuncEntityCount() > 1) {
@@ -511,8 +712,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					crit
 							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 					List results = appService.query(crit);
-					for (Object obj : results) {
-						FunctionalizingEntity entity = (FunctionalizingEntity) obj;
+					for (int i = 0; i < results.size(); i++) {
+						FunctionalizingEntity entity = (FunctionalizingEntity) results.get(i);
 						if (!entities.contains(entity)) {
 							entities.add(entity);
 						}
@@ -555,8 +756,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			crit.setFetchMode("targetCollection", FetchMode.JOIN);
 
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				Function function = (Function) obj;
+			for (int i = 0; i < results.size(); i++) {
+				Function function = (Function) results.get(i);
 				functions.add(function);
 			}
 		} else if (searchBean.getFuncCount() > 1) {
@@ -588,8 +789,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					crit
 							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 					List results = appService.query(crit);
-					for (Object obj : results) {
-						Function function = (Function) obj;
+					for (int i = 0; i < results.size(); i++) {
+						Function function = (Function) results.get(i);
 						if (!functions.contains(function)) {
 							functions.add(function);
 						}
@@ -639,8 +840,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				NanomaterialEntity entity = (NanomaterialEntity) obj;
+			for (int i = 0; i < results.size(); i++) {
+				NanomaterialEntity entity = (NanomaterialEntity) results.get(i);
 				entities.add(entity);
 			}
 		} else if (searchBean.getNanoEntityCount() > 1) {
@@ -677,8 +878,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					crit
 							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 					List results = appService.query(crit);
-					for (Object obj : results) {
-						NanomaterialEntity entity = (NanomaterialEntity) obj;
+					for (int i = 0; i < results.size(); i++) {
+						NanomaterialEntity entity = (NanomaterialEntity) results.get(i);
 						if (!entities.contains(entity)) {
 							entities.add(entity);
 						}
@@ -711,8 +912,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			crit.add(getPointOfContactDisjunction(searchBean, "", ""));
 			crit.setFetchMode("organization", FetchMode.JOIN);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				PointOfContact poc = (PointOfContact) obj;
+			for (int i = 0; i < results.size(); i++) {
+				PointOfContact poc = (PointOfContact) results.get(i);
 				// check if in sample POCs
 				if (!samplePOCs.contains(poc)) {
 					pocs.remove(poc);
@@ -729,8 +930,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					crit.add(Subqueries.exists(subCrit));
 					crit.setFetchMode("organization", FetchMode.JOIN);
 					List results = appService.query(crit);
-					for (Object obj : results) {
-						PointOfContact poc = (PointOfContact) obj;
+					for (int i = 0; i < results.size(); i++) {
+						PointOfContact poc = (PointOfContact) results.get(i);
 						// check if in sample POCs
 						if (!samplePOCs.contains(poc)) {
 							pocs.remove(poc);
@@ -1045,11 +1246,17 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		Criterion funcEntityCrit = null;
 		// other entity type
 		if (clazz == null) {
-			Criterion otherFuncCrit1 = Restrictions.eq(entityAlias + "class",
+			/*Criterion otherFuncCrit1 = Restrictions.eq(entityAlias + "class",
 					"OtherFunctionalizingEntity");
 			Criterion otherFuncCrit2 = Restrictions.eq(entityAlias + "type",
 					compQuery.getEntityType());
-			funcEntityCrit = Restrictions.and(otherFuncCrit1, otherFuncCrit2);
+			funcEntityCrit = Restrictions.and(otherFuncCrit1, otherFuncCrit2);*/
+		
+			Integer funcClassNameInteger = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
+					.get("OtherFunctionalizingEntity");
+			funcEntityCrit = Restrictions.eq(entityAlias + "class",
+							funcClassNameInteger);
+		
 		} else {
 			Integer funcClassNameInteger = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
 					.get(funcEntityClassName);

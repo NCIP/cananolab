@@ -92,4 +92,7 @@ public interface PublicationService extends BaseService {
 
 	public List<String> findPublicationIdsByOwner(String currentOwner)
 			throws PublicationException;
+
+	public PublicationBean findPublicationByIdWorkspace(String id, boolean b)
+			throws PublicationException;
 }

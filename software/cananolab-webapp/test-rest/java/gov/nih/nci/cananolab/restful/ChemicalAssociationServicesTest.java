@@ -23,7 +23,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
 import com.jayway.restassured.response.Response;
@@ -36,7 +35,7 @@ public class ChemicalAssociationServicesTest {
 
 		Response res =
 				given().contentType("application/json")
-				.parameter("sampleId", "20917510").expect()
+				.parameter("sampleId", "20917508").expect()
 				.body("chemicalAssociationTypes", hasItems("Association","attachment","encapsulation","entrapment","intercalation"))
 						.when().get("http://localhost:8080/caNanoLab/rest/chemicalAssociation/setup");
 
@@ -50,7 +49,7 @@ public class ChemicalAssociationServicesTest {
 		
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("sampleId", "20917508");
-		parameters.put("dataId", "73793538");
+		parameters.put("dataId", "59670528");
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 				.parameters(parameters).expect()
@@ -83,12 +82,12 @@ public class ChemicalAssociationServicesTest {
 		
 		String jsessionId = RestTestLoginUtil.loginTest();
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("id", "84377600");
+		parameters.put("id", "21867783");
 		ValidatableResponse res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.queryParam("id", "74022912")
+				.queryParam("id", "21867783")
 						.when().post("http://localhost:8080/caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId")
-		.then().body(containsString("modifier"));
+		.then().body(containsString("RNA"));
 		RestTestLoginUtil.logoutTest();
 		
 	}
@@ -123,7 +122,6 @@ public void testsaveFile() {
 
 	final Client aClient = ClientBuilder.newBuilder()
 	        .register(ObjectMapperProvider.class)
-	        .register(JacksonFeature.class)
 	        .build();
 	
 	WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -177,7 +175,6 @@ public void testRemoveFile() {
 
 	final Client aClient = ClientBuilder.newBuilder()
 	        .register(ObjectMapperProvider.class)
-	        .register(JacksonFeature.class)
 	        .build();
 	
 	WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -230,7 +227,6 @@ public void testSubmit() {
 
 	final Client aClient = ClientBuilder.newBuilder()
 	        .register(ObjectMapperProvider.class)
-	        .register(JacksonFeature.class)
 	        .build();
 	
 	WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -284,7 +280,6 @@ public void testDelete() {
 
 	final Client aClient = ClientBuilder.newBuilder()
 	        .register(ObjectMapperProvider.class)
-	        .register(JacksonFeature.class)
 	        .build();
 	
 	WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");

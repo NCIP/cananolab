@@ -204,7 +204,7 @@ td.subMenuPrimarySubTitle {
   font-weight: bold;
   padding: 5px;
   height: 20px;
-  background-color: #0089bb; /* constant: darker gray */
+  background-color: #fff; /* constant: darker gray */
   color: #ffffff; /* constant: white */
 
 }
@@ -508,6 +508,11 @@ SIDEBAR BEGINS
   text-align: right;
   margin-left: 1em;
 }
+.resetBlock {
+  text-align: left;
+  margin-left: 10em !important;
+  border:1px solid red;
+}
 
 td.sidebarTitle {
   /* for the subtitle elements of the sub menu (left-side) */
@@ -516,7 +521,7 @@ td.sidebarTitle {
   padding-left: 8px;
   padding-top: 5px;
   padding-bottom: 5px;
-  background-color: #009E2D; /* constant: darker gray */
+  background-color: #00b533; /* constant: darker gray */
   color: #fff; /* constant: white */
   height: 20px;
   border: 1px;
@@ -683,7 +688,7 @@ div.logindiv {
   margin-right:auto;
 }
 
-.gridtableHomePage th {
+.gridtableHomePage td {
   font-family: arial, helvetica, verdana, sans-serif;
   padding: 5px 30px 10px 30px;
   border-style: solid;
@@ -691,9 +696,11 @@ div.logindiv {
   border-color: #88BCE2;
 }
 
-th.dataTypeHomePage {
+td.dataTypeHomePage {
   width: 70%;
 }
+
+
 
 .gridtableHomePage td {
   font-family: arial, helvetica, verdana, sans-serif;
@@ -1112,7 +1119,7 @@ ul,ol {
 }
 
 #userActionsButton {
-  background-color:#009E2D;
+  background-color:#00b533;
   color:#fff;
   font-size:14px;
   margin-left:10px;
@@ -1130,6 +1137,12 @@ ul,ol {
 color:red;
 font-weight:bold;
 padding:1em;
+}
+
+#resetErrors {
+color:red;
+font-weight:bold;
+padding:.2em;
 }
 
 .userMessage {
@@ -1158,7 +1171,7 @@ line-height:1px;
 }
 
 th.mainMenuItem.home { /* for the off state of the main menu (top) cells */
-  background-color: #009E2D; /* constant: dark gray */
+  background-color: #00b533; /* constant: dark gray */
 }
 
 a:link.mainMenuLink.home,a:visited.mainMenuLink.home,a:active.mainMenuLink.home{

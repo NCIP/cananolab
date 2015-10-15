@@ -20,7 +20,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
 import com.jayway.restassured.response.Response;
@@ -93,7 +92,6 @@ public class CompositionFileServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
@@ -129,7 +127,6 @@ public class CompositionFileServicesTest {
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
 		        .build();
 		
 		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");

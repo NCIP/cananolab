@@ -29,12 +29,12 @@
       </div><br />
       <table class="gridtableHomePage">
         <tr>
-          <th class="dataTypeHomePage" scope="col">
+          <td class="dataTypeHomePage" style="font-weight:bold">
             Data Type
-          </th>
-          <th id="results" scope="col">
+          </td>
+          <td id="results"  style="font-weight:bold">
             Public Results
-          </th>
+          </td>
         </tr>
         <tr align="left">
           <td>
@@ -72,7 +72,8 @@
               <tr>
                 <td>
                   Search for information on nanomaterials including the composition of the nanomaterial, results of physico-chemical, <i>in vitro</i>, <i>in vivo</i> and other characterizations,
-                  and associated publications.
+                  and associated publications. <br />
+                  See also <a href="#/advancedSampleSearch">Advanced Sample Search</a>
                 </td>
               </tr>
             </table>
@@ -136,9 +137,11 @@
           </tr>
           <tr>
             <td class="sidebarContent">
-              <select name="userActions" ng-model="userActions">
+              <label for="User Actions">
+              </label>
+                <select name="userActions" ng-model="userActions" name="select" id="User Actions">
                 <option selected="selected" value="1">
-                  Browse publically available data
+                  Browse publicly available data
                 </option>
                 <option value="2">
                   Login to submit data
@@ -157,6 +160,7 @@
             <td>
               <div id="loginBlock" ng-show="loginShow">
                 <div class="spacer"></div><!-- <form name="loginForm" id="loginForm" method="post" action="/caNanoLab/login.do;jsessionid=9944D3BC5DD5C7F3DB8EC210CC50424C"> -->
+                <form autocomplete="off">
                 <table class="loginBlock" summary="layout">
                   <tr>
                     <td>
@@ -183,11 +187,62 @@
                       <input type="submit" value="Login" ng-click="loginDo()" />
                     </td>
                   </tr>
-                </table><!-- </form> -->
+                </table></form>
                 <div id="authErrors" ng-model="authErrors" ng-show="authErrors">
                   {{authErrors}}
                 </div>
-              </div><br />
+              </div>
+              <div id="resetBlock" ng-show="resetPasswordShow">
+                <div class="spacer"></div><!-- <form name="loginForm" id="loginForm" method="post" action="/caNanoLab/login.do;jsessionid=9944D3BC5DD5C7F3DB8EC210CC50424C"> -->
+                <table class="resetBlock" summary="layout">
+                  <tr>
+                    <td>
+                      <label for="login ID">LOGIN ID</label>
+                    </td>
+                    <td>
+                      <input type="text" name="reset_loginId" ng-model="reset_loginId" size="14" id="login ID" ng-init="reset_loginId=''" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="old_password">OLD PASSWORD</label>
+                    </td>
+                    <td>
+                      <input type="password" name="old_password" size="14" id="old_password" autocomplete="off" ng-model="old_password" ng-init="old_password=''" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="new_password">NEW PASSWORD</label>
+                    </td>
+                    <td>
+                      <input type="password" name="new_password" size="14" id="new_password" autocomplete="off" ng-model="new_password" ng-init="new_password=''" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label for="confirm_new_password">CONFIRM NEW PASSWORD</label>
+                    </td>
+                    <td>
+                      <input type="password" name="confirm_new_password" size="14" id="confirm_new_password" autocomplete="off" ng-model="confirm_new_password" ng-init="confirm_new_password=''" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                     
+                    </td>
+                    <td align="left">
+                      <input type="submit" ng-disabled="resettingPassword" value="Reset Password" ng-click="resetDo()" />
+                    </td>
+                  </tr>
+                </table><!-- </form> -->
+                <div id="resetErrors" ng-repeat="e in errorMessages track by $index">{{e}}</div>
+                <div id="authErrors" ng-model="authErrors" ng-show="authErrors">
+                  {{authErrors}}
+                </div>
+
+                <div id="authErrors" ng-show="resettingPassword">Please Wait</div>
+              </div><br />              
             </td>
           </tr>
           <tr>
@@ -204,11 +259,11 @@
                 </li>
                 <li>Nanomaterial Composition
                 </li>
-                <li>Namomaterial Characterizations (physic-chemical, in vitro, in vivo)
+                <li>Nanomaterial Characterizations (physic-chemical, in vitro, in vivo)
                 </li>
                 <li>Nanomaterial Publications
                 </li>
-              </ul><b>For additional information, see the caNanoLab <a href="https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ" target="_blank">FAQ</a> or <a href="https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+User%27s+Guide" target="_blank">Online Help</a><br />
+              </ul><b>For additional information, see the caNanoLab <a href="https://wiki.nci.nih.gov/x/UKml" target="_blank">FAQ</a> or <a href="https://wiki.nci.nih.gov/x/14CUBg" target="_blank">Online Help</a><br />
               <br /></b>
             </td>
           </tr>
@@ -222,28 +277,29 @@
               <a id="faq" name="faq"></a>
               <ul>
                 <li>
-                  <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-submit', 'caNanoLabFAQ', '800', '800')">How do I submit data into
+                  <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-Submitting', 'caNanoLabFAQ', '800', '800')">How do I submit data into
                     caNanoLab?</a>
-                  </li>          
-                <li>
-                  <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-HowdoIincorporatecaNanoLabintoadatasharingplan', 'caNanoLabFAQ', '800', '800')">How do I incorporate caNanoLab into a data sharing plan?</a>
-                  </li>          
+                  </li>                  
                   <li>
-                    <a href="/caNanoLab/#/searchProtocol">How do I find nanotechnology protocols?</a>
+                    <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-SearchProtocols', 'caNanoProtocols', '800', '800')">How do I find nanotechnology protocols?</a>
                   </li>
                   <li>
-                    <a href="/caNanoLab/#/searchPublication">How do I find Nanotechnology publications?</a>
+                    <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Publications+in+caNanoLab#ManagingPublicationsincaNanoLab-SearchPublications', 'caNanoPublications', '800', '800')">How do I find Nanotechnology publications?</a>
                   </li>
                   <li>
-                    <a href="/caNanoLab/#/searchSample">How can I search for nanomaterials?</a>
+                    <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-CompositionCompositionOverview', 'caNanoSearch', '800', '800')">How can I search for nanomaterials, composition annotations, and characterizations? </a>
                   </li>
                   <li>
-                    <a href="/caNanoLab/#/searchSample">How can I search for nanomaterial characterizations?</a>
-                  </li>
+                    <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Characterizations#ManagingSampleCharacterizations-Characterization', 'caNanoAddCharacterizations', '800', '800')">How can I add nanomaterial characterizations? </a>
+                  </li>                  
+
                   <li>
-                    <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-concepts', 'caNanoLabFAQ', '800', '800')">Where can I get definitions for
+                    <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-Definitions', 'caNanoLabFAQ', '800', '800')">Where can I get definitions for
                       nanotechnology concepts?</a>
                     </li>
+                  <li>
+                    <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-DataSharing', 'caNanoLabFAQ', '800', '800')">How do I incorporate caNanoLab into a data sharing plan?</a>
+                    </li>                    
                   </ul>
                 </td>
               </tr>
@@ -255,8 +311,8 @@
               <tr>
                 <td class="sidebarContent last">
                   <br />
-                  <b>caNanoLab 2.0 is now available for</b> <a target="_blank" href="https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Wiki+Home+Page">download</a><b>. For information on caNanoLab
-                  release, please refer to the</b> <a target="_blank" href="https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+2.0+Release+Note">caNanoLab Release Notes</a>.
+                  <b>caNanoLab 2.1 is now available for</b> <a target="_blank" href="https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Wiki+Home+Page">download</a><b>. For information on caNanoLab
+                  release, please refer to the</b> <a target="_blank" href="https://wiki.nci.nih.gov/x/tYEfEQ">caNanoLab Release Notes</a>.
                 </td>
               </tr>
 

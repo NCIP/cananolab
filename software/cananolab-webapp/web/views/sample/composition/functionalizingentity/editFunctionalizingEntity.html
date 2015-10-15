@@ -13,7 +13,7 @@
         </th>
 
         <td align="right" width="30%">
-            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/4+-+Managing+Sample+Composition+Annotations#id-4-ManagingSampleCompositionAnnotations-AddingFunctionalizingEntityCompositionAnnotations')">Help</a>
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-FunctionalizingAddingFunctionalizingEntityCompositionAnnotations')">Help</a>
             &nbsp;
             <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
             &nbsp;
@@ -24,7 +24,7 @@
             <span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
                 <ul>
                     <li ng-repeat="message in messages">
-                        {{message}}
+                        <span ng-bind-html="message">{{message}}</span>
                     </li>
                 </ul>
             </span>
@@ -35,7 +35,7 @@
         </td>
         <td>
             <div id="categoryPrompt">
-                <select ng-disabled="loader" id="type" ng-model="funcEntityForm.type" ng-click="showProperties();">
+                <select ng-disabled="loader" id="type" ng-model="funcEntityForm.type" ng-change="showProperties();">
                     <option ng-repeat="option in funcEntityTypes" value="{{option}}" ng-selected="{{option==funcEntityForm.type}}">
                         {{option}}
                     </option>

@@ -2,21 +2,12 @@ package gov.nih.nci.cananolab.restful;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
+
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
-import gov.nih.nci.cananolab.service.security.UserBean;
+
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
-import gov.nih.nci.cananolab.util.Constants;
 
-import java.util.List;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -24,8 +15,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,10 +28,7 @@ public class SampleServicesTest {
 	@Before
 	public void setUp() throws Exception {
 	
-		client = ClientBuilder.newBuilder()
-		        .register(ObjectMapperProvider.class)
-		        .register(JacksonFeature.class)
-		        .build();
+		client = ClientBuilder.newClient();
 	}
 
 	@Test

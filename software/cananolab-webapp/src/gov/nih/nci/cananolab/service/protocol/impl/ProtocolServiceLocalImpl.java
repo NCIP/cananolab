@@ -299,8 +299,8 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		crit.add(Property.forName("protocol.id").eq(new Long(protocolId)));
 		List results = appService.query(crit);
 		List<Long> ids = new ArrayList<Long>();
-		for (Object obj : results) {
-			Long charId = (Long) obj;
+		for (int i = 0; i< results.size(); i++) {
+			Long charId = (Long) results.get(i);
 			ids.add(charId);
 		}
 		return ids;
@@ -316,8 +316,8 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		crit.add(Property.forName("protocol.id").eq(new Long(protocolId)));
 		List results = appService.query(crit);
 		List<Characterization> chars = new ArrayList<Characterization>();
-		for (Object obj : results) {
-			Characterization achar = (Characterization) obj;
+		for (int i = 0; i< results.size(); i++) {
+			Characterization achar = (Characterization) results.get(i);
 			chars.add(achar);
 		}
 		return chars;

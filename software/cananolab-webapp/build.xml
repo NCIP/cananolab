@@ -17,6 +17,7 @@ L-->
 	<property file="project.properties" />
 	<property name="src.dir" location="${basedir}/src" />
 	<property name="webroot.dir" location="${basedir}/web" />
+	<property name="image.dir" location="${webroot.dir}/images" />
 	<property name="build.dir" location="${basedir}/build" />
 	<property name="common.dir" location="${basedir}/../common" />
 	<property name="dist.dir" location="${basedir}/target/dist" />
@@ -227,7 +228,32 @@ L-->
 		<!--copy uptEAR.ear -->
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/uptEAR.ear" />
 		
+		<!--copy csmapi-5.2.jar -->
+		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/lib/sdk/csmapi-5.2.jar" />
+		
+		<!--copy bcprov-jdk15on-1.47.jar -->
+		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/lib/sdk/bcprov-jdk15on-1.47.jar" />
+		
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/help/wikihelp.properties" />
+		
+		<!--copy images -->
+		<copy overwrite="true" todir="${common.dist.dir}" file="${image.dir}/canano_logo_mini.jpg" />
+				
+		<copy overwrite="true" todir="${common.dist.dir}" file="${image.dir}/doi-transparent.png" />
+		
+		<!--copy caNanoLab_setup.cli and replace database connection info-->
+				<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_setup.cli" file="${basedir}/caNanoLab_setup.cli">
+					<!-- replace tokens with values from build properties -->
+					<filterset id="db.filterset">
+						<filter token="database.url" value="${database.url}" />
+						<filter token="database.user" value="${database.user}" />
+						<filter token="database.password" value="${database.password}" />
+					</filterset>
+				</copy>
+		
+			<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_modules.cli" file="${basedir}/caNanoLab_modules.cli"> </copy>
+			<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_deploy.cli" file="${basedir}/caNanoLab_deploy.cli"> </copy>
+				
 	</target>
 
 	<target name="deploy" depends="dist">

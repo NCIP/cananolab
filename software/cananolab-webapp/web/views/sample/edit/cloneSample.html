@@ -7,7 +7,7 @@
             Copy Sample
         </th>
         <td align="right" width="30%">
-            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-CopyinganExistingSample')">Help</a>
+            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-CopySample')">Help</a>
             &nbsp;
             <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
             &nbsp;
@@ -57,7 +57,7 @@
                     <td>
                         <img ng-src="images/ajax-loader.gif" border="0" class="counts" ng-if="loader"
                              id="loaderImg" alt="load existing samples">
-                        <select ng-disabled="loader" id="matchedSampleSelect" ng-model="matchedSampleSelect" size="5" ng-click="updateCloningSample()">
+                        <select ng-disabled="loader" id="matchedSampleSelect" ng-model="matchedSampleSelect" size="5" ng-change="updateCloningSample()">
                             <option ng-repeat="option in sampleResults" value="{{option}}">
                                 {{option}}
                             </option>

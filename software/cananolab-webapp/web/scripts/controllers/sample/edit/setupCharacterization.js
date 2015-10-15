@@ -7,6 +7,8 @@ var app = angular.module('angularApp')
     $scope.sampleId = sampleService.sampleId.data;
     $scope.domainFileUri = "";
     $scope.data = {};  
+    $scope.sampleMessage = sampleService.message.data;
+
     $scope.PE = {};
     // can remove this after done testing local data
     $scope.dataCopy = angular.copy($scope.data);
@@ -290,7 +292,7 @@ var app = angular.module('angularApp')
     // opens new finding dialog //
     $scope.addNewFinding = function() {
         var old = $location.hash();
-        $scope.currentFinding = {};
+        $scope.currentFinding = {'columnHeaders':[]};
         $scope.currentFinding.dirty = 1;
         $scope.updateFinding = 1;
         $scope.finding = {};
@@ -351,6 +353,7 @@ var app = angular.module('angularApp')
                 var curCell = $scope.currentFinding.rows[x].cells[columnIndex];
                 if ($scope.findingsColumn.constantValue!='') {
                     curCell.value=$scope.findingsColumn.constantValue;
+                    curCell.datumOrCondition = $scope.findingsColumn.columnType;                    
                 }
             };
             var headerName = $scope.findingsColumn.columnName;
@@ -489,8 +492,9 @@ var app = angular.module('angularApp')
         $scope.loader = true;    
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveCharacterization',data: $scope.data}).
         success(function(data, status, headers, config) {  
-            $location.path("/editCharacterization").search({'sampleId':$scope.sampleId}).replace();
+            $location.path("/editCharacterization").search({'sampleId':$scope.sampleId,'charMessage':'Characterization Saved'}).replace();
             $scope.loader = false;
+            $scope.sampleMessage = 'Characterization Saved';
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
@@ -521,7 +525,7 @@ var app = angular.module('angularApp')
     $scope.onFileSelect = function($files) {
         $scope.selectedFiles = [];
         $scope.selectedFiles = $files;
-        
+          
         
         if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) 
         	$scope.selectedFileName = $scope.selectedFiles[0].name;        

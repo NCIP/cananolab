@@ -1,0 +1,47 @@
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+      <tr>
+       <th scope="col" align="left">
+         Search Results
+       </th>
+            <td align="right" width="30%">
+                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/x/NIKAEQ')">Help</a>       
+             </td>       
+      </tr>
+    </table>
+<br /><div ng-if="keywordData.length>0" ng-init="p=tableParams.$params;
+				length=keywordData.length;
+				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
+	</div>
+<div ng-if="keywordData.length==0&&keyword_search_text==''">No Search Criteria</div>
+<div ng-if="keywordData.length==0&&keyword_search_text!=''">No Search Results</div>
+<span ng-if="keywordData.length>0"><br />
+<table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
+	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
+		<td data-title="'Actions'" width="5%" class="columnOne">
+			<div ng-init="actions=getLink(row)">
+				<div><a ng-init="searchType='simple'" target="{{getLink(row)[0].target}}" href="{{getLink(row)[0].link}}">{{getLink(row)[0].actionType}}</a></div>
+				<div><a ng-init="searchType='simple'" target="{{getLink(row)[1].target}}" href="{{getLink(row)[1].link}}">{{getLink(row)[1].actionType}}</a></div>				
+			</div>
+
+            <a ng-if="!row.favoriteAdded&&loggedInUser.name!=''" id="href{{row.id}}" href="" ng-click="addToFavorites(row)"><i class="fa fa-plus fa-1"></i>&nbsp;Add to Favorites</a>  
+            <span ng-if="row.favoriteAdded" style="color:#2276ff;font-weight:bold;">Added to Favorites</span>  
+                
+		</td>
+		<td data-title="'Type'" sortable="'type'">
+		 {{row.type}}
+		</td>
+		<td data-title="'Name'" sortable="'name'">
+			{{row.name}}
+		</td>    
+		<td data-title="'Created Date'" sortable="'createdDate'">
+		 {{row.createdDate | date:'shortDate'}}
+		</td>  
+		<td data-title="'Description'" sortable="'description'">
+			<a href="" ng-if="row.type=='publication'" ng-click="openDataAvailability(row.description)">View</a>
+			<span ng-if="row.type!='publication'">{{row.description}}</span>
+		</td> 
+	</tr>
+</table> 
+</span>
+</div>

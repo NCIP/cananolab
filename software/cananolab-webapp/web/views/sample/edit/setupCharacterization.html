@@ -1,4 +1,6 @@
 
+<form name="characterizationForm">
+
 <div id="loader" ng-show="loader">
 	<div id="loaderText">
 		{{loaderMessage}}
@@ -14,7 +16,7 @@
     </th>
     <td align="right" width="30%">
       <a class="helpText" href=
-      "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
+      "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Characterizations#ManagingSampleCharacterizations-SubmittingCharacterizations')">Help</a>   <a class=
       "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
     </td>
   </tr> 
@@ -161,7 +163,7 @@
 <td>
 
 	<div class="input-group" style="width:350px;">
-		<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="data.characterizationDate" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" readonly />
+		<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="data.characterizationDate" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" readonly />
 		<span class="input-group-btn">
 			<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
 		</span>
@@ -382,7 +384,10 @@
 				<strong><label for="criticalConcentration">Critical Concentration</label></strong>
 			</td>
 			<td colspan="3">
-				<input type="text" ng-model="data.property.criticalConcentration">
+				<input type="number" name="criticalConcentration" integer ng-model="data.property.criticalConcentration">
+<span class="error" style="color:red;padding-left:5px;" ng-show="characterizationForm.criticalConcentration.$error.number">
+    Not valid number!</span>
+
 				<select ng-hide="loader" data-ng-model="data.property.concentrationUnit" 
 				data-ng-options="option for option in data.property.concentrationUnitOptions" id="type">
 					<option value=""></option>
@@ -1141,8 +1146,8 @@
 	<div class="modal-footer">
 		<button ng-click="remove()" class="btn btn-warning btn-danger" ng-disabled="loader">Delete</button>  
 		<button ng-click="reset()" class="btn btn-warning btn-danger" ng-disabled="loader">Reset</button>  		  
-		<button ng-disabled="data.type==''||data.name==''||loader" ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="loader">{{saveButton}}</button>
+		<button ng-disabled="data.type==''||data.name==''||loader||characterizationForm.criticalConcentration.$error.number" ng-click="save()" class='btn btn-primary btn-modal'>{{saveButton}}</button>
 	</div>
 </div>
-
+</form>
 

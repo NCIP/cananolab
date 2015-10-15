@@ -11,13 +11,13 @@
         </th>
     </tr>
     <tr>
-        <td>
+        <td ng-bind-html="$parent.entityType.Properties.Initiator">
             {{$parent.entityType.Properties.Initiator}}
         </td>
-        <td>
+        <td ng-bind-html="$parent.entityType.Properties.isCrossLinked">
             {{$parent.entityType.Properties.isCrossLinked}}
         </td>
-        <td>
+        <td ng-bind-html="$parent.entityType.Properties.CrossLinkDegree">
             {{$parent.entityType.Properties.CrossLinkDegree}}
         </td>
     </tr>

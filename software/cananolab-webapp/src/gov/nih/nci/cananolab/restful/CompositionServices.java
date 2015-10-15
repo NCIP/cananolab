@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful;
 import java.io.FileInputStream;
 
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.sample.CompositionBO;
 import gov.nih.nci.cananolab.restful.view.SimpleCompositionBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
@@ -20,14 +21,16 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/composition")
 public class CompositionServices {
 
 private Logger logger = Logger.getLogger(CompositionServices.class);
 	
-	@Inject
-	ApplicationContext applicationContext;
+//	@Inject
+//	ApplicationContext applicationContext;
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
 	@GET
 	@Path("/summaryView")
 	@Produces ("application/json")
@@ -37,7 +40,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 		try { 
 			CompositionForm form = new CompositionForm();
 			form.setSampleId(sampleId);
-
+			
 		 CompositionBO compositionBO = 
 					(CompositionBO) applicationContext.getBean("compositionBO");
 
@@ -60,7 +63,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 		try { 
 			CompositionForm form = new CompositionForm();
 			form.setSampleId(sampleId);
-
+			
 			CompositionBO compositionBO = 
 					(CompositionBO) applicationContext.getBean("compositionBO");
 
@@ -86,7 +89,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 			CompositionForm form = new CompositionForm();
 			form.setSampleId(sampleId);
 			
-			
+
 			CompositionBO compositionBO = 
 					(CompositionBO) applicationContext.getBean("compositionBO");
 
@@ -109,7 +112,7 @@ private Logger logger = Logger.getLogger(CompositionServices.class);
 						(CompositionBO) applicationContext.getBean("compositionBO");
 				java.io.File file = compositionBO.download(fileId, httpRequest);
 				
-				return Response.ok(new FileInputStream(file)).build();
+				return Response.ok((Object) file).build();
 				
 
 			} catch (Exception e) {

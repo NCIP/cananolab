@@ -19,6 +19,7 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.LinkableItem;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
@@ -38,11 +39,17 @@ import java.util.Map;
  * @author pansu
  *
  */
-public class AdvancedSampleBean {
-	public static String SAMPLE_DETAIL_URL = "sample.do?page=0&dispatch=setupView";
-	public static String NANOMATERIAL_DETAIL_URL = "nanomaterialEntity.do?page=0&dispatch=setupView";
-	public static String AGENTMATERIAL_DETAIL_URL = "functionalizingEntity.do?page=0&dispatch=setupView";
-	public static String CHARACTERIZATION_DETAIL_URL = "characterization.do?page=0&dispatch=setupView";
+public class AdvancedSampleBean {//extends SecuredDataBean{
+//	public static String SAMPLE_DETAIL_URL = "sample.do?page=0&dispatch=setupView";
+//	public static String NANOMATERIAL_DETAIL_URL = "nanomaterialEntity.do?page=0&dispatch=setupView";
+//	public static String AGENTMATERIAL_DETAIL_URL = "functionalizingEntity.do?page=0&dispatch=setupView";
+//	public static String CHARACTERIZATION_DETAIL_URL = "characterization.do?page=0&dispatch=setupView";
+//	
+	public static String NANOMATERIAL_NAME = "nanomaterialEntity";
+	public static String AGENTMATERIAL_NAME = "functionalizingEntity";
+	
+	//public static String CHARACTERIZATION_DETAIL_URL = "characterization.do?page=0&dispatch=setupView";
+	
 	private Sample domainSample;
 	private String sampleId;
 	private List<PointOfContact> pointOfContacts;
@@ -52,6 +59,8 @@ public class AdvancedSampleBean {
 	private List<Characterization> characterizations;
 	private List<Datum> data;
 	private AdvancedSampleSearchBean advancedSearchBean;
+	
+	String sampleName;
 
 	public AdvancedSampleBean() {
 	}
@@ -77,6 +86,16 @@ public class AdvancedSampleBean {
 		advancedSearchBean = searchBean;
 		this.domainSample = sample;
 	}
+	
+	
+
+	public String getSampleName() {
+		return sampleName;
+	}
+
+	public void setSampleName(String sampleName) {
+		this.sampleName = sampleName;
+	}
 
 	public AdvancedSampleSearchBean getAdvancedSearchBean() {
 		return advancedSearchBean;
@@ -98,11 +117,12 @@ public class AdvancedSampleBean {
 	public Map<String, List<LinkableItem>> getAttributeMap() {
 		String linkSuffix = "&sampleId=" + sampleId;
 		Map<String, List<LinkableItem>> attributeMap = new LinkedHashMap<String, List<LinkableItem>>();
-		for (String columnName : advancedSearchBean.getQueryAsColumnNames()) {
+		List<String> columnNames = advancedSearchBean.getQueryAsColumnNames();
+		for (String columnName : columnNames) {
 			List<LinkableItem> items = new ArrayList<LinkableItem>();
 			if (columnName.contains("point of contact")) {
 				LinkableItem item = new LinkableItem();
-				item.setAction(SAMPLE_DETAIL_URL + linkSuffix);
+				item.setAction("" + sampleId);
 				for (PointOfContact poc : pointOfContacts) {
 					PointOfContactBean pocBean = new PointOfContactBean(poc);
 					item.getDisplayStrings().add(pocBean.getDisplayName());
@@ -118,8 +138,7 @@ public class AdvancedSampleBean {
 							.getShortClassName(entity.getClass().getName()));
 					if (columnName.contains(entityName)) {
 						LinkableItem item = new LinkableItem();
-						item.setAction(NANOMATERIAL_DETAIL_URL + linkSuffix
-								+ "&dataId=" + entity.getId());
+						item.setAction("" + entity.getId());
 						item.getDisplayStrings().add(entityBean.getType());
 						for (ComposingElement ce : entity
 								.getComposingElementCollection()) {
@@ -138,8 +157,7 @@ public class AdvancedSampleBean {
 						NanomaterialEntityBean entityBean = new NanomaterialEntityBean(
 								entity);
 						LinkableItem item = new LinkableItem();
-						item.setAction(NANOMATERIAL_DETAIL_URL + linkSuffix
-								+ "&dataId=" + entity.getId());
+						item.setAction("" + entity.getId());
 						item.getDisplayStrings().add(entityBean.getType());
 						for (ComposingElementBean ceBean : entityBean
 								.getComposingElements()) {
@@ -158,8 +176,7 @@ public class AdvancedSampleBean {
 						FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
 								entity);
 						LinkableItem item = new LinkableItem();
-						item.setAction(AGENTMATERIAL_DETAIL_URL + linkSuffix
-								+ "&dataId=" + entity.getId());
+						item.setAction("" + entity.getId());
 						item.getDisplayStrings().add(
 								entityBean.getAdvancedSearchDisplayName());
 						items.add(item);
@@ -170,8 +187,7 @@ public class AdvancedSampleBean {
 				if (!hasName) {
 					for (FunctionalizingEntity entity : functionalizingEntities) {
 						LinkableItem item = new LinkableItem();
-						item.setAction(AGENTMATERIAL_DETAIL_URL + linkSuffix
-								+ "&dataId=" + entity.getId());
+						item.setAction("" + entity.getId());
 						FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
 								entity);
 						item.getDisplayStrings().add(
@@ -192,9 +208,7 @@ public class AdvancedSampleBean {
 							for (Function function : ce
 									.getInherentFunctionCollection()) {
 								if (func.equals(function)) {
-									item.setAction(NANOMATERIAL_DETAIL_URL
-											+ linkSuffix + "&dataId="
-											+ entity.getId());
+									item.setAction(NANOMATERIAL_NAME + ":"  + entity.getId());
 									break;
 								}
 							}
@@ -207,9 +221,7 @@ public class AdvancedSampleBean {
 							.getFunctionalizingEntityCollection()) {
 						for (Function function : entity.getFunctionCollection()) {
 							if (func.equals(function)) {
-								item.setAction(AGENTMATERIAL_DETAIL_URL
-										+ linkSuffix + "&dataId="
-										+ entity.getId());
+								item.setAction(AGENTMATERIAL_NAME + ":" + entity.getId());
 								break;
 							}
 						}
@@ -229,11 +241,7 @@ public class AdvancedSampleBean {
 								for (Datum datum0 : finding
 										.getDatumCollection()) {
 									if (datum.equals(datum0)) {
-										item
-												.setAction(CHARACTERIZATION_DETAIL_URL
-														+ linkSuffix
-														+ "&charId="
-														+ chara.getId());
+										item.setAction("" + chara.getId());
 										break;
 									}
 								}
@@ -252,8 +260,7 @@ public class AdvancedSampleBean {
 										.getShortClassName(chara.getClass()
 												.getSuperclass().getName()));
 						LinkableItem item = new LinkableItem();
-						item.setAction(CHARACTERIZATION_DETAIL_URL + linkSuffix
-								+ "&charId=" + chara.getId());
+						item.setAction("" + chara.getId());
 						if (columnName.contains(characterizationType)) {
 							String charName = ClassUtils
 									.getDisplayName(ClassUtils
@@ -273,6 +280,101 @@ public class AdvancedSampleBean {
 			attributeMap.put(columnName, items);
 		}
 		return attributeMap;
+	}
+	
+//	public void getCharacterizationItems() {
+//		boolean hasDatum = false;
+//		for (Datum datum : data) {
+//			if (columnName.contains(datum.getName())) {
+//				LinkableItem item = new LinkableItem();
+//				// find corresponding characterization from domainSample
+//				for (Characterization chara : domainSample
+//						.getCharacterizationCollection()) {
+//					for (Finding finding : chara.getFindingCollection()) {
+//						for (Datum datum0 : finding
+//								.getDatumCollection()) {
+//							if (datum.equals(datum0)) {
+//								item
+//										.setAction(CHARACTERIZATION_DETAIL_URL
+//												+ linkSuffix
+//												+ "&charId="
+//												+ chara.getId());
+//								break;
+//							}
+//						}
+//					}
+//				}
+//				item.getDisplayStrings().add(
+//						datum.getValue() + " " + datum.getValueUnit());
+//				hasDatum = true;
+//				items.add(item);
+//			}
+//		}
+//		if (!hasDatum && !columnName.contains("<br>")) {
+//			for (Characterization chara : characterizations) {
+//				String characterizationType = ClassUtils
+//						.getDisplayName(ClassUtils
+//								.getShortClassName(chara.getClass()
+//										.getSuperclass().getName()));
+//				LinkableItem item = new LinkableItem();
+//				item.setAction(CHARACTERIZATION_DETAIL_URL + linkSuffix
+//						+ "&charId=" + chara.getId());
+//				if (columnName.contains(characterizationType)) {
+//					String charName = ClassUtils
+//							.getDisplayName(ClassUtils
+//									.getShortClassName(chara.getClass()
+//											.getName()));
+//					if (!StringUtils.isEmpty(chara.getAssayType())) {
+//						item.getDisplayStrings().add(
+//								charName + ":" + chara.getAssayType());
+//					} else {
+//						item.getDisplayStrings().add(charName);
+//					}
+//				}
+//				items.add(item);
+//			}
+//		}
+//	}
+//	
+	
+	public List<LinkableItem> getFunctionItems() {
+		List<LinkableItem> items = new ArrayList<LinkableItem>();
+		for (Function func : functions) {
+			LinkableItem item = new LinkableItem();
+			FunctionBean funcBean = new FunctionBean(func);
+			// find corresponding nanomaterial entity from domainSample
+			for (NanomaterialEntity entity : domainSample
+					.getSampleComposition()
+					.getNanomaterialEntityCollection()) {
+				for (ComposingElement ce : entity
+						.getComposingElementCollection()) {
+					for (Function function : ce
+							.getInherentFunctionCollection()) {
+						if (func.equals(function)) {
+							
+							item.setAction(NANOMATERIAL_NAME + ":" + entity.getId());
+							break;
+						}
+					}
+				}
+			}
+			// find corresponding functionalizing entity from
+			// domainSample
+			for (FunctionalizingEntity entity : domainSample
+					.getSampleComposition()
+					.getFunctionalizingEntityCollection()) {
+				for (Function function : entity.getFunctionCollection()) {
+					if (func.equals(function)) {
+						item.setAction(AGENTMATERIAL_NAME + ":" + entity.getId());
+						break;
+					}
+				}
+			}
+			item.getDisplayStrings().add(funcBean.getDisplayName());
+			items.add(item);
+		}
+		
+		return items;
 	}
 
 	public List<PointOfContact> getPointOfContacts() {

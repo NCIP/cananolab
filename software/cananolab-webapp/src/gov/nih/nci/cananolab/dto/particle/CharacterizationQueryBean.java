@@ -14,12 +14,17 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonTypeName;
+
 /**
  * Information for the characterization query form
  * 
  * @author pansu
  * 
  */
+@JsonTypeName("CharacterizationQueryBean")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CharacterizationQueryBean extends BaseQueryBean {
 	private String characterizationType = "";
 	private String characterizationName = "";
@@ -28,7 +33,40 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 	private String datumName = "";
 	private String datumValue = "";
 	private String datumValueUnit = "";
+	
+	
+	private String id;
+	private String operand = "";
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getOperand() {
+		return operand;
+	}
+
+	public void setOperand(String operand) {
+		this.operand = operand;
+	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof BaseQueryBean) {
+			BaseQueryBean q = (BaseQueryBean) obj;
+			String thisId = this.getId();
+			if (thisId != null && thisId.equals(q.getId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
+	
+	
 	public String getCharacterizationType() {
 		return characterizationType;
 	}
@@ -108,4 +146,18 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 					+ "<br>" + datumName;
 		}
 	}
+
+	@Override
+	public String getType() {
+		// TODO Auto-generated method stub
+		return "CharacterizationQueryBean";
+	}
+
+	@Override
+	public void setType(String type) {
+		// TODO Auto-generated method stub
+		super.setType(type);
+	}
+	
+	
 }

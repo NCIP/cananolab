@@ -386,8 +386,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 							Property.forName("type").eq(new String(type))
 									.ignoreCase());
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				technique = (Technique) obj;
+			for (int i = 0; i < results.size(); i++) {
+				technique = (Technique) results.get(i);
 			}
 		} catch (Exception e) {
 			String err = "Problem to retrieve technique by type.";
@@ -408,8 +408,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		crit.add(Restrictions.eq("manufacturer", manufacturer).ignoreCase());
 		crit.add(Restrictions.eq("modelName", modelName).ignoreCase());
 		List results = appService.query(crit);
-		for (Object obj : results) {
-			instrument = (Instrument) obj;
+		for (int i = 0; i < results.size(); i++) {
+			instrument = (Instrument) results.get(i);
 		}
 		return instrument;
 	}

@@ -118,8 +118,8 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 
 		HQLCriteria crit = new HQLCriteria(hql);
 		List results = appService.query(crit);
-		for (Object obj : results) {
-			File file = (File) obj;
+		for (int i = 0; i < results.size(); i++) {
+			File file = (File) results.get(i);
 			if (getAccessibleData().contains(file.getId().toString())) {
 				fileCollection.add(file);
 			} else {

@@ -12,9 +12,13 @@ import gov.nih.nci.cananolab.dto.BaseQueryBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * information needed for the advanced sample search form
@@ -22,19 +26,34 @@ import java.util.Set;
  * @author pansu
  *
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AdvancedSampleSearchBean {
 	private List<SampleQueryBean> sampleQueries = new ArrayList<SampleQueryBean>();
 	private List<CompositionQueryBean> compositionQueries = new ArrayList<CompositionQueryBean>();
 	private List<CharacterizationQueryBean> characterizationQueries = new ArrayList<CharacterizationQueryBean>();
+	
 	private SampleQueryBean theSampleQuery = new SampleQueryBean();
 	private CompositionQueryBean theCompositionQuery = new CompositionQueryBean();
 	private CharacterizationQueryBean theCharacterizationQuery = new CharacterizationQueryBean();
+	
 	private String sampleLogicalOperator = "and";
 	private String compositionLogicalOperator = "and";
 	private String characterizationLogicalOperator = "and";
 	private String logicalOperator = "or";
 	private int nanoEntityCount = 0, funcEntityCount = 0, funcCount = 0,
 			pocCount = 0, datumTypeCount = 0;
+	
+	Map<String, Object> setupMap = new HashMap<String, Object>();
+
+	
+
+	public Map<String, Object> getSetupMap() {
+		return setupMap;
+	}
+
+	public void setSetupMap(Map<String, Object> setupMap) {
+		this.setupMap = setupMap;
+	}
 
 	public List<CompositionQueryBean> getCompositionQueries() {
 		return compositionQueries;
@@ -88,63 +107,63 @@ public class AdvancedSampleSearchBean {
 		this.characterizationLogicalOperator = characterizationLogicalOperator;
 	}
 
-	public void addQuery(BaseQueryBean query) {
-		if (query instanceof SampleQueryBean) {
-			int index = sampleQueries.indexOf(query);
-			if (index != -1) {
-				sampleQueries.remove(query);
-				// retain the original order`
-				sampleQueries.add(index, (SampleQueryBean) query);
-			} else {
-				SampleQueryBean sampleQuery=(SampleQueryBean)query;
-				//set operand empty if name is empty
-				if (StringUtils.isEmpty(sampleQuery.getName())) {
-					sampleQuery.setOperand("");
-				}
-				sampleQueries.add(sampleQuery);
-			}
-		} else if (query instanceof CompositionQueryBean) {
-			int index = compositionQueries.indexOf(query);
-			if (index != -1) {
-				compositionQueries.remove(query);
-				// retain the original order
-				compositionQueries.add(index, (CompositionQueryBean) query);
-			} else {
-				CompositionQueryBean compQuery = (CompositionQueryBean) query;
-				//set operand empty if chemical name is empty
-				if (StringUtils.isEmpty(compQuery.getChemicalName())) {
-					compQuery.setOperand("");
-				}
-				compositionQueries.add(compQuery);
-			}
-		} else if (query instanceof CharacterizationQueryBean) {
-			int index = characterizationQueries.indexOf(query);
-			if (index != -1) {
-				characterizationQueries.remove(query);
-				// retain the original order
-				characterizationQueries.add(index,
-						(CharacterizationQueryBean) query);
-			} else {
-				CharacterizationQueryBean charQuery = (CharacterizationQueryBean) query;
-				//set operand and unit empty if value is empty
-				if (StringUtils.isEmpty(charQuery.getDatumValue())) {
-					charQuery.setOperand("");
-					charQuery.setDatumValueUnit("");
-				}
-				characterizationQueries.add(charQuery);
-			}
-		}
-	}
+//	public void addQuery(BaseQueryBean query) {
+//		if (query instanceof SampleQueryBean) {
+//			int index = sampleQueries.indexOf(query);
+//			if (index != -1) {
+//				sampleQueries.remove(query);
+//				// retain the original order`
+//				sampleQueries.add(index, (SampleQueryBean) query);
+//			} else {
+//				SampleQueryBean sampleQuery=(SampleQueryBean)query;
+//				//set operand empty if name is empty
+//				if (StringUtils.isEmpty(sampleQuery.getName())) {
+//					sampleQuery.setOperand("");
+//				}
+//				sampleQueries.add(sampleQuery);
+//			}
+//		} else if (query instanceof CompositionQueryBean) {
+//			int index = compositionQueries.indexOf(query);
+//			if (index != -1) {
+//				compositionQueries.remove(query);
+//				// retain the original order
+//				compositionQueries.add(index, (CompositionQueryBean) query);
+//			} else {
+//				CompositionQueryBean compQuery = (CompositionQueryBean) query;
+//				//set operand empty if chemical name is empty
+//				if (StringUtils.isEmpty(compQuery.getChemicalName())) {
+//					compQuery.setOperand("");
+//				}
+//				compositionQueries.add(compQuery);
+//			}
+//		} else if (query instanceof CharacterizationQueryBean) {
+//			int index = characterizationQueries.indexOf(query);
+//			if (index != -1) {
+//				characterizationQueries.remove(query);
+//				// retain the original order
+//				characterizationQueries.add(index,
+//						(CharacterizationQueryBean) query);
+//			} else {
+//				CharacterizationQueryBean charQuery = (CharacterizationQueryBean) query;
+//				//set operand and unit empty if value is empty
+//				if (StringUtils.isEmpty(charQuery.getDatumValue())) {
+//					charQuery.setOperand("");
+//					charQuery.setDatumValueUnit("");
+//				}
+//				characterizationQueries.add(charQuery);
+//			}
+//		}
+//	}
 
-	public void removeQuery(BaseQueryBean query) {
-		if (query instanceof SampleQueryBean) {
-			sampleQueries.remove((SampleQueryBean) query);
-		} else if (query instanceof CompositionQueryBean) {
-			compositionQueries.remove((CompositionQueryBean) query);
-		} else if (query instanceof CharacterizationQueryBean) {
-			characterizationQueries.remove((CharacterizationQueryBean) query);
-		}
-	}
+//	public void removeQuery(BaseQueryBean query) {
+//		if (query instanceof SampleQueryBean) {
+//			sampleQueries.remove((SampleQueryBean) query);
+//		} else if (query instanceof CompositionQueryBean) {
+//			compositionQueries.remove((CompositionQueryBean) query);
+//		} else if (query instanceof CharacterizationQueryBean) {
+//			characterizationQueries.remove((CharacterizationQueryBean) query);
+//		}
+//	}
 
 	public String getLogicalOperator() {
 		return logicalOperator;
@@ -288,11 +307,20 @@ public class AdvancedSampleSearchBean {
 			if (query.getCompositionType().equals("nanomaterial entity")) {
 				nanoEntityCount++;
 			} else if (query.getCompositionType().equals(
-					"functionalizing entity")) {
+					"functionalizing entity")) { 
 				funcEntityCount++;
+				
 			} else if (query.getCompositionType().equals("function")) {
 				funcCount++;
+				if (query.getOperand() == null || query.getOperand().length() == 0)
+					query.setOperand("contains");
 			}
+			
+			String entType = query.getEntityType();
+			if (entType != null && entType.startsWith("["))
+				query.setEntityType(entType.substring(1, entType.length()-1));
+			
+			int i = 0;
 		}
 		// how many types of datum and set assay type if any
 		Set<String> datumNames = new HashSet<String>();
@@ -333,4 +361,6 @@ public class AdvancedSampleSearchBean {
 	public int getDatumTypeCount() {
 		return datumTypeCount;
 	}
+	
+	
 }

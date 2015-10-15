@@ -48,7 +48,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.jvnet.hk2.config.Changed.TYPE;
+//import org.jvnet.hk2.config.Changed.TYPE;
 
 public class FunctionalizingEntityBO extends BaseAnnotationBO {
 	public List<String> create(SimpleFunctionalizingEntityBean bean,
@@ -807,4 +807,20 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 		return funcBean;
 	}
 
+	public FunctionalizingEntityBean setupFunctionalizingEntityForAdvancedSearch(String sampleId,
+			String dataId, HttpServletRequest request) throws Exception {
+		CompositionService compService = this.setServicesInSession(request);
+		// set up other particles with the same primary point of contact
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+		// dataId = super.validateId(request, "dataId");
+		FunctionalizingEntityBean entityBean = compService
+				.findFunctionalizingEntityById(dataId);
+		this.setLookups(request);
+		// clear copy to otherSamples
+		// form.setOtherSamples(new String[0]);
+		checkOpenForms(entityBean, request);
+		request.getSession().setAttribute("sampleId", sampleId);
+
+		return entityBean;
+	}
 }

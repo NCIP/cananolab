@@ -16,6 +16,7 @@ import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.impl.WritableApplicationServiceImpl;
 import gov.nih.nci.system.util.ClassCache;
 
+//import org.hibernate.type.StandardBasicTypes;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -181,9 +182,9 @@ public class CaNanoLabApplicationServiceImpl extends WritableApplicationServiceI
 			String[] columns = new String[] { "protection_group_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
 			List results = directSQL(query, columns, columnTypes);
-			for (Object obj : results) {
-				if (obj != null) {
-					publicData.add(((String) obj));
+			for (int i = 0; i < results.size(); i++) {
+				if (results.get(i) != null) {
+					publicData.add(((String) results.get(i)));
 				}
 			}
 		} catch (Exception e) {

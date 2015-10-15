@@ -224,7 +224,7 @@ th.subMenuPrimaryTitle {
 td.subMenuPrimarySubTitle {
     height: 20px;
     padding: 5px;
-    background-color: #0089bb; color: #fff /* constant: white */;;;;;
+    background-color: #005d7e; color: #fff /* constant: white */;;;;;
     font-weight: 700;
     nowhitespace: afterproperty;
     nowhitespace: afterproperty; /* for the subtitle elements of the sub menu (left-side) */
@@ -565,10 +565,15 @@ SIDEBAR BEGINS
     text-align: right
 }
 
+.resetBlock {
+    margin-left: 1.2em;
+    text-align: left;
+}
+
 td.sidebarTitle {
     height: 20px;
     padding-top: 5px; padding-bottom: 5px; padding-left: 8px;
-    background-color: #009E2D; color: #fff;
+    background-color: #005518; color: #fff;
     font-weight: 700;
     /* for the subtitle elements of the sub menu (left-side) */
     font-family: arial,helvetica,verdana,sans-serif;
@@ -580,7 +585,7 @@ td.sidebarTitle {
 th.sidebarTitle {
     height: 20px;
     padding-top: .2em; padding-bottom: .2em; padding-left: .8em;
-    background-color: #acc4c4; color: #4c5b5b;
+    background-color: #ccc; color: #000;
     font-weight: 700;
     /* for the subtitle elements of the sub menu (left-side) */
     font-family: arial,helvetica,verdana,sans-serif;
@@ -740,7 +745,7 @@ div.logindiv {
     border-width: 0;
 }
 
-    .gridtableHomePage th {
+    .gridtableHomePage td {
         padding: 5px 30px 10px;
         font-family: arial,helvetica,verdana,sans-serif;
         border-style: solid;
@@ -757,7 +762,7 @@ div.logindiv {
         vertical-align: top;
     }
 
-th.dataTypeHomePage {
+td.dataTypeHomePage {
     width: 70%
 }
 
@@ -1136,7 +1141,8 @@ ol {
 }
 
     .invisibleTable td {
-        padding: 0 15px 0 0;
+        padding:0px !important;
+        margin:0px !important;
         border-collapse: collapse;
         border-spacing: 0;
     }
@@ -1160,7 +1166,7 @@ ol {
 
 #userActionsButton {
     margin-left: 10px;
-    background-color: #009E2D; color: #fff;
+    background-color: #005518; color: #fff;
     font-size: 14px
 }
 
@@ -1168,6 +1174,13 @@ ol {
     padding: 1em;
     color: red;
     font-weight: 700
+}
+
+#resetErrors {
+color:red;
+font-weight:bold;
+padding-left:1em;
+padding-top:.2em;
 }
 
 .userMessage {
@@ -1196,7 +1209,7 @@ select#nanomaterialEntityTypes,
 }
 
 th.mainMenuItem.home {
-    background-color: #009E2D /* constant: dark gray ;;;;;
+    background-color: #005518 /* constant: dark gray ;;;;;
     /* for the off state of the main menu (top) cells */:
 }
 
@@ -1335,7 +1348,7 @@ a:hover.mainMenuLink.home {
 td.subMenuSecondaryTitleSample {
     height: 20px;
     padding-top: 2px; padding-bottom: 2px; padding-left: 15px;
-    background-color: #009E2D; color: #fff;
+    background-color: #005518; color: #fff;
     border-bottom: 1px solid #88BCE2;
     font-weight: 700
 }
@@ -1382,7 +1395,7 @@ td:hover.subMenuSecondaryTitleSelectedSample {
 .contentTitle {
     padding-left: .2em;
     padding: 3px;
-    background-color: #0089BB; color: white;
+    background-color: #005d7e; color: white;
     font-size: 1.1em; font-weight: 700
 }
 
@@ -1442,7 +1455,7 @@ table.summaryViewNoGrid {
 .btn.back  {
     margin-right:15px;
     font-weight:700;
-    background-color:#009E2D !important;
+    background-color:#005518 !important;
     color:#fff;
     box-shadow: 0px 0px 0px 1px #fff;    
 }
@@ -1624,12 +1637,12 @@ table.table {
     }    
 
     .header.sortable.sort-desc {
-        background-color:#009E2D !important; 
+        background-color:#005518 !important; 
         color:#fff;
       }
 
     .header.sortable.sort-asc {
-        background-color:#009E2D !important; 
+        background-color:#005518 !important; 
         color:#fff;
       }      
 
@@ -1671,7 +1684,7 @@ ul.pagination li.disabled a,ul.pagination li.disabled a:hover{
 }
 
     .dataTable .heading {
-        background-color:#009E2D;
+        background-color:#005518;
         color:#fff;
         text-transform:capitalize;
     }
@@ -1777,4 +1790,21 @@ text-shadow: 0px 0px 0px !important;
 .sampleSearchLookup{
 width:150px;
 }
+#keywordSearch {
+padding-left:440px;
+}
 
+#keywordSearch #searching {
+padding-top:5px;
+    background: url(../images/ajax-loader.gif);
+    background-repeat: no-repeat;
+    background-position: 30% 100%;
+}
+
+.invisibleTable.sample {
+margin:4px;
+}
+
+.invisibleTable.sample td{
+padding:4px !important;
+}
