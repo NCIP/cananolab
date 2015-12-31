@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -502,6 +503,7 @@ ApplicationContext applicationContext = new ClassPathXmlApplicationContext("appl
 	 public Response searchByIdImage(@Context HttpServletRequest httpRequest, 
 	    		@DefaultValue("") @QueryParam("type") String type, @QueryParam("id") String id){
 		
+
 		PublicationManager pubManager = 
 				(PublicationManager) applicationContext.getBean("publicationManager");
 		
@@ -511,16 +513,29 @@ ApplicationContext applicationContext = new ClassPathXmlApplicationContext("appl
 		java.io.File fileSuccess = new java.io.File(fileRoot + java.io.File.separator +"canano_logo_mini.jpg");
 		java.io.File fileError = new java.io.File(fileRoot + java.io.File.separator +"doi-transparent.png");
 		
-		try {
-			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
-			
-			return (result.getErrors().size() > 0) ?
-					Response.ok(new FileInputStream(fileError)).build()
-						:
-						Response.ok(new FileInputStream(fileSuccess)).build();
-			} 
-		catch (Exception e) {
-			return Response.ok(fileError).build();
+		if ((fileSuccess.exists()) && (fileError.exists())) {
+			try {
+				SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
+				
+				return (result.getErrors().size() > 0) ?
+						Response.ok(new FileInputStream(fileError)).build()
+							:
+							Response.ok(new FileInputStream(fileSuccess)).build();
+				} 
+			catch (Exception e) {
+				try {
+					logger.info("PublicationServices.searchByIdImage search publication by ID error", e);
+					return Response.ok(new FileInputStream(fileError)).build();
+				}
+				catch (FileNotFoundException e1) {
+					logger.error("PublicationServices.searchByIdImage 'doi-transparent.png' image file not found", e);
+					return Response.serverError().build();
+				}
+			}
+		}
+		else {
+			logger.error("PublicationServices.searchByIdImage fileSuccess or fileError does not exist: " + fileSuccess.getAbsolutePath() + ", " + fileError.getAbsolutePath());
+			return Response.serverError().build();
 		}
 	}	
 
