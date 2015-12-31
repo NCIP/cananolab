@@ -339,7 +339,7 @@ public class PublicationBean extends FileBean {
 		List<String> strs = new ArrayList<String>();
 		strs.add(getAuthorsDisplayName());
 		// remove last . in the title
-		if (pub.getTitle().endsWith(".")) {
+		if ((pub.getTitle() != null) && (pub.getTitle().endsWith("."))) {
 			strs.add(pub.getTitle().substring(0, pub.getTitle().length() - 1));
 		} else {
 			strs.add(pub.getTitle());
