@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.customsearch.helper;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,12 +53,16 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	public List<CustomSearchBean> customSearchByKeywordByProtocol(HttpServletRequest httpRequest, String keyword) {
 		List<CustomSearchBean> results = null;
 		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+		FSDirectory fsDirectory = null;
+		DirectoryReader directoryReader = null;
 		try {
 			ProtocolService protocolService = getProtocolServiceInSession(httpRequest, securityService);
 			
-			results = new ArrayList<CustomSearchBean>();	
+			results = new ArrayList<CustomSearchBean>();
+			fsDirectory = FSDirectory.open(new File("indexDir"));
+			directoryReader = DirectoryReader.open(fsDirectory);
 			  
-		    IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("indexDir"))));
+		    IndexSearcher searcher = new IndexSearcher(directoryReader);
 		    QueryParser parser = new QueryParser("content", new StandardAnalyzer());
 		    Query query = parser.parse(keyword);        
 		    TopDocs topDocs = searcher.search(query, 1000);
@@ -95,6 +100,17 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		    
 		}catch(Exception e){
 			e.printStackTrace();
+		}
+		finally {
+			if (fsDirectory != null)
+				fsDirectory.close();
+			try {
+				if (directoryReader != null)
+					directoryReader.close();
+			}
+			catch (IOException e) {
+				logger.error("Error in customSearchByKeywordByProtocol when trying to close DirectoryReader", e);
+			}
 		}
 		return results;
 	}
@@ -135,11 +151,17 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	public List<CustomSearchBean> customSearchByKeywordBySample(HttpServletRequest httpRequest, String keyword) {
 		List<CustomSearchBean> results = null;
 		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+		FSDirectory fsDirectory = null;
+		DirectoryReader directoryReader = null;
+
 		try {
 			SampleService sampleService = this.getSampleServiceInSession(httpRequest, securityService);			
 			results = new ArrayList<CustomSearchBean>();	
 			  
-		    IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("indexDir"))));
+			fsDirectory = FSDirectory.open(new File("indexDir"));
+			directoryReader = DirectoryReader.open(fsDirectory);
+			  
+		    IndexSearcher searcher = new IndexSearcher(directoryReader);
 		    QueryParser parser = new QueryParser("content", new StandardAnalyzer());
 		    Query query = parser.parse(keyword);        
 		    TopDocs topDocs = searcher.search(query, 100);
@@ -175,19 +197,32 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		finally {
+			if (fsDirectory != null)
+				fsDirectory.close();
+			try {
+				if (directoryReader != null)
+					directoryReader.close();
+			}
+			catch (IOException e) {
+				logger.error("Error in customSearchByKeywordBySample when trying to close DirectoryReader", e);
+			}
+		}		
 		return results;
 	}
 
 	public List<CustomSearchBean> customSearchByKeywordByPub(HttpServletRequest httpRequest, String keyword) {
 		List<CustomSearchBean> results = null;
 		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+		FSDirectory fsDirectory = null;
+		DirectoryReader directoryReader = null;
 		
 		try {
 			
 			PublicationService publicationService = this.getPublicationServiceInSession(httpRequest, securityService);				
 			results = new ArrayList<CustomSearchBean>();	
 			  
-		    IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("indexDir"))));
+		    IndexSearcher searcher = new IndexSearcher(directoryReader);
 		    QueryParser parser = new QueryParser("content", new StandardAnalyzer());
 		    Query query = parser.parse(keyword);        
 		    TopDocs topDocs = searcher.search(query, 100);
@@ -224,6 +259,17 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		finally {
+			if (fsDirectory != null)
+				fsDirectory.close();
+			try {
+				if (directoryReader != null)
+					directoryReader.close();
+			}
+			catch (IOException e) {
+				logger.error("Error in customSearchByKeywordByPub when trying to close DirectoryReader", e);
+			}
+		}		
 		return results;
 	}
 	
