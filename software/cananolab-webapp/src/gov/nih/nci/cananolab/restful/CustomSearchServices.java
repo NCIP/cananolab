@@ -29,11 +29,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 @Path("/customsearch")
 public class CustomSearchServices {
 
-	private Logger logger = Logger.getLogger(CustomSearchServices.class);
+	private static final Logger logger = Logger.getLogger(CustomSearchServices.class);
 		
 //		@Inject
 //		SpringApplicationContext applicationContext;
-	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
+	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
 		@GET
 		@Path("/search")
 		@Produces ("application/json")

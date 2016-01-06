@@ -26,11 +26,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 @Path("/composition")
 public class CompositionServices {
 
-private Logger logger = Logger.getLogger(CompositionServices.class);
+	private static final Logger logger = Logger.getLogger(CompositionServices.class);
 	
 //	@Inject
 //	ApplicationContext applicationContext;
-ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
+	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
 	@GET
 	@Path("/summaryView")
 	@Produces ("application/json")

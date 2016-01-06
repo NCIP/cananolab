@@ -32,7 +32,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/security")
 public class SecurityServices {
-	private Logger logger = Logger.getLogger(SecurityServices.class);
+	private static final Logger logger = Logger.getLogger(SecurityServices.class);
 	
 //	@Inject
 //	SpringApplicationContext applicationContext;
@@ -41,7 +41,7 @@ public class SecurityServices {
 	 * 
 	 *    Ref. to validation.xml
 	 */
-	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
+	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
 	@POST
 	@Path("/login")
 	@Produces ("application/json")

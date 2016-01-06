@@ -34,11 +34,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 @Path("/chemicalAssociation")
 public class ChemicalAssociationServices {
 
-private Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
+	private static final Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
 	
 //	@Inject
 //	ApplicationContext applicationContext;
-	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
+	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
 	@GET
 	@Path("/setup")
 	@Produces ("application/json")

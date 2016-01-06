@@ -43,11 +43,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/sample")
 public class SampleServices {
-	private Logger logger = Logger.getLogger(SampleServices.class);
+	private static final Logger logger = Logger.getLogger(SampleServices.class);
 	
 //	@Inject
 //	SpringApplicationContext applicationContext;
-	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
+	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
 
 	@GET
 	@Path("/setup")

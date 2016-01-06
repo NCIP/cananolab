@@ -62,8 +62,8 @@ public class CoreServices {
 //	@Inject
 //	SpringApplicationContext applicationContext;
 	
-	private Logger logger = Logger.getLogger(CoreServices.class);
-	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
+	private static final Logger logger = Logger.getLogger(CoreServices.class);
+	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
 	@GET
 	@Path("/initSetup")
 	@Produces ("application/json")

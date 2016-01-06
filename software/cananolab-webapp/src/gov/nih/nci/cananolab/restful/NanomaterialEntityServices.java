@@ -32,11 +32,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 @Path("/nanomaterialEntity")
 public class NanomaterialEntityServices {
 	
-private Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
+	private static final Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 	
 //	@Inject
 //	ApplicationContext applicationContext;
-ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
+	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
 	
 	@GET
 	@Path("/setup")

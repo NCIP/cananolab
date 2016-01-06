@@ -41,12 +41,11 @@ import gov.nih.nci.cananolab.util.PropertyUtils;
 
 @Path("/publication")
 public class PublicationServices {
-
-private Logger logger = Logger.getLogger(PublicationServices.class);
+	private static final Logger logger = Logger.getLogger(PublicationServices.class);
 
 //	@Inject
 //	SpringApplicationContext applicationContext;
-ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
+	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
 	@GET
 	@Path("/summaryView")
 	@Produces ("application/json")

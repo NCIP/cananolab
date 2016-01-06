@@ -30,11 +30,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 @Path("/compositionFile")
 public class CompositionFileServices {
 
-private Logger logger = Logger.getLogger(CompositionFileServices.class);
+	private static final Logger logger = Logger.getLogger(CompositionFileServices.class);
 	
 //	@Inject
 //	ApplicationContext applicationContext;
-ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
+	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
 	@GET
 	@Path("/setup")
 	@Produces ("application/json")

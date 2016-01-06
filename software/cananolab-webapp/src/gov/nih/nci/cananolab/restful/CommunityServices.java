@@ -31,8 +31,8 @@ public class CommunityServices {
 	
 //	@Inject
 //	ApplicationContext applicationContext;
-	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
-	private Logger logger = Logger.getLogger(CommunityServices.class);
+	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
+	private static final Logger logger = Logger.getLogger(CommunityServices.class);
 	
 	@GET
 	@Path("/getCollaborationGroups")
