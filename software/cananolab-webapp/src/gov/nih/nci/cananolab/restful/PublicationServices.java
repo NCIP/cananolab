@@ -1,30 +1,10 @@
 package gov.nih.nci.cananolab.restful;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
-import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
-import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
-import gov.nih.nci.cananolab.restful.publication.PublicationBO;
-import gov.nih.nci.cananolab.restful.publication.PublicationManager;
-import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
-import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
-import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
-import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.ui.form.PublicationForm;
-import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
-import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.PropertyUtils;
-
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
@@ -39,6 +19,25 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
+import gov.nih.nci.cananolab.restful.publication.PublicationBO;
+import gov.nih.nci.cananolab.restful.publication.PublicationManager;
+import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.util.PublicationImageCache;
+import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
+import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.ui.form.PublicationForm;
+import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 
 @Path("/publication")
 public class PublicationServices {
@@ -507,35 +506,25 @@ ApplicationContext applicationContext = new ClassPathXmlApplicationContext("appl
 		PublicationManager pubManager = 
 				(PublicationManager) applicationContext.getBean("publicationManager");
 		
-		String fileRoot = PropertyUtils.getProperty(
-								Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
-				 		
-		java.io.File fileSuccess = new java.io.File(fileRoot + java.io.File.separator +"canano_logo_mini.jpg");
-		java.io.File fileError = new java.io.File(fileRoot + java.io.File.separator +"doi-transparent.png");
+		String fileRoot = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 		
-		if ((fileSuccess.exists()) && (fileError.exists())) {
+		try {
+			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
+			
+			return (result.getErrors().size() > 0) ?
+					Response.ok(buildTranspImage(fileRoot)).build()
+						:
+						Response.ok(buildCaNanoImage(fileRoot)).build();
+		} 
+		catch (Exception e) {
 			try {
-				SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
-				
-				return (result.getErrors().size() > 0) ?
-						Response.ok(new FileInputStream(fileError)).build()
-							:
-							Response.ok(new FileInputStream(fileSuccess)).build();
-				} 
-			catch (Exception e) {
-				try {
-					logger.info("PublicationServices.searchByIdImage search publication by ID error", e);
-					return Response.ok(new FileInputStream(fileError)).build();
-				}
-				catch (FileNotFoundException e1) {
-					logger.error("PublicationServices.searchByIdImage 'doi-transparent.png' image file not found", e);
-					return Response.serverError().build();
-				}
+				logger.info("PublicationServices.searchByIdImage search publication by ID error", e);
+				return Response.ok(buildTranspImage(fileRoot)).build();
 			}
-		}
-		else {
-			logger.error("PublicationServices.searchByIdImage fileSuccess or fileError does not exist: " + fileSuccess.getAbsolutePath() + ", " + fileError.getAbsolutePath());
-			return Response.serverError().build();
+			catch (FileNotFoundException e1) {
+				logger.error("PublicationServices.searchByIdImage 'doi-transparent.png' image file not found", e);
+				return Response.serverError().build();
+			}
 		}
 	}	
 
@@ -565,6 +554,13 @@ ApplicationContext applicationContext = new ClassPathXmlApplicationContext("appl
 		}
 	}
 	
+	private InputStream buildCaNanoImage(String fileRoot) throws FileNotFoundException {
+		return PublicationImageCache.getInstance().getCaNanoImage(fileRoot);
+	}
 	
+	private InputStream buildTranspImage(String fileRoot) throws FileNotFoundException {
+		return PublicationImageCache.getInstance().getTranspImage(fileRoot);
+	}
+
 }
 	
