@@ -99,6 +99,7 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		  
 		    
 		}catch(Exception e){
+			logger.error("Error in customSearchByKeywordByProtocol printing stack trace", e);
 			e.printStackTrace();
 		}
 		finally {
@@ -195,6 +196,7 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		  
 		    
 		}catch(Exception e){
+			logger.error("Error in customSearchByKeywordBySample printing stack trace", e);
 			e.printStackTrace();
 		}
 		finally {
@@ -221,6 +223,9 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 			
 			PublicationService publicationService = this.getPublicationServiceInSession(httpRequest, securityService);				
 			results = new ArrayList<CustomSearchBean>();	
+			
+			fsDirectory = FSDirectory.open(new File("indexDir"));
+			directoryReader = DirectoryReader.open(fsDirectory);
 			  
 		    IndexSearcher searcher = new IndexSearcher(directoryReader);
 		    QueryParser parser = new QueryParser("content", new StandardAnalyzer());
@@ -257,6 +262,7 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		  
 		    
 		}catch(Exception e){
+			logger.error("Error in customSearchByKeywordByPub printing stack trace", e);
 			e.printStackTrace();
 		}
 		finally {

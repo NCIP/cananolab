@@ -343,10 +343,15 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				.getApplicationService();
 		
 		List results = appService.query(crit);
+		
+		int resSize = results.size();
+		/*
+		 * We will look only though the maximum amount of allowed records to avoid Exceptions
+		 */
+		int maxCount = appService.getMaxRecordsCount();
 		Set<Sample> samples = new HashSet<Sample>();
 		List<String> accessibleData = getAccessibleData();
-		for(int i = 0; i < results.size(); i++){
-			
+		for(int i = 0; (i < resSize) && (i < maxCount); i++){
 			try {
 				/*
 				 * There is a bug when searching with keyword "tes", where the following line

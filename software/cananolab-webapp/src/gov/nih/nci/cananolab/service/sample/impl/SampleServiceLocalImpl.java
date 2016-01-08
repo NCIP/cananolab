@@ -177,7 +177,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		} catch (DuplicateEntriesException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Error in saving the sample";
+			String err = "Error in saving the sample" + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -303,7 +303,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					otherCharacterizationTypes, wordList);
 			return sampleIds;
 		} catch (Exception e) {
-			String err = "Problem finding samples with the given search parameters.";
+			String err = "Problem finding samples with the given search parameters. " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -324,7 +324,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Problem finding the sample by id: " + sampleId;
+			String err = "Problem finding the sample by id: " + sampleId + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -351,7 +351,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Problem finding the sample by id: " + sampleId;
+			String err = "Problem finding the sample by id: " + sampleId + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -571,7 +571,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Problem finding the sample by name: " + sampleName;
+			String err = "Problem finding the sample by name: " + sampleName + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -582,7 +582,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			int count = helper.getNumberOfPublicSamples();
 			return count;
 		} catch (Exception e) {
-			String err = "Error finding counts of public samples.";
+			String err = "Error finding counts of public samples. " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 
@@ -594,7 +594,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			int count = helper.getNumberOfPublicSampleSources();
 			return count;
 		} catch (Exception e) {
-			String err = "Error finding counts of public sample sources.";
+			String err = "Error finding counts of public sample sources. " + e.getMessage();;
 			logger.error(err, e);
 			throw new SampleException(err, e);
 
@@ -608,7 +608,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			PointOfContact poc = helper.findPointOfContactById(pocId);
 			pocBean = new PointOfContactBean(poc);
 		} catch (Exception e) {
-			String err = "Problem finding point of contact for the given id.";
+			String err = "Problem finding point of contact for the given id. " + e.getMessage();;
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
 		}
@@ -682,7 +682,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			return advancedHelper.findSampleIdsByAdvancedSearch(searchBean);
 		} catch (Exception e) {
-			String err = "Problem finding samples with the given advanced search parameters.";
+			String err = "Problem finding samples with the given advanced search parameters. " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -695,7 +695,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			return advancedHelper.findAdvancedSampleByAdvancedSearch(sampleId,
 					searchBean);
 		} catch (Exception e) {
-			String err = "Problem finding advanced sample details with the given advanced search parameters.";
+			String err = "Problem finding advanced sample details with the given advanced search parameters. " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -737,7 +737,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw e;
 		} catch (Exception e) {
 			String err = "Error in loading the original sample "
-					+ originalSampleName;
+					+ originalSampleName + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -776,11 +776,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				this.deleteSampleWhenError(newSample0.getName());
 			} catch (Exception ex) {
 				String err = "Error in deleting the errored cloned-sample "
-						+ newSample0.getName();
+						+ newSample0.getName() + ". " + ex.getMessage();
 				logger.error(err, e);
 				throw new SampleException(err, ex);
 			}
-			String err = "Error in cloning the sample " + originalSampleName;
+			String err = "Error in cloning the sample " + originalSampleName + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -1036,7 +1036,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		} catch (NotExistException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Error in deleting the sample " + sampleName;
+			String err = "Error in deleting the sample " + sampleName + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -1064,7 +1064,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 		} catch (Exception e) {
 			String err = "Error in updating POC associated sample characterizations "
-					+ sampleName;
+					+ sampleName + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -1100,7 +1100,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					new Comparators.SortableNameComparator());
 
 		} catch (Exception e) {
-			String err = "Error in deleting the sample " + sampleId;
+			String err = "Error in deleting the sample " + sampleId + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -1179,7 +1179,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw e;
 		} catch (Exception e) {
 			String err = "Error in assigning accessibility to the sample "
-					+ sampleId;
+					+ sampleId + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -1211,7 +1211,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Error in deleting the access for sample " + sampleId;
+			String err = "Error in deleting the access for sample " + sampleId + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -1223,7 +1223,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			sampleIds = helper.findSampleIdsByOwner(currentOwner);
 		} catch (Exception e) {
-			String error = "Error in retrieving sampleIds by owner";
+			String error = "Error in retrieving sampleIds by owner. " + e.getMessage();
 			throw new SampleException(error, e);
 		}
 		return sampleIds;
@@ -1260,7 +1260,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String error = "Error in removing sample accesses";
+			String error = "Error in removing sample accesses" + ". " + e.getMessage();
 			throw new SampleException(error, e);
 		}
 		return ids;
@@ -1306,7 +1306,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					otherCharacterizationTypes, wordList);
 			return samples;
 		} catch (Exception e) {
-			String err = "Problem finding samples with the given search parameters.";
+			String err = "Problem finding samples with the given search parameters. " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
