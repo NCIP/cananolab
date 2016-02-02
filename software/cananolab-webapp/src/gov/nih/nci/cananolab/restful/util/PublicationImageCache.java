@@ -64,7 +64,7 @@ public class PublicationImageCache {
 		}
 		
 		if (imageTranspCached != null && imageTranspCached.length > 0) {
-		 ByteArrayInputStream bis = new ByteArrayInputStream(imageCaNanoCached);
+		 ByteArrayInputStream bis = new ByteArrayInputStream(imageTranspCached);
 		 return bis;
 		}
 		else {
