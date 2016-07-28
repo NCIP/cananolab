@@ -18,18 +18,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service methods for site preference and visitor counter.
  * 
  * @author houyh
  */
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("adminServiceDAO")
 public class AdminServiceJDBCImpl extends JdbcDaoSupport implements AdminService {
 	//ADMIN_RECORD_ID
 	private static final int ADMIN_RECORD_ID = 0;
+	
+	@Autowired
+	private DataSource dataSource;
+	
+	@PostConstruct
+	private void initialize() {
+		setDataSource(dataSource);
+	}
 	
 	//[administration] table columns.
 	private static final String SITE_NAME = "site_name";

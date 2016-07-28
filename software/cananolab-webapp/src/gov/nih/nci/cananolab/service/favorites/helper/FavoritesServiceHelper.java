@@ -8,10 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.FavoriteBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.BaseServiceHelper;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -25,34 +23,23 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Component;
 
-public class FavoritesServiceHelper extends BaseServiceHelper{
-	private static Logger logger = Logger
-			.getLogger(ProtocolServiceHelper.class);
+@Component("favoritesServiceHelper")
+public class FavoritesServiceHelper
+{
+	private static Logger logger = Logger.getLogger(ProtocolServiceHelper.class);
 
-	public FavoritesServiceHelper() {
-		super();
-	}
-
-	public FavoritesServiceHelper(UserBean user) {
-		super(user);
-	}
-
-	public FavoritesServiceHelper(SecurityService securityService) {
-		super(securityService);
-	}
-
-	public FavoriteBean findFavouritesById(String dataId, String loginName) {
+	public FavoriteBean findFavouritesById(String dataId, String loginName)
+	{
 		FavoriteBean bean = null;
 
 		CaNanoLabApplicationService appService;
 		try {
-			appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+			appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(FavoriteBean.class);
 			Criterion crit1 = Restrictions.eq("dataId", dataId);
-			Criterion crit2 = Restrictions.like("loginName", loginName,
-					MatchMode.EXACT);
+			Criterion crit2 = Restrictions.like("loginName", loginName, MatchMode.EXACT);
 			crit.add(Expression.and(crit1, crit2));
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
@@ -65,17 +52,16 @@ public class FavoritesServiceHelper extends BaseServiceHelper{
 		return bean;
 	}
 
-	public List<FavoriteBean> findFavourites(HttpServletRequest request) {
+	public List<FavoriteBean> findFavourites(HttpServletRequest request)
+	{
 		List<FavoriteBean> list = new ArrayList<FavoriteBean>();
 
 		CaNanoLabApplicationService appService;
 		try {
-			UserBean user = (UserBean) request.getSession().getAttribute("user");
-			appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+			appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 			DetachedCriteria crit = DetachedCriteria.forClass(FavoriteBean.class);
-			crit.add(Restrictions.ilike("loginName", user.getLoginName(), MatchMode.EXACT));
+			crit.add(Restrictions.ilike("loginName", SpringSecurityUtil.getLoggedInUserName(), MatchMode.EXACT));
 
 			List result = appService.query(crit);
 //			for (Object obj : result) {

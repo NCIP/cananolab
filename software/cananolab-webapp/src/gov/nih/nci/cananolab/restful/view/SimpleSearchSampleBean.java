@@ -1,18 +1,14 @@
 package gov.nih.nci.cananolab.restful.view;
 
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
-import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -118,8 +114,7 @@ public class SimpleSearchSampleBean {
 		this.nanoEntityDesc = nanoEntityDesc;
 	}
 
-	public void transferSampleBeanForBasicResultView(SampleBean sampleBean,
-			UserBean user) {
+	public void transferSampleBeanForBasicResultView(SampleBean sampleBean) {
 
 		if (sampleBean == null)
 			return;
@@ -130,8 +125,7 @@ public class SimpleSearchSampleBean {
 		SampleComposition comp = sampleBean.getDomain().getSampleComposition();
 
 		if (comp != null) {
-			Collection<NanomaterialEntity> nanocoll = comp
-					.getNanomaterialEntityCollection();
+			Collection<NanomaterialEntity> nanocoll = comp.getNanomaterialEntityCollection();
 			String[] v = new String[nanocoll.size()];
 			Iterator ite = nanocoll.iterator();
 
@@ -150,8 +144,6 @@ public class SimpleSearchSampleBean {
 		setFunctions(sampleBean.getFunctionClassNames());
 		setCharacterizations(sampleBean.getCharacterizationClassNames());
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
-		setCreatedDate(sampleBean.getDomain().getCreatedDate());
-
 		setCreatedDate(sampleBean.getDomain().getCreatedDate());
 
 		//editable = SecurityUtil.isEntityEditableForUser(sampleBean.getUserAccesses(), user);

@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.restful.util;
 
-import gov.nih.nci.cananolab.restful.SecurityServices;
-
 import java.io.InputStream;
 import java.util.Properties;
 

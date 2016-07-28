@@ -22,6 +22,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.type.NullableType;
+import org.springframework.stereotype.Component;
 
 /**
  * Modified the original ORMDAOImpl to contain generic CRUD operations. Removed
@@ -31,10 +32,9 @@ import org.hibernate.type.NullableType;
  *
  * @author Satish Patel, Dan Dumitru
  */
-public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements
-		CaNanoLabORMDAO {
-	private static Logger log = Logger.getLogger(CaNanoLabORMDAOImpl.class
-			.getName());
+public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLabORMDAO
+{
+	private static Logger log = Logger.getLogger(CaNanoLabORMDAOImpl.class.getName());
 
 
 	public Object load(Class domainClass, Serializable id) {

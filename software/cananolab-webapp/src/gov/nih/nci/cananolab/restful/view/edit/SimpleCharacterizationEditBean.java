@@ -8,7 +8,6 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
-import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
@@ -16,11 +15,14 @@ import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleChar
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleCytotoxicity;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleEnzymeInduction;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimplePhysicalState;
-import gov.nih.nci.cananolab.restful.view.characterization.properties.SimplePropertyDefault;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleShape;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleSolubility;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleSurface;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleTransfection;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -34,38 +36,39 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
-public class SimpleCharacterizationEditBean {
-	
+public class SimpleCharacterizationEditBean
+{
+
 	private Logger logger = Logger.getLogger(SimpleCharacterizationEditBean.class);
-	
+
 	String type;
 	String name;
 	long parentSampleId;
-	
+
 	long charId;	
 	String assayType;
-	
+
 	long protocolId;
 	long characterizationSourceId;
 	Date characterizationDate;
-	
+
 	List<String> charNamesForCurrentType;
-	
+
 	SimpleCharacterizationProperty property = new SimpleCharacterizationProperty();
-	
+
 	String designMethodsDescription;
-	
+
 	SimpleTechniqueAndInstrument techniqueInstruments = new SimpleTechniqueAndInstrument();
-	
+
 	List<SimpleFindingBean> finding = new ArrayList<SimpleFindingBean>();
-	
+
 	String analysisConclusion;
-	
+
 	//When saving, could propagate to other samples
 	List<String> selectedOtherSampleNames = new ArrayList<String>();
 	boolean copyToOtherSamples;	
 	boolean submitNewChar;
-	
+
 	List<String> charTypesLookup;
 	//List<String> characterizationNameLookup;
 	//List<String> AssayTypeLookup;
@@ -73,18 +76,18 @@ public class SimpleCharacterizationEditBean {
 	List<SimplePOC> charSourceLookup;
 	List<String> otherSampleNameLookup;
 	List<String> datumConditionValueTypeLookup = new ArrayList<String>();
-	
+
 	List<String> assayTypesByCharNameLookup = new ArrayList<String>();
-	
+
 	List<String> errors = new ArrayList<String>();
 	List<String> messages = new ArrayList<String>();
-	
+
 	SimpleFindingBean dirtyFindingBean;
-	
+
 	SimpleExperimentBean dirtyExperimentBean;
-	
-	
-	
+
+
+
 	public void setDirtyFindingBean(SimpleFindingBean dirtyFindingBean) {
 		this.dirtyFindingBean = dirtyFindingBean;
 	}
@@ -94,47 +97,48 @@ public class SimpleCharacterizationEditBean {
 	}
 
 	public void transferFromCharacterizationBean(HttpServletRequest request, 
-			CharacterizationBean charBean, String sampleId) 
-	throws Exception {
-		
+			CharacterizationBean charBean, String sampleId, SampleService service, 
+			CharacterizationService characterizationService, ProtocolService protocolService, SpringSecurityAclService springSecurityAclService) 
+					throws Exception {
+
 		//TODO: handle type=other than in the list
 		this.type = charBean.getCharacterizationType();
 		this.parentSampleId = Long.parseLong(sampleId);
 		this.name = charBean.getCharacterizationName();
 		this.analysisConclusion = charBean.getConclusion();
-		
+
 		setProtocolIdFromProtocolBean(charBean);
 		setCharacterizationSourceIdFromPOCBean(charBean.getPocBean());
-		
-		transferCharBeanData(request, charBean);
-		
-		setupLookups(request, charBean, sampleId);
+
+		transferCharBeanData(request, charBean, springSecurityAclService);
+
+		setupLookups(request, charBean, sampleId, service, characterizationService, protocolService);
 	}
-	
+
 	protected void setCharacterizationSourceIdFromPOCBean(PointOfContactBean pocBean) {
 		if (pocBean == null || 
 				pocBean.getDomain() == null || 
 				pocBean.getDomain().getId() == null)
 			return;
-		
+
 		this.characterizationSourceId = pocBean.getDomain().getId();
 	}
-	
+
 	protected void setProtocolIdFromProtocolBean(CharacterizationBean charBean) {
 		if (charBean == null || 
 				charBean.getProtocolBean() == null || 
 				charBean.getProtocolBean().getDomain() == null ||
 				charBean.getProtocolBean().getDomain().getId() == null)
 			return;
-		
+
 		this.protocolId = charBean.getProtocolBean().getDomain().getId();
 	}
-	
-	protected void transferCharBeanData(HttpServletRequest request, CharacterizationBean charBean) 
-	throws Exception {
+
+	protected void transferCharBeanData(HttpServletRequest request, CharacterizationBean charBean, SpringSecurityAclService springSecurityAclService) 
+			throws Exception {
 		if (charBean.getDomainChar() == null) 
 			return;
-		
+
 		this.designMethodsDescription = charBean.getDomainChar().getDesignMethodsDescription();
 		this.characterizationDate = charBean.getDomainChar().getDate();
 
@@ -143,18 +147,18 @@ public class SimpleCharacterizationEditBean {
 			this.charId = id.longValue();
 			this.assayType = charBean.getAssayType();
 		}
-		
+
 		transferExperimentConfigs(charBean.getExperimentConfigs());
-		transferFinding(request, charBean.getFindings())	;
-		
+		transferFinding(request, charBean.getFindings(), springSecurityAclService);
+
 		transferProperty(request, charBean);
-		
+
 	}
-	
+
 	protected void transferToPropertyBean(CharacterizationBean charBean) 
-	throws Exception {
+			throws Exception {
 		if (this.property == null) return;
-		
+
 		if (this.name.contains("physical"))
 			((SimplePhysicalState)property).transferToPropertyBean(charBean);
 		else if (name.contains("shape"))
@@ -169,18 +173,18 @@ public class SimpleCharacterizationEditBean {
 			((SimpleEnzymeInduction)property).transferToPropertyBean(charBean);
 		else if (name.contains("transfection"))
 			((SimpleTransfection)property).transferToPropertyBean(charBean);
-		
+
 	}
-	
+
 	protected void transferProperty(HttpServletRequest request, CharacterizationBean charBean) 
-	throws Exception {
+			throws Exception {
 		if (!charBean.isWithProperties()) return;
-		
+
 		String charName = charBean.getCharacterizationName();
 		property = getPropertyClassByCharName(charName);
 		property.transferFromPropertyBean(request, charBean, true);
 	}
-	
+
 	protected SimpleCharacterizationProperty getPropertyClassByCharName(String charName) 
 			throws Exception {
 		if (charName.contains("physical"))
@@ -201,38 +205,43 @@ public class SimpleCharacterizationEditBean {
 			throw new Exception("Unknown charName: " + charName);
 
 	}
-	
-	protected void transferFinding(HttpServletRequest request, List<FindingBean> findingBeans) {
+
+	protected void transferFinding(HttpServletRequest request, List<FindingBean> findingBeans, SpringSecurityAclService springSecurityAclService) {
 		if (findingBeans == null) return;
-		
+
 		for (FindingBean findingBean : findingBeans) {
 			SimpleFindingBean simpleBean = new SimpleFindingBean();
+			
+			for (FileBean file : findingBean.getFiles())
+			{
+				boolean isPublic = springSecurityAclService.checkObjectPublic(file.getDomainFile().getId(), SecureClassesEnum.FILE.getClazz());
+				file.setPublicStatus(isPublic);
+			}
+			
 			simpleBean.transferFromFindingBean(request, findingBean);
-			
-			
+
+
 			//List<FileBean> files = findingBean.getFiles();
-			
-			
-			
+
 			this.finding.add(simpleBean);
 		}
 	}
-	
+
 	protected void transferExperimentConfigs(List<ExperimentConfigBean> expConfigs) {
 		if (expConfigs == null) return;
-	
+
 		for (ExperimentConfigBean expConfig : expConfigs) {
 			SimpleExperimentBean simpleExp = new SimpleExperimentBean();
 			simpleExp.setDescription(expConfig.getDescription());
 			simpleExp.setDisplayName(expConfig.getTechniqueDisplayName());
-			
+
 			if (expConfig.getDomain() != null && expConfig.getDomain().getTechnique() != null) {
 				simpleExp.setTechniqueType(expConfig.getDomain().getTechnique().getType());
 				simpleExp.setAbbreviation(expConfig.getDomain().getTechnique().getAbbreviation());
 			}
 			if (expConfig.getDomain() != null && expConfig.getDomain().getId() != null)
 				simpleExp.setId(expConfig.getDomain().getId());
-			
+
 			List<Instrument> domainInsts = expConfig.getInstruments();
 			if (domainInsts != null) {
 				for (Instrument inst : domainInsts) {
@@ -240,41 +249,39 @@ public class SimpleCharacterizationEditBean {
 					simpleInst.setManufacturer(inst.getManufacturer());
 					simpleInst.setModelName(inst.getModelName());
 					simpleInst.setType(inst.getType());
-					
+
 					simpleExp.getInstruments().add(simpleInst);
 				}
 			}
-			
+
 			this.techniqueInstruments.getExperiments().add(simpleExp);
 		}
 	}
-	
-	protected void setupLookups(HttpServletRequest request, CharacterizationBean charBean, String sampleId) 
+
+	protected void setupLookups(HttpServletRequest request, CharacterizationBean charBean, String sampleId, SampleService service, CharacterizationService characterizationService, ProtocolService protocolService) 
 			throws Exception {
-	
+
 		String charType = charBean.getCharacterizationType();
-		
-		charTypesLookup = InitCharacterizationSetup
-				.getInstance().getCharacterizationTypes(request);
+
+		charTypesLookup = InitCharacterizationSetup.getInstance().getCharacterizationTypes(request);
 		charTypesLookup.add("other");
 
 		charNamesForCurrentType = new ArrayList<String>();
-		SortedSet<String> charNames = InitCharacterizationSetup
-				.getInstance().getCharNamesByCharType(request, charType);
+		SortedSet<String> charNames = InitCharacterizationSetup.getInstance().getCharNamesByCharType(request, charType, characterizationService);
 		charNamesForCurrentType.addAll(charNames);
 		charNamesForCurrentType.add("other");
-		
-		setProtocolLookup(request, charType);
-		setPOCLookup(request, sampleId);
-		otherSampleNameLookup = InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
-		
+
+		setProtocolLookup(request, charType, protocolService);
+		setPOCLookup(request, sampleId, service);
+		otherSampleNameLookup = InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, service);
+
 		SortedSet<String> valueTypes = (SortedSet<String>)request.getSession().getAttribute("datumConditionValueTypes");
 		if (valueTypes != null) 
 			this.datumConditionValueTypeLookup.addAll(valueTypes);
 		CommonUtil.addOtherToList(this.datumConditionValueTypeLookup);
-		
+
 		this.techniqueInstruments.setupLookups(request);
-		
+
 		if (this.name != null && this.name.length() > 0) {
 			SortedSet<String> assayTypes = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(
 					request, "charNameAssays",
@@ -284,16 +291,14 @@ public class SimpleCharacterizationEditBean {
 			CommonUtil.addOtherToList(this.assayTypesByCharNameLookup);
 		}
 	}
-	
-	protected void setPOCLookup(HttpServletRequest request, String sampleId) 
-	throws Exception {
+
+	protected void setPOCLookup(HttpServletRequest request, String sampleId, SampleService service) 
+			throws Exception {
 		charSourceLookup = new ArrayList<SimplePOC>();
-		SampleService service = (SampleService)request.getSession().getAttribute("sampleService");
-		List<PointOfContactBean> pocs = service
-				.findPointOfContactsBySampleId(sampleId);
-		
+		List<PointOfContactBean> pocs = service.findPointOfContactsBySampleId(sampleId);
+
 		if (pocs == null) return;
-			
+
 		for (PointOfContactBean poc : pocs) {
 			SimplePOC simplePOC = new SimplePOC();
 			simplePOC.transferFromPointOfContactBean(poc);
@@ -301,68 +306,67 @@ public class SimpleCharacterizationEditBean {
 		}
 	}
 
-	protected void setProtocolLookup(HttpServletRequest request, String charType) 
-	throws Exception {
+	protected void setProtocolLookup(HttpServletRequest request, String charType, ProtocolService protocolService) 
+			throws Exception {
 		protocolLookup = new ArrayList<SimpleProtocol>();
-		List<ProtocolBean> protoBeans = InitProtocolSetup.getInstance()
-				.getProtocolsByChar(request, charType);
-		
+		List<ProtocolBean> protoBeans = protocolService.getProtocolsByChar(request, charType);
+
 		if (protoBeans == null)
 			return;
-		
+
 		for (ProtocolBean protoBean : protoBeans) {
 			SimpleProtocol simpleProto = new SimpleProtocol();
 			simpleProto.transferFromProtocolBean(protoBean);
 			protocolLookup.add(simpleProto);
 		}
 	}
-	
+
 	/**
 	 * Currently it only transfter what's needed in "submit" / "update"
 	 * @param charBean
 	 */
 	public CharacterizationBean transferToCharacterizationBean(CharacterizationBean achar) 
-	throws Exception {
+			throws Exception {
 		if (achar == null) 
 			achar = new CharacterizationBean();
-		
+
 		achar.setCharacterizationName(this.name);
 		achar.setCharacterizationType(this.type);
-		
+
 		achar.setAssayType(assayType);
-		
+
 		if (this.characterizationDate != null) {
 			String dateString = DateUtils.convertDateToString(this.characterizationDate, Constants.DEFAULT_DATE_FORMAT);
 			achar.setDateString(dateString);
 		}
-		
+
 		//Protocol
 		//Use id to find matching one in lookup list
 		//then transfer to a bean
 		transferToProtocolBean(achar, this.protocolId);
-		
+
 		//POC
 		transferToPOCBean(achar, this.characterizationSourceId);
-		
+
 		//char date
 		if (achar.getDomainChar() != null) {
 			achar.getDomainChar().setDate(characterizationDate);
 		}
-		
+
 		achar.setDescription(this.designMethodsDescription);
 		achar.setConclusion(this.analysisConclusion);
-		
+
 		transferToPropertyBean(achar);
-		
+
 		return achar;
 	}
-	
+
 	protected void transferToPOCBean(CharacterizationBean charBean, long selectedId) {
 		if (selectedId == 0) {//user didn't select one or selected empty, which is ok
 			charBean.setPocBean(new PointOfContactBean());
 			return;
 		}
-		
+
 		SimplePOC selected = null;
 		for (SimplePOC simplepoc : this.charSourceLookup) {
 			if (selectedId == simplepoc.getId()) {
@@ -370,29 +374,29 @@ public class SimpleCharacterizationEditBean {
 				break;
 			}
 		}
-		
+
 		if (selected == null) { 
 			logger.error("User selected Characterization Source doesn't have a match in lookup list. This should not happen");
 			return;
 		}
-		
+
 		PointOfContactBean pocBean = charBean.getPocBean();
 		Long id = pocBean.getDomain().getId();
 		if (id != null && selectedId == id.longValue())
 			return; //nothing changed. 
-				
+
 		pocBean	= new PointOfContactBean();
 		pocBean.getDomain().setId(selectedId);
 		charBean.setPocBean(pocBean);
 	}
-	
+
 	protected void transferToProtocolBean(CharacterizationBean charBean, long selectedProtoId) {
-		
+
 		if (selectedProtoId == 0) { //user didn't select one or selected empty, which is ok
 			charBean.setProtocolBean(new ProtocolBean());
 			return; 
 		}
-		
+
 		SimpleProtocol selected = null;
 		for (SimpleProtocol simpleProto : this.protocolLookup) {
 			if (selectedProtoId == simpleProto.getDomainId()) {
@@ -400,48 +404,48 @@ public class SimpleCharacterizationEditBean {
 				break;
 			}
 		}
-		
+
 		if (selected == null) {
 			logger.error("User selected protocol doesn't have a match in lookup list. This should not happen");
 			return;
 		}
-			
+
 		ProtocolBean protoBean = charBean.getProtocolBean();
 		Long id = protoBean.getDomain().getId();
 		if (id != null && selectedProtoId == id.longValue()) {
 			return; //proto didn't change. nothing to do
 		} 
-		
+
 		protoBean = new ProtocolBean(); //user selected a different one
 		protoBean.getDomain().setId(selected.domainId);
 		FileBean fileBean = protoBean.getFileBean();
 		fileBean.getDomainFile().setId(selected.domainFileId);
 		fileBean.getDomainFile().setUri(selected.domainFileUri);
-		
+
 		charBean.setProtocolBean(protoBean);
 	}
-	
+
 	public SimpleFindingBean getDirtyFindingBean() {
 		for (SimpleFindingBean simplefinding : this.finding) {
 			if (simplefinding.isDirty())
 				return simplefinding;
 		}
-		
+
 		return null;
 	}
-	
+
 	public SimpleExperimentBean getDirtyExperimentBean() {
 		List<SimpleExperimentBean> expConfigs = this.techniqueInstruments.getExperiments();
-		
+
 		for (SimpleExperimentBean simpleExp : expConfigs) {
 			if (simpleExp.isDirty())
 				return simpleExp;
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	public String getAnalysisConclusion() {
 		return analysisConclusion;
 	}
@@ -548,7 +552,7 @@ public class SimpleCharacterizationEditBean {
 	public void setAssayType(String assayType) {
 		this.assayType = assayType;
 	}
-	
+
 	public Date getCharacterizationDate() {
 		return characterizationDate;
 	}
@@ -567,15 +571,15 @@ public class SimpleCharacterizationEditBean {
 	public void setCharTypesLookup(List<String> charTypesLookup) {
 		this.charTypesLookup = charTypesLookup;
 	}
-	
-//	public List<String> getAssayTypeLookup() {
-//		return AssayTypeLookup;
-//	}
-//	public void setAssayTypeLookup(List<String> assayTypeLookup) {
-//		AssayTypeLookup = assayTypeLookup;
-//	}	
-	
-	
+
+	//	public List<String> getAssayTypeLookup() {
+	//		return AssayTypeLookup;
+	//	}
+	//	public void setAssayTypeLookup(List<String> assayTypeLookup) {
+	//		AssayTypeLookup = assayTypeLookup;
+	//	}	
+
+
 
 	public String getDesignMethodsDescription() {
 		return designMethodsDescription;
@@ -650,5 +654,5 @@ public class SimpleCharacterizationEditBean {
 		this.property = property;
 	}
 
-	
+
 }

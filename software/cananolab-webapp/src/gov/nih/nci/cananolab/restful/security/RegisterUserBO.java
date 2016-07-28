@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.validator.EmailValidator;
+import org.springframework.stereotype.Component;
 
 /**
  * This class allow users to register to caNanoLab.
@@ -27,6 +28,7 @@ import org.apache.commons.validator.EmailValidator;
  * @author lethai
  */
 
+@Component("registerUserBO")
 public class RegisterUserBO  {
 	
 	public List<String> register(String title, 

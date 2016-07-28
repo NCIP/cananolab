@@ -41,12 +41,18 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.sample.CharacterizationService;
+import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
-import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -70,6 +76,8 @@ import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Service methods involving samples
@@ -77,46 +85,28 @@ import org.hibernate.criterion.Property;
  * @author pansu
  * 
  */
-public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
-		SampleService {
-	private static Logger logger = Logger
-			.getLogger(SampleServiceLocalImpl.class);
+@Component("sampleService")
+public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements SampleService
+{
+	private static Logger logger = Logger.getLogger(SampleServiceLocalImpl.class);
 
-	private SampleServiceHelper helper;
+	@Autowired
+	private SampleServiceHelper sampleServiceHelper;
+	
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
 	private AdvancedSampleServiceHelper advancedHelper;
-	private CharacterizationServiceLocalImpl charService;
-	private CompositionServiceLocalImpl compService;
-	private PublicationServiceLocalImpl publicationService;
-
-	public SampleServiceLocalImpl() {
-		super();
-		helper = new SampleServiceHelper(this.securityService);
-		charService = new CharacterizationServiceLocalImpl(this.securityService);
-		compService = new CompositionServiceLocalImpl(this.securityService);
-		publicationService = new PublicationServiceLocalImpl(
-				this.securityService);
-		advancedHelper = new AdvancedSampleServiceHelper(this.securityService);
-	}
-
-	public SampleServiceLocalImpl(UserBean user) {
-		super(user);
-		helper = new SampleServiceHelper(user);
-		charService = new CharacterizationServiceLocalImpl(this.securityService);
-		compService = new CompositionServiceLocalImpl(this.securityService);
-		publicationService = new PublicationServiceLocalImpl(
-				this.securityService);
-		advancedHelper = new AdvancedSampleServiceHelper(this.securityService);
-	}
-
-	public SampleServiceLocalImpl(SecurityService securityService) {
-		super(securityService);
-		helper = new SampleServiceHelper(this.securityService);
-		charService = new CharacterizationServiceLocalImpl(this.securityService);
-		compService = new CompositionServiceLocalImpl(this.securityService);
-		publicationService = new PublicationServiceLocalImpl(
-				this.securityService);
-		advancedHelper = new AdvancedSampleServiceHelper(this.securityService);
-	}
+	
+	@Autowired
+	private CharacterizationService characterizationService;
+	
+	@Autowired
+	private CompositionService compositionService;
+	
+	@Autowired
+	private PublicationService publicationService;
 
 	/**
 	 * Persist a new sample or update an existing canano sample
@@ -126,9 +116,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	 * @throws SampleException
 	 *             , DuplicateEntriesException
 	 */
-	public void saveSample(SampleBean sampleBean) throws SampleException,
-			DuplicateEntriesException, NoAccessException {
-		if (user == null) {
+	public void saveSample(SampleBean sampleBean) throws SampleException, DuplicateEntriesException, NoAccessException
+	{
+		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		Boolean newSample = true;
@@ -136,14 +126,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			newSample = false;
 		}
 		Sample sample = sampleBean.getDomain();
-		try {
-			if (!newSample
-					&& !securityService.checkCreatePermission(sampleBean
-							.getDomain().getId().toString())) {
+		try
+		{
+			if (!newSample && !springSecurityAclService.currentUserHasWritePermission(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			Sample dbSample = (Sample) appService.getObject(Sample.class,
 					"name", sample.getName());
 			if (dbSample != null && !dbSample.getId().equals(sample.getId())) {
@@ -170,22 +158,21 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			appService.saveOrUpdate(sample);
 			// save default access
 			if (newSample) {
-				super.saveDefaultAccessibilities(sample.getId().toString());
+				springSecurityAclService.saveDefaultAccessForNewObject(sample.getId(), SecureClassesEnum.SAMPLE.getClazz());
 			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (DuplicateEntriesException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Error in saving the sample" + ". " + e.getMessage();
-			logger.error(err, e);
-			throw new SampleException(err, e);
+			logger.error("Error in saving the sample. ", e);
+			throw new SampleException("Error in saving the sample. ", e);
 		}
 	}
 
-	public void savePointOfContact(PointOfContactBean pocBean)
-			throws PointOfContactException, NoAccessException {
-		if (user == null) {
+	public void savePointOfContact(PointOfContactBean pocBean) throws PointOfContactException, NoAccessException
+	{
+		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		try {
@@ -194,15 +181,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			String oldOrgName = null;
 			Boolean newPOC = true;
 			Boolean newOrg = true;
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			PointOfContact domainPOC = pocBean.getDomain();
 			Organization domainOrg = domainPOC.getOrganization();
 			// get existing organization from database and reuse ID,
 			// created by and created date
 			// address information will be updated
-			Organization dbOrganization = helper
-					.findOrganizationByName(domainOrg.getName());
+			Organization dbOrganization = sampleServiceHelper.findOrganizationByName(domainOrg.getName());
 			if (dbOrganization != null) {
 				domainOrg.setId(dbOrganization.getId());
 				domainOrg.setCreatedBy(dbOrganization.getCreatedBy());
@@ -217,7 +202,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			if (domainPOC.getId() == null) {
 				// check if org name, first name and last name matches existing
 				// one
-				dbPointOfContact = helper.findPointOfContactByNameAndOrg(
+				dbPointOfContact = sampleServiceHelper.findPointOfContactByNameAndOrg(
 						domainPOC.getFirstName(), domainPOC.getLastName(),
 						domainPOC.getOrganization().getName());
 				// if found, reuse ID, created_date and created_by
@@ -229,8 +214,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				}
 			} else {
 				// check if organization is changed
-				dbPointOfContact = helper.findPointOfContactById(domainPOC
-						.getId().toString());
+				dbPointOfContact = sampleServiceHelper.findPointOfContactById(domainPOC.getId().toString());
 				Organization dbOrg = dbPointOfContact.getOrganization();
 				// if organization information is changed, create a new POC
 				if (!dbOrg.getName().equals(domainOrg.getName())) {
@@ -241,11 +225,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				}
 				// if name information is changed, create a new POC
 				else if (domainPOC.getFirstName() != null
-						&& !domainPOC.getFirstName().equalsIgnoreCase(
-								dbPointOfContact.getFirstName())
+						&& !domainPOC.getFirstName().equalsIgnoreCase(dbPointOfContact.getFirstName())
 						|| domainPOC.getLastName() != null
-						&& !domainPOC.getLastName().equalsIgnoreCase(
-								dbPointOfContact.getLastName())) {
+						&& !domainPOC.getLastName().equalsIgnoreCase(dbPointOfContact.getLastName())) {
 					newPOC = true;
 				} else {
 					domainPOC.setId(dbPointOfContact.getId());
@@ -255,15 +237,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				}
 			}
 			appService.saveOrUpdate(domainPOC);
-
-			if (newPOC) {
-				this.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
-						domainPOC.getId().toString());
-			}
 			if (newOrg) {
-				this.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
-						domainPOC.getOrganization().getId().toString());
+				springSecurityAclService.savePublicAccessForObject(domainPOC.getOrganization().getId(), SecureClassesEnum.ORG.getClazz());
 			}
+			if (newPOC) {
+				springSecurityAclService.saveAccessForChildObject(domainPOC.getOrganization().getId(), SecureClassesEnum.ORG.getClazz(), domainPOC.getId(), SecureClassesEnum.POC.getClazz());
+			}
+			
 		} catch (Exception e) {
 			String err = "Error in saving the PointOfContact.";
 			logger.error(err, e);
@@ -294,7 +274,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws SampleException {
 		try {
-			List<String> sampleIds = helper.findSampleIdsBy(sampleName,
+			List<String> sampleIds = sampleServiceHelper.findSampleIdsBy(sampleName,
 					samplePointOfContact, nanomaterialEntityClassNames,
 					otherNanomaterialEntityTypes,
 					functionalizingEntityClassNames,
@@ -309,11 +289,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public SampleBean findSampleById(String sampleId, Boolean loadAccessInfo)
-			throws SampleException, NoAccessException {
+	public SampleBean findSampleById(String sampleId, Boolean loadAccessInfo) throws SampleException, NoAccessException
+	{
 		SampleBean sampleBean = null;
 		try {
-			Sample sample = helper.findSampleById(sampleId);
+			Sample sample = sampleServiceHelper.findSampleById(sampleId);
 			if (sample != null) {
 				if (loadAccessInfo) {
 					sampleBean = loadSampleBean(sample);
@@ -340,7 +320,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throws SampleException, NoAccessException {
 		SampleBasicBean sampleBean = null;
 		try {
-			Sample sample = helper.findSampleBasicById(sampleId);
+			Sample sample = sampleServiceHelper.findSampleBasicById(sampleId);
 			if (sample != null) {
 				if (loadAccessInfo) {
 					sampleBean = loadSampleBean(sample, false);
@@ -358,14 +338,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return sampleBean;
 	}
 
-	private Sample findFullyLoadedSampleByName(String sampleName)
-			throws Exception {
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+	private Sample findFullyLoadedSampleByName(String sampleName) throws Exception
+	{
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		// load composition and characterization separate because of Hibernate
 		// join limitation
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("name").eq(sampleName).ignoreCase());
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("name").eq(sampleName).ignoreCase());
 		Sample sample = null;
 
 		// load composition and characterization separate because of
@@ -373,14 +351,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection.organization",
-				FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization", FetchMode.JOIN);
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection.authorCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection.keywordCollection",
-				FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.authorCollection", FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -392,75 +367,44 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 
 		// fully load composition
-		SampleComposition comp = this
-				.loadComposition(sample.getId().toString());
+		SampleComposition comp = this.loadComposition(sample.getId().toString());
 		sample.setSampleComposition(comp);
 
 		// fully load characterizations
-		List<Characterization> chars = this.loadCharacterizations(sample
-				.getId().toString());
+		List<Characterization> chars = this.loadCharacterizations(sample.getId().toString());
 		if (chars != null && !chars.isEmpty()) {
-			sample.setCharacterizationCollection(new HashSet<Characterization>(
-					chars));
+			sample.setCharacterizationCollection(new HashSet<Characterization>(chars));
 		} else {
 			sample.setCharacterizationCollection(null);
 		}
 		return sample;
 	}
 
-	private SampleComposition loadComposition(String sampleId) throws Exception {
+	private SampleComposition loadComposition(String sampleId) throws Exception
+	{
 		SampleComposition composition = null;
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria
-				.forClass(SampleComposition.class);
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(SampleComposition.class);
 		crit.createAlias("sample", "sample");
 		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
 		crit.setFetchMode("nanomaterialEntityCollection", FetchMode.JOIN);
-		crit.setFetchMode("nanomaterialEntityCollection.fileCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"nanomaterialEntityCollection.fileCollection.keywordCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode(
-				"nanomaterialEntityCollection.composingElementCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
-						FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.composingElementCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection", FetchMode.JOIN);
 		crit.setFetchMode("functionalizingEntityCollection", FetchMode.JOIN);
-		crit.setFetchMode("functionalizingEntityCollection.fileCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"functionalizingEntityCollection.fileCollection.keywordCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("functionalizingEntityCollection.functionCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"functionalizingEntityCollection.functionCollection.targetCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("functionalizingEntityCollection.activationMethod",
-				FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.functionCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.functionCollection.targetCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.activationMethod", FetchMode.JOIN);
 		crit.setFetchMode("chemicalAssociationCollection", FetchMode.JOIN);
-		crit.setFetchMode("chemicalAssociationCollection.fileCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"chemicalAssociationCollection.fileCollection.keywordCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("chemicalAssociationCollection.associatedElementA",
-				FetchMode.JOIN);
-		crit.setFetchMode("chemicalAssociationCollection.associatedElementB",
-				FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.associatedElementA", FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.associatedElementB", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -472,14 +416,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return composition;
 	}
 
-	private List<Characterization> loadCharacterizations(String sampleId)
-			throws Exception {
+	private List<Characterization> loadCharacterizations(String sampleId) throws Exception
+	{
 		List<Characterization> chars = new ArrayList<Characterization>();
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria
-				.forClass(Characterization.class);
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class);
 		crit.createAlias("sample", "sample");
 		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
 		// fully load characterization
@@ -489,22 +431,18 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		crit.setFetchMode("protocol.file", FetchMode.JOIN);
 		crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
-		crit.setFetchMode("experimentConfigCollection.technique",
-				FetchMode.JOIN);
-		crit.setFetchMode("experimentConfigCollection.instrumentCollection",
-				FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.technique", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.instrumentCollection", FetchMode.JOIN);
 		crit.setFetchMode("findingCollection", FetchMode.JOIN);
 		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
-		crit.setFetchMode(
-				"findingCollection.datumCollection.conditionCollection",
-				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.datumCollection.conditionCollection", FetchMode.JOIN);
 		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
-				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 
-		for (int i = 0; i < results.size(); i++){
+		for (int i = 0; i < results.size(); i++)
+		{
 			Characterization achar = (Characterization) results.get(i);
 			chars.add(achar);
 		}
@@ -512,57 +450,39 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 
 	
-	private SampleBean loadSampleBean(Sample sample) throws Exception {
+	private SampleBean loadSampleBean(Sample sample) throws Exception
+	{
 		SampleBean sampleBean = new SampleBean(sample);
-		if (user != null) {
-			List<AccessibilityBean> groupAccesses = super
-					.findGroupAccessibilities(sample.getId().toString());
-			List<AccessibilityBean> userAccesses = super
-					.findUserAccessibilities(sample.getId().toString());
-			sampleBean.setUserAccesses(userAccesses);
-			sampleBean.setGroupAccesses(groupAccesses);
-			sampleBean.setUser(user);
-		}
+		if (springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()))
+			springSecurityAclService.loadAccessControlInfoForObject(sample.getId(), SecureClassesEnum.SAMPLE.getClazz(), sampleBean);
+		else
+			throw new NoAccessException();
 		return sampleBean;
 	}
 
 	public void loadAccessesForBasicSampleBean(SampleBasicBean sampleBean) throws Exception {
 		Sample sample = sampleBean.getDomain();
-		if (user != null) {
-			List<AccessibilityBean> groupAccesses = super
-					.findGroupAccessibilities(sample.getId().toString());
-			List<AccessibilityBean> userAccesses = super
-					.findUserAccessibilities(sample.getId().toString());
-			sampleBean.setUserAccesses(userAccesses);
-			sampleBean.setGroupAccesses(groupAccesses);
-			sampleBean.setUser(user);
-		}
+		if (springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()))
+			springSecurityAclService.loadAccessControlInfoForObject(sample.getId(), SecureClassesEnum.SAMPLE.getClazz(), sampleBean);
+		else
+			throw new NoAccessException();
 		
 	}
 	
-	private SampleBasicBean loadSampleBean(Sample sample, boolean checkReadPermission) throws Exception {
+	private SampleBasicBean loadSampleBean(Sample sample, boolean checkReadPermission) throws Exception
+	{
 		SampleBasicBean sampleBean = new SampleBasicBean(sample);
-		if (user != null) {
-			logger.debug("=== Loading group accesses");
-			List<AccessibilityBean> groupAccesses = super
-					.findGroupAccessibilities(sample.getId().toString(), checkReadPermission);
-			logger.debug("=== Done Loading group accesses");
-			
-			logger.debug("=== Loading user accesses");
-			List<AccessibilityBean> userAccesses = super
-					.findUserAccessibilities(sample.getId().toString(), checkReadPermission);
-			logger.debug("=== Done Loading user accesses");
-			sampleBean.setUserAccesses(userAccesses);
-			sampleBean.setGroupAccesses(groupAccesses);
-			sampleBean.setUser(user);
-		}
+		if (springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()))
+			springSecurityAclService.loadAccessControlInfoForObject(sample.getId(), SecureClassesEnum.SAMPLE.getClazz(), sampleBean);
+		else
+			throw new NoAccessException();
 		return sampleBean;
 	}
 
-	public SampleBean findSampleByName(String sampleName)
-			throws SampleException, NoAccessException {
+	public SampleBean findSampleByName(String sampleName) throws SampleException, NoAccessException
+	{
 		try {
-			Sample sample = helper.findSampleByName(sampleName);
+			Sample sample = sampleServiceHelper.findSampleByName(sampleName);
 			SampleBean sampleBean = null;
 			if (sample != null) {
 				sampleBean = loadSampleBean(sample);
@@ -577,9 +497,23 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public int getNumberOfPublicSamples() throws SampleException {
+	public int getNumberOfPublicSamples() throws SampleException
+	{
 		try {
-			int count = helper.getNumberOfPublicSamples();
+			int count = sampleServiceHelper.getNumberOfPublicSamples();
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of public samples. " + e.getMessage();
+			logger.error(err, e);
+			throw new SampleException(err, e);
+
+		}
+	}
+	
+	public int getNumberOfPublicSamplesForJob() throws SampleException
+	{
+		try {
+			int count = sampleServiceHelper.getNumberOfPublicSamplesForJob();
 			return count;
 		} catch (Exception e) {
 			String err = "Error finding counts of public samples. " + e.getMessage();
@@ -589,9 +523,23 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public int getNumberOfPublicSampleSources() throws SampleException {
+	public int getNumberOfPublicSampleSources() throws SampleException
+	{
 		try {
-			int count = helper.getNumberOfPublicSampleSources();
+			int count = sampleServiceHelper.getNumberOfPublicSampleSources();
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of public sample sources. " + e.getMessage();;
+			logger.error(err, e);
+			throw new SampleException(err, e);
+
+		}
+	}
+	
+	public int getNumberOfPublicSampleSourcesForJob() throws SampleException
+	{
+		try {
+			int count = sampleServiceHelper.getNumberOfPublicSampleSourcesForJob();
 			return count;
 		} catch (Exception e) {
 			String err = "Error finding counts of public sample sources. " + e.getMessage();;
@@ -601,11 +549,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public PointOfContactBean findPointOfContactById(String pocId)
-			throws PointOfContactException {
+	public PointOfContactBean findPointOfContactById(String pocId) throws PointOfContactException
+	{
 		PointOfContactBean pocBean = null;
 		try {
-			PointOfContact poc = helper.findPointOfContactById(pocId);
+			PointOfContact poc = sampleServiceHelper.findPointOfContactById(pocId);
 			pocBean = new PointOfContactBean(poc);
 		} catch (Exception e) {
 			String err = "Problem finding point of contact for the given id. " + e.getMessage();;
@@ -615,30 +563,23 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return pocBean;
 	}
 
-	public List<PointOfContactBean> findPointOfContactsBySampleId(
-			String sampleId) throws PointOfContactException {
+	public List<PointOfContactBean> findPointOfContactsBySampleId(String sampleId) throws PointOfContactException
+	{
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
-					.add(Property.forName("id").eq(new Long(sampleId)));
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(new Long(sampleId)));
 			crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-			crit.setFetchMode("primaryPointOfContact.organization",
-					FetchMode.JOIN);
+			crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-			crit.setFetchMode("otherPointOfContactCollection.organization",
-					FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			crit.setFetchMode("otherPointOfContactCollection.organization", FetchMode.JOIN);
+			crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
 			List<PointOfContactBean> pointOfContactCollection = new ArrayList<PointOfContactBean>();
 			for (int i = 0; i < results.size(); i++){
 				Sample particle = (Sample) results.get(i);
 				PointOfContact primaryPOC = particle.getPrimaryPointOfContact();
-				Collection<PointOfContact> otherPOCs = particle
-						.getOtherPointOfContactCollection();
-				pointOfContactCollection
-						.add(new PointOfContactBean(primaryPOC));
+				Collection<PointOfContact> otherPOCs = particle.getOtherPointOfContactCollection();
+				pointOfContactCollection.add(new PointOfContactBean(primaryPOC));
 				for (PointOfContact poc : otherPOCs) {
 					pointOfContactCollection.add(new PointOfContactBean(poc));
 				}
@@ -651,17 +592,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public SortedSet<String> getAllOrganizationNames()
-			throws PointOfContactException {
+	public SortedSet<String> getAllOrganizationNames() throws PointOfContactException
+	{
 		try {
-			SortedSet<String> names = new TreeSet<String>(
-					new Comparators.SortableNameComparator());
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			HQLCriteria crit = new HQLCriteria(
-					"select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
+			SortedSet<String> names = new TreeSet<String>(new Comparators.SortableNameComparator());
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			HQLCriteria crit = new HQLCriteria("select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
 			List results = appService.query(crit);
-			
 			
 			logger.debug("Completed select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
 			for (int i = 0; i < results.size(); i++){
@@ -670,15 +607,14 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 			return names;
 		} catch (Exception e) {
-			String err = "Error finding organization for "
-					+ helper.getUser().getLoginName();
+			String err = "Error finding organization for " + SpringSecurityUtil.getLoggedInUserName();
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
 		}
 	}
 
-	public List<String> findSampleIdsByAdvancedSearch(
-			AdvancedSampleSearchBean searchBean) throws SampleException {
+	public List<String> findSampleIdsByAdvancedSearch(AdvancedSampleSearchBean searchBean) throws SampleException
+	{
 		try {
 			return advancedHelper.findSampleIdsByAdvancedSearch(searchBean);
 		} catch (Exception e) {
@@ -688,12 +624,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
-			String sampleId, AdvancedSampleSearchBean searchBean)
-			throws SampleException {
+	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(String sampleId, AdvancedSampleSearchBean searchBean)
+			throws SampleException 
+	{
 		try {
-			return advancedHelper.findAdvancedSampleByAdvancedSearch(sampleId,
-					searchBean);
+			return advancedHelper.findAdvancedSampleByAdvancedSearch(sampleId, searchBean);
 		} catch (Exception e) {
 			String err = "Problem finding advanced sample details with the given advanced search parameters. " + e.getMessage();
 			logger.error(err, e);
@@ -701,10 +636,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public SampleBean cloneSample(String originalSampleName,
-			String newSampleName) throws SampleException, NoAccessException,
-			DuplicateEntriesException, NotExistException {
-		if (user == null) {
+	public SampleBean cloneSample(String originalSampleName, String newSampleName) throws SampleException, NoAccessException,
+			DuplicateEntriesException, NotExistException
+	{
+		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		SampleBean newSampleBean = null;
@@ -712,10 +647,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		SampleBean origSampleBean = null;
 		Sample newSample0 = new Sample();
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			Sample dbNewSample = (Sample) appService.getObject(Sample.class,
-					"name", newSampleName);
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			Sample dbNewSample = (Sample) appService.getObject(Sample.class, "name", newSampleName);
 			if (dbNewSample != null) {
 				throw new DuplicateEntriesException();
 			}
@@ -723,8 +656,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			origSample = findFullyLoadedSampleByName(originalSampleName);
 			origSampleBean = new SampleBean(origSample);
 			newSample0.setName(newSampleName);
-			newSample0.setCreatedBy(user.getLoginName() + ":"
-					+ Constants.AUTO_COPY_ANNOTATION_PREFIX);
+			newSample0.setCreatedBy(SpringSecurityUtil.getLoggedInUserName() + ":" + Constants.AUTO_COPY_ANNOTATION_PREFIX);
 			newSample0.setCreatedDate(new Date());
 			// save the sample so later up just update the cloned the
 			// associations.
@@ -736,27 +668,20 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		} catch (DuplicateEntriesException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Error in loading the original sample "
-					+ originalSampleName + ". " + e.getMessage();
+			String err = "Error in loading the original sample " + originalSampleName + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
 		try {
 			// clone the sample
-			Sample newSample = origSampleBean
-					.getDomainCopy(user.getLoginName());
+			Sample newSample = origSampleBean.getDomainCopy(SpringSecurityUtil.getLoggedInUserName());
 			newSample.setName(newSampleName);
 			// keep the id
 			newSample.setId(newSample0.getId());
 			newSampleBean = new SampleBean(newSample);
 
 			// retrieve accessibilities of the original sample
-			List<AccessibilityBean> groupAccesses = super
-					.findGroupAccessibilities(origSample.getId().toString());
-			List<AccessibilityBean> userAccesses = super
-					.findUserAccessibilities(origSample.getId().toString());
-			origSampleBean.setGroupAccesses(groupAccesses);
-			origSampleBean.setUserAccesses(userAccesses);
+			springSecurityAclService.loadAccessControlInfoForObject(origSampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz(), origSampleBean);
 
 			// need to save associations one by one (except keywords)
 			// Hibernate mapping settings for most use cases
@@ -765,9 +690,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			saveClonedComposition(origSampleBean, newSampleBean);
 			saveClonedPublications(origSampleBean, newSampleBean);
 			saveSample(newSampleBean);
-			newSampleBean.setUser(user);
+			
+			//Commented while removing CSM
+			//newSampleBean.setUser(user);
+			
+			
 			// assign accessibility for the new sample
-			for (AccessibilityBean access : origSampleBean.getAllAccesses()) {
+			for (AccessControlInfo access : origSampleBean.getAllAccesses()) {
 				this.assignAccessibility(access, newSampleBean.getDomain());
 			}
 		} catch (Exception e) {
@@ -789,8 +718,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	private void saveClonedPOCs(SampleBean sampleBean) throws Exception {
 		savePointOfContact(sampleBean.getPrimaryPOCBean());
-		if (sampleBean.getOtherPOCBeans() != null
-				&& !sampleBean.getOtherPOCBeans().isEmpty()) {
+		if (sampleBean.getOtherPOCBeans() != null && !sampleBean.getOtherPOCBeans().isEmpty()) {
 			for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
 				savePointOfContact(pocBean);
 			}
@@ -807,7 +735,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				if (charBean.getExperimentConfigs() != null) {
 					for (ExperimentConfigBean configBean : charBean
 							.getExperimentConfigs()) {
-						charService.saveExperimentConfig(configBean);
+						characterizationService.saveExperimentConfig(configBean);
 					}
 				}
 				if (charBean.getFindings() != null) {
@@ -816,45 +744,39 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 							fileUtils.updateClonedFileInfo(fileBean,
 									origSampleName, newSampleName);
 						}
-						charService.saveFinding(findingBean);
+						characterizationService.saveFinding(findingBean);
 					}
 				}
-				charService.saveCharacterization(sampleBean, charBean);
+				characterizationService.saveCharacterization(sampleBean, charBean);
 			}
 		}
 	}
 
-	private void saveClonedComposition(SampleBean origSampleBean,
-			SampleBean sampleBean) throws Exception {
+	private void saveClonedComposition(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
 		String origSampleName = origSampleBean.getDomain().getName();
 		String newSampleName = sampleBean.getDomain().getName();
 
 		if (sampleBean.getDomain().getSampleComposition() != null) {
 			// save files
-			if (sampleBean.getDomain().getSampleComposition()
-					.getFileCollection() != null) {
-				for (File file : sampleBean.getDomain().getSampleComposition()
-						.getFileCollection()) {
+			if (sampleBean.getDomain().getSampleComposition().getFileCollection() != null) {
+				for (File file : sampleBean.getDomain().getSampleComposition().getFileCollection()) {
 					FileBean fileBean = new FileBean(file);
-					fileUtils.updateClonedFileInfo(fileBean, origSampleName,
-							newSampleName);
-					compService.saveCompositionFile(sampleBean, fileBean);
+					fileUtils.updateClonedFileInfo(fileBean, origSampleName, newSampleName);
+					compositionService.saveCompositionFile(sampleBean, fileBean);
 				}
 			}
 
 			// save nanomaterial entities
-			if (sampleBean.getDomain().getSampleComposition()
-					.getNanomaterialEntityCollection() != null) {
+			if (sampleBean.getDomain().getSampleComposition().getNanomaterialEntityCollection() != null) {
 				for (NanomaterialEntity entity : sampleBean.getDomain()
 						.getSampleComposition()
 						.getNanomaterialEntityCollection()) {
-					NanomaterialEntityBean entityBean = new NanomaterialEntityBean(
-							entity);
+					NanomaterialEntityBean entityBean = new NanomaterialEntityBean(entity);
 					for (FileBean fileBean : entityBean.getFiles()) {
 						fileUtils.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
 					}
-					compService.saveNanomaterialEntity(sampleBean, entityBean);
+					compositionService.saveNanomaterialEntity(sampleBean, entityBean);
 				}
 			}
 			// save functionalizing entities
@@ -863,14 +785,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				for (FunctionalizingEntity entity : sampleBean.getDomain()
 						.getSampleComposition()
 						.getFunctionalizingEntityCollection()) {
-					FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
-							entity);
+					FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(entity);
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileUtils.updateClonedFileInfo(fileBean,
-								origSampleName, newSampleName);
+						fileUtils.updateClonedFileInfo(fileBean, origSampleName, newSampleName);
 					}
-					compService.saveFunctionalizingEntity(sampleBean,
-							entityBean);
+					compositionService.saveFunctionalizingEntity(sampleBean, entityBean);
 				}
 			}
 			// save chemical association
@@ -879,8 +798,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				for (ChemicalAssociation assoc : sampleBean.getDomain()
 						.getSampleComposition()
 						.getChemicalAssociationCollection()) {
-					ChemicalAssociationBean assocBean = new ChemicalAssociationBean(
-							assoc);
+					ChemicalAssociationBean assocBean = new ChemicalAssociationBean(assoc);
 					// set the correct IDs for associated elements
 					updateAssociatedElementId(sampleBean.getDomain()
 							.getSampleComposition(), assoc
@@ -889,10 +807,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 							.getSampleComposition(), assoc
 							.getAssociatedElementB());
 					for (FileBean fileBean : assocBean.getFiles()) {
-						fileUtils.updateClonedFileInfo(fileBean,
-								origSampleName, newSampleName);
+						fileUtils.updateClonedFileInfo(fileBean, origSampleName, newSampleName);
 					}
-					compService.saveChemicalAssociation(sampleBean, assocBean);
+					compositionService.saveChemicalAssociation(sampleBean, assocBean);
 				}
 			}
 		}
@@ -974,13 +891,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		if (sample.getCharacterizationCollection() != null) {
 			for (Characterization achar : sample
 					.getCharacterizationCollection()) {
-				charService.deleteCharacterization(achar);
+				characterizationService.deleteCharacterization(achar);
 			}
 		}
 
 		// delete composition
 		if (sample.getSampleComposition() != null) {
-			compService.deleteComposition(sample.getSampleComposition());
+			compositionService.deleteComposition(sample.getSampleComposition());
 		}
 		sample.setSampleComposition(null);
 
@@ -995,12 +912,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		appService.saveOrUpdate(sample);
 		appService.delete(sample);
 		// remove all csm entries associated with sample
-		this.accessUtils.removeCSMEntries(sample.getId().toString());
+		springSecurityAclService.deleteAccessObject(sample.getId(), SecureClassesEnum.SAMPLE.getClazz());
 	}
 
-	public void deleteSample(String sampleName) throws SampleException,
-			NoAccessException, NotExistException {
-		if (user == null) {
+	public void deleteSample(String sampleName) throws SampleException, NoAccessException, NotExistException
+	{
+		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		Sample sample = null;
@@ -1011,15 +928,14 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					.getApplicationService();
 			// / / delete characterizations
 			if (sample.getCharacterizationCollection() != null) {
-				for (Characterization achar : sample
-						.getCharacterizationCollection()) {
-					charService.deleteCharacterization(achar);
+				for (Characterization achar : sample.getCharacterizationCollection()) {
+					characterizationService.deleteCharacterization(achar);
 				}
 			}
 
 			// / / delete composition
 			if (sample.getSampleComposition() != null) {
-				compService.deleteComposition(sample.getSampleComposition());
+				compositionService.deleteComposition(sample.getSampleComposition());
 			}
 			sample.setSampleComposition(null);
 
@@ -1042,19 +958,16 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void updatePOCAssociatedWithCharacterizations(String sampleName,
-			Long oldPOCId, Long newPOCId) throws SampleException {
+	public void updatePOCAssociatedWithCharacterizations(String sampleName, Long oldPOCId, Long newPOCId) throws SampleException
+	{
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(Characterization.class);
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class);
 			crit.createAlias("sample", "sample");
 			crit.createAlias("pointOfContact", "poc");
 			crit.add(Property.forName("poc.id").eq(oldPOCId));
 			crit.add(Property.forName("sample.name").eq(sampleName));
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
 			for (int i = 0; i < results.size(); i++){
 				Characterization achar = (Characterization) results.get(i);
@@ -1089,15 +1002,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	// }
 	// }
 
-	public List<String> findOtherSampleNamesFromSamePrimaryOrganization(
-			String sampleId) throws SampleException {
+	public List<String> findOtherSampleNamesFromSamePrimaryOrganization(String sampleId) throws SampleException
+	{
 		List<String> sortedNames = null;
 		try {
-			Set<String> names = helper
-					.findOtherSamplesFromSamePrimaryOrganization(sampleId);
+			Set<String> names = sampleServiceHelper.findOtherSamplesFromSamePrimaryOrganization(sampleId);
 			sortedNames = new ArrayList<String>(names);
-			Collections.sort(sortedNames,
-					new Comparators.SortableNameComparator());
+			Collections.sort(sortedNames, new Comparators.SortableNameComparator());
 
 		} catch (Exception e) {
 			String err = "Error in deleting the sample " + sampleId + ". " + e.getMessage();
@@ -1107,57 +1018,29 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return sortedNames;
 	}
 
-	public SampleServiceHelper getHelper() {
-		return helper;
-	}
-
-	public void assignAccessibility(AccessibilityBean access, Sample sample)
-			throws SampleException, NoAccessException {
-		if (!isOwnerByCreatedBy(sample.getCreatedBy())) {
+	public void assignAccessibility(AccessControlInfo accessInfo, Sample sample) throws SampleException, NoAccessException
+	{
+		Long sampleId = sample.getId();
+		
+		if (!springSecurityAclService.isOwnerOfObject(sampleId, SecureClassesEnum.SAMPLE.getClazz()))
 			throw new NoAccessException();
-		}
-		String sampleId = sample.getId().toString();
-		try {
-			if (!isOwnerByCreatedBy(sample.getCreatedBy())) {
-				throw new NoAccessException();
-			}
-			// get existing accessibilities
-			List<AccessibilityBean> groupAccesses = this
-					.findGroupAccessibilities(sampleId);
-			List<AccessibilityBean> userAccesses = this
-					.findUserAccessibilities(sampleId);
-
-			// if access is Public, remove all other access except Public
-			// Curator and owner
-			if (access.getGroupName()
-					.equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
-				for (AccessibilityBean acc : groupAccesses) {
-					// remove group accesses that are not public or curator
-					if (!acc.getGroupName().equals(
-							AccessibilityBean.CSM_PUBLIC_GROUP)
-							&& !acc.getGroupName().equals(
-									(AccessibilityBean.CSM_DATA_CURATOR))) {
-						this.removeAccessibility(acc, sample);
-					}
-				}
-				SecuredDataBean securedDataBean = new SecuredDataBean();
-				for (AccessibilityBean acc : userAccesses) {
-					// remove accesses that are not owner
-					if (!securedDataBean.retrieveUserIsOwner(acc.getUserBean(),
-							sample.getCreatedBy())) {
-						this.removeAccessibility(acc, sample);
-					}
-				}
+		
+		try
+		{
+			// if access is Public, remove all other access except Public, Curator and owner
+			if (CaNanoRoleEnum.ROLE_ANONYMOUS.getRoleName().equalsIgnoreCase(accessInfo.getRecipient()))
+			{
+				springSecurityAclService.deleteAllAccessExceptPublicAndDefault(sampleId, SecureClassesEnum.SAMPLE.getClazz());
 			}
 			// if sample is already public, retract from public
-			else {
-				if (groupAccesses.contains(AccessibilityBean.CSM_PUBLIC_ACCESS)) {
-					this.removeAccessibility(
-							AccessibilityBean.CSM_PUBLIC_ACCESS, sample);
-				}
+			else
+			{
+				springSecurityAclService.retractObjectFromPublic(sampleId, SecureClassesEnum.SAMPLE.getClazz());
 			}
-			super.saveAccessibility(access, sampleId);
-
+			
+			springSecurityAclService.saveAccessForObject(sampleId, SecureClassesEnum.SAMPLE.getClazz(), accessInfo.getRecipient(), 
+														 accessInfo.isPrincipal(), accessInfo.getPermissions());
+			
 			// fully load sample
 			sample = this.findFullyLoadedSampleByName(sample.getName());
 			// assign POC to public is handled when adding POC
@@ -1165,49 +1048,38 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			// assign characterization accessibility
 			if (sample.getCharacterizationCollection() != null) {
-				for (Characterization achar : sample
-						.getCharacterizationCollection()) {
-					accessUtils.assignAccessibility(access, achar);
+				for (Characterization achar : sample.getCharacterizationCollection()) {
+					springSecurityAclService.saveAccessForChildObject(sampleId, SecureClassesEnum.SAMPLE.getClazz(), 
+							  										  achar.getId(), SecureClassesEnum.CHAR.getClazz());
 				}
 			}
 			// assign composition accessibility
 			if (sample.getSampleComposition() != null) {
-				accessUtils.assignAccessibility(access, sample
-						.getSampleComposition());
+				springSecurityAclService.saveAccessForChildObject(sampleId, SecureClassesEnum.SAMPLE.getClazz(), 
+						  										  sample.getSampleComposition().getId(), SecureClassesEnum.COMPOSITION.getClazz());
 			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Error in assigning accessibility to the sample "
-					+ sampleId + ". " + e.getMessage();
+			String err = "Error in assigning accessibility to the sample " + sampleId + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
 	}
 
-	public void removeAccessibility(AccessibilityBean access, Sample sample)
-			throws SampleException, NoAccessException {
-		if (!isOwnerByCreatedBy(sample.getCreatedBy())) {
+	public void removeAccessibility(AccessControlInfo access, Sample sample) throws SampleException, NoAccessException
+	{
+		if (!springSecurityAclService.isOwnerOfObject(sample.getId(), SecureClassesEnum.SAMPLE.getClazz())) {
 			throw new NoAccessException();
 		}
 		String sampleId = sample.getId().toString();
 		try {
-			super.deleteAccessibility(access, sampleId);
+			springSecurityAclService.retractAccessToObjectForSid(sample.getId(), SecureClassesEnum.SAMPLE.getClazz(), access.getRecipient());
 			// fully load sample
 			sample = this.findFullyLoadedSampleByName(sample.getName());
 			// keep POC public
-			// remove characterization accessibility
-			if (sample.getCharacterizationCollection() != null) {
-				for (Characterization achar : sample
-						.getCharacterizationCollection()) {
-					accessUtils.removeAccessibility(access, achar, false);
-				}
-			}
-			// remove composition accessibility
-			if (sample.getSampleComposition() != null) {
-				accessUtils.removeAccessibility(access, sample
-						.getSampleComposition(), false);
-			}
+			//Characterization and Composition access automatically deleted due to inheritance set up.
+			
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -1217,11 +1089,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public List<String> findSampleIdsByOwner(String currentOwner)
-			throws SampleException {
+	public List<String> findSampleIdsByOwner(String currentOwner) throws SampleException
+	{
 		List<String> sampleIds = new ArrayList<String>();
 		try {
-			sampleIds = helper.findSampleIdsByOwner(currentOwner);
+			sampleIds = sampleServiceHelper.findSampleIdsByOwner(currentOwner);
 		} catch (Exception e) {
 			String error = "Error in retrieving sampleIds by owner. " + e.getMessage();
 			throw new SampleException(error, e);
@@ -1229,25 +1101,21 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return sampleIds;
 	}
 
-	public List<String> removeAccesses(Sample sample, Boolean removeLater)
-			throws SampleException, NoAccessException {
+	/*public List<String> removeAccesses(Sample sample, Boolean removeLater) throws SampleException, NoAccessException {
 		List<String> ids = new ArrayList<String>();
 		try {
-			if (!securityService.checkCreatePermission(sample.getId()
-					.toString())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()))
+			{
 				throw new NoAccessException();
 			}
 			ids.add(sample.getId().toString());
 			// fully load sample
-			Sample fullSample = this.findFullyLoadedSampleByName(sample
-					.getName());
+			Sample fullSample = this.findFullyLoadedSampleByName(sample.getName());
 			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super
-					.findSampleAccesses(sample.getId().toString());
+			List<AccessibilityBean> sampleAccesses = super.findSampleAccesses(sample.getId().toString());
 			for (AccessibilityBean access : sampleAccesses) {
 				if (fullSample.getCharacterizationCollection() != null) {
-					for (Characterization achar : fullSample
-							.getCharacterizationCollection()) {
+					for (Characterization achar : fullSample.getCharacterizationCollection()) {
 						ids.addAll(accessUtils.removeAccessibility(access,
 								achar, removeLater));
 					}
@@ -1265,10 +1133,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		return ids;
 	}
-
+*/
 	@Override
-	public SampleBasicBean findSampleBasicById(String sampleId,
-			Boolean loadAccessInfo) throws SampleException, NoAccessException {
+	public SampleBasicBean findSampleBasicById(String sampleId, Boolean loadAccessInfo) throws SampleException, NoAccessException
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1281,12 +1149,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 
 	@Override
-	public void loadAccessesForSampleBean(SampleBean sampleBean)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
 	public List<Sample> findSamplesBy(String sampleName,
 			String samplePointOfContact, String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
@@ -1297,7 +1159,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws SampleException {
 		try {
-			List<Sample> samples = helper.findSamplesBy(sampleName,
+			List<Sample> samples = sampleServiceHelper.findSamplesBy(sampleName,
 					samplePointOfContact, nanomaterialEntityClassNames,
 					otherNanomaterialEntityTypes,
 					functionalizingEntityClassNames,
@@ -1311,4 +1173,29 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new SampleException(err, e);
 		}
 	}
+	
+	public List<String> findSampleNamesBy(String nameStr) throws SampleException 
+	{
+		List<String> sampleNames = new ArrayList<String>();
+		try {
+			sampleNames = sampleServiceHelper.findSampleNamesBy(nameStr);
+		} catch (Exception e) {
+			logger.error("Problem finding samples with the given search parameters.", e);
+			throw new SampleException("Problem finding samples with the given search parameters.", e);
+		}
+		return sampleNames;
+	}
+	
+	@Override
+	public void setUpdateDeleteFlags(SampleBean sample)
+	{
+		sample.setUserUpdatable(springSecurityAclService.currentUserHasWritePermission(sample.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz()));
+		sample.setUserDeletable(springSecurityAclService.currentUserHasDeletePermission(sample.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz()));
+	}
+
+	@Override
+	public SpringSecurityAclService getSpringSecurityAclService() {
+		return springSecurityAclService;
+	}
+	
 }

@@ -20,6 +20,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
@@ -61,15 +62,14 @@ public interface SampleService extends BaseService {
 			throws SampleException, NoAccessException;
 
 	public int getNumberOfPublicSamples() throws SampleException;
+	
+	public int getNumberOfPublicSamplesForJob() throws SampleException;
 
-	public PointOfContactBean findPointOfContactById(String pocId)
-			throws PointOfContactException;
+	public PointOfContactBean findPointOfContactById(String pocId) throws PointOfContactException;
 
-	public List<PointOfContactBean> findPointOfContactsBySampleId(
-			String sampleId) throws PointOfContactException;
+	public List<PointOfContactBean> findPointOfContactsBySampleId(String sampleId) throws PointOfContactException;
 
-	public SortedSet<String> getAllOrganizationNames()
-			throws PointOfContactException;
+	public SortedSet<String> getAllOrganizationNames() throws PointOfContactException;
 
 	public void savePointOfContact(PointOfContactBean pointOfContactBean)
 			throws PointOfContactException, NoAccessException;
@@ -89,18 +89,20 @@ public interface SampleService extends BaseService {
 			NoAccessException, NotExistException;
 
 	public int getNumberOfPublicSampleSources() throws SampleException;
+	
+	public int getNumberOfPublicSampleSourcesForJob() throws SampleException;
 
 	public List<String> findOtherSampleNamesFromSamePrimaryOrganization(
 			String sampleId) throws SampleException;
+	
+	public void assignAccessibility(AccessControlInfo accessInfo, Sample sample) throws SampleException, NoAccessException;
 
-	public void assignAccessibility(AccessibilityBean access, Sample sample)
+	public void removeAccessibility(AccessControlInfo access, Sample sample)
 			throws SampleException, NoAccessException;
 
-	public void removeAccessibility(AccessibilityBean access, Sample sample)
-			throws SampleException, NoAccessException;
-
-	public List<String> removeAccesses(Sample sample, Boolean removeLater)
-			throws SampleException, NoAccessException;
+	//may not be used
+	/*public List<String> removeAccesses(Sample sample, Boolean removeLater)
+			throws SampleException, NoAccessException;*/
 
 	public List<String> findSampleIdsByOwner(String currentOwner)
 			throws SampleException;
@@ -112,12 +114,8 @@ public interface SampleService extends BaseService {
 	public Map<String, String> findSampleIdNamesByAdvancedSearch (AdvancedSampleSearchBean searchBean) 
 			throws SampleException;
 	
-	public void loadAccessesForSampleBean(SampleBean sampleBean) throws Exception;
-	
 	public SampleBasicBean findSWorkspaceSampleById(String sampleId, boolean loadAccessInfo)
 			throws SampleException, NoAccessException;
-	
-	public void loadAccessesForBasicSampleBean(SampleBasicBean sampleBean) throws Exception;
 	
 	public List<Sample> findSamplesBy(String sampleName,
 			String samplePointOfContact, String[] nanomaterialEntityClassNames,
@@ -128,4 +126,11 @@ public interface SampleService extends BaseService {
 			String[] characterizationClassNames,
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws SampleException;
+	
+	public void updatePOCAssociatedWithCharacterizations(String sampleName, Long oldPOCId, Long newPOCId) throws SampleException;
+	
+	public List<String> findSampleNamesBy(String nameStr) throws Exception;
+	
+	public void setUpdateDeleteFlags(SampleBean sample);
+	
 }

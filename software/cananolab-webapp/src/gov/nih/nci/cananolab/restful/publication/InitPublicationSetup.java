@@ -11,7 +11,6 @@ package gov.nih.nci.cananolab.restful.publication;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
-import gov.nih.nci.cananolab.service.security.UserBean;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,7 +38,6 @@ public class InitPublicationSetup {
 		InitSetup.getInstance()
 			.getDefaultAndOtherTypesByLookup(request, "publicationResearchAreas",
 				"publication", "researchArea", "otherResearchArea", true);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 	}
 
 	public void persistPublicationDropdowns(HttpServletRequest request,

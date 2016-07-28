@@ -8,30 +8,21 @@
 
 package gov.nih.nci.cananolab.restful.core;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
-import org.directwebremoting.impl.DefaultWebContextBuilder;
-
-public class PointOfContactManager {
-	private SampleServiceLocalImpl service;
-
-	private SampleServiceLocalImpl getService(HttpServletRequest request) {
-		SecurityService securityService = (SecurityService) request.getSession()
-				.getAttribute("securityService");
-
-		service = new SampleServiceLocalImpl(securityService);
-		return service;
-	}
+@Component("pointOfContactManager")
+public class PointOfContactManager
+{
+	@Autowired
+	private SampleServiceHelper sampleServiceHelper;
 
 	public PointOfContactBean getPointOfContactById(HttpServletRequest request, String id,
 			Boolean primaryStatus) throws Exception {
@@ -71,16 +62,13 @@ public class PointOfContactManager {
 
 	public Organization getOrganizationByName(HttpServletRequest request, String name) throws Exception {
 		System.out.println("Getting data for org: " + name);
-		Organization org = ((SampleServiceLocalImpl) getService(request)).getHelper()
-				.findOrganizationByName(name);
+		Organization org = sampleServiceHelper.findOrganizationByName(name);
 		return org;
 	}
 
 	public PointOfContactBean getPointOfContactByNameAndOrg(HttpServletRequest request, String firstName,
 			String lastName, String orgName) throws Exception {
-		PointOfContact poc = ((SampleServiceLocalImpl) getService(request))
-				.getHelper().findPointOfContactByNameAndOrg(firstName,
-						lastName, orgName);
+		PointOfContact poc = sampleServiceHelper.findPointOfContactByNameAndOrg(firstName, lastName, orgName);
 		if (poc != null) {
 			return new PointOfContactBean(poc);
 		} else {

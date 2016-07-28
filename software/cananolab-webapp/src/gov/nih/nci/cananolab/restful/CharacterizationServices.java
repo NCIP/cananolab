@@ -1,23 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
-import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
-import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
-import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.restful.util.SecurityUtil;
-import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationUnitBean;
-import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
-import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleCharacterizationProperty;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationSummaryEditBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
-
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -29,44 +13,50 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
+import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationUnitBean;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleCharacterizationProperty;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationSummaryEditBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.util.Constants;
 
 @Path("/characterization")
 public class CharacterizationServices {
 
 	private static final Logger logger = Logger.getLogger(CharacterizationServices.class);
 	
-//	@Inject
-//	ApplicationContext applicationContext;
-	
-	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
-	
 	@GET
 	@Path("/setupEdit")
 	@Produces ("application/json")
-    public Response setupEdit(@Context HttpServletRequest httpRequest, 
-    		@DefaultValue("") @QueryParam("sampleId") String sampleId) {
+    public Response setupEdit(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId)
+	{
 		logger.debug("In setupEdit");		
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
-			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		if (SpringSecurityUtil.getPrincipal() == null)
+			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 		
-		try {
-		CharacterizationBO characterizationBO = 
-				(CharacterizationBO) applicationContext.getBean("characterizationBO");
+		try
+		{
+			CharacterizationBO characterizationBO = (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 
-		SimpleCharacterizationSummaryEditBean editBean = characterizationBO.summaryEdit(sampleId, httpRequest, 
-				null);
-		
-		List<SimpleCharacterizationsByTypeBean> finalBean = editBean.getAllCharTypeBeans();
-		
-		logger.debug("Set up " + finalBean.size() + " characterization types for sample: " + sampleId);
-		
-		return Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true")
-						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			SimpleCharacterizationSummaryEditBean editBean = characterizationBO.summaryEdit(sampleId, httpRequest, null);
+
+			List<SimpleCharacterizationsByTypeBean> finalBean = editBean.getAllCharTypeBeans();
+
+			logger.debug("Set up " + finalBean.size() + " characterization types for sample: " + sampleId);
+
+			return Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
@@ -78,16 +68,15 @@ public class CharacterizationServices {
 	@Produces ("application/json")
     public Response setupAdd(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("sampleId") String sampleId, 
-    		@DefaultValue("") @QueryParam("charType") String charType) {
+    		@DefaultValue("") @QueryParam("charType") String charType)
+	{
 		logger.debug("In setupAdd");		
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
-			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		if (SpringSecurityUtil.getPrincipal() == null)
+			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 		
 		try {
-		CharacterizationBO characterizationBO = 
-				(CharacterizationBO) applicationContext.getBean("characterizationBO");
+		CharacterizationBO characterizationBO = (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 
 		SimpleCharacterizationEditBean charView = characterizationBO.setupNew(httpRequest, sampleId, charType);
 //		SimpleCharacterizationSummaryEditBean editBean = new SimpleCharacterizationSummaryEditBean();
@@ -111,22 +100,22 @@ public class CharacterizationServices {
     public Response setupUpdate(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("charId") String charId,
     		@DefaultValue("") @QueryParam("charClassName") String charClassName,
-    		@DefaultValue("") @QueryParam("charType") String charType) {
+    		@DefaultValue("") @QueryParam("charType") String charType)
+	{
 		logger.debug("In setupUpdate");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
-			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		if (SpringSecurityUtil.getPrincipal() == null)
+			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 		
-		try {
-		CharacterizationBO characterizationBO = 
-				(CharacterizationBO) applicationContext.getBean("characterizationBO");
+		try 
+		{
+			CharacterizationBO characterizationBO = (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 
-		SimpleCharacterizationEditBean charView = characterizationBO.setupUpdate(httpRequest, sampleId, charId, charClassName, charType);
+			SimpleCharacterizationEditBean charView = characterizationBO.setupUpdate(httpRequest, sampleId, charId, charClassName, charType);
 
-		return Response.ok(charView).header("Access-Control-Allow-Credentials", "true")
-						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(charView).header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
@@ -138,18 +127,19 @@ public class CharacterizationServices {
 	@Path("/getCharNamesByCharType")
 	@Produces ("application/json")
     public Response getCharNamesByCharType(@Context HttpServletRequest httpRequest, 
-    		@DefaultValue("") @QueryParam("charType") String charType) {
+    		@DefaultValue("") @QueryParam("charType") String charType)
+	{
 		logger.debug("In getCharNamesByCharType");		
 		
 		try {
-			CharacterizationManager characterizationMgr = 
-				(CharacterizationManager) applicationContext.getBean("characterizationManager");
+			
+			CharacterizationManager characterizationMgr = (CharacterizationManager) SpringApplicationContext.getBean(httpRequest, "characterizationManager");
 
-		List<String> charNames = characterizationMgr.getCharacterizationNames(httpRequest, charType);
+			List<String> charNames = characterizationMgr.getCharacterizationNames(httpRequest, charType);
 
-		return Response.ok(charNames).header("Access-Control-Allow-Credentials", "true")
-						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			return Response.ok(charNames).header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
@@ -164,8 +154,7 @@ public class CharacterizationServices {
 		logger.debug("In getAssayTypesByCharName");		
 		
 		try {
-			CharacterizationManager characterizationMgr = 
-				(CharacterizationManager) applicationContext.getBean("characterizationManager");
+			CharacterizationManager characterizationMgr = (CharacterizationManager) SpringApplicationContext.getBean(httpRequest, "characterizationManager");
 
 		List<String> assayTypes = characterizationMgr.getAssayTypes(httpRequest, charName);
 
@@ -186,8 +175,7 @@ public class CharacterizationServices {
 		logger.debug("In getAbbreviationByTechnique");		
 		
 		try {
-			ExperimentConfigManager experimentMgr = 
-				(ExperimentConfigManager) applicationContext.getBean("experimentConfigManager");
+			ExperimentConfigManager experimentMgr = (ExperimentConfigManager) SpringApplicationContext.getBean(httpRequest, "experimentConfigManager");
 
 		String abbr = experimentMgr.getTechniqueAbbreviation(httpRequest, techniqueType);
 
@@ -203,31 +191,27 @@ public class CharacterizationServices {
 	@POST
 	@Path("/saveExperimentConfig")
 	@Produces ("application/json")
-    public Response saveExperimentConfig(@Context HttpServletRequest httpRequest, 
-    		SimpleCharacterizationEditBean charEditBean ) {
+    public Response saveExperimentConfig(@Context HttpServletRequest httpRequest, SimpleCharacterizationEditBean charEditBean )
+	{
 		logger.debug("In saveExperimentConfig");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
-			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		if (SpringSecurityUtil.getPrincipal() == null)
+			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 		
 		try {
-			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			CharacterizationBO characterizationBO = (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			
 			SimpleCharacterizationEditBean editBean = characterizationBO.saveExperimentConfig(httpRequest, charEditBean);
 			List<String> errors = editBean.getErrors();
 			if (errors != null && errors.size() > 0) {
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-						.entity(errors).build();
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 			}
 
 		return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
 	
@@ -238,13 +222,13 @@ public class CharacterizationServices {
     		SimpleExperimentBean simpleExpConfig) {
 		logger.debug("In removeExperimentConfig");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+		if (SpringSecurityUtil.getPrincipal() == null)
 			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+					.entity(Constants.MSG_SESSION_INVALID).build();
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			
 			SimpleCharacterizationEditBean editBean = characterizationBO.deleteExperimentConfig(httpRequest, simpleExpConfig);
 
@@ -266,7 +250,7 @@ public class CharacterizationServices {
 		
 		try {
 			ExperimentConfigManager experimentMgr = 
-				(ExperimentConfigManager) applicationContext.getBean("experimentConfigManager");
+				(ExperimentConfigManager) SpringApplicationContext.getBean(httpRequest, "experimentConfigManager");
 
 			List<String> types = experimentMgr.getInstrumentTypesByTechniqueType(httpRequest, techniqueType);
 
@@ -287,13 +271,13 @@ public class CharacterizationServices {
     		SimpleFindingBean simpleFinding) {
 		logger.debug("In updateDataConditionTable");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+		if (SpringSecurityUtil.getPrincipal() == null)
 			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+					.entity(Constants.MSG_SESSION_INVALID).build();
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			
 			SimpleFindingBean simpleFindingBean = characterizationBO.drawMatrix(httpRequest, simpleFinding);
 
@@ -313,13 +297,13 @@ public class CharacterizationServices {
     		SimpleFindingBean simpleFinding) {
 		logger.debug("In setColumnOrder");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+		if (SpringSecurityUtil.getPrincipal() == null)
 			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+					.entity(Constants.MSG_SESSION_INVALID).build();
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			
 			SimpleFindingBean simpleFindingBean = characterizationBO.updateColumnOrder(httpRequest, simpleFinding);
 
@@ -345,7 +329,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationResultManager characterizationResultManager = 
-				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+				(CharacterizationResultManager) SpringApplicationContext.getBean(httpRequest, "characterizationResultManager");
 
 			List<String> names = characterizationResultManager
 					.getColumnNameOptionsByType(httpRequest, columnType, charType, charName, assayType);
@@ -370,7 +354,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationResultManager characterizationResultManager = 
-				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+				(CharacterizationResultManager) SpringApplicationContext.getBean(httpRequest, "characterizationResultManager");
 			
 			List<String> names = characterizationResultManager
 					.getColumnValueUnitOptions(httpRequest, columnName, conditionProperty, true);
@@ -394,7 +378,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationResultManager characterizationResultManager = 
-				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+				(CharacterizationResultManager) SpringApplicationContext.getBean(httpRequest, "characterizationResultManager");
 			
 			List<String> names = characterizationResultManager.getConditionPropertyOptions(httpRequest, columnName);
 					
@@ -415,13 +399,13 @@ public class CharacterizationServices {
     		SimpleFindingBean simpleFinding) {
 		logger.debug("In removeFinding");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+		if (SpringSecurityUtil.getPrincipal() == null)
 			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+					.entity(Constants.MSG_SESSION_INVALID).build();
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			logger.debug("Finding id to delete: " + simpleFinding.getFindingId());
 			SimpleCharacterizationEditBean editBean = characterizationBO.deleteFinding(httpRequest, simpleFinding);
 			List<String> errors = editBean.getErrors();
@@ -447,13 +431,13 @@ public class CharacterizationServices {
     		/*SimpleExperimentBean simpleExpConfig */) {
 		logger.debug("In saveFinding");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+		if (SpringSecurityUtil.getPrincipal() == null)
 			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+					.entity(Constants.MSG_SESSION_INVALID).build();
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			
 			SimpleCharacterizationEditBean editBean = characterizationBO.saveFinding(httpRequest, charEditBean);
 			List<String> errors = editBean.getErrors();
@@ -478,13 +462,13 @@ public class CharacterizationServices {
     		SimpleCharacterizationEditBean editBean) {
 		logger.debug("In saveCharacterization");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+		if (SpringSecurityUtil.getPrincipal() == null)
 			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+					.entity(Constants.MSG_SESSION_INVALID).build();
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			
 			SimpleCharacterizationSummaryEditBean summaryView = characterizationBO.submitOrUpdate(httpRequest, editBean);
 			List<String> errors = summaryView.getErrors();
@@ -517,13 +501,12 @@ public class CharacterizationServices {
     		SimpleCharacterizationEditBean editBean) {
 		logger.debug("In removeCharacterization");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
-			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+		if (SpringSecurityUtil.getPrincipal() == null)
+			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			
 			SimpleCharacterizationSummaryEditBean summaryView = characterizationBO.delete(httpRequest, editBean);
 			List<SimpleCharacterizationsByTypeBean> finalBeans = summaryView.getCharByTypeBeans();
@@ -544,13 +527,13 @@ public class CharacterizationServices {
     		SimpleFindingBean simpleFinding) {
 		logger.debug("In saveFile");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+		if (SpringSecurityUtil.getPrincipal() == null)
 			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+					.entity(Constants.MSG_SESSION_INVALID).build();
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			
 			SimpleFindingBean editBean = characterizationBO.saveFile(httpRequest, simpleFinding);
 			List<String> errors = editBean.getErrors();
@@ -575,13 +558,13 @@ public class CharacterizationServices {
     		SimpleFindingBean simpleFinding) {
 		logger.debug("In removeFile");	
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+		if (SpringSecurityUtil.getPrincipal() == null)
 			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+					.entity(Constants.MSG_SESSION_INVALID).build();
 		
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			
 			SimpleFindingBean editBean = characterizationBO.removeFile(httpRequest, simpleFinding);
 			List<String> errors = editBean.getErrors();
@@ -608,7 +591,7 @@ public class CharacterizationServices {
 		
 		try {
 			CharacterizationManager characterizationMgr = 
-				(CharacterizationManager) applicationContext.getBean("characterizationManager");
+				(CharacterizationManager) SpringApplicationContext.getBean(httpRequest, "characterizationManager");
 
 		SimpleCharacterizationProperty simpleProp = characterizationMgr.getCharacterizationProperties(httpRequest, charName);
 
@@ -630,8 +613,7 @@ public class CharacterizationServices {
 		logger.debug("In setupEdit");		
 		
 		try {
-		CharacterizationBO characterizationBO = 
-				(CharacterizationBO) applicationContext.getBean("characterizationBO");
+		CharacterizationBO characterizationBO = (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 
 		List<SimpleCharacterizationUnitBean> charDisplayables = characterizationBO.setupView(
 				httpRequest, "", charId, "", "");

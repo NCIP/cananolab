@@ -14,12 +14,12 @@ import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.CompositionUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -27,7 +27,27 @@ import gov.nih.nci.cananolab.util.DateUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class CompositionFileBO extends BaseAnnotationBO{
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
+
+@Component("compositionFileBO")
+public class CompositionFileBO extends BaseAnnotationBO
+{
+	@Autowired
+	private CompositionService compositionService;
+
+	@Autowired
+	private CurationService curationServiceDAO;
+
+	@Autowired
+	private SampleService sampleService;
+
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
 	
 	public List<String> create(SimpleFileBean bean,
 			HttpServletRequest request)
@@ -40,16 +60,14 @@ public class CompositionFileBO extends BaseAnnotationBO{
 		if(msgs.size()>0){
 			return msgs;
 		}
-		CompositionService service = this.setServicesInSession(request);
 		// restore previously uploaded file from session.
 		//restoreUploadedFile(request, theFile);
 
 		SampleBean sampleBean = setupSampleById(bean.getSampleId(), request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
 				+ sampleBean.getDomain().getName() + "/" + "compositionFile";
 
-		theFile.setupDomainFile(internalUriPath, user.getLoginName());
+		theFile.setupDomainFile(internalUriPath, SpringSecurityUtil.getLoggedInUserName());
 		if (theFile.getDomainFile().getId() != null) {
 			newFile = true;
 		}
@@ -69,10 +87,12 @@ public class CompositionFileBO extends BaseAnnotationBO{
 				theFile.getDomainFile().setUri(null);
 			}
 		}
-		service.saveCompositionFile(sampleBean, theFile);
+		compositionService.saveCompositionFile(sampleBean, theFile);
 		// retract from public if updating an existing public record and not
 		// curator
-		if (!newFile && !user.isCurator() && sampleBean.getPublicStatus()) {
+		if (!newFile && !SpringSecurityUtil.getPrincipal().isCurator() && 
+			springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz()))
+		{
 //			retractFromPublic(theForm, request, sampleBean.getDomain().getId()
 //					.toString(), sampleBean.getDomain().getName(), "sample");
 //			ActionMessage msg = null;
@@ -118,16 +138,15 @@ public class CompositionFileBO extends BaseAnnotationBO{
 		form.setSampleId(bean.getSampleId());
 		CompositionBean comp = compBO.summaryView(form, request);
 		FileBean fileBean = transferFileBean(bean);
-		CompositionService compService = this.setServicesInSession(request);
 		SampleBean sampleBean = setupSampleById(bean.getSampleId(), request);
-		compService.deleteCompositionFile(sampleBean.getDomain()
+		compositionService.deleteCompositionFile(sampleBean.getDomain()
 				.getSampleComposition(), fileBean.getDomainFile());
-		compService.removeAccesses(comp.getDomain(), fileBean
+		compositionService.removeAccesses(comp.getDomain(), fileBean
 				.getDomainFile());
-		// retract from public if updating an existing public record and not
-		// curator
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (!user.isCurator() && sampleBean.getPublicStatus()) {
+		// retract from public if updating an existing public record and not curator
+		if (!SpringSecurityUtil.getPrincipal().isCurator() && 
+			springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz()))
+		{
 //			retractFromPublic(theForm, request, sampleBean.getDomain().getId()
 //					.toString(), sampleBean.getDomain().getName(), "sample");
 //			ActionMessage msg = null;
@@ -143,7 +162,6 @@ public class CompositionFileBO extends BaseAnnotationBO{
 
 	public Map<String, Object> setupNew(HttpServletRequest request)
 			throws Exception {
-		this.setServicesInSession(request);
 		setLookups(request);
 		return CompositionUtil.reformatLocalSearchDropdownsInSessionForCompositionFile(request.getSession());
 
@@ -153,14 +171,12 @@ public class CompositionFileBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 		fileId = super.validateId(request, "dataId");
-		this.setServicesInSession(request);
-		CompositionService compService = (CompositionService) request
-				.getSession().getAttribute("compositionService");
-		FileBean fileBean = compService.findFileById(fileId);
+		FileBean fileBean = compositionService.findFileById(fileId);
 //		CompositionBean compBean = form.getComp();
 //		compBean.setTheFile(fileBean);
 		request.getSession().setAttribute("sampleId", sampleId);
 		SimpleFileBean simpleBean = new SimpleFileBean();
+		fileBean.setPublicStatus(springSecurityAclService.checkObjectPublic(Long.valueOf(fileId), SecureClassesEnum.FILE.getClazz()));
 		simpleBean.transferSimpleFileBean(fileBean, request);
 		return simpleBean;
 	}
@@ -179,7 +195,6 @@ public class CompositionFileBO extends BaseAnnotationBO{
 	public void input(CompositionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		this.setServicesInSession(request);
 		setupSampleById(form.getSampleId(), request);
 		this.setLookups(request);
 		CompositionBean comp = form.getComp();
@@ -198,17 +213,25 @@ public class CompositionFileBO extends BaseAnnotationBO{
 		InitSampleSetup.getInstance().setSharedDropdowns(request);
 	}
 
-	private CompositionService setServicesInSession(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-		CompositionService compService = new CompositionServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("compositionService", compService);
-		SampleService sampleService = new SampleServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("sampleService", sampleService);
-		return compService;
+	@Override
+	public CurationService getCurationServiceDAO() {
+		return this.curationServiceDAO;
 	}
+
+	@Override
+	public SampleService getSampleService() {
+		return this.sampleService;
+	}
+
+	@Override
+	public SpringSecurityAclService getSpringSecurityAclService() {
+		return springSecurityAclService;
+	}
+
+	@Override
+	public UserDetailsService getUserDetailsService() {
+		return userDetailsService;
+	}
+	
 }
 

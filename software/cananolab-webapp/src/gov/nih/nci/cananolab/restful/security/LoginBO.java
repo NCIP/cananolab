@@ -8,20 +8,18 @@
 
 package gov.nih.nci.cananolab.restful.security;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.restful.RestfulConstants;
-import gov.nih.nci.cananolab.restful.util.SecurityUtil;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
 
 /**
  * The LoginAction authenticates a user into the system.
@@ -29,6 +27,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  */
 
+@Component("loginBO")
 public class LoginBO  {
 	
 	private Logger logger = Logger.getLogger(LoginBO.class);

@@ -11,7 +11,6 @@ package gov.nih.nci.cananolab.service.admin;
 import gov.nih.nci.cananolab.exception.AdministrationException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseService;
-import gov.nih.nci.cananolab.service.security.SecurityService;
 
 import java.util.List;
 
@@ -28,8 +27,7 @@ public interface OwnershipTransferService {
 			String currentOwner, String newOwner)
 			throws AdministrationException, NoAccessException;
 
-	public int transferOwner(SecurityService securityService,
-			List<String> dataIds, String dataType, String currentOwner,
+	public int transferOwner(List<String> dataIds, String dataType, String currentOwner,
 			String newOwner) throws AdministrationException, NoAccessException;
 
 }

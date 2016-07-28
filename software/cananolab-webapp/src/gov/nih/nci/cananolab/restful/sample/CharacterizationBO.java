@@ -14,17 +14,16 @@ import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.Row;
 import gov.nih.nci.cananolab.dto.common.TableCell;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
-import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
-import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean.SimpleCharacterizationViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationUnitBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCell;
@@ -34,15 +33,14 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleRowBean;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationExporter;
-import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
@@ -55,18 +53,39 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 
 /**
  * Base action for characterization actions
  * 
  * @author pansu
  */
+@Component("characterizationBO")
 public class CharacterizationBO extends BaseAnnotationBO {
 	
 	private Logger logger = Logger.getLogger(CharacterizationBO.class);
+	
+	@Autowired
+	private CharacterizationService characterizationService;
+	
+	@Autowired
+	private CurationService curationServiceDAO;
+
+	@Autowired
+	private SampleService sampleService;
+
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private ProtocolService protocolService;
 
 	/**
 	 * Add or update a characterization to database
@@ -90,8 +109,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		charBean = simpleEdit.transferToCharacterizationBean(charBean);
 		if (simpleEdit.getCharId() == 0)
 			simpleEdit.setSubmitNewChar(true);
-		
-		this.setServicesInSession(request);
 		
 		List<String> errs = new ArrayList<String>();
 		if (!validateInputs(request, charBean, errs)) {
@@ -141,15 +158,13 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public SimpleCharacterizationEditBean setupNew(HttpServletRequest request, String sampleId, String charType)
-			throws Exception {
+	public SimpleCharacterizationEditBean setupNew(HttpServletRequest request, String sampleId, String charType) throws Exception
+	{
 		if (StringUtils.isEmpty(sampleId))
 			throw new Exception("Sample id is empty");
 		
 		if (StringUtils.isEmpty(charType))
 			throw new Exception("Characterization type is empty");
-		
-		setServicesInSession(request);
 		
 		//This method sets tons of lookups. Need to see what's needed and what's not
 		//setupInputForm(request, sampleId, charType);
@@ -162,7 +177,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //		clearCopy(theForm);
 //		return mapping.findForward("inputForm");
 		SimpleCharacterizationEditBean editBean = new SimpleCharacterizationEditBean();
-		editBean.transferFromCharacterizationBean(request, charBean, sampleId);
+		editBean.transferFromCharacterizationBean(request, charBean, sampleId, sampleService, characterizationService, protocolService, springSecurityAclService);
 		
 		request.getSession().setAttribute("theEditChar", editBean);
 		request.getSession().setAttribute("theChar", charBean);
@@ -176,21 +191,19 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @param theForm
 	 * @throws Exception
 	 */
-	private void setupInputForm(HttpServletRequest request, String sampleId, String charType) throws Exception {
-
+	private void setupInputForm(HttpServletRequest request, String sampleId, String charType) throws Exception
+	{
 		if (StringUtils.isEmpty(sampleId))
 			throw new Exception("Sample id is invalid");
 		
 		if (!StringUtils.isEmpty(charType))
-			InitProtocolSetup.getInstance().getProtocolsByChar(request,
-					charType);
-		InitCharacterizationSetup.getInstance().setPOCDropdown(request,
-				sampleId);
+			protocolService.getProtocolsByChar(request, charType);
+		InitCharacterizationSetup.getInstance().setPOCDropdown(request, sampleId, sampleService);
 //		InitCharacterizationSetup.getInstance().setCharacterizationDropdowns(
 //				request);
 
 		// set up other samples with the same primary point of contact
-		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
 	}
 
 	/**
@@ -203,14 +216,12 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public SimpleCharacterizationEditBean setupUpdate(HttpServletRequest request, String sampleId, String charId, 
-			String charClassName, String charType)
-			throws Exception {
-		CharacterizationService charService = this.setServicesInSession(request);
+	public SimpleCharacterizationEditBean setupUpdate(HttpServletRequest request, String sampleId, String charId, String charClassName, String charType)
+			throws Exception 
+	{
 		charId = super.validateCharId(charId);
 		
-		CharacterizationBean charBean = charService
-				.findCharacterizationById(charId);
+		CharacterizationBean charBean = characterizationService.findCharacterizationById(charId);
 		
 //
 //		// TODO: Find out usage of "charNameDatumNames", not used in any JSPs.
@@ -224,7 +235,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		logger.debug("Setting theChar in session: " + request.getSession().getId());;
 		
 		SimpleCharacterizationEditBean editBean = new SimpleCharacterizationEditBean();
-		editBean.transferFromCharacterizationBean(request, charBean, sampleId);
+		editBean.transferFromCharacterizationBean(request, charBean, sampleId, sampleService, characterizationService, protocolService, springSecurityAclService);
 		request.getSession().setAttribute("theEditChar", editBean);
 		return editBean;
 	}
@@ -244,12 +255,11 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 */
 	private void saveCharacterization(HttpServletRequest request, 
 			CharacterizationBean charBean, SimpleCharacterizationEditBean simpleEdit)
-			throws Exception {
-
+			throws Exception
+	{
 		SampleBean sampleBean = setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
 		
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		charBean.setupDomain(user.getLoginName());
+		charBean.setupDomain(SpringSecurityUtil.getLoggedInUserName());
 		
 		if (charBean.getDomainChar().getDate() == null && simpleEdit.getCharacterizationDate() != null)
 			charBean.getDomainChar().setDate(simpleEdit.getCharacterizationDate());
@@ -260,25 +270,21 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		logger.debug("Saving new char? " + newChar);
 		
-		// reuse the existing char service
-		CharacterizationService charService = (CharacterizationService) request
-				.getSession().getAttribute("characterizationService");
-		charService.saveCharacterization(sampleBean, charBean);
-		// retract from public if updating an existing public record and not
-		// curator
-		if (!newChar && !user.isCurator() && sampleBean.getPublicStatus()) {
-			retractFromPublic(String.valueOf(simpleEdit.getParentSampleId()), request, sampleBean.getDomain().getId()
-					.toString(), sampleBean.getDomain().getName(), "sample");
+		characterizationService.saveCharacterization(sampleBean, charBean);
+		// retract from public if updating an existing public record and not curator
+		if (!newChar && !SpringSecurityUtil.getPrincipal().isCurator() && 
+			springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz()))
+		{
+			retractFromPublic(String.valueOf(simpleEdit.getParentSampleId()), request, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
 			
 			simpleEdit.getErrors().add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
 		}
 		
 		// save to other samples (only when user click [Submit] button.)
 		if (simpleEdit.getSelectedOtherSampleNames().size()>0) {
-			SampleBean[] otherSampleBeans = prepareCopy(request, simpleEdit.getSelectedOtherSampleNames(),
-					sampleBean);
+			SampleBean[] otherSampleBeans = prepareCopy(request, simpleEdit.getSelectedOtherSampleNames(), sampleBean);
 			if (otherSampleBeans != null) {
-				charService.copyAndSaveCharacterization(charBean, sampleBean,
+				characterizationService.copyAndSaveCharacterization(charBean, sampleBean,
 						otherSampleBeans, simpleEdit.isCopyToOtherSamples()); //field should be renamed to copyDeepData
 			}
 			
@@ -286,24 +292,20 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		
 		sampleBean = setupSampleById(String.valueOf(simpleEdit.getParentSampleId()), request);
-		request.setAttribute("sampleId", sampleBean.getDomain().getId()
-				.toString());
+		request.setAttribute("sampleId", sampleBean.getDomain().getId().toString());
 		logger.debug("Done saving characterization: " + charBean.getDomainChar().getId());
 	}
 
-	private void deleteCharacterization(HttpServletRequest request,
-			CharacterizationBean charBean,
-			String createdBy) throws Exception {
+	private void deleteCharacterization(HttpServletRequest request, CharacterizationBean charBean, String createdBy) throws Exception
+	{
 		charBean.setupDomain(createdBy);
-		CharacterizationService service = this.setServicesInSession(request);
-		service.deleteCharacterization(charBean.getDomainChar());
-		service.removeAccesses(charBean.getDomainChar());
+		characterizationService.deleteCharacterization(charBean.getDomainChar());
+		characterizationService.removeAccesses(charBean.getDomainChar());
 	}
 
-	public SimpleCharacterizationSummaryEditBean delete(HttpServletRequest request, 
-			SimpleCharacterizationEditBean editBean)
-			throws Exception {
-		
+	public SimpleCharacterizationSummaryEditBean delete(HttpServletRequest request, SimpleCharacterizationEditBean editBean)
+			throws Exception
+	{		
 		CharacterizationBean charBean = (CharacterizationBean)request.getSession().getAttribute("theChar");
 		if (charBean == null)
 			throw new Exception("No characterization bean in session. Unable to proceed with delete");
@@ -315,9 +317,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		if (charId.longValue() != editBean.getCharId())
 			throw new Exception("Characterization id in session doesn't match input char id. Unable to proceed with delete");
 		
-		
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		deleteCharacterization(request, charBean, user.getLoginName());
+		deleteCharacterization(request, charBean, SpringSecurityUtil.getLoggedInUserName());
 		
 		SimpleCharacterizationSummaryEditBean summaryEdit = new SimpleCharacterizationSummaryEditBean();
 		summaryEdit.getMessages().add(PropertyUtil.getProperty("sample", "message.deleteCharacterization"));
@@ -406,15 +406,10 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		//DynaValidatorForm theForm = (DynaValidatorForm) form;
 		//String sampleId = form.getSampleId();  //.getString(SampleConstants.SAMPLE_ID);
 	
-		CharacterizationService service = this.setServicesInSession(request);
+		List<CharacterizationBean> charBeans = characterizationService.findCharacterizationsBySampleId(sampleId);
+		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(charBeans);
 		
-		List<CharacterizationBean> charBeans = service
-				.findCharacterizationsBySampleId(sampleId);
-		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
-				charBeans);
-		
-		request.getSession().setAttribute("characterizationSummaryView",
-				summaryView);
+		request.getSession().setAttribute("characterizationSummaryView", summaryView);
 
 		// Save sample bean in session for sample name in export/print.
 		//request.getSession().setAttribute("theSample", sampleBean);
@@ -548,9 +543,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	}
 
 	public SimpleCharacterizationEditBean saveExperimentConfig(HttpServletRequest request, 
-			SimpleCharacterizationEditBean charEditBean) 
-			throws Exception {
-		
+			SimpleCharacterizationEditBean charEditBean) throws Exception
+	{
 		logger.debug("Start saving experiment confg");
 		
 		//editBean's charId could be null, indicating new char
@@ -565,11 +559,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		simpleExpConfig.transferToExperimentConfigBean(configBean);
 		
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		configBean.setupDomain(user.getLoginName());
-		CharacterizationService service = this.setServicesInSession(request);
+		configBean.setupDomain(SpringSecurityUtil.getLoggedInUserName());
 		logger.debug("Call saveExperimentConfig");
-		service.saveExperimentConfig(configBean);
+		characterizationService.saveExperimentConfig(configBean);
 		logger.debug("Save exp config complete");
 		achar.addExperimentConfig(configBean);
 		
@@ -583,12 +575,11 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		this.saveCharacterization(request, achar, charEditBean);
 		logger.debug("Save char complete");
-		service.assignAccesses(achar.getDomainChar(), configBean.getDomain());
+		characterizationService.assignAccesses(achar.getDomainChar(), configBean.getDomain());
 		
 		//TODO:
 		//this.checkOpenForms(achar, theForm, request);
-		InitCharacterizationSetup.getInstance()
-			.persistCharacterizationDropdowns(request, achar);
+		InitCharacterizationSetup.getInstance().persistCharacterizationDropdowns(request, achar);
 		
 		// return to setupUpdate to retrieve the data matrix in the correct
 		// form from database
@@ -663,13 +654,10 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
 		
-		CharacterizationService service = this.setServicesInSession(request);
-				
 		//FindingBean findingBean = achar.getTheFinding();
 		String theFindingId = String.valueOf(simpleFinding.getFindingId());
 		
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		simpleFinding.transferToFindingBean(findingBean, user);
+		simpleFinding.transferToFindingBean(findingBean);
 		
 		if (!validateEmptyFinding(request, findingBean, editBean.getErrors())) {
 			return editBean;
@@ -684,8 +672,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
 						.getCharacterizationName());
 
-		findingBean.setupDomain(internalUriPath, user.getLoginName());
-		service.saveFinding(findingBean);
+		findingBean.setupDomain(internalUriPath, SpringSecurityUtil.getLoggedInUserName());
+		characterizationService.saveFinding(findingBean);
 		achar.addFinding(findingBean);
 		
 		//transfer other data fields of the char
@@ -697,7 +685,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		
 		this.saveCharacterization(request, achar, editBean);
-		service.assignAccesses(achar.getDomainChar(), findingBean.getDomain());
+		characterizationService.assignAccesses(achar.getDomainChar(), findingBean.getDomain());
 		//this.checkOpenForms(achar, theForm, request);
 		InitCharacterizationSetup.getInstance()
 			.persistCharacterizationDropdowns(request, achar);
@@ -731,7 +719,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		simpleFinding.getErrors().clear();
 	
-		CharacterizationService service = this.setServicesInSession(request);
 		// create a new copy before adding to finding
 		FileBean newFile = theFile.copy();
 		
@@ -745,8 +732,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				+ '/'
 				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
 						.getCharacterizationName());
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		newFile.setupDomainFile(internalUriPath, user.getLoginName());
+		newFile.setupDomainFile(internalUriPath, SpringSecurityUtil.getLoggedInUserName());
 		
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
@@ -769,8 +755,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			return simpleFinding;
 		
 		findingBean.addFile(newFile, theFileIndex);
-		findingBean.setupDomain(internalUriPath, user.getLoginName());
-		service.saveFinding(findingBean);
+		findingBean.setupDomain(internalUriPath, SpringSecurityUtil.getLoggedInUserName());
+		characterizationService.saveFinding(findingBean);
 				
 		achar.addFinding(findingBean);
 		simpleFinding.transferFromFindingBean(request, findingBean);
@@ -947,22 +933,18 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			throws Exception {
 		
 		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
-		SimpleCharacterizationEditBean editBean = 
-				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+		SimpleCharacterizationEditBean editBean = (SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
 		
 		FindingBean dataSetBean = this.findMatchFindingBean(achar, simpleFinding);
 		
-		CharacterizationService service = this.setServicesInSession(request);
-		
-		service.deleteFinding(dataSetBean.getDomain());
-		service.removeAccesses(achar.getDomainChar(), dataSetBean.getDomain());
+		characterizationService.deleteFinding(dataSetBean.getDomain());
+		characterizationService.removeAccesses(achar.getDomainChar(), dataSetBean.getDomain());
 		
 		achar.removeFinding(dataSetBean);
 		request.setAttribute("anchor", "result");
 		
 		//this.checkOpenForms(achar, theForm, request);
-		InitCharacterizationSetup.getInstance()
-			.persistCharacterizationDropdowns(request, achar);
+		InitCharacterizationSetup.getInstance().persistCharacterizationDropdowns(request, achar);
 		
 		return setupUpdate(request, String.valueOf(editBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
 				achar.getClassName(), achar.getCharacterizationType());
@@ -981,8 +963,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
 		simpleExpConfig.transferToExperimentConfigBean(configBean);
 		
-		CharacterizationService service = this.setServicesInSession(request);
-		service.deleteExperimentConfig(configBean.getDomain());
+		characterizationService.deleteExperimentConfig(configBean.getDomain());
 		logger.debug("Experiment config deleted");
 		achar.removeExperimentConfig(configBean);
 		
@@ -992,7 +973,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			logger.debug("Char saved");
 		}	
 		
-		service.removeAccesses(achar.getDomainChar(), configBean.getDomain());
+		characterizationService.removeAccesses(achar.getDomainChar(), configBean.getDomain());
 		logger.debug("Access removed");
 		//this.checkOpenForms(achar, theForm, request);
 		InitCharacterizationSetup.getInstance()
@@ -1060,10 +1041,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());
 	}
 	
-	protected ExperimentConfigBean findMatchExperimentConfig(CharacterizationBean achar, 
-			SimpleExperimentBean simpleExp) 
-	throws Exception {
-		
+	protected ExperimentConfigBean findMatchExperimentConfig(CharacterizationBean achar, SimpleExperimentBean simpleExp) throws Exception
+	{		
 		long expId = simpleExp.getId();
 		
 		if (expId <= 0)
@@ -1295,42 +1274,12 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 	}
 
-public Boolean canUserExecutePrivateDispatch(UserBean user)
-			throws SecurityException {
-		if (user == null) {
-			return false;
-		}
-		return true;
-	}
-
-
-	private CharacterizationService setServicesInSession(
-			HttpServletRequest request) throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-		CharacterizationService charService = new CharacterizationServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("characterizationService",
-				charService);
-		ProtocolService protocolService = new ProtocolServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("protocolService", protocolService);
-		SampleService sampleService = new SampleServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("sampleService", sampleService);
-		return charService;
-	}
-
-	public java.io.File download(String fileId, HttpServletRequest request)
-			throws Exception {
-		CharacterizationService service = setServicesInSession(request);
-		return downloadImage(service, fileId, request);
+	public java.io.File download(String fileId, HttpServletRequest request) throws Exception {
+		return downloadImage(characterizationService, fileId, request);
 	}
 	
-	public String download(String fileId, HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		CharacterizationService service = setServicesInSession(request);
-		return downloadFile(service, fileId, request, response);
+	public String download(String fileId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		return downloadFile(characterizationService, fileId, request, response);
 	}
 
 	protected boolean validCharTypeAndName(String charType, String charName, List<String> errors) {
@@ -1358,18 +1307,37 @@ public Boolean canUserExecutePrivateDispatch(UserBean user)
 	 * @return
 	 * @throws Exception
 	 */
-	public List<SimpleCharacterizationUnitBean> setupView(HttpServletRequest request, String sampleId, String charId, 
-			String charClassName, String charType)
-			throws Exception {
-		CharacterizationService charService = this.setServicesInSession(request);
+	public List<SimpleCharacterizationUnitBean> setupView(HttpServletRequest request, String sampleId, String charId, String charClassName, String charType)
+			throws Exception
+	{
 		charId = super.validateCharId(charId);
 		
-		CharacterizationBean charBean = charService
-				.findCharacterizationById(charId);
+		CharacterizationBean charBean = characterizationService.findCharacterizationById(charId);
 		
 		SimpleCharacterizationSummaryViewBean viewHelper = new SimpleCharacterizationSummaryViewBean();
 		List<SimpleCharacterizationUnitBean> aBeanUnitList = viewHelper.tranferCharacterizationBeanData(request, charBean);
 		
 		return aBeanUnitList;
 	}
+
+	@Override
+	public CurationService getCurationServiceDAO() {
+		return curationServiceDAO;
+	}
+
+	@Override
+	public SampleService getSampleService() {
+		return sampleService;
+	}
+
+	@Override
+	public SpringSecurityAclService getSpringSecurityAclService() {
+		return springSecurityAclService;
+	}
+
+	@Override
+	public UserDetailsService getUserDetailsService() {
+		return userDetailsService;
+	}
+	
 }

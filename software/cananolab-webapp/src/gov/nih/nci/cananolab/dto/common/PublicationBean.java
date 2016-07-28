@@ -120,7 +120,6 @@ public class PublicationBean extends FileBean {
 		this.setSampleNames(source.getSampleNames());
 		this.setUserAccesses(source.getUserAccesses());
 		this.setGroupAccesses(source.getGroupAccesses());
-		this.setUser(source.getUser());
 	}
 
 	public void copyFromDatabase(PublicationBean source) {
@@ -149,7 +148,6 @@ public class PublicationBean extends FileBean {
 		this.setSampleNames(source.getSampleNames());
 		this.setUserAccesses(source.getUserAccesses());
 		this.setGroupAccesses(source.getGroupAccesses());
-		this.setUser(source.getUser());
 		oldPub.setUri(dbPub.getUri());
 		oldPub.setUriExternal(dbPub.getUriExternal());
 	}

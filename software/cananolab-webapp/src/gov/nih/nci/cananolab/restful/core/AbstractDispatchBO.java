@@ -8,25 +8,24 @@
 
 package gov.nih.nci.cananolab.restful.core;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.exception.BaseException;
-import gov.nih.nci.cananolab.exception.InvalidSessionException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.StringUtils;
-
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public abstract class AbstractDispatchBO {
+import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.exception.InvalidSessionException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
-	public void execute(HttpServletRequest request)
-			throws Exception {
+public abstract class AbstractDispatchBO
+{
+
+	public void execute(HttpServletRequest request) throws Exception
+	{
 		HttpSession session = request.getSession();
 		String dispatch = (String) request.getParameter("dispatch");
 		String page = request.getParameter("page");
@@ -40,18 +39,16 @@ public abstract class AbstractDispatchBO {
 		if (dispatch != null && !dispatch.matches(Constants.STRING_PATTERN)) {
 			throw new BaseException("Invalid value for the dispatch parameter");
 		}
-		UserBean user = (UserBean) session.getAttribute("user");
 		// private dispatch and session expired
-		boolean privateDispatch = checkDispatch(dispatch,
-				Constants.PRIVATE_DISPATCHES, "startsWith");
+		boolean privateDispatch = checkDispatch(dispatch, Constants.PRIVATE_DISPATCHES, "startsWith");
 		if (session.isNew() && (dispatch == null || privateDispatch)) {
 			throw new InvalidSessionException();
 		}
 		// if dispatched methods require validation but page=0 throw error
-		if (checkDispatch(dispatch, Constants.DISPATCHES_WITH_VALIDATIONS,
-				"equals") && (page == null || Integer.parseInt(page) <= 0)) {
-			throw new BaseException(
-					"The value for the page parameter is invalid for the given dispatch");
+		if (checkDispatch(dispatch, Constants.DISPATCHES_WITH_VALIDATIONS, "equals") && 
+			(page == null || Integer.parseInt(page) <= 0))
+		{
+			throw new BaseException("The value for the page parameter is invalid for the given dispatch");
 		}
 		String protectedData = request.getParameter("sampleId");
 		if (protectedData == null) {
@@ -69,10 +66,9 @@ public abstract class AbstractDispatchBO {
 			
 			
 		} else {
-			if (user == null) {
+			if (SpringSecurityUtil.getPrincipal() == null) {
 				throw new NoAccessException("Log in is required");
 			}
-			request.getSession().removeAttribute("user");
 			throw new NoAccessException();
 		}
 	}
@@ -85,32 +81,29 @@ public abstract class AbstractDispatchBO {
 	 * @return
 	 * @throws SecurityException
 	 */
-	public boolean canUserExecute(HttpServletRequest request, String dispatch,
-			String protectedData) throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+	public boolean canUserExecute(HttpServletRequest request, String dispatch, String protectedData) throws Exception
+	{
 		// private dispatch in public actions
-		boolean privateDispatch = checkDispatch(dispatch,
-				Constants.PRIVATE_DISPATCHES, "startsWith");
+		boolean privateDispatch = checkDispatch(dispatch, Constants.PRIVATE_DISPATCHES, "startsWith");
 		if (!privateDispatch) {
 			return true;
-		} else if (user == null && privateDispatch) {
+		} else if (SpringSecurityUtil.getPrincipal() == null && privateDispatch) {
 			return false;
 		} else {
 			return canUserExecutePrivateDispatch(request, protectedData);
 		}
 	}
 
-	public Boolean canUserExecutePrivateDispatch(HttpServletRequest request,
-			String protectedData) throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user == null) {
+	public Boolean canUserExecutePrivateDispatch(HttpServletRequest request, String protectedData) throws Exception
+	{
+		if (SpringSecurityUtil.getPrincipal() == null) {
 			return false;
 		}
 		return true;
 	}
 
-	private boolean checkDispatch(String dispatch, String[] dispatchGroup,
-			String compareString) {
+	private boolean checkDispatch(String dispatch, String[] dispatchGroup, String compareString)
+	{
 		if (dispatch != null) {
 			for (String theDispatch : dispatchGroup) {
 				if (compareString.equals("startsWith")) {
@@ -134,7 +127,8 @@ public abstract class AbstractDispatchBO {
 	 * @param request
 	 * @return
 	 */
-	public int getDisplayPage(HttpServletRequest request) {
+	public int getDisplayPage(HttpServletRequest request)
+	{
 		int page = 0;
 		Enumeration paramNames = request.getParameterNames();
 		while (paramNames.hasMoreElements()) {
@@ -153,13 +147,10 @@ public abstract class AbstractDispatchBO {
 		String dispatch = request.getParameter("dispatch");
 		// get the dispatch value from the URL in the browser address bar
 		// used in case of validation
-		if (dispatch != null
-				&& request.getAttribute("javax.servlet.forward.query_string") != null) {
-			String browserQueryString = request.getAttribute(
-					"javax.servlet.forward.query_string").toString();
+		if (dispatch != null && request.getAttribute("javax.servlet.forward.query_string") != null) {
+			String browserQueryString = request.getAttribute("javax.servlet.forward.query_string").toString();
 			if (!StringUtils.isEmpty(browserQueryString)) {
-				String browserDispatch = browserQueryString.replaceAll(
-						"dispatch=(.+)&(.+)", "$1");
+				String browserDispatch = browserQueryString.replaceAll("dispatch=(.+)&(.+)", "$1");
 				return browserDispatch;
 			}
 		}
@@ -185,40 +176,4 @@ public abstract class AbstractDispatchBO {
 		return value;
 	}
 
-	protected SecurityService getSecurityServiceFromSession(
-			HttpServletRequest request) throws SecurityException {
-		if (request.getSession().getAttribute("securityService") == null) {
-			
-			//UserBean user = (UserBean) request.getAttribute("user");
-			UserBean user = (UserBean) request.getSession().getAttribute("user");
-			
-			SecurityService service = new SecurityService(
-					AccessibilityBean.CSM_APP_NAME, user);
-			return service;
-		}
-		SecurityService securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
-		return securityService;
-	}
-
-	/**
-	 * @deprecated
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
-	protected Boolean validateToken(HttpServletRequest request)
-			throws Exception {
-//		ActionMessages messages = new ActionMessages();
-//		
-		//TODO
-		
-//		if (!isTokenValid(request)) {
-//			ActionMessage err = new ActionMessage("error.invalidToken");
-//			messages.add(ActionMessages.GLOBAL_MESSAGE, err);
-//			saveErrors(request, messages);
-//			return false;
-//		}
-		return true;
-	}
 }

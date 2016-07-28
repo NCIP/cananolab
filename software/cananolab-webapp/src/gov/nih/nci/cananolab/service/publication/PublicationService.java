@@ -13,7 +13,9 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.service.BaseService;
+import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 
 import java.util.List;
 
@@ -50,6 +52,8 @@ public interface PublicationService extends BaseService {
 			throws PublicationException;
 
 	public int getNumberOfPublicPublications() throws PublicationException;
+	
+	public int getNumberOfPublicPublicationsForJob() throws PublicationException;
 
 	public List<String> findPublicationIdsBy(String title, String category,
 			String sampleName, String[] researchAreas, String[] keywords,
@@ -82,11 +86,11 @@ public interface PublicationService extends BaseService {
 			Publication publication) throws PublicationException,
 			NoAccessException;
 
-	public void assignAccessibility(AccessibilityBean access,
+	public void assignAccessibility(AccessControlInfo access,
 			Publication publication) throws PublicationException,
 			NoAccessException;
 
-	public void removeAccessibility(AccessibilityBean access,
+	public void removeAccessibility(AccessControlInfo access,
 			Publication publication) throws PublicationException,
 			NoAccessException;
 
@@ -95,4 +99,6 @@ public interface PublicationService extends BaseService {
 
 	public PublicationBean findPublicationByIdWorkspace(String id, boolean b)
 			throws PublicationException;
+	
+	public PublicationServiceHelper getPublicationServiceHelper();
 }

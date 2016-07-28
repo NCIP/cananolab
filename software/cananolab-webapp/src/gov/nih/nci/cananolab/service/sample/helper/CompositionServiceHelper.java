@@ -16,9 +16,8 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.BaseServiceHelper;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -32,6 +31,8 @@ import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Service methods involving composition.
@@ -39,28 +40,19 @@ import org.hibernate.criterion.Property;
  * @author pansu, tanq
  *
  */
-public class CompositionServiceHelper extends BaseServiceHelper {
-
-	private static Logger logger = Logger
-			.getLogger(CompositionServiceHelper.class);
-
-	public CompositionServiceHelper() {
-		super();
-	}
-
-	public CompositionServiceHelper(UserBean user) {
-		super(user);
-	}
-
-	public CompositionServiceHelper(SecurityService securityService) {
-		super(securityService);
-	}
+@Component("compositionServiceHelper")
+public class CompositionServiceHelper
+{
+	private static Logger logger = Logger.getLogger(CompositionServiceHelper.class);
+	
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
 
 	// for DWR Ajax
 	public Function findFunctionById(String funcId) throws Exception {
-		if (!getAccessibleData().contains(funcId)) {
-			new NoAccessException("User has no access to the function "
-					+ funcId);
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(funcId), SecureClassesEnum.FUNCTION.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(funcId), SecureClassesEnum.FUNCTION.getClazz())) {
+			new NoAccessException("User has no access to the function " + funcId);
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -78,21 +70,17 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 	}
 
 	// for DWR Ajax
-	public ComposingElement findComposingElementById(String ceId)
-			throws Exception {
-		if (!getAccessibleData().contains(ceId)) {
-			new NoAccessException(
-					"User has no access to the composing element " + ceId);
+	public ComposingElement findComposingElementById(String ceId) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(ceId), SecureClassesEnum.COMPOSINGELEMENT.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(ceId), SecureClassesEnum.COMPOSINGELEMENT.getClazz())) {
+			new NoAccessException("User has no access to the composing element " + ceId);
 		}
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				ComposingElement.class).add(
-				Property.forName("id").eq(new Long(ceId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(ComposingElement.class).add(Property.forName("id").eq(new Long(ceId)));
 		crit.setFetchMode("inherentFunctionCollection", FetchMode.JOIN);
-		crit.setFetchMode("inherentFunctionCollection.targetCollection",
-				FetchMode.JOIN);
+		crit.setFetchMode("inherentFunctionCollection.targetCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List result = appService.query(crit);
 		ComposingElement ce = null;
@@ -120,74 +108,47 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		List results = appService.query(crit);
 		for (int i = 0; i < results.size(); i++) {
 			File file = (File) results.get(i);
-			if (getAccessibleData().contains(file.getId().toString())) {
+			if (springSecurityAclService.currentUserHasReadPermission(file.getId(), SecureClassesEnum.FILE.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(file.getId(), SecureClassesEnum.FILE.getClazz())) {
 				fileCollection.add(file);
 			} else {
-				logger.debug("User doesn't have access to file of id:"
-						+ file.getId());
+				logger.debug("User doesn't have access to file of id:" + file.getId());
 			}
 		}
 		return fileCollection;
 	}
 
-	public SampleComposition findCompositionBySampleId(String sampleId)
-			throws Exception {
-		if (!getAccessibleData().contains(sampleId)) {
-			new NoAccessException("User has no access to the sample "
-					+ sampleId);
+	public SampleComposition findCompositionBySampleId(String sampleId) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			new NoAccessException("User has no access to the sample " + sampleId);
 		}
 		SampleComposition composition = null;
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria
-				.forClass(SampleComposition.class);
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(SampleComposition.class);
 		crit.createAlias("sample", "sample");
 		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
 		crit.setFetchMode("nanomaterialEntityCollection", FetchMode.JOIN);
-		crit.setFetchMode("nanomaterialEntityCollection.fileCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"nanomaterialEntityCollection.fileCollection.keywordCollection",
+		crit.setFetchMode("nanomaterialEntityCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.composingElementCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
 						FetchMode.JOIN);
-		crit.setFetchMode(
-				"nanomaterialEntityCollection.composingElementCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
+		crit.setFetchMode("nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
 						FetchMode.JOIN);
 		crit.setFetchMode("functionalizingEntityCollection", FetchMode.JOIN);
-		crit.setFetchMode("functionalizingEntityCollection.fileCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"functionalizingEntityCollection.fileCollection.keywordCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("functionalizingEntityCollection.functionCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"functionalizingEntityCollection.functionCollection.targetCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("functionalizingEntityCollection.activationMethod",
-				FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.functionCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.functionCollection.targetCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.activationMethod", FetchMode.JOIN);
 		crit.setFetchMode("chemicalAssociationCollection", FetchMode.JOIN);
-		crit.setFetchMode("chemicalAssociationCollection.fileCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"chemicalAssociationCollection.fileCollection.keywordCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("chemicalAssociationCollection.associatedElementA",
-				FetchMode.JOIN);
-		crit.setFetchMode("chemicalAssociationCollection.associatedElementB",
-				FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.associatedElementA", FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.associatedElementB", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -195,48 +156,34 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 
 		if (!result.isEmpty()) {
 			composition = (SampleComposition) result.get(0);
-			if (!getAccessibleData().contains(composition.getId().toString())) {
-				throw new NoAccessException(
-						"User doesn't have access to the composition "
-								+ composition.getId());
+			if (!springSecurityAclService.currentUserHasReadPermission(composition.getId(), SecureClassesEnum.COMPOSITION.getClazz()) &&
+				!springSecurityAclService.currentUserHasWritePermission(composition.getId(), SecureClassesEnum.COMPOSITION.getClazz())) {
+				throw new NoAccessException("User doesn't have access to the composition " + composition.getId());
 			}
 		}
 		return composition;
 	}
 
-	public NanomaterialEntity findNanomaterialEntityById(String entityId)
-			throws Exception {
+	public NanomaterialEntity findNanomaterialEntityById(String entityId) throws Exception
+	{
 		NanomaterialEntity entity = null;
-		if (!getAccessibleData().contains(entityId)) {
-			new NoAccessException(
-					"User has no access to the nanomaterial entity " + entityId);
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(entityId), SecureClassesEnum.NANO.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(entityId), SecureClassesEnum.NANO.getClazz())) {
+			new NoAccessException("User has no access to the nanomaterial entity " + entityId);
 		}
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				NanomaterialEntity.class).add(
+		DetachedCriteria crit = DetachedCriteria.forClass(NanomaterialEntity.class).add(
 				Property.forName("id").eq(new Long(entityId)));
 		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.chemicalAssociationCollection.associatedElementA",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.chemicalAssociationCollection.associatedElementB",
-						FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection", FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection.associatedElementA", FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection.associatedElementB", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("composingElementCollection", FetchMode.JOIN);
-		crit.setFetchMode(
-				"composingElementCollection.inherentFunctionCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"composingElementCollection.inherentFunctionCollection.targetCollection",
+		crit.setFetchMode("composingElementCollection.inherentFunctionCollection", FetchMode.JOIN);
+		crit.setFetchMode("composingElementCollection.inherentFunctionCollection.targetCollection",
 						FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List result = appService.query(crit);
@@ -246,17 +193,15 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		return entity;
 	}
 
-	public FunctionalizingEntity findFunctionalizingEntityById(String entityId)
-			throws Exception {
-		if (!getAccessibleData().contains(entityId)) {
-			new NoAccessException(
-					"User has no access to the functionalizing entity "
-							+ entityId);
+	public FunctionalizingEntity findFunctionalizingEntityById(String entityId) throws Exception 
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(entityId), SecureClassesEnum.FUNCTIONALIZING.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(entityId), SecureClassesEnum.FUNCTIONALIZING.getClazz())) {
+			new NoAccessException("User has no access to the functionalizing entity " + entityId);
 		}
 		FunctionalizingEntity entity = null;
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				FunctionalizingEntity.class).add(
@@ -265,20 +210,11 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("functionCollection", FetchMode.JOIN);
-		crit
-				.setFetchMode("functionCollection.targetCollection",
-						FetchMode.JOIN);
+		crit.setFetchMode("functionCollection.targetCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.chemicalAssociationCollection.associatedElementA",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.chemicalAssociationCollection.associatedElementB",
-						FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection", FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection.associatedElementA", FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection.associatedElementB", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -288,28 +224,23 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		return entity;
 	}
 
-	public ChemicalAssociation findChemicalAssociationById(String assocId)
-			throws Exception {
-		if (!getAccessibleData().contains(assocId)) {
-			new NoAccessException(
-					"User has no access to the chemical association " + assocId);
+	public ChemicalAssociation findChemicalAssociationById(String assocId) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(assocId), SecureClassesEnum.CHEMASSOC.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(assocId), SecureClassesEnum.CHEMASSOC.getClazz())) {
+			new NoAccessException("User has no access to the chemical association " + assocId);
 		}
 		ChemicalAssociation assoc = null;
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				ChemicalAssociation.class).add(
-				Property.forName("id").eq(new Long(assocId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(ChemicalAssociation.class).add(Property.forName("id").eq(new Long(assocId)));
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("associatedElementA", FetchMode.JOIN);
-		crit.setFetchMode("associatedElementA.nanomaterialEntity",
-				FetchMode.JOIN);
+		crit.setFetchMode("associatedElementA.nanomaterialEntity", FetchMode.JOIN);
 		crit.setFetchMode("associatedElementB", FetchMode.JOIN);
-		crit.setFetchMode("associatedElementB.nanomaterialEntity",
-				FetchMode.JOIN);
+		crit.setFetchMode("associatedElementB.nanomaterialEntity", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);

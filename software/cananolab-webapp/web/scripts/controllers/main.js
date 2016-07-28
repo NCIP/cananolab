@@ -2,8 +2,14 @@
 var app = angular.module('angularApp')
   .controller('MainCtrl', function (sampleService, publicationService, protocolService, navigationService, groupService,$rootScope, $scope, $location,$http, $route,$cookieStore, $window, $cookies) {
 
-    $scope.userActions = 1;
-    $scope.loginShow = 0;
+	  if ($rootScope.loggedInUser && $rootScope.loggedInUser.length > 0)
+		  $scope.loginShow = 0;
+	  else
+		  $scope.loginShow = 1;
+	  
+	 $scope.loginId = '';
+     $scope.password = '';   
+    
     $scope.authErrors = 0;
     $scope.homepage = true;
     $scope.errorMessages = [];
@@ -45,25 +51,8 @@ var app = angular.module('angularApp')
         else if ($scope.userActions==2) {
           $scope.loginShow = 1;
           $scope.loginId = '';
-          $scope.password = '';
-          $scope.resetPasswordShow = 0;        
+          $scope.password = '';      
           $scope.authErrors = 0;
-        }
-        else if ($scope.userActions==3) {
-          $scope.loginShow = 0;
-          $scope.authErrors = 0;
-          $scope.resetPasswordShow = 0;        
-          $location.path("/register").replace();
-        }
-        else {
-          $scope.authErrors = 0;
-          $scope.loginShow = 0;        
-          $scope.resetPasswordShow = 1;
-          $scope.reset_loginId = "";
-          $scope.old_password = "";
-          $scope.new_password = "";
-          $scope.confirm_new_password = "";
-          $scope.errorMessage = "";
         }
     }
 
@@ -125,29 +114,28 @@ var app = angular.module('angularApp')
           $scope.authErrors="Username and Password are required";
         }
         else {
-        	$scope.bean = {"userName" : $scope.loginId, "password" : $scope.password};   	  
-            $http({method: 'POST', url: '/caNanoLab/rest/security/login', data: $scope.bean}).
+        	$scope.bean = {"username" : $scope.loginId, "password" : $scope.password};   	  
+            $http({method: 'POST', url: 'login', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                   transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                   }, data: $scope.bean}).
           success(function(data, status, headers, config) {
             // this callback will be called asynchronously
             // when the response is available
-            $location.path("/").replace();
-            $route.reload();
+        	  $rootScope.loggedInUser = data;
+        	  $scope.loginShow = 0; 
+        	  $location.path("/").replace();
+        	  $route.reload();
 
             //Set tabs here.. Delete on logout. Use variable instead of rest call
 
           }).
           error(function(data, status, headers, config) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-            var re = /changed/; 
-            var str = data;
-            $scope.password = '';            
-            if (re.exec(str)) {
-              $scope.loginShow = 0
-              $scope.resetPasswordShow = 1;
-              $scope.loginId = '';
-            }
-            $scope.authErrors=data;
+            $scope.password = ''; 
+            $scope.authErrors = data;
           });
         }      
     };

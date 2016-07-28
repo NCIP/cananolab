@@ -10,8 +10,7 @@ L-->
 
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-	<import resource="application-config.xml"/>
-	<import resource="application-config-security.xml"/>	
+	<import resource="application-config.xml"/>	
 	
 	<!-- Used only by the client and not the server components -->
 	<bean id="ServiceInfo" class="java.util.HashMap">
@@ -25,13 +24,13 @@ L-->
 		</constructor-arg>
 	</bean>
 	
-	<bean id="Interceptor" class="gov.nih.nci.system.client.proxy.ApplicationServiceProxy" singleton="false">
+	<bean id="Interceptor" class="gov.nih.nci.system.client.proxy.ApplicationServiceProxy" scope="prototype">
 		<property name="proxyFactory">
-			<bean class="gov.nih.nci.system.client.proxy.ProxyHelperImpl" singleton="false"/>
+			<bean class="gov.nih.nci.system.client.proxy.ProxyHelperImpl" scope="prototype"/>
 		</property>
 	</bean>
 
-	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="true">
+	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="target" ref="ApplicationServiceImpl" />
 		<property name="interfaces" value="gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService" />
 		<property name="interceptorNames">

@@ -8,24 +8,26 @@
 
 package gov.nih.nci.cananolab.dto.common;
 
-import gov.nih.nci.cananolab.util.StringUtils;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 
-public class CollaborationGroupBean extends SecuredDataBean {
+public class CollaborationGroupBean extends SecuredDataBean
+{
 	private String id;
 	private String name;
 	private String description;
 	private String ownerName;
 
 	public CollaborationGroupBean() {
-		for (AccessibilityBean access : this.getUserAccesses()) {
-			access.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
+		for (AccessControlInfo access : this.getUserAccesses()) {
+			access.setAccessType(AccessTypeEnum.USER.toString());
 		}
 	}
 
-//	public String getDescriptionDisplayName() {
-//		return StringUtils.escapeXmlButPreserveLineBreaks(description);
-//	}
+	//	public String getDescriptionDisplayName() {
+	//		return StringUtils.escapeXmlButPreserveLineBreaks(description);
+	//	}
 
 	public CollaborationGroupBean(Group group) {
 		this.name = group.getGroupName();
@@ -57,26 +59,33 @@ public class CollaborationGroupBean extends SecuredDataBean {
 		this.description = description;
 	}
 
-	public void addUserAccess(AccessibilityBean userAccess) {
-		
-		for(int i = 0 ; i < this.getUserAccesses().size() ; i++){
-			if((userAccess.getUserBean().getUserId()!=null)&&(this.getUserAccesses().get(i).getUserBean().getUserId().equals(userAccess.getUserBean().getUserId()))){
-				this.getUserAccesses().remove(i);
-			}else if(this.getUserAccesses().get(i).getUserBean().getDisplayName().equalsIgnoreCase(userAccess.getUserBean().getDisplayName())){
-				this.getUserAccesses().remove(i);
+	public void addUserAccess(AccessControlInfo userAccess)
+	{
+		boolean found = false;
+		for(int i = 0 ; i < this.getUserAccesses().size() ; i++)
+		{
+			if (this.getUserAccesses().get(i).getRecipient().equalsIgnoreCase(userAccess.getRecipient()))
+			{
+				found = true;
+				break;
 			}
 		}
-//		if (index != -1) {
-//			this.getUserAccesses().remove(userAccess);
-//			// retain the original order
-//			this.getUserAccesses().add(index, userAccess);
-//		} else {
+		if (!found)
 			this.getUserAccesses().add(userAccess);
-//		}
 	}
 
-	public void removeUserAccess(AccessibilityBean userAccess) {
-		this.getUserAccesses().remove(userAccess);
+	public void removeUserAccess(AccessControlInfo userAccess)
+	{
+		int i = 0;
+		for (AccessControlInfo access : this.getUserAccesses())
+		{
+			if (access.getRecipient().equals(userAccess.getRecipient()))
+			{
+				this.getUserAccesses().remove(i);
+				break;
+			}
+			i++;
+		}
 	}
 
 	public String getOwnerName() {
@@ -86,4 +95,5 @@ public class CollaborationGroupBean extends SecuredDataBean {
 	public void setOwnerName(String ownerName) {
 		this.ownerName = ownerName;
 	}
+
 }

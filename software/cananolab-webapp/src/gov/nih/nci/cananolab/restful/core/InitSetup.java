@@ -50,16 +50,14 @@ public class InitSetup {
 	 * @return
 	 * @throws BaseException
 	 */
-	public Map<String, Map<String, SortedSet<String>>> getDefaultLookupTable(
-			ServletContext appContext) throws BaseException {
+	public Map<String, Map<String, SortedSet<String>>> getDefaultLookupTable(ServletContext appContext) throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = null;
 		if (appContext.getAttribute("defaultLookupTable") == null) {
 			defaultLookupTable = LookupService.findAllLookups();
 			appContext.setAttribute("defaultLookupTable", defaultLookupTable);
 		} else {
 			defaultLookupTable = new HashMap<String, Map<String, SortedSet<String>>>(
-					(Map<? extends String, Map<String, SortedSet<String>>>) appContext
-							.getAttribute("defaultLookupTable"));
+					(Map<? extends String, Map<String, SortedSet<String>>>) appContext.getAttribute("defaultLookupTable"));
 		}
 		return defaultLookupTable;
 	}
@@ -187,8 +185,7 @@ public class InitSetup {
 			ServletContext appContext, String contextAttribute,
 			String fullParentClassName) throws Exception {
 		SortedSet<String> types = new TreeSet<String>();
-		List<String> classNames = ClassUtils
-				.getChildClassNames(fullParentClassName);
+		List<String> classNames = ClassUtils.getChildClassNames(fullParentClassName);
 		for (String name : classNames) {
 			if (!name.contains("Other")) {
 				String shortClassName = ClassUtils.getShortClassName(name);
@@ -258,27 +255,6 @@ public class InitSetup {
 		}
 		return types;
 	}
-
-//	public String getFileUriFromFormFile(FormFile file, String folderType,
-//			String sampleName, String submitType) {
-//		if (file != null && !StringUtils.isEmpty(file.getFileName())) {
-//			String prefix = folderType;
-//
-//			if (!StringUtils.isEmpty(sampleName)
-//					&& !StringUtils.isEmpty(submitType)
-//					&& folderType.equals(Constants.FOLDER_PARTICLE)) {
-//				prefix += "/" + sampleName + "/";
-//				prefix += StringUtils
-//						.getOneWordLowerCaseFirstLetter(submitType);
-//			}
-//			String timestamp = DateUtils.convertDateToString(new Date(),
-//					"yyyyMMdd_HH-mm-ss-SSS");
-//
-//			return prefix + "/" + timestamp + "_" + file.getFileName();
-//		} else {
-//			return null;
-//		}
-//	}
 
 	// check whether the value is already stored in context
 	private Boolean isLookupInContext(HttpServletRequest request,
@@ -374,15 +350,7 @@ public class InitSetup {
 				new LabelValueBean("false", "0") };
 		appContext.setAttribute("booleanOptions", booleanOptions);
 
-//		LabelValueBean[] stringOperands = new LabelValueBean[] {
-//				new LabelValueBean(Constants.STRING_OPERAND_CONTAINS,
-//						Constants.STRING_OPERAND_CONTAINS),
-//				new LabelValueBean(Constants.STRING_OPERAND_EQUALS,
-//						Constants.STRING_OPERAND_EQUALS) };
-//		appContext.setAttribute("stringOperands", stringOperands);
-
-		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean(
-				"equals", "is") };
+		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean("equals", "is") };
 		appContext.setAttribute("booleanOperands", booleanOperands);
 
 		List<LabelValueBean> numberOperands = new ArrayList<LabelValueBean>();
@@ -390,13 +358,8 @@ public class InitSetup {
 		numberOperands.add( new LabelValueBean(">", ">"));
 		numberOperands.add(new LabelValueBean(">=", ">="));
 		numberOperands.add(new LabelValueBean("<=", "<="));
-		
-		
-			
-		appContext.setAttribute("numberOperands", numberOperands);
 
-//		appContext.setAttribute("allCompositionSections",
-//				CompositionBean.ALL_COMPOSITION_SECTIONS);
+		appContext.setAttribute("numberOperands", numberOperands);
 
 		// register page
 		LabelValueBean[] titleOperands = new LabelValueBean[] {
@@ -406,13 +369,6 @@ public class InitSetup {
 				new LabelValueBean("Miss", "Miss"),
 				new LabelValueBean("Ms.", "Ms.") };
 		appContext.setAttribute("titleOperands", titleOperands);
-
-//		LabelValueBean[] csmRoleNames = new LabelValueBean[] {
-//				new LabelValueBean(AccessibilityBean.R_ROLE_DISPLAY_NAME,
-//						AccessibilityBean.CSM_READ_ROLE),
-//				new LabelValueBean(AccessibilityBean.CURD_ROLE_DISPLAY_NAME,
-//						AccessibilityBean.CSM_CURD_ROLE) };
-//		appContext.setAttribute("csmRoleNames", csmRoleNames);
 	}
 	
 	public void setPublicCountInContext(ServletContext appContext) {

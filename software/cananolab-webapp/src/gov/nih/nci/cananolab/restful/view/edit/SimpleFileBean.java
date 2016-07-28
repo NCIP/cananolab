@@ -1,9 +1,8 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class SimpleFileBean {
 	String sampleId = "";
 	List<String> errors;
 	String externalUrl = "";
-	AccessibilityBean theAccess;
+	AccessControlInfo theAccess;
 	Boolean isPublic = false;
 	
 	
@@ -33,10 +32,10 @@ public class SimpleFileBean {
 	public void setIsPublic(Boolean isPublic) {
 		this.isPublic = isPublic;
 	}
-	public AccessibilityBean getTheAccess() {
+	public AccessControlInfo getTheAccess() {
 		return theAccess;
 	}
-	public void setTheAccess(AccessibilityBean theAccess) {
+	public void setTheAccess(AccessControlInfo theAccess) {
 		this.theAccess = theAccess;
 	}
 	public String getExternalUrl() {
@@ -111,9 +110,9 @@ public class SimpleFileBean {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public void transferSimpleFileBean(FileBean simpleBean,
-			HttpServletRequest request) {
-
+	
+	public void transferSimpleFileBean(FileBean simpleBean, HttpServletRequest request)
+	{
 		this.setDescription(simpleBean.getDescription());
 		this.setId(simpleBean.getDomainFile().getId());
 		this.setKeywordsStr(simpleBean.getKeywordsStr());
@@ -128,7 +127,6 @@ public class SimpleFileBean {
 		this.setTheAccess(simpleBean.getTheAccess());
 		this.setIsPublic(simpleBean.getPublicStatus());
 	}
-	
-	
+
 }
 

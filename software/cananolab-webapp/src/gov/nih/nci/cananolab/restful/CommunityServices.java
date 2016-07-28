@@ -1,17 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
-import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
-import gov.nih.nci.cananolab.restful.community.CollaborationGroupBO;
-import gov.nih.nci.cananolab.restful.community.CollaborationGroupManager;
-import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
-import gov.nih.nci.cananolab.restful.util.SecurityUtil;
-import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
-
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -23,15 +13,17 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
+import gov.nih.nci.cananolab.restful.community.CollaborationGroupBO;
+import gov.nih.nci.cananolab.restful.community.CollaborationGroupManager;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.util.Constants;
 
 @Path("/community")
-public class CommunityServices {
-	
-//	@Inject
-//	ApplicationContext applicationContext;
-	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
+public class CommunityServices
+{	
 	private static final Logger logger = Logger.getLogger(CommunityServices.class);
 	
 	@GET
@@ -41,12 +33,11 @@ public class CommunityServices {
 		logger.info("In getCollaborationGroups");
 				
 		try { 
-			CollaborationGroupBO collGroupBO = 
-					 (CollaborationGroupBO) applicationContext.getBean("collaborationGroupBO");
+			CollaborationGroupBO collGroupBO = (CollaborationGroupBO) SpringApplicationContext.getBean(httpRequest, "collaborationGroupBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (SpringSecurityUtil.getPrincipal() == null)
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			List<CollaborationGroupBean> existingGroups = collGroupBO.getExistingGroups(httpRequest);
 			
@@ -68,12 +59,11 @@ public class CommunityServices {
 		logger.info("In getCollaborationGroups");
 				
 		try { 
-			CollaborationGroupBO collGroupBO = 
-					 (CollaborationGroupBO) applicationContext.getBean("collaborationGroupBO");
+			CollaborationGroupBO collGroupBO = (CollaborationGroupBO) SpringApplicationContext.getBean(httpRequest, "collaborationGroupBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (SpringSecurityUtil.getPrincipal() == null)
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			 
 						
 			List<CollaborationGroupBean> beans = collGroupBO.create(groupBean, httpRequest);
@@ -96,12 +86,11 @@ public class CommunityServices {
 		logger.info("In getCollaborationGroups");
 				
 		try { 
-			CollaborationGroupBO collGroupBO = 
-					 (CollaborationGroupBO) applicationContext.getBean("collaborationGroupBO");
+			CollaborationGroupBO collGroupBO = (CollaborationGroupBO) SpringApplicationContext.getBean(httpRequest, "collaborationGroupBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (SpringSecurityUtil.getPrincipal() == null)
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			 
 						
 			List<CollaborationGroupBean> beans = collGroupBO.delete(groupBean, httpRequest);
@@ -124,12 +113,11 @@ public class CommunityServices {
 		logger.info("In editCollaborationGroup");
 				
 		try { 
-			CollaborationGroupManager collGroupManager = 
-					 (CollaborationGroupManager) applicationContext.getBean("collaborationGroupManger");
+			CollaborationGroupManager collGroupManager = (CollaborationGroupManager) SpringApplicationContext.getBean(httpRequest, "collaborationGroupManger");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (SpringSecurityUtil.getPrincipal() == null)
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			CollaborationGroupBean collaborationBean = collGroupManager.getCollaborationGroupById(httpRequest, groupId);
 			
@@ -147,16 +135,14 @@ public class CommunityServices {
 	@POST
 	@Path("/addUserAccess")
 	@Produces ("application/json")
-    public Response addUserAccess(@Context HttpServletRequest httpRequest, AccessibilityBean userAccess) {
+    public Response addUserAccess(@Context HttpServletRequest httpRequest, AccessControlInfo userAccess) {
 		logger.info("In addUserAccess for Collaboration group");
 				
 		try { 
-			CollaborationGroupManager collGroupManager = 
-					 (CollaborationGroupManager) applicationContext.getBean("collaborationGroupManger");
+			CollaborationGroupManager collGroupManager = (CollaborationGroupManager) SpringApplicationContext.getBean(httpRequest, "collaborationGroupManger");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			if (SpringSecurityUtil.getPrincipal() == null)
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			CollaborationGroupBean collaborationBean = collGroupManager.addUserAccess(httpRequest, userAccess);
 			
@@ -174,16 +160,15 @@ public class CommunityServices {
 	@POST
 	@Path("/deleteUserAccess")
 	@Produces ("application/json")
-    public Response deleteUserAccess(@Context HttpServletRequest httpRequest, AccessibilityBean userAccess) {
+    public Response deleteUserAccess(@Context HttpServletRequest httpRequest, AccessControlInfo userAccess) {
 		logger.info("In addUserAccess for Collaboration group");
 				
 		try { 
 			CollaborationGroupManager collGroupManager = 
-					 (CollaborationGroupManager) applicationContext.getBean("collaborationGroupManger");
+					 (CollaborationGroupManager) SpringApplicationContext.getBean(httpRequest, "collaborationGroupManger");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			if (SpringSecurityUtil.getPrincipal() == null)
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			CollaborationGroupBean collaborationBean = collGroupManager.deleteUserAccess(httpRequest, userAccess);
 			
@@ -204,12 +189,10 @@ public class CommunityServices {
 		logger.info("setup new CollaborationGroups");
 				
 		try { 
-			CollaborationGroupBO collGroupBO = 
-					 (CollaborationGroupBO) applicationContext.getBean("collaborationGroupBO");
+			CollaborationGroupBO collGroupBO = (CollaborationGroupBO) SpringApplicationContext.getBean(httpRequest, "collaborationGroupBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			if (SpringSecurityUtil.getPrincipal() == null)
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			collGroupBO.setupNew(httpRequest);
 			

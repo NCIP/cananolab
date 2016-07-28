@@ -69,8 +69,7 @@ public class BatchOwnershipTransferProcess extends LongRunningProcess {
 			long start = System.currentTimeMillis();
 			// generate data availability for sampleIds
 			int numFailures = 0;
-			transferService.transferOwner(dataService, dataIds, currentOwner,
-					newOwner);
+			transferService.transferOwner(dataService, dataIds, currentOwner, newOwner);
 			long end = System.currentTimeMillis();
 			long duration = (end - start) / 1000;
 			int numSuccesses = dataIds.size() - numFailures;

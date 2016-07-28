@@ -1,6 +1,6 @@
 #caNanoLab Wildfly setup scripts
 
-connect localhost:19990
+connect
 
 
 
@@ -17,8 +17,8 @@ if (outcome == success) of /system-property=gov.nih.nci.caNanoLab.wikihelpProper
 end-if
 
 
-/system-property=gov.nih.nci.security.configFile:add(value=/local/content/caNanoLab/config/ApplicationSecurityConfig.xml)
-/system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=/local/content/caNanoLab/config/wikihelp.properties)
+/system-property=gov.nih.nci.security.configFile:add(value=/Users/chandrasekaranp/local/content/caNanoLab/config/ApplicationSecurityConfig.xml)
+/system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=/Users/chandrasekaranp/local/content/caNanoLab/config/wikihelp.properties)
 
 
 ##############################################################

@@ -1,10 +1,9 @@
 package gov.nih.nci.cananolab.restful.util;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.util.SampleConstants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

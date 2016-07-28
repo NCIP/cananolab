@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.springframework.aop.framework.Advised;
+import org.springframework.stereotype.Component;
 
 /**
  * Customized to contain more CRUD operations.
@@ -32,29 +33,24 @@ import org.springframework.aop.framework.Advised;
  * @author pansu
  *
  */
-public class CaNanoLabApplicationServiceImpl extends WritableApplicationServiceImpl
-		implements CaNanoLabApplicationService {
+public class CaNanoLabApplicationServiceImpl extends WritableApplicationServiceImpl implements CaNanoLabApplicationService
+{
 	private ClassCache classCache;
 
-	private static Logger logger = Logger
-			.getLogger(CaNanoLabApplicationServiceImpl.class.getName());
+	private static Logger logger = Logger.getLogger(CaNanoLabApplicationServiceImpl.class.getName());
 
 	public CaNanoLabApplicationServiceImpl(ClassCache classCache) {
 		super(classCache);
 		this.classCache = classCache;
 	}
 
-	public Object load(Class domainClass, Serializable id)
-			throws ApplicationException {
-		CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache
-				.getDAOForClass(domainClass.getCanonicalName());
+	public Object load(Class domainClass, Serializable id) throws ApplicationException {
+		CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache.getDAOForClass(domainClass.getCanonicalName());
 		return dao.load(domainClass, id);
 	}
 
-	public Object get(Class domainClass, Serializable id)
-			throws ApplicationException {
-		CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache
-				.getDAOForClass(domainClass.getCanonicalName());
+	public Object get(Class domainClass, Serializable id) throws ApplicationException {
+		CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache.getDAOForClass(domainClass.getCanonicalName());
 		return dao.get(domainClass, id);
 	}
 

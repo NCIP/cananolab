@@ -9,10 +9,9 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -27,26 +26,26 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 //Copied from DWRPublicationManager
 
-public class PublicationManager {
-	Logger logger = Logger.getLogger(PublicationManager.class);
-	PublicationServiceLocalImpl service;
-	SecurityService securityService;
+@Component("publicationManager")
+public class PublicationManager
+{
+	private Logger logger = Logger.getLogger(PublicationManager.class);
+	
+	@Autowired
+	private SampleServiceHelper sampleServiceHelper;
+	
+	@Autowired
+	private PublicationService publicationService;
 
-	private PublicationServiceLocalImpl getService() {
-		WebContext wctx = WebContextFactory.get();
-		securityService = (SecurityService) wctx.getSession().getAttribute(
-				"securityService");
-		service = new PublicationServiceLocalImpl(securityService);
-		return service;
-	}
 
 	public PublicationBean clearPublication() {
 		WebContext wctx = WebContextFactory.get();
-		PublicationForm form = (PublicationForm) wctx.getSession()
-				.getAttribute("publicationForm");
+		PublicationForm form = (PublicationForm) wctx.getSession().getAttribute("publicationForm");
 		PublicationBean pbean = new PublicationBean();
 		if (form != null) {
 			form.setPublicationBean(pbean);  //("publication", pbean);
@@ -54,15 +53,13 @@ public class PublicationManager {
 		return pbean;
 	}
 
-	public PublicationBean searchPubMedById(String pubmedID, HttpServletRequest request) {
+	public PublicationBean searchPubMedById(String pubmedID, HttpServletRequest request)
+	{
 		// New a pubBean each time, so we know if parsing is success or not.
 		PublicationBean newPubBean = new PublicationBean();
-		SecurityService securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
-		PublicationServiceLocalImpl service = new PublicationServiceLocalImpl(securityService);
 		if (!StringUtils.isEmpty(pubmedID) && !pubmedID.equals("0")) {
 			try {
-				newPubBean = service.getPublicationFromPubMedXML(pubmedID);
+				newPubBean = publicationService.getPublicationFromPubMedXML(pubmedID);
 			} catch (Exception ex) {
 				logger.warn("Invalid PubMed ID: " + pubmedID);
 			}
@@ -70,10 +67,10 @@ public class PublicationManager {
 		return newPubBean;
 	}
 
-	public PublicationBean retrievePubMedInfo(String pubmedID, PublicationForm form, HttpServletRequest request) {
+	public PublicationBean retrievePubMedInfo(String pubmedID, PublicationForm form, HttpServletRequest request)
+	{
 //		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user == null) {
+		if (SpringSecurityUtil.getPrincipal() == null) {
 			return null;
 		}
 				
@@ -86,33 +83,28 @@ public class PublicationManager {
 		return publicationBean;
 	}
 
-	public String getExistingPubMedPublication(String pubmedID, HttpServletRequest request) {
+	public String getExistingPubMedPublication(String pubmedID, HttpServletRequest request)
+	{
 		String publicationId = null;
 		try {
-			SecurityService securityService = (SecurityService) request
-					.getSession().getAttribute("securityService");
-			PublicationServiceLocalImpl service = new PublicationServiceLocalImpl(securityService);
-			Publication publication = service.getHelper()
-					.findPublicationByKey("pubMedId", new Long(pubmedID));
+			Publication publication = publicationService.getPublicationServiceHelper().findPublicationByKey("pubMedId", new Long(pubmedID));
 			if (publication != null) {
 				publicationId = publication.getId().toString();
 			}
 		} catch (NoAccessException ne) {
-			logger.info("User can't access the publication with Pub Med ID "
-					+ pubmedID);
+			logger.info("User can't access the publication with Pub Med ID " + pubmedID);
 			publicationId="no access";
 		} catch (Exception e) {
-			logger.info("Error in retrieving publication with Pub Med ID "
-					+ pubmedID);
+			logger.info("Error in retrieving publication with Pub Med ID " + pubmedID);
 		}
 		return publicationId;
 	}
 
-	public String getExistingDOIPublication(String doi) {
+	public String getExistingDOIPublication(String doi)
+	{
 		String publicationId = null;
 		try {
-			Publication publication = getService().getHelper()
-					.findPublicationByKey("digitalObjectId", doi);
+			Publication publication = publicationService.getPublicationServiceHelper().findPublicationByKey("digitalObjectId", doi);
 			if (publication != null) {
 				publicationId = publication.getId().toString();
 			}
@@ -125,20 +117,16 @@ public class PublicationManager {
 		return publicationId;
 	}
 
-	public String getExistingNonPubMedDOIPublication(String category,
-			String title, Author firstAuthor) {
+	public String getExistingNonPubMedDOIPublication(String category, String title, Author firstAuthor)
+	{
 		String publicationId = null;
 		Publication publication = null;
 		try {
 			if (firstAuthor != null) {
-				publication = getService().getHelper()
-						.findNonPubMedNonDOIPublication(category, title,
-								firstAuthor.getFirstName(),
-								firstAuthor.getLastName());
+				publication = publicationService.getPublicationServiceHelper().findNonPubMedNonDOIPublication(category, title,
+								firstAuthor.getFirstName(), firstAuthor.getLastName());
 			} else {
-				publication = getService().getHelper()
-						.findNonPubMedNonDOIPublication(category, title, null,
-								null);
+				publication = publicationService.getPublicationServiceHelper().findNonPubMedNonDOIPublication(category, title, null, null);
 			}
 			if (publication != null) {
 				publicationId = publication.getId().toString();
@@ -152,10 +140,11 @@ public class PublicationManager {
 		return publicationId;
 	}
 
-	public PublicationBean getExistingPublicationById(String id) {
+	public PublicationBean getExistingPublicationById(String id)
+	{
 		PublicationBean dbPubBean = null;
 		try {
-			dbPubBean = getService().findPublicationById(id, false);
+			dbPubBean = publicationService.findPublicationById(id, false);
 		} catch (NoAccessException ne) {
 			logger.info("User can't access the publication with ID " + id);
 		} catch (Exception e) {
@@ -172,8 +161,7 @@ public class PublicationManager {
 	 */
 	public PublicationBean retrieveCurrentPub() {
 		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		if (user == null) {
+		if (SpringSecurityUtil.getPrincipal() == null) {
 			return null;
 		}
 		PublicationForm form = (PublicationForm) wctx.getSession()
@@ -223,23 +211,17 @@ public class PublicationManager {
 	}
 
 	public String[] getMatchedSampleNames(String searchStr) {
-		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		if (user == null) {
+		if (SpringSecurityUtil.getPrincipal() == null) {
 			return null;
 		}
-		try {
-			SampleServiceHelper sampleHelper = (SampleServiceHelper) (getService()
-					.getSampleHelper());
-			List<String> sampleNames = sampleHelper
-					.findSampleNamesBy(searchStr);
+		try
+		{
+			List<String> sampleNames = sampleServiceHelper.findSampleNamesBy(searchStr);
 			Collections.sort(sampleNames,
 					new Comparators.SortableNameComparator());
 			return sampleNames.toArray(new String[sampleNames.size()]);
 		} catch (Exception e) {
-			logger.error(
-					"Problem getting all sample names for publication submission \n",
-					e);
+			logger.error("Problem getting all sample names for publication submission \n", e);
 			return new String[] { "" };
 		}
 	}
@@ -282,7 +264,7 @@ public class PublicationManager {
 		Integer counts = 0;
 
 		try {
-			counts = getService().getNumberOfPublicPublications();
+			counts = publicationService.getNumberOfPublicPublications();
 		} catch (Exception e) {
 			logger.error("Error obtaining counts of public publications from local site.");
 		}
@@ -308,10 +290,7 @@ public class PublicationManager {
 		PublicationBean pubBean = null;
 		List<Sample> samples = null;
 		try {
-			SecurityService securityService = (SecurityService) request
-					.getSession().getAttribute("securityService");
-			PublicationServiceLocalImpl service = new PublicationServiceLocalImpl(securityService);
-			pubBean = service.findPublicationByKey(key, val, false);
+			pubBean = publicationService.findPublicationByKey(key, val, false);
 		
 			if (pubBean == null) {
 				List<String> errors = new ArrayList<String>();
@@ -322,7 +301,7 @@ public class PublicationManager {
 			}
 			
 			long pubId = pubBean.getDomainFile().getId().longValue();
-			samples = service.getHelper().findSamplesByPublicationId(pubId);
+			samples = publicationService.getPublicationServiceHelper().findSamplesByPublicationId(pubId);
 			
 		} catch (NoAccessException ne) {
 			logger.info("User can't access the publication with DOI/PubMed Id: " + id);

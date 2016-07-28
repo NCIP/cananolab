@@ -34,9 +34,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.map.annotate.JsonFilter;
-
 /**
  * This class represents shared properties of samples to be shown in the view
  * pages.
@@ -366,8 +363,7 @@ public class SampleBean extends SecuredDataBean {
 	public Sample getDomainCopy(String createdBy) {
 		Sample copy = (Sample) ClassUtils.deepCopy(domain);
 		copy.setId(null);
-		copy.setCreatedBy(createdBy + ":"
-				+ Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		copy.setCreatedBy(createdBy + ":" + Constants.AUTO_COPY_ANNOTATION_PREFIX);
 
 		// copy characterizations
 		Collection<Characterization> oldChars = copy
@@ -387,8 +383,7 @@ public class SampleBean extends SecuredDataBean {
 		if (copy.getSampleComposition() != null) {
 			// correctly set the other end of the association
 			copy.getSampleComposition().setSample(copy);
-			CompositionBean compBean = new CompositionBean(copy
-					.getSampleComposition());
+			CompositionBean compBean = new CompositionBean(copy.getSampleComposition());
 			compBean.resetDomainCopy(createdBy, copy.getSampleComposition());
 		}
 

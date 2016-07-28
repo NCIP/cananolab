@@ -122,38 +122,17 @@
       <!-- right sidebar begins -->
       <table summary="layout" cellpadding="0" cellspacing="0" border="0" class="sidebarSectionNoTop">
         <!-- login begins -->
-        <tr>
+        <tr ng-show="loginShow">
           <td class="sidebarTitle">
           USER ACTIONS<!-- <a href="#" class="loginText">Login</a> &nbsp; <a href="#"
                class="loginText" onClick="javascript:location.href='register.jsp';">Register</a>&nbsp;&nbsp;
                <a class="loginText"href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/1+-+Getting+Started+in+caNanoLab#id-1-GettingStartedincaNanoLab-LoggingintocaNanoLab')">Help</a> -->
              </td>
            </tr>
-           <tr>
+           <tr ng-show="loginShow">
             <td class="sidebarContent">
               <br />
               <b>No account is required to browse publicly available data.</b>
-            </td>
-          </tr>
-          <tr>
-            <td class="sidebarContent">
-              <label for="User Actions">
-              </label>
-                <select name="userActions" ng-model="userActions" name="select" id="User Actions">
-                <option selected="selected" value="1">
-                  Browse publicly available data
-                </option>
-                <option value="2">
-                  Login to submit data
-                </option>
-                <option value="3">
-                  Register for a login account
-                </option>
-                <option value="4">
-                  Reset password
-                </option>
-              </select> 
-              <button class="btn btn-success btn-xs" ng-click="doUserAction()">Go</button>
             </td>
           </tr>
           <tr>
@@ -180,68 +159,19 @@
                   </tr>
                   <tr>
                     <td>
+                    <!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
                      
                     </td>
                     <td align="left">
 
                       <input type="submit" value="Login" ng-click="loginDo()" />
+                      
                     </td>
                   </tr>
                 </table></form>
                 <div id="authErrors" ng-model="authErrors" ng-show="authErrors">
                   {{authErrors}}
                 </div>
-              </div>
-              <div id="resetBlock" ng-show="resetPasswordShow">
-                <div class="spacer"></div><!-- <form name="loginForm" id="loginForm" method="post" action="/caNanoLab/login.do;jsessionid=9944D3BC5DD5C7F3DB8EC210CC50424C"> -->
-                <table class="resetBlock" summary="layout">
-                  <tr>
-                    <td>
-                      <label for="login ID">LOGIN ID</label>
-                    </td>
-                    <td>
-                      <input type="text" name="reset_loginId" ng-model="reset_loginId" size="14" id="login ID" ng-init="reset_loginId=''" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label for="old_password">OLD PASSWORD</label>
-                    </td>
-                    <td>
-                      <input type="password" name="old_password" size="14" id="old_password" autocomplete="off" ng-model="old_password" ng-init="old_password=''" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label for="new_password">NEW PASSWORD</label>
-                    </td>
-                    <td>
-                      <input type="password" name="new_password" size="14" id="new_password" autocomplete="off" ng-model="new_password" ng-init="new_password=''" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label for="confirm_new_password">CONFIRM NEW PASSWORD</label>
-                    </td>
-                    <td>
-                      <input type="password" name="confirm_new_password" size="14" id="confirm_new_password" autocomplete="off" ng-model="confirm_new_password" ng-init="confirm_new_password=''" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                     
-                    </td>
-                    <td align="left">
-                      <input type="submit" ng-disabled="resettingPassword" value="Reset Password" ng-click="resetDo()" />
-                    </td>
-                  </tr>
-                </table><!-- </form> -->
-                <div id="resetErrors" ng-repeat="e in errorMessages track by $index">{{e}}</div>
-                <div id="authErrors" ng-model="authErrors" ng-show="authErrors">
-                  {{authErrors}}
-                </div>
-
-                <div id="authErrors" ng-show="resettingPassword">Please Wait</div>
               </div><br />              
             </td>
           </tr>

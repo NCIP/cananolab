@@ -2,8 +2,7 @@ package gov.nih.nci.cananolab.restful.protocol;
 
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.SortedSet;
@@ -13,29 +12,25 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class ProtocolManager {
+@Component("protocolManager")
+public class ProtocolManager
+{
+	private Logger logger = Logger.getLogger(ProtocolManager.class);
+	
+	@Autowired
+	private ProtocolService protocolService;
 
-	Logger logger = Logger.getLogger(ProtocolManager.class);
-	ProtocolServiceLocalImpl service;
-	SecurityService securityService;
-
-	private ProtocolServiceLocalImpl getService() {
-		WebContext wctx = WebContextFactory.get();
-		securityService = (SecurityService) wctx.getSession().getAttribute(
-				"securityService");
-		service = new ProtocolServiceLocalImpl(securityService);
-		return service;
-	}
-
-	public String[] getProtocolTypes() {
+	public String[] getProtocolTypes()
+	{
 		WebContext webContext = WebContextFactory.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
 		try {
 			SortedSet<String> types = null;
 			types = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(
-					request, "protocolTypes", "protocol", "type", "otherType",
-					true);
+					request, "protocolTypes", "protocol", "type", "otherType", true);
 			types.add("");
 			String[] eleArray = new String[types.size()];
 			return types.toArray(eleArray);
@@ -54,15 +49,10 @@ public class ProtocolManager {
 			return null;
 		}
 		try {
-			SecurityService securityService = (SecurityService) request
-					.getSession().getAttribute("securityService");
-			service = new ProtocolServiceLocalImpl(securityService);
-			ProtocolBean protocolBean = service.findProtocolBy(
-					protocolType, protocolName, protocolVersion);
+			ProtocolBean protocolBean = protocolService.findProtocolBy(protocolType, protocolName, protocolVersion);
 			if (protocolBean != null
 					&& protocolBean.getDomain().getFile() != null
-					&& !StringUtils.xssValidate(protocolBean.getDomain()
-							.getFile().getUri())) {
+					&& !StringUtils.xssValidate(protocolBean.getDomain().getFile().getUri())) {
 				return null;
 			}
 			return protocolBean;
@@ -77,12 +67,10 @@ public class ProtocolManager {
 			return null;
 		}
 		try {
-			ProtocolBean protocolBean = getService().findProtocolById(
-					protocolId);
+			ProtocolBean protocolBean = protocolService.findProtocolById(protocolId);
 			if (protocolBean != null
 					&& protocolBean.getDomain().getFile() != null
-					&& !StringUtils.xssValidate(protocolBean.getDomain()
-							.getFile().getUri())) {
+					&& !StringUtils.xssValidate(protocolBean.getDomain().getFile().getUri())) {
 				return null;
 			}
 			return protocolBean;
@@ -92,10 +80,11 @@ public class ProtocolManager {
 		return null;
 	}
 
-	public String getPublicCounts() {
+	public String getPublicCounts()
+	{
 		Integer counts = 0;
 		try {
-			counts = getService().getHelper().getNumberOfPublicProtocols();
+			counts = protocolService.getHelper().getNumberOfPublicProtocols();
 		} catch (Exception e) {
 			logger.error("Error obtaining counts of public protocols from local site.");
 		}

@@ -11,11 +11,19 @@ L-->
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-lazy-init="false" default-dependency-check="none"
 	default-autowire="no">
+	
+	<jee:jndi-lookup id="dataSource" jndi-name="java:/caNanoLab"  />
+
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="txManager" />
 
 	<!-- Bean Definitions for Admin Services -->
 	<bean id="caNanoLabDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
-			<value>java:/caNanoLab</value>
+			<value>java:jboss/datasources/caNanoLab</value>
 		</property>
 	</bean>
 

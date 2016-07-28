@@ -22,6 +22,7 @@ L-->
 		<property name="jdbc.use_streams_for_binary">true</property>
 		<property name="cache.use_query_cache">false</property>
 		<property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+		<property name="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</property>
 
 		<!-- Mapped Resources -->
 		<mapping resource="gov/nih/nci/cananolab/domain/common/Finding.hbm.xml" />

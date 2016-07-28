@@ -31,6 +31,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * Methods for DWR Ajax
@@ -38,6 +39,7 @@ import org.directwebremoting.WebContextFactory;
  * @author pansu, tanq
  *
  */
+@Component("characterizationResultManager")
 public class CharacterizationResultManager {
 	
 	private Logger logger = Logger.getLogger(CharacterizationResultManager.class);

@@ -4,8 +4,6 @@ import java.util.Date;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.restful.util.SecurityUtil;
-import gov.nih.nci.cananolab.service.security.UserBean;
 
 public class SimpleSearchPublicationBean {
 	
@@ -136,7 +134,7 @@ public class SimpleSearchPublicationBean {
 	}
 
 
-	public void transferSampleBeanForBasicResultView(PublicationBean bean, UserBean user) {
+	public void transferSampleBeanForBasicResultView(PublicationBean bean) {
 		try{
 			if (bean == null) return;
 

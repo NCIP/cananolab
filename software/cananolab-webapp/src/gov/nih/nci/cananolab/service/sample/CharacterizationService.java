@@ -75,6 +75,8 @@ public interface CharacterizationService extends BaseService {
 
 	public int getNumberOfPublicCharacterizations(
 			String characterizationClassName) throws CharacterizationException;
+	
+	public int getNumberOfPublicCharacterizationsForJob(List<String> characterizationClassName) throws CharacterizationException;
 
 	public List<String> findOtherCharacterizationByAssayCategory(
 			String assayCategory) throws CharacterizationException;

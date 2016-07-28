@@ -1,5 +1,21 @@
 package gov.nih.nci.cananolab.restful.sample;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
+
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
@@ -18,7 +34,6 @@ import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
-import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
@@ -29,33 +44,36 @@ import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
-import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+@Component("nanomaterialEntityBO")
+public class NanomaterialEntityBO extends BaseAnnotationBO
+{
+	@Autowired
+	private CompositionService compositionService;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+	@Autowired
+	private CurationService curationServiceDAO;
 
+	@Autowired
+	private SampleService sampleService;
 
-public class NanomaterialEntityBO extends BaseAnnotationBO{
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	/**
 	 * Add or update the data to database
 	 * 
@@ -72,7 +90,6 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		List<String> msgs = new ArrayList<String>();
 		String sampleId = nanoBean.getSampleId();
 		NanomaterialEntityBean entityBean = transferNanoMateriaEntityBean(nanoBean, request);  
-		this.setServicesInSession(request);
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 		List<String> otherSampleNames = nanoBean.getOtherSampleNames();
 		msgs = validateInputs(request, entityBean);
@@ -132,14 +149,13 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			NanomaterialEntityBean entityBean)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
-		this.setServicesInSession(request);
-
 		SampleBean sampleBean = setupSampleById(sampleId, request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+		
 		Boolean newEntity = true;
 
 		try {
-			entityBean.setupDomainEntity(user.getLoginName());
+			entityBean.setupDomainEntity(userDetails.getUsername());
 			if (entityBean.getDomainEntity().getId() != null) {
 				newEntity = false;
 			}
@@ -159,11 +175,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 				.getSession().getAttribute("compositionService");
 		compService.saveNanomaterialEntity(sampleBean, entityBean);
 		
-		// retract from public if updating an existing public record and not
-		// curator
-		if (!newEntity && !user.isCurator() && sampleBean.getPublicStatus()) {
-			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
-					.toString(), sampleBean.getDomain().getName(), "sample");
+		// retract from public if updating an existing public record and not curator
+		if (!newEntity && !userDetails.isCurator() && 
+			springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			retractFromPublic(sampleId, request, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
 			msgs.add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
 			return msgs;
 		}
@@ -302,7 +317,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			throws Exception {
 		NanomaterialEntityBean entityBean = new NanomaterialEntityBean();
 		// set up other particles with the same primary point of contact
-		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
 		this.setLookups(request);
 		this.checkOpenForms(entityBean, request);
 		// clear copy to otherSamples
@@ -316,17 +331,15 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	//	entityId = super.validateId(request, "dataId");
 		CompositionForm form = new CompositionForm();
 		// set up other particles with the same primary point of contact
-		CompositionService compService = this.setServicesInSession(request);
-		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
 
-		NanomaterialEntityBean entityBean = compService
-				.findNanomaterialEntityById(entityId);
+		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(entityId);
 		form.setNanomaterialEntity(entityBean);
 		form.setOtherSamples(new String[0]);
 		this.checkOpenForms(entityBean, request);
 		request.getSession().setAttribute("sampleId", sampleId);
 		SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
-		nano.transferNanoMaterialEntityBeanToSimple(entityBean, request);
+		nano.transferNanoMaterialEntityBeanToSimple(entityBean, request, springSecurityAclService);
 		return nano;
 	}
 
@@ -334,10 +347,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 		String entityId = super.validateId(request, "dataId");
-		CompositionService compService = this.setServicesInSession(request);
-
-		NanomaterialEntityBean entityBean = compService
-				.findNanomaterialEntityById(entityId);
+		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(entityId);
 		request.setAttribute("nanomaterialEntity", entityBean);
 		String detailPage = null;
 		if (entityBean.isWithProperties()) {
@@ -347,13 +357,13 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		request.setAttribute("entityDetailPage", detailPage);
 	}
 
-	public SimpleNanomaterialEntityBean saveComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
+	public SimpleNanomaterialEntityBean saveComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception
+	{
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
 		String sampleId = nanoBean.getSampleId();
 		List<String> msgs =new ArrayList<String>();
 		ComposingElementBean composingElement = entity.getTheComposingElement();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		composingElement.setupDomain(user.getLoginName());
+		composingElement.setupDomain(SpringSecurityUtil.getLoggedInUserName());
 		entity.addComposingElement(composingElement);
 		
 		// save nanomaterial entity
@@ -372,10 +382,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 
 		// return to setupUpdate to retrieve the correct entity from database
 		// after saving to database.
-		request.setAttribute("dataId", entity.getDomainEntity().getId()
-				.toString());
-		return setupUpdate(sampleId, entity.getDomainEntity().getId()
-				.toString(), request);
+		request.setAttribute("dataId", entity.getDomainEntity().getId().toString());
+		return setupUpdate(sampleId, entity.getDomainEntity().getId().toString(), request);
 	}
 
 	private NanomaterialEntityBean transferNanoMateriaEntityBean(
@@ -389,11 +397,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		//Managed to get the sampleComposition in the backend to avoid lazy loading things
 		
 		SampleComposition sampleComp = null;
-		SecurityService securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
-			CompositionServiceHelper helper = new CompositionServiceHelper(securityService);
-			try {
-				sampleComp = helper.findCompositionBySampleId(nanoBean.getSampleId()
+		try {
+				sampleComp = compositionService.getHelper().findCompositionBySampleId(nanoBean.getSampleId()
 						.toString());
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
@@ -767,12 +772,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
 		ComposingElementBean composingElement = entity.getTheComposingElement();
 		// check if composing element is associated with an association
-		CompositionServiceLocalImpl compService = (CompositionServiceLocalImpl) (this
-				.setServicesInSession(request));
 		SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
-		if (!compService.checkChemicalAssociationBeforeDelete(entity
-				.getDomainEntity().getSampleComposition(), composingElement
-				.getDomain())) {
+		if (!compositionService.checkChemicalAssociationBeforeDelete(entity
+				.getDomainEntity().getSampleComposition(), composingElement.getDomain())) {
 			throw new ChemicalAssociationViolationException(
 					"The composing element is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
 		}
@@ -783,25 +785,20 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			return nano;
 		}
 		this.saveEntity(request, nanoBean.getSampleId(), entity);
-		compService.removeAccesses(entity.getDomainEntity(),
-				composingElement.getDomain());
+		compositionService.removeAccesses(entity.getDomainEntity(), composingElement.getDomain());
 		this.checkOpenForms(entity, request);
-		return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId()
-				.toString(), request);
+		return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
 	}
 
-	public SimpleNanomaterialEntityBean saveFile(SimpleNanomaterialEntityBean nanoBean,
-			HttpServletRequest request)
-			throws Exception {
+	public SimpleNanomaterialEntityBean saveFile(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception
+	{
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
 		FileBean theFile = entity.getTheFile();
-		this.setServicesInSession(request);
 		SampleBean sampleBean = setupSampleById(nanoBean.getSampleId(), request); 
 		// setup domainFile uri for fileBean
 		String internalUriPath = Constants.FOLDER_PARTICLE + '/'
 				+ sampleBean.getDomain().getName() + '/' + "nanomaterialEntity";
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		theFile.setupDomainFile(internalUriPath, user.getLoginName());
+		theFile.setupDomainFile(internalUriPath, SpringSecurityUtil.getLoggedInUserName());
 		
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
@@ -831,19 +828,13 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			return nano;
 		}
 		this.saveEntity(request,nanoBean.getSampleId(), entity);
-		// comp service has already been created
-		CompositionService compService = (CompositionService) request
-				.getSession().getAttribute("compositionService");
-		compService.assignAccesses(entity.getDomainEntity()
-				.getSampleComposition(), theFile.getDomainFile());
+		compositionService.assignAccesses(entity.getDomainEntity().getSampleComposition(), theFile.getDomainFile());
 
 		request.setAttribute("anchor", "file");
-		request.setAttribute("dataId", entity.getDomainEntity().getId()
-				.toString());
+		request.setAttribute("dataId", entity.getDomainEntity().getId().toString());
 		 request.getSession().removeAttribute("newFileData");
 
-		return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId()
-				.toString(), request);
+		return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
 	}
 
 	public SimpleNanomaterialEntityBean removeFile(SimpleNanomaterialEntityBean nanoBean,
@@ -877,12 +868,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
-		CompositionService compositionService = this
-				.setServicesInSession(request);
 		NanomaterialEntityBean entityBean = transferNanoMateriaEntityBean(nanoBean, request);
 		
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		entityBean.setupDomainEntity(user.getLoginName());
+		entityBean.setupDomainEntity(SpringSecurityUtil.getLoggedInUserName());
 		compositionService.deleteNanomaterialEntity(entityBean
 				.getDomainEntity());
 		compositionService.removeAccesses(entityBean.getDomainEntity());
@@ -935,20 +923,6 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 		}
 	}
 
-	private CompositionService setServicesInSession(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-
-		CompositionService compService = new CompositionServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("compositionService", compService);
-		SampleService sampleService = new SampleServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("sampleService", sampleService);
-		return compService;
-	}
-
 	public String download(String fileId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -962,11 +936,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 	//	entityId = super.validateId(request, "dataId");
 		CompositionForm form = new CompositionForm();
 		// set up other particles with the same primary point of contact
-		CompositionService compService = this.setServicesInSession(request);
-		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
 
-		NanomaterialEntityBean entityBean = compService
-				.findNanomaterialEntityById(entityId);
+		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(entityId);
 		form.setNanomaterialEntity(entityBean);
 		form.setOtherSamples(new String[0]);
 		this.checkOpenForms(entityBean, request);
@@ -975,4 +947,25 @@ public class NanomaterialEntityBO extends BaseAnnotationBO{
 //		nano.transferNanoMaterialEntityBeanToSimple(entityBean, request);
 		return entityBean;
 	}
+
+	@Override
+	public CurationService getCurationServiceDAO() {
+		return this.curationServiceDAO;
+	}
+
+	@Override
+	public SampleService getSampleService() {
+		return this.sampleService;
+	}
+
+	@Override
+	public SpringSecurityAclService getSpringSecurityAclService() {
+		return springSecurityAclService;
+	}
+
+	@Override
+	public UserDetailsService getUserDetailsService() {
+		return userDetailsService;
+	}
+
 }

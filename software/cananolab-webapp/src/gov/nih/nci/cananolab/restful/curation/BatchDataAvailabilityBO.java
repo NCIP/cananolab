@@ -1,17 +1,5 @@
 package gov.nih.nci.cananolab.restful.curation;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
-import gov.nih.nci.cananolab.restful.util.PropertyUtil;
-import gov.nih.nci.cananolab.service.common.LongRunningProcess;
-import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
-import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.BatchDataAvailabilityProcess;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.ui.form.GenerateBatchDataAvailabilityForm;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,19 +7,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class BatchDataAvailabilityBO extends AbstractDispatchBO {
-	private DataAvailabilityService dataAvailabilityService;
+import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.service.common.LongRunningProcess;
+import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
+import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.impl.BatchDataAvailabilityProcess;
+import gov.nih.nci.cananolab.ui.form.GenerateBatchDataAvailabilityForm;
+
+@Component("batchDataAvailabilityBO")
+public class BatchDataAvailabilityBO extends AbstractDispatchBO
+{
+	@Autowired
+	private DataAvailabilityService dataAvailabilityServiceDAO;
+	
+	@Autowired
+	private SampleService sampleService;
+	
 	private static final int CUT_OFF_NUM_SAMPLES = 30;
-
-	public DataAvailabilityService getDataAvailabilityService() {
-		return dataAvailabilityService;
-	}
-
-	public void setDataAvailabilityService(
-			DataAvailabilityService dataAvailabilityService) {
-		this.dataAvailabilityService = dataAvailabilityService;
-	}
 
 	public void setupNew(GenerateBatchDataAvailabilityForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -51,11 +47,6 @@ public class BatchDataAvailabilityBO extends AbstractDispatchBO {
 		List<String> messages = new ArrayList<String>();
 		String option = form.getOption();
 		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-		SecurityService securityService = new SecurityService(
-				AccessibilityBean.CSM_APP_NAME, user);
-		SampleService sampleService = new SampleServiceLocalImpl(
-				securityService);
 
 		List<String> sampleIdsToRun = new ArrayList<String>();
 		if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION1)) {
@@ -64,14 +55,12 @@ public class BatchDataAvailabilityBO extends AbstractDispatchBO {
 					null, null, null, null, null, null, null);
 		} else {
 			// find samplesIds with existing data availability
-			sampleIdsToRun = dataAvailabilityService
-					.findSampleIdsWithDataAvailability(securityService);
+			sampleIdsToRun = dataAvailabilityServiceDAO.findSampleIdsWithDataAvailability();
 		}
 		// empty sampleIds
 		if (sampleIdsToRun.isEmpty()) {
 			if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION2)
-					|| option
-							.equals(BatchDataAvailabilityProcess.BATCH_OPTION3)) {
+					|| option.equals(BatchDataAvailabilityProcess.BATCH_OPTION3)) {
 				messages.add(PropertyUtil.getProperty("application", "message.batchDataAvailability.empty.metrics"));
 			} else {
 				
@@ -85,16 +74,13 @@ public class BatchDataAvailabilityBO extends AbstractDispatchBO {
 		if (sampleIdsToRun.size() < CUT_OFF_NUM_SAMPLES) {
 			int failures = 0;
 			if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION1)
-					|| option
-							.equals(BatchDataAvailabilityProcess.BATCH_OPTION2)) {
-				failures = dataAvailabilityService.saveBatchDataAvailability(
-						sampleIdsToRun, securityService);
+					|| option.equals(BatchDataAvailabilityProcess.BATCH_OPTION2)) {
+				failures = dataAvailabilityServiceDAO.saveBatchDataAvailability(sampleIdsToRun);
 
 				messages.add("You've successfully generated data availability metrics for "+sampleIdsToRun.size()+" sample(s).");
 			}
 			if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION3)) {
-				failures = dataAvailabilityService.deleteBatchDataAvailability(
-						sampleIdsToRun, securityService);
+				failures = dataAvailabilityServiceDAO.deleteBatchDataAvailability(sampleIdsToRun);
 
 				messages.add("You've successfully deleted data availability metrics for "+sampleIdsToRun.size() +"-"+failures +" sample(s).");
 			}
@@ -114,9 +100,7 @@ public class BatchDataAvailabilityBO extends AbstractDispatchBO {
 		BatchDataAvailabilityProcess batchProcess = (BatchDataAvailabilityProcess) session
 				.getAttribute("BatchDataAvailabilityProcess");
 		if (batchProcess == null) {
-			this.startThreadForBatchProcess(batchProcess, session,
-					sampleIdsToRun, dataAvailabilityService, securityService,
-					option, user);
+			this.startThreadForBatchProcess(batchProcess, session, sampleIdsToRun, dataAvailabilityServiceDAO, option);
 		} else {
 			if (!batchProcess.isComplete()) {
 
@@ -152,13 +136,12 @@ public class BatchDataAvailabilityBO extends AbstractDispatchBO {
 	private void startThreadForBatchProcess(
 			BatchDataAvailabilityProcess batchProcess, HttpSession session,
 			List<String> sampleIdsToRun,
-			DataAvailabilityService dataAvailabilityService,
-			SecurityService securityService, String option, UserBean user)
+			DataAvailabilityService dataAvailabilityService, String option)
 			throws Exception {
 		session.setAttribute("hasResultsWaiting", true);
 		batchProcess = new BatchDataAvailabilityProcess(
-				dataAvailabilityService, securityService, sampleIdsToRun,
-				option, user);
+				dataAvailabilityService, sampleIdsToRun,
+				option);
 		batchProcess.process();
 		session.setAttribute("BatchDataAvailabilityProcess", batchProcess);
 		// obtain the list of long running processes

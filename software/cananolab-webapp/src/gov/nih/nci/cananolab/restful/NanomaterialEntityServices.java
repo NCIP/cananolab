@@ -1,20 +1,16 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
+import gov.nih.nci.cananolab.restful.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvacedSampleCompositionBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -26,17 +22,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/nanomaterialEntity")
 public class NanomaterialEntityServices {
 	
 	private static final Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
-	
-//	@Inject
-//	ApplicationContext applicationContext;
-	private static final ApplicationContext applicationContext = ApplicationContextBO.getApplicationContextBO();
 	
 	@GET
 	@Path("/setup")
@@ -45,7 +35,7 @@ public class NanomaterialEntityServices {
 				
 		try {
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
 			Map<String, Object> dropdownMap = nanomaterialEntityBO.setupNew(sampleId, httpRequest);
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
@@ -62,9 +52,8 @@ public class NanomaterialEntityServices {
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
+			if (SpringSecurityUtil.getPrincipal() == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
@@ -88,9 +77,8 @@ public class NanomaterialEntityServices {
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
+			if (SpringSecurityUtil.getPrincipal() == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
@@ -114,9 +102,8 @@ public class NanomaterialEntityServices {
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
+			if (SpringSecurityUtil.getPrincipal() == null)
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
@@ -138,9 +125,8 @@ public class NanomaterialEntityServices {
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
+			if (SpringSecurityUtil.getPrincipal() == null)
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
@@ -166,9 +152,8 @@ public class NanomaterialEntityServices {
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
+			if (SpringSecurityUtil.getPrincipal() == null)
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
@@ -193,10 +178,8 @@ public class NanomaterialEntityServices {
     public Response submit(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean) {
 				
 		try { 
-			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+			NanomaterialEntityBO nanomaterialEntityBO = (NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
+			if (SpringSecurityUtil.getPrincipal() == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 				
@@ -217,9 +200,8 @@ public class NanomaterialEntityServices {
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
+			if (SpringSecurityUtil.getPrincipal() == null) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 				
@@ -240,7 +222,7 @@ public class NanomaterialEntityServices {
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
-					(NanomaterialEntityBO) applicationContext.getBean("nanomaterialEntityBO");
+					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
 						
 			NanomaterialEntityBean entityBean = nanomaterialEntityBO.setupNanoEntityForAdvSearch(sampleId, dataId, httpRequest);
 			

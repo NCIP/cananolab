@@ -12,62 +12,53 @@ L-->
 	version="3.0">
 	<display-name>caNanoLab</display-name>
 	
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 	<context-param>
-    <param-name>resteasy.scan</param-name>
-    <param-value>true</param-value>
-  </context-param>
+    	<param-name>resteasy.scan</param-name>
+    	<param-value>true</param-value>
+	</context-param>
 
-  <context-param>
-    <param-name>resteasy.servlet.mapping.prefix</param-name>
-    <param-value>/rest</param-value>
-  </context-param>   
+ 	<context-param>
+	 	<param-name>resteasy.servlet.mapping.prefix</param-name>
+	    <param-value>/rest</param-value>
+	</context-param>   
   
-  <context-param>
-            <param-name>resteasy.resources</param-name>
-            <param-value>gov.nih.nci.cananolab.restful.CoreServices</param-value>
-        </context-param>  
-
-  <listener>
-    <listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
-  </listener>
-  
- 	<servlet>
-		<servlet-name>dwr-invoker</servlet-name>
-		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-		<init-param>
-			<param-name>debug</param-name>
-			<param-value>true</param-value>
-		</init-param>
-	</servlet>
-<!-- 	<servlet>
-        <servlet-name>Jersey Web Application</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-        <init-param>
-            <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>gov.nih.nci.cananolab.restful org.codehaus.jackson.jaxrs</param-value>
-        </init-param>
-		<init-param>
-    		<param-name>jersey.config.disableMoxyJson.server</param-name>
-    		<param-value>true</param-value>
-		</init-param>
-		<init-param>
-		    <param-name>jersey.config.server.provider.classnames</param-name>
-		    <param-value>org.glassfish.jersey.media.multipart.MultiPartFeature;org.glassfish.jersey.media.multipart.FormDataContentDisposition</param-value>
-		</init-param>		
-		
-        <load-on-startup>1</load-on-startup>
-    </servlet>   -->
+	<context-param>
+		<param-name>resteasy.resources</param-name>
+		<param-value>gov.nih.nci.cananolab.restful.CoreServices</param-value>
+	</context-param>
+	
+	<context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext-strutsless.xml,
+        			/WEB-INF/applicationContextSpringSecurity.xml</param-value>
+    </context-param>
     
+    <listener>
+    	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  	</listener>
+
+	<listener>
+    	<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+	</listener>    
     
     <servlet>
 	    <servlet-name>resteasy-servlet</servlet-name>
 	    <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
     </servlet>
-
-  <servlet-mapping>
-    <servlet-name>resteasy-servlet</servlet-name>
-    <url-pattern>/rest/*</url-pattern>
-  </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>resteasy-servlet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
   
 	<servlet>
 		<servlet-name>file_upload</servlet-name>
@@ -77,32 +68,24 @@ L-->
 		<servlet-name>file_upload</servlet-name>
 		<url-pattern>/uploadFile</url-pattern>
 	</servlet-mapping>     
-	
-	 <servlet-mapping>
+
+ 	<servlet>
+		<servlet-name>dwr-invoker</servlet-name>
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
 		<servlet-name>dwr-invoker</servlet-name>
 		<url-pattern>/dwr/*</url-pattern>
-	</servlet-mapping> 
-	
-	<!-- <servlet-mapping>
-        <servlet-name>Jersey Web Application</servlet-name>
-        <url-pattern>/rest/*</url-pattern>
-    </servlet-mapping>   -->
-   
-   
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext-strutsless.xml</param-value>
-    </context-param>
-    
-    <listener>
-    	<listener-class>
-      		org.springframework.web.context.ContextLoaderListener
-    	</listener-class>
-  	</listener>
+	</servlet-mapping>
   	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
+	
 	<jsp-config>
 		<jsp-property-group>
 			<url-pattern>*.jsp</url-pattern>

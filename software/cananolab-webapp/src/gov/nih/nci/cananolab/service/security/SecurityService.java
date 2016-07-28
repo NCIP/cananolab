@@ -81,8 +81,7 @@ public class SecurityService {
 		}
 	}
 
-	public SecurityService(String applicationName, UserBean userBean)
-			throws SecurityException {
+	public SecurityService(String applicationName, UserBean userBean) throws SecurityException {
 		this(applicationName);
 		if (userBean != null) {
 			try {
@@ -522,8 +521,7 @@ public class SecurityService {
 	public List<String> getAllUserAccessibleData() throws ApplicationException {
 		List<String> data = new ArrayList<String>();
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			if (userBean == null) {
 				return new ArrayList<String>(appService.getAllPublicData());
 			}

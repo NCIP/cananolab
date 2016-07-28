@@ -8,21 +8,20 @@
 
 package gov.nih.nci.cananolab.service;
 
-import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
-import gov.nih.nci.cananolab.service.protocol.ProtocolService;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
-import gov.nih.nci.cananolab.service.publication.PublicationService;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.CharacterizationService;
-import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.util.DateUtils;
+import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
+import gov.nih.nci.cananolab.security.enums.CharacterizationEnum;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.sample.CharacterizationService;
+import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.util.DateUtils;
 
 /**
  * A Scheduler job for pulling public data counts from the database
@@ -30,22 +29,30 @@ import org.quartz.JobExecutionException;
  * @author pansu
  * 
  */
-public class PublicDataCountJob implements Job {
-	private static Logger logger = Logger
-			.getLogger(PublicDataCountJob.class.getName());
+public class PublicDataCountJob extends QuartzJobBean
+{
+	private static Logger logger = Logger.getLogger(PublicDataCountJob.class.getName());
+	
 	private static PublicDataCountBean dataCounts;
 
-	public PublicDataCountJob() {
-	}
+	private SampleService sampleService;
+	private ProtocolService protocolService;
+	private PublicationService publicationService;
+	private CharacterizationService characterizationService;
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
 	 */
-	public void execute(JobExecutionContext context)
-			throws JobExecutionException {
-		queryPublicDataCounts();
+	public void executeInternal(JobExecutionContext context) throws JobExecutionException 
+	{
+		try {
+			queryPublicDataCounts();
+		} catch (Exception e) {
+			new JobExecutionException(e);
+		}
+		
 	}
 
 	public void queryPublicDataCounts() {
@@ -54,26 +61,32 @@ public class PublicDataCountJob implements Job {
 		dataCountBean.setNumOfPublicSources(getPublicSampleSourceCount());
 		dataCountBean.setNumOfPublicPublications(getPublicPublicationCount());
 		dataCountBean.setNumOfPublicProtocols(getPublicProtocolCount());
-		dataCountBean
-				.setNumOfPublicCharacterizations(getPublicCharacterizationCount("Characterization"));
-		dataCountBean
-				.setNumOfPublicPhysicoChemicalCharacterizations(getPublicCharacterizationCount("PhysicoChemicalCharacterization"));
-		dataCountBean
-				.setNumOfPublicInvitroCharacterizations(getPublicCharacterizationCount("InvitroCharacterization"));
-		dataCountBean
-				.setNumOfPublicInvivoCharacterizations(getPublicCharacterizationCount("InvivoCharacterization"));
-		dataCountBean
-				.setNumOfPublicOtherCharacterizations(getPublicCharacterizationCount("OtherCharacterization"));
+		
+		int physicoCharacterizationCount = getPublicCharacterizationCount(CharacterizationEnum.PHYSICO);
+		dataCountBean.setNumOfPublicPhysicoChemicalCharacterizations(physicoCharacterizationCount);
+		
+		int invitroCharacterizationCount = getPublicCharacterizationCount(CharacterizationEnum.INVITRO);
+		dataCountBean.setNumOfPublicInvitroCharacterizations(invitroCharacterizationCount);
+		
+		int invivoCharacterizationCount = getPublicCharacterizationCount(CharacterizationEnum.INVIVO);
+		dataCountBean.setNumOfPublicInvivoCharacterizations(invivoCharacterizationCount);
+		
+		int otherCharacterizationCount = getPublicCharacterizationCount(CharacterizationEnum.OTHER);
+		dataCountBean.setNumOfPublicOtherCharacterizations(otherCharacterizationCount);
+		
+		//dataCountBean.setNumOfPublicCharacterizations(getPublicCharacterizationCount("Characterization"));
+		dataCountBean.setNumOfPublicCharacterizations(physicoCharacterizationCount + invitroCharacterizationCount + invivoCharacterizationCount + otherCharacterizationCount);
+		
 		//current time
 		dataCountBean.setCountDateString(DateUtils.now());
 		dataCounts = dataCountBean;		
 	}
 
-	private Integer getPublicSampleCount() {
+	private Integer getPublicSampleCount() 
+	{
 		Integer count = 0;
-		SampleService service = new SampleServiceLocalImpl();
 		try {
-			count = service.getNumberOfPublicSamples();
+			count = sampleService.getNumberOfPublicSamplesForJob();
 		} catch (Exception e) {
 			logger.error("Error obtaining counts of public samples from local site.");
 		}
@@ -82,10 +95,8 @@ public class PublicDataCountJob implements Job {
 
 	private Integer getPublicSampleSourceCount() {
 		Integer count = 0;
-		SampleService service = null;
 		try {
-			service = new SampleServiceLocalImpl();
-			count = service.getNumberOfPublicSampleSources();
+			count = sampleService.getNumberOfPublicSampleSourcesForJob();
 		} catch (Exception e) {
 			logger.error("Error obtaining counts of public sample sources from local site.");
 		}
@@ -94,10 +105,8 @@ public class PublicDataCountJob implements Job {
 
 	private Integer getPublicProtocolCount() {
 		Integer count = 0;
-		ProtocolService service = null;
 		try {
-			service = new ProtocolServiceLocalImpl();
-			count = service.getNumberOfPublicProtocols();
+			count = protocolService.getNumberOfPublicProtocolsForJob();
 		} catch (Exception e) {
 			logger.error("Error obtaining counts of public protocols from local site.");
 		}
@@ -106,27 +115,21 @@ public class PublicDataCountJob implements Job {
 
 	private Integer getPublicPublicationCount() {
 		Integer count = 0;
-		PublicationService service = null;
 		try {
-			service = new PublicationServiceLocalImpl();
-			count = service.getNumberOfPublicPublications();
+			count = publicationService.getNumberOfPublicPublicationsForJob();
 		} catch (Exception e) {
 			logger.error("Error obtaining counts of public publications from local site.");
 		}
 		return count;
 	}
 
-	private Integer getPublicCharacterizationCount(
-			String characterizationClassName) {
-		Integer count = 0;
-		CharacterizationService service = null;
+	private int getPublicCharacterizationCount(CharacterizationEnum charEnum)
+	{
+		int count = 0;
 		try {
-			service = new CharacterizationServiceLocalImpl();
-			count = service
-					.getNumberOfPublicCharacterizations(characterizationClassName);
+			count = characterizationService.getNumberOfPublicCharacterizationsForJob(charEnum.getSubChars());
 		} catch (Exception e) {
-			logger.error("Error obtaining counts of public characterizations of type "
-					+ characterizationClassName + " from local site.");
+			logger.error("Error obtaining counts of public characterizations of type " + charEnum + " from local site.");
 		}
 		return count;
 	}
@@ -134,4 +137,21 @@ public class PublicDataCountJob implements Job {
 	public PublicDataCountBean getPublicDataCounts() {
 		return dataCounts;
 	}
+
+	public void setSampleService(SampleService sampleService) {
+		this.sampleService = sampleService;
+	}
+
+	public void setProtocolService(ProtocolService protocolService) {
+		this.protocolService = protocolService;
+	}
+
+	public void setPublicationService(PublicationService publicationService) {
+		this.publicationService = publicationService;
+	}
+
+	public void setCharacterizationService(CharacterizationService characterizationService) {
+		this.characterizationService = characterizationService;
+	}
+
 }

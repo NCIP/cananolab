@@ -10,20 +10,17 @@ package gov.nih.nci.cananolab.restful.community;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.community.CommunityService;
-import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 //import org.apache.struts.validator.DynaValidatorForm;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 
 /**
  * Methods for DWR Ajax
@@ -31,17 +28,17 @@ import org.directwebremoting.WebContextFactory;
  * @author pansu
  *
  */
-public class CollaborationGroupManager {
-	private CommunityService service;
+@Component("collaborationGroupManger")
+public class CollaborationGroupManager
+{
 	private Logger logger = Logger.getLogger(CollaborationGroupManager.class);
-	private SecurityService securityService;
-
-	private CommunityService getService(HttpServletRequest request) throws Exception {
-		securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
-		service = new CommunityServiceLocalImpl(securityService);
-		return service;
-	}
+	
+	@Autowired
+	private CommunityService communityService;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 
 //	public CollaborationGroupBean resetTheCollaborationGroup() {
 //		DynaValidatorForm collaborationGroupForm = (DynaValidatorForm) (WebContextFactory
@@ -54,37 +51,32 @@ public class CollaborationGroupManager {
 //		return group;
 //	}
 //
-	public CollaborationGroupBean getCollaborationGroupById(HttpServletRequest request, String id)
-			throws Exception {
-		
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user == null) {
+	public CollaborationGroupBean getCollaborationGroupById(HttpServletRequest request, String id)throws Exception
+	{
+		if (SpringSecurityUtil.getPrincipal() == null) {
 			return null;
 		}
-		CollaborationGroupBean group = getService(request).findCollaborationGroupById(
-				id);
+		CollaborationGroupBean group = communityService.findCollaborationGroupById(id);
 		request.getSession().setAttribute("group", group);
 		return group;
 	}
 
-	public CollaborationGroupBean addUserAccess(HttpServletRequest request, AccessibilityBean userAccess)
-			throws Exception {
+	public CollaborationGroupBean addUserAccess(HttpServletRequest request, AccessControlInfo userAccess) throws Exception{
 
 		CollaborationGroupBean group = (CollaborationGroupBean) (request.getSession().getAttribute("group"));
 		if(group == null){
 			group = new CollaborationGroupBean();
 		}
 		// check whether user is a valid user
-		getService(request);
-		String userLogin = userAccess.getUserBean().getLoginName();
 		CollaborationGroupBean bogusGroup=new CollaborationGroupBean();
-		if (!securityService.isUserValid(userLogin)) {
+		if (userDetailsService.loadUserByUsername(userAccess.getRecipient()) == null)
+		{
 			bogusGroup.setName("!!invalid user");
 			throw new Exception("!!invalid user");
 			//return bogusGroup;
 		}
 		// if the user is already a curator, don't add the user
-		else if (securityService.isCurator(userLogin)) {
+		else if (SpringSecurityUtil.getPrincipal().isCurator()) {
 			bogusGroup.setName("!!user is a curator");
 			throw new Exception("!!user is a curator");
 			//return bogusGroup;
@@ -93,7 +85,7 @@ public class CollaborationGroupManager {
 		return group;
 	}
 
-	public CollaborationGroupBean deleteUserAccess(HttpServletRequest request, AccessibilityBean userAccess)
+	public CollaborationGroupBean deleteUserAccess(HttpServletRequest request, AccessControlInfo userAccess)
 			throws Exception {
 		CollaborationGroupBean group = (CollaborationGroupBean) (request.getSession().getAttribute("group"));
 		group.removeUserAccess(userAccess);

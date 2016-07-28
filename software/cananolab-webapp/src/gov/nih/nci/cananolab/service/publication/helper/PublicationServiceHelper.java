@@ -3,9 +3,10 @@ package gov.nih.nci.cananolab.service.publication.helper;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.BaseServiceHelper;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.dao.AclDao;
+import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -35,6 +36,8 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Helper class providing implementations of search methods needed for both
@@ -42,20 +45,16 @@ import org.hibernate.criterion.Restrictions;
  * 
  * @author tanq, pansu
  */
-public class PublicationServiceHelper extends BaseServiceHelper {
+@Component("publicationServiceHelper")
+public class PublicationServiceHelper
+{
 	private Logger logger = Logger.getLogger(PublicationServiceHelper.class);
-
-	public PublicationServiceHelper() {
-		super();
-	}
-
-	public PublicationServiceHelper(UserBean user) {
-		super(user);
-	}
-
-	public PublicationServiceHelper(SecurityService securityService) {
-		super(securityService);
-	}
+	
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
+	private AclDao aclDao;
 
 	public List<String> findPublicationIdsBy(String title, String category,
 			String sampleName, String[] researchArea, String[] keywords,
@@ -109,8 +108,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		//
 		// added created date and title to allow sorting on date and title
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
-				.setProjection(
-						Projections.projectionList()
+				.setProjection(Projections.projectionList()
 								.add(Projections.property("id"))
 								.add(Projections.property("title"))
 								.add(Projections.property("createdDate")));
@@ -190,8 +188,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 			crit.add(disjunction);
 		}
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		List results = appService.query(crit);
 		for(int i = 0; i < results.size(); i++){
 			Object[] row = (Object[]) results.get(i);
@@ -233,28 +230,27 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		// get ordered ids
 		List<String> orderedPubIds = new ArrayList<String>();
 		for (Publication pub : orderedPubs) {
-			if (getAccessibleData().contains(pub.getId().toString())) {
+			if (springSecurityAclService.currentUserHasReadPermission(pub.getId(), SecureClassesEnum.PUBLICATION.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(pub.getId(), SecureClassesEnum.PUBLICATION.getClazz())) {
 				orderedPubIds.add(pub.getId().toString());
 			} else {
 				// ignore no access exception
-				logger.debug("User doesn't have access to publication with id "
-						+ pub.getId());
+				logger.debug("User doesn't have access to publication with id " + pub.getId());
 			}
 		}
 		return orderedPubIds;
 	}
 
-	public Publication findPublicationById(String publicationId)
-			throws Exception {
-		if (!getAccessibleData().contains(publicationId)) {
-			throw new NoAccessException(
-					"User has no access to the publication " + publicationId);
+	public Publication findPublicationById(String publicationId) throws Exception
+	{
+		Long pubId = Long.valueOf(publicationId);
+		if (!springSecurityAclService.currentUserHasReadPermission(pubId, SecureClassesEnum.PUBLICATION.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(pubId, SecureClassesEnum.PUBLICATION.getClazz())) {
+			throw new NoAccessException("User has no access to the publication " + publicationId);
 		}
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
-				.add(Property.forName("id").eq(new Long(publicationId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class).add(Property.forName("id").eq(pubId));
 		crit.setFetchMode("authorCollection", FetchMode.JOIN);
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -280,7 +276,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		Publication publication = null;
 		if (!result.isEmpty()) {
 			publication = (Publication) result.get(0);
-			if (getAccessibleData().contains(publication.getId().toString())) {
+			if (springSecurityAclService.currentUserHasReadPermission(publication.getId(), SecureClassesEnum.PUBLICATION.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(publication.getId(), SecureClassesEnum.PUBLICATION.getClazz())) {
 				return publication;
 			} else {
 				throw new NoAccessException();
@@ -290,41 +287,47 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 	}
 
 	public int getNumberOfPublicPublications() throws Exception {
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select id from gov.nih.nci.cananolab.domain.common.Publication");
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		HQLCriteria crit = new HQLCriteria("select id from gov.nih.nci.cananolab.domain.common.Publication");
 		List results = appService.query(crit);
 		int count = 0;
-		for(int i = 0; i< results.size(); i++){
-			String id = (String) results.get(i).toString();
-			if (getAccessibleData().contains(id)) {
+		for(int i = 0; i< results.size(); i++)
+		{
+			Long id = Long.valueOf(results.get(i).toString());
+			if (springSecurityAclService.checkObjectPublic(id, SecureClassesEnum.PUBLICATION.getClazz()))
 				count++;
-			}
 		}
 		return count;
 	}
 
-	public String[] findSampleNamesByPublicationId(String publicationId)
-			throws Exception {
-		if (!getAccessibleData().contains(publicationId)) {
-			throw new NoAccessException(
-					"User has no access to the publication " + publicationId);
-		} 
-		// check if user have access to publication first
+	public int getNumberOfPublicPublicationsForJob() throws Exception
+	{
+		List<Long> publicData = aclDao.getIdsOfClassForSid(SecureClassesEnum.PUBLICATION.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
+		int cnt = (publicData != null) ? publicData.size() : 0;
+		return cnt;
+	}
 
+	public String[] findSampleNamesByPublicationId(String publicationId) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(publicationId), SecureClassesEnum.PUBLICATION.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(publicationId), SecureClassesEnum.PUBLICATION.getClazz())) {
+			throw new NoAccessException("User has no access to the publication " + publicationId);
+		} 
+		
+		// check if user have access to publication first
 		String query = "select sample.name, sample.id from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
 				+ publicationId + "'";
 		HQLCriteria crit = new HQLCriteria(query);
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		
 		List results = appService.query(crit);
 		SortedSet<String> names = new TreeSet<String>();
 		for (int i = 0; i < results.size(); i++) {
 			Object[] row = (Object[]) results.get(i);
 			String sampleName = row[0].toString();
 			String sampleId = row[1].toString();
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+			if (springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 				names.add(sampleName);
 			} else {
 				logger.debug("User doesn't have access to sample " + sampleName);
@@ -333,51 +336,46 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		return names.toArray(new String[0]);
 	}
 
-	public List<Publication> findPublicationsBySampleId(String sampleId)
-			throws Exception {
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
-			throw new NoAccessException("User has no access to the sample "
-					+ sampleId);
+	public List<Publication> findPublicationsBySampleId(String sampleId) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to the sample " + sampleId);
 		}
+		
 		List<Publication> publications = new ArrayList<Publication>();
 		Sample sample = null;
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(new Long(sampleId)));
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection.authorCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection.keywordCollection",
-				FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.authorCollection", FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.keywordCollection", FetchMode.JOIN);
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
 		}
 		for (Object obj : sample.getPublicationCollection()) {
 			Publication pub = (Publication) obj;
-			if (getAccessibleData().contains(pub.getId().toString())) {
+			if (springSecurityAclService.currentUserHasReadPermission(pub.getId(), SecureClassesEnum.PUBLICATION.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(pub.getId(), SecureClassesEnum.PUBLICATION.getClazz())) {
 				publications.add(pub);
 			} else {
-				logger.debug("User doesn't have access ot publication with id "
-						+ pub.getId());
+				logger.debug("User doesn't have access ot publication with id " + pub.getId());
 			}
 		}
 		return publications;
 	}
 
-	private List<Publication> findPublicationsBySampleName(String sampleName)
-			throws Exception {
+	private List<Publication> findPublicationsBySampleName(String sampleName) throws Exception
+	{
 		List<Publication> publications = new ArrayList<Publication>();
 		Sample sample = null;
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
 		TextMatchMode nameMatchMode = new TextMatchMode(sampleName);
-		crit.add(Restrictions.ilike("name", nameMatchMode.getUpdatedText(),
-				nameMatchMode.getMatchMode()));
+		crit.add(Restrictions.ilike("name", nameMatchMode.getUpdatedText(), nameMatchMode.getMatchMode()));
 		
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		List result = appService.query(crit);
@@ -393,20 +391,19 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 			for( Object robj: result ) {
 				sample = (Sample) robj;
 				
-				if (StringUtils.containsIgnoreCase(getAccessibleData(), sample
-						.getId().toString())) {
+				if (springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()) ||
+					springSecurityAclService.currentUserHasWritePermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz())) {
 					for (Object obj : sample.getPublicationCollection()) {
 						Publication pub = (Publication) obj;
-						if (getAccessibleData().contains(pub.getId().toString())) {
+						if (springSecurityAclService.currentUserHasReadPermission(pub.getId(), SecureClassesEnum.PUBLICATION.getClazz()) ||
+							springSecurityAclService.currentUserHasWritePermission(pub.getId(), SecureClassesEnum.PUBLICATION.getClazz())) {
 							publications.add(pub);
 						} else {
-							logger.debug("User doesn't have access to publication with id "
-									+ pub.getId());
+							logger.debug("User doesn't have access to publication with id " + pub.getId());
 						}
 					}
 				} else {
-					logger.debug("User doesn't have access ot sample with id "
-							+ sample.getId());
+					logger.debug("User doesn't have access ot sample with id " + sample.getId());
 				}
 				
 			}
@@ -557,19 +554,17 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		List results = appService.query(crit);
 		for (Object result : results) {
 			sample = (Sample) result;
-			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
-					.getId().toString())) {
-				logger.debug("User doesn't have access to sample with id "
-						+ sample.getId());
-
+			if (!springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()) &&
+				!springSecurityAclService.currentUserHasWritePermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+				logger.debug("User doesn't have access to sample with id " + sample.getId());
 			} else {
 				for (Object obj : sample.getPublicationCollection()) {
 					Publication pub = (Publication) obj;
-					if (getAccessibleData().contains(pub.getId().toString())) {
+					if (springSecurityAclService.currentUserHasReadPermission(pub.getId(), SecureClassesEnum.PUBLICATION.getClazz()) ||
+						springSecurityAclService.currentUserHasWritePermission(pub.getId(), SecureClassesEnum.PUBLICATION.getClazz())) {
 						publications.add(pub);
 					} else {
-						logger.debug("User doesn't have access to publication with id "
-								+ pub.getId());
+						logger.debug("User doesn't have access to publication with id " + pub.getId());
 					}
 				}
 			}
@@ -622,7 +617,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		Publication publication = null;
 		for (int i = 0; i < results.size(); i++) {
 			publication = (Publication) results.get(i);
-			if (getAccessibleData().contains(publication.getId().toString())) {
+			if (springSecurityAclService.currentUserHasReadPermission(publication.getId(), SecureClassesEnum.PUBLICATION.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(publication.getId(), SecureClassesEnum.PUBLICATION.getClazz())) {
 				return publication;
 			} else {
 				throw new NoAccessException();
@@ -631,37 +627,31 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		return publication;
 	}
 
-	public List<String> findPublicationIdsByOwner(String currentOwner)
-			throws Exception {
+	public List<String> findPublicationIdsByOwner(String currentOwner) throws Exception
+	{
 		List<String> publicationIds = new ArrayList<String>();
-		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
-				.setProjection(
-						Projections.projectionList().add(
-								Projections.property("id")));
+		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class).setProjection(Projections.projectionList().add(Projections.property("id")));
 		Criterion crit1 = Restrictions.eq("createdBy", currentOwner);
 		// in case of copy createdBy is like lijowskim:COPY
-		Criterion crit2 = Restrictions.like("createdBy", currentOwner + ":",
-				MatchMode.START);
+		Criterion crit2 = Restrictions.like("createdBy", currentOwner + ":", MatchMode.START);
 		crit.add(Expression.or(crit1, crit2));
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		List results = appService.query(crit);
-		List<String> accessibleData = getAccessibleData();
 		for(int i = 0; i < results.size(); i++){
 			String publicationId = results.get(i).toString();
-			if (accessibleData.contains(publicationId)) {
+			Long pubId = Long.valueOf(publicationId);
+			if (springSecurityAclService.currentUserHasReadPermission(pubId, SecureClassesEnum.PUBLICATION.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(pubId, SecureClassesEnum.PUBLICATION.getClazz())) {
 				publicationIds.add(publicationId);
 			} else {
-				logger.debug("User doesn't have access to publication of ID: "
-						+ publicationId);
+				logger.debug("User doesn't have access to publication of ID: " + publicationId);
 			}
 		}
 		return publicationIds;
 	}
 
-	private static class PublicationDateComparator implements
-			Comparator<Publication> {
+	private static class PublicationDateComparator implements Comparator<Publication> {
 		public int compare(Publication pub1, Publication pub2) {
 			return pub1.getCreatedDate().compareTo(pub2.getCreatedDate());
 		}
@@ -702,16 +692,15 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 
 				Long sampleId = (Long) row[0];
 
-				if (StringUtils.containsIgnoreCase(getAccessibleData(),
-						sampleId.toString())) {
+				if (springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) ||
+					springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
 					Sample sample = new Sample();
 					sample.setId(sampleId);
 					sample.setName((String) row[1]);
 					sample.setCreatedDate((Date) row[2]);
 					samples.add(sample);
 				} else {
-					logger.debug("User doesn't have access to sample of ID: "
-							+ sampleId);
+					logger.debug("User doesn't have access to sample of ID: " + sampleId);
 				}
 
 			} catch (ClassCastException e) {

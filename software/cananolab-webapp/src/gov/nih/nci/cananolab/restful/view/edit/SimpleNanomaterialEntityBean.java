@@ -26,6 +26,8 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -222,8 +224,8 @@ public class SimpleNanomaterialEntityBean {
 		this.isCrossLinked = isCrossLinked;
 	}
 
-	public void transferNanoMaterialEntityBeanToSimple(
-			NanomaterialEntityBean bean, HttpServletRequest httpRequest) {
+	public void transferNanoMaterialEntityBeanToSimple(NanomaterialEntityBean bean, HttpServletRequest httpRequest, SpringSecurityAclService springSecurityAclService)
+	{
 		NanomaterialEntity nanoEntity = bean.getDomainEntity();
 		setSampleId((String) httpRequest.getSession().getAttribute("sampleId"));
 		setType(bean.getType());
@@ -283,7 +285,8 @@ public class SimpleNanomaterialEntityBean {
 			fBean.setCreatedBy(file.getDomainFile().getCreatedBy());
 			fBean.setCreatedDate(file.getDomainFile().getCreatedDate());
 			fBean.setTheAccess(file.getTheAccess());
-			fBean.setIsPublic(file.getPublicStatus());
+			boolean isPublic = springSecurityAclService.checkObjectPublic(file.getDomainFile().getId(), SecureClassesEnum.FILE.getClazz());
+			fBean.setIsPublic(isPublic);
 			files.add(fBean);
 		}
 		setFiles(files);

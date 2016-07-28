@@ -8,6 +8,21 @@
 
 package gov.nih.nci.cananolab.restful.sample;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
+
 /**
  * This class searches canano metadata based on user supplied criteria
  *
@@ -18,33 +33,15 @@ import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
-import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
-import gov.nih.nci.cananolab.restful.util.SampleUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchResultView;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchSampleBean;
-import gov.nih.nci.cananolab.service.common.LookupService;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleExporter;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.ui.form.AdvancedSampleSearchForm;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
 
 //import org.apache.struts.action.ActionForm;
 //import org.apache.struts.action.ActionForward;
@@ -53,9 +50,22 @@ import org.apache.log4j.Logger;
 //import org.apache.struts.action.ActionMessages;
 //import org.apache.struts.validator.DynaValidatorForm;
 
-public class AdvancedSampleSearchBO extends BaseAnnotationBO {
-	
+@Component("advancedSampleSearchBO")
+public class AdvancedSampleSearchBO extends BaseAnnotationBO
+{
 	private Logger logger = Logger.getLogger(AdvancedSampleSearchBO.class);
+
+	@Autowired
+	private CurationService curationServiceDAO;
+
+	@Autowired
+	private SampleService sampleService;
+
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
 
 	// Partial URL for viewing detailed sample info from Excel report file.
 	public static final String VIEW_SAMPLE_URL = "sample.do?dispatch=summaryView&page=0";
@@ -67,9 +77,6 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		session
 		.setAttribute("advancedSampleSearchBean",
 				searchBean);
-		this.setServiceInSession(request);
-		SampleService service = (SampleService) request.getSession()
-				.getAttribute("sampleService");
 		
 //		searchBean.updateQueries();
 //		
@@ -106,7 +113,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		for (AdvancedSampleBean sampleBean : sampleBeans) {
 
 			String sampleId = sampleBean.getSampleId();
-			AdvancedSampleBean loadedAdvancedSample = service
+			AdvancedSampleBean loadedAdvancedSample = sampleService
 					.findAdvancedSampleByAdvancedSearch(sampleId,
 							searchBean);
 			loadedSampleBeans.add(loadedAdvancedSample);
@@ -118,9 +125,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		// save sample result set in session for printing.
 		//session.setAttribute("samplesResultList", sampleBeansPerPage);
 		//return mapping.findForward("success");
-		SimpleAdvancedSearchResultView resultView = 
-				transfertoSimpleSampleBeans(loadedSampleBeans, (UserBean)session.getAttribute("user"),
-						searchBean);
+		SimpleAdvancedSearchResultView resultView = transfertoSimpleSampleBeans(loadedSampleBeans, searchBean);
 		
 		return resultView;
 	}
@@ -159,11 +164,10 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 			if (samplesFullList == null) {
 				samplesFullList = new ArrayList<AdvancedSampleBean>(
 						sampleSearchResult.size());
-				SampleService service = this.setServiceInSession(request);
 				for (AdvancedSampleBean sample : sampleSearchResult) {
 					String sampleId = sample.getSampleId();
 					AdvancedSampleBean loadedAdvancedSample = null;
-					loadedAdvancedSample = service
+					loadedAdvancedSample = sampleService
 							.findAdvancedSampleByAdvancedSearch(sampleId,
 									searchBean);
 					samplesFullList.add(loadedAdvancedSample);
@@ -195,10 +199,6 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 	public SimpleAdvancedSearchResultView print(HttpServletRequest request, AdvancedSampleSearchBean searchBean)
 			throws Exception {
 		HttpSession session = request.getSession();
-
-		this.setServiceInSession(request);
-		SampleService service = (SampleService) request.getSession()
-				.getAttribute("sampleService");
 		
 		// 1.Get total sample list from session for total result size.
 		List<AdvancedSampleBean> sampleBeans = (List<AdvancedSampleBean>) session
@@ -227,9 +227,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		for (AdvancedSampleBean sampleBean : sampleBeans) {
 
 			String sampleId = sampleBean.getSampleId();
-			AdvancedSampleBean loadedAdvancedSample = service
-					.findAdvancedSampleByAdvancedSearch(sampleId,
-							searchBean);
+			AdvancedSampleBean loadedAdvancedSample = sampleService.findAdvancedSampleByAdvancedSearch(sampleId, searchBean);
 			loadedSampleBeans.add(loadedAdvancedSample);
 			
 			logger.debug("Processing sample #: " + idx++);
@@ -239,21 +237,14 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		// save sample result set in session for printing.
 		//session.setAttribute("samplesResultList", sampleBeansPerPage);
 		//return mapping.findForward("success");
-		SimpleAdvancedSearchResultView resultView = 
-				transfertoSimpleSampleBeans(loadedSampleBeans, (UserBean)session.getAttribute("user"),
-						searchBean);
+		SimpleAdvancedSearchResultView resultView = transfertoSimpleSampleBeans(loadedSampleBeans, searchBean);
 		
 		return resultView;
 	}
 
-	private List<AdvancedSampleBean> querySamples(HttpServletRequest request, AdvancedSampleSearchBean searchBean) 
-			throws Exception {
-		
-		SampleService service = (SampleService) request.getSession()
-				.getAttribute("sampleService");
-		
-		List<String> sampleNames = service
-				.findSampleIdsByAdvancedSearch(searchBean);
+	private List<AdvancedSampleBean> querySamples(HttpServletRequest request, AdvancedSampleSearchBean searchBean) throws Exception
+	{		
+		List<String> sampleNames = sampleService.findSampleIdsByAdvancedSearch(searchBean);
 		List<AdvancedSampleBean> sampleBeans = new ArrayList<AdvancedSampleBean>();
 		for (String name : sampleNames) {
 			AdvancedSampleBean sampleBean = new AdvancedSampleBean(name);
@@ -311,14 +302,13 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 //		return loadedSampleBeans;
 //	}
 
-	public void validateSetup(HttpServletRequest request)
-			throws Exception {
+	public void validateSetup(HttpServletRequest request) throws Exception
+	{
 		// clear the search results and start over
 		request.getSession().removeAttribute("advancedSampleSearchResults");
 		request.getSession().removeAttribute("samplesResultList");
 		request.getSession().removeAttribute("samplesFullList");
-		request
-				.setAttribute(
+		request.setAttribute(
 						"onloadJavascript",
 						"displaySampleQueries(); displayCompositionQueries(); displayCharacterizationQueries()");
 		//return mapping.findForward("inputForm");
@@ -373,8 +363,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 	 */
 	private static String getExportFileName() {
 		StringBuilder sb = new StringBuilder("Advanced_Sample_Search_Report_");
-		sb.append(DateUtils.convertDateToString(Calendar.getInstance()
-				.getTime()));
+		sb.append(DateUtils.convertDateToString(Calendar.getInstance().getTime()));
 		return sb.toString();
 	}
 
@@ -393,24 +382,12 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 
 		return sb.toString();
 	}
-
-	private SampleService setServiceInSession(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-
-		SampleService sampleService = new SampleServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("sampleService", sampleService);
-		return sampleService;
-	}
 	
 	/**
 	 * 
 	 */
-	protected SimpleAdvancedSearchResultView transfertoSimpleSampleBeans(List<AdvancedSampleBean> sampleBeans,
-			UserBean user, AdvancedSampleSearchBean searchBean) {
-		
+	protected SimpleAdvancedSearchResultView transfertoSimpleSampleBeans(List<AdvancedSampleBean> sampleBeans, AdvancedSampleSearchBean searchBean)
+	{		
 		SimpleAdvancedSearchResultView resultView = new SimpleAdvancedSearchResultView();
 		resultView.createColumnTitles(searchBean.getQueryAsColumnNames());
 	
@@ -419,13 +396,33 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO {
 		for (AdvancedSampleBean bean : sampleBeans) {
 			
 			SimpleAdvancedSearchSampleBean simpleBean = new SimpleAdvancedSearchSampleBean();
-			simpleBean.transferAdvancedSampleBeanForResultView(bean, user, searchBean, resultView.getColumnTitles());
+			simpleBean.transferAdvancedSampleBeanForResultView(bean, searchBean, resultView.getColumnTitles());
 			simpleBeans.add(simpleBean);
 		}
 		
 		resultView.setSamples(simpleBeans);
 		resultView.transformToTableView();
 		return resultView;
+	}
+
+	@Override
+	public CurationService getCurationServiceDAO() {
+		return curationServiceDAO;
+	}
+
+	@Override
+	public SampleService getSampleService() {
+		return sampleService;
+	}
+
+	@Override
+	public SpringSecurityAclService getSpringSecurityAclService() {
+		return springSecurityAclService;
+	}
+
+	@Override
+	public UserDetailsService getUserDetailsService() {
+		return userDetailsService;
 	}
 	
 }

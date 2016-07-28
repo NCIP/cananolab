@@ -13,8 +13,7 @@ import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.CharacterizationPropertyUtil;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleCharacterizationProperty;
-import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -29,19 +28,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class CharacterizationManager {
-	Logger logger = Logger.getLogger(CharacterizationManager.class);
-	private CharacterizationServiceLocalImpl service;
-
-	private CharacterizationServiceLocalImpl getService() {
-		WebContext wctx = WebContextFactory.get();
-		SecurityService securityService = (SecurityService) wctx.getSession()
-				.getAttribute("securityService");
-		service = new CharacterizationServiceLocalImpl(securityService);
-		return service;
-	}
-
+@Component("characterizationManager")
+public class CharacterizationManager
+{
+	private final static Logger logger = Logger.getLogger(CharacterizationManager.class);
+	
+	@Autowired
+	private CharacterizationService characterizationService;
 	/**
 	 * Return characterization name by characterization type
 	 * 
@@ -56,8 +52,7 @@ public class CharacterizationManager {
 			return null;
 		}
 		SortedSet<String> charNames = InitCharacterizationSetup.getInstance()
-				.getCharNamesByCharType(request,
-						characterizationType);
+				.getCharNamesByCharType(request, characterizationType, characterizationService);
 		String[] charNameArray = new String[charNames.size()];
 		charNames.toArray(charNameArray);
 		
@@ -77,9 +72,8 @@ public class CharacterizationManager {
 			return null;
 		}
 		
-		List<LabelValueBean> charNames = InitCharacterizationSetup
-				.getInstance().getDecoratedCharNamesByCharType(
-						request, characterizationType);
+		List<LabelValueBean> charNames = InitCharacterizationSetup.getInstance().getDecoratedCharNamesByCharType(
+						request, characterizationType, characterizationService);
 		
 		List<LabelValueBean> charNamesWithAssayTypes = new ArrayList<LabelValueBean>();
 		
@@ -170,14 +164,10 @@ public class CharacterizationManager {
 	 * @param characterizationClassName
 	 * @return
 	 */
-	public String getPublicCharacterizationCounts(
-			String characterizationClassName) {
-		WebContext wctx = WebContextFactory.get();
-		HttpServletRequest request = wctx.getHttpServletRequest();
-
+	public String getPublicCharacterizationCounts(String characterizationClassName) {
 		Integer counts = 0;
 		try {
-			counts += getService().getNumberOfPublicCharacterizations(
+			counts += characterizationService.getNumberOfPublicCharacterizations(
 					characterizationClassName);
 		} catch (Exception e) {
 			logger

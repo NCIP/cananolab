@@ -11,9 +11,11 @@ package gov.nih.nci.cananolab.service.protocol.helper;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.BaseServiceHelper;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.dao.AclDao;
+import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
@@ -35,6 +37,8 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * This class includes methods involved in searching protocols that can be used
@@ -43,28 +47,21 @@ import org.hibernate.criterion.Restrictions;
  * @author pansu
  * 
  */
-public class ProtocolServiceHelper extends BaseServiceHelper {
-	private static Logger logger = Logger
-			.getLogger(ProtocolServiceHelper.class);
+@Component("protocolServiceHelper")
+public class ProtocolServiceHelper
+{
+	private static Logger logger = Logger.getLogger(ProtocolServiceHelper.class);
+	
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
+	private AclDao aclDao;
 
-	public ProtocolServiceHelper() {
-		super();
-	}
-
-	public ProtocolServiceHelper(UserBean user) {
-		super(user);
-	}
-
-	public ProtocolServiceHelper(SecurityService securityService) {
-		super(securityService);
-	}
-
-	public List<Protocol> findProtocolsBy(String protocolType,
-			String protocolName, String protocolAbbreviation, String fileTitle)
+	public List<Protocol> findProtocolsBy(String protocolType, String protocolName, String protocolAbbreviation, String fileTitle)
 			throws Exception {
 		List<Protocol> protocols = new ArrayList<Protocol>();
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class);
 		crit.createAlias("file", "file", CriteriaSpecification.LEFT_JOIN);
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
@@ -73,15 +70,13 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 			crit.add(Restrictions.ilike("type", protocolType, MatchMode.EXACT));
 		}
 		if (!StringUtils.isEmpty(protocolName)) {
-			TextMatchMode protocolNameMatchMode = new TextMatchMode(
-					protocolName);
+			TextMatchMode protocolNameMatchMode = new TextMatchMode(protocolName);
 			crit.add(Restrictions.ilike("name",
 					protocolNameMatchMode.getUpdatedText(),
 					protocolNameMatchMode.getMatchMode()));
 		}
 		if (!StringUtils.isEmpty(protocolAbbreviation)) {
-			TextMatchMode protocolAbbreviationMatchMode = new TextMatchMode(
-					protocolAbbreviation);
+			TextMatchMode protocolAbbreviationMatchMode = new TextMatchMode(protocolAbbreviation);
 			crit.add(Restrictions.ilike("abbreviation",
 					protocolAbbreviationMatchMode.getUpdatedText(),
 					protocolAbbreviationMatchMode.getMatchMode()));
@@ -96,32 +91,28 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 		List results = appService.query(crit);
 		for(int i=0;i< results.size();i++){
 			Protocol protocol = (Protocol) results.get(i);
-			if (getAccessibleData().contains(protocol.getId().toString())) {
+			if (springSecurityAclService.currentUserHasReadPermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
 				protocols.add(protocol);
 			} else {
-				logger.debug("User doesn't have access ot protocol with id "
-						+ protocol.getId());
+				logger.debug("User doesn't have access ot protocol with id " + protocol.getId());
 			}
 		}
 		return protocols;
 	}
 
-	public Protocol findProtocolBy(String protocolType, String protocolName,
-			String protocolVersion) throws Exception {
+	public Protocol findProtocolBy(String protocolType, String protocolName, String protocolVersion) throws Exception {
 		// protocol type and protocol name are required
-		if (StringUtils.isEmpty(protocolType)
-				&& StringUtils.isEmpty(protocolName)) {
+		if (StringUtils.isEmpty(protocolType) && StringUtils.isEmpty(protocolName)) {
 			return null;
 		}
 		Protocol protocol = null;
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
 				.add(Property.forName("type").eq(protocolType).ignoreCase())
 				.add(Property.forName("name").eq(protocolName).ignoreCase());
 		if (!StringUtils.isEmpty(protocolVersion)) {
-			crit.add(Property.forName("version").eq(protocolVersion)
-					.ignoreCase());
+			crit.add(Property.forName("version").eq(protocolVersion).ignoreCase());
 		}
 		crit.setFetchMode("file", FetchMode.JOIN);
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
@@ -134,22 +125,23 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 			return null;
 		}
 		protocol = (Protocol) results.get(0);
-		if (getAccessibleData().contains(protocol.getId().toString())) {
+		
+		if (springSecurityAclService.currentUserHasReadPermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz()) ||
+			springSecurityAclService.currentUserHasWritePermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
 			return protocol;
 		} else {
 			throw new NoAccessException();
 		}
 	}
 
-	public File findFileByProtocolId(String protocolId) throws Exception {
-		if (!getAccessibleData().contains(protocolId)) {
-			new NoAccessException("User has no access to the protocol "
-					+ protocolId);
+	public File findFileByProtocolId(String protocolId) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(protocolId), SecureClassesEnum.PROTOCOL.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(protocolId), SecureClassesEnum.PROTOCOL.getClazz())) {
+			new NoAccessException("User has no access to the protocol " + protocolId);
 		}
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select aProtocol.file from gov.nih.nci.cananolab.domain.common.Protocol aProtocol where aProtocol.id = "
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		HQLCriteria crit = new HQLCriteria("select aProtocol.file from gov.nih.nci.cananolab.domain.common.Protocol aProtocol where aProtocol.id = "
 						+ protocolId);
 		List result = appService.query(crit);
 		File file = null;
@@ -160,30 +152,32 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 	}
 
 	public int getNumberOfPublicProtocols() throws Exception {
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select id from gov.nih.nci.cananolab.domain.common.Protocol");
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		HQLCriteria crit = new HQLCriteria("select id from gov.nih.nci.cananolab.domain.common.Protocol");
 		List results = appService.query(crit);
-		List<String> publicIds = new ArrayList<String>();
-		for(int i = 0; i< results.size();i++){
-			String id = (String) results.get(i).toString();
-			if (getAccessibleData().contains(id)) {
-				publicIds.add(id);
-			}
+		int cnt = 0;
+		for (int i = 0; i< results.size();i++){
+			Long id = Long.valueOf(results.get(i).toString());
+			if (springSecurityAclService.checkObjectPublic(id, SecureClassesEnum.PROTOCOL.getClazz()))
+				cnt++;
 		}
-		return publicIds.size();
+		return cnt;
+	}
+
+	public int getNumberOfPublicProtocolsForJob() throws Exception {
+		List<Long> publicData = aclDao.getIdsOfClassForSid(SecureClassesEnum.PROTOCOL.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
+		int cnt = (publicData != null) ? publicData.size() : 0;
+		return cnt;
 	}
 
 	public Protocol findProtocolById(String protocolId) throws Exception {
-		if (!getAccessibleData().contains(protocolId)) {
-			new NoAccessException("User has no access to the protocol "
-					+ protocolId);
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(protocolId), SecureClassesEnum.PROTOCOL.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(protocolId), SecureClassesEnum.PROTOCOL.getClazz())) {
+			new NoAccessException("User has no access to the protocol " + protocolId);
 		}
 		Protocol protocol = null;
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class).add(
 				Property.forName("id").eq(new Long(protocolId)));
 		crit.setFetchMode("file", FetchMode.JOIN);
@@ -195,11 +189,10 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 		return protocol;
 	}
 
-	public SortedSet<String> getProtocolNamesBy(String protocolType)
-			throws Exception {
+	public SortedSet<String> getProtocolNamesBy(String protocolType) throws Exception
+	{
 		SortedSet<String> protocolNames = new TreeSet<String>();
-		List<Protocol> protocols = this.findProtocolsBy(protocolType, null,
-				null, null);
+		List<Protocol> protocols = this.findProtocolsBy(protocolType, null, null, null);
 		for (Protocol protocol : protocols) {
 			protocolNames.add(protocol.getName());
 		}
@@ -209,38 +202,32 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 	public SortedSet<String> getProtocolVersionsBy(String protocolType,
 			String protocolName) throws Exception {
 		SortedSet<String> protocolVersions = new TreeSet<String>();
-		List<Protocol> protocols = this.findProtocolsBy(protocolType,
-				protocolName, null, null);
+		List<Protocol> protocols = this.findProtocolsBy(protocolType, protocolName, null, null);
 		for (Protocol protocol : protocols) {
 			protocolVersions.add(protocol.getVersion());
 		}
 		return protocolVersions;
 	}
 
-	public List<String> findProtocolIdsByOwner(String currentOwner)
-			throws Exception {
+	public List<String> findProtocolIdsByOwner(String currentOwner) throws Exception
+	{
 		List<String> protocolIds = new ArrayList<String>();
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
-				.setProjection(
-						Projections.projectionList().add(
-								Projections.property("id")));
+				.setProjection(Projections.projectionList().add(Projections.property("id")));
 		Criterion crit1 = Restrictions.eq("createdBy", currentOwner);
 		// in case of copy createdBy is like lijowskim:COPY
-		Criterion crit2 = Restrictions.like("createdBy", currentOwner + ":",
-				MatchMode.START);
+		Criterion crit2 = Restrictions.like("createdBy", currentOwner + ":", MatchMode.START);
 		crit.add(Expression.or(crit1, crit2));
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		List results = appService.query(crit);
-		List<String> accessibleData = getAccessibleData();
 		for(int i = 0; i < results.size(); i++){
 			String protocolId = results.get(i).toString();
-			if (accessibleData.contains(protocolId)) {
+			if (springSecurityAclService.currentUserHasReadPermission(Long.valueOf(protocolId), SecureClassesEnum.PROTOCOL.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(Long.valueOf(protocolId), SecureClassesEnum.PROTOCOL.getClazz())) {
 				protocolIds.add(protocolId);
 			} else {
-				logger.debug("User doesn't have access to protocol of ID: "
-						+ protocolId);
+				logger.debug("User doesn't have access to protocol of ID: " + protocolId);
 			}
 		}
 		return protocolIds;
@@ -248,10 +235,8 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 
 	
 	public List<String> getAllProtocols() throws Exception {
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select id from gov.nih.nci.cananolab.domain.common.Protocol");
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		HQLCriteria crit = new HQLCriteria("select id from gov.nih.nci.cananolab.domain.common.Protocol");
 		List results = appService.query(crit);
 		List<String> publicIds = new ArrayList<String>();
 		for(int i = 0; i< results.size();i++){

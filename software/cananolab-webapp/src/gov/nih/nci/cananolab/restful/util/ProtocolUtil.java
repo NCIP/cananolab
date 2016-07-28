@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.restful.util;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.security.enums.CaNanoPermissionEnum;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,10 +9,11 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpSession;
 
-public class ProtocolUtil {
+public class ProtocolUtil
+{
 
-	public static Map<String, Object> reformatLocalSearchDropdownsInSession(
-			HttpSession session) {
+	public static Map<String, Object> reformatLocalSearchDropdownsInSession(HttpSession session)
+	{
         if (session == null) 
         	return null;
         
@@ -23,14 +24,12 @@ public class ProtocolUtil {
 			typeMap.put("protocolTypes", new ArrayList<String>(types));
 		
 		Map<String, String> csmRoles = new HashMap<String, String>();
-				
-		csmRoles.put(AccessibilityBean.CSM_READ_ROLE, AccessibilityBean.R_ROLE_DISPLAY_NAME);
-		csmRoles.put(AccessibilityBean.CSM_CURD_ROLE, AccessibilityBean.CURD_ROLE_DISPLAY_NAME);
+		csmRoles.put("R", CaNanoPermissionEnum.READ.toString());
+		csmRoles.put("RWD", "READ WRITE DELETE");
 		if (types != null) 
 			typeMap.put("csmRoleNames", csmRoles);
 		
 		return typeMap;
 	}
 
-	
 }

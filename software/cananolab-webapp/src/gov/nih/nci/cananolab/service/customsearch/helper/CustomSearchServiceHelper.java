@@ -2,62 +2,52 @@ package gov.nih.nci.cananolab.service.customsearch.helper;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-import gov.nih.nci.cananolab.restful.customsearch.bean.CustomSearchBean;
-import gov.nih.nci.cananolab.service.BaseServiceHelper;
-import gov.nih.nci.cananolab.service.protocol.ProtocolService;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
-import gov.nih.nci.cananolab.service.publication.PublicationService;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.util.StringUtils;
-
 import org.apache.log4j.Logger;
-import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class CustomSearchServiceHelper extends BaseServiceHelper {
-	private static Logger logger = Logger
-			.getLogger(CustomSearchServiceHelper.class);
-	SecurityService securityService = getSecurityService();
+import gov.nih.nci.cananolab.restful.customsearch.bean.CustomSearchBean;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.util.StringUtils;
 
-	public CustomSearchServiceHelper() {
-		super();
-	}
-
-	public CustomSearchServiceHelper(UserBean user) {
-		super(user);
-	}
-
-	public CustomSearchServiceHelper(SecurityService securityService) {
-		super(securityService);
-	}
+@Component("customSearchServiceHelper")
+public class CustomSearchServiceHelper
+{
+	private static Logger logger = Logger.getLogger(CustomSearchServiceHelper.class);
+	
+	@Autowired
+	private SampleService sampleService;
+	
+	@Autowired
+	private ProtocolService protocolService;
+	
+	@Autowired
+	private PublicationService publicationService;
 
 	public List<CustomSearchBean> customSearchByKeywordByProtocol(HttpServletRequest httpRequest, String keyword) {
 		List<CustomSearchBean> results = null;
-		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+		CananoUserDetails user = SpringSecurityUtil.getPrincipal();
 		FSDirectory fsDirectory = null;
 		DirectoryReader directoryReader = null;
 		try {
-			ProtocolService protocolService = getProtocolServiceInSession(httpRequest, securityService);
-			
 			results = new ArrayList<CustomSearchBean>();
 			fsDirectory = FSDirectory.open(new File("indexDir"));
 			directoryReader = DirectoryReader.open(fsDirectory);
@@ -80,14 +70,13 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            String date = this.parseDate(doc.get("createdDate"));
 	            searchBean.setCreatedDate(date);
 	            searchBean.setFileTitle(doc.get("protocolFileName"));
-	            if(user!=null){
+	            if (user != null){
 	            	if(user.isCurator()){
 	            		searchBean.setEditable(true);
 	            	}
 	            	else{
-	            		List<String> protoIds = protocolService.findProtocolIdsByOwner(user.getLoginName());
-	            		if((searchBean.getId()!=null)&&(StringUtils.containsIgnoreCase(protoIds,
-	    						searchBean.getId()))){
+	            		List<String> protoIds = protocolService.findProtocolIdsByOwner(user.getUsername());
+	            		if((searchBean.getId()!=null)&&(StringUtils.containsIgnoreCase(protoIds, searchBean.getId()))){
 	    	            	searchBean.setEditable(true);
 	    	            }else{
 	    	            	searchBean.setEditable(false);
@@ -151,12 +140,11 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 
 	public List<CustomSearchBean> customSearchByKeywordBySample(HttpServletRequest httpRequest, String keyword) {
 		List<CustomSearchBean> results = null;
-		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+		CananoUserDetails user = SpringSecurityUtil.getPrincipal();
 		FSDirectory fsDirectory = null;
 		DirectoryReader directoryReader = null;
 
 		try {
-			SampleService sampleService = this.getSampleServiceInSession(httpRequest, securityService);			
 			results = new ArrayList<CustomSearchBean>();	
 			  
 			fsDirectory = FSDirectory.open(new File("indexDir"));
@@ -182,9 +170,8 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            		searchBean.setEditable(true);
 	            	}
 	            	else{
-	            		List<String> sampleIds = sampleService.findSampleIdsByOwner(user.getLoginName());
-	            		if((searchBean.getId()!=null)&&(StringUtils.containsIgnoreCase(sampleIds,
-	    						searchBean.getId()))){
+	            		List<String> sampleIds = sampleService.findSampleIdsByOwner(user.getUsername());
+	            		if((searchBean.getId()!=null)&&(StringUtils.containsIgnoreCase(sampleIds, searchBean.getId()))){
 	    	            	searchBean.setEditable(true);
 	    	            }else{
 	    	            	searchBean.setEditable(false);
@@ -215,13 +202,12 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 
 	public List<CustomSearchBean> customSearchByKeywordByPub(HttpServletRequest httpRequest, String keyword) {
 		List<CustomSearchBean> results = null;
-		UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
+		CananoUserDetails user = SpringSecurityUtil.getPrincipal();
 		FSDirectory fsDirectory = null;
 		DirectoryReader directoryReader = null;
 		
 		try {
 			
-			PublicationService publicationService = this.getPublicationServiceInSession(httpRequest, securityService);				
 			results = new ArrayList<CustomSearchBean>();	
 			
 			fsDirectory = FSDirectory.open(new File("indexDir"));
@@ -248,7 +234,7 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 	            		searchBean.setEditable(true);
 	            	}
 	            	else{
-	            		List<String> publicationIds = publicationService.findPublicationIdsByOwner(user.getLoginName());	
+	            		List<String> publicationIds = publicationService.findPublicationIdsByOwner(user.getUsername());	
 	            		if((searchBean.getId()!=null)&&(StringUtils.containsIgnoreCase(publicationIds,
 	    						searchBean.getId()))){
 	    	            	searchBean.setEditable(true);
@@ -279,36 +265,4 @@ public class CustomSearchServiceHelper extends BaseServiceHelper {
 		return results;
 	}
 	
-	private SampleService getSampleServiceInSession(HttpServletRequest request, SecurityService securityService) {
-
-		SampleService sampleService = (SampleService)request.getSession().getAttribute("sampleService");
-		if (sampleService == null) {
-			sampleService = new SampleServiceLocalImpl(securityService);
-			request.getSession().setAttribute("sampleService", sampleService);
-		}
-		return sampleService;
-
-	}
-
-	private PublicationService getPublicationServiceInSession(HttpServletRequest request, SecurityService securityService)
-			throws Exception {
-		PublicationService publicationService = (PublicationService)request.getSession().getAttribute("publicationService");
-
-		if (publicationService == null) {
-			publicationService = new PublicationServiceLocalImpl(securityService);
-			request.getSession().setAttribute("publicationService", publicationService);
-		}
-		return publicationService;
-	}
-
-	private ProtocolService getProtocolServiceInSession(HttpServletRequest request, SecurityService securityService)
-			throws Exception {
-
-		ProtocolService protocolService = (ProtocolService)request.getSession().getAttribute("protocolService");
-		if (protocolService == null) {
-			protocolService =	new ProtocolServiceLocalImpl(securityService);
-			request.getSession().setAttribute("protocolService", protocolService);
-		}
-		return protocolService;
-	}
 }

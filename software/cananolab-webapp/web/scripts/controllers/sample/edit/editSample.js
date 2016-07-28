@@ -17,7 +17,7 @@ var app = angular.module('angularApp')
     $scope.newKeyword = "";
     $scope.message = "";
     // Access variables
-    $scope.csmRoleNames = {"R":"read","CURD":"read update delete"};
+    $scope.csmRoleNames = {"R":"READ","RWD":"READ WRITE DELETE"};
     $scope.sampleData.theAccess = {};
     $scope.accessForm = {};
     $scope.accessForm.theAcccess = {};

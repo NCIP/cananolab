@@ -17,11 +17,7 @@ package gov.nih.nci.cananolab.restful.community;
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.restful.bean.SimpleCollaborationGroup;
 import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
-import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.service.community.CommunityService;
-import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -30,10 +26,16 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-
-public class CollaborationGroupBO  extends AbstractDispatchBO {
+@Component("collaborationGroupBO")
+public class CollaborationGroupBO  extends AbstractDispatchBO
+{
 	private Logger logger = Logger.getLogger(CollaborationGroupBO.class);
+	
+	@Autowired
+	private CommunityService communityService;
 
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
@@ -55,9 +57,7 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 	}
 
 	public List<CollaborationGroupBean> getExistingGroups(HttpServletRequest request) throws Exception {
-		CommunityService service = setServiceInSession(request);
-		List<CollaborationGroupBean> existingCollaborationGroups = service
-				.findCollaborationGroups();
+		List<CollaborationGroupBean> existingCollaborationGroups = communityService.findCollaborationGroups();
 //		request.setAttribute("existingCollaborationGroups",
 //				existingCollaborationGroups);
 		
@@ -130,26 +130,12 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 //			//saveErrors(request, msgs);
 //			return msgs;
 		}
-		CommunityService service = setServiceInSession(request);
-		service.saveCollaborationGroup(group);
+		communityService.saveCollaborationGroup(group);
 		// update user's groupNames
-		UserBean user = ((CommunityServiceLocalImpl) service).getUser();
-		request.getSession().setAttribute("user", user);
-		
 		List<CollaborationGroupBean> beans = getExistingGroups(request);
 		request.getSession().removeAttribute("group");
 		return beans;
 		//return setupNew(request);
-	}
-
-	private CommunityService setServiceInSession(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-		CommunityService service = new CommunityServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("communityService", service);
-		return service;
 	}
 
 	public List<CollaborationGroupBean> delete(CollaborationGroupBean group,
@@ -158,8 +144,7 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 		
 //		CollaborationGroupBean group = (CollaborationGroupBean) theForm
 //				.get("group");
-		CommunityService service = setServiceInSession(request);
-		service.deleteCollaborationGroup(group);
+		communityService.deleteCollaborationGroup(group);
 //		resetToken(request);
 //		return setupNew(request);
 		List<CollaborationGroupBean> beans = getExistingGroups(request);

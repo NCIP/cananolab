@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 
 public class SimpleChemicalAssociationBean {
 
@@ -101,7 +103,7 @@ public class SimpleChemicalAssociationBean {
 		this.associatedElementB = associatedElementB;
 	}
 	
-	public void trasferToSimpleChemicalAssociation(ChemicalAssociationBean chemBean, HttpServletRequest request){
+	public void trasferToSimpleChemicalAssociation(ChemicalAssociationBean chemBean, HttpServletRequest request, SpringSecurityAclService springSecurityAclService){
 		
 		this.setType(chemBean.getType());
 		this.setDescription(chemBean.getDescription());
@@ -173,7 +175,9 @@ public class SimpleChemicalAssociationBean {
 			simpleBean.setCreatedBy(fileBean.getDomainFile().getCreatedBy());
 			simpleBean.setCreatedDate(fileBean.getDomainFile().getCreatedDate());
 			simpleBean.setTheAccess(fileBean.getTheAccess());
-			simpleBean.setIsPublic(fileBean.getPublicStatus());
+			//simpleBean.setIsPublic(fileBean.getPublicStatus());
+			boolean isPublic = springSecurityAclService.checkObjectPublic(fileBean.getDomainFile().getId(), SecureClassesEnum.FILE.getClazz());
+			simpleBean.setIsPublic(isPublic);
 			files.add(simpleBean);
 		}
 		this.setFiles(files);
