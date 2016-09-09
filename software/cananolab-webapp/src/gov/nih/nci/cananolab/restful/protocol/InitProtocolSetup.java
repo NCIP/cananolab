@@ -22,7 +22,8 @@ import gov.nih.nci.cananolab.restful.core.InitSetup;
  * @author pansu
  *
  */
-public class InitProtocolSetup {
+public class InitProtocolSetup
+{
 	Logger logger = Logger.getLogger(InitProtocolSetup.class);
 
 	private InitProtocolSetup() {
@@ -32,13 +33,13 @@ public class InitProtocolSetup {
 		return new InitProtocolSetup();
 	}
 
-	public void setProtocolDropdowns(HttpServletRequest request)
-			throws Exception {
+	public void setProtocolDropdowns(HttpServletRequest request) throws Exception
+	{
 		setLocalSearchDropdowns(request);
 	}
 
-	public void setLocalSearchDropdowns(HttpServletRequest request)
-			throws Exception {
+	public void setLocalSearchDropdowns(HttpServletRequest request) throws Exception
+	{
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request, "protocolTypes", "protocol", "type", "otherType", true);
 	}
 

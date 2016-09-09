@@ -53,7 +53,7 @@ public class NanomaterialEntityServices {
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
 					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
@@ -78,7 +78,7 @@ public class NanomaterialEntityServices {
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
 					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
@@ -103,7 +103,7 @@ public class NanomaterialEntityServices {
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
 					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
@@ -126,7 +126,7 @@ public class NanomaterialEntityServices {
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
 					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
@@ -153,7 +153,7 @@ public class NanomaterialEntityServices {
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
 					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
@@ -179,7 +179,7 @@ public class NanomaterialEntityServices {
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = (NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 				
@@ -201,7 +201,7 @@ public class NanomaterialEntityServices {
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
 					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 				

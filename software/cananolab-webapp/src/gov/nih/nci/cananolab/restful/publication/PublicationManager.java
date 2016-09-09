@@ -70,7 +70,7 @@ public class PublicationManager
 	public PublicationBean retrievePubMedInfo(String pubmedID, PublicationForm form, HttpServletRequest request)
 	{
 //		WebContext wctx = WebContextFactory.get();
-		if (SpringSecurityUtil.getPrincipal() == null) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			return null;
 		}
 				
@@ -161,7 +161,7 @@ public class PublicationManager
 	 */
 	public PublicationBean retrieveCurrentPub() {
 		WebContext wctx = WebContextFactory.get();
-		if (SpringSecurityUtil.getPrincipal() == null) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			return null;
 		}
 		PublicationForm form = (PublicationForm) wctx.getSession()
@@ -198,8 +198,7 @@ public class PublicationManager
 		try {
 			SortedSet<String> types = InitSetup.getInstance()
 					.getDefaultAndOtherTypesByLookup(request,
-							"publicationStatuses", "publication", "status",
-							"otherStatus", true);
+							"publicationStatuses", "publication", "status", "otherStatus", true);
 			types.add("");
 			String[] eleArray = new String[types.size()];
 			return types.toArray(eleArray);
@@ -210,15 +209,15 @@ public class PublicationManager
 		return new String[] { "" };
 	}
 
-	public String[] getMatchedSampleNames(String searchStr) {
-		if (SpringSecurityUtil.getPrincipal() == null) {
+	public String[] getMatchedSampleNames(String searchStr)
+	{
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			return null;
 		}
 		try
 		{
 			List<String> sampleNames = sampleServiceHelper.findSampleNamesBy(searchStr);
-			Collections.sort(sampleNames,
-					new Comparators.SortableNameComparator());
+			Collections.sort(sampleNames, new Comparators.SortableNameComparator());
 			return sampleNames.toArray(new String[sampleNames.size()]);
 		} catch (Exception e) {
 			logger.error("Problem getting all sample names for publication submission \n", e);
@@ -227,9 +226,7 @@ public class PublicationManager
 	}
 
 	public PublicationBean addAuthor(Author author, HttpServletRequest request) throws PublicationException {
-		PublicationForm pubForm = (PublicationForm) (WebContextFactory
-				.get().getSession()
-				.getAttribute("publicationForm"));
+		PublicationForm pubForm = (PublicationForm) (WebContextFactory.get().getSession().getAttribute("publicationForm"));
 //		DynaValidatorForm pubForm = (DynaValidatorForm) (WebContextFactory
 //				.get().getSession().getAttribute("publicationForm"));
 		if (pubForm == null) {
@@ -240,12 +237,9 @@ public class PublicationManager
 		return pubBean;
 	}
 
-	public PublicationBean deleteAuthor(Author author)
-			throws ExperimentConfigException {
-		
-		PublicationForm pubForm = (PublicationForm) (WebContextFactory
-				.get().getSession()
-				.getAttribute("publicationForm"));
+	public PublicationBean deleteAuthor(Author author) throws ExperimentConfigException
+	{	
+		PublicationForm pubForm = (PublicationForm) (WebContextFactory.get().getSession().getAttribute("publicationForm"));
 //		DynaValidatorForm pubForm = (DynaValidatorForm) (WebContextFactory
 //				.get().getSession().getAttribute("publicationForm"));
 		if (pubForm == null) {
@@ -256,7 +250,8 @@ public class PublicationManager
 		return pubBean;
 	}
 
-	public String getPublicCounts() {
+	public String getPublicCounts()
+	{
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
 		request.getSession().removeAttribute("publicationSearchResults");

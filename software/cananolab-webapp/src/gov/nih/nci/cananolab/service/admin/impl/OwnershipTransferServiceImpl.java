@@ -46,6 +46,7 @@ import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -275,8 +276,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		// ---remove access from the owner
 		// if currentOwner is a curator, don't need to remove access from current owner
 		// remove currentOwner access if user accesses contains user
-		if (userAccess != null && userAccess.getPermissions() != null & userAccess.getPermissions().size() > 0) {
-			springSecurityAclService.saveAccessForObject(dataId, clazz, newOwner, true, userAccess.getPermissions());
+		if (userAccess != null && !StringUtils.isEmpty(userAccess.getRoleName())) {
+			springSecurityAclService.saveAccessForObject(dataId, clazz, newOwner, true, userAccess.getRoleName());
 			springSecurityAclService.retractAccessToObjectForSid(dataId, clazz, currentOwner);
 			springSecurityAclService.updateObjectOwner(dataId, clazz, newOwner);
 		}

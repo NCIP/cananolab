@@ -24,6 +24,8 @@
 		<constructor-arg ref="dataSource" />
 		<constructor-arg ref="lookupStrategy" />
 		<constructor-arg ref="aclCache" />
+		<property name="classIdentityQuery" value="SELECT @@IDENTITY"/>
+		<property name="sidIdentityQuery" value="SELECT @@IDENTITY"/>	
 	</bean>
 
 	<!-- Declare a lookup strategy -->

@@ -255,7 +255,7 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		logger.debug("In edit Sample");
 		
-		if (SpringSecurityUtil.getPrincipal() == null) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			logger.info("User not logged in");
 			return Response.status(Response.Status.UNAUTHORIZED)
 					.entity(Constants.MSG_SESSION_INVALID).build();
@@ -288,7 +288,7 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -318,7 +318,7 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -344,7 +344,7 @@ public class SampleServices {
 		SampleBO sampleBO = 
 				(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 		
-		if (SpringSecurityUtil.getPrincipal() == null)
+		if (!SpringSecurityUtil.isUserLoggedIn())
 			return Response.status(Response.Status.UNAUTHORIZED)
 					.entity(Constants.MSG_SESSION_INVALID).build();
 
@@ -369,7 +369,7 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -395,7 +395,7 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -424,7 +424,7 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -455,7 +455,7 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -484,7 +484,7 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -513,7 +513,7 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -540,7 +540,7 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -564,7 +564,7 @@ public class SampleServices {
 	 public Response submissionSetup(@Context HttpServletRequest httpRequest){
 		logger.debug("In edit Sample");
 		
-		if (SpringSecurityUtil.getPrincipal() == null) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			logger.info("User not logged in");
 			return Response.status(Response.Status.UNAUTHORIZED)
 					.entity(Constants.MSG_SESSION_INVALID).build();
@@ -595,7 +595,7 @@ public class SampleServices {
 
 			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			List<String> names = sampleBO.getMatchedSampleNames(httpRequest, "");
@@ -617,7 +617,7 @@ public class SampleServices {
 
 			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -644,7 +644,7 @@ public class SampleServices {
 
 			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			String message = sampleBO.submitForReview(httpRequest, reviewBean);
@@ -670,10 +670,12 @@ public class SampleServices {
 			String sampelName = sampleBO.getCurrentSampleNameInSession(httpRequest, sampleId);
 			
 			return 
-					Response.ok(sampelName).header("Access-Control-Allow-Credentials", "true")
+					Response.ok(sampelName)
+/*					.header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+*/					.build();
 		} catch (Exception e) {
 			//return Response.ok("Error while viewing the search results").build();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

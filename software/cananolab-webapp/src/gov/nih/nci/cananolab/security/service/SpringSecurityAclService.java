@@ -2,11 +2,11 @@ package gov.nih.nci.cananolab.security.service;
 
 import java.util.List;
 
+import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.model.Permission;
 
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
-import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 
 public interface SpringSecurityAclService
 {
@@ -28,7 +28,7 @@ public interface SpringSecurityAclService
 
 	public void savePublicAccessForObject(Long securedObjectId, Class clazz);
 
-	public void saveAccessForObject(Long securedObjectId, Class clazz, String recipient, boolean principal, List<Permission> perms);
+	public void saveAccessForObject(Long securedObjectId, Class clazz, String recipient, boolean principal, String perms);
 	
 	public void saveAccessForChildObject(Long parentObjectId, Class parentClass, Long securedObjectId, Class childClass);
 

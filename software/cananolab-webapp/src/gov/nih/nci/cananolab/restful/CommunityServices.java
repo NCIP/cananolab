@@ -35,9 +35,8 @@ public class CommunityServices
 		try { 
 			CollaborationGroupBO collGroupBO = (CollaborationGroupBO) SpringApplicationContext.getBean(httpRequest, "collaborationGroupBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(Constants.MSG_SESSION_INVALID).build();
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			List<CollaborationGroupBean> existingGroups = collGroupBO.getExistingGroups(httpRequest);
 			
@@ -55,17 +54,16 @@ public class CommunityServices
 	@POST
 	@Path("/addCollaborationGroups")
 	@Produces ("application/json")
-    public Response addCollaborationGroups(@Context HttpServletRequest httpRequest, CollaborationGroupBean groupBean) {
+    public Response addCollaborationGroups(@Context HttpServletRequest httpRequest, CollaborationGroupBean groupBean)
+	{
 		logger.info("In getCollaborationGroups");
 				
 		try { 
 			CollaborationGroupBO collGroupBO = (CollaborationGroupBO) SpringApplicationContext.getBean(httpRequest, "collaborationGroupBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(Constants.MSG_SESSION_INVALID).build();
-			 
-						
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
 			List<CollaborationGroupBean> beans = collGroupBO.create(groupBean, httpRequest);
 			
 			return Response.ok(beans).header("Access-Control-Allow-Credentials", "true")
@@ -82,17 +80,16 @@ public class CommunityServices
 	@POST
 	@Path("/deleteCollaborationGroups")
 	@Produces ("application/json")
-    public Response deleteCollaborationGroups(@Context HttpServletRequest httpRequest, CollaborationGroupBean groupBean) {
+    public Response deleteCollaborationGroups(@Context HttpServletRequest httpRequest, CollaborationGroupBean groupBean)
+	{
 		logger.info("In getCollaborationGroups");
 				
 		try { 
 			CollaborationGroupBO collGroupBO = (CollaborationGroupBO) SpringApplicationContext.getBean(httpRequest, "collaborationGroupBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(Constants.MSG_SESSION_INVALID).build();
-			 
-						
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
 			List<CollaborationGroupBean> beans = collGroupBO.delete(groupBean, httpRequest);
 			
 			return Response.ok(beans).header("Access-Control-Allow-Credentials", "true")
@@ -109,15 +106,15 @@ public class CommunityServices
 	@GET
 	@Path("/editCollaborationGroup")
 	@Produces ("application/json")
-    public Response editCollaborationGroup(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("groupId") String groupId) {
+    public Response editCollaborationGroup(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("groupId") String groupId)
+	{
 		logger.info("In editCollaborationGroup");
 				
 		try { 
 			CollaborationGroupManager collGroupManager = (CollaborationGroupManager) SpringApplicationContext.getBean(httpRequest, "collaborationGroupManger");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(Constants.MSG_SESSION_INVALID).build();
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			CollaborationGroupBean collaborationBean = collGroupManager.getCollaborationGroupById(httpRequest, groupId);
 			
@@ -135,16 +132,17 @@ public class CommunityServices
 	@POST
 	@Path("/addUserAccess")
 	@Produces ("application/json")
-    public Response addUserAccess(@Context HttpServletRequest httpRequest, AccessControlInfo userAccess) {
+    public Response addUserAccess(@Context HttpServletRequest httpRequest, AccessControlInfo theAccess)
+	{
 		logger.info("In addUserAccess for Collaboration group");
 				
 		try { 
 			CollaborationGroupManager collGroupManager = (CollaborationGroupManager) SpringApplicationContext.getBean(httpRequest, "collaborationGroupManger");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
-			CollaborationGroupBean collaborationBean = collGroupManager.addUserAccess(httpRequest, userAccess);
+			CollaborationGroupBean collaborationBean = collGroupManager.addUserAccess(httpRequest, theAccess);
 			
 			return Response.ok(collaborationBean).header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
@@ -160,14 +158,15 @@ public class CommunityServices
 	@POST
 	@Path("/deleteUserAccess")
 	@Produces ("application/json")
-    public Response deleteUserAccess(@Context HttpServletRequest httpRequest, AccessControlInfo userAccess) {
+    public Response deleteUserAccess(@Context HttpServletRequest httpRequest, AccessControlInfo userAccess)
+	{
 		logger.info("In addUserAccess for Collaboration group");
 				
 		try { 
 			CollaborationGroupManager collGroupManager = 
 					 (CollaborationGroupManager) SpringApplicationContext.getBean(httpRequest, "collaborationGroupManger");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			CollaborationGroupBean collaborationBean = collGroupManager.deleteUserAccess(httpRequest, userAccess);
@@ -185,13 +184,14 @@ public class CommunityServices
 	@GET
 	@Path("/setupNew")
 	@Produces ("application/json")
-    public Response setupNew(@Context HttpServletRequest httpRequest) {
+    public Response setupNew(@Context HttpServletRequest httpRequest)
+	{
 		logger.info("setup new CollaborationGroups");
 				
 		try { 
 			CollaborationGroupBO collGroupBO = (CollaborationGroupBO) SpringApplicationContext.getBean(httpRequest, "collaborationGroupBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			collGroupBO.setupNew(httpRequest);

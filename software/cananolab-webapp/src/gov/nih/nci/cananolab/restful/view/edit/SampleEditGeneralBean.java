@@ -219,8 +219,9 @@ public class SampleEditGeneralBean {
 
 	public void setupRoleNameMap() {
 		this.roleNames = new HashMap<String, String>();
-		roleNames.put("R", CaNanoPermissionEnum.READ.toString());
-		roleNames.put("RWD", "READ WRITE DELETE");
+		roleNames.put("R", CaNanoPermissionEnum.R.getPermValue());
+		roleNames.put("RWD", CaNanoPermissionEnum.R.getPermValue() + " " + CaNanoPermissionEnum.W.getPermValue() + " " + CaNanoPermissionEnum.D.getPermValue());
+		
 	}
 
 	/**
@@ -305,7 +306,7 @@ public class SampleEditGeneralBean {
 				SimpleAccessBean aBean = new SimpleAccessBean();
 				aBean.setGroupName(accBean.getRecipient());
 				aBean.setAccessBy(accBean.getAccessType());
-				aBean.setRoleDisplayName(accBean.getPermStr());
+				aBean.setRoleDisplayName(accBean.getRoleName());
 				groupList.add(aBean);
 			}
 
@@ -320,7 +321,7 @@ public class SampleEditGeneralBean {
 				SimpleAccessBean aBean = new SimpleAccessBean();
 				aBean.setLoginName(accBean.getRecipient());
 				aBean.setAccessBy(accBean.getAccessType());
-				aBean.setRoleDisplayName(accBean.getPermStr());
+				aBean.setRoleDisplayName(accBean.getRoleName());
 
 				userList.add(aBean);
 			}

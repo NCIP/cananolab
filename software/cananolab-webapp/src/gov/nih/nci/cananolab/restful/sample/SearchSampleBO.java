@@ -98,8 +98,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 			return messages;
 		}
 		
-		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
-		if (userDetails != null) {
+		if (SpringSecurityUtil.isUserLoggedIn()) {
 			loadUserAccess(request, sampleBeansPerPage);
 		}
 		//set in sessionScope so user can go back to the result from the sample summary page

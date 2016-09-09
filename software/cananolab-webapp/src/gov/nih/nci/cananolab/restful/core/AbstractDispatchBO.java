@@ -66,7 +66,7 @@ public abstract class AbstractDispatchBO
 			
 			
 		} else {
-			if (SpringSecurityUtil.getPrincipal() == null) {
+			if (!SpringSecurityUtil.isUserLoggedIn()) {
 				throw new NoAccessException("Log in is required");
 			}
 			throw new NoAccessException();
@@ -87,7 +87,7 @@ public abstract class AbstractDispatchBO
 		boolean privateDispatch = checkDispatch(dispatch, Constants.PRIVATE_DISPATCHES, "startsWith");
 		if (!privateDispatch) {
 			return true;
-		} else if (SpringSecurityUtil.getPrincipal() == null && privateDispatch) {
+		} else if (!SpringSecurityUtil.isUserLoggedIn() && privateDispatch) {
 			return false;
 		} else {
 			return canUserExecutePrivateDispatch(request, protectedData);
@@ -96,7 +96,7 @@ public abstract class AbstractDispatchBO
 
 	public Boolean canUserExecutePrivateDispatch(HttpServletRequest request, String protectedData) throws Exception
 	{
-		if (SpringSecurityUtil.getPrincipal() == null) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			return false;
 		}
 		return true;

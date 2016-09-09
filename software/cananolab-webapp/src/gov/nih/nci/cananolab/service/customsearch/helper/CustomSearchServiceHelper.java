@@ -77,19 +77,18 @@ public class CustomSearchServiceHelper
 	            	else{
 	            		List<String> protoIds = protocolService.findProtocolIdsByOwner(user.getUsername());
 	            		if((searchBean.getId()!=null)&&(StringUtils.containsIgnoreCase(protoIds, searchBean.getId()))){
-	    	            	searchBean.setEditable(true);
-	    	            }else{
-	    	            	searchBean.setEditable(false);
-	    	            }
+	            			searchBean.setEditable(true);
+	            		}else{
+	            			searchBean.setEditable(false);
+	            		}
 	            	}	            	
 	            }
 	            results.add(searchBean);
-	            }
+	        }
 		  
 		    
 		}catch(Exception e){
 			logger.error("Error in customSearchByKeywordByProtocol printing stack trace", e);
-			e.printStackTrace();
 		}
 		finally {
 			if (fsDirectory != null)

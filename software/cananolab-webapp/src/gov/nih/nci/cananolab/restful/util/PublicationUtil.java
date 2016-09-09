@@ -44,8 +44,9 @@ public class PublicationUtil {
 		
 		Map<String, String> csmRoles = new HashMap<String, String>();
 				
-		csmRoles.put("R", CaNanoPermissionEnum.READ.toString());
-		csmRoles.put("RWD", "READ WRITE DELETE");
+		csmRoles.put("R", CaNanoPermissionEnum.R.getPermValue());
+		csmRoles.put("RWD", CaNanoPermissionEnum.R.getPermValue() + " " + CaNanoPermissionEnum.W.getPermValue() + " " + CaNanoPermissionEnum.D.getPermValue());
+		
 		if (types != null) 
 			typeMap.put("csmRoleNames", csmRoles);
 		

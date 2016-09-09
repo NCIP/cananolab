@@ -19,5 +19,6 @@ public enum CaNanoRoleEnum
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
-	}	
+	}
+
 }

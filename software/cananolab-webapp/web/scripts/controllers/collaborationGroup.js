@@ -88,7 +88,9 @@ var app = angular.module('angularApp')
 		}
 		else {
 			$scope.isUserInfoAdd = true;
-			$scope.userInfoBean = {"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":$scope.collaborationGroup.name,"roleName":"R","roleDisplayName":"read","accessBy":"user"};
+			//$scope.userInfoBean = {"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":$scope.collaborationGroup.name,"roleName":"R","roleDisplayName":"read","accessType":"user"};
+			//replaced AccessibilityBean by AccessControlInfo bean
+			$scope.userInfoBean = {"recipient":"","roleName":"R","roleDisplayName":"READ","accessType":"user"};
 			$scope.theAccess = $scope.userInfoBean;
 
 			// $scope.theAccess.userBean = {};
@@ -177,15 +179,15 @@ var app = angular.module('angularApp')
 	$scope.changeRole = function() {
 		console.log($scope.userInfoBean);
 		if ($scope.userInfoBean.roleName=='R') {
-			$scope.userInfoBean.roleDisplayName = 'read'
+			$scope.userInfoBean.roleDisplayName = 'READ'
 		}
 		else {
-			$scope.userInfoBean.roleDisplayName = 'read update delete'
+			$scope.userInfoBean.roleDisplayName = 'READ WRITE DELETE'
 		}
 	};
 
 	$scope.searchLoginName = function() {
-		$http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr='+$scope.userInfoBean.userBean.loginName+ '&dataOwner='}).
+		$http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr='+$scope.userInfoBean.recipient+ '&dataOwner='}).
 			success(function(data, status, headers, config) {
 			$scope.userList = data;
 		}).

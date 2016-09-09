@@ -127,7 +127,7 @@ var app = angular.module('angularApp')
             // when the response is available
         	  $rootScope.loggedInUser = data;
         	  $scope.loginShow = 0; 
-        	  $location.path("/").replace();
+        	  $location.path().replace();
         	  $route.reload();
 
             //Set tabs here.. Delete on logout. Use variable instead of rest call

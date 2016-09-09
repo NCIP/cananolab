@@ -133,6 +133,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				}
 			}*/
 		} catch (NoAccessException e) {
+			logger.error(e);
 			throw e;
 		} catch (Exception e) {
 			String err = "Error in saving a nanomaterial entity.";

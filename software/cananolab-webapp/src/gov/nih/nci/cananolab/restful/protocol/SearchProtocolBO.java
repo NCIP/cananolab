@@ -68,8 +68,7 @@ public class SearchProtocolBO extends BaseAnnotationBO
 		List<ProtocolBean> protocolBeansPerPage = getProtocolsPerPage(protocolBeans, displayPage, Constants.DISPLAY_TAG_TABLE_SIZE,
 				request);
 
-		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
-		if (userDetails != null) {
+		if (SpringSecurityUtil.isUserLoggedIn()) {
 			loadUserAccess(request, protocolBeansPerPage);
 		}
 		// set in sessionScope so user can go back to the result from the sample

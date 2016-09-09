@@ -523,7 +523,7 @@ public class PublicationBO extends BaseAnnotationBO
 		// if session is expired or the url is clicked on directly
 		PublicationSummaryViewBean summaryEdit = null;
 		//String sampleId = form.getSampleId();
-		if (SpringSecurityUtil.getPrincipal() == null) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			summaryEdit = summaryView(sampleId, request);
 		}
 		summaryEdit = this.prepareSummary(sampleId, request);
@@ -875,7 +875,7 @@ public class PublicationBO extends BaseAnnotationBO
 
 	public String[] getMatchedSampleNames(String searchStr, HttpServletRequest request)
 	{
-		if (SpringSecurityUtil.getPrincipal() == null) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			return null;
 		}
 		

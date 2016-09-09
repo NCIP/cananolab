@@ -76,6 +76,15 @@ public class GroupServiceImpl implements GroupService
 			status = groupDao.removeGroupMembers(groupId);
 		return status;
 	}
+	
+	@Override
+	public int removeGroupMember(Long groupId, String userName)
+	{
+		int status = 0;
+		if (groupId != null && groupId > 0)
+			status = groupDao.removeGroupMember(groupId, userName);
+		return status;
+	}
 
 	@Override
 	public int removeGroup(Long groupId) {

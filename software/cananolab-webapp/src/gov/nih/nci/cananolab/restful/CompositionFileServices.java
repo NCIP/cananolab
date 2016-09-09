@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.util.Constants;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -51,7 +50,7 @@ public class CompositionFileServices {
 				
 		try { 
 			CompositionFileBO compBO = (CompositionFileBO) SpringApplicationContext.getBean(httpRequest, "compositionFileBO");
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SimpleFileBean bean = compBO.setupUpdate(sampleId, dataId, httpRequest);
@@ -74,7 +73,7 @@ public class CompositionFileServices {
 	{			
 		try { 
 			CompositionFileBO compBO = (CompositionFileBO) SpringApplicationContext.getBean(httpRequest, "compositionFileBO");
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			List<String> msgs = compBO.create(fileBean, httpRequest);
@@ -93,7 +92,7 @@ public class CompositionFileServices {
 	{
 		try { 
 			CompositionFileBO compBO = (CompositionFileBO) SpringApplicationContext.getBean(httpRequest, "compositionFileBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			List<String> msgs = compBO.delete(fileBean, httpRequest);

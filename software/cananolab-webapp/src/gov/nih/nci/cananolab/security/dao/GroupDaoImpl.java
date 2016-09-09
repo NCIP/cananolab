@@ -25,14 +25,15 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 	@Autowired
 	private DataSource dataSource;
 	
-	private static final String FETCH_GROUP_SQL = "SELECT g.id, g.group_name, g.group_description, g.created_by FROM groups g where g.group_name = ?";
+	private static final String FETCH_GROUP_BY_NAME_SQL = "SELECT g.id, g.group_name, g.group_description, g.created_by FROM groups g where g.group_name = ?";
 	private static final String FETCH_GROUP_BY_ID_SQL = "SELECT g.id, g.group_name, g.group_description, g.created_by FROM groups g where g.id = ?";	
-	private static final String INSERT_GROUP_SQL = "INSERT INTO groups (id, group_name, group_description) VALUES (?,?)";
+	private static final String INSERT_GROUP_SQL = "INSERT INTO groups (group_name, group_description, created_by) VALUES (?,?,?)";
 	private static final String INSERT_GROUP_MEMBER_SQL = "INSERT INTO group_members (group_id, username) VALUES (?,?)";
 	private static final String UPDATE_GROUP_SQL = "UPDATE groups SET group_description = ? WHERE id = ?";
-	private static final String FETCH_GROUP_MEMBERS_SQL = "SELECT gm.username FROM group_members gm where gm.id = ?";
-	private static final String DEL_GROUP_MEMBERS_SQL = "DELETE FROM group_members gm where gm.id = ?";
-	private static final String DEL_GROUP_SQL = "DELETE FROM groups g where g.id = ?";
+	private static final String FETCH_GROUP_MEMBERS_SQL = "SELECT gm.username FROM group_members gm where gm.group_id = ?";
+	private static final String DEL_GROUP_MEMBERS_SQL = "DELETE FROM group_members where group_id = ?";
+	private static final String DEL_GROUP_MEMBER_SQL = "DELETE FROM group_members where group_id = ? and username = ?";
+	private static final String DEL_GROUP_SQL = "DELETE FROM groups where id = ?";
 	private static final String FETCH_GROUPS_FOR_USER_SQL = "SELECT g.id, g.group_name, g.group_description, g.created_by FROM groups g, group_members gm " +
 															"where g.id = gm.group_id and gm.username = ?";
 	
@@ -51,7 +52,9 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 		if (!StringUtils.isEmpty(groupName))
 		{
 			Object[] params = new Object[] {groupName};
-			grp = (Group) getJdbcTemplate().queryForObject(FETCH_GROUP_SQL, params, new GroupMapper());
+			List<Group> grpList = (List<Group>) getJdbcTemplate().query(FETCH_GROUP_BY_NAME_SQL, params, new GroupMapper());
+			if (grpList != null && grpList.size() > 0)
+				grp = grpList.get(0);
 		}
 		return grp;
 	}
@@ -74,7 +77,7 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 	@Override
 	public int insertGroup(Group newGroup)
 	{
-		Object[] args = {newGroup.getGroupName(), newGroup.getGroupDesc()};
+		Object[] args = {newGroup.getGroupName(), newGroup.getGroupDesc(), newGroup.getCreatedBy()};
 		int status = this.getJdbcTemplate().update(INSERT_GROUP_SQL, args);
 		return status;
 	}
@@ -116,6 +119,14 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 	{
 		Object[] args = {groupId};
 		int status = this.getJdbcTemplate().update(DEL_GROUP_MEMBERS_SQL, args);
+		return status;
+	}
+	
+	@Override
+	public int removeGroupMember(Long groupId, String userName)
+	{
+		Object[] args = {groupId, userName};
+		int status = this.getJdbcTemplate().update(DEL_GROUP_MEMBER_SQL, args);
 		return status;
 	}
 

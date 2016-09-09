@@ -14,7 +14,6 @@ import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.model.AccessControlEntry;
 import org.springframework.security.acls.model.MutableAcl;
 import org.springframework.security.acls.model.Permission;
-import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +25,7 @@ import gov.nih.nci.cananolab.security.enums.CaNanoPermissionEnum;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 @Component("springSecurityAclService")
 public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
@@ -125,18 +125,28 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 		List<AccessControlEntry> entries = acl.getEntries();
 		if (entries != null)
 		{
+			List<String> uniqueSid = new ArrayList<String>();
 			for (AccessControlEntry entry : entries)
 			{
 				if (entry.getSid() instanceof GrantedAuthoritySid)
 				{
 					GrantedAuthoritySid gaSid = (GrantedAuthoritySid) entry.getSid();
-					sb.append(gaSid.getGrantedAuthority()).append(", ");
+					String grantedAuthority = gaSid.getGrantedAuthority();
+					if (!uniqueSid.contains(grantedAuthority))
+					{
+						sb.append(grantedAuthority).append(", ");
+						uniqueSid.add(grantedAuthority);
+					}
 				}
 				else
 				{
 					PrincipalSid pSid = (PrincipalSid) entry.getSid();
-					if (isOwner && !SpringSecurityUtil.getLoggedInUserName().equals(pSid.getPrincipal()))
-						sb.append(pSid.getPrincipal()).append(", ");
+					String principal = pSid.getPrincipal();
+					if (isOwner && !SpringSecurityUtil.getLoggedInUserName().equals(principal) && !uniqueSid.contains(principal))
+					{
+						sb.append(principal).append(", ");
+						uniqueSid.add(principal);
+					}
 				}
 			}
 		}
@@ -148,7 +158,6 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 	public void saveDefaultAccessForNewObject(Long securedObjectId, Class clazz)
 	{
 		List<Permission> perms = new ArrayList<Permission>();
-		perms.add(BasePermission.CREATE);
 		perms.add(BasePermission.READ);
 		perms.add(BasePermission.WRITE);
 		perms.add(BasePermission.DELETE);
@@ -173,13 +182,30 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 	}
 	
 	@Override
-	public void saveAccessForObject(Long securedObjectId, Class clazz, String recipient, boolean principal, List<Permission> perms)
+	public void saveAccessForObject(Long securedObjectId, Class clazz, String recipient, boolean principal, String perms)
 	{
-		CananoUserDetails userDetails = (CananoUserDetails) userDetailsService.loadUserByUsername(recipient);
+		List<Permission> permList = new ArrayList<Permission>();
+		if (!StringUtils.isEmpty(perms))
+			for (int i = 0; i < perms.length(); i++)
+			{
+				char c = perms.charAt(i);
+				if (c == 'R')
+					permList.add(BasePermission.READ);
+				else if (c == 'W')
+					permList.add(BasePermission.WRITE);
+				else if (c == 'D')
+					permList.add(BasePermission.DELETE);
+			}
 		
 		//grant explicit permission for a user only if he/she is already not a curator.
-		if (userDetails != null & !userDetails.isCurator())
-			aclOperationService.createAclAndGrantAccess(securedObjectId, clazz, recipient, principal, perms, false);
+		if (principal)
+		{
+			CananoUserDetails userDetails = (CananoUserDetails) userDetailsService.loadUserByUsername(recipient);
+			if (userDetails != null & !userDetails.isCurator())
+				aclOperationService.createAclAndGrantAccess(securedObjectId, clazz, recipient, principal, permList, false);
+		}
+		else
+			aclOperationService.createAclAndGrantAccess(securedObjectId, clazz, recipient, principal, permList, false);
 	}
 	
 	@Override
@@ -188,11 +214,9 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 		MutableAcl acl = aclOperationService.fetchAclForObject(clazz, securedObjectId);
 		CananoUserDetails loggedInUser = SpringSecurityUtil.getPrincipal();
 		List<String> loggedInUserGroups = new ArrayList<String>();
-		List<String> loggedInUserRoles = new ArrayList<String>();
 		if (loggedInUser != null)
 		{
 			loggedInUserGroups = loggedInUser.getGroups();
-			loggedInUserRoles = loggedInUser.getRoles();
 		}
 		Map<String, AccessControlInfo> userAccesses = new HashMap<String, AccessControlInfo>();
 		Map<String, AccessControlInfo> groupAccesses = new HashMap<String, AccessControlInfo>();
@@ -221,24 +245,55 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 			{
 				info = new AccessControlInfo();
 				info.setRecipient(aclSid);
+				//add the newly created AccessControlInfo into the group/user collection
 				Map<String, AccessControlInfo> map = (accessType == AccessTypeEnum.USER) ? userAccesses : groupAccesses;
 				map.put(aclSid, info);
 				info.setAccessType(accessType.getAccessType());
 			}
-			BasePermission permission = (BasePermission) entry.getPermission();
-			info.addPerm(permission);
-			info.setPermStr(info.getPermStr() + " " + CaNanoPermissionEnum.getFromPermission(permission).toString());
+			info.setRoleName(info.getRoleName() + entry.getPermission().getPattern());
 		}
 
 		for (String recipient: userAccesses.keySet())
-			accessControlData.addUserAccess(userAccesses.get(recipient));
+		{
+			AccessControlInfo userAccess = userAccesses.get(recipient);
+			accessControlData.addUserAccess(userAccess);
+			
+			StringBuffer permStr = new StringBuffer();
+			String roleDisplayName = "";
+			for (int i = 0; i < userAccess.getRoleName().length(); i++)
+			{
+				if (userAccess.getRoleName().charAt(i) != '.')
+				{
+					permStr.append(userAccess.getRoleName().charAt(i));
+					roleDisplayName += CaNanoPermissionEnum.getFromStr(userAccess.getRoleName().charAt(i) + "").getPermValue() + " ";
+				}
+			}
+			userAccess.setRoleName(permStr.toString());
+			userAccess.setRoleDisplayName(roleDisplayName);
+		}
 		
-		//add only those groups/roles to which the logged in user is a member of
+		//add all the roles and only those groups to which the logged in user is a member of
 		for (String recipient: groupAccesses.keySet())
 		{
-			if ((loggedInUserRoles != null && loggedInUserRoles.contains(recipient)) ||
+			if (recipient.startsWith("ROLE_") ||
 				(loggedInUserGroups != null && loggedInUserGroups.contains(recipient)))
-				accessControlData.addGroupAccess(groupAccesses.get(recipient));
+			{
+				AccessControlInfo groupAccess = groupAccesses.get(recipient);
+				accessControlData.addGroupAccess(groupAccess);
+				
+				StringBuffer permStr = new StringBuffer();
+				String roleDisplayName = "";
+				for (int i = 0; i < groupAccess.getRoleName().length(); i++)
+				{
+					if (groupAccess.getRoleName().charAt(i) != '.')
+					{
+						permStr.append(groupAccess.getRoleName().charAt(i));
+						roleDisplayName += CaNanoPermissionEnum.getFromStr(groupAccess.getRoleName().charAt(i) + "").getPermValue() + " ";
+					}
+				}
+				groupAccess.setRoleName(permStr.toString());
+				groupAccess.setRoleDisplayName(roleDisplayName);
+			}
 		}
 	}
 	
@@ -260,8 +315,8 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 				aclSid = pSid.getPrincipal();
 				if (userAccess != null && recipient.equals(aclSid))
 				{
-					userAccess.addPerm((BasePermission) entry.getPermission());
-					userAccess.setPermStr(userAccess.getPermStr() + " " + entry.getPermission().toString());
+					//userAccess.addPerm((BasePermission) entry.getPermission());
+					userAccess.setRoleName(userAccess.getRoleName() + " " + entry.getPermission().toString());
 				}
 			}
 		}

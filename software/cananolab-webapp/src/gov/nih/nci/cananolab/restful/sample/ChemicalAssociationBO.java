@@ -479,7 +479,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 		escapeXmlForFileUri(assocBean.getTheFile());
 		prepareEntityLists(assocBean, request);
 		HttpSession session = request.getSession();
-		if (SpringSecurityUtil.getPrincipal() == null) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			throw new InvalidSessionException();
 		}
 		Boolean hasFunctionalizingEntities = (Boolean) session.getAttribute("hasFunctionalizingEntity");

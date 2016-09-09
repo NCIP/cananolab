@@ -49,8 +49,6 @@ public class TabGenerationBO {
 				tabWithLink[0] = "PUBLICATIONS";
 				tabWithLink[1] =  urlBase + "#/managePublications";;
 				tabs.add(tabWithLink);
-				
-				
 			}
 			tabWithLink = new String[2];
 			tabWithLink[0] = "HELP";

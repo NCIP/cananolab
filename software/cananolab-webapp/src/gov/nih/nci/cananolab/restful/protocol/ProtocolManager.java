@@ -44,10 +44,11 @@ public class ProtocolManager
 	public ProtocolBean getProtocol(HttpServletRequest request, String protocolType, String protocolName,
 			String protocolVersion) {
 		// protocolType and protocolName have to be present
-		if (StringUtils.isEmpty(protocolType)
-				|| StringUtils.isEmpty(protocolName)) {
+		if (StringUtils.isEmpty(protocolType) || StringUtils.isEmpty(protocolName))
+		{
 			return null;
 		}
+		
 		try {
 			ProtocolBean protocolBean = protocolService.findProtocolBy(protocolType, protocolName, protocolVersion);
 			if (protocolBean != null
@@ -62,7 +63,8 @@ public class ProtocolManager
 		return null;
 	}
 
-	public ProtocolBean getProtocolById(String protocolId) {
+	public ProtocolBean getProtocolById(String protocolId)
+	{
 		if (StringUtils.isEmpty(protocolId)) {
 			return null;
 		}
@@ -90,6 +92,7 @@ public class ProtocolManager
 		}
 		return counts.toString() + " Protocols";
 	}
+
 }
 
 

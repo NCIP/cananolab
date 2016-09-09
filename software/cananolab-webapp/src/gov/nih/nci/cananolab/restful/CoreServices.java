@@ -169,9 +169,7 @@ public class CoreServices
 		logger.info("In getOrganizationByName");
 		try { 
 			PointOfContactManager manager = (PointOfContactManager) SpringApplicationContext.getBean(httpRequest, "pointOfContactManager");
-			if (manager == null)
-				logger.info("manager is null" );
-
+			
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
@@ -289,4 +287,5 @@ public class CoreServices
 			return Response.status(Response.Status.NOT_FOUND).entity("Problem while deleting the favorites from the list : "+ e.getMessage()).build();
 		}
 	}
+
 }

@@ -333,7 +333,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 			}
 
 			springSecurityAclService.saveAccessForObject(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz(), access.getRecipient(), 
-														 access.isPrincipal(), access.getPermissions());
+														 access.isPrincipal(), access.getRoleName());
 
 			if (protocol.getFile() != null) {
 				springSecurityAclService.saveAccessForChildObject(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz(), 

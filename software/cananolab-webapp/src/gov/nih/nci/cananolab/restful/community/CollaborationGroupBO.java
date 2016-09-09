@@ -47,8 +47,8 @@ public class CollaborationGroupBO  extends AbstractDispatchBO
 	 * @return
 	 * @throws Exception
 	 */
-	public void setupNew(HttpServletRequest request)
-			throws Exception {
+	public void setupNew(HttpServletRequest request) throws Exception
+	{
 		request.getSession().setAttribute("group", new CollaborationGroupBean());
 		request.getSession().removeAttribute("openCollaborationGroup");
 //		List<CollaborationGroupBean> beans = getExistingGroups(request);
@@ -80,32 +80,7 @@ public class CollaborationGroupBO  extends AbstractDispatchBO
 		}
 		
 		return simpleGroups;
-			
-		
 	}
-	
-
-//	public ActionForward input(ActionMapping mapping, ActionForm form,
-//			HttpServletRequest request, HttpServletResponse response)
-//			throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		checkOpenForms(theForm, request);
-//		setExistingGroups(request);
-//		return mapping.findForward("setup");
-//	}
-
-//	private void checkOpenForms(DynaValidatorForm theForm,
-//			HttpServletRequest request) throws Exception {
-//		String dispatch = request.getParameter("dispatch");
-//		String browserDispatch = getBrowserDispatch(request);
-//		HttpSession session = request.getSession();
-//		Boolean openCollaborationGroup = false;
-//		if (dispatch.equals("input")) {
-//			openCollaborationGroup = true;
-//			session.setAttribute("openCollaborationGroup",
-//					openCollaborationGroup);
-//		}
-//	}
 
 	/**
 	 * Save or update collaboration group.
@@ -117,12 +92,8 @@ public class CollaborationGroupBO  extends AbstractDispatchBO
 	 * @return
 	 * @throws Exception
 	 */
-	public List<CollaborationGroupBean> create(CollaborationGroupBean group,
-			HttpServletRequest request)
-			throws Exception {
-		
-//		CollaborationGroupBean group = (CollaborationGroupBean) theForm
-//				.get("group");
+	public List<CollaborationGroupBean> create(CollaborationGroupBean group, HttpServletRequest request) throws Exception
+	{
 		//double check the groupName for invalid special characters
 		if (!StringUtils.xssValidate(group.getName())) {
 			//ActionMessage error = new ActionMessage("group.name.invalid");
@@ -135,13 +106,11 @@ public class CollaborationGroupBO  extends AbstractDispatchBO
 		List<CollaborationGroupBean> beans = getExistingGroups(request);
 		request.getSession().removeAttribute("group");
 		return beans;
-		//return setupNew(request);
 	}
 
-	public List<CollaborationGroupBean> delete(CollaborationGroupBean group,
-			HttpServletRequest request)
-			throws Exception {
-		
+	public List<CollaborationGroupBean> delete(CollaborationGroupBean group, HttpServletRequest request)
+			throws Exception
+	{
 //		CollaborationGroupBean group = (CollaborationGroupBean) theForm
 //				.get("group");
 		communityService.deleteCollaborationGroup(group);
@@ -151,4 +120,5 @@ public class CollaborationGroupBO  extends AbstractDispatchBO
 		request.getSession().removeAttribute("group");
 		return beans;
 	}
+
 }

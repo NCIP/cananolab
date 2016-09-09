@@ -116,9 +116,8 @@ public class WorkspaceManager extends BaseAnnotationBO
 		List<String> Ids = new ArrayList<String>();
 		if(!userDetails.isCurator()){
 			Ids = helper.findSharedPublications(userDetails.getUsername());
-
-			for(String pubId : publicationIds){
-				if(!Ids.contains(pubId))
+			for (String pubId : Ids){
+				if (!publicationIds.contains(pubId))
 					publicationIds.add(pubId);
 			}
 		}
@@ -162,9 +161,8 @@ public class WorkspaceManager extends BaseAnnotationBO
 
 		if(!userDetails.isCurator()){
 			List<String> Id = helper.findSharedProtocols(userDetails.getUsername());
-
-			for(String ids : protoIds){
-				if(!Id.contains(ids))
+			for(String ids : Id){
+				if(!protoIds.contains(ids))
 					protoIds.add(ids);
 			}
 		}
@@ -212,7 +210,6 @@ public class WorkspaceManager extends BaseAnnotationBO
 		//Only Researchers have shared items, not curators.
 		if(!userDetails.isCurator()){
 			sharedByIds = helper.findSharedSampleIds(userDetails.getUsername());
-
 			for (String sharedById : sharedByIds) {
 				if (!sampleIds.contains(sharedById))
 					sampleIds.add(sharedById);
@@ -242,7 +239,8 @@ public class WorkspaceManager extends BaseAnnotationBO
 
 	protected void setCommonDataFields(String itemId, SimpleWorkspaceItem item, SecuredDataBean dataBean, SecureClassesEnum type)
 	{
-		item.setEditable(dataBean.getUserUpdatable());
+		boolean isWriteable = springSecurityAclService.currentUserHasWritePermission(Long.valueOf(itemId), type.getClazz());
+		item.setEditable(isWriteable);
 		Class clazz = type.getClazz();	
 		item.setOwner(springSecurityAclService.isOwnerOfObject(Long.valueOf(itemId), clazz));
 

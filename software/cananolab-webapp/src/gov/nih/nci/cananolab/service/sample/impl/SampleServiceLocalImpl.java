@@ -496,19 +496,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			throw new SampleException(err, e);
 		}
 	}
-
-	public int getNumberOfPublicSamples() throws SampleException
-	{
-		try {
-			int count = sampleServiceHelper.getNumberOfPublicSamples();
-			return count;
-		} catch (Exception e) {
-			String err = "Error finding counts of public samples. " + e.getMessage();
-			logger.error(err, e);
-			throw new SampleException(err, e);
-
-		}
-	}
 	
 	public int getNumberOfPublicSamplesForJob() throws SampleException
 	{
@@ -1039,7 +1026,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			}
 			
 			springSecurityAclService.saveAccessForObject(sampleId, SecureClassesEnum.SAMPLE.getClazz(), accessInfo.getRecipient(), 
-														 accessInfo.isPrincipal(), accessInfo.getPermissions());
+														 accessInfo.isPrincipal(), accessInfo.getRoleName());
 			
 			// fully load sample
 			sample = this.findFullyLoadedSampleByName(sample.getName());

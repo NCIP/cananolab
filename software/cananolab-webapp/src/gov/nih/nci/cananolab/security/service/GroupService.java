@@ -20,6 +20,8 @@ public interface GroupService
 	
 	public int removeGroupMembers(Long groupId);
 	
+	public int removeGroupMember(Long groupId, String userName);
+	
 	public int removeGroup(Long groupId);
 	
 	public List<Group> getGroupsAccessibleToUser(String userName);

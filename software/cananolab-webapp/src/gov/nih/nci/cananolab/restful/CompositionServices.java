@@ -84,8 +84,8 @@ public class CompositionServices {
 		} catch (Exception e) {
 			return Response.ok("Error while exporting the file").build();
 		}
-
 	}
+
 	@GET
 	@Path("/downloadImage")
 	@Produces("image/png")

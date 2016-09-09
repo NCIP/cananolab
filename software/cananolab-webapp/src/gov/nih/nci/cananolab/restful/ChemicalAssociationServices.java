@@ -55,7 +55,7 @@ public class ChemicalAssociationServices
 	{
 		try { 
 			ChemicalAssociationBO chem = (ChemicalAssociationBO) SpringApplicationContext.getBean(httpRequest, "chemicalAssociationBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			SimpleChemicalAssociationBean bean = chem.setupUpdate(sampleId, dataId, httpRequest);
@@ -76,7 +76,7 @@ public class ChemicalAssociationServices
 	{
 		try { 
 			CompositionManager comp = (CompositionManager) SpringApplicationContext.getBean(httpRequest, "compositionManager");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<BaseCompositionEntityBean> beans = comp.getAssociatedElementOptions(compositionType, httpRequest);
@@ -100,7 +100,7 @@ public class ChemicalAssociationServices
 	{
 		try { 
 			CompositionManager comp = (CompositionManager) SpringApplicationContext.getBean(httpRequest, "compositionManager");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<ComposingElementBean> beans = comp.getComposingElementsByNanomaterialEntityId(id, httpRequest);
@@ -125,7 +125,7 @@ public class ChemicalAssociationServices
 	{
 		try { 
 			ChemicalAssociationBO chem = (ChemicalAssociationBO) SpringApplicationContext.getBean(httpRequest, "chemicalAssociationBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			SimpleChemicalAssociationBean bean = chem.saveFile(chemBean, httpRequest);
@@ -145,7 +145,7 @@ public class ChemicalAssociationServices
 	{
 		try { 
 			ChemicalAssociationBO chem = (ChemicalAssociationBO) SpringApplicationContext.getBean(httpRequest, "chemicalAssociationBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<String> msgs = chem.create(chemBean, httpRequest);
@@ -163,7 +163,7 @@ public class ChemicalAssociationServices
 	{
 		try { 
 			ChemicalAssociationBO chem = (ChemicalAssociationBO) SpringApplicationContext.getBean(httpRequest, "chemicalAssociationBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			SimpleChemicalAssociationBean bean = chem.removeFile(chemBean, httpRequest);
@@ -184,7 +184,7 @@ public class ChemicalAssociationServices
 	{
 		try { 
 			ChemicalAssociationBO chem = (ChemicalAssociationBO) SpringApplicationContext.getBean(httpRequest, "chemicalAssociationBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<String> msgs = chem.delete(chemBean, httpRequest);

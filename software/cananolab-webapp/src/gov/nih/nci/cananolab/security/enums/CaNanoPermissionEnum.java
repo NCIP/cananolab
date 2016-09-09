@@ -1,55 +1,43 @@
 package gov.nih.nci.cananolab.security.enums;
 
-import org.springframework.security.acls.domain.BasePermission;
-import org.springframework.security.acls.model.Permission;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 public enum CaNanoPermissionEnum
 {
-	CREATE(BasePermission.CREATE),
-	READ(BasePermission.READ),
-	WRITE(BasePermission.WRITE),
-	DELETE(BasePermission.DELETE);
-
-	private Permission perm;
+	C("CREATE"),
+	R("READ"),
+	W("WRITE"),
+	D("DELETE");
 	
-	private CaNanoPermissionEnum(Permission perm) {
-		this.perm = perm;
-	}
-
-	public Permission getPerm() {
-		return perm;
-	}
-
-	public void setPerm(Permission perm) {
-		this.perm = perm;
+	private String permValue;
+	
+	private CaNanoPermissionEnum(String permValue) {
+		this.permValue = permValue;
 	}
 	
-	public static CaNanoPermissionEnum getFromPermission(BasePermission perm)
+	public String getPermValue() {
+		return permValue;
+	}
+	
+	public void setPermValue(String permValue) {
+		this.permValue = permValue;
+	}
+	
+	public static CaNanoPermissionEnum getFromStr(String str)
 	{
-		CaNanoPermissionEnum retEnum = null;
-		for (CaNanoPermissionEnum permEnum : CaNanoPermissionEnum.values())
+		CaNanoPermissionEnum permEnum = null;
+		if (!StringUtils.isEmpty(str))
 		{
-			if (permEnum.getPerm() == perm)
-			{
-				retEnum = permEnum;
-				break;
-			}
+			if (CaNanoPermissionEnum.C.toString().equalsIgnoreCase(str))
+				permEnum = CaNanoPermissionEnum.C;
+			else if (CaNanoPermissionEnum.R.toString().equalsIgnoreCase(str))
+				permEnum = CaNanoPermissionEnum.R;
+			else if (CaNanoPermissionEnum.W.toString().equalsIgnoreCase(str))
+				permEnum = CaNanoPermissionEnum.W;
+			else if (CaNanoPermissionEnum.D.toString().equalsIgnoreCase(str))
+				permEnum = CaNanoPermissionEnum.D;
 		}
-		return retEnum;
-	}
-	
-	public static CaNanoPermissionEnum getFromString(String perm)
-	{
-		CaNanoPermissionEnum retEnum = null;
-		for (CaNanoPermissionEnum permEnum : CaNanoPermissionEnum.values())
-		{
-			if (permEnum.getPerm().toString().equalsIgnoreCase(perm))
-			{
-				retEnum = permEnum;
-				break;
-			}
-		}
-		return retEnum;
+		return permEnum;
 	}
 
 }

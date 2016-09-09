@@ -9,7 +9,6 @@
 package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
@@ -367,39 +366,26 @@ public class SampleBO extends BaseAnnotationBO {
 	{
 
 		try {
+			String loggedInUserName = SpringSecurityUtil.getLoggedInUserName();
 			List<CananoUserDetails> matchedUsers = userService.loadUsers("");
 			List<CananoUserDetails> updatedUsers = new ArrayList<CananoUserDetails>();
-			String loggedInUserName = SpringSecurityUtil.getLoggedInUserName();
 			
-			// remove current user and curators from the list
-			int i = 0;
+			
+			// remove current user and curators from the list and also data owner from the list if owner is not the current user
 			for (CananoUserDetails userDetail: matchedUsers)
 			{
-				if (loggedInUserName.equals(userDetail.getUsername()) || userDetail.isCurator())
+				if (!loggedInUserName.equals(userDetail.getUsername()) && userDetail.isCurator() && !userDetail.getUsername().equalsIgnoreCase(dataOwner))
 				{
-					updatedUsers.remove(i);
-				}
-				i++;
-			}
-			// remove data owner from the list if owner is not the current user
-			if (!dataOwner.equalsIgnoreCase(loggedInUserName)) {
-				i = 0;
-				for (CananoUserDetails userBean : matchedUsers) {
-					if (userBean.getUsername().equalsIgnoreCase(dataOwner)) {
-						updatedUsers.remove(i);
-						break;
-					}
-					i++;
+					updatedUsers.add(userDetail);
 				}
 			}
 
-			CananoUserDetails[] users = updatedUsers.toArray(new CananoUserDetails[updatedUsers.size()]);
 			sampleEdit.setFilteredUsers(new HashMap<String, String>());
-			for (CananoUserDetails u :users) {
+			for (CananoUserDetails u :updatedUsers) {
 				sampleEdit.getFilteredUsers().put(u.getUsername(), u.getDisplayName());
 			}
 		} catch (Exception e) {
-			logger.error("Got error while setting up params for adding access");
+			logger.error("Got error while setting up params for adding access", e);
 		}
 	}
 
@@ -1243,8 +1229,7 @@ public class SampleBO extends BaseAnnotationBO {
 
 	public boolean isSampleEditableByCurrentUser(HttpServletRequest request, String sampleId) throws Exception
 	{		
-		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
-		if (userDetails == null)
+		if (!SpringSecurityUtil.isUserLoggedIn())
 			return false;
 
 		if (sampleId == null || sampleId.length() == 0)

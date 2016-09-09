@@ -33,7 +33,7 @@ public class CurationServices {
 				
 		try { 
 			ReviewDataBO reviewDataBO = (ReviewDataBO) SpringApplicationContext.getBean(httpRequest, "reviewDataBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			List<DataReviewStatusBean> list = reviewDataBO.setupNew(httpRequest);
 			return Response.ok(list).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -53,7 +53,7 @@ public class CurationServices {
 		try {
 			BatchDataAvailabilityBO batchDataAvailabilityBO = 
 					(BatchDataAvailabilityBO) SpringApplicationContext.getBean(httpRequest, "batchDataAvailabilityBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();		
 			List<String> results = batchDataAvailabilityBO.generate(form, httpRequest);
 			
@@ -72,7 +72,7 @@ public class CurationServices {
 		try { 
 			ManageResultBO manageResultBO = (ManageResultBO) SpringApplicationContext.getBean(httpRequest, "manageResultBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();	
 			
 			List<LongRunningProcess> list = manageResultBO.execute(httpRequest);

@@ -1,23 +1,19 @@
 package gov.nih.nci.cananolab.security;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.security.acls.domain.BasePermission;
-import org.springframework.security.acls.model.Permission;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
-import gov.nih.nci.cananolab.security.enums.CaNanoPermissionEnum;
-import gov.nih.nci.cananolab.util.StringUtils;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AccessControlInfo
 {
 	private String recipient;
 	private String accessType;
-	private String permStr = "";
-	private List<String> perms = new ArrayList<String>();
+	private String roleName = "";
+	private String roleDisplayName = "";
+	//private List<String> perms = new ArrayList<String>();
 	
-	private List<Permission> permissions = new ArrayList<Permission>();
+	//private List<BasePermission> permissions = new ArrayList<BasePermission>();
 	
 	public String getRecipient() {
 		return recipient;
@@ -35,25 +31,12 @@ public class AccessControlInfo
 		this.accessType = accessType;
 	}
 	
-	public String getPermStr() {
-		return permStr;
+	public String getRoleName() {
+		return roleName;
 	}
 
-	public void setPermStr(String permStr) {
-		this.permStr = permStr;
-	}
-
-	public List<String> getPerms() {
-		return perms;
-	}
-	
-	public void setPerms(List<String> perms) {
-		this.perms = perms;
-	}
-	
-	public void addPerm(BasePermission perm)
-	{
-		this.permissions.add(perm);
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 	
 	public boolean isPrincipal()
@@ -62,15 +45,23 @@ public class AccessControlInfo
 		return principalFlag;
 	}
 	
-	public List<Permission> getPermissions() {
+	/*public List<String> getPerms() {
+		return perms;
+	}
+	
+	public void setPerms(List<String> perms) {
+		this.perms = perms;
+	}
+	
+	public List<BasePermission> getPermissions() {
 		return permissions;
 	}
 
-	public void setPermissions(List<Permission> permissions) {
+	public void setPermissions(List<BasePermission> permissions) {
 		this.permissions = permissions;
 	}
 	
-	public List<Permission> getPermissionFromStr()
+	public List<BasePermission> getPermissionFromStr()
 	{
 		if (!StringUtils.isEmpty(permStr))
 		{
@@ -83,11 +74,19 @@ public class AccessControlInfo
 			}
 		}
 		return this.permissions;
+	}*/
+
+	public String getRoleDisplayName() {
+		return roleDisplayName;
+	}
+
+	public void setRoleDisplayName(String roleDisplayName) {
+		this.roleDisplayName = roleDisplayName;
 	}
 
 	@Override
 	public String toString() {
-		return "AccessControlInfo [recipient=" + recipient + ", accessType=" + accessType + ", perms= (" + perms.toString() + ")]";
+		return "AccessControlInfo [recipient=" + recipient + ", accessType=" + accessType + ", permStr=" + roleName + ", roleDisplayName=" + roleDisplayName + "]";
 	}
 
 }

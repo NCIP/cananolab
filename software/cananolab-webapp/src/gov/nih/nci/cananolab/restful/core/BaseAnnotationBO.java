@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -301,9 +302,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 
 	public Boolean canUserExecutePrivateDispatch(HttpServletRequest request, String protectedData) throws Exception
 	{
-		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
-		
-		if (userDetails == null) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			return false;
 		}
 		if (protectedData == null) {
@@ -417,7 +416,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 		getSpringSecurityAclService().retractObjectFromPublic(dataId, clazz);
 	}
 
-	// check if the entered user name is valid
+	// check if the entered group name is valid
 	private Boolean validateGroupAccess(HttpServletRequest request, AccessControlInfo access) throws Exception
 	{
 		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
@@ -427,14 +426,24 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 		{
 			return true;
 		}
-		return userDetails.belongsToGroup(access.getRecipient());
+		else if (AccessTypeEnum.GROUP.getAccessType().equalsIgnoreCase(access.getAccessType()))
+			return userDetails.belongsToGroup(access.getRecipient());
+		else if (AccessTypeEnum.USER.getAccessType().equalsIgnoreCase(access.getAccessType()))
+			return true;
+		
+		return false;
 	}
 
-	// check if the entered group name is valid
+	// check if the entered user name is valid
 	private Boolean validateUserAccess(HttpServletRequest request, AccessControlInfo access) throws Exception
 	{
-		UserDetails userDetails = getUserDetailsService().loadUserByUsername(access.getRecipient());
-		if (userDetails != null)
+		if (AccessTypeEnum.USER.getAccessType().equalsIgnoreCase(access.getAccessType()))
+		{
+			UserDetails userDetails = getUserDetailsService().loadUserByUsername(access.getRecipient());
+			if (userDetails != null)
+				return true;
+		}
+		else if (AccessTypeEnum.GROUP.getAccessType().equalsIgnoreCase(access.getAccessType()))
 			return true;
 		
 		return false;
@@ -451,9 +460,9 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 			errors.add(err);
 			accessValid = false;
 		}
-		List<Permission> permList = theAccess.getPermissionFromStr();
-		if (permList == null || permList.size() == 0) {
-			String err = PropertyUtil.getPropertyReplacingToken("sample", "error.invalidRoleName", "0", theAccess.getPermStr());
+		String permStr = theAccess.getRoleName();
+		if (StringUtils.isEmpty(permStr)) {
+			String err = PropertyUtil.getPropertyReplacingToken("sample", "error.invalidRoleName", "0", theAccess.getRoleName());
 			errors.add(err);
 			accessValid = false;
 		}

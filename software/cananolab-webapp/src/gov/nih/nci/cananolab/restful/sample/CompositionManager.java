@@ -105,7 +105,7 @@ public class CompositionManager
 			return new ArrayList<BaseCompositionEntityBean>();
 		}
 		List<BaseCompositionEntityBean> entities = null;
-		if (SpringSecurityUtil.getPrincipal() == null) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			return null;
 		}
 		if (compositionType.equals("nanomaterial entity")) {
@@ -122,7 +122,7 @@ public class CompositionManager
 
 	public List<ComposingElementBean> getComposingElementsByNanomaterialEntityId(String id, HttpServletRequest request) throws Exception
 	{
-		if (SpringSecurityUtil.getPrincipal() == null || StringUtils.isEmpty(id))
+		if (!SpringSecurityUtil.isUserLoggedIn() || StringUtils.isEmpty(id))
 			return null;
 		
 		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(id);

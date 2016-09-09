@@ -20,6 +20,8 @@ public interface GroupDao
 	
 	public int removeGroupMembers(Long groupId);
 	
+	public int removeGroupMember(Long groupId, String userName);
+	
 	public int deleteGroup(Long groupId);
 	
 	public List<Group> getGroupsWithMember(String username);

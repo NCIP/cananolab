@@ -38,7 +38,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 public abstract class BaseServiceLocalImpl implements BaseService
 {
 	protected Logger logger = Logger.getLogger(BaseServiceLocalImpl.class);
-	protected FileUtils fileUtils;
+	protected FileUtils fileUtils = new FileUtils();
 	
 	public abstract SpringSecurityAclService getSpringSecurityAclService();
 

@@ -43,13 +43,6 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleExporter;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 
-//import org.apache.struts.action.ActionForm;
-//import org.apache.struts.action.ActionForward;
-//import org.apache.struts.action.ActionMapping;
-//import org.apache.struts.action.ActionMessage;
-//import org.apache.struts.action.ActionMessages;
-//import org.apache.struts.validator.DynaValidatorForm;
-
 @Component("advancedSampleSearchBO")
 public class AdvancedSampleSearchBO extends BaseAnnotationBO
 {
@@ -84,8 +77,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 		
 		searchBean.updateQueries();
 		// retrieve from session if it's not null
-		List<AdvancedSampleBean> sampleBeans = (List<AdvancedSampleBean>) session
-				.getAttribute("advancedSampleSearchResults");
+		List<AdvancedSampleBean> sampleBeans = (List<AdvancedSampleBean>) session.getAttribute("advancedSampleSearchResults");
 		if (sampleBeans == null) {
 			sampleBeans = querySamples(request, searchBean);
 			if (sampleBeans != null && !sampleBeans.isEmpty()) {
@@ -113,13 +105,10 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 		for (AdvancedSampleBean sampleBean : sampleBeans) {
 
 			String sampleId = sampleBean.getSampleId();
-			AdvancedSampleBean loadedAdvancedSample = sampleService
-					.findAdvancedSampleByAdvancedSearch(sampleId,
-							searchBean);
+			AdvancedSampleBean loadedAdvancedSample = sampleService.findAdvancedSampleByAdvancedSearch(sampleId, searchBean);
 			loadedSampleBeans.add(loadedAdvancedSample);
 			
 			logger.debug("Processing sample #: " + idx++);
-
 		}
 		
 		// save sample result set in session for printing.
@@ -148,28 +137,22 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 //		DynaValidatorForm searchForm = (DynaValidatorForm) session
 //				.getAttribute("advancedSampleSearchForm");
 
-		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) session
-				.getAttribute("advancedSampleSearchBean");
+		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) session.getAttribute("advancedSampleSearchBean");
 
 		// 2.retrieve full list of sample name from session.
-		List<AdvancedSampleBean> sampleSearchResult = (List<AdvancedSampleBean>) session
-				.getAttribute("advancedSampleSearchResults");
+		List<AdvancedSampleBean> sampleSearchResult = (List<AdvancedSampleBean>) session.getAttribute("advancedSampleSearchResults");
 
-		if (searchBean != null && sampleSearchResult != null
-				&& !sampleSearchResult.isEmpty()) {
+		if (searchBean != null && sampleSearchResult != null && !sampleSearchResult.isEmpty())
+		{
 			// Load all samples by name & location if they are not loaded
 			// previously.
-			List<AdvancedSampleBean> samplesFullList = (List<AdvancedSampleBean>) session
-					.getAttribute("samplesFullList");
+			List<AdvancedSampleBean> samplesFullList = (List<AdvancedSampleBean>) session.getAttribute("samplesFullList");
 			if (samplesFullList == null) {
-				samplesFullList = new ArrayList<AdvancedSampleBean>(
-						sampleSearchResult.size());
+				samplesFullList = new ArrayList<AdvancedSampleBean>(sampleSearchResult.size());
 				for (AdvancedSampleBean sample : sampleSearchResult) {
 					String sampleId = sample.getSampleId();
 					AdvancedSampleBean loadedAdvancedSample = null;
-					loadedAdvancedSample = sampleService
-							.findAdvancedSampleByAdvancedSearch(sampleId,
-									searchBean);
+					loadedAdvancedSample = sampleService.findAdvancedSampleByAdvancedSearch(sampleId, searchBean);
 					samplesFullList.add(loadedAdvancedSample);
 				}
 				// save full sample result set in session for later use.
@@ -197,7 +180,8 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 	 * @throws Exception
 	 */
 	public SimpleAdvancedSearchResultView print(HttpServletRequest request, AdvancedSampleSearchBean searchBean)
-			throws Exception {
+			throws Exception
+	{
 		HttpSession session = request.getSession();
 		
 		// 1.Get total sample list from session for total result size.
@@ -214,24 +198,21 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 			List<String> messages = new ArrayList<String>();
 			empty.getErrors().add(PropertyUtil.getProperty("sample", "message.advancedSampleSearch.noresult"));
 			return empty;
-
 		}
 			
 		logger.debug("Got " + sampleBeans.size() + " sample ids from adv. queries");
-		
-		
+
 		//Load full objects
 		List<AdvancedSampleBean> loadedSampleBeans = new ArrayList<AdvancedSampleBean>();
 		
 		int idx = 0;
-		for (AdvancedSampleBean sampleBean : sampleBeans) {
-
+		for (AdvancedSampleBean sampleBean : sampleBeans)
+		{
 			String sampleId = sampleBean.getSampleId();
 			AdvancedSampleBean loadedAdvancedSample = sampleService.findAdvancedSampleByAdvancedSearch(sampleId, searchBean);
 			loadedSampleBeans.add(loadedAdvancedSample);
 			
 			logger.debug("Processing sample #: " + idx++);
-
 		}
 		
 		// save sample result set in session for printing.
@@ -350,7 +331,6 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 		mixedMap.put("characterizationTypes", charTypes);
 		
 		return mixedMap;
-		
 	}
 
 	/**

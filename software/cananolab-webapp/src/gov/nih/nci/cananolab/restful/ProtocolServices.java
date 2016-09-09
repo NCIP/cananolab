@@ -98,7 +98,7 @@ public class ProtocolServices
 		try {
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<String> msgs = protocolBO.create(form, httpRequest);
@@ -120,7 +120,7 @@ public class ProtocolServices
 		try { 
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			SimpleSubmitProtocolBean view = protocolBO.setupUpdate(protocolId, httpRequest);
@@ -145,7 +145,7 @@ public class ProtocolServices
 		try {
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			SimpleSubmitProtocolBean view = protocolBO.saveAccess(bean, httpRequest);
@@ -166,7 +166,7 @@ public class ProtocolServices
 		try {
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<String> msgs = protocolBO.delete(form, httpRequest);
@@ -188,7 +188,7 @@ public class ProtocolServices
 		try {
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			SimpleSubmitProtocolBean bean = protocolBO.deleteAccess(form, httpRequest);
@@ -213,7 +213,7 @@ public class ProtocolServices
 			ProtocolManager protocolManager = (ProtocolManager) SpringApplicationContext.getBean(httpRequest, "protocolManager");
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 			
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			ProtocolBean bean = protocolManager.getProtocol(httpRequest, protocolType, protocolName, protocolVersion);
@@ -236,7 +236,7 @@ public class ProtocolServices
 		try {
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			String result = protocolBO.submitForReview(httpRequest, reviewBean);
@@ -257,7 +257,7 @@ public class ProtocolServices
 		try {
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<String> msgs = protocolBO.deleteProtocolById(protocolId, httpRequest);

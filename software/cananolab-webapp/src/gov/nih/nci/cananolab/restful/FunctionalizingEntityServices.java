@@ -57,7 +57,7 @@ public class FunctionalizingEntityServices {
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
 					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -82,7 +82,7 @@ public class FunctionalizingEntityServices {
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
 					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -107,7 +107,7 @@ public class FunctionalizingEntityServices {
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
 					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -132,7 +132,7 @@ public class FunctionalizingEntityServices {
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
 					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -157,7 +157,7 @@ public class FunctionalizingEntityServices {
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
 					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -182,7 +182,7 @@ public class FunctionalizingEntityServices {
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
 					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity(Constants.MSG_SESSION_INVALID).build();
 			
@@ -207,9 +207,8 @@ public class FunctionalizingEntityServices {
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
 					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
-			if (SpringSecurityUtil.getPrincipal() == null)
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(Constants.MSG_SESSION_INVALID).build();
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			List<String> msgs = functionalizingEntity.delete(funcBean, httpRequest);
 			

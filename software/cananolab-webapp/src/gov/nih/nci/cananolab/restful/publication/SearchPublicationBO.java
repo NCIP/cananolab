@@ -78,7 +78,7 @@ public class SearchPublicationBO extends BaseAnnotationBO
 			messages.add(PropertyUtil.getProperty("publication", "message.searchPublication.noresult"));
 			return messages;
 		}
-		if (SpringSecurityUtil.getPrincipal() != null) {
+		if (SpringSecurityUtil.isUserLoggedIn()) {
 			loadUserAccess(request, pubBeansPerPage);
 		}
 		//set in sessionScope so user can go back to the result from the sample summary page
@@ -86,8 +86,7 @@ public class SearchPublicationBO extends BaseAnnotationBO
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
 		//set in sessionScope so user can go back to the result from the sample summary page
-		request.getSession().setAttribute("resultSize",
-						new Integer(publicationBeans.size()));
+		request.getSession().setAttribute("resultSize", new Integer(publicationBeans.size()));
 	//	return mapping.findForward("success");
 		List<SimpleSearchPublicationBean> simplePubBeans = transfertoSimplePubBeans(pubBeansPerPage);
 		return simplePubBeans;

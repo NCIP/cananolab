@@ -8,7 +8,6 @@
 
 package gov.nih.nci.cananolab.restful.security;
 
-import gov.nih.nci.cananolab.restful.RestfulConstants;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.service.security.MailService;

@@ -36,7 +36,7 @@
 								Owner
 							</th>
 							<th>
-								Users (Access)
+								Users
 							</th>
 							<th></th>
 						</tr>
@@ -53,13 +53,12 @@
 								</td>
 								<td>
 									<div ng-repeat="user in item.userAccesses track by $index">
-										{{user.userBean.loginName}} ({{user.roleDisplayName}})
+										{{user.recipient}}
 									</div>							
 								</td>
 								<td>
 									<div align="right">
 										<button ng-click="editGroupCollaboration(item)">Edit</button>
-									
 									</div>
 								</td>
 							</tr>						
@@ -109,19 +108,19 @@
 												<td class="cellLabel" scope="col" width="40%">
 													Login Name
 												</td>
-												<td class="cellLabel" scope="col">
+												<!-- <td class="cellLabel" scope="col">
 													Access to the Group
-												</td>
+												</td> -->
 												<td>
 												</td>
 											</tr>
 											<tr ng-repeat="access in collaborationGroup.userAccesses" style="">
 												<td>
-													{{access.userBean.loginName}}
+													{{access.recipient}}
 												</td>
-												<td>
+												<!-- <td>
 													{{access.roleDisplayName}}
-												</td>
+												</td> -->
 												<td>
 													<button ng-click="openUserInfo(access)">Edit</button>
 												</td>
@@ -143,7 +142,7 @@
 												<label for="loginName">User Login Name*</label>
 											</td>
 											<td valign="top" width="30%">
-												<input name="loginName" value="" id="loginName" ng-model="userInfoBean.userBean.loginName" type="text">
+												<input name="loginName" value="" id="loginName" ng-model="userInfoBean.recipient" type="text">
 											</td>
 											<td valign="top">
 												<button style="width:140px" ng-click="searchLoginName()">Search For User</button>
@@ -157,7 +156,7 @@
 														<td valign="top" ng-show="showUsers">
 															
 															
-														<select data-ng-model="userInfoBean.userBean.loginName"
+														<select data-ng-model="userInfoBean.recipient"
 															data-ng-options="key as val for (key,val) in userList" id="loginName"><option value=""></option>
 														</select>
 														</td>
@@ -165,21 +164,21 @@
 												</tbody></table>
 											</td>
 													</tr>
-													<tr>
+													<!-- <tr>
 														<td class="cellLabel">
 															<label for="roleName">Access to the Group*</label>
 														</td>
 														<td colspan="3">
 															<select id="roleName" ng-change="changeRole()" ng-model="userInfoBean.roleName">
-<!--                 													<option ng-selected="{{option==userInfoBean.roleName}}"></option> -->
+                													<option ng-selected="{{option==userInfoBean.roleName}}"></option>
                 <option value="R" ng-model="userInfoBean.roleDisplayName" ng-selected="{{option==userInfoBean.roleName}}">
-                    read
+                    READ
                 </option>    
-                <option value="CURD" ng-model="userInfoBean.roleDisplayName" ng-selected="{{option==userInfoBean.roleName}}">
-                    read update delete
+                <option value="RWD" ng-model="userInfoBean.roleDisplayName" ng-selected="{{option==userInfoBean.roleName}}">
+                    READ WRITE DELETE
                 </option>                                					</select>
 														</td>
-													</tr>
+													</tr> -->
 													<tr>
 														<td>
 															<button ng-hide="isUserInfoAdd" ng-click="removeUserInfo(access)" >Remove</button>
@@ -188,7 +187,7 @@
 															<div align="right">
 
 																<button style="float:right" ng-click="cancelUserInfo(access)">Cancel</button>
-																<button ng-click="saveUserInfo(access)" ng-disabled="!userInfoBean.userBean.loginName" style="float:right">Save</button>															</div>
+																<button ng-click="saveUserInfo(access)" ng-disabled="!userInfoBean.recipient" style="float:right">Save</button>															</div>
 														</td>
 													</tr>
 												</tbody></table>

@@ -94,7 +94,7 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationS
 	public List<DataReviewStatusBean> findDataPendingReview() throws CurationException, NoAccessException
 	{
 		List<DataReviewStatusBean> pendingDataList = null;
-		if (SpringSecurityUtil.getPrincipal().isCurator()) {
+		if (!SpringSecurityUtil.getPrincipal().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {

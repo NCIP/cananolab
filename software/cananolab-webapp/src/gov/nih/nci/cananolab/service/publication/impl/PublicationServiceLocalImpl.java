@@ -402,7 +402,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					springSecurityAclService.retractObjectFromPublic(publication.getId(), SecureClassesEnum.PUBLICATION.getClazz());
 			}
 			springSecurityAclService.saveAccessForObject(publication.getId(), SecureClassesEnum.PUBLICATION.getClazz(), 
-														access.getRecipient(), access.isPrincipal(), access.getPermissions());
+														access.getRecipient(), access.isPrincipal(), access.getRoleName());
 
 			// set author accessibility as well because didn't share authors
 			// between publications

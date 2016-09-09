@@ -717,22 +717,6 @@ public class SampleServiceHelper
 		}
 		return sample;
 	}
-
-	public int getNumberOfPublicSamples() throws Exception
-	{
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-		List<String> publicData = appService.getAllPublicData();
-		HQLCriteria crit = new HQLCriteria("select id from gov.nih.nci.cananolab.domain.particle.Sample");
-		List results = appService.query(crit);
-		int cnt = 0;
-		for(int i = 0; i< results.size(); i++){
-			String id = (String) results.get(i).toString();
-			if (springSecurityAclService.checkObjectPublic(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz()))
-				cnt++;
-		}
-		
-		return cnt;
-	}
 	
 	public int getNumberOfPublicSamplesForJob() throws Exception
 	{

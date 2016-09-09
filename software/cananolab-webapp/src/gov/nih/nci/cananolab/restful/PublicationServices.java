@@ -177,7 +177,7 @@ public class PublicationServices {
 		try
 		{ 
 			PublicationBO publicationBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SimpleSubmitPublicationBean view = publicationBO.setupUpdate(publicationId,sampleId, httpRequest);
@@ -202,7 +202,7 @@ public class PublicationServices {
 		try { 
 			PublicationBO pubBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			String[] sampleList = pubBO.getMatchedSampleNames(searchStr, httpRequest);
@@ -222,7 +222,7 @@ public class PublicationServices {
 		try {
 			PublicationBO pubBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<String> msgs = pubBO.create(form, httpRequest);
@@ -265,7 +265,7 @@ public class PublicationServices {
 		{ 
 			PublicationManager pubManager = (PublicationManager) SpringApplicationContext.getBean(httpRequest, "publicationManager");
 
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			String value = pubManager.getExistingPubMedPublication(pubmedId, httpRequest);
@@ -288,7 +288,7 @@ public class PublicationServices {
 		try { 
 			PublicationManager pubManager = (PublicationManager) SpringApplicationContext.getBean(httpRequest, "publicationManager");
 
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			PublicationForm form = new PublicationForm();
@@ -314,7 +314,7 @@ public class PublicationServices {
 		try {
 			PublicationBO pubBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			SimpleSubmitPublicationBean view = pubBO.saveAccess(bean, httpRequest);
@@ -336,7 +336,7 @@ public class PublicationServices {
 		try {
 			PublicationBO pubBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<String> msgs = pubBO.delete(form, httpRequest);
@@ -356,7 +356,7 @@ public class PublicationServices {
 		try {
 			PublicationBO pubBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null) 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			SimpleSubmitPublicationBean bean = pubBO.deleteAccess(form, httpRequest);
@@ -380,7 +380,7 @@ public class PublicationServices {
 		try {
 			PublicationBO pubBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			SimplePublicationSummaryViewBean bean = pubBO.removeFromSample(form, httpRequest);
@@ -404,7 +404,7 @@ public class PublicationServices {
 		try {
 			PublicationBO publicationBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			String result = publicationBO.submitForReview(httpRequest, dataReviewStatusBean);
@@ -454,7 +454,7 @@ public class PublicationServices {
 		try {
 			PublicationBO pubBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
-			if (SpringSecurityUtil.getPrincipal() == null)
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<String> msgs = pubBO.deletePublicationById(publicationId, httpRequest);

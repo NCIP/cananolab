@@ -75,19 +75,26 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
 
 	private void createNewCollaborationGroup(CollaborationGroupBean collaborationGroup) throws Exception
 	{
+		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+		
 		Group doGroup = new Group();
 		doGroup.setGroupName(collaborationGroup.getName());
 		doGroup.setGroupDesc(collaborationGroup.getDescription());
+		doGroup.setCreatedBy(userDetails.getUsername());
 		Long newId = groupService.createNewGroup(doGroup);
 		collaborationGroup.setId(newId.toString());
 		doGroup.setId(newId);
+		
+		AccessControlInfo acinfo = new AccessControlInfo();
+		acinfo.setRecipient(userDetails.getUsername());
+		acinfo.setAccessType(AccessTypeEnum.USER.getAccessType());
+		collaborationGroup.addUserAccess(acinfo);
 		
 		// add owner access to the group
 		// add curator default CURD access to the group
 		springSecurityAclService.saveDefaultAccessForNewObject(newId, SecureClassesEnum.COLLABORATIONGRP.getClazz());
 
 		// update current user's associated groups shown on the side menu
-		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 		userDetails.addGroup(collaborationGroup.getName());
 
 		// add users to the collaboration group
@@ -134,9 +141,11 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
 				for (Group group : groupList)
 				{
 					CollaborationGroupBean cGroup = new CollaborationGroupBean();
+					collaborationGroups.add(cGroup);
 					cGroup.setId(group.getId() + "");
 					cGroup.setName(group.getGroupName());
 					cGroup.setDescription(group.getGroupDesc());
+					cGroup.setCreatedBy(group.getCreatedBy());
 					List<String> members = groupService.getGroupMembers(group.getId());
 					//TODO: should they be fetched as AccessControlInfo or changed to List<String>
 					for (String member : members)
@@ -220,7 +229,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
 
 	public void deleteCollaborationGroup(CollaborationGroupBean collaborationGroup) throws CommunityException, NoAccessException
 	{
-		if (SpringSecurityUtil.getPrincipal() == null) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			throw new NoAccessException();
 		}
 		try {
@@ -253,7 +262,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
 			if (!springSecurityAclService.isOwnerOfObject(groupId, SecureClassesEnum.COLLABORATIONGRP.getClazz())) {
 				throw new NoAccessException();
 			}
-			springSecurityAclService.saveAccessForObject(Long.valueOf(collaborationGroupId), SecureClassesEnum.COLLABORATIONGRP.getClazz(), SpringSecurityUtil.getLoggedInUserName(), access.isPrincipal(), access.getPermissions());
+			springSecurityAclService.saveAccessForObject(Long.valueOf(collaborationGroupId), SecureClassesEnum.COLLABORATIONGRP.getClazz(), SpringSecurityUtil.getLoggedInUserName(), access.isPrincipal(), access.getRoleName());
 
 		} catch (NoAccessException e) {
 			throw e;

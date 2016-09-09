@@ -61,8 +61,6 @@ public interface SampleService extends BaseService {
 	public SampleBean findSampleByName(String sampleName)
 			throws SampleException, NoAccessException;
 
-	public int getNumberOfPublicSamples() throws SampleException;
-	
 	public int getNumberOfPublicSamplesForJob() throws SampleException;
 
 	public PointOfContactBean findPointOfContactById(String pocId) throws PointOfContactException;

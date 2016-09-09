@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.security.service;
 
 import java.util.List;
 
+import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.model.MutableAcl;
 import org.springframework.security.acls.model.Permission;
 
