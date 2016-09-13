@@ -422,7 +422,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 		
 		if (userDetails.isCurator() && AccessTypeEnum.ROLE.getAccessType().equalsIgnoreCase(access.getAccessType()) &&
-			CaNanoRoleEnum.ROLE_ANONYMOUS.getRoleName().equalsIgnoreCase(access.getRecipient()))
+			CaNanoRoleEnum.ROLE_ANONYMOUS.getRoleName().equalsIgnoreCase(access.getRecipientDisplayName()))
 		{
 			return true;
 		}
@@ -443,7 +443,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 			if (userDetails != null)
 				return true;
 		}
-		else if (AccessTypeEnum.GROUP.getAccessType().equalsIgnoreCase(access.getAccessType()))
+		else 
 			return true;
 		
 		return false;

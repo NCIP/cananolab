@@ -90,7 +90,7 @@ var app = angular.module('angularApp')
 			$scope.isUserInfoAdd = true;
 			//$scope.userInfoBean = {"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":$scope.collaborationGroup.name,"roleName":"R","roleDisplayName":"read","accessType":"user"};
 			//replaced AccessibilityBean by AccessControlInfo bean
-			$scope.userInfoBean = {"recipient":"","roleName":"R","roleDisplayName":"READ","accessType":"user"};
+			$scope.userInfoBean = {"recipient":"","recipientDisplayName":"","roleName":"R","roleDisplayName":"READ","accessType":"user"};
 			$scope.theAccess = $scope.userInfoBean;
 
 			// $scope.theAccess.userBean = {};

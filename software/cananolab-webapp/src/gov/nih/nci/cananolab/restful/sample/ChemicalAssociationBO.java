@@ -386,9 +386,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 				assocBean.setType(null);
 			}
 		}
-		// comp service already created
-		CompositionService compService = (CompositionService) request.getSession().getAttribute("compositionService");
-		compService.saveChemicalAssociation(sampleBean, assocBean);
+		compositionService.saveChemicalAssociation(sampleBean, assocBean);
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newAssoc && !SpringSecurityUtil.getPrincipal().isCurator() && 
@@ -632,8 +630,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 		// save the association
 		saveAssociation(request, bean.getSampleId(), assoc);
 		// comp service has already been created
-		compositionService.removeAccesses(assoc.getDomainAssociation()
-				.getSampleComposition(), theFile.getDomainFile());
+		compositionService.removeAccesses(assoc.getDomainAssociation().getSampleComposition(), theFile.getDomainFile());
 
 		this.checkOpenForms(assoc, request);
 	//	return mapping.findForward("inputForm");
@@ -656,8 +653,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 		return msgs;
 	}
 
-	private void checkOpenForms(ChemicalAssociationBean assoc,
-			HttpServletRequest request) {
+	private void checkOpenForms(ChemicalAssociationBean assoc, HttpServletRequest request) {
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();

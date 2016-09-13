@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.security.enums;
 
+import gov.nih.nci.cananolab.util.StringUtils;
+
 public enum CaNanoRoleEnum 
 {
 	ROLE_ANONYMOUS("Public"),
@@ -19,6 +21,18 @@ public enum CaNanoRoleEnum
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+	
+	public static CaNanoRoleEnum getFromString(String role)
+	{
+		if (!StringUtils.isEmpty(role))
+			for (CaNanoRoleEnum enumVal : CaNanoRoleEnum.values())
+			{
+				if (enumVal.toString().equalsIgnoreCase(role))
+					return enumVal;
+			}
+		
+		return null;
 	}
 
 }

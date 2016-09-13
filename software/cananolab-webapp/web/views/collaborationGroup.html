@@ -53,7 +53,7 @@
 								</td>
 								<td>
 									<div ng-repeat="user in item.userAccesses track by $index">
-										{{user.recipient}}
+										{{user.recipientDisplayName}}
 									</div>							
 								</td>
 								<td>
@@ -116,7 +116,7 @@
 											</tr>
 											<tr ng-repeat="access in collaborationGroup.userAccesses" style="">
 												<td>
-													{{access.recipient}}
+													{{access.recipientDisplayName}}
 												</td>
 												<!-- <td>
 													{{access.roleDisplayName}}

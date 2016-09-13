@@ -35,12 +35,11 @@ var app = angular.module('angularApp')
             $scope.showAccessuser = false;
             $scope.showAccessSelection = false;
             $scope.accessForm.theAccess = {};
-            $scope.accessForm.theAccess.groupName = '';
-            $scope.accessForm.theAccess.userBean = {};
-            $scope.accessForm.theAccess.userBean.loginName = '';
+            $scope.accessForm.theAccess.recipient = '';
+            $scope.accessForm.theAccess.recipientDisplayName = '';
             $scope.access = {};
-            $scope.access.groupName = '';
-            $scope.access.loginName = '';
+            $scope.access.recipient = '';
+            $scope.access.recipientDisplayName = '';
             $scope.protocolForm.isPublic = false;
             $scope.accessForm.theAccess.accessBy = 'group';
             $scope.accessExists = false;
@@ -318,12 +317,13 @@ var app = angular.module('angularApp')
         /** Start - Access functions **/
 
         $scope.getCollabGroups = function() {
-            if ($scope.accessForm.theAccess.groupName === undefined || $scope.accessForm.theAccess.groupName === null) {
-                $scope.accessForm.theAccess.groupName = '';
+            if ($scope.accessForm.theAccess.recipient === undefined || $scope.accessForm.theAccess.recipient === null) {
+                $scope.accessForm.theAccess.recipient = '';
+                $scope.accessForm.theAccess.recipientDisplayName = '';
             }
 
             $scope.loader = true;
-            $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.groupName}).
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.recipient}).
                 success(function(data, status, headers, config) {
                     $scope.collabGroups = data;
                     $scope.loader = false;
@@ -430,7 +430,8 @@ var app = angular.module('angularApp')
         $scope.editGroupAccessSection = function(groupName, groupAccess) {
             $scope.addAccess=true;
             $scope.accessForm.theAccess.accessBy='group';
-            $scope.accessForm.theAccess.groupName=groupName;
+            $scope.accessForm.theAccess.recipient=groupName;
+            $scope.accessForm.theAccess.recipientDisplayName=groupName;
             $scope.showCollaborationGroup=true;
             $scope.showAccessuser=false;
             $scope.showAccessSelection=false;
@@ -441,7 +442,7 @@ var app = angular.module('angularApp')
                 }
             }
 
-            if($scope.accessForm.theAccess.groupName == 'Public') {
+            if($scope.accessForm.theAccess.recipient == 'ROLE_ANONYMOUS') {
                 $scope.accessForm.theAccess.accessBy='public';
             }
         }
@@ -512,7 +513,8 @@ var app = angular.module('angularApp')
         };
 
         $scope.selectPublicAccess = function() {
-            $scope.accessForm.theAccess.groupName = 'Public';
+            $scope.accessForm.theAccess.recipient = 'ROLE_ANONYMOUS';
+            $scope.accessForm.theAccess.recipientDisplayName = 'Public';
             $scope.accessForm.theAccess.roleName = 'R';
             $scope.showCollaborationGroup=true;
             $scope.showAccessuser=false;

@@ -58,7 +58,9 @@
                                  <a href="/caNanoLab/#/" class="link" alt="caNanoLab" title="caNanoLab" description="caNanoLab"></a>
                               </td>
                               <td id="keywordSearch"> 
-                                 <label for="keywordsearch" style="color:white;">Search</label><input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" id="keywordsearch" name="keyword_search_text" role="search">&nbsp;<button class="btn btn-success btn-xs keyword_search" ng-click="doKeywordSearch()" ng-disabled="isSearching" >Search</button>
+                                 <label for="keywordsearch" style="color:white;">Search</label>
+                                 <input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" placeholder="Enter keyword" id="keywordsearch" name="keyword_search_text" role="search">&nbsp;
+                                 <button class="btn btn-success btn-xs keyword_search" ng-click="doKeywordSearch()" ng-disabled="isSearching" >Search</button>
                                  <div ng-show="isSearching" id="searching">Searching</div>
                               </td>
                            </tr>

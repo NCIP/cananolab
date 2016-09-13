@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
 public class AccessControlInfo
 {
 	private String recipient;
+	private String recipientDisplayName;
 	private String accessType;
 	private String roleName = "";
 	private String roleDisplayName = "";
@@ -23,6 +24,14 @@ public class AccessControlInfo
 		this.recipient = recipient;
 	}
 	
+	public String getRecipientDisplayName() {
+		return recipientDisplayName;
+	}
+
+	public void setRecipientDisplayName(String recipientDisplayName) {
+		this.recipientDisplayName = recipientDisplayName;
+	}
+
 	public String getAccessType() {
 		return accessType;
 	}

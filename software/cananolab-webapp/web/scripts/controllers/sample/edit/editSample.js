@@ -31,8 +31,10 @@ var app = angular.module('angularApp')
     $scope.showAccessSelection = false;
     $scope.accessForm.theAccess = {};
     $scope.accessForm.theAccess.recipient = '';
+    $scope.accessForm.theAccess.recipientDisplayName = '';
     $scope.access = {};
     $scope.access.recipient = '';
+    $scope.access.recipientDisplayName = '';
     $scope.sampleData.isPublic = false;
     $scope.accessForm.theAccess.accessType = 'group';        
     $scope.accessExists = false;    
@@ -423,6 +425,7 @@ var app = angular.module('angularApp')
     $scope.getCollabGroups = function() {
         if ($scope.accessForm.theAccess.recipient === undefined || $scope.accessForm.theAccess.recipient === null) {
             $scope.accessForm.theAccess.recipient = '';
+            $scope.accessForm.theAccess.recipientDisplayName = '';
         }
 
         $scope.loader = true;
@@ -444,6 +447,7 @@ var app = angular.module('angularApp')
     $scope.getAccessUsers = function() {
         if ($scope.accessForm.theAccess.recipient === undefined || $scope.accessForm.theAccess.recipient === null) {
             $scope.accessForm.theAccess.recipient = '';
+            $scope.accessForm.theAccess.recipientDisplayName = '';
         }
         
         $scope.loader = true;
@@ -501,6 +505,7 @@ var app = angular.module('angularApp')
         $scope.addAccess=true;
         $scope.accessForm.theAccess.accessType='user';
         $scope.accessForm.theAccess.recipient=loginName;
+        $scope.accessForm.theAccess.recipientDisplayName=loginName;
         $scope.showCollaborationGroup=false;
         $scope.showAccessuser=true;
         $scope.showAccessSelection=false;
@@ -516,6 +521,7 @@ var app = angular.module('angularApp')
         $scope.addAccess=true;
         $scope.accessForm.theAccess.accessType='group';
         $scope.accessForm.theAccess.recipient=groupName;
+        $scope.accessForm.theAccess.recipientDisplayName=groupName;
         $scope.showCollaborationGroup=true;
         $scope.showAccessuser=false;
         $scope.showAccessSelection=false;
@@ -526,7 +532,7 @@ var app = angular.module('angularApp')
             }
         }
         
-        if($scope.accessForm.theAccess.recipient == 'Public') {
+        if($scope.accessForm.theAccess.recipient == 'ROLE_ANONYMOUS') {
             $scope.accessForm.theAccess.accessType='public';
         }
     }
@@ -588,7 +594,8 @@ var app = angular.module('angularApp')
     };
 
     $scope.selectPublicAccess = function() {
-        $scope.accessForm.theAccess.recipient = 'Public';
+        $scope.accessForm.theAccess.recipient = 'ROLE_ANONYMOUS';
+        $scope.accessForm.theAccess.recipientDisplayName = 'Public';
         $scope.accessForm.theAccess.roleName = 'R';
         $scope.showCollaborationGroup=true;
         $scope.showAccessuser=false;

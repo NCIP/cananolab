@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
 import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 
 @Path("/security")
@@ -32,7 +34,18 @@ public class SecurityServices
 		
 		if (userDetails != null)
 		{
-			userGroups.put(userDetails.getUsername(), userDetails.getGroups());
+			List<String> rolesGroups = new ArrayList<String>();
+			if (userDetails.getRoles() != null)
+			{
+				for (String role: userDetails.getRoles())
+				{
+					CaNanoRoleEnum roleEnum = CaNanoRoleEnum.getFromString(role);
+					rolesGroups.add(roleEnum.getRoleName());
+				}
+			}
+			if (userDetails.getGroups() != null)
+				rolesGroups.addAll(userDetails.getGroups());
+			userGroups.put(userDetails.getUsername(), rolesGroups);
 		}
 		
 		//return Response.status(Response.Status.NOT_FOUND).entity("Unable to get userGroup due to unknown reason.").build();

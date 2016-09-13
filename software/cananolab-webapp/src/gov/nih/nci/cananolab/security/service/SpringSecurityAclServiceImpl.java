@@ -134,7 +134,13 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 					String grantedAuthority = gaSid.getGrantedAuthority();
 					if (!uniqueSid.contains(grantedAuthority))
 					{
-						sb.append(grantedAuthority).append(", ");
+						String str = grantedAuthority;
+						if (grantedAuthority.startsWith("ROLE_"))
+						{
+							CaNanoRoleEnum roleEnum = CaNanoRoleEnum.getFromString(grantedAuthority);
+							str = roleEnum.getRoleName();
+						}
+						sb.append(str).append(", ");
 						uniqueSid.add(grantedAuthority);
 					}
 				}
@@ -249,6 +255,13 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 				Map<String, AccessControlInfo> map = (accessType == AccessTypeEnum.USER) ? userAccesses : groupAccesses;
 				map.put(aclSid, info);
 				info.setAccessType(accessType.getAccessType());
+				if (aclSid.startsWith("ROLE_"))
+				{
+					CaNanoRoleEnum roleEnum = CaNanoRoleEnum.getFromString(aclSid);
+					info.setRecipientDisplayName(roleEnum.getRoleName());
+				}
+				else
+					info.setRecipientDisplayName(aclSid);
 			}
 			info.setRoleName(info.getRoleName() + entry.getPermission().getPattern());
 		}

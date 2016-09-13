@@ -240,8 +240,7 @@ public class SampleServices {
 			
 			String result = characterizationBO.summaryExport(sampleId, type, httpRequest, httpResponse);
 			return Response.ok(result).build();
-		} 
-		
+		}
 		catch (Exception ioe) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
@@ -252,22 +251,20 @@ public class SampleServices {
 	@Path("/edit")
 	@Produces("application/json")
 	 public Response edit(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId)
+	{
 		logger.debug("In edit Sample");
 		
 		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			logger.info("User not logged in");
-			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(Constants.MSG_SESSION_INVALID).build();
+			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 		}
-		SampleBO sampleBO = 
-				(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
+		SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 
 		try {
 			SampleEditGeneralBean sampleBean = sampleBO.summaryEdit(sampleId,httpRequest);
 			return (sampleBean.getErrors().size() == 0) ?
-					Response.ok(sampleBean).build()
-					:
+					Response.ok(sampleBean).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
 		} 
 
@@ -285,8 +282,7 @@ public class SampleServices {
 		
 		SampleEditGeneralBean editBean = null;
 		try {
-			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
+			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
@@ -366,12 +362,10 @@ public class SampleServices {
 	public Response updateSample(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleEdit) {
 		logger.info("In updateSample");
 		try {
-			SampleBO sampleBO = 
-					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
+			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
 			if (!SpringSecurityUtil.isUserLoggedIn())
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(Constants.MSG_SESSION_INVALID).build();
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.update(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();

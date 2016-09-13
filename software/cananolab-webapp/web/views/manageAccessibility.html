@@ -9,7 +9,7 @@
            onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'{{$parent.parentFormName}}\', \'{{$parent.dataType}}\')');"
            id="addAccess" style="display:block"><img
                 align="top" src="images/btn_add.gif" border="0" alt="add accessibility"/></a> -->
-        <button ng-click="$parent.accessForm = {}; $parent.addAccess=true; $parent.showAddAccessButton=false;$parent.accessForm.theAccess.recipient='';$parent.accessForm.theAccess.recipient='';$parent.accessForm.theAccess.roleName='';" id="addAccess" class="btn btn-primary btn-xxs">Add</button>
+        <button ng-click="$parent.accessForm = {}; $parent.addAccess=true; $parent.showAddAccessButton=false;$parent.accessForm.theAccess.recipient='';$parent.accessForm.theAccess.recipientDisplayName='';$parent.accessForm.theAccess.roleName='';" id="addAccess" class="btn btn-primary btn-xxs">Add</button>
     </td>
 </tr>
 <tr>
@@ -23,14 +23,14 @@
             </tr>
             <tr valign="top" ng-repeat="access in $parent.groupAccesses track by $index">
                 <td>
-                    {{access.recipient}}
+                    {{access.recipientDisplayName}}
                 </td>
                 <td>
                     {{access.roleDisplayName}}
                 </td>
                 <td>
                     <!-- <div align="right" ng-if="access.groupName == 'Curator' || access.groupName == 'Public' && !$parent.user.curator" > -->
-                    <div align="right" ng-if="access.recipient != 'Curator' &&  $parent.isCurator.curator" >
+                    <div align="right" ng-if="access.recipient != 'ROLE_CURATOR' &&  $parent.isCurator.curator" >
                         <button ng-click="$parent.accessForm.theAccess.recipient='';editGroupAccessSection('{{access.recipient}}','{{access.roleDisplayName}}');" class="btn btn-primary btn-xxs">Edit</button>
                     </div>
                 </td>
@@ -54,7 +54,7 @@
             </tr>
             <tr valign="top" ng-repeat="access in $parent.userAccesses track by $index">
                 <td>
-                    {{access.recipient}}
+                    {{access.recipientDisplayName}}
                 </td>
                 <td>
                     {{access.roleDisplayName}}
@@ -108,7 +108,7 @@
                         <label for="userName" style="display:none">Login Name</label>
                         <input type="text" ng-model="accessForm.theAccess.recipient" value="" id="userName" ng-if="$parent.showAccessuser">
                     </td>
-                    <td><button id="browseIcon1" ng-if="$parent.showCollaborationGroup && accessForm.theAccess.recipient != 'public'"
+                    <td><button id="browseIcon1" ng-if="$parent.showCollaborationGroup && accessForm.theAccess.recipient != 'ROLE_ANONYMOUS'"
                            ng-click="getCollabGroups();">Search</button>
 
                         <button id="browseIcon2" ng-if="$parent.showAccessuser"
@@ -148,7 +148,7 @@
                         Access to the {{$parent.dataType}} *
                     </td>
                     <td colspan="2">
-                        <select ng-disabled="accessForm.theAccess.recipient == 'public'" ng-model="accessForm.theAccess.roleName" id="roleName" ng-options="key as value for (key , value) in $parent.csmRoleNames" >
+                        <select ng-disabled="accessForm.theAccess.recipient == 'ROLE_ANONYMOUS'" ng-model="accessForm.theAccess.roleName" id="roleName" ng-options="key as value for (key , value) in $parent.csmRoleNames" >
                         </select>
                     </td>
                     <td></td>
