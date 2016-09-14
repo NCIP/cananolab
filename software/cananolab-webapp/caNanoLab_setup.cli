@@ -10,8 +10,8 @@ if (outcome == success) of /system-property=gov.nih.nci.security.configFile:read
 /system-property=gov.nih.nci.security.configFile:remove
 end-if
 
-if (outcome == success) of /system-property=gov.nih.nci.caNanoLab.wikihelp.properties:read-resource
-	/system-property=gov.nih.nci.caNanoLab.wikihelpProperties:remove
+if (outcome == success) of /system-property=gov.nih.nci.cananolab.wikihelpProperties:read-resource
+	/system-property=gov.nih.nci.cananolab.wikihelpProperties:remove
 end-if
 
 /system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=/local/content/caNanoLab/config/wikihelp.properties)
