@@ -925,7 +925,7 @@ public class SampleBO extends BaseAnnotationBO {
 		sampleService.assignAccessibility(theAccess, sample.getDomain());
 
 		// update status to retracted if the access is not public and sample is public
-		if (CaNanoRoleEnum.ROLE_ANONYMOUS.getRoleName().equalsIgnoreCase(theAccess.getRecipient()) && 
+		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient()) && 
 			springSecurityAclService.checkObjectPublic(sample.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz()))
 		{
 			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request, sample.getDomain().getId().toString(), sample

@@ -368,7 +368,7 @@ public class ProtocolBO extends BaseAnnotationBO
 		protocolService.assignAccessibility(theAccess, protocol.getDomain());
 		// update status to retracted if the access is not public and protocol
 		// is public
-		if (CaNanoRoleEnum.ROLE_ANONYMOUS.getRoleName().equalsIgnoreCase(theAccess.getRecipient()) &&
+		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient()) &&
 			springSecurityAclService.checkObjectPublic(protocol.getDomain().getId(), SecureClassesEnum.PROTOCOL.getClazz()))
 		{
 			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request, protocol.getDomain().getId().toString(), protocol

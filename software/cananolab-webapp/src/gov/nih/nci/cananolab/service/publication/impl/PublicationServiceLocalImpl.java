@@ -392,7 +392,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		try {
 			// if access is Public, remove all other access except Public, Curator and owner
-			if (CaNanoRoleEnum.ROLE_ANONYMOUS.getRoleName().equalsIgnoreCase(access.getRecipient()))
+			if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(access.getRecipient()))
 			{
 				springSecurityAclService.deleteAllAccessExceptPublicAndDefault(publication.getId(), SecureClassesEnum.PUBLICATION.getClazz());
 			}
