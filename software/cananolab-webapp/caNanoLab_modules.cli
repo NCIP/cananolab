@@ -1,6 +1,6 @@
 #caNanoLab Wildfly setup scripts
 
-connect
+connect localhost:19990
 
 ### Database driver module
 module add --name=com.mysql --resources=/Users/chandrasekaranp/local/content/caNanoLab/artifacts/mysql-connector-java-5.1.26.jar --dependencies=javax.api,javax.transaction.api
