@@ -1015,7 +1015,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		try
 		{
 			// if access is Public, remove all other access except Public, Curator and owner
-			if (CaNanoRoleEnum.ROLE_ANONYMOUS.getRoleName().equalsIgnoreCase(accessInfo.getRecipient()))
+			if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(accessInfo.getRecipient()))
 			{
 				springSecurityAclService.deleteAllAccessExceptPublicAndDefault(sampleId, SecureClassesEnum.SAMPLE.getClazz());
 			}

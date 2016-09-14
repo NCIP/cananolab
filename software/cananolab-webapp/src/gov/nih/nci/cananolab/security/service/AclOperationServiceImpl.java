@@ -60,10 +60,10 @@ public class AclOperationServiceImpl implements AclOperationService
 		{
 			for (AccessControlEntry entry : entries)
 			{
-				if (entry.getSid().equals(recipient) && entry.getPermission().equals(perm)) {
+				if (entry.getSid().equals(recipient) && entry.getPermission().equals(perm))
 					acl.deleteAce(i);
-				}
-				i++;
+				else
+					i++;
 			}
 		}
 
@@ -97,11 +97,9 @@ public class AclOperationServiceImpl implements AclOperationService
 						aclSid = pSid.getPrincipal();
 					}
 					if (sid.equals(aclSid)) 
-					{
 						acl.deleteAce(i);
-					}
-	
-					i++;
+					else
+						i++;
 				}
 				aclService.updateAcl(acl);
 			}
@@ -196,11 +194,9 @@ public class AclOperationServiceImpl implements AclOperationService
 					}
 					if (!aclSid.equalsIgnoreCase(CaNanoRoleEnum.ROLE_ANONYMOUS.toString()) &&
 						!aclSid.equalsIgnoreCase(CaNanoRoleEnum.ROLE_CURATOR.toString()) && !aclSid.equalsIgnoreCase(owner)) 
-					{
 						acl.deleteAce(i);
-					}
-	
-					i++;
+					else
+						i++;
 				}
 				aclService.updateAcl(acl);
 			}
