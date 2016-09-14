@@ -17,7 +17,6 @@ if (outcome == success) of /system-property=gov.nih.nci.caNanoLab.wikihelpProper
 end-if
 
 
-/system-property=gov.nih.nci.security.configFile:add(value=/Users/chandrasekaranp/local/content/caNanoLab/config/ApplicationSecurityConfig.xml)
 /system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=/Users/chandrasekaranp/local/content/caNanoLab/config/wikihelp.properties)
 
 
@@ -77,23 +76,6 @@ if (outcome == success) of /subsystem=security/security-domain=caNanoLab/authent
    /subsystem=security/security-domain=caNanoLab/authentication=classic:remove()
 end-if
 
-if (outcome != success) of /subsystem=security/security-domain=caNanoLab:read-resource
-/subsystem=security/security-domain=caNanoLab/:add(cache-type=default)
-end-if
-
-if (outcome != success) of /subsystem=security/security-domain=caNanoLab/authentication=classic:read-resource 
-/subsystem=security/security-domain=caNanoLab/authentication=classic:add( \
-    login-modules=[ \   
-        { \
-            "code" => "gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule", \
-            "flag" => "required", \
-            "module" => "gov.nih.nci.security", \
-            "module-options" => [("driver"=>"com.mysql.jdbc.Driver"), ("url"=>"@database.url@"), ("user"=>"@database.user@"), ("passwd"=>"@database.password@"), ("query"=>"SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?"), ("encryption-enabled"=>"YES")] \
-        } \     
-    ] \
-) {allow-resource-service-restart=true}
-end-if
-
 # csmupt login module configuration
 
 if (outcome == success) of /subsystem=security/security-domain=csmupt:read-resource
@@ -102,23 +84,6 @@ end-if
 
 if (outcome == success) of /subsystem=security/security-domain=csmupt/authentication=classic:read-resource 
    /subsystem=security/security-domain=csmupt/authentication=classic:remove()
-end-if
-
-if (outcome != success) of /subsystem=security/security-domain=csmupt:read-resource
-/subsystem=security/security-domain=csmupt/:add(cache-type=default)
-end-if
-
-if (outcome != success) of /subsystem=security/security-domain=csmupt/authentication=classic:read-resource 
-/subsystem=security/security-domain=csmupt/authentication=classic:add( \
-    login-modules=[ \   
-        { \
-            "code" => "gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule", \
-            "flag" => "required", \
-            "module" => "gov.nih.nci.security", \
-            "module-options" => [("driver"=>"com.mysql.jdbc.Driver"), ("url"=>"@database.url@"), ("user"=>"@database.user@"), ("passwd"=>"@database.password@"), ("query"=>"SELECT * FROM CSM_USER WHERE LOGIN_NAME=? and PASSWORD=?"), ("encryption-enabled"=>"YES")] \
-        } \     
-    ] \
-) {allow-resource-service-restart=true}
 end-if
 
 # Execute and reload
