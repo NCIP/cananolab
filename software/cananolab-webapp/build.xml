@@ -167,6 +167,7 @@ L-->
 			</restrict>
 			<mapper classpathref="maven-ant-tasks.classpath" type="flatten" />
 		</copy>
+		
 	
 		<!--copy mysql-ds.xml and replace database connection info-->
 		<copy overwrite="true" tofile="${common.dist.dir}/mysql-ds.xml" file="${common.dir}/resources/jboss-conf/mysql-ds.xml">
@@ -175,7 +176,6 @@ L-->
 				<filter token="database.url" value="${database.url}" />
 				<filter token="database.user" value="${database.user}" />
 				<filter token="database.password" value="${database.password}" />
-				<filter token="logLevel" value="${logLevel}" />
 			</filterset>
 		</copy>
 		<if>
@@ -249,6 +249,7 @@ L-->
 						<filter token="database.url" value="${database.url}" />
 						<filter token="database.user" value="${database.user}" />
 						<filter token="database.password" value="${database.password}" />
+						<filter token="logLevel" value="${logLevel}" />
 					</filterset>
 				</copy>
 		
