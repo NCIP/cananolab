@@ -89,7 +89,7 @@ L-->
 				<exclude name="**/ant-contrib-*.jar" />
 			</fileset>
 		</path>
-		<javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes" debug="true" source="1.7" target="1.7">
+		<javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes" debug="true" source="1.8" target="1.8">
 			<classpath refid="classpath" />
 		</javac>
 	</target>
@@ -175,6 +175,7 @@ L-->
 				<filter token="database.url" value="${database.url}" />
 				<filter token="database.user" value="${database.user}" />
 				<filter token="database.password" value="${database.password}" />
+				<filter token="logLevel" value="${logLevel}" />
 			</filterset>
 		</copy>
 		<if>
@@ -226,7 +227,7 @@ L-->
 		</copy>
 
 		<!--copy uptEAR.ear -->
-		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/uptEAR.ear" />
+		<!--copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/uptEAR.ear" /-->
 		
 		<!--copy csmapi-5.2.jar -->
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/lib/sdk/csmapi-5.2.jar" />
@@ -260,7 +261,6 @@ L-->
 		<!-- deploy WAR and xml to JBOSS deploy location-->
 		<copy todir="${jboss.deploy.dir}" overwrite="true">
 			<fileset dir="${common.dist.dir}">
-				<include name="uptEAR.ear" />
 				<include name="upt-ds.xml" />
 				<include name="${database.type}-ds.xml" />
 				<include name="properties-service.xml"/>
@@ -363,7 +363,7 @@ L-->
 					<exclude name="**/ant-contrib-*.jar" />
 				</fileset>
 			</path>
-			<javac destdir="${build.dir}/WEB-INF/classes" debug="true" source="1.7" target="1.7">
+			<javac destdir="${build.dir}/WEB-INF/classes" debug="true" source="1.8" target="1.8">
 				<classpath refid="classpath" />
 				<classpath refid="test.classpath" />
 				<src path="${src.dir}" />
