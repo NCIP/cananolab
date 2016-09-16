@@ -3,10 +3,10 @@
 connect localhost:19990
 
 ### Database driver module
-module add --name=com.mysql --resources=/Users/chandrasekaranp/local/content/caNanoLab/artifacts/mysql-connector-java-5.1.26.jar --dependencies=javax.api,javax.transaction.api
+module add --name=com.mysql --resources=/local/content/caNanoLab/artifacts/mysql-connector-java-5.1.26.jar --dependencies=javax.api,javax.transaction.api
 
 ### CSM security module
-module add --name=gov.nih.nci.security --resources=/Users/chandrasekaranp/local/content/caNanoLab/artifacts/csmapi-5.2.jar --dependencies=org.apache.log4j,org.hibernate,org.jdom,org.slf4j.jcl-over-slf4j
+module add --name=gov.nih.nci.security --resources=/local/content/caNanoLab/artifacts/csmapi-5.2.jar --dependencies=org.apache.log4j,org.hibernate,org.jdom,org.slf4j.jcl-over-slf4j
 
 ###  BounyCastle
-module add --name=org.bouncycastle --resources=/Users/chandrasekaranp/local/content/caNanoLab/artifacts/bcprov-jdk15on-1.47.jar --dependencies=javax.api
+module add --name=org.bouncycastle --resources=/local/content/caNanoLab/artifacts/bcprov-jdk15on-1.47.jar --dependencies=javax.api
