@@ -92,4 +92,22 @@ CREATE TABLE `authorities` (
   UNIQUE KEY `ix_auth_username` (`username`,`authority`),
   CONSTRAINT `fk_authorities_users` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
 );
+
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.dto.particle.SampleBean');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.dto.particle.composition.CompositionBean');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.dto.particle.composition.FunctionBean');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.domain.particle.Characterization');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.domain.common.ExperimentConfig');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.domain.common.Finding');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.dto.common.ProtocolBean');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.dto.common.PublicationBean');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.domain.common.Author');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.dto.common.FileBean');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.domain.common.Organization');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.domain.common.PointOfContact');
+INSERT INTO `acl_class` (`class`) VALUES ('gov.nih.nci.cananolab.dto.common.CollaborationGroupBean');
   

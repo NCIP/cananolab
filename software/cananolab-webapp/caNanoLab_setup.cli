@@ -58,10 +58,6 @@ data-source add \
 #data-source enable --name=csmupt
 end-if
 
-# References: (http://www.mastertheboss.com/jboss-server/jboss-script/installing-a-jboss-as-7-module-using-the-cli)
-
-reload
-
 ##############################################################
 #               CSM Login Module                             
 ##############################################################
@@ -86,8 +82,8 @@ end-if
 if (outcome != success) of /subsystem=logging/size-rotating-file-handler=CANANOLAB:read-resource
 	/subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
 	/subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
-	/subsystem=logging/size-rotating-file-handler=CANANOLAB:add(level=@logLevel@, file={"relative-to"=>"jboss.server.log.dir", "path"=>"cananolab.log"}, append=false, autoflush=true)
-	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="formatter", value="%d [%t] %-5p [%c : %L] %m%n") 
+	/subsystem=logging/size-rotating-file-handler=CANANOLAB:add(level=DEBUG, file={"relative-to"=>"jboss.server.log.dir", "path"=>"cananolab.log"}, append=false, autoflush=true)
+	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="formatter", value="%d [%t] %-5p [%c : %L] %m%n")
 	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="rotate-size", value="1m")
 	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="max-backup-index", value="10")
 end-if
