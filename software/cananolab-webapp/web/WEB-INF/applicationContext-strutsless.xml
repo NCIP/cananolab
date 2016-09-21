@@ -39,7 +39,7 @@
          <!-- see the example of method invoking job above -->
          <property name="jobDetail" ref="publicDataCountJob"/>
          <property name="startDelay" value="2000"/>
-         <property name="repeatInterval" value="8640000"/>
+         <property name="repeatInterval" value="86400000"/>
     </bean>
     
     <bean name="luceneIndexJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
@@ -63,13 +63,13 @@
 		<property name="jobDetails">
 	        <list>
 	            <ref bean="publicDataCountJob" />
-	            <!-- <ref bean="luceneIndexJob" /> -->
+	            <ref bean="luceneIndexJob" />
 	        </list>
 	    </property>
 		<property name="triggers">
 			<list>
 				<ref bean="publicDataCountTrigger" />
-				<!-- <ref bean="luceneIndexTrigger" /> -->
+				<ref bean="luceneIndexTrigger" />
 			</list>
 		</property>
 	</bean>
