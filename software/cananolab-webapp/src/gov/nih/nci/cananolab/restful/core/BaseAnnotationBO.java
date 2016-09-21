@@ -343,14 +343,13 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 	protected void setUpSubmitForReviewButton(HttpServletRequest request, String dataId, Boolean publicData) throws Exception
 	{
 		// show 'submit for review' button if data is not public and doesn't
-		// have tracted status and user is
-		// not curator
+		// have retracted status and user is not curator
 		if (!publicData) {
 			CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 			DataReviewStatusBean reviewStatus = getCurationServiceDAO().findDataReviewStatusBeanByDataId(dataId);
 
-			if (!userDetails.isCurator() && (reviewStatus == null || reviewStatus != null && 
-				 reviewStatus.getReviewStatus().equals(DataReviewStatusBean.RETRACTED_STATUS))) {
+			if (!userDetails.isCurator() && (reviewStatus == null || (reviewStatus != null && 
+				 reviewStatus.getReviewStatus().equals(DataReviewStatusBean.RETRACTED_STATUS)))) {
 				request.setAttribute("review", true);
 			} else {
 				request.setAttribute("review", false);
@@ -410,7 +409,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 	 * @param dataType
 	 * @throws Exception
 	 */
-	protected void retractFromPublic(String entityId, HttpServletRequest request, Long dataId, String dataName, String dataType, Class clazz) throws Exception
+	protected void retractFromPublic(HttpServletRequest request, Long dataId, String dataName, String dataType, Class clazz) throws Exception
 	{
 		updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request, dataId.toString(), dataName, dataType);
 		getSpringSecurityAclService().retractObjectFromPublic(dataId, clazz);

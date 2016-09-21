@@ -76,23 +76,20 @@ public class ProtocolBO extends BaseAnnotationBO
 			return msgs;
 		}
 		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
-		// retract from public if updating an existing public record and not
-		// curator
-		if (!newProtocol && !userDetails.isCurator() && springSecurityAclService.checkObjectPublic(protocolBean.getDomain().getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
-//			retractFromPublic(request, protocolBean.getDomain()
-//					.getId().toString(), protocolBean.getDomain().getName(),
-//					"protocol");
+		// retract from public if updating an existing public record and not curator
+		if (!newProtocol && !userDetails.isCurator() && 
+			springSecurityAclService.checkObjectPublic(protocolBean.getDomain().getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
+			retractFromPublic(request, protocolBean.getDomain().getId(), protocolBean.getDomain().getName(),
+							  "protocol", SecureClassesEnum.PROTOCOL.getClazz());
 			
-			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request,
-					protocolBean.getDomain().getId().toString(), protocolBean.getDomain().getName(), "protocol");
+//			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request,
+//					protocolBean.getDomain().getId().toString(), protocolBean.getDomain().getName(), "protocol");
 			msgs.add("retract success");
 			return msgs;
-		
-		} else {
-		
+		} else
+		{
 			msgs.add("success");
 		}
-	//	forward = mapping.findForward("success");
 		return msgs;
 	}
 
@@ -342,8 +339,7 @@ public class ProtocolBO extends BaseAnnotationBO
 		ProtocolBean protocolBean = transferSimpleSubmitProtocolBean(form);//form.getProtocol();
 		// update data review status to "DELETED"
 		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
-				protocolBean.getDomain().getId().toString(), protocolBean
-						.getDomain().getName(), "protocol");
+				protocolBean.getDomain().getId().toString(), protocolBean.getDomain().getName(), "protocol");
 		protocolService.deleteProtocol(protocolBean.getDomain());
 		msgs.add("success");
 	
@@ -366,9 +362,8 @@ public class ProtocolBO extends BaseAnnotationBO
 		// privilege would be handled in the service method
 		
 		protocolService.assignAccessibility(theAccess, protocol.getDomain());
-		// update status to retracted if the access is not public and protocol
-		// is public
-		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient()) &&
+		// update status to retracted if the access is not public and protocol is public
+		if (!CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient()) &&
 			springSecurityAclService.checkObjectPublic(protocol.getDomain().getId(), SecureClassesEnum.PROTOCOL.getClazz()))
 		{
 			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request, protocol.getDomain().getId().toString(), protocol
@@ -377,7 +372,7 @@ public class ProtocolBO extends BaseAnnotationBO
 		}
 		// if access is public, pending review status, update review
 		// status to public
-		if (CaNanoRoleEnum.ROLE_ANONYMOUS.getRoleName().equalsIgnoreCase(theAccess.getRecipient())) {
+		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient())) {
 			this.switchPendingReviewToPublic(request, protocol.getDomain().getId().toString());
 		}
 

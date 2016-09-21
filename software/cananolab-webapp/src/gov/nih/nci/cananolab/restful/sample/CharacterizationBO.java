@@ -275,7 +275,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		if (!newChar && !SpringSecurityUtil.getPrincipal().isCurator() && 
 			springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz()))
 		{
-			retractFromPublic(String.valueOf(simpleEdit.getParentSampleId()), request, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
+			retractFromPublic(request, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
 			
 			simpleEdit.getErrors().add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
 		}

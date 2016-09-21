@@ -163,7 +163,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 		// curator
 		if (!newEntity && !userDetails.isCurator() && 
 			springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
-			retractFromPublic(sampleId, request, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
+			retractFromPublic(request, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
 			msgs.add(PropertyUtil.getProperty("sample",
 					"message.updateSample.retractFromPublic"));
 		}

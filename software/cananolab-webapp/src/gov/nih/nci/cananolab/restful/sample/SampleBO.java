@@ -128,7 +128,7 @@ public class SampleBO extends BaseAnnotationBO {
 		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 		if (!userDetails.isCurator() && springSecurityAclService.checkObjectPublic(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()))
 		{
-			retractFromPublic(String.valueOf(simpleEditBean.getSampleId()), request, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
+			retractFromPublic(request, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
 			springSecurityAclService.retractObjectFromPublic(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz());
 
 			return wrapErrorInEditBean(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
@@ -925,7 +925,7 @@ public class SampleBO extends BaseAnnotationBO {
 		sampleService.assignAccessibility(theAccess, sample.getDomain());
 
 		// update status to retracted if the access is not public and sample is public
-		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient()) && 
+		if (!CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient()) && 
 			springSecurityAclService.checkObjectPublic(sample.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz()))
 		{
 			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request, sample.getDomain().getId().toString(), sample
@@ -933,9 +933,8 @@ public class SampleBO extends BaseAnnotationBO {
 			springSecurityAclService.retractObjectFromPublic(sample.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz());
 		}
 
-		// if access is public, pending review status, update review
-		// status to public
-		if (CaNanoRoleEnum.ROLE_ANONYMOUS.getRoleName().equalsIgnoreCase(theAccess.getRecipient())) {
+		// if access is public, pending review status, update review status to public
+		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient())) {
 			this.switchPendingReviewToPublic(request, sample.getDomain().getId().toString());
 		}
 

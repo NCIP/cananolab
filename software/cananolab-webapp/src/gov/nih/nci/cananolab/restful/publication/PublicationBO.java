@@ -811,7 +811,7 @@ public class PublicationBO extends BaseAnnotationBO
 		publicationService.assignAccessibility(theAccess, (Publication) pub.getDomainFile());
 		// update status to retracted if the access is not public and
 		// publication is public
-		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient()) && 
+		if (!CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient()) && 
 			springSecurityAclService.checkObjectPublic(pub.getDomainFile().getId(), SecureClassesEnum.PUBLICATION.getClazz()))
 		{
 			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request, pub.getDomainFile().getId().toString(),
@@ -820,7 +820,7 @@ public class PublicationBO extends BaseAnnotationBO
 		}
 		// if access is public, pending review status, update review
 		// status to public
-		if (CaNanoRoleEnum.ROLE_ANONYMOUS.getRoleName().equalsIgnoreCase(theAccess.getRecipient())) {
+		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient())) {
 			this.switchPendingReviewToPublic(request, pub.getDomainFile().getId().toString());
 		}
 

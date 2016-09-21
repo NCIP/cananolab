@@ -392,8 +392,8 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 		if (!newAssoc && !SpringSecurityUtil.getPrincipal().isCurator() && 
 			springSecurityAclService.checkObjectPublic(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()))
 		{
-			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
-					, sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
+			retractFromPublic(request, sampleBean.getDomain().getId(), 
+							  sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
 			msgs.add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
 		}
 		Boolean hasFunctionalizingEntity = (Boolean) request.getSession().getAttribute("hasFunctionalizingEntity");
