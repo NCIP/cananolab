@@ -7,9 +7,9 @@ connect localhost:19990
 #              Deploy War Files                            
 ##############################################################
 
-if (outcome == success) of /deployment=caNanoLab.war:read-resource
-undeploy caNanoLab.war
-end-if
+#if (outcome == success) of /deployment=caNanoLab.war:read-resource
+#undeploy caNanoLab.war
+#end-if
 if (outcome == success) of /deployment=uptEAR.ear:read-resource
 undeploy uptEAR.ear
 end-if
