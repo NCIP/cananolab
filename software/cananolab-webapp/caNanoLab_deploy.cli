@@ -14,4 +14,4 @@ if (outcome == success) of /deployment=uptEAR.ear:read-resource
 undeploy uptEAR.ear
 end-if
 
-#deploy --force /local/content/caNanoLab/artifacts/caNanoLab.war
+deploy --force /local/content/caNanoLab/artifacts/caNanoLab.war
