@@ -34,8 +34,8 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 	private static final String DEL_GROUP_MEMBERS_SQL = "DELETE FROM group_members where group_id = ?";
 	private static final String DEL_GROUP_MEMBER_SQL = "DELETE FROM group_members where group_id = ? and username = ?";
 	private static final String DEL_GROUP_SQL = "DELETE FROM groups where id = ?";
-	private static final String FETCH_GROUPS_FOR_USER_SQL = "SELECT g.id, g.group_name, g.group_description, g.created_by FROM groups g, group_members gm " +
-															"where g.id = gm.group_id and gm.username = ?";
+	private static final String FETCH_GROUPS_FOR_USER_SQL = "SELECT g.id, g.group_name, g.group_description, g.created_by FROM groups g LEFT JOIN group_members gm " +
+															"ON g.id = gm.group_id WHERE (gm.username = ? or g.created_by = ?)";
 	
 	@PostConstruct
 	private void initialize() {
@@ -146,7 +146,7 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 		
 		if (!StringUtils.isEmpty(username))
 		{
-			Object[] params = new Object[] {username};
+			Object[] params = new Object[] {username, username};
 			groups = getJdbcTemplate().query(FETCH_GROUPS_FOR_USER_SQL, params, new GroupMapper());
 		}
 		return groups;
