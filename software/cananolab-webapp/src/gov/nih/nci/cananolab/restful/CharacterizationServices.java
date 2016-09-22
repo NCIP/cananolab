@@ -154,7 +154,8 @@ public class CharacterizationServices
 	{
 		logger.debug("In getAssayTypesByCharName");		
 
-		try {
+		try
+		{
 			CharacterizationManager characterizationMgr = (CharacterizationManager) SpringApplicationContext.getBean(httpRequest, "characterizationManager");
 
 			List<String> assayTypes = characterizationMgr.getAssayTypes(httpRequest, charName);
@@ -228,7 +229,8 @@ public class CharacterizationServices
 		if (!SpringSecurityUtil.isUserLoggedIn())
 			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
-		try {
+		try
+		{
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 
@@ -251,7 +253,8 @@ public class CharacterizationServices
 	{
 		logger.debug("In getInstrumentTypesByTechniqueType");		
 
-		try {
+		try
+		{
 			ExperimentConfigManager experimentMgr = 
 					(ExperimentConfigManager) SpringApplicationContext.getBean(httpRequest, "experimentConfigManager");
 

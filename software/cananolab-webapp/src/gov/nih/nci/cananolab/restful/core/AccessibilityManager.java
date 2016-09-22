@@ -28,24 +28,15 @@ public class AccessibilityManager
 	{
 		try {
 			List<CananoUserDetails> matchedUsers = userService.loadUsers(searchStr);
-			List<CananoUserDetails> updatedUsers = new ArrayList<CananoUserDetails>(matchedUsers);
-			// remove current user from the list
-			// remove data owner from the list if owner is not the current user
-			// exclude curators;
-			int i = 0;
+			Map<String, String> userMap = new HashMap<String, String>();
+			// add only if not logged in user and not owner of the entity and not curator
 			for (CananoUserDetails currUser: matchedUsers)
 			{
-				if (currUser.getUsername().equals(SpringSecurityUtil.getLoggedInUserName()) ||
-					currUser.getUsername().equalsIgnoreCase(dataOwner) || currUser.isCurator())
+				if (!currUser.getUsername().equals(SpringSecurityUtil.getLoggedInUserName()) &&
+					!currUser.getUsername().equalsIgnoreCase(dataOwner) && !currUser.isCurator())
 				{
-					updatedUsers.remove(i);
+					userMap.put(currUser.getUsername(), currUser.getLastName() + " " + currUser.getFirstName());
 				}
-				i++;
-			}
-
-			Map<String, String> userMap = new HashMap<String, String>();
-			for(CananoUserDetails bean : updatedUsers){
-				userMap.put(bean.getUsername(), bean.getLastName() + " " + bean.getFirstName());
 			}
 			return userMap;
 		} catch (Exception e) {
