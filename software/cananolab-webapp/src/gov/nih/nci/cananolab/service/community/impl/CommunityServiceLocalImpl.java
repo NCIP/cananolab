@@ -153,6 +153,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
 					{
 						AccessControlInfo access = new AccessControlInfo();
 						access.setRecipient(member);
+						access.setRecipientDisplayName(member);
 						access.setAccessType(AccessTypeEnum.USER.getAccessType());
 						cGroup.addUserAccess(access);
 					}
