@@ -316,6 +316,7 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 		MutableAcl acl = aclOperationService.fetchAclForObject(clazz, securedObjectId);
 		AccessControlInfo userAccess = new AccessControlInfo();
 		userAccess.setRecipient(recipient);
+		userAccess.setRecipientDisplayName(recipient);
 		userAccess.setAccessType(AccessTypeEnum.USER.getAccessType());
 
 		List<AccessControlEntry> entries = acl.getEntries();

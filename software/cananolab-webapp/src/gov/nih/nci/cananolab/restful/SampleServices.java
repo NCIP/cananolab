@@ -59,16 +59,13 @@ public class SampleServices {
 		}
 	}
 	
-	
-	
 	@GET
 	@Path("/getCharacterizationByType")
 	@Produces ("application/json")
     public Response getCharacterizationByType(@Context HttpServletRequest httpRequest, 
-    		@DefaultValue("") @QueryParam("type") String type) {
-		
-		SearchSampleBO searchSampleBO = 
-				(SearchSampleBO) SpringApplicationContext.getBean(httpRequest, "searchSampleBO");
+    		@DefaultValue("") @QueryParam("type") String type)
+	{	
+		SearchSampleBO searchSampleBO = (SearchSampleBO) SpringApplicationContext.getBean(httpRequest, "searchSampleBO");
 		
 		try {
 			List<String> characterizations = searchSampleBO.getCharacterizationByType(httpRequest, type);
@@ -82,11 +79,11 @@ public class SampleServices {
 	@POST
 	@Path("/searchSample")
 	@Produces ("application/json")
-	public Response searchSample(@Context HttpServletRequest httpRequest, SearchSampleForm searchForm ) {
-		
-		try {
-			SearchSampleBO searchSampleBO = 
-					(SearchSampleBO) SpringApplicationContext.getBean(httpRequest, "searchSampleBO");
+	public Response searchSample(@Context HttpServletRequest httpRequest, SearchSampleForm searchForm )
+	{	
+		try
+		{
+			SearchSampleBO searchSampleBO = (SearchSampleBO) SpringApplicationContext.getBean(httpRequest, "searchSampleBO");
 			
 			List results = searchSampleBO.search(searchForm, httpRequest);
 			
@@ -112,9 +109,10 @@ public class SampleServices {
 	@Path("/view")
 	@Produces ("application/json")
 	 public Response view(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
-		
-		try { 
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId)
+	{	
+		try
+		{ 
 			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 
 			SimpleSampleBean sampleBean = sampleBO.summaryView(sampleId,httpRequest);
@@ -124,8 +122,7 @@ public class SampleServices {
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build()
-					:
-						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
+					:Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
 			
 		} catch (Exception e) {
 			//return Response.ok("Error while viewing the search results").build();
@@ -139,8 +136,8 @@ public class SampleServices {
 	@Path("/viewDataAvailability")
 	@Produces ("application/json")
 	 public Response viewDataAvailability(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
-		
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId)
+	{
 		try { 
 
 			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
@@ -163,10 +160,10 @@ public class SampleServices {
 	@Path("/characterizationView")
 	@Produces ("application/json")
 	 public Response characterizationView(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId)
+	{
 		try { 
-			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
+			CharacterizationBO characterizationBO = (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 
 			CharacterizationSummaryViewBean charView = characterizationBO.summaryView(sampleId,httpRequest);
 			SimpleCharacterizationSummaryViewBean viewBean = new SimpleCharacterizationSummaryViewBean();
@@ -177,8 +174,7 @@ public class SampleServices {
 			
 			return (finalBean.size() == 0) ? Response.status(Response.Status.NOT_FOUND)
 					.entity(CommonUtil.wrapErrorMessageInList("There is no characterization with your sample.")).build()
-							: 
-							Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true")
+							: Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true")
 							.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 							.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			

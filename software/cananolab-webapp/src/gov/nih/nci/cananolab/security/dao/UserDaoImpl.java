@@ -36,7 +36,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	private static final String FETCH_USER_ROLES_SQL = "SELECT a.authority rolename FROM authorities a where a.username = ?";
 	
 	
-	private static final String FETCH_USER_GROUPS_SQL = "SELECT g.group_name FROM groups g LEFT JOIN group_members gm ON g.id = gm.group_id WHERE (g.created_by = ? OR gm.username = ?)";
+	private static final String FETCH_USER_GROUPS_SQL = "SELECT DISTINCT g.group_name FROM groups g LEFT JOIN group_members gm ON g.id = gm.group_id WHERE (g.created_by = ? OR gm.username = ?)";
 	private static final String FETCH_USERS_LIKE_SQL = "SELECT u.username, u.first_name, u.last_name, u.password, u.organization, u.department, " +
 												 	   "u.title, u.phone_number, u.email_id, u.enabled FROM users u " +
 												 	   "WHERE UPPER(username) LIKE ? OR UPPER(first_name) LIKE ? OR UPPER(last_name) LIKE ?";
