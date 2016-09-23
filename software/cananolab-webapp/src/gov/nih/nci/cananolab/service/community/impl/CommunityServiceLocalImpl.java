@@ -146,6 +146,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
 					cGroup.setName(group.getGroupName());
 					cGroup.setDescription(group.getGroupDesc());
 					cGroup.setCreatedBy(group.getCreatedBy());
+					cGroup.setOwnerName(group.getCreatedBy());
 					List<String> members = groupService.getGroupMembers(group.getId());
 					//TODO: should they be fetched as AccessControlInfo or changed to List<String>
 					for (String member : members)
