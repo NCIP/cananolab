@@ -25,7 +25,6 @@ var app = angular.module('angularApp')
             $scope.dataType = 'Protocol';
             $scope.parentFormName = 'protocolForm';
             $scope.accessForm.theAcccess = {};
-            $scope.accessForm.theAcccess.userBean = {};
             $scope.isCurator = groupService.isCurator();
             $scope.groupAccesses = [];
             $scope.userAccesses = [];
