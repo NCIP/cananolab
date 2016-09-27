@@ -10,7 +10,8 @@ var app = angular.module('angularApp')
 		      
 		      $scope.message=data;
 		      $rootScope.groups = null;
-		    	 $location.path('/login?logout').replace();
+		      $rootScope.loggedInUser = '';
+		      $location.path('/login?logout').replace();
 
 		    }).
 		    error(function(data, status, headers, config) {

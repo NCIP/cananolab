@@ -70,7 +70,7 @@
 					password-parameter="password"
 		/>
 
-		<logout invalidate-session="true" logout-success-url="/" /> 
+		<logout invalidate-session="true" logout-success-url="/index.html" /> 
 		<!-- <logout-url="/rest/security/logout" />  -->
 		
 		<csrf disabled="true"/>

@@ -2,7 +2,7 @@
 var app = angular.module('angularApp')
   .controller('MainCtrl', function (sampleService, publicationService, protocolService, navigationService, groupService,$rootScope, $scope, $location,$http, $route,$cookieStore, $window, $cookies) {
 
-	  if ($rootScope.loggedInUser && $rootScope.loggedInUser.length > 0)
+	  if ($rootScope.loggedInUser && $rootScope.loggedInUser.length > 0 && $rootScope.loggedInUser != 'anonymousUser')
 		  $scope.loginShow = 0;
 	  else
 		  $scope.loginShow = 1;

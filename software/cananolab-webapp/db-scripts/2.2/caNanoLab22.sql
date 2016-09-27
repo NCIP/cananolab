@@ -25,7 +25,8 @@ CREATE TABLE `groups` (
   `group_name` varchar(50) NOT NULL,
   `group_description` varchar(200) DEFAULT NULL,
   `created_by` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `group_name_UNIQUE` (`group_name` ASC)
 );
 
 CREATE TABLE `group_authorities` (
