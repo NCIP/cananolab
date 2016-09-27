@@ -341,12 +341,12 @@ var app = angular.module('angularApp')
         };
 
         $scope.getAccessUsers = function() {
-            if ($scope.accessForm.theAccess.userBean.loginName === undefined || $scope.accessForm.theAccess.userBean.loginName === null) {
-                $scope.accessForm.theAccess.userBean.loginName = '';
+            if ($scope.accessForm.theAccess.recipient === undefined || $scope.accessForm.theAccess.recipient === null) {
+                $scope.accessForm.theAccess.recipient = '';
             }
 
             $scope.loader = true;
-            $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.userBean.loginName}).
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.recipient}).
                 success(function(data, status, headers, config) {
                     $scope.accessUsers = data;
                     $scope.loader = false;
@@ -415,7 +415,7 @@ var app = angular.module('angularApp')
         $scope.editUserAccessSection = function(loginName, userAccess) {
             $scope.addAccess=true;
             $scope.accessForm.theAccess.accessBy='user';
-            $scope.accessForm.theAccess.userBean.loginName=loginName;
+            $scope.accessForm.theAccess.recipient=loginName;
             $scope.showCollaborationGroup=false;
             $scope.showAccessuser=true;
             $scope.showAccessSelection=false;
