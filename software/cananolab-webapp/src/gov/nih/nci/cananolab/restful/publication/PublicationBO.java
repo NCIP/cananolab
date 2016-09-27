@@ -227,7 +227,8 @@ public class PublicationBO extends BaseAnnotationBO
 		pubBean.setGroupAccesses(bean.getGroupAccesses());
 		pubBean.setUserAccesses(bean.getUserAccesses());
 		pubBean.setDomainFile(pub);
-		pubBean.setUserDeletable(springSecurityAclService.currentUserHasDeletePermission(bean.getFileId(), SecureClassesEnum.PUBLICATION.getClazz()));
+		if (bean.getFileId() != null)
+			pubBean.setUserDeletable(springSecurityAclService.currentUserHasDeletePermission(bean.getFileId(), SecureClassesEnum.PUBLICATION.getClazz()));
 		pubBean.setKeywordsStr(bean.getKeywordsStr());
 		pubBean.setTheAccess(bean.getTheAccess());
 		pubBean.setExternalUrl(bean.getExternalUrl());

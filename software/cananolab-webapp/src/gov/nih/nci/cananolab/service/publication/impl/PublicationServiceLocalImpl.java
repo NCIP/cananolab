@@ -79,6 +79,8 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 			Publication publication = (Publication) publicationBean.getDomainFile();
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			Boolean newPub = true;
+			if (publication.getId() != null)
+				newPub = false;
 			// check if publication is already entered based on PubMedId or DOI
 			if (publication.getPubMedId() != null && publication.getPubMedId() != 0) {
 				Publication dbPublication = (Publication) appService.getObject(
