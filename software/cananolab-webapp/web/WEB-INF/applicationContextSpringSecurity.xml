@@ -48,6 +48,7 @@
 		
 		<intercept-url pattern="/rest/protocol/searchProtocol" access="permitAll" />
 		<intercept-url pattern="/rest/protocol/download" access="permitAll" />
+		<intercept-url pattern="/rest/protocol/setup" access="permitAll" />
 		
 		<intercept-url pattern="/rest/curation/reviewData" access="hasRole('ROLE_CURATOR')" />
 		<intercept-url pattern="/rest/curation/generateBatchDataAvailability" access="hasRole('ROLE_CURATOR')" />
