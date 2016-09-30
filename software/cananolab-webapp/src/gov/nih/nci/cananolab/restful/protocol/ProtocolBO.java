@@ -63,7 +63,7 @@ public class ProtocolBO extends BaseAnnotationBO
 	public List<String> create(SimpleSubmitProtocolBean bean, HttpServletRequest request) throws Exception
 	{
 		List<String> msgs = new ArrayList<String>();
-		ProtocolBean protocolBean = transferSimpleSubmitProtocolBean(bean);//(ProtocolBean) form.getProtocol();
+		ProtocolBean protocolBean = transferSimpleSubmitProtocolBean(bean);
 		Boolean newProtocol = true;
 		if (protocolBean.getDomain().getId() != null && protocolBean.getDomain().getId() > 0)
 		{

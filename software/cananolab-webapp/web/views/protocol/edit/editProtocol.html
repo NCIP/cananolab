@@ -168,19 +168,18 @@
 <br>
 <table width="100%" class="invisibleTable" summary="layout">
     <tbody><tr>
-        <td align="left" width="600">
-            <input type="button" value="Delete" ng-click="doDelete()" ng-if="protocolId != null">
-        </td>
-        <td align="right" width="300">
-            <input type="reset" value="Reset" ng-click="resetForm()">
-            <input type="submit" value="Submit" ng-click="doSubmit()" ng-if="protocolId == null">
-            <input type="button" value="Submit for Review" ng-click="submitForReview()" ng-if="protocolForm.review">
-            <input type="submit" value="Update" ng-click="doSubmit()" ng-if="protocolId != null">
-        </td>
-    </tr>
-    </tbody>
+ 	<td align="left" width="600">
+ 		<button ng-click="doDelete()" ng-if="protocolId != null" class='btn btn-primary'>Delete</button>
+ 	</td>
+ 	<td class="btn-group pull-right" width="300">
+        <button ng-click="resetForm()" class='btn btn-default'>Reset</button>
+	    <button ng-click="doSubmit()" ng-if="protocolId == null" class='btn btn-primary'>Save</button>
+	    <button ng-click="doSubmit()" ng-if="protocolId != null" class='btn btn-primary'>Update</button>
+	    <button ng-click="submitForReview()" ng-if="protocolForm.review" class='btn btn-primary'>Submit for Review</button>                
+      </td>
+      </tr></tbody>
 </table>
-</form>
+	</form>
 </div>
 </div>
 <div id="loader" ng-show="loader">
