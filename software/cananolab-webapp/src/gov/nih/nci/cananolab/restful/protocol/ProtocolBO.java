@@ -70,6 +70,7 @@ public class ProtocolBO extends BaseAnnotationBO
 			newProtocol = false;
 		}
 		msgs = this.saveProtocol(request, protocolBean);
+		bean.setId(protocolBean.getDomain().getId());
 		request.getSession().removeAttribute("newFileData");
 
 		if(msgs.size()>0){

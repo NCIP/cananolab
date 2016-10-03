@@ -276,20 +276,28 @@ var app = angular.module('angularApp')
 
             $http({method: 'POST', url: '/caNanoLab/rest/publication/submitPublication',data: $scope.publicationForm}).
                 success(function(data, status, headers, config) {
-                	if (data == "success") {
+                	if (data[0] == "success") {
                 		if ($scope.sampleId != null && $scope.sampleId != '') {
                             $location.search('sampleId', $scope.sampleId).path('/publication').replace();
                         }
                         else {
-                            $location.search('message', 'Publication successfully updated with title "' + $scope.publicationForm.title + '"').path('/message').replace();
+                            //$location.search('message', 'Publication successfully updated with title "' + $scope.publicationForm.title + '"').path('/message').replace();
+                            var msg = 'Publication successfully updated with title "' + $scope.publicationForm.title + '".';
+                            $scope.messages = [msg];
+                            $scope.publicationId = data[1];
+                            $scope.loadPublicationData(); 
                         }
                 	}
-                	else if (data == "retract success") {
+                	else if (data[0] == "retract success") {
                 		if ($scope.sampleId != null && $scope.sampleId != '') {
                             $location.search('sampleId', $scope.sampleId).path('/publication').replace();
                         }
                         else {
-                            $location.search('message', 'Publication successfully saved with title "' + $scope.publicationForm.title + '" and retracted from public access.').path('/message').replace();
+                            //$location.search('message', 'Publication successfully saved with title "' + $scope.publicationForm.title + '" and retracted from public access.').path('/message').replace();
+                        	var msg = 'Publication successfully updated with title "' + $scope.publicationForm.title + '" and retracted from public access.';
+                            $scope.messages = [msg];
+                            $scope.publicationId = data[1];
+                            $scope.loadPublicationData();
                         }
                 	}
                 	else {

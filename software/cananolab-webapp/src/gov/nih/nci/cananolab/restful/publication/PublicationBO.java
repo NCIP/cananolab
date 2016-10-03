@@ -116,6 +116,7 @@ public class PublicationBO extends BaseAnnotationBO
 			bean.setErrors(msgs);
 
 		}
+		simplePubBean.setFileId(publicationBean.getDomainFile().getId());
 
 		//	if (!StringUtils.isEmpty(sampleId)) {
 		//		return summaryEdit(sampleId, request);

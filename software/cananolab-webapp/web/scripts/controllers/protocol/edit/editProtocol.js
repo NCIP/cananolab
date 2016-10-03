@@ -140,17 +140,24 @@ var app = angular.module('angularApp')
 
             $http({method: 'POST', url: '/caNanoLab/rest/protocol/submitProtocol',data: $scope.protocolForm}).
                 success(function(data, status, headers, config) {
-                    if (data == "success") {
-                        $location.search('message', 'Protocol successfully saved with title "' + $scope.protocolForm.name + '"').path('/message').replace();
+                    if (data[0] == "success") {
+                        //$location.search('message', 'Protocol successfully saved with title "' + $scope.protocolForm.name + '"').path('/message').replace();
+                    	var msg = 'Protocol successfully saved with title "' + $scope.protocolForm.name + '"';
+                    	$scope.messages = [msg];
+                    	$scope.protocolId = data[1];
+                    	$scope.loadProtocolData();
                     }
-                    else if (data == "retract success") {
-                    	$location.search('message', 'Protocol successfully saved with title "' + $scope.protocolForm.name + '" and retracted from public access.').path('/message').replace();
-                	}                    
+                    else if (data[0] == "retract success") {
+                    	//$location.search('message', 'Protocol successfully saved with title "' + $scope.protocolForm.name + '" and retracted from public access.').path('/message').replace();
+                    	var msg = 'Protocol successfully saved with title "' + $scope.protocolForm.name + '" and retracted from public access.';
+                    	$scope.messages = [msg];
+                    	$scope.protocolId = data[1];
+                    	$scope.loadProtocolData();
+                    }                    
                     else {
                         $scope.loader = false;
                         $scope.messages = data;
                     }
-
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
@@ -159,13 +166,11 @@ var app = angular.module('angularApp')
                     $scope.loader = false;
                     $scope.messages = data;
                 });
-
         };
 
         $scope.doDelete = function() {
             if (confirm("Delete the Protocol?")) {
                 $scope.loader = true;
-
                 $http({method: 'POST', url: '/caNanoLab/rest/protocol/deleteProtocol',data: $scope.protocolForm}).
                     success(function(data, status, headers, config) {
                         if (data == "success") {
@@ -175,7 +180,6 @@ var app = angular.module('angularApp')
                             $scope.loader = false;
                             $scope.messages = data;
                         }
-
                     }).
                     error(function(data, status, headers, config) {
                         // called asynchronously if an error occurs
