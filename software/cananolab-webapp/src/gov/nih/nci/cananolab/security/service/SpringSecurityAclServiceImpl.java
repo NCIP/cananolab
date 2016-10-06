@@ -169,7 +169,9 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 		perms.add(BasePermission.DELETE);
 		aclOperationService.createAclAndGrantAccess(securedObjectId, clazz, SpringSecurityUtil.getLoggedInUserName(), true, perms, true);
 		aclOperationService.createAclAndGrantAccess(securedObjectId, clazz, CaNanoRoleEnum.ROLE_CURATOR.toString(), false, perms, false);
-		
+		perms.remove(1);
+		perms.remove(2);
+		aclOperationService.createAclAndGrantAccess(securedObjectId, clazz, CaNanoRoleEnum.ROLE_RESEARCHER.toString(), false, perms, false);	
 	}
 	
 	@Override
