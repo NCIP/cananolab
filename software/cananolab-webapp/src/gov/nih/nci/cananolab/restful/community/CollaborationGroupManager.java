@@ -63,14 +63,15 @@ public class CollaborationGroupManager
 		}
 		// check whether user is a valid user
 		CollaborationGroupBean bogusGroup=new CollaborationGroupBean();
-		if (userDetailsService.loadUserByUsername(userAccess.getRecipient()) == null)
+		CananoUserDetails userDetail = (CananoUserDetails) userDetailsService.loadUserByUsername(userAccess.getRecipient());
+		if (userDetail == null)
 		{
 			bogusGroup.setName("!!invalid user");
 			throw new Exception("!!invalid user");
 			//return bogusGroup;
 		}
 		// if the user is already a curator, don't add the user
-		else if (SpringSecurityUtil.getPrincipal().isCurator()) {
+		else if (userDetail.isCurator()) {
 			bogusGroup.setName("!!user is a curator");
 			throw new Exception("!!user is a curator");
 			//return bogusGroup;
