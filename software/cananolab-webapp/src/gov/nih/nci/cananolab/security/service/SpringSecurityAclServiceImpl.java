@@ -169,9 +169,19 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 		perms.add(BasePermission.DELETE);
 		aclOperationService.createAclAndGrantAccess(securedObjectId, clazz, SpringSecurityUtil.getLoggedInUserName(), true, perms, true);
 		aclOperationService.createAclAndGrantAccess(securedObjectId, clazz, CaNanoRoleEnum.ROLE_CURATOR.toString(), false, perms, false);
-		perms.remove(1);
+		
 		perms.remove(2);
+		perms.remove(1);
 		aclOperationService.createAclAndGrantAccess(securedObjectId, clazz, CaNanoRoleEnum.ROLE_RESEARCHER.toString(), false, perms, false);	
+	}
+	
+	@Override
+	public void saveDefaultAccessForNewObjectWithOwner(Long securedObjectId, Class clazz, String owner, List<Permission> rwdPerms, List<Permission> readPerm)
+	{
+		aclOperationService.createAclAndGrantAccess(securedObjectId, clazz, owner, true, rwdPerms, true);
+		aclOperationService.createAclAndGrantAccess(securedObjectId, clazz, CaNanoRoleEnum.ROLE_CURATOR.toString(), false, rwdPerms, false);
+		
+		aclOperationService.createAclAndGrantAccess(securedObjectId, clazz, CaNanoRoleEnum.ROLE_RESEARCHER.toString(), false, readPerm, false);	
 	}
 	
 	@Override

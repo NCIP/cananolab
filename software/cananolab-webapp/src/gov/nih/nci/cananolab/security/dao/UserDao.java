@@ -14,4 +14,8 @@ public interface UserDao
 
 	public List<CananoUserDetails> getUsers(String likeStr);
 
+	public int insertUser(CananoUserDetails user);
+
+	public int insertUserAuthority(String userName, String authority);
+
 }

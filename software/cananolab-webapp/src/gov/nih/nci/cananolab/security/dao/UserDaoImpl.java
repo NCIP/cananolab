@@ -43,6 +43,11 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	
 	private static final String FETCH_ALL_USERS_SQL = "SELECT u.username, u.first_name, u.last_name, u.password, u.organization, u.department, " +
 												 	  "u.title, u.phone_number, u.email_id, u.enabled FROM users u";
+	
+	private static final String INSERT_USER_SQL = "insert into users(username, password, first_name, last_name, organization, department, title, phone_number, email_id, enabled) " +
+												  "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	
+	private static final String INSERT_USER_AUTHORITY_SQL = "INSERT INTO authorities(username, authority) values (?, ?)";
 
 	@Override
 	public CananoUserDetails getUserByName(String username)
@@ -106,6 +111,29 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 			userRoles = (List<String>) getJdbcTemplate().queryForList(FETCH_USER_ROLES_SQL, params, String.class);
 		}
 		return userRoles;
+	}
+	
+	@Override
+	public int insertUser(CananoUserDetails user)
+	{
+		logger.debug("Insert user : " + user);
+		int enabled = (user.isEnabled()) ? 1 : 0;
+		Object[] params = new Object[] {user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
+										user.getOrganization(), user.getDepartment(), user.getTitle(), user.getPhoneNumber(),
+										user.getEmailId(), Integer.valueOf(enabled)};
+
+		int status = getJdbcTemplate().update(INSERT_USER_SQL, params);
+		return status;
+	}
+	
+	@Override
+	public int insertUserAuthority(String userName, String authority)
+	{
+		logger.debug("Insert user authority: user = " + userName + ", authority = " + authority);
+		Object[] params = new Object[] {userName, authority};
+
+		int status = getJdbcTemplate().update(INSERT_USER_AUTHORITY_SQL, params);
+		return status;
 	}
 	
 	private static final class UserMapper implements RowMapper

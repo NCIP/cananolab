@@ -2,7 +2,6 @@ package gov.nih.nci.cananolab.security.service;
 
 import java.util.List;
 
-import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.model.Permission;
 
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
@@ -25,6 +24,8 @@ public interface SpringSecurityAclService
 	
 
 	public void saveDefaultAccessForNewObject(Long securedObjectId, Class clazz);
+	
+	public void saveDefaultAccessForNewObjectWithOwner(Long securedObjectId, Class clazz, String owner, List<Permission> rwdPerms, List<Permission> readPerm);
 
 	public void savePublicAccessForObject(Long securedObjectId, Class clazz);
 
