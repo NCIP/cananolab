@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.datamigration.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Component;
 
+import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.dao.GroupDaoImpl;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 
@@ -25,7 +27,8 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 	@Autowired
 	private DataSource dataSource;
 	
-	private static final String GET_CSM_USERS_SQL = "SELECT u.login_name FROM csm_user u order by u.user_id;";
+	private static final String GET_CSM_USERS_SQL = "SELECT u.login_name, u.first_name, u.last_name, u.password, u.organization, u.department, " +
+												 	"u.title, u.phone_number, u.email_id, u.enabled FROM csm_user u order by u.user_id;";
 	
 	private static final String GET_CSM_CURATORS_SQL = "SELECT u.LOGIN_NAME FROM csm_user u, csm_user_group ug " +
 													  "WHERE u.user_id = ug.user_id AND ug.group_id = 2";
@@ -40,9 +43,9 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 														"and c.group_id = d.group_id and p.protocol_pk_id = a.protection_group_name " +
 														"and d.group_name = 'Public' and b.role_name = 'R'";
 	
-	private static final String PUBLIC_PUBLICATION_COUNT_SQL = "SELECT count(*) from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d, protocol p " +
+	private static final String PUBLIC_PUBLICATION_COUNT_SQL = "SELECT count(*) from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d, publication p " +
 														"where a.protection_group_id = c.protection_group_id and b.role_id = c.role_id " + 
-														"and c.group_id = d.group_id and p.protocol_pk_id = a.protection_group_name " +
+														"and c.group_id = d.group_id and p.publication_pk_id = a.protection_group_name " +
 														"and d.group_name = 'Public' and b.role_name = 'R'";
 
 	private static final String PUBLIC_SAMPLE_SQL = "SELECT rs.ID, rs.username FROM (SELECT @rownum:=@rownum+1 'rank', a.protection_group_name ID, s.created_by username " + 
@@ -62,7 +65,7 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 														"where a.protection_group_id = c.protection_group_id and b.role_id = c.role_id " + 
 														"and c.group_id = d.group_id and p.publication_pk_id = a.protection_group_name and p.publication_pk_id = f.file_pk_id " +
 														"and d.group_name = 'Public' and b.role_name = 'R' ORDER BY publication_pk_id asc) rs WHERE rank >= ? AND rank <= ?";
-	
+
 	private static final String SAMPLE_COUNT_SQL = "SELECT count(*) FROM sample";
 	
 	private static final String PROTOCOL_COUNT_SQL = "SELECT count(*) FROM protocol";
@@ -85,20 +88,26 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 	private static final String FETCH_ACCESS_FOR_SAMPLE_SQL = "SELECT a.protection_group_name ID, d.login_name USERNAME " +
 																 "FROM csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_user d, sample s " +
 																 "WHERE a.protection_group_id = c.protection_group_id AND b.role_id = c.role_id AND c.user_id = d.user_id " +
-																 "AND s.sample_pk_id = a.protection_group_name AND b.role_id = ? AND s.created_by != d.login_name" +
+																 "AND s.sample_pk_id = a.protection_group_name AND b.role_id = ? AND s.created_by != d.login_name " +
 																 "AND c.group_id IS NULL";
 	
 	private static final String FETCH_ACCESS_FOR_PROTOCOL_SQL = "SELECT a.protection_group_name ID, d.login_name USERNAME " +
 																 "FROM csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_user d, protocol p " +
 																 "WHERE a.protection_group_id = c.protection_group_id AND b.role_id = c.role_id AND c.user_id = d.user_id " +
-																 "AND p.protocol_pk_id = a.protection_group_name AND b.role_id = ? AND p.created_by != d.login_name" +
+																 "AND p.protocol_pk_id = a.protection_group_name AND b.role_id = ? AND p.created_by != d.login_name " +
 																 "AND c.group_id IS NULL";
 	
 	private static final String FETCH_ACCESS_FOR_PUBLICATION_SQL = "SELECT a.protection_group_name ID, d.login_name USERNAME " +
 																 "FROM csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_user d, publication p, file f " +
 																 "WHERE a.protection_group_id = c.protection_group_id AND b.role_id = c.role_id AND c.user_id = d.user_id " +
-																 "AND p.publication_pk_id = a.protection_group_name AND b.role_id = ? AND f.created_by != d.login_name" +
+																 "AND p.publication_pk_id = a.protection_group_name AND b.role_id = ? AND f.created_by != d.login_name " +
 																 "AND c.group_id IS NULL AND p.publication_pk_id = f.file_pk_id";
+	
+	private static final String FETCH_CHARACTERIZATIONS_COUNT_SQL = "SELECT count(*) from characterization ch";
+	
+	private static final String FETCH_CHARACTERIZATIONS_PAGE_SQL = "SELECT rp.char_id, rp.sample_id FROM (SELECT @rownum:=@rownum+1 'rank', ch.characterization_pk_id char_id, ch.sample_pk_id sample_id " +
+																  "from (SELECT @rownum:=0) r, characterization ch ORDER BY characterization_pk_id asc) rp " +
+																  "WHERE rank >= ? AND rank <= ?";
 	
 	
 	@PostConstruct
@@ -108,9 +117,9 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 	}
 	
 	@Override
-	public List<String> getUsersFromCSM()
+	public List<CananoUserDetails> getUsersFromCSM()
 	{
-		List<String> userList = getJdbcTemplate().queryForList(GET_CSM_USERS_SQL, String.class);
+		List<CananoUserDetails> userList = getJdbcTemplate().query(GET_CSM_USERS_SQL, new CsmUserMapper());
 		return userList;
 	}
 
@@ -239,6 +248,56 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 			
 			return entry;
 		}
+	}
+	
+	private static final class CharDataMapper implements RowMapper
+	{
+		public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			Long id = rs.getLong("CHAR_ID");
+			Long sampleId = rs.getLong("SAMPLE_ID");
+			AbstractMap.SimpleEntry<Long, Long> entry = new AbstractMap.SimpleEntry<Long, Long>(id, sampleId);
+			
+			return entry;
+		}
+	}
+	
+	private static final class CsmUserMapper implements RowMapper
+	{
+		public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			CananoUserDetails user = new CananoUserDetails();
+			user.setUsername(rs.getString("LOGIN_NAME"));
+			user.setFirstName(rs.getString("FIRST_NAME"));
+			user.setLastName(rs.getString("LAST_NAME"));
+			user.setPassword(rs.getString("PASSWORD"));
+			user.setOrganization(rs.getString("ORGANIZATION"));
+			user.setDepartment(rs.getString("DEPARTMENT"));
+			user.setTitle(rs.getString("TITLE"));
+			user.setPhoneNumber(rs.getString("PHONE_NUMBER"));
+			user.setEmailId(rs.getString("EMAIL_ID"));
+			user.setEnabled(rs.getBoolean("ENABLED"));
+			
+			return user;
+		}
+	}
+
+	@Override
+	public Long getCharDataSize()
+	{
+		Long count = getJdbcTemplate().queryForObject(FETCH_CHARACTERIZATIONS_COUNT_SQL, Long.class);
+
+		return count;
+	}
+
+	@Override
+	public List<SimpleEntry<Long, Long>> getAllCharacterizations(long rowMin, long rowMax) 
+	{
+		Object[] params = new Object[] {Long.valueOf(rowMin), Long.valueOf(rowMax)};
+		
+		List<AbstractMap.SimpleEntry<Long, Long>> dataPage= getJdbcTemplate().query(FETCH_CHARACTERIZATIONS_PAGE_SQL, params, new CharDataMapper());
+
+		return dataPage;
 	}
 
 }

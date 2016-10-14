@@ -14,7 +14,10 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
+import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -60,6 +63,9 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 	
 	@Autowired
 	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
+	private AclDao aclDao;
 
 	/**
 	 * Persist a new publication or update an existing publication
@@ -450,6 +456,20 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new PublicationException(error, e);
 		}
 		return publicationIds;
+	}
+	
+	@Override
+	public List<String> findPublicationIdsSharedWithUser(CananoUserDetails userDetails) throws PublicationException
+	{
+		List<String> pubIds = new ArrayList<String>();
+		try
+		{
+			pubIds = aclDao.getIdsOfClassSharedWithSid(SecureClassesEnum.SAMPLE, userDetails.getUsername(), userDetails.getGroups());
+		}catch (Exception e) {
+			String error = "Error in retrieving publicationIds shared with logged in user. " + e.getMessage();
+			throw new PublicationException(error, e);
+		}
+		return pubIds;
 	}
 
 	@Override

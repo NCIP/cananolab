@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
@@ -102,9 +103,9 @@ public interface SampleService extends BaseService {
 	/*public List<String> removeAccesses(Sample sample, Boolean removeLater)
 			throws SampleException, NoAccessException;*/
 
-	public List<String> findSampleIdsByOwner(String currentOwner)
-			throws SampleException;
+	public List<String> findSampleIdsByOwner(String currentOwner) throws SampleException;
 	
+	public List<String> findSampleIdsSharedWithUser(CananoUserDetails userDetails) throws SampleException;
 
 	public SampleBasicBean findSampleBasicById(String sampleId, Boolean loadAccessInfo)
 			throws SampleException, NoAccessException;

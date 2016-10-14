@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
@@ -59,6 +60,9 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 	
 	@Autowired
 	private ProtocolServiceHelper protocolServiceHelper;
+	
+	@Autowired
+	private AclDao aclDao;
 
 	public ProtocolBean findProtocolById(String protocolId) throws ProtocolException, NoAccessException
 	{
@@ -375,6 +379,20 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 			protocolIds = protocolServiceHelper.findProtocolIdsByOwner(currentOwner);
 		} catch (Exception e) {
 			String error = "Error in retrieving protocolIds by owner";
+			throw new ProtocolException(error, e);
+		}
+		return protocolIds;
+	}
+	
+	@Override
+	public List<String> findProtocolIdsSharedWithUser(CananoUserDetails userDetails) throws ProtocolException
+	{
+		List<String> protocolIds = new ArrayList<String>();
+		try
+		{
+			protocolIds = aclDao.getIdsOfClassSharedWithSid(SecureClassesEnum.PROTOCOL, userDetails.getUsername(), userDetails.getGroups());
+		}catch (Exception e) {
+			String error = "Error in retrieving protocolIds shared with logged in user. " + e.getMessage();
 			throw new ProtocolException(error, e);
 		}
 		return protocolIds;

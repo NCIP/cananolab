@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 
@@ -94,8 +95,9 @@ public interface PublicationService extends BaseService {
 			Publication publication) throws PublicationException,
 			NoAccessException;
 
-	public List<String> findPublicationIdsByOwner(String currentOwner)
-			throws PublicationException;
+	public List<String> findPublicationIdsByOwner(String currentOwner) throws PublicationException;
+	
+	public List<String> findPublicationIdsSharedWithUser(CananoUserDetails userDetails) throws PublicationException;
 
 	public PublicationBean findPublicationByIdWorkspace(String id, boolean b)
 			throws PublicationException;

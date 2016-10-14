@@ -42,6 +42,8 @@ import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -107,6 +109,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 	
 	@Autowired
 	private PublicationService publicationService;
+	
+	@Autowired
+	private AclDao aclDao;
 
 	/**
 	 * Persist a new sample or update an existing canano sample
@@ -1083,6 +1088,20 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			sampleIds = sampleServiceHelper.findSampleIdsByOwner(currentOwner);
 		} catch (Exception e) {
 			String error = "Error in retrieving sampleIds by owner. " + e.getMessage();
+			throw new SampleException(error, e);
+		}
+		return sampleIds;
+	}
+	
+	@Override
+	public List<String> findSampleIdsSharedWithUser(CananoUserDetails userDetails) throws SampleException
+	{
+		List<String> sampleIds = new ArrayList<String>();
+		try
+		{
+			sampleIds = aclDao.getIdsOfClassSharedWithSid(SecureClassesEnum.SAMPLE, userDetails.getUsername(), userDetails.getGroups());
+		}catch (Exception e) {
+			String error = "Error in retrieving sampleIds shared with logged in user. " + e.getMessage();
 			throw new SampleException(error, e);
 		}
 		return sampleIds;

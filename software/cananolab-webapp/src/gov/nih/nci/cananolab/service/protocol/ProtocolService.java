@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 
@@ -61,9 +62,9 @@ public interface ProtocolService extends BaseService {
 	public void removeAccessibility(AccessControlInfo access, Protocol protocol)
 			throws ProtocolException, NoAccessException;
 
-	public List<String> findProtocolIdsByOwner(String currentOwner)
-			throws ProtocolException;
+	public List<String> findProtocolIdsByOwner(String currentOwner) throws ProtocolException;
 	
+	public List<String> findProtocolIdsSharedWithUser(CananoUserDetails userDetails) throws ProtocolException;
 
 	public ProtocolBean findWorkspaceProtocolById(String protocolId)
 			throws ProtocolException, NoAccessException;

@@ -37,7 +37,6 @@ import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
-import gov.nih.nci.cananolab.service.common.helper.CommonServiceHelper;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
@@ -66,8 +65,6 @@ public class WorkspaceManager extends BaseAnnotationBO
 
 	@Autowired
 	private UserDetailsService userDetailsService;
-
-	CommonServiceHelper helper = new CommonServiceHelper();
 
 	public SimpleWorkspaceBean getWorkspaceItems(HttpServletRequest request) throws Exception
 	{
@@ -113,10 +110,11 @@ public class WorkspaceManager extends BaseAnnotationBO
 		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 
 		List<String> publicationIds = publicationService.findPublicationIdsByOwner(userDetails.getUsername());
-		List<String> Ids = new ArrayList<String>();
+		List<String> ids = new ArrayList<String>();
 		if(!userDetails.isCurator()){
-			Ids = helper.findSharedPublications(userDetails.getUsername());
-			for (String pubId : Ids){
+			//ids = helper.findSharedPublications(userDetails.getUsername());
+			ids = publicationService.findPublicationIdsSharedWithUser(userDetails);
+			for (String pubId : ids){
 				if (!publicationIds.contains(pubId))
 					publicationIds.add(pubId);
 			}
@@ -160,7 +158,8 @@ public class WorkspaceManager extends BaseAnnotationBO
 		List<String> protoIds = protocolService.findProtocolIdsByOwner(userDetails.getUsername());
 
 		if(!userDetails.isCurator()){
-			List<String> Id = helper.findSharedProtocols(userDetails.getUsername());
+			//List<String> Id = helper.findSharedProtocols(userDetails.getUsername());
+			List<String> Id = protocolService.findProtocolIdsSharedWithUser(userDetails);
 			for(String ids : Id){
 				if(!protoIds.contains(ids))
 					protoIds.add(ids);
@@ -207,9 +206,10 @@ public class WorkspaceManager extends BaseAnnotationBO
 
 		List<String> sampleIds = sampleService.findSampleIdsByOwner(userDetails.getUsername());
 		List<String> sharedByIds = new ArrayList<String>();
-		//Only Researchers have shared items, not curators.
+		//Only Researchers and other users have shared items, not curators.
 		if(!userDetails.isCurator()){
-			sharedByIds = helper.findSharedSampleIds(userDetails.getUsername());
+			//sharedByIds = helper.findSharedSampleIds(userDetails.getUsername());
+			sharedByIds = sampleService.findSampleIdsSharedWithUser(userDetails);
 			for (String sharedById : sharedByIds) {
 				if (!sampleIds.contains(sharedById))
 					sampleIds.add(sharedById);

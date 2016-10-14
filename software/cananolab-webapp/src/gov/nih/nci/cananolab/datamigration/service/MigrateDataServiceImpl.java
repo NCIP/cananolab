@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.model.Permission;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.datamigration.dao.MigrateDataDAO;
+import gov.nih.nci.cananolab.datamigration.util.AESEncryption;
 
 @Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("migrateDataService")
@@ -37,22 +39,34 @@ public class MigrateDataServiceImpl implements MigrateDataService
 	private UserDao userDao;
 
 	@Override
-	public void migrateUserAccountsFromCSMToSpring()
+	public void migrateUserAccountsFromCSMToSpring() throws Exception
 	{
 		logger.info("Migrating all user accounts from CSM to Spring Security and granting Public role.");
-		List<String> csmUserList = migrateDataDAO.getUsersFromCSM();
-		for (String csmUser : csmUserList)
+		AESEncryption aesEncryption = new AESEncryption();
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+		
+		List<CananoUserDetails> csmUserList = migrateDataDAO.getUsersFromCSM();
+		for (CananoUserDetails csmUser : csmUserList)
 		{
 			CananoUserDetails userDetails = new CananoUserDetails();
-			userDetails.setUsername(csmUser);
-			userDetails.setPassword(csmUser);
-			userDetails.setFirstName(csmUser);
-			userDetails.setLastName(csmUser);
+			userDetails.setUsername(csmUser.getUsername());
+			String password = aesEncryption.decrypt(csmUser.getPassword());
+			
+			String encodedPwd = bcrypt.encode(password);
+			
+			userDetails.setPassword(encodedPwd);
+			userDetails.setFirstName(aesEncryption.decrypt(csmUser.getFirstName()));
+			userDetails.setLastName(aesEncryption.decrypt(csmUser.getLastName()));
+			userDetails.setOrganization(aesEncryption.decrypt(csmUser.getOrganization()));
+			userDetails.setDepartment(aesEncryption.decrypt(csmUser.getDepartment()));
+			userDetails.setTitle(aesEncryption.decrypt(csmUser.getTitle()));
+			userDetails.setEmailId(aesEncryption.decrypt(csmUser.getEmailId()));
+			userDetails.setPhoneNumber(aesEncryption.decrypt(csmUser.getPhoneNumber()));
 			userDetails.setEnabled(true);
 			int status = userDao.insertUser(userDetails);
 			logger.info("User account created for " + csmUser + " status = " + status);
 
-			status = userDao.insertUserAuthority(csmUser, CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
+			status = userDao.insertUserAuthority(csmUser.getUsername(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
 			logger.info(csmUser + " granted Public role with status = " + status);
 		}
 	}
@@ -97,7 +111,13 @@ public class MigrateDataServiceImpl implements MigrateDataService
 			List<AbstractMap.SimpleEntry<Long, String>> dataList = migrateDataDAO.getDataPage(rowMin, rowMax, dataType);
 			for (AbstractMap.SimpleEntry<Long, String> id : dataList)
 			{
-				springSecurityAclService.saveDefaultAccessForNewObjectWithOwner(id.getKey(), dataType.getClazz(), id.getValue(), rwdPerms, rPerms);
+				String value = id.getValue();
+				if (value.endsWith(":COPY"))
+				{
+					value = value.substring(0, value.indexOf(":COPY"));
+				}
+					
+				springSecurityAclService.saveDefaultAccessForNewObjectWithOwner(id.getKey(), dataType.getClazz(), value, rwdPerms, rPerms);
 			}
 		}
 
@@ -158,6 +178,39 @@ public class MigrateDataServiceImpl implements MigrateDataService
 			{
 				springSecurityAclService.saveAccessForObject(idUser.getKey(), dataType.getClazz(), idUser.getValue(), true, "R");
 			}
+		}
+	}
+	
+	@Override
+	public void migrateCharacterizationAccessData()
+	{
+		logger.info("Starting transfer of access data for characterizations.");
+		
+		Long count = migrateDataDAO.getCharDataSize();
+
+		logger.info("Characterization data size = " + count);
+		
+		// calculate the number of pages
+		double pageCount = count / pageSize;
+		int pageCnt = Double.valueOf(pageCount).intValue() + 1;
+		logger.info("Characterization data size = " + count + ", page count = " + pageCnt);
+
+		for (int i = 0; i < pageCnt; i++)
+		{
+			long rowMin = (i * pageSize) + 1 ;
+			long rowMax = (i == pageCnt - 1) ? count : (i + 1) * pageSize;
+			logger.info("Tranferring characterization data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
+			
+			List<AbstractMap.SimpleEntry<Long, Long>> charList = migrateDataDAO.getAllCharacterizations(rowMin, rowMax);
+			if (charList != null)
+			{
+				logger.info("Size of charaterizations of all samples = " + charList.size());
+				for (AbstractMap.SimpleEntry<Long, Long> charSample : charList)
+				{
+					springSecurityAclService.saveAccessForChildObject(charSample.getValue(), SecureClassesEnum.SAMPLE.getClazz(), charSample.getKey(), SecureClassesEnum.CHAR.getClazz());
+				}
+			}
+
 		}
 	}
 

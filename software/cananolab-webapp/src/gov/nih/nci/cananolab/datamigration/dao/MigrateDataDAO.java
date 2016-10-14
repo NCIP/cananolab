@@ -3,11 +3,12 @@ package gov.nih.nci.cananolab.datamigration.dao;
 import java.util.AbstractMap;
 import java.util.List;
 
+import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 
 public interface MigrateDataDAO
 {
-	public List<String> getUsersFromCSM();
+	public List<CananoUserDetails> getUsersFromCSM();
 	
 	public List<String> getCuratorUsersFromCSM();
 	
@@ -22,5 +23,9 @@ public interface MigrateDataDAO
 	public List<AbstractMap.SimpleEntry<Long, String>> getRWDAccessDataForUsers(SecureClassesEnum dataType);
 	
 	public List<AbstractMap.SimpleEntry<Long, String>> getReadAccessDataForUsers(SecureClassesEnum dataType);
+	
+	public Long getCharDataSize();
+	
+	public List<AbstractMap.SimpleEntry<Long, Long>> getAllCharacterizations(long rowMin, long rowMax);
 
 }

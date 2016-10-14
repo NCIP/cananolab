@@ -8,12 +8,14 @@ public interface MigrateDataService
 	
 	public void migratePublicAccessDataFromCSMToSpring(SecureClassesEnum dataType);
 	
-	public void migrateUserAccountsFromCSMToSpring();
+	public void migrateUserAccountsFromCSMToSpring() throws Exception;
 
 	public void grantCuratorRoleToAccounts();
 	
 	public void migrateRWDUserAccessFromCSMToSpring(SecureClassesEnum dataType);
 	
 	public void migrateReadUserAccessFromCSMToSpring(SecureClassesEnum dataType);
+	
+	public void migrateCharacterizationAccessData();
 	
 }
