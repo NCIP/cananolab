@@ -27,5 +27,9 @@ public interface MigrateDataDAO
 	public Long getCharDataSize();
 	
 	public List<AbstractMap.SimpleEntry<Long, Long>> getAllCharacterizations(long rowMin, long rowMax);
+	
+	public List<Long> getAllOrganizations();
+	
+	public List<AbstractMap.SimpleEntry<Long, Long>> getPOCsForOrgs();
 
 }

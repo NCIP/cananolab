@@ -33,13 +33,6 @@ public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 													  "where ac.class = :clazz and asid.sid = :sidval " +
 													  "and ae.sid = asid.id and aoi.object_id_class = ac.id " +
 													  "and ae.acl_object_identity = aoi.id";
-	
-	private static final String POC_OF_PUBLIC_ORGS_SQL = "select distinct o.organization_pk_id " +
-														 "from acl_class ac, acl_sid asid, acl_object_identity aoi, acl_entry ae , sample s, point_of_contact poc, organization o " +
-														 "where ac.class = :clazz and asid.sid = :sidval and ae.sid = asid.id " + 
-														 "and aoi.object_id_class = ac.id and ae.acl_object_identity = aoi.id " +
-														 "and aoi.object_id_identity = s.sample_pk_id and s.primary_contact_pk_id = poc.poc_pk_id " +
-														 "and poc.organization_pk_id = o.organization_pk_id";
 
 	private static final String PUBLIC_CHARACTERIZATION_SQL = "select distinct c.characterization_pk_id " +
 															  "from acl_class ac, acl_sid asid, acl_object_identity aoi, acl_entry ae, characterization c " +
@@ -78,23 +71,6 @@ public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 			parameters.addValue("clazz", clazz);
 			parameters.addValue("sidval", sid);
 			idList = getNamedParameterJdbcTemplate().queryForList(IDS_OF_CLASS_FOR_SID_SQL, parameters, Long.class);
-		}
-		
-		return idList;
-	}
-	
-	@Override
-	public List<Long> getPocOfPublicSamples(String clazz, String sid)
-	{
-		logger.debug("Fetching Poc of Samples Ids accessible to: " + sid);
-		List<Long> idList = new ArrayList<Long>();
-		
-		if (!StringUtils.isEmpty(clazz) && !StringUtils.isEmpty(sid))
-		{
-			MapSqlParameterSource parameters = new MapSqlParameterSource();
-			parameters.addValue("clazz", clazz);
-			parameters.addValue("sidval", sid);
-			idList = getNamedParameterJdbcTemplate().queryForList(POC_OF_PUBLIC_ORGS_SQL, parameters, Long.class);
 		}
 		
 		return idList;

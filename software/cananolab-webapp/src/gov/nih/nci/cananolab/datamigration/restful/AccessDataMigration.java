@@ -14,6 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import gov.nih.nci.cananolab.datamigration.service.MigrateDataService;
 import gov.nih.nci.cananolab.datamigration.util.AESEncryption;
@@ -179,6 +180,35 @@ public class AccessDataMigration
 	}
 	
 	@GET
+	@Path("/migratesamplesourceaccess")
+	public void migrateSampleSourceAccess(@Suspended final AsyncResponse asyncResponse, @Context HttpServletRequest httpRequest) 
+	{
+		logger.info("Migrate all access for Organizations and Point of Contacts.");
+		
+		try {
+			MigrateDataService migrateDataService = (MigrateDataService) SpringApplicationContext.getBean(httpRequest, "migrateDataService");
+			asyncResponse.setTimeout(600000, TimeUnit.MILLISECONDS);
+            asyncResponse.setTimeoutHandler(new TimeoutHandler() {
+								                @Override
+								                public void handleTimeout(AsyncResponse asyncResponse) {
+								                    asyncResponse.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
+								                            .entity("Operation time out.").build());
+								                }}
+                );
+			migrateDataService.migrateOrganizationAccessData();
+			
+			asyncResponse.resume(Response.status(Response.Status.OK)
+					                    .entity("All Access data migrated successfully for Organizations and Point of Contacts.")
+					                    .build());
+		} catch (Exception e) {
+			logger.error("Error in migrating all access data for Organizations and Point of Contacts: ", e);
+			asyncResponse.resume(Response.status(Response.Status.OK)
+					                    .entity("Error in migrating all access data for Organizations and Point of Contacts.")
+					                    .build());
+		}
+	}
+	
+	@GET
 	@Path("/encrypt")
 	@Produces ("application/json")
 	public Response encrypt(@Context HttpServletRequest httpRequest, @QueryParam("decryptedString") String decryptedString)
@@ -203,9 +233,24 @@ public class AccessDataMigration
 			AESEncryption aesencryption = new AESEncryption();
 			decryptedString = aesencryption.decrypt(encryptedString);
 		} catch (Exception e) {
-			decryptedString = "Error in encryption: " + e.getMessage();
+			decryptedString = "Error in decryption: " + e.getMessage();
 		}
 		return Response.ok("Encrypted String = " + encryptedString + ", Decrypted String = " + decryptedString).build();
+	}
+	
+	@GET
+	@Path("/bcrypt")
+	@Produces ("application/json")
+	public Response bcrypt(@Context HttpServletRequest httpRequest, @QueryParam("plainText") String plainText)
+	{
+		String encryptedString = "";
+		try {
+			BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+			encryptedString = bcrypt.encode(plainText);
+		} catch (Exception e) {
+			encryptedString = "Error in encryption: " + e.getMessage();
+		}
+		return Response.ok("Plain text = " + plainText + ", Encrypted String = " + encryptedString).build();
 	}
 
 }

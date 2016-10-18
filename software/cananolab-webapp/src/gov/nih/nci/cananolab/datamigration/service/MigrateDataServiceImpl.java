@@ -204,7 +204,7 @@ public class MigrateDataServiceImpl implements MigrateDataService
 			List<AbstractMap.SimpleEntry<Long, Long>> charList = migrateDataDAO.getAllCharacterizations(rowMin, rowMax);
 			if (charList != null)
 			{
-				logger.info("Size of charaterizations of all samples = " + charList.size());
+				logger.info("Size of charaterizations = " + charList.size());
 				for (AbstractMap.SimpleEntry<Long, Long> charSample : charList)
 				{
 					springSecurityAclService.saveAccessForChildObject(charSample.getValue(), SecureClassesEnum.SAMPLE.getClazz(), charSample.getKey(), SecureClassesEnum.CHAR.getClazz());
@@ -212,6 +212,34 @@ public class MigrateDataServiceImpl implements MigrateDataService
 			}
 
 		}
+	}
+	
+	@Override
+	public void migrateOrganizationAccessData()
+	{
+		logger.info("Starting transfer of access data for Organizations and Point of Contacts.");
+
+		List<Long> orgPkIdList = migrateDataDAO.getAllOrganizations();
+		if (orgPkIdList != null)
+		{
+			logger.info("Size of organizations = " + orgPkIdList.size());
+			for (Long orgPkId : orgPkIdList)
+			{
+				springSecurityAclService.savePublicAccessForObject(orgPkId, SecureClassesEnum.ORG.getClazz());
+			}
+		}
+		
+		List<AbstractMap.SimpleEntry<Long, Long>> orgPocIdList = migrateDataDAO.getPOCsForOrgs();
+		if (orgPocIdList != null)
+		{
+			logger.info("Size of POCs for organizations = " + orgPocIdList.size());
+			for (AbstractMap.SimpleEntry<Long, Long> orgPocId : orgPocIdList)
+			{
+				springSecurityAclService.saveAccessForChildObject(orgPocId.getValue(), SecureClassesEnum.ORG.getClazz(), orgPocId.getKey(), SecureClassesEnum.POC.getClazz());
+			}
+		}
+		logger.info("Organizations and Point of COntact access data migrated");
+		
 	}
 
 }

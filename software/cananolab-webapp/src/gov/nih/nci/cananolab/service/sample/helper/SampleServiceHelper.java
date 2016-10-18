@@ -747,7 +747,7 @@ public class SampleServiceHelper
 
 	public int getNumberOfPublicSampleSourcesForJob() throws Exception
 	{
-		List<Long> publicData = aclDao.getPocOfPublicSamples(SecureClassesEnum.ORG.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
+		List<Long> publicData = aclDao.getIdsOfClassForSid(SecureClassesEnum.ORG.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
 		int cnt = (publicData != null) ? publicData.size() : 0;
 		return cnt;
 	}

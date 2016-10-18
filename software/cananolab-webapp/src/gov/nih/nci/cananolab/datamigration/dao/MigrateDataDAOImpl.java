@@ -105,9 +105,13 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 	
 	private static final String FETCH_CHARACTERIZATIONS_COUNT_SQL = "SELECT count(*) from characterization ch";
 	
-	private static final String FETCH_CHARACTERIZATIONS_PAGE_SQL = "SELECT rp.char_id, rp.sample_id FROM (SELECT @rownum:=@rownum+1 'rank', ch.characterization_pk_id char_id, ch.sample_pk_id sample_id " +
+	private static final String FETCH_CHARACTERIZATIONS_PAGE_SQL = "SELECT rp.char_id UNQ_ID, rp.sample_id PARENT_ID FROM (SELECT @rownum:=@rownum+1 'rank', ch.characterization_pk_id char_id, ch.sample_pk_id sample_id " +
 																  "from (SELECT @rownum:=0) r, characterization ch ORDER BY characterization_pk_id asc) rp " +
 																  "WHERE rank >= ? AND rank <= ?";
+	
+	private static final String FETCH_ALL_ORGANIZATIONS_SQL = "SELECT organization_pk_id FROM organization";
+	
+	private static final String FETCH_ALL_POCS_FOR_ORGS_SQL = "SELECT poc_pk_id UNQ_ID, organization_pk_id PARENT_ID FROM point_of_contact";
 	
 	
 	@PostConstruct
@@ -250,12 +254,12 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 		}
 	}
 	
-	private static final class CharDataMapper implements RowMapper
+	private static final class ForeignKeyDataMapper implements RowMapper
 	{
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException
 		{
-			Long id = rs.getLong("CHAR_ID");
-			Long sampleId = rs.getLong("SAMPLE_ID");
+			Long id = rs.getLong("UNQ_ID");
+			Long sampleId = rs.getLong("PARENT_ID");
 			AbstractMap.SimpleEntry<Long, Long> entry = new AbstractMap.SimpleEntry<Long, Long>(id, sampleId);
 			
 			return entry;
@@ -295,7 +299,23 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 	{
 		Object[] params = new Object[] {Long.valueOf(rowMin), Long.valueOf(rowMax)};
 		
-		List<AbstractMap.SimpleEntry<Long, Long>> dataPage= getJdbcTemplate().query(FETCH_CHARACTERIZATIONS_PAGE_SQL, params, new CharDataMapper());
+		List<AbstractMap.SimpleEntry<Long, Long>> dataPage= getJdbcTemplate().query(FETCH_CHARACTERIZATIONS_PAGE_SQL, params, new ForeignKeyDataMapper());
+
+		return dataPage;
+	}
+
+	@Override
+	public List<Long> getAllOrganizations()
+	{
+		List<Long> orgPkId= getJdbcTemplate().queryForList(FETCH_ALL_ORGANIZATIONS_SQL, Long.class);
+
+		return orgPkId;
+	}
+
+	@Override
+	public List<SimpleEntry<Long, Long>> getPOCsForOrgs()
+	{
+		List<AbstractMap.SimpleEntry<Long, Long>> dataPage= getJdbcTemplate().query(FETCH_ALL_POCS_FOR_ORGS_SQL, new ForeignKeyDataMapper());
 
 		return dataPage;
 	}

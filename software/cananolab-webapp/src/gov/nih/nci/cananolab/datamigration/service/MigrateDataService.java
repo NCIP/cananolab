@@ -18,4 +18,6 @@ public interface MigrateDataService
 	
 	public void migrateCharacterizationAccessData();
 	
+	public void migrateOrganizationAccessData();
+	
 }
