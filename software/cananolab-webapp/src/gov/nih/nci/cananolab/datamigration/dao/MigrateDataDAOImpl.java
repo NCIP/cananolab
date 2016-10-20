@@ -28,7 +28,7 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 	private DataSource dataSource;
 	
 	private static final String GET_CSM_USERS_SQL = "SELECT u.login_name, u.first_name, u.last_name, u.password, u.organization, u.department, " +
-												 	"u.title, u.phone_number, u.email_id, u.enabled FROM csm_user u order by u.user_id;";
+												 	"u.title, u.phone_number, u.email_id, u.active_flag enabled FROM csm_user u order by u.user_id;";
 	
 	private static final String GET_CSM_CURATORS_SQL = "SELECT u.LOGIN_NAME FROM csm_user u, csm_user_group ug " +
 													  "WHERE u.user_id = ug.user_id AND ug.group_id = 2";
