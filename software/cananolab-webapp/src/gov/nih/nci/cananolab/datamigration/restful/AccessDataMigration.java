@@ -29,19 +29,31 @@ public class AccessDataMigration
 	@GET
 	@Path("/migrateuseraccounts")
 	@Produces ("application/json")
-	public Response migrateUserAccountsAndRoles(@Context HttpServletRequest httpRequest) 
+	public void migrateUserAccountsAndRoles(@Suspended final AsyncResponse asyncResponse, @Context HttpServletRequest httpRequest) 
 	{
 		logger.info("Migrate all user accounts from CSM to Spring.");
 		
 		try {
 			MigrateDataService migrateDataService = (MigrateDataService) SpringApplicationContext.getBean(httpRequest, "migrateDataService");
+			asyncResponse.setTimeout(600000, TimeUnit.MILLISECONDS);
+            asyncResponse.setTimeoutHandler(new TimeoutHandler() {
+								                @Override
+								                public void handleTimeout(AsyncResponse asyncResponse) {
+								                    asyncResponse.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
+								                            .entity("Operation time out.").build());
+								                }}
+                );
 			migrateDataService.migrateUserAccountsFromCSMToSpring();
 			migrateDataService.grantCuratorRoleToAccounts();
 			
-			return Response.ok("Access data migrated successfully.").build();
+			asyncResponse.resume(Response.status(Response.Status.OK)
+                    .entity("All user accounts migrated successfully.")
+                    .build());
 		} catch (Exception e) {
 			logger.error("Error in migrating user accounts and roles from CSM : ", e);
-			return Response.ok("Error in migrating user accounts and roles from CSM.").build();
+			asyncResponse.resume(Response.status(Response.Status.OK)
+                .entity("Error in migrating user accounts and roles from CSM : " + e.getMessage())
+                .build());
 		}
 	}
 	
@@ -75,7 +87,7 @@ public class AccessDataMigration
 		} catch (Exception e) {
 			logger.error("Error in migrating all access data for samples : ", e);
 			asyncResponse.resume(Response.status(Response.Status.OK)
-					                    .entity("Error in migrating all access data for samples.")
+					                    .entity("Error in migrating all access data for samples." + e.getMessage())
 					                    .build());
 		}
 	}
@@ -110,7 +122,7 @@ public class AccessDataMigration
 		} catch (Exception e) {
 			logger.error("Error in migrating all access data for protocols : ", e);
 			asyncResponse.resume(Response.status(Response.Status.OK)
-					                    .entity("Error in migrating all access data for protocols.")
+					                    .entity("Error in migrating all access data for protocols." + e.getMessage())
 					                    .build());
 		}
 	}
@@ -145,7 +157,7 @@ public class AccessDataMigration
 		} catch (Exception e) {
 			logger.error("Error in migrating all access data for publications : ", e);
 			asyncResponse.resume(Response.status(Response.Status.OK)
-					                    .entity("Error in migrating all access data for publications.")
+					                    .entity("Error in migrating all access data for publications." + e.getMessage())
 					                    .build());
 		}
 	}
@@ -174,7 +186,7 @@ public class AccessDataMigration
 		} catch (Exception e) {
 			logger.error("Error in migrating all access data for characterizations : ", e);
 			asyncResponse.resume(Response.status(Response.Status.OK)
-					                    .entity("Error in migrating all access data for characterizations.")
+					                    .entity("Error in migrating all access data for characterizations." + e.getMessage())
 					                    .build());
 		}
 	}
@@ -203,7 +215,7 @@ public class AccessDataMigration
 		} catch (Exception e) {
 			logger.error("Error in migrating all access data for Organizations and Point of Contacts: ", e);
 			asyncResponse.resume(Response.status(Response.Status.OK)
-					                    .entity("Error in migrating all access data for Organizations and Point of Contacts.")
+					                    .entity("Error in migrating all access data for Organizations and Point of Contacts." + e.getMessage())
 					                    .build());
 		}
 	}
