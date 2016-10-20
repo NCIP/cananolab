@@ -241,5 +241,22 @@ public class MigrateDataServiceImpl implements MigrateDataService
 		logger.info("Organizations and Point of COntact access data migrated");
 		
 	}
+	
+	@Override
+	public void bcryptPasswords()
+	{
+		logger.info("Start encyption of passwords in user table with BCrypt.");
+		List<AbstractMap.SimpleEntry<String, String>> userPwdList = migrateDataDAO.getUserPasswords();
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+		
+		for (AbstractMap.SimpleEntry<String, String> userPwd : userPwdList)
+		{
+			String value = bcrypt.encode(userPwd.getValue());
+			int status = migrateDataDAO.updateEncryptedPassword(userPwd.getKey(), value);
+		}
+		
+		logger.info("Encyption of passwords in user table with BCrypt completed.");
+		
+	}
 
 }

@@ -188,10 +188,6 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	public void deleteDataAvailability(String sampleId) throws DataAvailabilityException,
 			NoAccessException, SecurityException 
 	{
-		if (!springSecurityAclService.currentUserHasDeletePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
-			throw new NoAccessException(noAccessException + sampleId);
-		}
-
 		String sql = "delete from data_availability where sample_id = " + sampleId;
 		this.getJdbcTemplate().execute(sql);
 
@@ -200,7 +196,6 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	public int deleteBatchDataAvailability(List<String> sampleIds) throws Exception
 	{
 		// delete all records from data_availability table
-
 		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 		int i = 0;
 		if (!userDetails.isCurator()) {
@@ -263,8 +258,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	}
 
 	public int saveBatchDataAvailability(List<String> sampleIds) throws Exception {
-		// find data availability for the sampleId,
-		// update if exist, otherwise insert
+		// find data availability for the sampleId and update if exist, otherwise insert
 
 		int i = 0;
 		for (String sampleId : sampleIds) {
@@ -336,8 +330,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 				newGenernatedDataAvailability);
 		List<String> removedEntityList = new ArrayList<String>();
 		// scenario where data is removed
-		Set<DataAvailabilityBean> removedDataAvailability = findRemovedData(
-				currentDataAvailability, newGenernatedDataAvailability);
+		Set<DataAvailabilityBean> removedDataAvailability = findRemovedData(currentDataAvailability, newGenernatedDataAvailability);
 
 		if (removedDataAvailability.size() > 0) {
 			for (DataAvailabilityBean removedBean : removedDataAvailability) {
@@ -391,43 +384,30 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 
 		Sample domain = sampleBean.getDomain();
 
-		SortedSet<String> storedChemicalAssociationClassNames = sampleServiceHelper
-				.getStoredChemicalAssociationClassNames(domain);
+		SortedSet<String> storedChemicalAssociationClassNames = sampleServiceHelper.getStoredChemicalAssociationClassNames(domain);
 
-		SortedSet<String> storedFunctionalizingEntityClassNames = sampleServiceHelper
-				.getStoredFunctionalizingEntityClassNames(domain);
-		SortedSet<String> storedFunctionClassNames = sampleServiceHelper
-				.getStoredFunctionClassNames(domain);
-		SortedSet<String> storedNanomaterialEntityClassNames = sampleServiceHelper
-				.getStoredNanomaterialEntityClassNames(domain);
+		SortedSet<String> storedFunctionalizingEntityClassNames = sampleServiceHelper.getStoredFunctionalizingEntityClassNames(domain);
+		SortedSet<String> storedFunctionClassNames = sampleServiceHelper.getStoredFunctionClassNames(domain);
+		SortedSet<String> storedNanomaterialEntityClassNames = sampleServiceHelper.getStoredNanomaterialEntityClassNames(domain);
 
 		Set<String> clazzNames = new HashSet<String>();
 		clazzNames.add("General Sample Information");
 		if (domain.getCharacterizationCollection() != null) {
-			for (Characterization achar : domain
-					.getCharacterizationCollection()) {
+			for (Characterization achar : domain.getCharacterizationCollection()) {
 				if (achar instanceof OtherCharacterization) {
 				} else {
-					String shortClassName = ClassUtils.getShortClassName(achar
-							.getClass().getCanonicalName());
-					String displayName = ClassUtils
-							.getDisplayName(shortClassName);
+					String shortClassName = ClassUtils.getShortClassName(achar.getClass().getCanonicalName());
+					String displayName = ClassUtils.getDisplayName(shortClassName);
 					if (shortClassName.equalsIgnoreCase("surface")) {
 						CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
-						List<Finding> findingCollection = charHelper
-								.findFindingsByCharacterizationId(achar.getId()
-										.toString());
+						List<Finding> findingCollection = charHelper.findFindingsByCharacterizationId(achar.getId().toString());
 						// Collection<Finding> findingCollection =
 						// achar.getFindingCollection();
 						if (!findingCollection.isEmpty()) {
 							for (Finding finding : findingCollection) {
-								Collection<Datum> datumCollection = finding
-										.getDatumCollection();
+								Collection<Datum> datumCollection = finding.getDatumCollection();
 								for (Datum datum : datumCollection) {
-									// System.out.println("datum: " +
-									// datum.getName() );
-									clazzNames.add(datum.getName()
-											.toLowerCase());
+									clazzNames.add(datum.getName().toLowerCase());
 								}
 							}
 						} else {

@@ -20,4 +20,6 @@ public interface MigrateDataService
 	
 	public void migrateOrganizationAccessData();
 	
+	public void bcryptPasswords();
+	
 }

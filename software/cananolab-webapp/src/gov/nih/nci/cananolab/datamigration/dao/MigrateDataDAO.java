@@ -31,5 +31,9 @@ public interface MigrateDataDAO
 	public List<Long> getAllOrganizations();
 	
 	public List<AbstractMap.SimpleEntry<Long, Long>> getPOCsForOrgs();
+	
+	public List<AbstractMap.SimpleEntry<String, String>> getUserPasswords();
+	
+	public int updateEncryptedPassword(String userName, String password);
 
 }

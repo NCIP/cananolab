@@ -93,7 +93,7 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 	@Override
 	public int updateGroup(Long groupId, String groupDesc)
 	{
-		Object[] args = {groupId, groupDesc};
+		Object[] args = {groupDesc, groupId};
 		int status = this.getJdbcTemplate().update(UPDATE_GROUP_SQL, args);
 		return status;
 		

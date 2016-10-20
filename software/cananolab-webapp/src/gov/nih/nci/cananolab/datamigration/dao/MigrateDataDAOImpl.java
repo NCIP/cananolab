@@ -113,6 +113,10 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 	
 	private static final String FETCH_ALL_POCS_FOR_ORGS_SQL = "SELECT poc_pk_id UNQ_ID, organization_pk_id PARENT_ID FROM point_of_contact";
 	
+	private static final String FETCH_ALL_USER_PWDS_SQL = "SELECT username as KEYCOL, password as VALCOL FROM users";
+	
+	private static final String UPDATE_PWD_SQL = "UPDATE users SET password = ? WHERE username = ?";
+	
 	
 	@PostConstruct
 	private void initialize() {
@@ -266,6 +270,18 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 		}
 	}
 	
+	private static final class KeyValueMapper implements RowMapper
+	{
+		public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			String key = rs.getString("KEYCOL");
+			String value = rs.getString("VALCOL");
+			AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<String, String>(key, value);
+			
+			return entry;
+		}
+	}
+	
 	private static final class CsmUserMapper implements RowMapper
 	{
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException
@@ -318,6 +334,24 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 		List<AbstractMap.SimpleEntry<Long, Long>> dataPage= getJdbcTemplate().query(FETCH_ALL_POCS_FOR_ORGS_SQL, new ForeignKeyDataMapper());
 
 		return dataPage;
+	}
+	
+	@Override
+	public List<AbstractMap.SimpleEntry<String, String>> getUserPasswords()
+	{
+		List<AbstractMap.SimpleEntry<String, String>> userPwdList = getJdbcTemplate().query(FETCH_ALL_USER_PWDS_SQL, new KeyValueMapper());
+
+		return userPwdList;
+	}
+	
+	@Override
+	public int updateEncryptedPassword(String userName, String password)
+	{
+		logger.debug("Update password for : " + userName);
+		Object[] params = new Object[] {password, userName};
+
+		int status = getJdbcTemplate().update(UPDATE_PWD_SQL, params);
+		return status;
 	}
 
 }

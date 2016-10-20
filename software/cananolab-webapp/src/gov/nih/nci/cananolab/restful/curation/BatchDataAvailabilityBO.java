@@ -29,21 +29,16 @@ public class BatchDataAvailabilityBO extends AbstractDispatchBO
 	
 	private static final int CUT_OFF_NUM_SAMPLES = 30;
 
-	public void setupNew(GenerateBatchDataAvailabilityForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-	//	DynaActionForm theForm = (DynaActionForm) form;
+	public void setupNew(GenerateBatchDataAvailabilityForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
+	{
 		form.setOption(BatchDataAvailabilityProcess.BATCH_OPTION1);
-	//	return mapping.findForward("input");
 	}
 
 	// option1 - generate all: update existing one and generate new ones.
 	// option2 - re-generate for samples with existing data availability
 	// option3 - delete existing data availability
-	public List<String> generate(GenerateBatchDataAvailabilityForm form,
-			HttpServletRequest request)
-			throws Exception {
-	//	DynaActionForm theForm = (DynaActionForm) form;
+	public List<String> generate(GenerateBatchDataAvailabilityForm form, HttpServletRequest request) throws Exception
+	{
 		List<String> messages = new ArrayList<String>();
 		String option = form.getOption();
 		HttpSession session = request.getSession();

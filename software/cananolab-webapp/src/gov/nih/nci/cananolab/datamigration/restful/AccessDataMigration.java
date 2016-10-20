@@ -252,5 +252,23 @@ public class AccessDataMigration
 		}
 		return Response.ok("Plain text = " + plainText + ", Encrypted String = " + encryptedString).build();
 	}
+	
+	@GET
+	@Path("/bcryptpasswords")
+	@Produces ("application/json")
+	public Response bcryptPasswords(@Context HttpServletRequest httpRequest)
+	{
+		logger.info("Encrypt all the passowrds in users table.");
+		String message = "";
+		try
+		{
+			MigrateDataService migrateDataService = (MigrateDataService) SpringApplicationContext.getBean(httpRequest, "migrateDataService");
+			migrateDataService.bcryptPasswords();
+			message = "Passwords encrypted successfully.";
+		} catch (Exception e) {
+			message = "Error in encrypting passwords: " + e.getMessage();
+		}
+		return Response.ok(message).build();
+	}
 
 }
