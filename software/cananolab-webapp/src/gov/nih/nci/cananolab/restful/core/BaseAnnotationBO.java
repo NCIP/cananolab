@@ -126,8 +126,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 				return null;
 			}
 		}
-		String fileRoot = PropertyUtils.getProperty(
-				Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
+		String fileRoot = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
 				+ fileBean.getDomainFile().getUri());
 				//+ "particles/composition.png");

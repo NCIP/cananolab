@@ -561,7 +561,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		configBean.setupDomain(SpringSecurityUtil.getLoggedInUserName());
 		logger.debug("Call saveExperimentConfig");
-		characterizationService.saveExperimentConfig(configBean);
+		String sampleId = (String) request.getSession().getAttribute("sampleId");
+		characterizationService.saveExperimentConfig(sampleId, configBean);
 		logger.debug("Save exp config complete");
 		achar.addExperimentConfig(configBean);
 		
@@ -963,7 +964,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
 		simpleExpConfig.transferToExperimentConfigBean(configBean);
 		
-		characterizationService.deleteExperimentConfig(configBean.getDomain());
+		characterizationService.deleteExperimentConfig(editBean.getParentSampleId() + "", configBean.getDomain());
 		logger.debug("Experiment config deleted");
 		achar.removeExperimentConfig(configBean);
 		

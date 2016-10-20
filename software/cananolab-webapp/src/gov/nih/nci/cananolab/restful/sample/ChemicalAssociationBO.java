@@ -470,8 +470,9 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 		}
 		return msgs;
 	}
-
-	public void input(CompositionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
+	
+	//unused code
+	/*public void input(CompositionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		ChemicalAssociationBean assocBean = form.getAssoc();
 		escapeXmlForFileUri(assocBean.getTheFile());
@@ -490,7 +491,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 
 		this.checkOpenForms(assocBean, request);
 		//return mapping.findForward("inputForm");
-	}
+	}*/
 
 	private void setLookups(HttpServletRequest request, CompositionBean compositionBean) throws Exception
 	{
@@ -513,7 +514,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 		request.getSession().setAttribute("hasFunctionalizingEntity", hasFunctionalizingEntity);
 	}
 
-	public void prepareEntityLists(ChemicalAssociationBean assocBean, HttpServletRequest request) throws Exception
+	public void prepareEntityLists(String sampleId, ChemicalAssociationBean assocBean, HttpServletRequest request) throws Exception
 	{
 		HttpSession session = request.getSession();
 		// associated element A
@@ -523,7 +524,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 			entityListA = new ArrayList<BaseCompositionEntityBean>(
 					(List<BaseCompositionEntityBean>) session.getAttribute("sampleMaterialEntities"));
 			// get composing elements
-			NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(assocBean
+			NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(sampleId, assocBean
 							.getAssociatedElementA().getEntityId());
 			ceListA = entityBean.getComposingElements();
 		} else {
@@ -539,7 +540,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 			entityListB = new ArrayList<BaseCompositionEntityBean>(
 					(List<BaseCompositionEntityBean>) session.getAttribute("sampleMaterialEntities"));
 			// get composing elements
-			NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(assocBean.getAssociatedElementB().getEntityId());
+			NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(sampleId, assocBean.getAssociatedElementB().getEntityId());
 			ceListB = entityBean.getComposingElements();
 		} else {
 			entityListB = new ArrayList<BaseCompositionEntityBean>(
@@ -549,15 +550,14 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 		session.setAttribute("entityListB", entityListB);
 	}
 
-	public SimpleChemicalAssociationBean setupUpdate(String sampleId, String assocId,
-			HttpServletRequest request)
+	public SimpleChemicalAssociationBean setupUpdate(String sampleId, String assocId, HttpServletRequest request)
 			throws Exception {
 		// set up compositionBean required to set up drop-down
 		CompositionBean compositionBean = compositionService.findCompositionBySampleId(sampleId);
 		setLookups(request, compositionBean);
 		//String assocId = super.validateId(request, "dataId");
-		ChemicalAssociationBean assocBean = compositionService.findChemicalAssociationById(assocId);
-		prepareEntityLists(assocBean, request);
+		ChemicalAssociationBean assocBean = compositionService.findChemicalAssociationById(sampleId, assocId);
+		prepareEntityLists(sampleId, assocBean, request);
 		//theForm.set("assoc", assocBean);
 		this.checkOpenForms(assocBean, request);
 	//	return mapping.findForward("inputForm");

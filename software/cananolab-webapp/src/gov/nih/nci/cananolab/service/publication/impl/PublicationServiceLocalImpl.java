@@ -414,14 +414,14 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			// set author accessibility as well because didn't share authors
 			// between publications
-			if (publication.getAuthorCollection() != null) {
+/*			if (publication.getAuthorCollection() != null) {
 				for (Author author : publication.getAuthorCollection()) {
 					if (author != null) {
 						springSecurityAclService.saveAccessForChildObject(publication.getId(), SecureClassesEnum.PUBLICATION.getClazz(), 
 																		  author.getId(), SecureClassesEnum.AUTHOR.getClazz());
 					}
 				}
-			}
+			}*/
 		} catch (Exception e) {
 			String error = "Error in assigning access to publication";
 			throw new PublicationException(error, e);
@@ -464,7 +464,9 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 		List<String> pubIds = new ArrayList<String>();
 		try
 		{
-			pubIds = aclDao.getIdsOfClassSharedWithSid(SecureClassesEnum.SAMPLE, userDetails.getUsername(), userDetails.getGroups());
+			List<String> sharedWithSids = new ArrayList<String>(userDetails.getGroups());
+			sharedWithSids.add(userDetails.getUsername());
+			pubIds = aclDao.getIdsOfClassSharedWithSid(SecureClassesEnum.SAMPLE, userDetails.getUsername(), sharedWithSids);
 		}catch (Exception e) {
 			String error = "Error in retrieving publicationIds shared with logged in user. " + e.getMessage();
 			throw new PublicationException(error, e);

@@ -328,7 +328,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
 
-		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(entityId);
+		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(sampleId, entityId);
 		form.setNanomaterialEntity(entityBean);
 		form.setOtherSamples(new String[0]);
 		this.checkOpenForms(entityBean, request);
@@ -338,9 +338,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		return nano;
 	}
 
-	public void setupView(CompositionForm form, HttpServletRequest request) throws Exception {
+	//unused code
+	/*public void setupView(CompositionForm form, HttpServletRequest request) throws Exception {
 		String entityId = super.validateId(request, "dataId");
-		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(entityId);
+		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(form.getSampleId(), entityId);
 		request.setAttribute("nanomaterialEntity", entityBean);
 		String detailPage = null;
 		if (entityBean.isWithProperties()) {
@@ -348,7 +349,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 					entityBean.getClassName(), "nanomaterialEntity");
 		}
 		request.setAttribute("entityDetailPage", detailPage);
-	}
+	}*/
 
 	public SimpleNanomaterialEntityBean saveComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception
 	{
@@ -919,7 +920,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
 
-		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(entityId);
+		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(sampleId, entityId);
 		form.setNanomaterialEntity(entityBean);
 		form.setOtherSamples(new String[0]);
 		this.checkOpenForms(entityBean, request);

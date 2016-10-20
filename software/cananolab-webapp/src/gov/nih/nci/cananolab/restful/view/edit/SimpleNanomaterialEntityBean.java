@@ -285,7 +285,7 @@ public class SimpleNanomaterialEntityBean {
 			fBean.setCreatedBy(file.getDomainFile().getCreatedBy());
 			fBean.setCreatedDate(file.getDomainFile().getCreatedDate());
 			fBean.setTheAccess(file.getTheAccess());
-			boolean isPublic = springSecurityAclService.checkObjectPublic(file.getDomainFile().getId(), SecureClassesEnum.FILE.getClazz());
+			boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
 			fBean.setIsPublic(isPublic);
 			files.add(fBean);
 		}

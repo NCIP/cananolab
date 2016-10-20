@@ -70,14 +70,15 @@ public class WorkspaceManager extends BaseAnnotationBO
 	{
 		logger.info("In getWorkspaceItems");
 		SimpleWorkspaceBean simpleWorkspace = new SimpleWorkspaceBean();
+		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 
-		List<SimpleWorkspaceItem> sampleItems =  getSampleItems(request);
+		List<SimpleWorkspaceItem> sampleItems =  getSampleItems(request, userDetails);
 		simpleWorkspace.setSamples(sampleItems);
 
-		List<SimpleWorkspaceItem> pubItems = getPublicationItems(request);
+		List<SimpleWorkspaceItem> pubItems = getPublicationItems(request, userDetails);
 		simpleWorkspace.setPublications(pubItems);
 
-		List<SimpleWorkspaceItem> protoItems = getProtocolItems(request);
+		List<SimpleWorkspaceItem> protoItems = getProtocolItems(request, userDetails);
 		simpleWorkspace.setProtocols(protoItems);
 
 		return simpleWorkspace;
@@ -88,26 +89,26 @@ public class WorkspaceManager extends BaseAnnotationBO
 		logger.info("In getWorkspaceItems with type: " + type);
 
 		SimpleWorkspaceBean simpleWorkspace = new SimpleWorkspaceBean();
+		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 
 		List<SimpleWorkspaceItem> items = null;
 		if (type.equals("sample")) {
-			items =  getSampleItems(request);
+			items =  getSampleItems(request, userDetails);
 			simpleWorkspace.setSamples(items);
 		} else if (type.equals("protocol")) {
-			items = getProtocolItems(request);
+			items = getProtocolItems(request, userDetails);
 			simpleWorkspace.setProtocols(items);
 		} else if (type.equals("publication")) {
-			items = getPublicationItems(request);
+			items = getPublicationItems(request, userDetails);
 			simpleWorkspace.setPublications(items);
 		}
 
 		return simpleWorkspace;
 	}
 
-	protected List<SimpleWorkspaceItem> getPublicationItems(HttpServletRequest request) throws Exception
+	protected List<SimpleWorkspaceItem> getPublicationItems(HttpServletRequest request, CananoUserDetails userDetails) throws Exception
 	{
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
-		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 
 		List<String> publicationIds = publicationService.findPublicationIdsByOwner(userDetails.getUsername());
 		List<String> ids = new ArrayList<String>();
@@ -151,10 +152,9 @@ public class WorkspaceManager extends BaseAnnotationBO
 		return items;
 	}
 
-	protected List<SimpleWorkspaceItem> getProtocolItems(HttpServletRequest request) throws Exception
+	protected List<SimpleWorkspaceItem> getProtocolItems(HttpServletRequest request, CananoUserDetails userDetails) throws Exception
 	{
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
-		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 		List<String> protoIds = protocolService.findProtocolIdsByOwner(userDetails.getUsername());
 
 		if(!userDetails.isCurator()){
@@ -199,11 +199,9 @@ public class WorkspaceManager extends BaseAnnotationBO
 	}
 
 
-	protected List<SimpleWorkspaceItem> getSampleItems(HttpServletRequest request) throws Exception
+	protected List<SimpleWorkspaceItem> getSampleItems(HttpServletRequest request, CananoUserDetails userDetails) throws Exception
 	{
 		List<SimpleWorkspaceItem> items = new ArrayList<SimpleWorkspaceItem>();
-		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
-
 		List<String> sampleIds = sampleService.findSampleIdsByOwner(userDetails.getUsername());
 		List<String> sharedByIds = new ArrayList<String>();
 		//Only Researchers and other users have shared items, not curators.

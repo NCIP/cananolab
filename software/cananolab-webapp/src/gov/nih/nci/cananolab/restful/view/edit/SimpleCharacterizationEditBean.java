@@ -208,13 +208,15 @@ public class SimpleCharacterizationEditBean
 
 	protected void transferFinding(HttpServletRequest request, List<FindingBean> findingBeans, SpringSecurityAclService springSecurityAclService) {
 		if (findingBeans == null) return;
+		
+		String sampleId = (String) request.getSession().getAttribute("sampleId");
 
 		for (FindingBean findingBean : findingBeans) {
 			SimpleFindingBean simpleBean = new SimpleFindingBean();
 			
 			for (FileBean file : findingBean.getFiles())
 			{
-				boolean isPublic = springSecurityAclService.checkObjectPublic(file.getDomainFile().getId(), SecureClassesEnum.FILE.getClazz());
+				boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz());
 				file.setPublicStatus(isPublic);
 			}
 			

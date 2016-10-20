@@ -164,7 +164,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 		}
 	}
 
-	public FindingBean findFindingById(String findingId) throws CharacterizationException, NoAccessException
+	/*public FindingBean findFindingById(String findingId) throws CharacterizationException, NoAccessException
 	{
 		FindingBean findingBean = null;
 		try {
@@ -180,7 +180,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 			throw new CharacterizationException(err, e);
 		}
 		return findingBean;
-	}
+	}*/
 
 	public void saveFinding(FindingBean finding) throws CharacterizationException, NoAccessException
 	{
@@ -220,17 +220,17 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 		}
 	}
 
-	public void saveExperimentConfig(ExperimentConfigBean configBean)
+	public void saveExperimentConfig(String sampleId, ExperimentConfigBean configBean)
 			throws ExperimentConfigException, NoAccessException {
-		if (SpringSecurityUtil.getPrincipal() == null) {
+		if (SpringSecurityUtil.getPrincipal() == null)
 			throw new NoAccessException();
-		}
+
 		try {
 			ExperimentConfig config = configBean.getDomain();
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			// get existing createdDate and createdBy
 			if (config.getId() != null) {
-				ExperimentConfig dbConfig = characterizationServiceHelper.findExperimentConfigById(config.getId().toString());
+				ExperimentConfig dbConfig = characterizationServiceHelper.findExperimentConfigById(sampleId, config.getId().toString());
 				if (dbConfig != null) {
 					// reuse original createdBy if it is not COPY
 					if (!dbConfig.getCreatedBy().contains(Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
@@ -276,16 +276,15 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 		}
 	}
 
-	public void deleteExperimentConfig(ExperimentConfig config) throws ExperimentConfigException, NoAccessException {
+	public void deleteExperimentConfig(String sampleId, ExperimentConfig config) throws ExperimentConfigException, NoAccessException {
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			// get existing createdDate and createdBy
 			if (config.getId() != null) {
-				ExperimentConfig dbConfig = characterizationServiceHelper.findExperimentConfigById(config.getId().toString());
+				ExperimentConfig dbConfig = characterizationServiceHelper.findExperimentConfigById(sampleId, config.getId().toString());
 				if (dbConfig != null) {
 					config.setCreatedBy(dbConfig.getCreatedBy());
 					config.setCreatedDate(dbConfig.getCreatedDate());
@@ -400,7 +399,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 				List<ExperimentConfigBean> expConfigs = copyBean.getExperimentConfigs();
 				if (expConfigs != null && !expConfigs.isEmpty()) {
 					for (ExperimentConfigBean configBean : expConfigs) {
-						this.saveExperimentConfig(configBean);
+						this.saveExperimentConfig(sampleBean.getDomain().getId() + "", configBean);
 					}
 				}
 				List<FindingBean> findings = copyBean.getFindings();
@@ -529,8 +528,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 				throw new NoAccessException();
 			}
 			
-			springSecurityAclService.saveAccessForChildObject(achar.getId(), SecureClassesEnum.CHAR.getClazz(),
-															  config.getId(), SecureClassesEnum.CONFIG.getClazz());
+			/*springSecurityAclService.saveAccessForChildObject(achar.getId(), SecureClassesEnum.CHAR.getClazz(),
+															  config.getId(), SecureClassesEnum.CONFIG.getClazz());*/
 
 			/*// find sample accesses, already contains owner for config
 			List<AccessibilityBean> sampleAccesses = this.findSampleAccesses(achar.getSample().getId().toString());
@@ -552,8 +551,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 				throw new NoAccessException();
 			}
 			
-			springSecurityAclService.saveAccessForChildObject(achar.getId(), SecureClassesEnum.CHAR.getClazz(),
-															  finding.getId(), SecureClassesEnum.FINDING.getClazz());
+			/*springSecurityAclService.saveAccessForChildObject(achar.getId(), SecureClassesEnum.CHAR.getClazz(),
+															  finding.getId(), SecureClassesEnum.FINDING.getClazz());*/
 			
 			
 			/*// find sample accesses, already contains owner for finding
@@ -572,10 +571,10 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 	public void removeAccesses(Characterization achar, ExperimentConfig config) throws CharacterizationException, NoAccessException
 	{
 		try {
-			if (!springSecurityAclService.currentUserHasWritePermission(config.getId(), SecureClassesEnum.CONFIG.getClazz())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(achar.getId(), SecureClassesEnum.CHAR.getClazz())) {
 				throw new NoAccessException();
 			}
-			springSecurityAclService.deleteAccessObject(config.getId(), SecureClassesEnum.CONFIG.getClazz());
+			//springSecurityAclService.deleteAccessObject(config.getId(), SecureClassesEnum.CONFIG.getClazz());
 
 			
 			/*// find sample accesses, already contains owner for config
@@ -594,10 +593,10 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 	public void removeAccesses(Characterization achar, Finding finding) throws CharacterizationException, NoAccessException
 	{
 		try {
-			if (!springSecurityAclService.currentUserHasWritePermission(finding.getId(), SecureClassesEnum.FINDING.getClazz())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(achar.getId(), SecureClassesEnum.CHAR.getClazz())) {
 				throw new NoAccessException();
 			}
-			springSecurityAclService.deleteAccessObject(finding.getId(), SecureClassesEnum.FINDING.getClazz());
+			//springSecurityAclService.deleteAccessObject(finding.getId(), SecureClassesEnum.FINDING.getClazz());
 
 			/*// find sample accesses, already contains owner for finding
 			List<AccessibilityBean> sampleAccesses = this.findSampleAccesses(achar.getSample().getId().toString());

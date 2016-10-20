@@ -130,10 +130,10 @@ public class CharacterizationServiceHelper
 		return configs;
 	}
 
-	public ExperimentConfig findExperimentConfigById(String id) throws Exception 
+	public ExperimentConfig findExperimentConfigById(String sampleId, String id) throws Exception 
 	{
-		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(id), SecureClassesEnum.CONFIG.getClazz()) &&
-			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(id), SecureClassesEnum.CONFIG.getClazz())) {
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 			new NoAccessException("User has no access to the experiment config " + id);
 		}
 		ExperimentConfig config = null;

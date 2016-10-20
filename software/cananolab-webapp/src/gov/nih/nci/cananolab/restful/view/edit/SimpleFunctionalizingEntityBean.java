@@ -231,7 +231,7 @@ public class SimpleFunctionalizingEntityBean {
 			fBean.setCreatedBy(files.getDomainFile().getCreatedBy());
 			fBean.setCreatedDate(files.getDomainFile().getCreatedDate());
 			fBean.setTheAccess(files.getTheAccess());
-			boolean isPublic = springSecurityAclService.checkObjectPublic(files.getDomainFile().getId(), SecureClassesEnum.FILE.getClazz());
+			boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(this.getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
 			fBean.setIsPublic(isPublic);
 			fileList.add(fBean);
 		}

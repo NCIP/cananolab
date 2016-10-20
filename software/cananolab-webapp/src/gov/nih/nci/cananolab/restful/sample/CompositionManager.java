@@ -125,7 +125,9 @@ public class CompositionManager
 		if (!SpringSecurityUtil.isUserLoggedIn() || StringUtils.isEmpty(id))
 			return null;
 		
-		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(id);
+		String sampleId = (String) request.getSession().getAttribute("sampleId");
+		
+		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(sampleId, id);
 		List<ComposingElementBean> composingElements = entityBean.getComposingElements();
 		return composingElements;
 	}

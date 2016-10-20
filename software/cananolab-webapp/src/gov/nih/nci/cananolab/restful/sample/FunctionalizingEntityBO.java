@@ -203,7 +203,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 				request);
 	}
 
-	public void setupView(CompositionForm form, HttpServletRequest request,
+	//unused code
+	/*public void setupView(CompositionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String entityId = super.validateId(request, "dataId");
 		FunctionalizingEntityBean entityBean = compositionService.findFunctionalizingEntityById(entityId);
@@ -214,14 +215,14 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 					entityBean.getClassName(), "functionalizingEntity");
 		}
 		request.setAttribute("entityDetailPage", detailPage);
-	}
+	}*/
 
 	public SimpleFunctionalizingEntityBean setupUpdate(String sampleId,
 			String dataId, HttpServletRequest request) throws Exception {
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
 		// dataId = super.validateId(request, "dataId");
-		FunctionalizingEntityBean entityBean = compositionService.findFunctionalizingEntityById(dataId);
+		FunctionalizingEntityBean entityBean = compositionService.findFunctionalizingEntityById(sampleId, dataId);
 		this.setLookups(request);
 		// clear copy to otherSamples
 		// form.setOtherSamples(new String[0]);
@@ -774,12 +775,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
 		// dataId = super.validateId(request, "dataId");
-		FunctionalizingEntityBean entityBean = compositionService.findFunctionalizingEntityById(dataId);
+		FunctionalizingEntityBean entityBean = compositionService.findFunctionalizingEntityById(sampleId, dataId);
 		this.setLookups(request);
 		// clear copy to otherSamples
 		// form.setOtherSamples(new String[0]);
 		checkOpenForms(entityBean, request);
-		request.getSession().setAttribute("sampleId", sampleId);
 
 		return entityBean;
 	}

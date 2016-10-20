@@ -177,13 +177,13 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 			if (newProtocol)
 			{
 				springSecurityAclService.saveDefaultAccessForNewObject(protocolBean.getDomain().getId(), SecureClassesEnum.PROTOCOL.getClazz());
-				if (protocolBean.getFileBean() != null)
+				/*if (protocolBean.getFileBean() != null)
 				{
 					springSecurityAclService.saveAccessForChildObject(protocolBean.getDomain().getId(), 
 																	SecureClassesEnum.PROTOCOL.getClazz(), 
 																	protocolBean.getFileBean().getDomainFile().getId(), 
 																	SecureClassesEnum.FILE.getClazz());
-				}
+				}*/
 			}
 		} catch (Exception e) {
 			String err = "Error in saving the protocol file.";
@@ -339,10 +339,10 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 			springSecurityAclService.saveAccessForObject(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz(), access.getRecipient(), 
 														 access.isPrincipal(), access.getRoleName());
 
-			if (protocol.getFile() != null) {
+			/*if (protocol.getFile() != null) {
 				springSecurityAclService.saveAccessForChildObject(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz(), 
 																  protocol.getFile().getId(), SecureClassesEnum.FILE.getClazz());
-			}
+			}*/
 		} catch (Exception e) {
 			String error = "Error in assigning access to protocol";
 			throw new ProtocolException(error, e);
@@ -390,7 +390,9 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		List<String> protocolIds = new ArrayList<String>();
 		try
 		{
-			protocolIds = aclDao.getIdsOfClassSharedWithSid(SecureClassesEnum.PROTOCOL, userDetails.getUsername(), userDetails.getGroups());
+			List<String> sharedWithSids = new ArrayList<String>(userDetails.getGroups());
+			sharedWithSids.add(userDetails.getUsername());
+			protocolIds = aclDao.getIdsOfClassSharedWithSid(SecureClassesEnum.PROTOCOL, userDetails.getUsername(), sharedWithSids);
 		}catch (Exception e) {
 			String error = "Error in retrieving protocolIds shared with logged in user. " + e.getMessage();
 			throw new ProtocolException(error, e);

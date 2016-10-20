@@ -167,16 +167,13 @@ public class CompositionFileBO extends BaseAnnotationBO
 
 	}
 
-	public SimpleFileBean setupUpdate(String sampleId, String fileId,
-			HttpServletRequest request)
+	public SimpleFileBean setupUpdate(String sampleId, String fileId, HttpServletRequest request)
 			throws Exception {
 		fileId = super.validateId(request, "dataId");
 		FileBean fileBean = compositionService.findFileById(fileId);
-//		CompositionBean compBean = form.getComp();
-//		compBean.setTheFile(fileBean);
 		request.getSession().setAttribute("sampleId", sampleId);
 		SimpleFileBean simpleBean = new SimpleFileBean();
-		fileBean.setPublicStatus(springSecurityAclService.checkObjectPublic(Long.valueOf(fileId), SecureClassesEnum.FILE.getClazz()));
+		fileBean.setPublicStatus(springSecurityAclService.checkObjectPublic(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()));
 		simpleBean.transferSimpleFileBean(fileBean, request);
 		return simpleBean;
 	}

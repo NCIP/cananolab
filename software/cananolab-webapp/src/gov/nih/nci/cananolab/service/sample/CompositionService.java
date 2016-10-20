@@ -39,7 +39,7 @@ public interface CompositionService extends BaseService {
 			NanomaterialEntityBean entityBean) throws CompositionException,
 			NoAccessException;
 
-	public NanomaterialEntityBean findNanomaterialEntityById(String entityId)
+	public NanomaterialEntityBean findNanomaterialEntityById(String sampleId, String entityId)
 			throws CompositionException, NoAccessException;
 
 	public void saveFunctionalizingEntity(SampleBean sampleBean,
@@ -53,10 +53,10 @@ public interface CompositionService extends BaseService {
 	public void saveCompositionFile(SampleBean sampleBean, FileBean fileBean)
 			throws CompositionException, NoAccessException;
 
-	public FunctionalizingEntityBean findFunctionalizingEntityById(
+	public FunctionalizingEntityBean findFunctionalizingEntityById(String sampleId,
 			String entityId) throws CompositionException, NoAccessException;
 
-	public ChemicalAssociationBean findChemicalAssociationById(String assocId)
+	public ChemicalAssociationBean findChemicalAssociationById(String sampleId, String assocId)
 			throws CompositionException, NoAccessException;
 
 	public void deleteNanomaterialEntity(NanomaterialEntity entity)

@@ -102,7 +102,7 @@ public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 		if (classEnum != null && !StringUtils.isEmpty(loggedInUser) && sids.size() > 0)
 		{
 			MapSqlParameterSource parameters = new MapSqlParameterSource();
-			parameters.addValue("clazz", classEnum.getClazz());
+			parameters.addValue("clazz", classEnum.getClazz().getName());
 			parameters.addValue("loggedInUser", loggedInUser);
 			parameters.addValue("sids", sids);
 			if (classEnum == SecureClassesEnum.SAMPLE)

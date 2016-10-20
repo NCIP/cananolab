@@ -727,7 +727,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 				if (charBean.getExperimentConfigs() != null) {
 					for (ExperimentConfigBean configBean : charBean
 							.getExperimentConfigs()) {
-						characterizationService.saveExperimentConfig(configBean);
+						characterizationService.saveExperimentConfig(sampleBean.getDomain().getId() + "", configBean);
 					}
 				}
 				if (charBean.getFindings() != null) {
@@ -1045,11 +1045,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 							  										  achar.getId(), SecureClassesEnum.CHAR.getClazz());
 				}
 			}
-			// assign composition accessibility
+			/*// assign composition accessibility
 			if (sample.getSampleComposition() != null) {
 				springSecurityAclService.saveAccessForChildObject(sampleId, SecureClassesEnum.SAMPLE.getClazz(), 
 						  										  sample.getSampleComposition().getId(), SecureClassesEnum.COMPOSITION.getClazz());
-			}
+			}*/
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -1099,7 +1099,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		List<String> sampleIds = new ArrayList<String>();
 		try
 		{
-			sampleIds = aclDao.getIdsOfClassSharedWithSid(SecureClassesEnum.SAMPLE, userDetails.getUsername(), userDetails.getGroups());
+			List<String> sharedWithSids = new ArrayList<String>(userDetails.getGroups());
+			sharedWithSids.add(userDetails.getUsername());
+		
+			sampleIds = aclDao.getIdsOfClassSharedWithSid(SecureClassesEnum.SAMPLE, userDetails.getUsername(), sharedWithSids);
 		}catch (Exception e) {
 			String error = "Error in retrieving sampleIds shared with logged in user. " + e.getMessage();
 			throw new SampleException(error, e);

@@ -54,8 +54,7 @@ public class CompositionServiceHelper
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(funcId), SecureClassesEnum.FUNCTION.getClazz())) {
 			new NoAccessException("User has no access to the function " + funcId);
 		}
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Function.class).add(
 				Property.forName("id").eq(new Long(funcId)));
@@ -90,7 +89,7 @@ public class CompositionServiceHelper
 		return ce;
 	}
 
-	public List<File> findFilesByCompositionInfoId(String id, String className)
+	public List<File> findFilesByCompositionInfoId(Long sampleId, String id, String className)
 			throws Exception {
 		List<File> fileCollection = new ArrayList<File>();
 		String fullClassName = null;
@@ -99,17 +98,15 @@ public class CompositionServiceHelper
 		} else {
 			return null;
 		}
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		String hql = "select anEntity.fileCollection from " + fullClassName
-				+ " anEntity where anEntity.id = " + id;
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		String hql = "select anEntity.fileCollection from " + fullClassName + " anEntity where anEntity.id = " + id;
 
 		HQLCriteria crit = new HQLCriteria(hql);
 		List results = appService.query(crit);
 		for (int i = 0; i < results.size(); i++) {
 			File file = (File) results.get(i);
-			if (springSecurityAclService.currentUserHasReadPermission(file.getId(), SecureClassesEnum.FILE.getClazz()) ||
-				springSecurityAclService.currentUserHasWritePermission(file.getId(), SecureClassesEnum.FILE.getClazz())) {
+			if (springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
 				fileCollection.add(file);
 			} else {
 				logger.debug("User doesn't have access to file of id:" + file.getId());
@@ -156,19 +153,19 @@ public class CompositionServiceHelper
 
 		if (!result.isEmpty()) {
 			composition = (SampleComposition) result.get(0);
-			if (!springSecurityAclService.currentUserHasReadPermission(composition.getId(), SecureClassesEnum.COMPOSITION.getClazz()) &&
+			/*if (!springSecurityAclService.currentUserHasReadPermission(composition.getId(), SecureClassesEnum.COMPOSITION.getClazz()) &&
 				!springSecurityAclService.currentUserHasWritePermission(composition.getId(), SecureClassesEnum.COMPOSITION.getClazz())) {
 				throw new NoAccessException("User doesn't have access to the composition " + composition.getId());
-			}
+			}*/
 		}
 		return composition;
 	}
 
-	public NanomaterialEntity findNanomaterialEntityById(String entityId) throws Exception
+	public NanomaterialEntity findNanomaterialEntityById(String sampleId, String entityId) throws Exception
 	{
 		NanomaterialEntity entity = null;
-		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(entityId), SecureClassesEnum.NANO.getClazz()) &&
-			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(entityId), SecureClassesEnum.NANO.getClazz())) {
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 			new NoAccessException("User has no access to the nanomaterial entity " + entityId);
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
@@ -193,18 +190,17 @@ public class CompositionServiceHelper
 		return entity;
 	}
 
-	public FunctionalizingEntity findFunctionalizingEntityById(String entityId) throws Exception 
+	public FunctionalizingEntity findFunctionalizingEntityById(String sampleId, String entityId) throws Exception 
 	{
-		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(entityId), SecureClassesEnum.FUNCTIONALIZING.getClazz()) &&
-			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(entityId), SecureClassesEnum.FUNCTIONALIZING.getClazz())) {
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 			new NoAccessException("User has no access to the functionalizing entity " + entityId);
 		}
 		FunctionalizingEntity entity = null;
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				FunctionalizingEntity.class).add(
+		DetachedCriteria crit = DetachedCriteria.forClass(FunctionalizingEntity.class).add(
 				Property.forName("id").eq(new Long(entityId)));
 		crit.setFetchMode("activationMethod", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
@@ -224,10 +220,10 @@ public class CompositionServiceHelper
 		return entity;
 	}
 
-	public ChemicalAssociation findChemicalAssociationById(String assocId) throws Exception
+	public ChemicalAssociation findChemicalAssociationById(String sampleId, String assocId) throws Exception
 	{
-		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(assocId), SecureClassesEnum.CHEMASSOC.getClazz()) &&
-			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(assocId), SecureClassesEnum.CHEMASSOC.getClazz())) {
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 			new NoAccessException("User has no access to the chemical association " + assocId);
 		}
 		ChemicalAssociation assoc = null;

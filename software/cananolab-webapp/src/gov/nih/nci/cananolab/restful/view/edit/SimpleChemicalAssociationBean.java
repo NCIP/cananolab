@@ -176,7 +176,7 @@ public class SimpleChemicalAssociationBean {
 			simpleBean.setCreatedDate(fileBean.getDomainFile().getCreatedDate());
 			simpleBean.setTheAccess(fileBean.getTheAccess());
 			//simpleBean.setIsPublic(fileBean.getPublicStatus());
-			boolean isPublic = springSecurityAclService.checkObjectPublic(fileBean.getDomainFile().getId(), SecureClassesEnum.FILE.getClazz());
+			boolean isPublic = springSecurityAclService.checkObjectPublic(Long.parseLong(simpleBean.getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
 			simpleBean.setIsPublic(isPublic);
 			files.add(simpleBean);
 		}
