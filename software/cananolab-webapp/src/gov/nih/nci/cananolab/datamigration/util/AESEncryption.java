@@ -62,7 +62,7 @@ public class AESEncryption {
 	public String decrypt(String encryptedString) throws Exception
 	{	
 		if (encryptedString == null || encryptedString.trim().length() <= 0)
-			throw new IllegalArgumentException("encrypted string was null or empty");
+			return encryptedString;
 
 		Base64 base64decoder = new Base64();
 		byte[] ciphertext;
