@@ -46,9 +46,9 @@ public class AccessDataMigration
 			migrateDataService.migrateUserAccountsFromCSMToSpring();
 			migrateDataService.grantCuratorRoleToAccounts();
 			
-			asyncResponse.resume(Response.status(Response.Status.OK)
-                    .entity("All user accounts migrated successfully.")
-                    .build());
+			String message = "All user accounts migrated successfully";
+			logger.info(message);
+			asyncResponse.resume(Response.status(Response.Status.OK).entity(message).build());
 		} catch (Exception e) {
 			logger.error("Error in migrating user accounts and roles from CSM : ", e);
 			asyncResponse.resume(Response.status(Response.Status.OK)
@@ -81,9 +81,10 @@ public class AccessDataMigration
 			migrateDataService.migrateRWDUserAccessFromCSMToSpring(SecureClassesEnum.SAMPLE);
 			
 			migrateDataService.migrateReadUserAccessFromCSMToSpring(SecureClassesEnum.SAMPLE);
-			asyncResponse.resume(Response.status(Response.Status.OK)
-						                    .entity("All Access data migrated successfully for samples.")
-						                    .build());
+			
+			String message = "All Access data migrated successfully for samples.";
+			logger.info(message);
+			asyncResponse.resume(Response.status(Response.Status.OK).entity(message).build());
 		} catch (Exception e) {
 			logger.error("Error in migrating all access data for samples : ", e);
 			asyncResponse.resume(Response.status(Response.Status.OK)
@@ -116,9 +117,9 @@ public class AccessDataMigration
 			
 			migrateDataService.migrateReadUserAccessFromCSMToSpring(SecureClassesEnum.PROTOCOL);
 			
-			asyncResponse.resume(Response.status(Response.Status.OK)
-					                    .entity("All Access data migrated successfully for protocols.")
-					                    .build());
+			String message = "All Access data migrated successfully for protocols.";
+			logger.info(message);
+			asyncResponse.resume(Response.status(Response.Status.OK).entity(message).build());
 		} catch (Exception e) {
 			logger.error("Error in migrating all access data for protocols : ", e);
 			asyncResponse.resume(Response.status(Response.Status.OK)
@@ -151,9 +152,9 @@ public class AccessDataMigration
 			
 			migrateDataService.migrateReadUserAccessFromCSMToSpring(SecureClassesEnum.PUBLICATION);
 			
-			asyncResponse.resume(Response.status(Response.Status.OK)
-					                    .entity("All Access data migrated successfully for publications.")
-					                    .build());
+			String message = "All Access data migrated successfully for publications.";
+			logger.info(message);
+			asyncResponse.resume(Response.status(Response.Status.OK).entity(message).build());
 		} catch (Exception e) {
 			logger.error("Error in migrating all access data for publications : ", e);
 			asyncResponse.resume(Response.status(Response.Status.OK)
@@ -180,9 +181,9 @@ public class AccessDataMigration
                 );
 			migrateDataService.migrateCharacterizationAccessData();
 			
-			asyncResponse.resume(Response.status(Response.Status.OK)
-					                    .entity("All Access data migrated successfully for characterizations.")
-					                    .build());
+			String message = "All Access data migrated successfully for characterizations.";
+			logger.info(message);
+			asyncResponse.resume(Response.status(Response.Status.OK).entity(message).build());
 		} catch (Exception e) {
 			logger.error("Error in migrating all access data for characterizations : ", e);
 			asyncResponse.resume(Response.status(Response.Status.OK)
@@ -209,9 +210,9 @@ public class AccessDataMigration
                 );
 			migrateDataService.migrateOrganizationAccessData();
 			
-			asyncResponse.resume(Response.status(Response.Status.OK)
-					                    .entity("All Access data migrated successfully for Organizations and Point of Contacts.")
-					                    .build());
+			String message = "All Access data migrated successfully for Organizations and Point of Contacts.";
+			logger.info(message);
+			asyncResponse.resume(Response.status(Response.Status.OK).entity(message).build());
 		} catch (Exception e) {
 			logger.error("Error in migrating all access data for Organizations and Point of Contacts: ", e);
 			asyncResponse.resume(Response.status(Response.Status.OK)

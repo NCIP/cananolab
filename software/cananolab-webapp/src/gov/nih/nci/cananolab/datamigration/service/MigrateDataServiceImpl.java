@@ -106,7 +106,7 @@ public class MigrateDataServiceImpl implements MigrateDataService
 		{
 			long rowMin = (i * pageSize) + 1 ;
 			long rowMax = (i == pageCnt - 1) ? totalCount : (i + 1) * pageSize;
-			logger.info("Tranferring default access data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
+			logger.info("Transferring default access data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
 			
 			List<AbstractMap.SimpleEntry<Long, String>> dataList = migrateDataDAO.getDataPage(rowMin, rowMax, dataType);
 			for (AbstractMap.SimpleEntry<Long, String> id : dataList)
@@ -120,7 +120,6 @@ public class MigrateDataServiceImpl implements MigrateDataService
 				springSecurityAclService.saveDefaultAccessForNewObjectWithOwner(id.getKey(), dataType.getClazz(), value, rwdPerms, rPerms);
 			}
 		}
-
 	}
 
 	@Override
@@ -140,14 +139,13 @@ public class MigrateDataServiceImpl implements MigrateDataService
 		{
 			long rowMin = (i * pageSize) + 1 ;
 			long rowMax = (i == pageCnt - 1) ? publicCount : (i + 1) * pageSize;
-			logger.info("Tranferring public access data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
+			logger.info("Transferring public access data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
 			
 			List<AbstractMap.SimpleEntry<Long, String>> publicIdDataList = migrateDataDAO.getPublicDataPage(rowMin, rowMax, dataType);
 			for (AbstractMap.SimpleEntry<Long, String> publicId : publicIdDataList)
 			{
 				springSecurityAclService.savePublicAccessForObject(publicId.getKey(), dataType.getClazz());
 			}
-
 		}
 	}
 	
@@ -199,7 +197,7 @@ public class MigrateDataServiceImpl implements MigrateDataService
 		{
 			long rowMin = (i * pageSize) + 1 ;
 			long rowMax = (i == pageCnt - 1) ? count : (i + 1) * pageSize;
-			logger.info("Tranferring characterization data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
+			logger.info("Transferring characterization data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
 			
 			List<AbstractMap.SimpleEntry<Long, Long>> charList = migrateDataDAO.getAllCharacterizations(rowMin, rowMax);
 			if (charList != null)
@@ -210,7 +208,6 @@ public class MigrateDataServiceImpl implements MigrateDataService
 					springSecurityAclService.saveAccessForChildObject(charSample.getValue(), SecureClassesEnum.SAMPLE.getClazz(), charSample.getKey(), SecureClassesEnum.CHAR.getClazz());
 				}
 			}
-
 		}
 	}
 	
@@ -239,7 +236,6 @@ public class MigrateDataServiceImpl implements MigrateDataService
 			}
 		}
 		logger.info("Organizations and Point of COntact access data migrated");
-		
 	}
 	
 	@Override
@@ -256,7 +252,6 @@ public class MigrateDataServiceImpl implements MigrateDataService
 		}
 		
 		logger.info("Encyption of passwords in user table with BCrypt completed.");
-		
 	}
 
 }
