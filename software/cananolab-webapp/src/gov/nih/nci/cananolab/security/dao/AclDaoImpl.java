@@ -49,7 +49,7 @@ public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 	private static final String IDS_OF_PROTOCOL_SHARED_WITH_SID_SQL = "select distinct aoi.object_id_identity " +
 																"from acl_class ac, acl_sid asid, acl_object_identity aoi, acl_entry ae, protocol p " +
 																"where ac.class = :clazz and asid.sid in (:sids) " +
-																"and p.protocol_pk_id = aoi.object_id_identity and s.created_by != :loggedInUser " +
+																"and p.protocol_pk_id = aoi.object_id_identity and p.created_by != :loggedInUser " +
 																"and ae.sid = asid.id and aoi.object_id_class = ac.id and ae.acl_object_identity = aoi.id";
 	
 	private static final String IDS_OF_PUB_SHARED_WITH_SID_SQL = "select distinct aoi.object_id_identity " +
@@ -58,7 +58,8 @@ public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 																"and p.publication_pk_id = aoi.object_id_identity and p.publication_pk_id = f.file_pk_id and f.created_by != :loggedInUser " +
 																"and ae.sid = asid.id and aoi.object_id_class = ac.id and ae.acl_object_identity = aoi.id";
 
-
+	private static final String DEL_SID_ACCESS_SQL = "delete from acl_entry ae, acl_sid s where ae.sid = s.id and s.sid = :sid";
+	
 	@Override
 	public List<Long> getIdsOfClassForSid(String clazz, String sid)
 	{
@@ -114,6 +115,15 @@ public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 		}
 		
 		return idList;
+	}
+
+	@Override
+	public int deleteAllAccessToSid(String groupSid)
+	{
+		Object[] args = {groupSid};
+		int status = this.getJdbcTemplate().update(DEL_SID_ACCESS_SQL, args);
+		return status;
+		
 	}
 
 }

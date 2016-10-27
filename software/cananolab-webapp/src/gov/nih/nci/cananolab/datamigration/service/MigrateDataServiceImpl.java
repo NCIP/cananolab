@@ -37,13 +37,15 @@ public class MigrateDataServiceImpl implements MigrateDataService
 
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
 	public void migrateUserAccountsFromCSMToSpring() throws Exception
 	{
 		logger.info("Migrating all user accounts from CSM to Spring Security and granting Public role.");
 		AESEncryption aesEncryption = new AESEncryption();
-		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 		
 		List<CananoUserDetails> csmUserList = migrateDataDAO.getUsersFromCSM();
 		for (CananoUserDetails csmUser : csmUserList)
@@ -52,7 +54,7 @@ public class MigrateDataServiceImpl implements MigrateDataService
 			userDetails.setUsername(csmUser.getUsername());
 			String password = aesEncryption.decrypt(csmUser.getPassword());
 			
-			String encodedPwd = bcrypt.encode(password);
+			String encodedPwd = passwordEncoder.encode(password);
 			
 			userDetails.setPassword(encodedPwd);
 			userDetails.setFirstName(aesEncryption.decrypt(csmUser.getFirstName()));

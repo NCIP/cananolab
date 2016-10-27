@@ -11,5 +11,7 @@ public interface AclDao
 	public List<Long> getCountOfPublicCharacterization(String clazz, String sid, List<String> charNames);
 	
 	public List<String> getIdsOfClassSharedWithSid(SecureClassesEnum classEnum, String loggedInUser, List<String> sids);
+	
+	public int deleteAllAccessToSid(String groupSid);
 
 }

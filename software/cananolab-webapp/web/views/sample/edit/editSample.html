@@ -4,9 +4,13 @@
 <!-- Menu Bar -->
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
-            <th align="left" scope="col">
-                {{updateButton}} {{sampleName.name}} Sample
-            </th>
+	        <th scope="col" align="left" ng-if="updateButton == 'Save'">
+	            Create Sample
+	        </th>
+	
+	        <th scope="col" align="left" ng-if="updateButton == 'Update'">
+	            Update Sample
+	        </th>
             <td align="right" width="30%">
                 <button class="btn back btn-xs" ng-click="goBack()">Back</button>
                 <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-SubmitSample')" ng-if="updateButton=='Submit'">Help</a>

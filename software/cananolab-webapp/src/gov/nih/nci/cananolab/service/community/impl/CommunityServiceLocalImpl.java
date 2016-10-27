@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.Group;
+import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.GroupService;
@@ -38,6 +39,9 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
 	
 	@Autowired
 	private GroupService groupService;
+	
+	@Autowired
+	private AclDao aclDao;
 
 	public void saveCollaborationGroup(CollaborationGroupBean collaborationGroup) throws CommunityException, NoAccessException, DuplicateEntriesException
 	{
@@ -237,11 +241,11 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
 		try {
 			// check if user has access to delete the group
 			Long id = Long.valueOf(collaborationGroup.getId());
-			if (springSecurityAclService.isOwnerOfObject(id, SecureClassesEnum.COLLABORATIONGRP.getClazz())) {
+			if (!springSecurityAclService.isOwnerOfObject(id, SecureClassesEnum.COLLABORATIONGRP.getClazz())) {
 				throw new NoAccessException();
 			} else {
-				//TODO: delete all access for objects to group
-				//springSecurityAclService.;
+				//delete all access for objects to group
+				aclDao.deleteAllAccessToSid(collaborationGroup.getName());
 				
 				groupService.removeGroup(id);
 				

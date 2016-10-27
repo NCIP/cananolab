@@ -466,7 +466,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 		{
 			List<String> sharedWithSids = new ArrayList<String>(userDetails.getGroups());
 			sharedWithSids.add(userDetails.getUsername());
-			pubIds = aclDao.getIdsOfClassSharedWithSid(SecureClassesEnum.SAMPLE, userDetails.getUsername(), sharedWithSids);
+			pubIds = aclDao.getIdsOfClassSharedWithSid(SecureClassesEnum.PUBLICATION, userDetails.getUsername(), sharedWithSids);
 		}catch (Exception e) {
 			String error = "Error in retrieving publicationIds shared with logged in user. " + e.getMessage();
 			throw new PublicationException(error, e);

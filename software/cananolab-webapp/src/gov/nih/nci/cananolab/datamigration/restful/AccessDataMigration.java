@@ -224,7 +224,7 @@ public class AccessDataMigration
 	@GET
 	@Path("/encrypt")
 	@Produces ("application/json")
-	public Response encrypt(@Context HttpServletRequest httpRequest, @QueryParam("decryptedString") String decryptedString)
+	public Response encrypt(@Context HttpServletRequest httpRequest, @QueryParam("plaintxt") String decryptedString)
 	{
 		String encryptedString = "";
 		try {
@@ -239,7 +239,7 @@ public class AccessDataMigration
 	@GET
 	@Path("/decrypt")
 	@Produces ("application/json")
-	public Response decrypt(@Context HttpServletRequest httpRequest, @QueryParam("encryptedString") String encryptedString)
+	public Response decrypt(@Context HttpServletRequest httpRequest, @QueryParam("encryptedstr") String encryptedString)
 	{
 		String decryptedString = "";
 		try {
@@ -254,11 +254,11 @@ public class AccessDataMigration
 	@GET
 	@Path("/bcrypt")
 	@Produces ("application/json")
-	public Response bcrypt(@Context HttpServletRequest httpRequest, @QueryParam("plainText") String plainText)
+	public Response bcrypt(@Context HttpServletRequest httpRequest, @QueryParam("plaintxt") String plainText)
 	{
 		String encryptedString = "";
 		try {
-			BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+			BCryptPasswordEncoder bcrypt = (BCryptPasswordEncoder) SpringApplicationContext.getBean(httpRequest, "passwordEncoder");
 			encryptedString = bcrypt.encode(plainText);
 		} catch (Exception e) {
 			encryptedString = "Error in encryption: " + e.getMessage();
