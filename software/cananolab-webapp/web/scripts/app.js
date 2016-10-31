@@ -233,3 +233,15 @@ app.config(function ($routeProvider, $httpProvider) {
         redirectTo: '/'
       });
   });
+
+app.run(run);
+run.$inject = ['$rootScope', '$location', '$window'];
+function run($rootScope, $location, $window) {
+    // initialise google analytics
+    $window.ga('create', 'UA-84884440-1', 'auto');
+
+    // track pageview on state change
+    $rootScope.$on('$stateChangeSuccess', function (event) {
+        $window.ga('send', 'pageview', $location.path());
+    });
+}
