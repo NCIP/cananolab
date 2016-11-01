@@ -234,7 +234,7 @@ app.config(function ($routeProvider, $httpProvider) {
       });
   });
 
-app.run(run);
+/*app.run(run);
 run.$inject = ['$rootScope', '$location', '$window'];
 function run($rootScope, $location, $window) {
     // initialise google analytics
@@ -244,4 +244,4 @@ function run($rootScope, $location, $window) {
     $rootScope.$on('$stateChangeSuccess', function (event) {
         $window.ga('send', 'pageview', $location.path());
     });
-}
+}*/
