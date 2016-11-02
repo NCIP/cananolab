@@ -234,14 +234,9 @@ app.config(function ($routeProvider, $httpProvider) {
       });
   });
 
-/*app.run(run);
-run.$inject = ['$rootScope', '$location', '$window'];
-function run($rootScope, $location, $window) {
-    // initialise google analytics
-    $window.ga('create', 'UA-84884440-1', 'auto');
-
-    // track pageview on state change
-    $rootScope.$on('$stateChangeSuccess', function (event) {
-        $window.ga('send', 'pageview', $location.path());
+app.run(['$rootScope','$window','$location',function($rootScope,$window,$location) { 
+	//Google Analytics URL creation to track # (hash) changes
+    $rootScope.$on('$viewContentLoaded', function(event) {
+    	$window.ga('send', 'pageview', { page: $location.url() });
     });
-}*/
+}]);
