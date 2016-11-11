@@ -58,6 +58,8 @@
 		
 		<intercept-url pattern="/rest/datamigration/**" access="permitAll" />
 		
+		<intercept-url pattern="/rest/customsearch/**" access="permitAll" />
+		
 		<intercept-url pattern="/rest/**" access="isAuthenticated()" />
 		<intercept-url pattern="/scripts/**" access="permitAll" />
 		<intercept-url pattern="/images/**" access="permitAll" />
