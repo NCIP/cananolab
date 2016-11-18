@@ -12,12 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("pointOfContactManager")
 public class PointOfContactManager
 {

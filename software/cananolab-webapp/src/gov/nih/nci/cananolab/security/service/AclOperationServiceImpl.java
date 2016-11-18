@@ -23,7 +23,7 @@ import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 @Component("aclOperationService")
-@Transactional(propagation=Propagation.REQUIRED)
+//@Transactional(propagation=Propagation.REQUIRED)
 public class AclOperationServiceImpl implements AclOperationService
 {
 	private static Logger logger = Logger.getLogger(AclOperationServiceImpl.class);

@@ -16,7 +16,7 @@ import gov.nih.nci.cananolab.security.dao.UserDao;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+//@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("userService")
 public class UserServiceImpl implements UserService
 {

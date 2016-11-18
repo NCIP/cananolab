@@ -22,6 +22,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class searches canano metadata based on user supplied criteria
@@ -43,6 +45,7 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleExporter;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("advancedSampleSearchBO")
 public class AdvancedSampleSearchBO extends BaseAnnotationBO
 {

@@ -45,7 +45,10 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("searchSampleBO")
 public class SearchSampleBO extends AbstractDispatchBO {
 	private Logger logger = Logger.getLogger(SearchSampleBO.class);

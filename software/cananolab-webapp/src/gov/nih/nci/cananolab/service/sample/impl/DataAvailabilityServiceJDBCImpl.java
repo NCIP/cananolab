@@ -59,7 +59,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author lethai
  *
  */
-@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+//@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("dataAvailabilityServiceDAO")
 public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements DataAvailabilityService
 {

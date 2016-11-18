@@ -28,9 +28,12 @@ import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 //Copied from DWRPublicationManager
 
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("publicationManager")
 public class PublicationManager
 {

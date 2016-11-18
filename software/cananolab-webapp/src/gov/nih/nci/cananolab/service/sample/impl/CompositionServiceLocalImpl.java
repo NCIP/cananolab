@@ -42,6 +42,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Local implementation of CompositionService.
@@ -869,7 +871,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void assignAccesses(SampleComposition comp, File file) throws CompositionException, NoAccessException
 	{
 		try {
-			if (springSecurityAclService.isOwnerOfObject(comp.getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			if (!springSecurityAclService.isOwnerOfObject(comp.getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
 			// TODO check if file is in the comp fileCollection

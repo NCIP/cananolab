@@ -22,6 +22,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Methods for DWR Ajax
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Component;
  * @author pansu
  *
  */
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("collaborationGroupManger")
 public class CollaborationGroupManager
 {

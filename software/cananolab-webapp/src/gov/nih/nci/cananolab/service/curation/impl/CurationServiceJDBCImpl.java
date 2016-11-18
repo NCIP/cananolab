@@ -31,7 +31,7 @@ import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 
-@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+//@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("curationServiceDAO")
 public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationService
 {

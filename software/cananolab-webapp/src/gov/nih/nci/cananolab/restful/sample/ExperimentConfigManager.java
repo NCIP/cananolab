@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
@@ -31,6 +33,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
  * @author pansu, tanq
  *
  */
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("experimentConfigManager")
 public class ExperimentConfigManager
 {

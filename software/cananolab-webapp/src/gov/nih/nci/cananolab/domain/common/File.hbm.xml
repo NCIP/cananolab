@@ -29,7 +29,7 @@ L-->
 		<property name="uri" type="string" column="file_uri" />
 		<property name="uriExternal" type="boolean" column="is_uri_external" />
 		<!-- Associations mapping for the File class -->
-		<set name="keywordCollection" table="keyword_file" lazy="true"
+		<set name="keywordCollection" table="keyword_file" lazy="false"
 			inverse="false">
 			<cache usage="read-write" />
 			<key column="file_pk_id" />

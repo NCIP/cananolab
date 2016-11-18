@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
@@ -18,6 +20,7 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.BatchDataAvailabilityProcess;
 import gov.nih.nci.cananolab.ui.form.GenerateBatchDataAvailabilityForm;
 
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("batchDataAvailabilityBO")
 public class BatchDataAvailabilityBO extends AbstractDispatchBO
 {

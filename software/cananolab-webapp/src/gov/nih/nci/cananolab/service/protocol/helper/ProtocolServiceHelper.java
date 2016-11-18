@@ -178,8 +178,7 @@ public class ProtocolServiceHelper
 		Protocol protocol = null;
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class).add(
-				Property.forName("id").eq(new Long(protocolId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class).add(Property.forName("id").eq(new Long(protocolId)));
 		crit.setFetchMode("file", FetchMode.JOIN);
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		List result = appService.query(crit);

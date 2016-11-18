@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.cananolab.dto.common.FavoriteBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
@@ -17,6 +19,7 @@ import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.favorites.FavoritesService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("favoritesBO")
 public class FavoritesBO extends BaseAnnotationBO
 {

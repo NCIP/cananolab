@@ -63,6 +63,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Class migrated from SampleAction, to support sample related rest services.
@@ -71,6 +73,7 @@ import org.springframework.stereotype.Component;
  *
  */
 
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("sampleBO")
 public class SampleBO extends BaseAnnotationBO {
 
