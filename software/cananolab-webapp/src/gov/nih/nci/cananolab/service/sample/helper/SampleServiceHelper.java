@@ -909,7 +909,7 @@ public class SampleServiceHelper
 			Object[] row = (Object[]) results.get(i);
 			String name = row[0].toString();
 			String id = row[1].toString();
-			if (springSecurityAclService.currentUserHasReadPermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz()) ||
+			if (//springSecurityAclService.currentUserHasReadPermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz()) ||
 				springSecurityAclService.currentUserHasWritePermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz())) {
 				otherSamples.add(name);
 			} else {

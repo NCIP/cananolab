@@ -627,6 +627,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				}
 			}
 		} catch (NoAccessException e) {
+			logger.error("Error while copying and saving nanomaterial entity: ", e);
 			throw e;
 		} catch (Exception e) {
 			String error = "Error in copying the characterization.";
