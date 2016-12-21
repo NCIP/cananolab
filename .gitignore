@@ -1,4 +1,5 @@
 ## Ignore build.properties ##
+
 software/cananolab-webapp/build.properties
 
 ## Ignore target, build, C: directories ##
@@ -6,3 +7,11 @@ software/cananolab-webapp/build.properties
 software/cananolab-webapp/build/
 software/cananolab-webapp/target/
 software/cananolab-webapp/C:/
+
+## Ignore machine specific path changes ##
+
+software/cananolab-webapp/build.properties
+software/cananolab-webapp/caNanoLab_deploy.cli
+software/cananolab-webapp/caNanoLab_modules.cli
+software/cananolab-webapp/caNanoLab_setup.cli
+
