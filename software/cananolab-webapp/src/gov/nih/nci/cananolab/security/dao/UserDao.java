@@ -15,7 +15,15 @@ public interface UserDao
 	public List<CananoUserDetails> getUsers(String likeStr);
 
 	public int insertUser(CananoUserDetails user);
+	
+	public int updateUser(CananoUserDetails user);
 
 	public int insertUserAuthority(String userName, String authority);
+	
+	public int resetPassword(String userName, String password);
+	
+	public String readPassword(String userName);
+	
+	public int deleteUserAssignedRoles(String username);
 
 }

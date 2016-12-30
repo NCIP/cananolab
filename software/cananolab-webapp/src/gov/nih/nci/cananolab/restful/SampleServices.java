@@ -102,9 +102,7 @@ public class SampleServices {
 					.entity(CommonUtil.wrapErrorMessageInList("Error while searching for samples: " + e.getMessage())).build();
 		}
 	}
-	
-	
-	
+
 	@GET
 	@Path("/view")
 	@Produces ("application/json")
