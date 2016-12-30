@@ -1,0 +1,95 @@
+<div class="spacer">
+    <div ng-class="{formFocus:loader}">
+        <table border="0" class="contentTitle" summary="layout" width="100%">
+            <tr>
+                <th align="left" scope="col">User Search</th>
+            </tr>
+        </table><br>
+
+        <table width="100%" align="center" class="submissionView" summary="layout">
+            <tr>
+                <td class="cellLabel" width="120">
+                    <label for="userName">User Name</label>
+                </td>
+                <td>
+                    <table class="invisibleTable" summary="layout">
+                        <tbody><tr>
+                            <td><label for="nameOperand" style="display:none">Name Operand</label>
+                                <select name="nameOperand" id="nameOperand" ng-model="searchUserForm.nameOperand" ng-init="searchUserForm.nameOperand='contains'">
+                                    <option value="contains">contains</option>
+                                    <option value="equals">equals</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="userName" ng-model="searchUserForm.userName" size="80" value="" id="userName">
+                            </td>
+                        </tr>
+                        </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td class="cellLabel" width="120">
+                    <label for="firstName">First Name</label>
+                </td>
+                <td>
+                    <table class="invisibleTable" summary="layout">
+                        <tbody><tr>
+                            <td><label for="nameOperand" style="display:none">Name Operand</label>
+                                <select name="nameOperand" id="nameOperand" ng-model="searchUserForm.nameOperand" ng-init="searchUserForm.nameOperand='contains'">
+                                    <option value="contains">contains</option>
+                                    <option value="equals">equals</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="firstName" ng-model="searchUserForm.firstName" size="80" value="" id="firstName">
+                            </td>
+                        </tr>
+                        </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td class="cellLabel" width="120">
+                    <label for="lastName">Last Name</label>
+                </td>
+                <td>
+                    <table class="invisibleTable" summary="layout">
+                        <tbody><tr>
+                            <td><label for="nameOperand" style="display:none">Name Operand</label>
+                                <select name="nameOperand" id="nameOperand" ng-model="searchUserForm.nameOperand" ng-init="searchUserForm.nameOperand='contains'">
+                                    <option value="contains">contains</option>
+                                    <option value="equals">equals</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="lastName" ng-model="searchUserForm.lastName" size="80" value="" id="lastName">
+                            </td>
+                        </tr>
+                        </tbody></table>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <table width="100%" class="invisibleTable" summary="layout">
+            <tr>
+                <td align="center">
+            <span class="formMessage"> <em>Searching without any parameters returns all users.</em> </span>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <input ng-disabled="loader" type="reset" value="Reset" ng-click="resetForm()"> &nbsp;
+                    <input ng-disabled="loader" type="submit" value="Search" ng-click="doSearch()"> <input ng-disabled="loader" name="dispatch" type="hidden" value="search">
+                    <input ng-disabled="loader" name="page" type="hidden" value="1">
+
+                </td>
+            </tr>
+        </table>
+        <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;" ng-if="message">{{message}}</div>
+        <div id="loader" ng-show="loader">
+            <div id="loaderText">
+                Loading
+            </div>
+            <div id="loaderGraphic"></div>
+        </div>
+    </div>
+</div>
