@@ -7,10 +7,8 @@ software/cananolab-webapp/build.properties
 software/cananolab-webapp/build/
 software/cananolab-webapp/target/
 .DS_Store
+**/.DS_Store
 .classpath
 .project
 
 software/cananolab-webapp/.settings/*
-
-## Ignore .DS_Store files ##
-**/.DS_Store
