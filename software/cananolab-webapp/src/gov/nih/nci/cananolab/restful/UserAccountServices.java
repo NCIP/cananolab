@@ -19,14 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import gov.nih.nci.cananolab.restful.useraccount.UserAccountBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.util.Constants;
 
 @Path("/useraccount")
 public class UserAccountServices 
 {
 	private static final Logger logger = Logger.getLogger(UserAccountServices.class);
-	
-	@Autowired
-	private UserAccountBO userAccountBO;
 
 	@GET
 	@Path("/read")
@@ -35,6 +34,11 @@ public class UserAccountServices
 	{
 		try
 		{ 
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
+			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+			
+			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
+
 			CananoUserDetails userDetails = userAccountBO.readUserAccount(username);
 			return Response.ok(userDetails).build();
 		}
@@ -52,6 +56,11 @@ public class UserAccountServices
 	{
 		try
 		{
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
+			
 			List<CananoUserDetails> userDetailsList = new ArrayList<CananoUserDetails>();
 			userDetailsList = userAccountBO.searchByUsername(username);
 			return Response.ok(userDetailsList).build();
@@ -71,7 +80,12 @@ public class UserAccountServices
 	{
 		try
 		{
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
 			userAccountBO.resetUserAccountPassword(oldpassword, newpassword, username);
+	
 			return Response.ok("success").build();
 		}
 		catch (Exception e) {
@@ -88,6 +102,10 @@ public class UserAccountServices
 	{
 		try
 		{
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
 			CananoUserDetails newUserDetails = userAccountBO.createUserAccount(userDetails);
 			return Response.ok(newUserDetails).build();
 		}
@@ -105,6 +123,10 @@ public class UserAccountServices
 	{
 		try
 		{
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
 			CananoUserDetails newUserDetails = userAccountBO.updateUserAccount(userDetails);
 			
 			return Response.ok(newUserDetails).build();
