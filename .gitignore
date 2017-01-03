@@ -5,4 +5,8 @@ software/cananolab-webapp/build.properties
 
 software/cananolab-webapp/build/
 software/cananolab-webapp/target/
-software/cananolab-webapp/C:/
+.DS_Store
+.classpath
+.project
+
+software/cananolab-webapp/.settings/*
