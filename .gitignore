@@ -1,4 +1,5 @@
 ## Ignore build.properties ##
+
 software/cananolab-webapp/build.properties
 
 ## Ignore target, build, C: directories ##
@@ -6,3 +7,7 @@ software/cananolab-webapp/build.properties
 software/cananolab-webapp/build/
 software/cananolab-webapp/target/
 software/cananolab-webapp/C:/
+
+## Ignore .DS_Store files ##
+
+.DS_Store

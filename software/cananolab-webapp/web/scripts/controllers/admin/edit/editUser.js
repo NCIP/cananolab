@@ -15,32 +15,32 @@ var app = angular.module('angularApp')
         $scope.localForm.otherCategoryText = '';
         $scope.externalUrlEnabled  = false; 
         
-        // Access variables
-        $scope.defineAccessVariables = function() {
-            $scope.userForm.theAccess = {};
-            $scope.accessForm = {};
+        // Role variables
+        $scope.defineRoleVariables = function() {
+            $scope.userForm.theRole = {};
+            $scope.roleForm = {};
             $scope.dataType = 'User';
             $scope.parentFormName = 'userForm';
-            $scope.accessForm.theAcccess = {};
+            $scope.roleForm.theAcccess = {}; //FIX_ME
             $scope.isCurator = groupService.isCurator();
-            $scope.groupAccesses = [];
-            $scope.userAccesses = [];
-            $scope.addAccess = false;
-            $scope.showAddAccessButton = true;
+            $scope.adminRoles = [];
+            $scope.curatorRoles = [];
+            $scope.addRole = false;
+            $scope.showAddRoleButton = true;
             $scope.showCollaborationGroup = true;
-            $scope.showAccessuser = false;
-            $scope.showAccessSelection = false;
-            $scope.accessForm.theAccess = {};
-            $scope.accessForm.theAccess.recipient = '';
-            $scope.accessForm.theAccess.recipientDisplayName = '';
-            $scope.access = {};
-            $scope.access.recipient = '';
-            $scope.access.recipientDisplayName = '';
-            $scope.userForm.isPublic = false;
-            $scope.accessForm.theAccess.accessBy = 'group';
-            $scope.accessExists = false;
+            $scope.showRolecurator = false;
+            $scope.showRoleSelection = false;
+            $scope.roleForm.theRole = {};
+            $scope.roleForm.theRole.recipient = '';
+            $scope.roleForm.theRole.recipientDisplayName = '';
+            $scope.role = {};
+            $scope.role.recipient = '';
+            $scope.role.recipientDisplayName = '';
+            $scope.userForm.isAdmin = false;
+            $scope.roleForm.theRole.roleBy = 'admin';
+            $scope.roleExists = false;
         };
-        $scope.defineAccessVariables();
+        $scope.defineRoleVariables();
         /* File Variables */
         $scope.usingFlash = FileAPI && FileAPI.upload != null;
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
@@ -78,15 +78,15 @@ var app = angular.module('angularApp')
                         $scope.userForm = data;
                         $scope.loader = false;
 
-                        $scope.groupAccesses = $scope.userForm.groupAccesses;
-                        $scope.userAccesses = $scope.userForm.userAccesses;
+                        $scope.adminRoles = $scope.userForm.adminRoles;
+                        $scope.curatorRoles = $scope.userForm.curatorRoles;
 
-                        if( $scope.userAccesses != null && $scope.userAccesses.length > 0 ) {
-                            $scope.accessExists = true;
+                        if( $scope.curatorRoles != null && $scope.curatorRoles.length > 0 ) {
+                            $scope.roleExists = true;
                         }
 
-                        if( $scope.groupAccesses != null && $scope.groupAccesses.length > 1 ) {
-                            $scope.accessExists = true;
+                        if( $scope.adminRoles != null && $scope.adminRoles.length > 1 ) {
+                            $scope.roleExists = true;
                         }
                         
 		                if( $scope.userForm.externalUrl != null && $scope.userForm.externalUrl != '') {
@@ -158,7 +158,7 @@ var app = angular.module('angularApp')
 
         $scope.resetForm = function() {
             $scope.userForm = {};
-            $scope.defineAccessVariables();
+            $scope.defineRoleVariables();
         };
         
         $scope.fillUserInfo = function() {
@@ -173,7 +173,7 @@ var app = angular.module('angularApp')
                     $scope.user = data;
                     $scope.userTag = data.id;
 
-                    if (confirm("A database record with the same user name already exists.  Load it and update?")) {
+                    if (confirm("A database record with the same username already exists.  Load it and update?")) {
                     	if ($scope.user.userUpdatable) {
                     		$scope.loadUserData();
                     	}
@@ -196,7 +196,7 @@ var app = angular.module('angularApp')
         };
                 
         $scope.doSubmit = function() {
-        	// if( $scope.userForm.isPublic && ! $scope.isCurator.curator) {
+        	// if( $scope.userForm.isAdmin && ! $scope.isCurator.curator) {
         	// 	if (confirm("The data has been assigned to Public.  Updating the data would retract it from Public.  You will need to resubmit the data to the curator for review before the curator reassigns it to Public.  Are you sure you want to continue?")) {
         	// 		// continue
         	// 	} else {
@@ -242,16 +242,16 @@ var app = angular.module('angularApp')
         	}
         };        
 
-        /** Start - Access functions **/
+        /** Start - Role functions **/
 
         $scope.getCollabGroups = function() {
-            if ($scope.accessForm.theAccess.recipient === undefined || $scope.accessForm.theAccess.recipient === null) {
-                $scope.accessForm.theAccess.recipient = '';
-                $scope.accessForm.theAccess.recipientDisplayName = '';
+            if ($scope.roleForm.theRole.recipient === undefined || $scope.roleForm.theRole.recipient === null) {
+                $scope.roleForm.theRole.recipient = '';
+                $scope.roleForm.theRole.recipientDisplayName = '';
             }
 
             $scope.loader = true;
-            $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.recipient}).
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.roleForm.theRole.recipient}).
                 success(function(data, status, headers, config) {
                     $scope.collabGroups = data;
                     $scope.loader = false;
@@ -263,19 +263,19 @@ var app = angular.module('angularApp')
                     $scope.loader = false;
                 });
 
-            $scope.showAccessSelection=true;
+            $scope.showRoleSelection=true;
 
         };
 
-        $scope.getAccessUsers = function() {
-            if ($scope.accessForm.theAccess.recipient === undefined || $scope.accessForm.theAccess.recipient === null) {
-                $scope.accessForm.theAccess.recipient = '';
+        $scope.getRolePublic = function() {
+            if ($scope.roleForm.theRole.recipient === undefined || $scope.roleForm.theRole.recipient === null) {
+                $scope.roleForm.theRole.recipient = '';
             }
 
             $scope.loader = true;
-            $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.recipient}).
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.roleForm.theRole.recipient}).
                 success(function(data, status, headers, config) {
-                    $scope.accessUsers = data;
+                    $scope.roleCurators = data;
                     $scope.loader = false;
                 }).
                 error(function(data, status, headers, config) {
@@ -285,87 +285,87 @@ var app = angular.module('angularApp')
                     $scope.loader = false;
                 });
 
-            $scope.showAccessSelection=true;
+            $scope.showRoleSelection=true;
 
         };
 
-        $scope.hideAccessSection = function() {
-            $scope.addAccess=false;
-            $scope.showAddAccessButton=true;
+        $scope.hideRoleSection = function() {
+            $scope.addRole=false;
+            $scope.showAddRoleButton=true;
         }
 
-        $scope.saveAccessSection = function() {
+        $scope.saveRoleSection = function() {
             $scope.loader = true;
-            $scope.userForm.theAccess = $scope.accessForm.theAccess;
-            $scope.addAccess=false;
-            $scope.showAddAccessButton=true;
+            $scope.userForm.theRole = $scope.roleForm.theRole;
+            $scope.addRole=false;
+            $scope.showAddRoleButton=true;
 
-            if( $scope.accessForm.theAccess.accessBy == 'public') {
-                $scope.userForm.isPublic = true;
+            if( $scope.roleForm.theRole.roleBy == 'admin') {
+                $scope.userForm.isAdmin = true;
             }
             
             if (typeof $scope.userForm.fileId == 'undefined' || $scope.userForm.fileId == null) {
             	$scope.userForm.fileId = '0';
             }
 
-            $http({method: 'POST', url: '/caNanoLab/rest/user/saveAccess',data: $scope.userForm}).
+            $http({method: 'POST', url: '/caNanoLab/rest/user/saveRole',data: $scope.userForm}).
                 success(function(data, status, headers, config) {
                     $scope.userForm = data;
-                    $scope.groupAccesses = $scope.userForm.groupAccesses;
-                    $scope.userAccesses = $scope.userForm.userAccesses;
+                    $scope.adminRoles = $scope.userForm.adminRoles;
+                    $scope.curatorRoles = $scope.userForm.curatorRoles;
                     $scope.loader = false;
-                    $scope.accessExists = true;
+                    $scope.roleExists = true;
                 }).
                 error(function(data, status, headers, config) {
                     $scope.loader = false;
                     $scope.messages = data;
-                    $scope.showAddAccessButton=false;
-                    $scope.addAccess=true;
-                    $scope.showAccessSelection=false;
+                    $scope.showAddRoleButton=false;
+                    $scope.addRole=true;
+                    $scope.showRoleSelection=false;
                 });
 
         };
 
-        $scope.editUserAccessSection = function(loginName, userAccess) {
-            $scope.addAccess=true;
-            $scope.accessForm.theAccess.accessBy='user';
-            $scope.accessForm.theAccess.recipient=loginName;
+        $scope.editCuratorRoleSection = function(loginName, curatorRole) {
+            $scope.addRole=true;
+            $scope.roleForm.theRole.roleBy='curator';
+            $scope.roleForm.theRole.recipient=loginName;
             $scope.showCollaborationGroup=false;
-            $scope.showAccessuser=true;
-            $scope.showAccessSelection=false;
+            $scope.showRolecurator=true;
+            $scope.showRoleSelection=false;
 
             for(var key in $scope.csmRoleNames){
-                if($scope.csmRoleNames[key] == userAccess){
-                    $scope.accessForm.theAccess.roleName = key;
+                if($scope.csmRoleNames[key] == curatorRole){
+                    $scope.roleForm.theRole.roleName = key;
                 }
             }
         }
 
-        $scope.editGroupAccessSection = function(groupName, groupAccess) {
-            $scope.addAccess=true;
-            $scope.accessForm.theAccess.accessBy='group';
-            $scope.accessForm.theAccess.recipient=groupName;
-            $scope.accessForm.theAccess.recipientDisplayName=groupName;
+        $scope.editPublicRoleSection = function(groupName, publicRole) {
+            $scope.addRole=true;
+            $scope.roleForm.theRole.roleBy='public';
+            $scope.roleForm.theRole.recipient=groupName;
+            $scope.roleForm.theRole.recipientDisplayName=groupName;
             $scope.showCollaborationGroup=true;
-            $scope.showAccessuser=false;
-            $scope.showAccessSelection=false;
+            $scope.showRolecurator=false;
+            $scope.showRoleSelection=false;
 
             for(var key in $scope.csmRoleNames){
-                if($scope.csmRoleNames[key] == groupAccess){
-                    $scope.accessForm.theAccess.roleName = key;
+                if($scope.csmRoleNames[key] == publicRole){
+                    $scope.roleForm.theRole.roleName = key;
                 }
             }
 
-            if($scope.accessForm.theAccess.recipient == 'ROLE_ANONYMOUS') {
-                $scope.accessForm.theAccess.accessBy='public';
+            if($scope.roleForm.theRole.recipient == 'ROLE_ANONYMOUS') {
+                $scope.roleForm.theRole.roleBy='admin';
             }
         }
 
 
-        $scope.removeAccessSection = function() {
-            $scope.userForm.theAccess = $scope.accessForm.theAccess;
-            $scope.addAccess=false;
-            $scope.showAddAccessButton=true;
+        $scope.removeRoleSection = function() {
+            $scope.userForm.theRole = $scope.roleForm.theRole;
+            $scope.addRole=false;
+            $scope.showAddRoleButton=true;
 
             if (confirm("Are you sure you want to delete?")) {
                 $scope.loader = true;
@@ -374,16 +374,16 @@ var app = angular.module('angularApp')
                 	$scope.userForm.fileId = '0';
                 }
 
-                $http({method: 'POST', url: '/caNanoLab/rest/user/deleteAccess',data: $scope.userForm}).
+                $http({method: 'POST', url: '/caNanoLab/rest/user/deleteRole',data: $scope.userForm}).
                     success(function(data, status, headers, config) {
                         $scope.userForm = data;
-                        $scope.groupAccesses = $scope.userForm.groupAccesses;
-                        $scope.userAccesses = $scope.userForm.userAccesses;
-                        if( $scope.userAccesses != null && $scope.userAccesses.length > 0 ) {
-                            $scope.accessExists = true;
+                        $scope.adminRoles = $scope.userForm.adminRoles;
+                        $scope.curatorRoles = $scope.userForm.curatorRoles;
+                        if( $scope.curatorRoles != null && $scope.curatorRoles.length > 0 ) {
+                            $scope.roleExists = true;
                         }
-                        if( $scope.groupAccesses != null && $scope.groupAccesses.length > 1 ) {
-                            $scope.accessExists = true;
+                        if( $scope.adminRoles != null && $scope.adminRoles.length > 1 ) {
+                            $scope.roleExists = true;
                         }
                         $scope.loader = false;
                     }).
@@ -397,36 +397,36 @@ var app = angular.module('angularApp')
 
         };
         
-        $scope.getUserAccessSection = function() {
-            return $scope.showAccessuser && $scope.showAccessSelection;
+        $scope.getCuratorRoleSection = function() {
+            return $scope.showRolecurator && $scope.showRoleSelection;
         };
 
-        $scope.getCollabAccessSection = function() {
-            return $scope.showCollaborationGroup && $scope.showAccessSelection;
+        $scope.getPublicRoleSection = function() {
+            return $scope.showCollaborationGroup && $scope.showRoleSelection;
         };
 
-        $scope.selectCgAccess = function() {
+        $scope.selectPublicRole = function() {
             $scope.showCollaborationGroup=true;
-            $scope.showAccessuser=false;
-            $scope.showAccessSelection=false;
+            $scope.showRolecurator=false;
+            $scope.showRoleSelection=false;
         };
 
-        $scope.selectUserAccess = function() {
+        $scope.selectCuratorRole = function() {
             $scope.showCollaborationGroup=false;
-            $scope.showAccessuser=true;
-            $scope.showAccessSelection=false;
+            $scope.showRolecurator=true;
+            $scope.showRoleSelection=false;
         };
 
-        $scope.selectPublicAccess = function() {
-            $scope.accessForm.theAccess.recipient = 'ROLE_ANONYMOUS';
-            $scope.accessForm.theAccess.recipientDisplayName = 'Public';
-            $scope.accessForm.theAccess.roleName = 'R';
+        $scope.selectAdminRole = function() {
+            $scope.roleForm.theRole.recipient = 'ROLE_ANONYMOUS';
+            $scope.roleForm.theRole.recipientDisplayName = 'admin';
+            $scope.roleForm.theRole.roleName = 'R';
             $scope.showCollaborationGroup=true;
-            $scope.showAccessuser=false;
-            $scope.showAccessSelection=false;
+            $scope.showRolecurator=false;
+            $scope.showRoleSelection=false;
         };       
 
-        /** End - Access Section **/
+        /** End - Role Section **/
     });
 
 

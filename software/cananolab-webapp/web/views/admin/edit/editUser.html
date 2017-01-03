@@ -24,7 +24,7 @@
 <table width="100%" align="center" class="submissionView" summary="layout">
 <tr>
     <td class="cellLabel">
-        <label for="userName">User Name</label>
+        <label for="userName">Username</label>
     </td>
     <td>
         <div id="userNamePrompt">
@@ -38,7 +38,7 @@
     </td>
     <td>
         <div id="firstNamePrompt">
-            <input type="text" ng-model="userForm.firstName" name="user.domain.firstName" size="30" ng-model-onblur ng-change="fillUserInfo()" id="firstName">
+            <input type="text" ng-model="userForm.firstName" name="user.domain.firstName" size="100" ng-model-onblur ng-change="fillUserInfo()" id="firstName">
         </div>
     </td>
 </tr>
@@ -48,7 +48,7 @@
     </td>
     <td>
         <div id="lastNamePrompt">
-            <input type="text" ng-model="userForm.lastName" name="user.domain.lastName" size="30" ng-model-onblur ng-change="fillUserInfo()" id="lastName">
+            <input type="text" ng-model="userForm.lastName" name="user.domain.lastName" size="100" ng-model-onblur ng-change="fillUserInfo()" id="lastName">
         </div>
     </td>
 </tr>
@@ -88,7 +88,7 @@
     </td>
     <td>
         <div id="phoneNumberPrompt">
-            <input type="text" ng-model="userForm.phoneNumber" name="user.domain.phoneNumber" size="30" ng-model-onblur ng-change="fillUserInfo()" id="phoneNumber">
+            <input type="text" ng-model="userForm.phoneNumber" name="user.domain.phoneNumber" size="100" ng-model-onblur ng-change="fillUserInfo()" id="phoneNumber">
         </div>
     </td>
 </tr>
@@ -106,7 +106,7 @@
 <tr>
     <td colspan="2">
         <table width="600">
-            <ng-include src="'/caNanoLab/views/manageAccessibility.html'"></ng-include>
+            <ng-include src="'/caNanoLab/views/manageRoles.html'"></ng-include>
         </table>
     </td>
 </tr>
