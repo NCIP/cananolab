@@ -79,7 +79,10 @@ public class UserServiceImpl implements UserService
 			int status = userDao.insertUser(userDetails);
 			userDao.insertUserAuthority(username, CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
 			for (String role : userDetails.getRoles())
-				userDao.insertUserAuthority(username, role);
+			{
+				if (!role.equals(CaNanoRoleEnum.ROLE_ANONYMOUS))
+					userDao.insertUserAuthority(username, role);
+			}
 		}
 	}
 	
@@ -111,10 +114,12 @@ public class UserServiceImpl implements UserService
 			int status = userDao.updateUser(userDetails);
 			
 			status = userDao.deleteUserAssignedRoles(username);
+			userDao.insertUserAuthority(username, CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
 			//update user roles
 			for (String role : userDetails.getRoles())
 			{
-				userDao.insertUserAuthority(username, role);
+				if (!role.equals(CaNanoRoleEnum.ROLE_ANONYMOUS))
+					userDao.insertUserAuthority(username, role);
 			}
 			
 		}
