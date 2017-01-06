@@ -114,7 +114,6 @@ public class UserServiceImpl implements UserService
 			int status = userDao.updateUser(userDetails);
 			
 			status = userDao.deleteUserAssignedRoles(username);
-			userDao.insertUserAuthority(username, CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
 			//update user roles
 			for (String role : userDetails.getRoles())
 			{
