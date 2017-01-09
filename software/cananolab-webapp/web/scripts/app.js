@@ -243,6 +243,10 @@ app.config(function ($routeProvider, $httpProvider) {
         .when('/editUser', {
               templateUrl: 'views/admin/edit/editUser.html',
               controller: 'EditUserCtrl'
+        })
+        .when('/resetPwd', {
+              templateUrl: 'views/admin/edit/resetPwd.html',
+              controller: 'EditUserCtrl'
         }) 
         .when('/manageUsers', {
          templateUrl: 'views/admin/view/manageUsers.html',

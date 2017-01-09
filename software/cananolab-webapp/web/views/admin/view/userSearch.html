@@ -9,64 +9,18 @@
         <table width="100%" align="center" class="submissionView" summary="layout">
             <tr>
                 <td class="cellLabel" width="120">
-                    <label for="userName">Username</label>
+                    <label for="username">Username</label>
                 </td>
                 <td>
                     <table class="invisibleTable" summary="layout">
                         <tbody><tr>
-                            <td><label for="nameOperand" style="display:none">Name Operand</label>
-                                <select name="nameOperand" id="nameOperand" ng-model="searchUserForm.nameOperand" ng-init="searchUserForm.nameOperand='contains'">
-                                    <option value="contains">contains</option>
-                                    <option value="equals">equals</option>
-                                </select>
-                            </td>
                             <td>
-                                <input type="text" name="userName" ng-model="searchUserForm.userName" size="80" value="" id="userName">
+                                <input type="text" name="username" ng-model="searchUserForm.username" size="100" value="" id="username">
                             </td>
                         </tr>
                         </tbody></table>
                 </td>
             </tr>
-<!--             <tr>
-                <td class="cellLabel" width="120">
-                    <label for="firstName">First Name</label>
-                </td>
-                <td>
-                    <table class="invisibleTable" summary="layout">
-                        <tbody><tr>
-                            <td><label for="nameOperand" style="display:none">Name Operand</label>
-                                <select name="nameOperand" id="nameOperand" ng-model="searchUserForm.nameOperand" ng-init="searchUserForm.nameOperand='contains'">
-                                    <option value="contains">contains</option>
-                                    <option value="equals">equals</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" name="firstName" ng-model="searchUserForm.firstName" size="80" value="" id="firstName">
-                            </td>
-                        </tr>
-                        </tbody></table>
-                </td>
-            </tr>
-            <tr>
-                <td class="cellLabel" width="120">
-                    <label for="lastName">Last Name</label>
-                </td>
-                <td>
-                    <table class="invisibleTable" summary="layout">
-                        <tbody><tr>
-                            <td><label for="nameOperand" style="display:none">Name Operand</label>
-                                <select name="nameOperand" id="nameOperand" ng-model="searchUserForm.nameOperand" ng-init="searchUserForm.nameOperand='contains'">
-                                    <option value="contains">contains</option>
-                                    <option value="equals">equals</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" name="lastName" ng-model="searchUserForm.lastName" size="80" value="" id="lastName">
-                            </td>
-                        </tr>
-                        </tbody></table>
-                </td>
-            </tr> -->
         </table>
         <br>
         <table width="100%" class="invisibleTable" summary="layout">

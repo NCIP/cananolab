@@ -7,20 +7,6 @@ var app = angular.module('angularApp')
         $rootScope.tabs = navigationService.get();
         $rootScope.groups = groupService.getGroups.data.get();
 
-        $scope.$on('$viewContentLoaded', function(){
-            $http({method: 'GET', url: '/caNanoLab/rest/user/setup'}).
-                success(function(data, status, headers, config) {
-                    $scope.data = data;
-                    $scope.userTypes = data.userTypes;
-                }).
-                error(function(data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                    $scope.message = data;
-                });
-        });
-
-
         $scope.doSearch = function() {
             $scope.loader = true;
             for (var key in $scope.researchArea) {
@@ -30,7 +16,7 @@ var app = angular.module('angularApp')
 
             }
 
-            $http({method: 'POST', url: '/caNanoLab/rest/user/searchUser',data: $scope.searchUserForm}).
+            $http({method: 'GET', url: '/caNanoLab/rest/useraccount/search',params: $scope.searchUserForm}).
                 success(function(data, status, headers, config) {
                     $scope.userData.data = data;
                     $location.path("/userResults").replace();

@@ -16,19 +16,19 @@
 </table>
 <span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
     <ul>
-        <li ng-repeat="message in messages">
-            {{message}}
+        <li ng-show="messages!=''">
+            {{messages}}
         </li>
     </ul>
 </span>
 <table width="100%" align="center" class="submissionView" summary="layout">
 <tr>
     <td class="cellLabel">
-        <label for="userName">Username</label>
+        <label for="username">Username</label>
     </td>
     <td>
         <div id="userNamePrompt">
-            <input type="text" ng-model="userForm.userName" name="user.domain.userName" size="100" ng-model-onblur ng-change="fillUserInfo()" id="userName">
+            <input type="text" ng-model="userForm.username" name="user.domain.username" size="100" ng-model-onblur id="username">
         </div>
     </td>
 </tr>
@@ -38,7 +38,7 @@
     </td>
     <td>
         <div id="firstNamePrompt">
-            <input type="text" ng-model="userForm.firstName" name="user.domain.firstName" size="100" ng-model-onblur ng-change="fillUserInfo()" id="firstName">
+            <input type="text" ng-model="userForm.firstName" name="user.domain.firstName" size="100" ng-model-onblur id="firstName">
         </div>
     </td>
 </tr>
@@ -48,7 +48,7 @@
     </td>
     <td>
         <div id="lastNamePrompt">
-            <input type="text" ng-model="userForm.lastName" name="user.domain.lastName" size="100" ng-model-onblur ng-change="fillUserInfo()" id="lastName">
+            <input type="text" ng-model="userForm.lastName" name="user.domain.lastName" size="100" ng-model-onblur id="lastName">
         </div>
     </td>
 </tr>
@@ -58,7 +58,7 @@
     </td>
     <td>
         <div id="organizationPrompt">
-            <input type="text" ng-model="userForm.organization" name="user.domain.organization" size="100" ng-model-onblur ng-change="fillUserInfo()" id="organization">
+            <input type="text" ng-model="userForm.organization" name="user.domain.organization" size="100" ng-model-onblur id="organization">
         </div>
     </td>
 </tr>
@@ -68,7 +68,7 @@
     </td>
     <td>
         <div id="departmentPrompt">
-            <input type="text" ng-model="userForm.department" name="user.domain.department" size="100" ng-model-onblur ng-change="fillUserInfo()" id="department">
+            <input type="text" ng-model="userForm.department" name="user.domain.department" size="100" ng-model-onblur id="department">
         </div>
     </td>
 </tr>
@@ -78,7 +78,7 @@
     </td>
     <td>
         <div id="titlePrompt">
-            <input type="text" ng-model="userForm.title" name="user.domain.title" size="100" ng-model-onblur ng-change="fillUserInfo()" id="title">
+            <input type="text" ng-model="userForm.title" name="user.domain.title" size="100" ng-model-onblur id="title">
         </div>
     </td>
 </tr>
@@ -88,17 +88,17 @@
     </td>
     <td>
         <div id="phoneNumberPrompt">
-            <input type="text" ng-model="userForm.phoneNumber" name="user.domain.phoneNumber" size="100" ng-model-onblur ng-change="fillUserInfo()" id="phoneNumber">
+            <input type="text" ng-model="userForm.phoneNumber" name="user.domain.phoneNumber" size="100" ng-model-onblur id="phoneNumber">
         </div>
     </td>
 </tr>
 <tr>
     <td class="cellLabel">
-        <label for="email">Email</label>
+        <label for="emailId">Email</label>
     </td>
     <td>
         <div id="emailPrompt">
-            <input type="text" ng-model="userForm.email" name="user.domain.email" size="100" ng-model-onblur ng-change="fillUserInfo()" id="email">
+            <input type="text" ng-model="userForm.emailId" name="user.domain.emailId" size="100" ng-model-onblur id="emailId">
         </div>
     </td>
 </tr>
@@ -117,8 +117,8 @@
     <tbody><tr>
  	<td class="btn-group pull-right" width="300">
         <button ng-click="resetForm()" class='btn btn-default'>Reset</button>
-	    <button ng-click="doSubmit()" ng-if="userTag == null" class='btn btn-primary'>Save</button>
-	    <button ng-click="doSubmit()" ng-if="userTag != null" class='btn btn-primary'>Update</button>
+	    <button ng-click="doSubmitData()" ng-if="userTag == null" class='btn btn-primary'>Save</button>
+	    <button ng-click="doUpdateData()" ng-if="userTag != null" class='btn btn-primary'>Update</button>
       </td>
       </tr></tbody>
 </table>
