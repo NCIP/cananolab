@@ -21,7 +21,7 @@ var app = angular.module('angularApp')
                     delete update.credentialsNonExpired;
                     delete update.curator;
                     delete update.displayName;
-                    delete update.enabled;
+                    // delete update.enabled;
                     delete update.groups;
                     delete update.password;
                     delete update.public;
@@ -41,6 +41,7 @@ var app = angular.module('angularApp')
 
         $scope.doSubmitData = function() {
             $scope.loader = true;
+
             var roles = [];
             angular.forEach($scope.userRoles,function(item) {
                 if (item) {
@@ -48,6 +49,9 @@ var app = angular.module('angularApp')
                 }
             });
             $scope.userForm.roles = roles;
+
+            var enabled = true;
+            $scope.userForm.enabled = enabled;
 
             $http({method: 'POST', url: '/caNanoLab/rest/useraccount/create',data: $scope.userForm}).
                 success(function(data, status, headers, config) {
