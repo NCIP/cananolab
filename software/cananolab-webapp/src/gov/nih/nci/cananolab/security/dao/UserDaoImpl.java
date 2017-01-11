@@ -170,10 +170,11 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	public int updateUser(CananoUserDetails userDetails)
 	{
 		logger.info("Update user account for user: " + userDetails.getUsername());
+		int enabled = (userDetails.isEnabled()) ? 1 : 0;
 		
 		Object[] params = new Object[] {userDetails.getFirstName(), userDetails.getLastName(), userDetails.getOrganization(), 
 										userDetails.getDepartment(), userDetails.getTitle(), userDetails.getPhoneNumber(),
-										userDetails.getEmailId(), userDetails.isEnabled(), userDetails.getUsername()};
+										userDetails.getEmailId(), Integer.valueOf(enabled), userDetails.getUsername()};
 		
 		int status = getJdbcTemplate().update(UPDATE_USER_SQL, params);
 		return status;
