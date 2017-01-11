@@ -21,7 +21,6 @@ var app = angular.module('angularApp')
                     delete update.credentialsNonExpired;
                     delete update.curator;
                     delete update.displayName;
-                    // delete update.enabled;
                     delete update.groups;
                     delete update.password;
                     delete update.public;
@@ -30,9 +29,12 @@ var app = angular.module('angularApp')
                     $scope.userForm = data;
                     $scope.userRoles = data.roles;
                     $scope.loader = false;
+
+                    var msg = 'Edit user information for "' + $scope.userForm.username + '" below';
+                    $scope.messages = msg;
+
                 }).
                 error(function(data, status, headers, config) {
-
                 });
             };
         };
@@ -58,6 +60,7 @@ var app = angular.module('angularApp')
                     $scope.loader = false;
                     	var msg = 'User successfully saved with username "' + $scope.userForm.username + '"';
                     	$scope.messages = msg;
+                        $location.path("/editUser").search({username: $scope.userForm.username}).replace();
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs

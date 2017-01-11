@@ -16,6 +16,9 @@
 </table>
 <span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
     <ul>
+        <li ng-if="userTag!=null && messages==''">
+            User successfully saved with username {{userForm.username}}
+        </li>
         <li ng-show="messages!=''">
             {{messages}}
         </li>
@@ -24,7 +27,7 @@
 <table width="100%" align="center" class="submissionView" summary="layout">
 <tr>
     <td class="cellLabel">
-        <label for="username">Username</label>
+        <label for="username">Username*</label>
     </td>
     <td>
         <div id="userNamePrompt">
@@ -34,7 +37,7 @@
 </tr>
 <tr>
     <td class="cellLabel">
-        <label for="firstName">First Name</label>
+        <label for="firstName">First Name*</label>
     </td>
     <td>
         <div id="firstNamePrompt">
@@ -44,7 +47,7 @@
 </tr>
 <tr>
     <td class="cellLabel">
-        <label for="lastName">Last Name</label>
+        <label for="lastName">Last Name*</label>
     </td>
     <td>
         <div id="lastNamePrompt">
