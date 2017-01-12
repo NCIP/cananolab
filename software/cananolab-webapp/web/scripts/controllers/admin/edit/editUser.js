@@ -26,12 +26,18 @@ var app = angular.module('angularApp')
                     delete update.public;
                     delete update.researcher;
 
+                    if ($rootScope.msgDisplay!=undefined) {
+                        if (!$rootScope.msgDisplay.fromCreate) {
+                            delete $rootScope.msgDisplay;
+                        }
+                        else {
+                            $rootScope.msgDisplay.fromCreate = false;
+                        }
+                    }
+
                     $scope.userForm = data;
                     $scope.userRoles = data.roles;
                     $scope.loader = false;
-
-                    var msg = 'Edit user information for "' + $scope.userForm.username + '" below';
-                    $scope.messages = msg;
 
                 }).
                 error(function(data, status, headers, config) {
@@ -59,7 +65,7 @@ var app = angular.module('angularApp')
                 success(function(data, status, headers, config) {
                     $scope.loader = false;
                     	var msg = 'User successfully saved with username "' + $scope.userForm.username + '"';
-                    	$scope.messages = msg;
+                        $rootScope.msgDisplay = {msg: msg, fromCreate: true};
                         $location.path("/editUser").search({username: $scope.userForm.username}).replace();
                 }).
                 error(function(data, status, headers, config) {
@@ -104,8 +110,6 @@ var app = angular.module('angularApp')
             $http({method: 'POST', url: '/caNanoLab/rest/useraccount/resetpwd',data: $scope.resetPwd}).
                 success(function(data, status, headers, config) {
                     $scope.loader = false;
-                        var msg = 'User password successfully reset for username "' + $scope.userForm.username + '"';
-                        $scope.messages = msg;
                         $location.path("/userResults").replace();
                 }).
                 error(function(data, status, headers, config) {
