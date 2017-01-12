@@ -744,8 +744,6 @@ public class SampleBO extends BaseAnnotationBO {
 		// remove all access associated with sample takes too long. Set up the
 		// delete job in scheduler
 		//InitSampleSetup.getInstance().updateCSMCleanupEntriesInContext(sampleBean.getDomain(), request, sampleService);
-
-		springSecurityAclService.deleteAccessObject(Long.parseLong(sampleId), SecureClassesEnum.SAMPLE.getClazz());
 		
 		// update data review status to "DELETED"
 		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
@@ -753,7 +751,10 @@ public class SampleBO extends BaseAnnotationBO {
 		if (sampleBean.getHasDataAvailability()) {
 			dataAvailabilityServiceDAO.deleteDataAvailability(sampleBean.getDomain().getId().toString());
 		}
+		
 		sampleService.deleteSample(sampleBean.getDomain().getName());
+		springSecurityAclService.deleteAccessObject(Long.parseLong(sampleId), SecureClassesEnum.SAMPLE.getClazz());
+		
 		request.getSession().removeAttribute("theSample");
 
 		String msg = PropertyUtil.getPropertyReplacingToken("sample", "message.deleteSample", "0", sampleName);

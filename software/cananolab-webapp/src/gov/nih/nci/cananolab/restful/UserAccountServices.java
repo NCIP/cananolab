@@ -34,7 +34,7 @@ public class UserAccountServices
 		try
 		{ 
 			if (!SpringSecurityUtil.isUserLoggedIn()) 
-			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
 

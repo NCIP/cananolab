@@ -28,20 +28,11 @@ public class UserAccountBO
 	
 	public CananoUserDetails readUserAccount(String username) throws NoAccessException
 	{
-		CananoUserDetails principal = SpringSecurityUtil.getPrincipal();
-		if (principal == null || !principal.isAdmin()) {
-			throw new NoAccessException();
-		}
 		return (CananoUserDetails) userDetailsService.loadUserByUsername(username);
 	}
 	
 	public CananoUserDetails createUserAccount(CananoUserDetails userDetails) throws NoAccessException
 	{
-		CananoUserDetails principal = SpringSecurityUtil.getPrincipal();
-		if (principal == null || !principal.isAdmin()) {
-			throw new NoAccessException();
-		}
-		
 		userService.createUserAccount(userDetails);
 		CananoUserDetails newUserDetails = (CananoUserDetails) userDetailsService.loadUserByUsername(userDetails.getUsername());
 		return newUserDetails;
@@ -49,21 +40,11 @@ public class UserAccountBO
 	
 	public void resetUserAccountPassword(String oldPassword, String newPassword, String userName) throws Exception
 	{
-		CananoUserDetails principal = SpringSecurityUtil.getPrincipal();
-		if (principal == null || !principal.isAdmin()) {
-			throw new NoAccessException();
-		}
-		
 		userService.resetPasswordForUser(oldPassword, newPassword, userName);
 	}
 	
 	public CananoUserDetails updateUserAccount(CananoUserDetails userDetails) throws NoAccessException
 	{
-		CananoUserDetails principal = SpringSecurityUtil.getPrincipal();
-		if (principal == null || !principal.isAdmin()) {
-			throw new NoAccessException();
-		}
-		
 		userService.updateUserAccount(userDetails);
 		CananoUserDetails newUserDetails = (CananoUserDetails) userDetailsService.loadUserByUsername(userDetails.getUsername());
 		return newUserDetails;
@@ -71,11 +52,6 @@ public class UserAccountBO
 	
 	public List<CananoUserDetails> searchByUsername(String searchStr) throws NoAccessException
 	{
-		CananoUserDetails principal = SpringSecurityUtil.getPrincipal();
-		if (principal == null || !principal.isAdmin()) {
-			throw new NoAccessException();
-		}
-
 		List<CananoUserDetails> userList = userService.loadUsers(searchStr);
 		return userList;
 	}
