@@ -57,6 +57,8 @@
 		
 		<intercept-url pattern="/rest/useraccount/**" access="hasRole('ROLE_ADMIN')" />
 		
+		<intercept-url pattern="/rest/community/getsamples"  access="hasRole('ROLE_CURATOR')" />
+		
 		<intercept-url pattern="/rest/security/**" access="permitAll" />
 		
 		<intercept-url pattern="/rest/datamigration/**" access="permitAll" />

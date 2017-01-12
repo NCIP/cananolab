@@ -22,6 +22,8 @@ import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.Group;
+import gov.nih.nci.cananolab.security.service.GroupService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
@@ -64,6 +66,9 @@ public class SearchSampleBO extends AbstractDispatchBO {
 	
 	@Autowired
 	private CharacterizationService characterizationService;
+	
+	@Autowired
+	private GroupService groupService;
 
 	public List search(SearchSampleForm form, HttpServletRequest request) throws Exception
 	{
@@ -118,6 +123,26 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		List<SimpleSearchSampleBean> simpleBeans = transfertoSimpleSampleBeans(sampleBeansPerPage);
 		
 		return simpleBeans;
+	}
+	
+	public List<SimpleSearchSampleBean> getSamplesByCollaborationGroup(Long groupId) throws Exception
+	{
+		Group collabGrp = null;
+		List<SampleBean> sampleList = new ArrayList<SampleBean>();
+		if (groupId != null)
+			collabGrp = groupService.getGroupById(groupId);
+		
+		List<Long> collabGrpSamples = sampleServiceHelper.getSampleAccessibleToACollabGrp(collabGrp.getGroupName());
+		if (collabGrpSamples != null & collabGrpSamples.size() > 0)
+		{
+			for (Long sampleId : collabGrpSamples)
+			{
+				SampleBean sampleBean = sampleService.findSampleById(sampleId + "", false);
+				sampleList.add(sampleBean);
+			}
+		}
+		List<SimpleSearchSampleBean> searchBeanList = transfertoSimpleSampleBeans(sampleList);
+		return searchBeanList;
 	}
 	
 	/**
