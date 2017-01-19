@@ -36,7 +36,19 @@ var app = angular.module('angularApp')
                     }
 
                     $scope.userForm = data;
-                    $scope.userRoles = data.roles;
+
+                    if (data.roles.indexOf("ROLE_CURATOR")!=-1) {
+                        $scope.userRoles[0] = "ROLE_CURATOR";
+                    }
+
+                    if (data.roles.indexOf("ROLE_RESEARCHER")!=-1) {
+                        $scope.userRoles[1] = "ROLE_RESEARCHER";
+                    }
+
+                    if (data.roles.indexOf("ROLE_ADMIN")!=-1) {
+                        $scope.userRoles[2] = "ROLE_ADMIN";
+                    }
+
                     $scope.loader = false;
 
                 }).

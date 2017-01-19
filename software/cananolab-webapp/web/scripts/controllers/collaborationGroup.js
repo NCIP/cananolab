@@ -195,4 +195,26 @@ var app = angular.module('angularApp')
 		}); 		
 		$scope.showUsers = true;
 	};
+
+	$scope.toggle = false;
+
+	$scope.showSamples = function(i) {
+		console.log("Name: " + i);
+		$scope.toggle = !$scope.toggle;
+
+
+
+		// id = groupId
+            $http({method: 'GET', url: '/caNanoLab/rest/community/getsamples',params: groupId}).
+                success(function(data, status, headers, config) {
+
+                }).
+                error(function(data, status, headers, config) {
+
+                });
+
+
+
+	};
+
 });

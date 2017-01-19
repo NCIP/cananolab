@@ -26,7 +26,7 @@
 
     <tr ng-repeat="item in data track by $index">
         <td class="columnOne">
-        	<div>{{item.name}}</div>
+        	<div><a ng-click="showSamples(item.name)" style="cursor: pointer;"><i ng-show="!toggle" class="fa fa-plus" aria-hidden="true"></i><i ng-show="toggle" class="fa fa-minus" aria-hidden="true"></i>&nbsp;<span style="text-decoration: underline;">{{item.name}}</span></a></div>
         </td>
         <td>
             <div>{{item.description}}</div>
@@ -49,6 +49,48 @@
             </div>
         </td>
     </tr>
+
+    <!-- <table ng-show="toggle" class="table sample" width="100%" cellpadding="0" cellspacing="0">
+
+	    <tr>
+	        <th>Sample Name</th>
+	        <th>Primary Point of Contact</th>
+	        <th>Composition</th>
+	        <th>Functions</th>
+	        <th>Characterizations</th>
+	        <th>Data Availability</th>
+	        <th>Created Date</th>
+	    </tr>
+
+	    <tr ng-repeat="item in data track by $index">
+	        <td class="columnOne">
+	        	<div>{{item.name}}</div>
+	        </td>
+	        <td>
+	            <div>{{item.description}}</div>
+	        </td>
+	        <td>
+	            <div>{{item.description}}</div>
+	        </td>
+	        <td>
+	            <div>{{item.description}}</div>
+	        </td>
+	        <td>
+	            <div>{{item.description}}</div>
+	        </td>
+	        <td>
+	            <div>{{item.ownerName}}</div>
+	        </td>
+	        <td>
+	        	<div>
+	                <div ng-repeat="user in item.userAccesses track by $index">
+						{{user.recipientDisplayName}}
+					</div>
+				</div>
+	        </td>
+	    </tr>
+
+    </table> -->
 
     <tr ng-show="editCollaborationGroup">
 		<td colspan="2">
