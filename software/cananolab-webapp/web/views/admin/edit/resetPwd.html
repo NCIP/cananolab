@@ -24,7 +24,7 @@
     </td>
     <td>
         <div>
-            <input type="text" ng-model="userForm.username" size="100" ng-init="resetPwd.username=userForm.username" ng-disabled ng-model-onblur id="username">
+            <input type="text" ng-model="userForm.username" size="100" ng-init="userForm.username=resetPwd.username" ng-disabled ng-model-onblur id="username">
         </div>
     </td>
 </tr>
@@ -34,7 +34,7 @@
     </td>
     <td>
         <div>
-            <input type="text" ng-model="resetPwd.oldPwd" size="100" ng-model-onblur id="oldPwd">
+            <input type="password" ng-model="resetPwd.oldpassword" size="100" ng-model-onblur id="oldPwd">
         </div>
     </td>
 </tr>
@@ -44,7 +44,7 @@
     </td>
     <td>
         <div>
-            <input type="text" ng-model="resetPwd.newPwd" size="100" ng-model-onblur id="newPwd">
+            <input type="password" ng-model="resetPwd.newpassword" size="100" ng-model-onblur id="newPwd">
         </div>
     </td>
 </tr>

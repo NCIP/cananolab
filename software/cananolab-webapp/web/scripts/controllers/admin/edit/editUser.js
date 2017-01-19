@@ -119,6 +119,7 @@ var app = angular.module('angularApp')
 
         $scope.doResetPwd = function() {
             $scope.loader = true;
+            $scope.resetPwd.username = $scope.userForm.username;
             $http({method: 'POST', url: '/caNanoLab/rest/useraccount/resetpwd',data: $scope.resetPwd}).
                 success(function(data, status, headers, config) {
                     $scope.loader = false;
