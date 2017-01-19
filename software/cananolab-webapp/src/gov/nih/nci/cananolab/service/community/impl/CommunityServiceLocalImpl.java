@@ -138,8 +138,13 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
 
 	public List<CollaborationGroupBean> findCollaborationGroups() throws CommunityException
 	{
-		String currUser = SpringSecurityUtil.getLoggedInUserName();
-		List<Group> groupList = groupService.getGroupsAccessibleToUser(currUser);
+		CananoUserDetails currUser = SpringSecurityUtil.getPrincipal();
+		List<Group> groupList = new ArrayList<>();
+		if (currUser.isCurator())
+			groupList = groupService.getAllGroups();
+		else
+			groupList = groupService.getGroupsAccessibleToUser(currUser.getUsername());
+		
 		List<CollaborationGroupBean> collaborationGroups = new ArrayList<CollaborationGroupBean>();
 		try {
 			if (groupList != null && groupList.size() > 0)

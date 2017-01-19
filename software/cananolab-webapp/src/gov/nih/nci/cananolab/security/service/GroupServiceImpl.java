@@ -103,4 +103,10 @@ public class GroupServiceImpl implements GroupService
 		return groups;
 	}
 
+	@Override
+	public List<Group> getAllGroups() {
+		List<Group> groups = groupDao.getAllGroups();
+		return groups;
+	}
+
 }

@@ -25,5 +25,7 @@ public interface GroupService
 	public int removeGroup(Long groupId);
 	
 	public List<Group> getGroupsAccessibleToUser(String userName);
+	
+	public List<Group> getAllGroups();
 
 }
