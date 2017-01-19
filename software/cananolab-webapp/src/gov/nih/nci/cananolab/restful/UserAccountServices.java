@@ -20,6 +20,7 @@ import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 @Path("/useraccount")
 public class UserAccountServices 
@@ -82,13 +83,18 @@ public class UserAccountServices
 			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
-			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
-			userAccountBO.resetUserAccountPassword(oldpassword, newpassword, username);
-	
+			if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(oldpassword) && !StringUtils.isEmpty(newpassword))
+			{
+				UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
+				userAccountBO.resetUserAccountPassword(oldpassword, newpassword, username);
+			}
+			else
+				throw new Exception("Username and old/new passwords are required for resetting password.");
+			
 			return Response.ok("success").build();
 		}
 		catch (Exception e) {
-			logger.error("Error in searching for user accounts : ", e);
+			logger.error("Error in resetting password for account: ", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
@@ -109,7 +115,7 @@ public class UserAccountServices
 			return Response.ok(newUserDetails).build();
 		}
 		catch (Exception e) {
-			logger.error("Error in searching for user accounts : ", e);
+			logger.error("Error in creating user account : ", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
@@ -131,7 +137,7 @@ public class UserAccountServices
 			return Response.ok(newUserDetails).build();
 		}
 		catch (Exception e) {
-			logger.error("Error in searching for user accounts : ", e);
+			logger.error("Error in updating user account : ", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
