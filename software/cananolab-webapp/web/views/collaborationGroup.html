@@ -16,6 +16,7 @@
 
 <div style="font-size:18px;">Existing Collaboration Groups</div>
 <table class="table sample" width="100%" cellpadding="0" cellspacing="0">
+
     <tr>
         <th>Name</th>
         <th>Description</th>
@@ -50,8 +51,6 @@
             </div>
         </td>
     </tr>
-
-
 
     <tr ng-if="item.expand" ng-repeat-end>
     	<td colspan="5" class="columnOne">
@@ -96,50 +95,6 @@
     		</table>
     	</td>
     </tr>
-
-    <!-- <table ng-show="toggle" class="table sample" width="100%" cellpadding="0" cellspacing="0">
-
-	    <tr>
-	        <th>Sample Name</th>
-	        <th>Primary Point of Contact</th>
-	        <th>Composition</th>
-	        <th>Functions</th>
-	        <th>Characterizations</th>
-	        <th>Data Availability</th>
-	        <th>Created Date</th>
-	    </tr>
-
-	    <tr ng-repeat="item in data track by $index">
-	        <td class="columnOne">
-	        	<div>{{item.name}}</div>
-	        </td>
-	        <td>
-	            <div>{{item.description}}</div>
-	        </td>
-	        <td>
-	            <div>{{item.description}}</div>
-	        </td>
-	        <td>
-	            <div>{{item.description}}</div>
-	        </td>
-	        <td>
-	            <div>{{item.description}}</div>
-	        </td>
-	        <td>
-	            <div>{{item.ownerName}}</div>
-	        </td>
-	        <td>
-	        	<div>
-	                <div ng-repeat="user in item.userAccesses track by $index">
-						{{user.recipientDisplayName}}
-					</div>
-				</div>
-	        </td>
-	    </tr>
-
-    </table> -->
-
-
 
     <tr ng-show="editCollaborationGroup">
 		<td colspan="2">
@@ -257,10 +212,7 @@
 			</table>		
 		</td>
 	</tr>
-<!-- 	<tr ng-hide="editCollaborationGroup">
-		<td colspan="3">New Collaboration Group</td>
-		<td colspan="2"><button ng-click="addGroupCollaboration()">Add</button></td>
-	</tr> -->
+
 </table>
 <br />
 <div ng-hide="editCollaborationGroup" style="font-size:18px;">New Collaboration Group</div>
