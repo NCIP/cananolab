@@ -24,9 +24,10 @@
         <th></th>
     </tr>
 
-    <tr ng-repeat="item in data track by $index">
+    <tr ng-repeat-start="item in data track by $index">
         <td class="columnOne">
-        	<div><a ng-click="showSamples(item.name)" style="cursor: pointer;"><i ng-show="!toggle" class="fa fa-plus" aria-hidden="true"></i><i ng-show="toggle" class="fa fa-minus" aria-hidden="true"></i>&nbsp;<span style="text-decoration: underline;">{{item.name}}</span></a></div>
+        	<div ng-show="isCurator"><a ng-click="showSamples(item.name,$index);item.expand=!item.expand" style="cursor: pointer;"><i ng-show="!item.expand" class="fa fa-plus" aria-hidden="true"></i><i ng-show="item.expand" class="fa fa-minus" aria-hidden="true"></i>&nbsp;<span style="text-decoration: underline;">{{item.name}}</span></a></div>
+        	<div ng-show="!isCurator"><span>{{item.name}}</span></div>        	
         </td>
         <td>
             <div>{{item.description}}</div>
@@ -48,6 +49,52 @@
 				</div>
             </div>
         </td>
+    </tr>
+
+
+
+    <tr ng-if="item.expand" ng-repeat-end>
+    	<td colspan="5" class="columnOne">
+    		<table class="table sample" width="100%" cellpadding="0" cellspacing="0">
+	
+	    		<tr>
+			        <th>Sample Name</th>
+			        <th>Primary Point of Contact</th>
+			        <th>Composition</th>
+			        <th>Functions</th>
+			        <th>Characterizations</th>
+			        <th>Data Availability</th>
+			        <th>Created Date</th>
+			    </tr>
+
+			    <tr ng-repeat="s in sampledata[item.name] track by $index">
+			        <td class="columnOne">
+			        	<div><a ng-init="searchType='simple'" href="" ng-click="redirectSample(s.sampleId)">{{s.sampleName}}</a></div>
+			        </td>
+			        <td>
+				        <div ng-bind-html="trustAsHtml(s.pointOfContact)"></div>
+			        </td>
+			        <td>
+			            <div ng-repeat="com in s.composition track by $index">
+			            	{{com}}<br>
+			            </div>
+			        </td>
+			        <td>
+			            <div ng-repeat="com in s.functions track by $index">{{com}}</div>
+			        </td>
+			        <td>	
+			            <div ng-repeat="com in s.characterizations track by $index">{{com}}</div>
+			        </td>
+			        <td>
+			            <div><a href="" ng-click="openDataAvailability(s.sampleId)">{{s.dataAvailability}}</a></div>
+			        </td>
+			        <td>
+			        	<div>{{s.createdDate | date:'shortDate'}}</div>
+			        </td>
+			    </tr>
+
+    		</table>
+    	</td>
     </tr>
 
     <!-- <table ng-show="toggle" class="table sample" width="100%" cellpadding="0" cellspacing="0">
@@ -91,6 +138,8 @@
 	    </tr>
 
     </table> -->
+
+
 
     <tr ng-show="editCollaborationGroup">
 		<td colspan="2">
