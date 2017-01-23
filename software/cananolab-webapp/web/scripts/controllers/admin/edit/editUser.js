@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('angularApp')
 
-    .controller('EditUserCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams,$upload) {
+    .controller('EditUserCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams,$upload) { //,$httpParamSerializerJQLike
         $scope.userForm = {};
         $scope.userForm.roles = [];
         $scope.userRoles = [];
@@ -120,17 +120,30 @@ var app = angular.module('angularApp')
         $scope.doResetPwd = function() {
             $scope.loader = true;
             $scope.resetPwd.username = $scope.userForm.username;
-            $http({method: 'POST', url: '/caNanoLab/rest/useraccount/resetpwd',data: $scope.resetPwd}).
-                success(function(data, status, headers, config) {
-                    $scope.loader = false;
-                        $location.path("/userResults").replace();
-                }).
-                error(function(data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                    $scope.loader = false;
-                    $scope.messages = 'Error resetting password for user with username "' + $scope.userForm.username + '"';
-                });
+            $http({
+                    method: 'POST',
+                    url: '/caNanoLab/rest/useraccount/resetpwd',
+                    data: $scope.resetPwd,
+                    transformRequest: function(obj) {
+                        var str = [];
+                        for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    },
+                    headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                    }).
+                    success(function(data, status, headers, config) {
+                        $scope.loader = false;
+                            $location.path("/userResults").replace();
+                    }).
+                    error(function(data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        $scope.loader = false;
+                        $scope.messages = 'Error resetting password for user with username "' + $scope.userForm.username + '"';
+                    });
         };
 
         $scope.cancelResetPwd = function() {

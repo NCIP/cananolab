@@ -16,7 +16,10 @@ var app = angular.module('angularApp', [
     'ngRoute',
     'ngTable',
     'ngSanitize',
-    'ngTouch','ngGrid','ui.bootstrap','angularFileUpload']);
+    'ngTouch',
+    'ngGrid',
+    'ui.bootstrap',
+    'angularFileUpload']);
 
 
 app.config(function ($routeProvider, $httpProvider) {
