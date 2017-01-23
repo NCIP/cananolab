@@ -18,6 +18,7 @@ var app = angular.module('angularApp')
 
             $http({method: 'GET', url: '/caNanoLab/rest/useraccount/search',params: $scope.searchUserForm}).
                 success(function(data, status, headers, config) {
+                    $scope.loader = false;
                     $scope.userData.data = data;
                     $location.path("/userResults").replace();
                 }).

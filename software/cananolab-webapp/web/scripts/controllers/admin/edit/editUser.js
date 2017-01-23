@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('angularApp')
 
-    .controller('EditUserCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams,$upload) { //,$httpParamSerializerJQLike
+    .controller('EditUserCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams,$upload) {
         $scope.userForm = {};
         $scope.userForm.roles = [];
         $scope.userRoles = [];

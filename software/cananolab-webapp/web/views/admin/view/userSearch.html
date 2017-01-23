@@ -1,5 +1,6 @@
 <div class="spacer">
     <div ng-class="{formFocus:loader}">
+    <form autocomplete="off">
         <table border="0" class="contentTitle" summary="layout" width="100%">
             <tr>
                 <th align="left" scope="col">User Search</th>
@@ -37,7 +38,7 @@
 
                 </td>
             </tr>
-        </table>
+        </table></form>
         <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;" ng-if="message">{{message}}</div>
         <div id="loader" ng-show="loader">
             <div id="loaderText">
