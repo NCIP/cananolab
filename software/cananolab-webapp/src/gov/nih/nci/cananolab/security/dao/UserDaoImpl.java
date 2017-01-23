@@ -161,7 +161,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	public String readPassword(String userName)
 	{
 		logger.info("Read password for user : " + userName);
-		String currPassword = (String) getJdbcTemplate().queryForObject(FETCH_PASSWORD_SQL, String.class);
+		String currPassword = (String) getJdbcTemplate().queryForObject(FETCH_PASSWORD_SQL, new Object[] {userName}, String.class);
 		
 		return currPassword;
 	}

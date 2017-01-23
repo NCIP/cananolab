@@ -98,7 +98,10 @@ public class UserServiceImpl implements UserService
 			
 			//update to new Password
 			if (match)
-				status = userDao.resetPassword(userName, newPassword);
+			{
+				String encryptedPassword = passwordEncoder.encode(newPassword);
+				status = userDao.resetPassword(userName, encryptedPassword);
+			}
 			else
 				throw new Exception("Incorrect old password.");
 		}

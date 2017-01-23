@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -75,8 +76,8 @@ public class UserAccountServices
 	@POST
 	@Path("/resetpwd")
 	@Produces ("application/json")
-	public Response resetPassword(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("username") String username,
-								  @DefaultValue("") @QueryParam("oldpassword") String oldpassword, @DefaultValue("") @QueryParam("newpassword") String newpassword)
+	public Response resetPassword(@Context HttpServletRequest httpRequest,
+			@FormParam("oldpassword") String oldpassword, @FormParam("newpassword") String newpassword, @FormParam("username") String username)
 	{
 		try
 		{
