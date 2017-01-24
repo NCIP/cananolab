@@ -111,8 +111,15 @@ public class UserAccountServices
 			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
-			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
-			CananoUserDetails newUserDetails = userAccountBO.createUserAccount(userDetails);
+			CananoUserDetails newUserDetails = new CananoUserDetails();
+			if (!StringUtils.isEmpty(userDetails.getUsername()) && !StringUtils.isEmpty(userDetails.getFirstName()) && !StringUtils.isEmpty(userDetails.getLastName()))
+			{
+				UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
+				newUserDetails = userAccountBO.createUserAccount(userDetails);
+			}
+			else
+				throw new Exception("Username, First and Last names are required to create an account.");
+			
 			return Response.ok(newUserDetails).build();
 		}
 		catch (Exception e) {
@@ -132,8 +139,14 @@ public class UserAccountServices
 			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
-			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
-			CananoUserDetails newUserDetails = userAccountBO.updateUserAccount(userDetails);
+			CananoUserDetails newUserDetails = new CananoUserDetails();
+			if (!StringUtils.isEmpty(userDetails.getUsername()) && !StringUtils.isEmpty(userDetails.getFirstName()) && !StringUtils.isEmpty(userDetails.getLastName()))
+			{
+				UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
+				newUserDetails = userAccountBO.updateUserAccount(userDetails);
+			}
+			else
+				throw new Exception("Username, First and Last names are required fields.");
 			
 			return Response.ok(newUserDetails).build();
 		}

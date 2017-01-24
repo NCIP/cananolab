@@ -125,7 +125,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		return simpleBeans;
 	}
 	
-	public List<SimpleSearchSampleBean> getSamplesByCollaborationGroup(Long groupId) throws Exception
+	public List<SimpleSearchSampleBean> getSamplesByCollaborationGroup(HttpServletRequest request, Long groupId) throws Exception
 	{
 		Group collabGrp = null;
 		List<SampleBean> sampleList = new ArrayList<SampleBean>();
@@ -138,6 +138,31 @@ public class SearchSampleBO extends AbstractDispatchBO {
 			for (Long sampleId : collabGrpSamples)
 			{
 				SampleBean sampleBean = sampleService.findSampleById(sampleId + "", false);
+				if (sampleBean != null) {
+					Sample sample = sampleBean.getDomain();
+					// load summary information
+					sampleBean.setCharacterizationClassNames(sampleServiceHelper
+							.getStoredCharacterizationClassNames(sample)
+							.toArray(new String[0]));
+					sampleBean.setFunctionalizingEntityClassNames(sampleServiceHelper
+							.getStoredFunctionalizingEntityClassNames(sample)
+							.toArray(new String[0]));
+					sampleBean.setNanomaterialEntityClassNames(sampleServiceHelper
+							.getStoredNanomaterialEntityClassNames(sample)
+							.toArray(new String[0]));
+					sampleBean.setFunctionClassNames(sampleServiceHelper
+							.getStoredFunctionClassNames(sample).toArray(new String[0]));
+					// get data availability for the samples
+					Set<DataAvailabilityBean> dataAvailability = dataAvailabilityServiceDAO.findDataAvailabilityBySampleId(sampleId + "");
+					// dataAvailabilityMapPerPage.put(sampleId,
+					// dataAvailability);
+					if (!dataAvailability.isEmpty() && dataAvailability.size() > 0)
+					{
+						sampleBean.setDataAvailability(dataAvailability);
+						sampleBean.setHasDataAvailability(true);
+						calculateDataAvailabilityScore(request, sampleBean, dataAvailability);
+					}
+				}
 				sampleList.add(sampleBean);
 			}
 		}

@@ -224,7 +224,7 @@ public class CommunityServices
 			List<SimpleSearchSampleBean> sampleList = new ArrayList<SimpleSearchSampleBean>();
 			
 			if (!StringUtils.isEmpty(groupId))
-				sampleList = srchSampleBO.getSamplesByCollaborationGroup(Long.valueOf(groupId));
+				sampleList = srchSampleBO.getSamplesByCollaborationGroup(httpRequest, Long.valueOf(groupId));
 			else
 				throw new Exception("No collaboration group information to fetch samples for.");
 			
