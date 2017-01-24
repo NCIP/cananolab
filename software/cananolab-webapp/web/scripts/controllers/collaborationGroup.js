@@ -219,6 +219,8 @@ var app = angular.module('angularApp')
 	$scope.sampledata = [];
 
 	$scope.showSamples = function(i,ndx) {
+
+		$scope.loader = true;
 	
 		var groupId = '';
 		groupId = $scope.data[ndx].id;
@@ -226,14 +228,17 @@ var app = angular.module('angularApp')
         $http({method: 'GET', url: '/caNanoLab/rest/community/getsamples?groupId=' + groupId}).
             success(function(data, status, headers, config) {
             	$scope.sampledata[i] = data;
+            	$scope.loader = false;
             }).
             error(function(data, status, headers, config) {
-
+            	$scope.loader = false;
             });
 
 	};
 
 	$scope.openDataAvailability = function(sampleId) {
+
+		$scope.loader = true;
 
           $http({method: 'GET', url: '/caNanoLab/rest/sample/viewDataAvailability',params: {"sampleId":sampleId}}).
           success(function(data, status, headers, config) {
@@ -256,11 +261,13 @@ var app = angular.module('angularApp')
                 }
               }
             });
+            $scope.loader = false;
           }).
           error(function(data, status, headers, config) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
             $scope.message = data;
+            $scope.loader = false;
           });        
     };
 
