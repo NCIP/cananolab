@@ -12,3 +12,8 @@ software/cananolab-webapp/target/
 .project
 
 software/cananolab-webapp/.settings/*
+
+## Ignore node modules ##
+
+node_modules/
+
