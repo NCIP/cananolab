@@ -1,36 +1,49 @@
 
 
-describe("editUser spec", function() {
+describe("editUser spec ", function() {
 	
-	var $scope = {}, controller, rootscope, http, httpBackend, location, timeout, route_params, upload, navigation_service, group_service, editUserCtrl;
+	var $scope = {}, controller, rootscope, http, httpBackend, location, timeout, route_params, upload, navigation_service, group_service, editUserCtrl,mockUserResource;
 
 	var read = {"username":"ttran","firstName":"tin","lastName":"tran","organization":"NCI","department":"CBIIT","title":null,"phoneNumber":null,"password":"$2a$10$EmfHzgyCiGdkNM6oM2jtEeMstTcNhM9pvsskD2fhy9cupEouWl3uq","emailId":"ttran@nih.gov","enabled":true,"roles":["ROLE_ANONYMOUS","ROLE_RESEARCHER"],"groups":["test_group","test group","a new test","Group A","Group B","TEST 1","TEST 2"],"authorities":[{"authority":"test_group"},{"authority":"test group"},{"authority":"a new test"},{"authority":"Group A"},{"authority":"Group B"},{"authority":"TEST 1"},{"authority":"TEST 2"},{"authority":"ROLE_ANONYMOUS"},{"authority":"ROLE_RESEARCHER"}],"public":true,"displayName":"tran, tin","researcher":true,"curator":false,"admin":false,"accountNonLocked":true,"credentialsNonExpired":true,"accountNonExpired":true};
-
-	beforeEach(module('ngResource'));
-	beforeEach(module('angularFileUpload'));
+    var apiService,queryDeferred;
+	
 	beforeEach(module('angularApp'));
 
-	beforeEach(inject(function(navigationService,groupService,$rootScope,$http,$location,$timeout,$routeParams,$upload,$httpBackend,$controller) {
+	beforeEach(inject(function($rootScope,$http,$location,$timeout,$routeParams,$httpBackend,$controller,$q) {
+
+        apiService = {
+            query:  function() {
+      queryDeferred = $q.defer();
+      queryDeferred.resolve(read);
+      return {$promise: queryDeferred.promise};
+    }
+        };
+
         rootscope = $rootScope.$new();
         $scope = $rootScope.$new();
         http = $http,
         location = $location,
         timeout = $timeout,
         route_params = $routeParams,
-        upload = $upload,
-        navigation_service = navigationService,
-        group_service = groupService,
+        upload = "",
+        group_service = apiService,
         httpBackend = $httpBackend;
         controller = $controller;
+
+        
+
+		spyOn(apiService, 'query').and.callThrough();
 
         spyOn(location, 'path').and.returnValue('');
         spyOn(location, 'replace');
 
         read = {"username":"ttran","firstName":"tin","lastName":"tran","organization":"NCI","department":"CBIIT","title":null,"phoneNumber":null,"password":"$2a$10$EmfHzgyCiGdkNM6oM2jtEeMstTcNhM9pvsskD2fhy9cupEouWl3uq","emailId":"ttran@nih.gov","enabled":true,"roles":["ROLE_ANONYMOUS","ROLE_RESEARCHER"],"groups":["test_group","test group","a new test","Group A","Group B","TEST 1","TEST 2"],"authorities":[{"authority":"test_group"},{"authority":"test group"},{"authority":"a new test"},{"authority":"Group A"},{"authority":"Group B"},{"authority":"TEST 1"},{"authority":"TEST 2"},{"authority":"ROLE_ANONYMOUS"},{"authority":"ROLE_RESEARCHER"}],"public":true,"displayName":"tran, tin","researcher":true,"curator":false,"admin":false,"accountNonLocked":true,"credentialsNonExpired":true,"accountNonExpired":true};
-        httpBackend.when('GET', '/caNanoLab/rest/useraccount/read').respond(read);
+        httpBackend.when('GET', '/caNanoLab/rest/useraccount/read?username=test').respond(read);
+        //queryDeferred.resolve(read);
+        //$rootScope.$apply();
 
-        editUserCtrl = controller('EditUserCtrl', {
-        	navigationService:navigation_service,
+        editUserCtrl = $controller('EditUserCtrl', {
+        	navigationService:apiService,
         	groupService:group_service,
         	$rootscope:rootscope,
         	$scope:$scope,
@@ -44,19 +57,44 @@ describe("editUser spec", function() {
     }));
 
     it('should test loadUserData()', function() {
+        $scope.userTag = "test";
     	$scope.loadUserData();
     	httpBackend.flush();
-    	expect(JSON.stringify($scope.userForm)).toEqual(JSON.stringify(read));
+        var result = {username: 'ttran', firstName: 'tin', lastName: 'tran', organization: 'NCI', department: 'CBIIT', title: null, phoneNumber: null, emailId: 'ttran@nih.gov', enabled: true, roles: ['ROLE_ANONYMOUS', 'ROLE_RESEARCHER']}
+    	expect(JSON.stringify($scope.userForm)).toEqual(JSON.stringify(result));
     });
 
 });
+
+
+
+
+	// beforeEach(inject(function($controller) {
+	//   $scope = $rootScope.$new();
+
+	//   mockBagelApiService = {
+	//     query: function() {
+	//       queryDeferred = $q.defer();
+	//       return {$promise: queryDeferred.promise};
+	//     }
+	//   }
+
+	//   spyOn(mockBagelApiService, 'query').andCallThrough();
+
+	//   $controller('BreakfastCtrl', {
+	//     '$scope': $scope,
+	//     'bagelApiService': mockBagelApiService
+	//   });
+	// }));
+
+
 
 
 // describe("manageUser spec", function() {
 	
 // 	var $scope = {}, controller, rootscope, http, httpBackend, location, timeout, route_params, upload, navigation_service, group_service, editUserCtrl;	
 
-// 	beforeEach(module('ngResource'));	
+// 	beforeEach(module('ngResource'));
 // 	beforeEach(module("angularApp"));
 
 // 	beforeEach(inject(function(userService,navigationService,groupService,$rootScope,$filter,ngTableParams,$http,$location,$modal,$httpBackend,$controller) {

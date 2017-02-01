@@ -27,10 +27,8 @@ module.exports = function(config) {
         "plugins/**/**.js",
         "scripts/app.js",
         "scripts/controllers/main.js",
-        "scripts/**/**.js",
-        "scripts/**/**/**.js",
-        "scripts/**/**/**/**.js",
-        "scripts/**/**/**/**/**.js",
+        "scripts/controllers/admin/edit/editUser.js",
+       
         "scripts/specs/test.js"
     ],
 
