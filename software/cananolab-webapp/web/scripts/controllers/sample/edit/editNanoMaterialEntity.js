@@ -232,13 +232,22 @@ var app = angular.module('angularApp')
         };
 
         $scope.closeAddComposingElement = function() {
-            $scope.addNewComposingElement=false;
+            $scope.addNewComposingElement = false;
         };
 
-        $scope.openAddComposingElement = function() {
+        var prev = -1;
+
+        $scope.openAddComposingElement = function(i) {
+            
+            if (prev>-1) {
+                $scope.composingElements[prev].expand = false;    
+            }
+
+            prev = i;
+
         	$scope.composingElementForm = {};
         	$scope.composingElementForm.inherentFunction = [];
-            $scope.addNewComposingElement=true;
+            $scope.addNewComposingElement = true;
         };
 
         $scope.getAddComposingElement = function() {
