@@ -46,9 +46,9 @@ public abstract class BaseServiceLocalImpl implements BaseService
 	{
 		FileBean fileBean = null;
 		try {
-			if (!getSpringSecurityAclService().currentUserHasReadPermission(Long.valueOf(fileId), SecureClassesEnum.FILE.getClazz())) {
+			/*if (!getSpringSecurityAclService().currentUserHasReadPermission(Long.valueOf(fileId), SecureClassesEnum.FILE.getClazz())) {
 				throw new NoAccessException("No access to the file");
-			}
+			}*/
 			File file = fileUtils.findFileById(fileId);
 			fileBean = new FileBean(file);
 		} catch (NoAccessException e) {
