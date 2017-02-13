@@ -31,10 +31,12 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -167,6 +169,8 @@ public class SearchSampleBO extends AbstractDispatchBO {
 			}
 		}
 		List<SimpleSearchSampleBean> searchBeanList = transfertoSimpleSampleBeans(sampleList);
+		if (searchBeanList != null && searchBeanList.size() > 0)
+			Collections.sort(searchBeanList, new Comparators.SimpleSearchSampleBeanComparator());
 		return searchBeanList;
 	}
 	

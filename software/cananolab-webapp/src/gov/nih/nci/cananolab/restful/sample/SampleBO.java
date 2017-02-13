@@ -281,6 +281,13 @@ public class SampleBO extends BaseAnnotationBO {
 		if (hasNullPOC(request, sampleBean, sampleEdit.getErrors())) {
 			return sampleEdit;
 		}
+		
+		InitSampleSetup.getInstance().setPOCDropdowns(request, sampleService);
+		SortedSet<String> organizationNames = sampleService.getAllOrganizationNames();
+		request.getSession().setAttribute("allOrganizationNames", organizationNames);
+		sampleEdit.setOrganizationNamesForUser(new ArrayList<String>(organizationNames));
+		SortedSet<String> roles = (SortedSet<String>)request.getSession().getAttribute("contactRoles");
+		sampleEdit.setContactRoles(new ArrayList<String>(roles));
 
 		Set<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityServiceDAO.findDataAvailabilityBySampleId(sampleBean.getDomain().getId().toString());
 
