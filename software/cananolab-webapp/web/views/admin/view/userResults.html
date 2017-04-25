@@ -1,0 +1,50 @@
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+        <tr>
+            <th scope="col" align="left">
+                User Search Results
+            </th>
+            <td align="right" width="30%">
+                <button class="btn back btn-xs" ng-click="goBack()">Back</button>
+            </td>
+        </tr>
+    </table>
+    <br /><div ng-init="p=tableParams.$params;
+				length=userData.data.length;
+				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
+</div><br />
+    <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
+        <tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
+            <td data-title="'Actions'" width="5%" class="columnOne">
+                <a href="#/editUser?username={{row.username}}">Edit</a><br/><br/>
+                <a href="#/resetPwd?username={{row.username}}">Reset Password</a><br/><br/>
+                <span id="msg{{row.username}}" style="color:#2276ff;font-weight:bold;"></span>
+            </td>
+            <td data-title="'Username'" sortable="'username'" width="15%">
+                {{row.username}}
+            </td>
+            <td data-title="'First Name'" sortable="'firstName'" width="15%">
+                {{row.firstName}}
+            </td>    
+            <td data-title="'Last Name'" sortable="'lastName'" width="15%">
+                {{row.lastName}}
+            </td>    
+            <td data-title="'Organization'" sortable="'organization'" width="15%">
+                {{row.organization}}
+            </td>    
+            <td data-title="'Department'" sortable="'department'" width="15%">
+                {{row.department}}
+            </td>    
+            <td data-title="'Title'" sortable="'title'" width="15%">
+                {{row.title}}
+            </td>    
+            <td data-title="'Phone Number'" sortable="'phoneNumber'" width="15%">
+                {{row.phoneNumber}}
+            </td>    
+            <td data-title="'Email'" sortable="'emailId'" width="15%">
+                {{row.emailId}}
+            </td>
+        </tr>
+    </table>
+
+</div>

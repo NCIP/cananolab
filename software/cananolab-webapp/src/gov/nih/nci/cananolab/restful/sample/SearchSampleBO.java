@@ -22,6 +22,8 @@ import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.Group;
+import gov.nih.nci.cananolab.security.service.GroupService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
@@ -29,10 +31,12 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -64,6 +68,9 @@ public class SearchSampleBO extends AbstractDispatchBO {
 	
 	@Autowired
 	private CharacterizationService characterizationService;
+	
+	@Autowired
+	private GroupService groupService;
 
 	public List search(SearchSampleForm form, HttpServletRequest request) throws Exception
 	{
@@ -118,6 +125,53 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		List<SimpleSearchSampleBean> simpleBeans = transfertoSimpleSampleBeans(sampleBeansPerPage);
 		
 		return simpleBeans;
+	}
+	
+	public List<SimpleSearchSampleBean> getSamplesByCollaborationGroup(HttpServletRequest request, Long groupId) throws Exception
+	{
+		Group collabGrp = null;
+		List<SampleBean> sampleList = new ArrayList<SampleBean>();
+		if (groupId != null)
+			collabGrp = groupService.getGroupById(groupId);
+		
+		List<Long> collabGrpSamples = sampleServiceHelper.getSampleAccessibleToACollabGrp(collabGrp.getGroupName());
+		if (collabGrpSamples != null & collabGrpSamples.size() > 0)
+		{
+			for (Long sampleId : collabGrpSamples)
+			{
+				SampleBean sampleBean = sampleService.findSampleById(sampleId + "", false);
+				if (sampleBean != null) {
+					Sample sample = sampleBean.getDomain();
+					// load summary information
+					sampleBean.setCharacterizationClassNames(sampleServiceHelper
+							.getStoredCharacterizationClassNames(sample)
+							.toArray(new String[0]));
+					sampleBean.setFunctionalizingEntityClassNames(sampleServiceHelper
+							.getStoredFunctionalizingEntityClassNames(sample)
+							.toArray(new String[0]));
+					sampleBean.setNanomaterialEntityClassNames(sampleServiceHelper
+							.getStoredNanomaterialEntityClassNames(sample)
+							.toArray(new String[0]));
+					sampleBean.setFunctionClassNames(sampleServiceHelper
+							.getStoredFunctionClassNames(sample).toArray(new String[0]));
+					// get data availability for the samples
+					Set<DataAvailabilityBean> dataAvailability = dataAvailabilityServiceDAO.findDataAvailabilityBySampleId(sampleId + "");
+					// dataAvailabilityMapPerPage.put(sampleId,
+					// dataAvailability);
+					if (!dataAvailability.isEmpty() && dataAvailability.size() > 0)
+					{
+						sampleBean.setDataAvailability(dataAvailability);
+						sampleBean.setHasDataAvailability(true);
+						calculateDataAvailabilityScore(request, sampleBean, dataAvailability);
+					}
+				}
+				sampleList.add(sampleBean);
+			}
+		}
+		List<SimpleSearchSampleBean> searchBeanList = transfertoSimpleSampleBeans(sampleList);
+		if (searchBeanList != null && searchBeanList.size() > 0)
+			Collections.sort(searchBeanList, new Comparators.SimpleSearchSampleBeanComparator());
+		return searchBeanList;
 	}
 	
 	/**

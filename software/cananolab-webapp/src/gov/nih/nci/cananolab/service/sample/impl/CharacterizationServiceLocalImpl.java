@@ -431,6 +431,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
+			logger.error("Error in copying characterization: ", e);
 			String error = "Error saving the copy of characterization.";
 			throw new CharacterizationException(error, e);
 		}

@@ -1,0 +1,136 @@
+<div class="nanoPageContainer" ng-class="{formFocus:loader}">
+<div class="spacer">
+<form novalidate>
+<table class="contentTitle" width="100%" border="0" summary="layout">
+    <tbody>
+    <tr>
+        <th scope="col" align="left" ng-if="userTag==null">
+            Create New User
+        </th>
+
+        <th scope="col" align="left" ng-if="userTag!=null">
+            Update User
+        </th>
+    </tr>
+    </tbody>
+</table>
+<span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
+    <ul>
+        <li ng-show="messages!=''">
+            {{messages}}
+        </li>
+        <li ng-show="messages=='' && msgDisplay!=undefined">
+            {{msgDisplay.msg}}
+        </li>
+    </ul>
+</span>
+<table width="100%" align="center" class="submissionView" summary="layout">
+<tr>
+    <td class="cellLabel">
+        <label for="username">Username*</label>
+    </td>
+    <td>
+        <div id="userNamePrompt">
+            <input type="text" ng-model="userForm.username" ng-disabled="userTag!=null" name="user.domain.username" size="30" ng-model-onblur id="username">
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="firstName">First Name*</label>
+    </td>
+    <td>
+        <div id="firstNamePrompt">
+            <input type="text" ng-model="userForm.firstName" name="user.domain.firstName" size="30" ng-model-onblur id="firstName">
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="lastName">Last Name*</label>
+    </td>
+    <td>
+        <div id="lastNamePrompt">
+            <input type="text" ng-model="userForm.lastName" name="user.domain.lastName" size="30" ng-model-onblur id="lastName">
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="organization">Organization</label>
+    </td>
+    <td>
+        <div id="organizationPrompt">
+            <input type="text" ng-model="userForm.organization" name="user.domain.organization" size="30" ng-model-onblur id="organization">
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="department">Department</label>
+    </td>
+    <td>
+        <div id="departmentPrompt">
+            <input type="text" ng-model="userForm.department" name="user.domain.department" size="30" ng-model-onblur id="department">
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="title">Title</label>
+    </td>
+    <td>
+        <div id="titlePrompt">
+            <input type="text" ng-model="userForm.title" name="user.domain.title" size="30" ng-model-onblur id="title">
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="phoneNumber">Phone Number</label>
+    </td>
+    <td>
+        <div id="phoneNumberPrompt">
+            <input type="text" ng-model="userForm.phoneNumber" name="user.domain.phoneNumber" size="30" ng-model-onblur id="phoneNumber">
+        </div>
+    </td>
+</tr>
+<tr>
+    <td class="cellLabel">
+        <label for="emailId">Email</label>
+    </td>
+    <td>
+        <div id="emailPrompt">
+            <input type="text" ng-model="userForm.emailId" name="user.domain.emailId" size="30" ng-model-onblur id="emailId">
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td colspan="2">
+        <table width="600">
+            <ng-include src="'/caNanoLab/views/manageRoles.html'"></ng-include>
+        </table>
+    </td>
+</tr>
+
+</table>
+<br>
+<table width="100%" class="invisibleTable" summary="layout">
+    <tbody><tr>
+ 	<td class="btn-group pull-right" width="300">
+        <button ng-click="resetForm()" class='btn btn-default'>Reset</button>
+	    <button ng-click="doSubmitData()" ng-if="userTag == null" class='btn btn-primary'>Save</button>
+	    <button ng-click="doUpdateData()" ng-if="userTag != null" class='btn btn-primary'>Update</button>
+      </td>
+      </tr></tbody>
+</table>
+	</form>
+</div>
+</div>
+<div id="loader" ng-show="loader">
+    <div id="loaderText">
+        Loading
+    </div>
+    <div id="loaderGraphic"></div>
+</div>

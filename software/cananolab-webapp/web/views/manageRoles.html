@@ -1,0 +1,34 @@
+<tr>
+    <td class="cellLabel" width="15%" id="addRoleLabel">
+        Roles for the User
+    </td>
+    <td>
+        <button ng-click="$parent.addRole=true" id="addRole" class="btn btn-primary btn-xxs">Add</button>
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        <div id="newRole" ng-if="$parent.addRole">
+            <table class="subSubmissionView" width="100%" align="center" summary="layout">
+                <tr>
+                    <th colspan="4">
+                        Add Roles to the User
+                    </th>
+                </tr>
+                <tr>
+                    <td class="cellLabel" width="25%">
+                        Role
+                    </td>
+                    <td colspan="3">
+                        <input type="checkbox" ng-model="userRoles[0]" ng-true-value="ROLE_CURATOR">
+                        <label for="byCurator">Curator&nbsp;&nbsp;</label>
+                        <input type="checkbox" ng-model="userRoles[1]" ng-true-value="ROLE_RESEARCHER">
+                        <label for="byPublic">Researcher&nbsp;&nbsp;</label>
+                        <input type="checkbox" ng-model="userRoles[2]" ng-true-value="ROLE_ADMIN">
+                        <label for="byAdmin">Admin</label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </td>
+</tr>

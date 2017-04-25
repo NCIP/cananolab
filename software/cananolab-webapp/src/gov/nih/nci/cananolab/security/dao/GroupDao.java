@@ -25,5 +25,7 @@ public interface GroupDao
 	public int deleteGroup(Long groupId);
 	
 	public List<Group> getGroupsWithMember(String username);
+	
+	public List<Group> getAllGroups();
 
 }

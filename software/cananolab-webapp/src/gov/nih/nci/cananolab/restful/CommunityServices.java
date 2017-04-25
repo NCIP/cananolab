@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +18,12 @@ import org.apache.log4j.Logger;
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.restful.community.CollaborationGroupBO;
 import gov.nih.nci.cananolab.restful.community.CollaborationGroupManager;
+import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
+import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 @Path("/community")
 public class CommunityServices
@@ -181,6 +185,7 @@ public class CommunityServices
 					.entity("Error while removing user from the collaboration group : "+ e.getMessage()).build();
 		}
 	}
+	
 	@GET
 	@Path("/setupNew")
 	@Produces ("application/json")
@@ -206,5 +211,32 @@ public class CommunityServices
 					.entity("Problem setting up the new collaboration groups: "+ e.getMessage()).build();
 		}
 	}
+	
+	@GET
+	@Path("/getsamples")
+	@Produces ("application/json")
+    public Response getSamplesByCollabGroup(@Context HttpServletRequest httpRequest, @QueryParam("groupId") String groupId)
+    {
+		logger.info("Fetch samples that a Collaboration Group " + groupId + " has access to.");
+		SearchSampleBO srchSampleBO = (SearchSampleBO) SpringApplicationContext.getBean(httpRequest, "searchSampleBO");
+		
+		try {
+			List<SimpleSearchSampleBean> sampleList = new ArrayList<SimpleSearchSampleBean>();
+			
+			if (!StringUtils.isEmpty(groupId))
+				sampleList = srchSampleBO.getSamplesByCollaborationGroup(httpRequest, Long.valueOf(groupId));
+			else
+				throw new Exception("No collaboration group information to fetch samples for.");
+			
+			return Response.ok(sampleList).header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity("Error in fetching samples for collaboration groups: "+ e.getMessage()).build();
+		}
+    }
 
 }

@@ -29,6 +29,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -464,6 +465,12 @@ public class Comparators {
 		}
 	}
 
+	public static class SimpleSearchSampleBeanComparator implements Comparator<SimpleSearchSampleBean> {
+		public int compare(SimpleSearchSampleBean sample1, SimpleSearchSampleBean sample2) {
+			return new SortableNameComparator().compare(sample1.getSampleName(), sample2.getSampleName());
+		}
+	}
+	
 	public static class ProtocolDateComparator implements Comparator<Protocol> {
 		public int compare(Protocol protocol1, Protocol protocol2) {
 			Date date1 = protocol1.getCreatedDate();

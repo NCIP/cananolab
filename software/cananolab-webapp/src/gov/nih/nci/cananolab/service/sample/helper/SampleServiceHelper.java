@@ -751,6 +751,12 @@ public class SampleServiceHelper
 		int cnt = (publicData != null) ? publicData.size() : 0;
 		return cnt;
 	}
+	
+	public List<Long> getSampleAccessibleToACollabGrp(String groupName)
+	{
+		List<Long> collabGroupSamples = aclDao.getIdsOfClassForSid(SecureClassesEnum.SAMPLE.getClazz().getName(), groupName);
+		return collabGroupSamples;
+	}
 
 	public String[] getSampleViewStrs(Sample sample) {
 		List<String> columns = new ArrayList<String>(7);

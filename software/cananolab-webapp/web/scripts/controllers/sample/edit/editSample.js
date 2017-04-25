@@ -52,6 +52,11 @@ var app = angular.module('angularApp')
     //goBack
     //Change location if user hits the Back button
     $scope.goBack = function() {
+        if ($rootScope.fromCollab!=undefined && $rootScope.fromCollab) {
+            $rootScope.fromCollab = false;
+            $location.path("/collaborationGroup").replace();
+            return;
+        }
                     console.log($routeParams);
 
         if ($scope.updateButton=='Save') {

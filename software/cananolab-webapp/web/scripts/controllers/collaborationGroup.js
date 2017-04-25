@@ -1,11 +1,31 @@
 'use strict';
 var app = angular.module('angularApp')
-.controller('CollaborationGroupCtrl', function (navigationService,groupService,$scope,$rootScope,$http,$location) {
+.controller('CollaborationGroupCtrl', function (navigationService,groupService,$scope,$rootScope,$http,$location,$sce,$modal) {
 	$rootScope.tabs = navigationService.get();
 	$rootScope.groups = groupService.getGroups.data.get();
+
+	$scope.isCurator = false;
+	$http({method: 'GET', url: '/caNanoLab/rest/security/getUserGroups' }).
+		success(function(data, status, headers, config) {
+
+		var x = data;
+		for (var key in x) {
+		  for (var y=0;y<x[key].length;y++) {
+		    if (x[key][y] == 'Curator') {
+		    	$scope.isCurator = true;
+		    };
+		  };
+		}
+		}).
+		error(function(data, status, headers, config) {
+			
+		});
+
+	$scope.trustAsHtml = $sce.trustAsHtml;
+
 	// $scope.data = [{"userAccesses":[{"userBean":{"userId":"56","displayName":"Gaheen, Sharon","loginName":"sharon","title":"","admin":false,"curator":false,"groupNames":[]},"groupName":"Carbon Tube Group","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"user"}],"groupAccesses":[{"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"}],"theAccess":{"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"publicStatus":false,"userUpdatable":true,"userDeletable":true,"userIsOwner":false,"id":"149","name":"Carbon Tube Group","description":"","ownerName":"gaheens","descriptionDisplayName":""},{"userAccesses":[],"groupAccesses":[{"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"}],"theAccess":{"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"publicStatus":false,"userUpdatable":true,"userDeletable":true,"userIsOwner":false,"id":"145","name":"Demo University","description":"","ownerName":"gaheens","descriptionDisplayName":""},{"userAccesses":[{"userBean":{"userId":"88","displayName":"Burns, Kevin","loginName":"burnskd","title":"","admin":false,"curator":false,"groupNames":[]},"groupName":"Demo-Collaboration","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"user"},{"userBean":{"userId":"62","displayName":"Guest, Guest","loginName":"canano_guest","title":"","admin":false,"curator":false,"groupNames":[]},"groupName":"Demo-Collaboration","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"user"},{"userBean":{"userId":"79","displayName":"Crist, Rachael","loginName":"cristr","title":"","admin":false,"curator":false,"groupNames":[]},"groupName":"Demo-Collaboration","roleName":"R","roleDisplayName":"read","accessBy":"user"}],"groupAccesses":[{"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"}],"theAccess":{"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"publicStatus":false,"userUpdatable":true,"userDeletable":true,"userIsOwner":false,"id":"146","name":"Demo-Collaboration","description":"Demonstration Collaboration Group","ownerName":"canano_guest","descriptionDisplayName":"Demonstration Collaboration Group"},{"userAccesses":[{"userBean":{"userId":"121","displayName":"Klemm, Juli","loginName":"KlemmJ","title":"","admin":false,"curator":false,"groupNames":[]},"groupName":"NCI group","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"user"},{"userBean":{"userId":"56","displayName":"Gaheen, Sharon","loginName":"sharon","title":"","admin":false,"curator":false,"groupNames":[]},"groupName":"NCI group","roleName":"R","roleDisplayName":"read","accessBy":"user"}],"groupAccesses":[{"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"}],"theAccess":{"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"publicStatus":false,"userUpdatable":true,"userDeletable":true,"userIsOwner":false,"id":"150","name":"NCI group","description":"","ownerName":"KlemmJ","descriptionDisplayName":""},{"userAccesses":[{"userBean":{"userId":"73","displayName":"Mcneil, Scott","loginName":"mcneils","title":"","admin":false,"curator":false,"groupNames":[]},"groupName":"NCNHIR","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"user"},{"userBean":{"userId":"79","displayName":"Crist, Rachael","loginName":"cristr","title":"","admin":false,"curator":false,"groupNames":[]},"groupName":"NCNHIR","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"user"}],"groupAccesses":[{"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"}],"theAccess":{"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"publicStatus":false,"userUpdatable":true,"userDeletable":true,"userIsOwner":false,"id":"148","name":"NCNHIR","description":"NIEHS Centers for Nanotechnology Health Implicaitons Research","ownerName":"cristr","descriptionDisplayName":"NIEHS Centers for Nanotechnology Health Implicaitons Research"},{"userAccesses":[{"userBean":{"userId":"126","displayName":"Researcher, CaNano","loginName":"canano_res","title":"","admin":false,"curator":false,"groupNames":[]},"groupName":"Test Collaboration","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"user"}],"groupAccesses":[{"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"Curator","roleName":"CURD","roleDisplayName":"read update delete","accessBy":"group"}],"theAccess":{"userBean":{"userId":null,"displayName":"","loginName":"","title":null,"admin":false,"curator":false,"groupNames":[]},"groupName":"","roleName":"","roleDisplayName":"","accessBy":"group"},"publicStatus":false,"userUpdatable":true,"userDeletable":true,"userIsOwner":false,"id":"151","name":"Test Collaboration","description":"Test","ownerName":"canano_res","descriptionDisplayName":"Test"}];
 	// $scope.userList = {"lethai":"Le Thai","burnskd":"Burns Kevin","canano_guest":"Guest Guest","grodzinp":"Grodzinski Piotr","swand":"Swan Don","skoczens":"Skoczen Sarah","sternstephan":"Stern Stephan","zolnik":"Zolnik Banu","canano_res":"Researcher CaNano","daijz":"Dai Jie","hunseckerk":"Hunsecker Kelly","lipkeyfg":"Lipkey Foster","marina":"Dobrovolskaia Marina","pottert":"Potter Tim","uckunf":"Uckun Fatih","michal":"Lijowski Michal","mcneils":"Mcneil Scott","neunb":"Neun Barry","cristr":"Crist Rachael","zhengji":"Zheng Jiwen","frittsmj":"Fritts Martin","SchaeferH":"Schaefer Henry","benhamm":"Benham Mick","masoods":"Masood Sana","mclelandc":"McLeland Chris","torresdh":"Torres David","KlemmJ":"Klemm Juli","patria":"Patri Anil","hughesbr":"Hughes Brian","clogstonj":"Clogston Jeff","hinkalgw":"Hinkal George","sharon":"Gaheen Sharon"}
-	$scope.$on('$viewContentLoaded', function(){
+	$scope.$on('$viewContentLoaded', function() {
 		$scope.loaderText = "Loading";
 		$scope.loader = true;
 		$http({method: 'GET', url: '/caNanoLab/rest/community/getCollaborationGroups'}).
@@ -195,4 +215,65 @@ var app = angular.module('angularApp')
 		}); 		
 		$scope.showUsers = true;
 	};
+
+	$scope.sampledata = [];
+
+	$scope.showSamples = function(i,ndx) {
+
+		$scope.loader = true;
+	
+		var groupId = '';
+		groupId = $scope.data[ndx].id;
+
+        $http({method: 'GET', url: '/caNanoLab/rest/community/getsamples?groupId=' + groupId}).
+            success(function(data, status, headers, config) {
+            	$scope.sampledata[i] = data;
+            	$scope.loader = false;
+            }).
+            error(function(data, status, headers, config) {
+            	$scope.loader = false;
+            });
+
+	};
+
+	$scope.openDataAvailability = function(sampleId) {
+
+		$scope.loader = true;
+
+          $http({method: 'GET', url: '/caNanoLab/rest/sample/viewDataAvailability',params: {"sampleId":sampleId}}).
+          success(function(data, status, headers, config) {
+            var modalInstance = $modal.open({
+              templateUrl: 'views/sample/view/sampleDataAvailability.html',
+              controller: 'SampleDataAvailabilityCtrl',
+              size: 'sm',
+              resolve: {
+                sampleId: function () {
+                  return sampleId;
+                },
+                availabilityData: function() {
+                  return data;
+                },                
+                sampleData: function() {
+                  return data;
+                },
+                edit: function() {
+                  return 0;
+                }
+              }
+            });
+            $scope.loader = false;
+          }).
+          error(function(data, status, headers, config) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            $scope.message = data;
+            $scope.loader = false;
+          });        
+    };
+
+    $scope.redirectSample = function(id) {
+    	$rootScope.fromCollab = true;
+    	$location.path("/editSample").search({'sampleId':id}).replace();
+    };
+
 });

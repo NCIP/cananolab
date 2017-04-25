@@ -12,9 +12,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 @Component("userDao")
@@ -48,6 +50,15 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 												  "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	private static final String INSERT_USER_AUTHORITY_SQL = "INSERT INTO authorities(username, authority) values (?, ?)";
+	
+	private static final String RESET_PASSWORD_SQL = "UPDATE users SET password = ? WHERE username = ?";
+	
+	private static final String FETCH_PASSWORD_SQL = "SELECT password FROM users WHERE username = ?";
+	
+	private static final String UPDATE_USER_SQL = "UPDATE users SET first_name = ?, last_name = ?, organization = ?, department = ?, title = ?, phone_number = ?, email_id = ?, enabled = ? " +
+												  "WHERE username = ?";
+	
+	private static final String DELETE_ROLES_SQL = "DELETE FROM authorities WHERE username = ? AND authority != '" + CaNanoRoleEnum.ROLE_ANONYMOUS.toString() + "'";
 
 	@Override
 	public CananoUserDetails getUserByName(String username)
@@ -133,6 +144,50 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 		Object[] params = new Object[] {userName, authority};
 
 		int status = getJdbcTemplate().update(INSERT_USER_AUTHORITY_SQL, params);
+		return status;
+	}
+	
+	@Override
+	public int resetPassword(String userName, String password)
+	{
+		logger.info("Reset password for user: " + userName);
+		Object[] params = new Object[] {password, userName};
+		
+		int status = getJdbcTemplate().update(RESET_PASSWORD_SQL, params);
+		return status;
+	}
+	
+	@Override
+	public String readPassword(String userName)
+	{
+		logger.info("Read password for user : " + userName);
+		String currPassword = (String) getJdbcTemplate().queryForObject(FETCH_PASSWORD_SQL, new Object[] {userName}, String.class);
+		
+		return currPassword;
+	}
+
+	@Override
+	public int updateUser(CananoUserDetails userDetails)
+	{
+		logger.info("Update user account for user: " + userDetails.getUsername());
+		int enabled = (userDetails.isEnabled()) ? 1 : 0;
+		
+		Object[] params = new Object[] {userDetails.getFirstName(), userDetails.getLastName(), userDetails.getOrganization(), 
+										userDetails.getDepartment(), userDetails.getTitle(), userDetails.getPhoneNumber(),
+										userDetails.getEmailId(), Integer.valueOf(enabled), userDetails.getUsername()};
+		
+		int status = getJdbcTemplate().update(UPDATE_USER_SQL, params);
+		return status;
+	}
+	
+	@Override
+	public int deleteUserAssignedRoles(String username)
+	{
+		logger.info("Delete all user assigned roles for :" + username);
+	
+		Object[] params = new Object[] {username};
+
+		int status = getJdbcTemplate().update(DELETE_ROLES_SQL, params);
 		return status;
 	}
 	

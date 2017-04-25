@@ -135,6 +135,14 @@ public class TabGenerationBO {
 //			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary";
 //			tabs.add(tabWithLink);
 			
+			if (userDetails.isAdmin())
+			{
+				tabWithLink = new String[2];
+				tabWithLink[0] = "ADMIN";
+				tabWithLink[1] =  urlBase + "#/manageUsers";
+				tabs.add(tabWithLink);
+			}
+			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "LOGOUT";
 			tabWithLink[1] =  urlBase + "index.html#/logout";;

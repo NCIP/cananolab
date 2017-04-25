@@ -27,6 +27,7 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 	
 	private static final String FETCH_GROUP_BY_NAME_SQL = "SELECT g.id, g.group_name, g.group_description, g.created_by FROM groups g where g.group_name = ?";
 	private static final String FETCH_GROUP_BY_ID_SQL = "SELECT g.id, g.group_name, g.group_description, g.created_by FROM groups g where g.id = ?";	
+	private static final String FETCH_ALL_GROUPS_SQL = "SELECT g.id, g.group_name, g.group_description, g.created_by FROM groups g";	
 	private static final String INSERT_GROUP_SQL = "INSERT INTO groups (group_name, group_description, created_by) VALUES (?,?,?)";
 	private static final String INSERT_GROUP_MEMBER_SQL = "INSERT INTO group_members (group_id, username) VALUES (?,?)";
 	private static final String UPDATE_GROUP_SQL = "UPDATE groups SET group_description = ? WHERE id = ?";
@@ -149,6 +150,16 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 			Object[] params = new Object[] {username, username};
 			groups = getJdbcTemplate().query(FETCH_GROUPS_FOR_USER_SQL, params, new GroupMapper());
 		}
+		return groups;
+	}
+
+	@Override
+	public List<Group> getAllGroups()
+	{
+		logger.debug("Fetching all groups.");
+		
+		List<Group> groups = getJdbcTemplate().query(FETCH_ALL_GROUPS_SQL, new GroupMapper());
+		
 		return groups;
 	}
 	

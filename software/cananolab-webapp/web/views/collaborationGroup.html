@@ -14,217 +14,216 @@
  </tr>
 </table><br />
 
-<table class="submissionView" width="100%" align="center">
-	<tbody>
-		<tr>
-			<td class="cellLabel" colspan="2">
-				Existing Collaboration Groups
-			</td>
-		</tr>
-		<tr ng-if="data.length">
-			<td colspan="2">
-				<table class="editTableWithGrid" align="center" width="95%">
-					<tbody>
-						<tr>
-							<th scope="col">
-								Name
-							</th>
-							<th scope="col" width="33%">
-								Description
-							</th>
-							<th scope="col">
-								Owner
-							</th>
-							<th>
-								Users
-							</th>
-							<th></th>
-						</tr>
-						
-							<tr valign="top" ng-repeat="item in data track by $index">
-								<td>
-									{{item.name}}
-								</td>
-								<td>
-									{{item.description}}
-								</td>
-								<td>
-									{{item.ownerName}}
-								</td>
-								<td>
-									<div ng-repeat="user in item.userAccesses track by $index">
-										{{user.recipientDisplayName}}
-									</div>							
-								</td>
-								<td>
-									<div align="right">
-										<button ng-click="editGroupCollaboration(item)">Edit</button>
-									</div>
-								</td>
-							</tr>						
-					</tbody>
-				</table>
-			</td>
-		</tr>
+<div style="font-size:18px;">Existing Collaboration Groups</div>
+<table class="table sample" width="100%" cellpadding="0" cellspacing="0">
 
-		<tr ng-show="editCollaborationGroup">
-			<td colspan="2">
-				<table class="subSubmissionView" summary="layout" align="center" width="85%">
-					<tbody>
-						<tr>	
-							<th colspan="2">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Owner</th>
+        <th>Users</th>
+        <th></th>
+    </tr>
+
+    <tr ng-repeat-start="item in data track by $index">
+        <td class="columnOne">
+        	<div ng-show="isCurator"><a ng-click="showSamples(item.name,$index);item.expand=!item.expand" style="cursor: pointer;"><i ng-show="!item.expand" class="fa fa-plus" aria-hidden="true"></i><i ng-show="item.expand" class="fa fa-minus" aria-hidden="true"></i>&nbsp;<span style="text-decoration: underline;">{{item.name}}</span></a></div>
+        	<div ng-show="!isCurator"><span>{{item.name}}</span></div>        	
+        </td>
+        <td>
+            <div>{{item.description}}</div>
+        </td>
+        <td>
+            <div>{{item.ownerName}}</div>
+        </td>
+        <td>
+        	<div>
+                <div ng-repeat="user in item.userAccesses track by $index">
+					{{user.recipientDisplayName}}
+				</div>
+			</div>
+        </td>
+        <td>
+            <div>
+            	<div align="right">
+					<button ng-click="editGroupCollaboration(item)">Edit</button>
+				</div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-if="item.expand" ng-repeat-end>
+    	<td colspan="5" class="columnOne">
+    		<table class="table sample" width="100%" cellpadding="0" cellspacing="0">
+	
+	    		<tr>
+			        <th>Sample Name</th>
+			        <th>Primary Point of Contact</th>
+			        <th>Composition</th>
+			        <th>Functions</th>
+			        <th>Characterizations</th>
+			        <th>Data Availability</th>
+			        <th>Created Date</th>
+			    </tr>
+
+			    <tr ng-repeat="s in sampledata[item.name] track by $index">
+			        <td class="columnOne">
+			        	<div><a ng-init="searchType='simple'" href="" ng-click="redirectSample(s.sampleId)">{{s.sampleName}}</a></div>
+			        </td>
+			        <td>
+				        <div ng-bind-html="trustAsHtml(s.pointOfContact)"></div>
+			        </td>
+			        <td>
+			            <div ng-repeat="com in s.composition track by $index">
+			            	{{com}}<br>
+			            </div>
+			        </td>
+			        <td>
+			            <div ng-repeat="com in s.functions track by $index">{{com}}</div>
+			        </td>
+			        <td>	
+			            <div ng-repeat="com in s.characterizations track by $index">{{com}}</div>
+			        </td>
+			        <td>
+			            <div><a href="" ng-click="openDataAvailability(s.sampleId)">{{s.dataAvailability}}</a></div>
+			        </td>
+			        <td>
+			        	<div>{{s.createdDate | date:'shortDate'}}</div>
+			        </td>
+			    </tr>
+
+    		</table>
+    	</td>
+    </tr>
+
+    <tr ng-show="editCollaborationGroup">
+		<td colspan="2">
+			<table class="subSubmissionView" summary="layout" align="center" width="85%">
+				<tbody>
+					<tr>	
+						<th colspan="2">
 							Collaboration Group Information
-							</th>
-						</tr>
-						<tr>
-							<td class="cellLabel" width="15%">
-								<label for="groupName">Name*</label>
-							</td>
-							<td>
-								<input name="name" size="30" value="" id="groupName" type="text" ng-model="collaborationGroup.name">
-							</td>
-						</tr>	
-						<tr>
-							<td class="cellLabel" width="15%">
-								<label for="groupDescription">Description</label>
-							</td>
-							<td>
-								<textarea name="description" ng-model="collaborationGroup.description" cols="70" rows="5" id="groupDescription"></textarea>
-							</td>
-						</tr>	
-
-						<tr>
-							<td class="cellLabel" id="userLabel" width="15%">
-								User
-							</td>
-							<td>
-								<div id="userSection">
-									<a style="display:block" id="addUser" href="" ng-click="openUserInfo()">Add</a>
-									<br>
-
-									<br>
-									<table id="userTable" class="editTableWithGrid" style="display: block;" width="95%">
-										<tbody id="userRows"><tr id="patternHeader">
-												<td class="cellLabel" scope="col" width="40%">
-													Login Name
-												</td>
-												<!-- <td class="cellLabel" scope="col">
-													Access to the Group
-												</td> -->
-												<td>
-												</td>
-											</tr>
-											<tr ng-repeat="access in collaborationGroup.userAccesses" style="">
-												<td>
-													{{access.recipient}}
-												</td>
-												<!-- <td>
-													{{access.roleDisplayName}}
-												</td> -->
-												<td>
-													<button ng-click="openUserInfo(access)">Edit</button>
-												</td>
-											</tr></tbody>
-									</table>
-								</div>
-							</td>
-						</tr>													
-						<tr ng-show="userInfo">
-							<td colspan="2">
-								<div id="newUser" style="display: block;padding-left:85px;">
-									<table class="promptbox" summary="layout" border="10" width="90%" align="center">
-										<tbody>
-											<tr ng-if="eMessage">
-												<td colspan="3"><div id="authErrors">{{eMessage}}</div></td>
-											</tr>
-											<tr>
-											<td valign="top" class="cellLabel" width="30%">
-												<label for="loginName">User Login Name*</label>
+						</th>
+					</tr>
+					<tr>
+						<td class="cellLabel" width="15%">
+							<label for="groupName">Name*</label>
+						</td>
+						<td>
+							<input name="name" size="30" value="" id="groupName" type="text" ng-model="collaborationGroup.name">
+						</td>
+					</tr>	
+					<tr>
+						<td class="cellLabel" width="15%">
+							<label for="groupDescription">Description</label>
+						</td>
+						<td>
+							<textarea name="description" ng-model="collaborationGroup.description" cols="70" rows="5" id="groupDescription"></textarea>
+						</td>
+					</tr>	
+					<tr>
+						<td class="cellLabel" id="userLabel" width="15%">
+							User
+						</td>
+						<td>
+							<div id="userSection">
+								<a style="display:block" id="addUser" href="" ng-click="openUserInfo()">Add</a>
+								<br>
+								<br>
+								<table id="userTable" class="editTableWithGrid" style="display: block;" width="95%">
+									<tbody id="userRows"><tr id="patternHeader">
+											<td class="cellLabel" scope="col" width="40%">
+												Login Name
 											</td>
-											<td valign="top" width="30%">
-												<input name="loginName" value="" id="loginName" ng-model="userInfoBean.recipient" type="text">
+											<td>
 											</td>
-											<td valign="top">
-												<button style="width:140px" ng-click="searchLoginName()">Search For User</button>
+										</tr>
+										<tr ng-repeat="access in collaborationGroup.userAccesses" style="">
+											<td>
+												{{access.recipient}}
 											</td>
-											<td valign="top">
-												<table class="invisibleTable" summary="layout">
-													<tbody><tr>
-														<td valign="top">
-															<img src="images/ajax-loader.gif" class="counts" id="loaderImg" style="display: none;" alt="load existing users" border="0">
-														</td>
-														<td valign="top" ng-show="showUsers">
-															
-															
-														<select data-ng-model="userInfoBean.recipient"
-															data-ng-options="key as val for (key,val) in userList" id="loginName"><option value=""></option>
-														</select>
-														</td>
-													</tr>
+											<td>
+												<button ng-click="openUserInfo(access)">Edit</button>
+											</td>
+										</tr></tbody>
+								</table>
+							</div>
+						</td>
+					</tr>													
+					<tr ng-show="userInfo">
+						<td colspan="2">
+							<div id="newUser" style="display: block;padding-left:85px;">
+								<table class="promptbox" summary="layout" border="10" width="90%" align="center">
+									<tbody>
+										<tr ng-if="eMessage">
+											<td colspan="3"><div id="authErrors">{{eMessage}}</div></td>
+										</tr>
+										<tr>
+										<td valign="top" class="cellLabel" width="30%">
+											<label for="loginName">User Login Name*</label>
+										</td>
+										<td valign="top" width="30%">
+											<input name="loginName" value="" id="loginName" ng-model="userInfoBean.recipient" type="text">
+										</td>
+										<td valign="top">
+											<button style="width:140px" ng-click="searchLoginName()">Search For User</button>
+										</td>
+										<td valign="top">
+											<table class="invisibleTable" summary="layout">
+												<tbody><tr>
+													<td valign="top">
+														<img src="images/ajax-loader.gif" class="counts" id="loaderImg" style="display: none;" alt="load existing users" border="0">
+													</td>
+													<td valign="top" ng-show="showUsers">
+														
+														
+													<select data-ng-model="userInfoBean.recipient"
+														data-ng-options="key as val for (key,val) in userList" id="loginName"><option value=""></option>
+													</select>
+													</td>
+												</tr>
 												</tbody></table>
-											</td>
-													</tr>
-													<!-- <tr>
-														<td class="cellLabel">
-															<label for="roleName">Access to the Group*</label>
-														</td>
-														<td colspan="3">
-															<select id="roleName" ng-change="changeRole()" ng-model="userInfoBean.roleName">
-                													<option ng-selected="{{option==userInfoBean.roleName}}"></option>
-                <option value="R" ng-model="userInfoBean.roleDisplayName" ng-selected="{{option==userInfoBean.roleName}}">
-                    READ
-                </option>    
-                <option value="RWD" ng-model="userInfoBean.roleDisplayName" ng-selected="{{option==userInfoBean.roleName}}">
-                    READ WRITE DELETE
-                </option>                                					</select>
-														</td>
-													</tr> -->
-													<tr>
-														<td>
-															<button ng-hide="isUserInfoAdd" ng-click="removeUserInfo(access)" >Remove</button>
-														</td>
-														<td colspan="3" align="right">
-															<div align="right">
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<button ng-hide="isUserInfoAdd" ng-click="removeUserInfo(access)" >Remove</button>
+													</td>
+													<td colspan="3" align="right">
+														<div align="right">
 
-																<button style="float:right" ng-click="cancelUserInfo(access)">Cancel</button>
-																<button ng-click="saveUserInfo(access)" ng-disabled="!userInfoBean.recipient" style="float:right">Save</button>															</div>
-														</td>
-													</tr>
-												</tbody></table>
-											</div>								
-							</td>
-						</tr>
-						<tr ng-hide="userInfo">
-							<td>
-								<button ng-hide="hideRemoveGroupButton" ng-click="removeGroupCollaboration(item)">Remove</button>
-							<td>
-								<button style="float:right" ng-click="cancelGroupCollaboration(item)">Cancel</button>
-								<button style="float:right" ng-disabled="!collaborationGroup.name" ng-click="submit(item)">Submit</button>
-							</td>
-						</tr>			
-					</tbody>	
-				</table>		
-			</td>
-		</tr>
+															<button style="float:right" ng-click="cancelUserInfo(access)">Cancel</button>
+															<button ng-click="saveUserInfo(access)" ng-disabled="!userInfoBean.recipient" style="float:right">Save</button>															</div>
+													</td>
+												</tr>
+											</tbody></table>
+										</div>								
+						</td>
+					</tr>
+					<tr ng-hide="userInfo">
+						<td>
+							<button ng-hide="hideRemoveGroupButton" ng-click="removeGroupCollaboration(item)">Remove</button>
+						<td>
+							<button style="float:right" ng-click="cancelGroupCollaboration(item)">Cancel</button>
+							<button style="float:right" ng-disabled="!collaborationGroup.name" ng-click="submit(item)">Submit</button>
+						</td>
+					</tr>			
+				</tbody>	
+			</table>		
+		</td>
+	</tr>
 
-
-		<tr ng-hide="editCollaborationGroup">
-			<td class="cellLabel" width="20%">New Collaboration Group</td>
-			<td width="80%"><button ng-click="addGroupCollaboration()">Add</button>
-		</tr>
-	</tbody>
 </table>
-<!-- 
-<table>
+<br />
+<div ng-hide="editCollaborationGroup" style="font-size:18px;">New Collaboration Group</div>
+<table ng-hide="editCollaborationGroup" class="table sample" width="100%" cellpadding="0" cellspacing="0">
 	<tr>
-		<td>
-			 <table align="left" class="summaryViewNoGrid" summary="layout" width="100%">
-			 	<tr><td>
-	<div ng-repeat="item in data track by $index">{{item}}<br /><br />
-<!-- 		<div ng-repeat="user in item.userAccesses">
-			{{user}}<br /><br /><br />
-		</div>
-	</div> -->
+        <th>Add a New Collaboration Group</th>
+    </tr>
+	<tr>
+		<td class="columnOne"><button ng-click="addGroupCollaboration()">Add</button></td>
+	</tr>
+</table>
 
 </div>
 </div>
