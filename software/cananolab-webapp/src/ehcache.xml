@@ -7,7 +7,7 @@
 L-->
 
   
-<ehcache>
+<ehcache name="domainObjectsCacheManager">
 
 	<diskStore path="java.io.tmpdir"/>
 

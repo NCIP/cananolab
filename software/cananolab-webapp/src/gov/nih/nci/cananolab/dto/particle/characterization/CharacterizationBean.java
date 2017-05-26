@@ -215,8 +215,7 @@ public class CharacterizationBean {
 	}
 
 	public void setupDomain(String createdBy) throws Exception {
-		className = ClassUtils
-				.getShortClassNameFromDisplayName(characterizationName);
+		className = ClassUtils.getShortClassNameFromDisplayName(characterizationName);
 		Class clazz = ClassUtils.getFullClass(className);
 		if (clazz == null) {
 			clazz = OtherCharacterization.class;
@@ -227,8 +226,7 @@ public class CharacterizationBean {
 		this.updateEmptyFieldsToNull();
 		if (domainChar instanceof OtherCharacterization) {
 			((OtherCharacterization) domainChar).setName(characterizationName);
-			((OtherCharacterization) domainChar)
-					.setAssayCategory(characterizationType);
+			((OtherCharacterization) domainChar).setAssayCategory(characterizationType);
 		} else if (domainChar instanceof Shape) {
 			domainChar = shape;
 		} else if (domainChar instanceof Solubility) {
@@ -251,17 +249,15 @@ public class CharacterizationBean {
 		}
 		// updated created_by if created_by contains copy, but keep the original
 		// created_date
-		if (domainChar.getId() != null
-				|| !StringUtils.isEmpty(domainChar.getCreatedBy())
-				&& domainChar.getCreatedBy().contains(
-						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+		if (domainChar.getId() != null || !StringUtils.isEmpty(domainChar.getCreatedBy())
+				&& domainChar.getCreatedBy().contains(Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainChar.setCreatedBy(createdBy);
 		}
 		domainChar.setDesignMethodsDescription(description);
 		domainChar.setAssayType(assayType);
 		domainChar.setAnalysisConclusion(conclusion);
-		if (pocBean != null && pocBean.getDomain().getId() != null
-				&& pocBean.getDomain().getId() != 0) {
+		if (pocBean != null && pocBean.getDomain().getId() != null && pocBean.getDomain().getId() != 0)
+		{
 			domainChar.setPointOfContact(pocBean.getDomain());
 		} else {
 			domainChar.setPointOfContact(null);

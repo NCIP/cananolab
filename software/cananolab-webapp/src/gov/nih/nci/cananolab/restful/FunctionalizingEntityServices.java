@@ -1,14 +1,13 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
+import gov.nih.nci.cananolab.restful.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.sample.FunctionalizingEntityBO;
-import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvacedSampleCompositionBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionalizingEntityBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.List;
 import java.util.Map;
@@ -31,12 +30,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 @Path("/functionalizingEntity")
 public class FunctionalizingEntityServices {
 
-	private Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
-		
-//	@Inject
-//	ApplicationContext applicationContext;
-	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
-
+	private static final Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
+	
 	@GET
 	@Path("/setup")
 	@Produces ("application/json")
@@ -44,7 +39,7 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
+					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
 			Map<String, Object> dropdownMap = functionalizingEntity.setupNew(sampleId, httpRequest);
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
@@ -61,11 +56,10 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity("Session expired").build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SimpleFunctionalizingEntityBean bean = functionalizingEntity.setupUpdate(sampleId, dataId, httpRequest);
 			
@@ -87,11 +81,10 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity("Session expired").build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SimpleFunctionalizingEntityBean bean = functionalizingEntity.saveFunction(funcBean, httpRequest);
 			
@@ -113,11 +106,10 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity("Session expired").build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SimpleFunctionalizingEntityBean bean = functionalizingEntity.saveFile(funcBean, httpRequest);
 			
@@ -139,11 +131,10 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity("Session expired").build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			List<String> msgs = functionalizingEntity.create(funcBean, httpRequest);
 			
@@ -165,11 +156,10 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity("Session expired").build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SimpleFunctionalizingEntityBean bean = functionalizingEntity.removeFile(funcBean, httpRequest);
 			
@@ -191,11 +181,10 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
+					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
+			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity("Session expired").build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SimpleFunctionalizingEntityBean bean = functionalizingEntity.removeFunction(funcBean, httpRequest);
 			
@@ -217,11 +206,9 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
-			UserBean user = (UserBean) (httpRequest.getSession().getAttribute("user"));
-			if (user == null) 
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity("Session expired").build();
+					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			List<String> msgs = functionalizingEntity.delete(funcBean, httpRequest);
 			
@@ -241,7 +228,7 @@ public class FunctionalizingEntityServices {
 				
 		try { 
 			FunctionalizingEntityBO functionalizingEntity = 
-					(FunctionalizingEntityBO) applicationContext.getBean("functionalizingEntityBO");
+					(FunctionalizingEntityBO) SpringApplicationContext.getBean(httpRequest, "functionalizingEntityBO");
 			
 			FunctionalizingEntityBean entityBean = functionalizingEntity.setupFunctionalizingEntityForAdvancedSearch(sampleId, dataId, httpRequest);
 			

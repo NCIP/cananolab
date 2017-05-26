@@ -106,9 +106,5 @@ public class SampleBasicBean extends SecuredDataBean {
 	public Sample getDomain() {
 		return domain;
 	}
-
-	
-
-	
 	
 }

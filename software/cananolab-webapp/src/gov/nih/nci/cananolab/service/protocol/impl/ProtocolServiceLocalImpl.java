@@ -10,18 +10,24 @@ package gov.nih.nci.cananolab.service.protocol.impl;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.dao.AclDao;
+import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
+import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -29,10 +35,16 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Local implementation of ProtocolService
@@ -40,32 +52,25 @@ import org.hibernate.criterion.Property;
  * @author pansu
  * 
  */
-public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
-		ProtocolService {
-	private static Logger logger = Logger
-			.getLogger(ProtocolServiceLocalImpl.class);
-	private ProtocolServiceHelper helper;
+@Component("protocolService")
+public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements ProtocolService
+{
+	private static Logger logger = Logger.getLogger(ProtocolServiceLocalImpl.class);
+	
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
+	private ProtocolServiceHelper protocolServiceHelper;
+	
+	@Autowired
+	private AclDao aclDao;
 
-	public ProtocolServiceLocalImpl() {
-		super();
-		helper = new ProtocolServiceHelper(this.securityService);
-	}
-
-	public ProtocolServiceLocalImpl(UserBean user) {
-		super(user);
-		helper = new ProtocolServiceHelper(this.securityService);
-	}
-
-	public ProtocolServiceLocalImpl(SecurityService securityService) {
-		super(securityService);
-		helper = new ProtocolServiceHelper(this.securityService);
-	}
-
-	public ProtocolBean findProtocolById(String protocolId)
-			throws ProtocolException, NoAccessException {
+	public ProtocolBean findProtocolById(String protocolId) throws ProtocolException, NoAccessException
+	{
 		ProtocolBean protocolBean = null;
 		try {
-			Protocol protocol = helper.findProtocolById(protocolId);
+			Protocol protocol = protocolServiceHelper.findProtocolById(protocolId);
 			if (protocol != null) {
 				protocolBean = loadProtocolBean(protocol);
 			}
@@ -79,11 +84,11 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		return protocolBean;
 	}
 	
-	public ProtocolBean findWorkspaceProtocolById(String protocolId)
-			throws ProtocolException, NoAccessException {
+	public ProtocolBean findWorkspaceProtocolById(String protocolId) throws ProtocolException, NoAccessException
+	{
 		ProtocolBean protocolBean = null;
 		try {
-			Protocol protocol = helper.findProtocolById(protocolId);
+			Protocol protocol = protocolServiceHelper.findProtocolById(protocolId);
 			if (protocol != null) {
 				protocolBean = loadProtocolBean(protocol, false);
 			}
@@ -99,30 +104,24 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	private ProtocolBean loadProtocolBean(Protocol protocol) throws Exception {
 		ProtocolBean protocolBean = new ProtocolBean(protocol);
-		if (user != null) {
-			List<AccessibilityBean> groupAccesses = super
-					.findGroupAccessibilities(protocol.getId().toString());
-			List<AccessibilityBean> userAccesses = super
-					.findUserAccessibilities(protocol.getId().toString());
-
-			protocolBean.setUserAccesses(userAccesses);
-			protocolBean.setGroupAccesses(groupAccesses);
-			protocolBean.setUser(user);
+		if (SpringSecurityUtil.getPrincipal() != null) {
+			springSecurityAclService.loadAccessControlInfoForObject(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz(), protocolBean);
 		}
 		return protocolBean;
 	}
 	
-	private ProtocolBean loadProtocolBean(Protocol protocol, boolean checkReadPermission) throws Exception {
+	private ProtocolBean loadProtocolBean(Protocol protocol, boolean checkReadPermission) throws Exception
+	{
 		ProtocolBean protocolBean = new ProtocolBean(protocol);
-		if (user != null) {
-			List<AccessibilityBean> groupAccesses = super
-					.findGroupAccessibilities(protocol.getId().toString(), checkReadPermission);
-			List<AccessibilityBean> userAccesses = super
-					.findUserAccessibilities(protocol.getId().toString(), checkReadPermission);
-
-			protocolBean.setUserAccesses(userAccesses);
-			protocolBean.setGroupAccesses(groupAccesses);
-			protocolBean.setUser(user);
+		if (SpringSecurityUtil.getPrincipal() != null) {
+			if (checkReadPermission)
+			{
+				if (springSecurityAclService.currentUserHasReadPermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz()))
+					springSecurityAclService.loadAccessControlInfoForObject(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz(), protocolBean);
+				else
+					throw new NoAccessException();
+			}
+			
 		}
 		return protocolBean;
 	}
@@ -133,9 +132,9 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 	 * @param protocolBean
 	 * @throws Exception
 	 */
-	public void saveProtocol(ProtocolBean protocolBean)
-			throws ProtocolException, NoAccessException {
-		if (user == null) {
+	public void saveProtocol(ProtocolBean protocolBean) throws ProtocolException, NoAccessException 
+	{
+		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		try {
@@ -147,21 +146,17 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 			if (protocolBean.getDomain().getId() != null) {
 				newProtocol = false;
-				if (!securityService.checkCreatePermission(protocolBean
-						.getDomain().getId().toString())) {
+				if (!springSecurityAclService.currentUserHasWritePermission(protocolBean.getDomain().getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
 					throw new NoAccessException();
 				}
 
 				Protocol dbProtocol = null;
 				// confirm if the record in the database exists
-				dbProtocol = helper.findProtocolById(protocolBean.getDomain()
-						.getId().toString());
+				dbProtocol = protocolServiceHelper.findProtocolById(protocolBean.getDomain().getId().toString());
 				if (dbProtocol != null) {
 					// reuse existing createdBy and createdDate
-					protocolBean.getDomain().setCreatedBy(
-							dbProtocol.getCreatedBy());
-					protocolBean.getDomain().setCreatedDate(
-							dbProtocol.getCreatedDate());
+					protocolBean.getDomain().setCreatedBy(dbProtocol.getCreatedBy());
+					protocolBean.getDomain().setCreatedDate(dbProtocol.getCreatedDate());
 				}
 				// the given ID is invalid, create a new one
 				else {
@@ -170,27 +165,27 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 			if (newProtocol) {
 				protocolBean.getDomain().setId(null);
-				protocolBean.getDomain().setCreatedBy(
-						helper.getUser().getLoginName());
+				protocolBean.getDomain().setCreatedBy(SpringSecurityUtil.getLoggedInUserName());
 				protocolBean.getDomain().setCreatedDate(new Date());
 			}
 			if (protocolBean.getFileBean() != null) {
-				fileUtils.prepareSaveFile(protocolBean.getFileBean()
-						.getDomainFile());
+				fileUtils.prepareSaveFile(protocolBean.getFileBean().getDomainFile());
 			}
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-
+			
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			appService.saveOrUpdate(protocolBean.getDomain());
 
 			// save default accesses
-			if (newProtocol) {
-				super.saveDefaultAccessibilities(protocolBean.getDomain()
-						.getId().toString());
-				if (protocolBean.getFileBean() != null) {
-					super.saveDefaultAccessibilities(protocolBean.getFileBean()
-							.getDomainFile().getId().toString());
-				}
+			if (newProtocol)
+			{
+				springSecurityAclService.saveDefaultAccessForNewObject(protocolBean.getDomain().getId(), SecureClassesEnum.PROTOCOL.getClazz());
+				/*if (protocolBean.getFileBean() != null)
+				{
+					springSecurityAclService.saveAccessForChildObject(protocolBean.getDomain().getId(), 
+																	SecureClassesEnum.PROTOCOL.getClazz(), 
+																	protocolBean.getFileBean().getDomainFile().getId(), 
+																	SecureClassesEnum.FILE.getClazz());
+				}*/
 			}
 		} catch (Exception e) {
 			String err = "Error in saving the protocol file.";
@@ -199,12 +194,10 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public ProtocolBean findProtocolBy(String protocolType,
-			String protocolName, String protocolVersion)
-			throws ProtocolException, NoAccessException {
+	public ProtocolBean findProtocolBy(String protocolType, String protocolName, String protocolVersion) throws ProtocolException, NoAccessException
+	{
 		try {
-			Protocol protocol = helper.findProtocolBy(protocolType,
-					protocolName, protocolVersion);
+			Protocol protocol = protocolServiceHelper.findProtocolBy(protocolType, protocolName, protocolVersion);
 			if (protocol != null) {
 				ProtocolBean protocolBean = loadProtocolBean(protocol);
 				return protocolBean;
@@ -225,8 +218,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			throws ProtocolException {
 		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
 		try {
-			List<Protocol> protocols = helper.findProtocolsBy(protocolType,
-					protocolName, protocolAbbreviation, fileTitle);
+			List<Protocol> protocols = protocolServiceHelper.findProtocolsBy(protocolType, protocolName, protocolAbbreviation, fileTitle);
 			Collections.sort(protocols, new Comparators.ProtocolDateComparator());
 			for (Protocol protocol : protocols) {
 				// don't need to load accessibility
@@ -243,7 +235,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public int getNumberOfPublicProtocols() throws ProtocolException {
 		try {
-			int count = helper.getNumberOfPublicProtocols();
+			int count = protocolServiceHelper.getNumberOfPublicProtocols();
 			return count;
 		} catch (Exception e) {
 			String err = "Error finding counts of public protocols.";
@@ -252,15 +244,25 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void deleteProtocol(Protocol protocol) throws ProtocolException,
-			NoAccessException {
-		if (user == null) {
+	public int getNumberOfPublicProtocolsForJob() throws ProtocolException {
+		try {
+			int count = protocolServiceHelper.getNumberOfPublicProtocolsForJob();
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of public protocols.";
+			logger.error(err, e);
+			throw new ProtocolException(err, e);
+		}
+	}
+
+	public void deleteProtocol(Protocol protocol) throws ProtocolException, NoAccessException
+	{
+		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			// assume protocol is loaded with protocol file
 			// find associated characterizations
 			// List<Long> charIds = findCharacterizationIdsByProtocolId(protocol
@@ -273,9 +275,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			// achar.setProtocol(null);
 			// appService.saveOrUpdate(achar);
 			// }
-			List<Characterization> chars = this
-					.findCharacterizationsByProtocolId(protocol.getId()
-							.toString());
+			List<Characterization> chars = this.findCharacterizationsByProtocolId(protocol.getId().toString());
 			for (Characterization achar : chars) {
 				achar.setProtocol(null);
 				appService.saveOrUpdate(achar);
@@ -288,13 +288,10 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	private List<Long> findCharacterizationIdsByProtocolId(String protocolId)
-			throws Exception {
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				Characterization.class).setProjection(
-				Projections.distinct(Property.forName("id")));
+	private List<Long> findCharacterizationIdsByProtocolId(String protocolId) throws Exception
+	{
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class).setProjection(Projections.distinct(Property.forName("id")));
 		crit.createAlias("protocol", "protocol");
 		crit.add(Property.forName("protocol.id").eq(new Long(protocolId)));
 		List results = appService.query(crit);
@@ -306,12 +303,10 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		return ids;
 	}
 
-	private List<Characterization> findCharacterizationsByProtocolId(
-			String protocolId) throws Exception {
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria
-				.forClass(Characterization.class);
+	private List<Characterization> findCharacterizationsByProtocolId(String protocolId) throws Exception
+	{
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class);
 		crit.createAlias("protocol", "protocol");
 		crit.add(Property.forName("protocol.id").eq(new Long(protocolId)));
 		List results = appService.query(crit);
@@ -323,77 +318,55 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		return chars;
 	}
 
-	public void assignAccessibility(AccessibilityBean access, Protocol protocol)
-			throws ProtocolException, NoAccessException {
-		if (!isOwnerByCreatedBy(protocol.getCreatedBy())) {
+	public void assignAccessibility(AccessControlInfo access, Protocol protocol) throws ProtocolException, NoAccessException
+	{
+		if (!springSecurityAclService.isOwnerOfObject(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
 			throw new NoAccessException();
 		}
-		try {
-			// get existing accessibilities
-			List<AccessibilityBean> groupAccesses = this
-					.findGroupAccessibilities(protocol.getId().toString());
-			List<AccessibilityBean> userAccesses = this
-					.findUserAccessibilities(protocol.getId().toString());
-			// do nothing is access already exist
-			if (groupAccesses.contains(access)) {
-				return;
-			} else if (userAccesses.contains(access)) {
-				return;
-			}
-
+		try
+		{
 			// if access is Public, remove all other access except Public
 			// Curator and owner
-			if (access.getGroupName()
-					.equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
-				for (AccessibilityBean acc : groupAccesses) {
-					// remove group accesses that are not public or curator
-					if (!acc.getGroupName().equals(
-							AccessibilityBean.CSM_PUBLIC_GROUP)
-							&& !acc.getGroupName().equals(
-									(AccessibilityBean.CSM_DATA_CURATOR))) {
-						this.removeAccessibility(acc, protocol);
-					}
-				}
-				SecuredDataBean securedDataBean = new SecuredDataBean();
-				for (AccessibilityBean acc : userAccesses) {
-					// remove accesses that are not owner
-					if (!securedDataBean.retrieveUserIsOwner(acc.getUserBean(),
-							protocol.getCreatedBy())) {
-						this.removeAccessibility(acc, protocol);
-					}
-				}
+			// if access is Public, remove all other access except Public, Curator and owner
+			if (CaNanoRoleEnum.ROLE_ANONYMOUS.getRoleName().equalsIgnoreCase(access.getRecipient()))
+			{
+				springSecurityAclService.deleteAllAccessExceptPublicAndDefault(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz());
 			}
-			// if protocol is already public, retract from public
-			else {
-				if (groupAccesses.contains(AccessibilityBean.CSM_PUBLIC_ACCESS)) {
-					this.removeAccessibility(
-							AccessibilityBean.CSM_PUBLIC_ACCESS, protocol);
-				}
+			// if sample is already public, retract from public
+			else
+			{
+				springSecurityAclService.retractObjectFromPublic(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz());
 			}
 
-			super.saveAccessibility(access, protocol.getId().toString());
-			if (protocol.getFile() != null) {
-				super.saveAccessibility(access, protocol.getFile().getId()
-						.toString());
-			}
+			springSecurityAclService.saveAccessForObject(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz(), access.getRecipient(), 
+														 access.isPrincipal(), access.getRoleName());
+
+			/*if (protocol.getFile() != null) {
+				springSecurityAclService.saveAccessForChildObject(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz(), 
+																  protocol.getFile().getId(), SecureClassesEnum.FILE.getClazz());
+			}*/
 		} catch (Exception e) {
 			String error = "Error in assigning access to protocol";
 			throw new ProtocolException(error, e);
 		}
 	}
 
-	public void removeAccessibility(AccessibilityBean access, Protocol protocol)
-			throws ProtocolException, NoAccessException {
-		if (!isOwnerByCreatedBy(protocol.getCreatedBy())) {
+	public void removeAccessibility(AccessControlInfo access, Protocol protocol) throws ProtocolException, NoAccessException
+	{
+		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+		if (userDetails != null && (userDetails.isCurator() ||
+			springSecurityAclService.isOwnerOfObject(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz())))
+		{
 			throw new NoAccessException();
 		}
 		try {
-			if (protocol != null) {
-				super.deleteAccessibility(access, protocol.getId().toString());
-				if (protocol.getFile() != null) {
-					super.deleteAccessibility(access, protocol.getFile()
-							.getId().toString());
-				}
+			if (protocol != null)
+			{
+				String sid = access.getRecipient();
+				
+				springSecurityAclService.retractAccessToObjectForSid(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz(), sid);
+				
+				//File object access automatically updated due to inheritance set up
 			}
 		} catch (Exception e) {
 			String error = "Error in assigning access to protocol";
@@ -401,19 +374,57 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public List<String> findProtocolIdsByOwner(String currentOwner)
-			throws ProtocolException {
+	public List<String> findProtocolIdsByOwner(String currentOwner) throws ProtocolException
+	{
 		List<String> protocolIds = new ArrayList<String>();
 		try {
-			protocolIds = helper.findProtocolIdsByOwner(currentOwner);
+			protocolIds = protocolServiceHelper.findProtocolIdsByOwner(currentOwner);
 		} catch (Exception e) {
 			String error = "Error in retrieving protocolIds by owner";
 			throw new ProtocolException(error, e);
 		}
 		return protocolIds;
 	}
-
-	public ProtocolServiceHelper getHelper() {
-		return helper;
+	
+	@Override
+	public List<String> findProtocolIdsSharedWithUser(CananoUserDetails userDetails) throws ProtocolException
+	{
+		List<String> protocolIds = new ArrayList<String>();
+		try
+		{
+			List<String> sharedWithSids = new ArrayList<String>(userDetails.getGroups());
+			sharedWithSids.add(userDetails.getUsername());
+			protocolIds = aclDao.getIdsOfClassSharedWithSid(SecureClassesEnum.PROTOCOL, userDetails.getUsername(), sharedWithSids);
+		}catch (Exception e) {
+			String error = "Error in retrieving protocolIds shared with logged in user. " + e.getMessage();
+			throw new ProtocolException(error, e);
+		}
+		return protocolIds;
 	}
+	
+	public List<ProtocolBean> getProtocolsByChar(HttpServletRequest request, String characterizationType) throws Exception {
+		String protocolType = null;
+		if (characterizationType
+				.equals(Constants.PHYSICOCHEMICAL_CHARACTERIZATION)) {
+			protocolType = Constants.PHYSICOCHEMICAL_ASSAY_PROTOCOL;
+		} else if (characterizationType.equals(Constants.INVITRO_CHARACTERIZATION)) {
+			protocolType = Constants.INVITRO_ASSAY_PROTOCOL;
+		} else {
+			protocolType = null; // update if in vivo is implemented
+		}
+		List<ProtocolBean> protocols = findProtocolsBy(protocolType, null, null, null);
+		request.getSession().setAttribute("characterizationProtocols", protocols);
+		return protocols;
+	}
+
+	@Override
+	public ProtocolServiceHelper getHelper() {
+		return protocolServiceHelper;
+	}
+
+	@Override
+	public SpringSecurityAclService getSpringSecurityAclService() {
+		return springSecurityAclService;
+	}
+
 }

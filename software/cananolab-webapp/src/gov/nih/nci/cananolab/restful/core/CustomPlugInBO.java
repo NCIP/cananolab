@@ -20,6 +20,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 
 
@@ -30,6 +31,7 @@ import org.springframework.web.context.ServletContextAware;
  * @author pansu
  * 
  */
+@Component("customPlugInBO")
 public class CustomPlugInBO implements ServletContextAware { //implements PlugIn {
 	Logger logger = Logger.getLogger(CustomPlugInBO.class);
 	

@@ -25,7 +25,6 @@ var app = angular.module('angularApp')
             $scope.dataType = 'Protocol';
             $scope.parentFormName = 'protocolForm';
             $scope.accessForm.theAcccess = {};
-            $scope.accessForm.theAcccess.userBean = {};
             $scope.isCurator = groupService.isCurator();
             $scope.groupAccesses = [];
             $scope.userAccesses = [];
@@ -35,12 +34,11 @@ var app = angular.module('angularApp')
             $scope.showAccessuser = false;
             $scope.showAccessSelection = false;
             $scope.accessForm.theAccess = {};
-            $scope.accessForm.theAccess.groupName = '';
-            $scope.accessForm.theAccess.userBean = {};
-            $scope.accessForm.theAccess.userBean.loginName = '';
+            $scope.accessForm.theAccess.recipient = '';
+            $scope.accessForm.theAccess.recipientDisplayName = '';
             $scope.access = {};
-            $scope.access.groupName = '';
-            $scope.access.loginName = '';
+            $scope.access.recipient = '';
+            $scope.access.recipientDisplayName = '';
             $scope.protocolForm.isPublic = false;
             $scope.accessForm.theAccess.accessBy = 'group';
             $scope.accessExists = false;
@@ -142,17 +140,24 @@ var app = angular.module('angularApp')
 
             $http({method: 'POST', url: '/caNanoLab/rest/protocol/submitProtocol',data: $scope.protocolForm}).
                 success(function(data, status, headers, config) {
-                    if (data == "success") {
-                        $location.search('message', 'Protocol successfully saved with title "' + $scope.protocolForm.name + '"').path('/message').replace();
+                    if (data[0] == "success") {
+                        //$location.search('message', 'Protocol successfully saved with title "' + $scope.protocolForm.name + '"').path('/message').replace();
+                    	var msg = 'Protocol successfully saved with title "' + $scope.protocolForm.name + '"';
+                    	$scope.messages = [msg];
+                    	$scope.protocolId = data[1];
+                    	$scope.loadProtocolData();
                     }
-                    else if (data == "retract success") {
-                    	$location.search('message', 'Protocol successfully saved with title "' + $scope.protocolForm.name + '" and retracted from public access.').path('/message').replace();
-                	}                    
+                    else if (data[0] == "retract success") {
+                    	//$location.search('message', 'Protocol successfully saved with title "' + $scope.protocolForm.name + '" and retracted from public access.').path('/message').replace();
+                    	var msg = 'Protocol successfully saved with title "' + $scope.protocolForm.name + '" and retracted from public access.';
+                    	$scope.messages = [msg];
+                    	$scope.protocolId = data[1];
+                    	$scope.loadProtocolData();
+                    }                    
                     else {
                         $scope.loader = false;
                         $scope.messages = data;
                     }
-
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
@@ -161,13 +166,11 @@ var app = angular.module('angularApp')
                     $scope.loader = false;
                     $scope.messages = data;
                 });
-
         };
 
         $scope.doDelete = function() {
             if (confirm("Delete the Protocol?")) {
                 $scope.loader = true;
-
                 $http({method: 'POST', url: '/caNanoLab/rest/protocol/deleteProtocol',data: $scope.protocolForm}).
                     success(function(data, status, headers, config) {
                         if (data == "success") {
@@ -177,7 +180,6 @@ var app = angular.module('angularApp')
                             $scope.loader = false;
                             $scope.messages = data;
                         }
-
                     }).
                     error(function(data, status, headers, config) {
                         // called asynchronously if an error occurs
@@ -318,12 +320,13 @@ var app = angular.module('angularApp')
         /** Start - Access functions **/
 
         $scope.getCollabGroups = function() {
-            if ($scope.accessForm.theAccess.groupName === undefined || $scope.accessForm.theAccess.groupName === null) {
-                $scope.accessForm.theAccess.groupName = '';
+            if ($scope.accessForm.theAccess.recipient === undefined || $scope.accessForm.theAccess.recipient === null) {
+                $scope.accessForm.theAccess.recipient = '';
+                $scope.accessForm.theAccess.recipientDisplayName = '';
             }
 
             $scope.loader = true;
-            $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.groupName}).
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.recipient}).
                 success(function(data, status, headers, config) {
                     $scope.collabGroups = data;
                     $scope.loader = false;
@@ -341,12 +344,12 @@ var app = angular.module('angularApp')
         };
 
         $scope.getAccessUsers = function() {
-            if ($scope.accessForm.theAccess.userBean.loginName === undefined || $scope.accessForm.theAccess.userBean.loginName === null) {
-                $scope.accessForm.theAccess.userBean.loginName = '';
+            if ($scope.accessForm.theAccess.recipient === undefined || $scope.accessForm.theAccess.recipient === null) {
+                $scope.accessForm.theAccess.recipient = '';
             }
 
             $scope.loader = true;
-            $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.userBean.loginName}).
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.recipient}).
                 success(function(data, status, headers, config) {
                     $scope.accessUsers = data;
                     $scope.loader = false;
@@ -415,7 +418,7 @@ var app = angular.module('angularApp')
         $scope.editUserAccessSection = function(loginName, userAccess) {
             $scope.addAccess=true;
             $scope.accessForm.theAccess.accessBy='user';
-            $scope.accessForm.theAccess.userBean.loginName=loginName;
+            $scope.accessForm.theAccess.recipient=loginName;
             $scope.showCollaborationGroup=false;
             $scope.showAccessuser=true;
             $scope.showAccessSelection=false;
@@ -430,7 +433,8 @@ var app = angular.module('angularApp')
         $scope.editGroupAccessSection = function(groupName, groupAccess) {
             $scope.addAccess=true;
             $scope.accessForm.theAccess.accessBy='group';
-            $scope.accessForm.theAccess.groupName=groupName;
+            $scope.accessForm.theAccess.recipient=groupName;
+            $scope.accessForm.theAccess.recipientDisplayName=groupName;
             $scope.showCollaborationGroup=true;
             $scope.showAccessuser=false;
             $scope.showAccessSelection=false;
@@ -441,7 +445,7 @@ var app = angular.module('angularApp')
                 }
             }
 
-            if($scope.accessForm.theAccess.groupName == 'Public') {
+            if($scope.accessForm.theAccess.recipient == 'ROLE_ANONYMOUS') {
                 $scope.accessForm.theAccess.accessBy='public';
             }
         }
@@ -512,7 +516,8 @@ var app = angular.module('angularApp')
         };
 
         $scope.selectPublicAccess = function() {
-            $scope.accessForm.theAccess.groupName = 'Public';
+            $scope.accessForm.theAccess.recipient = 'ROLE_ANONYMOUS';
+            $scope.accessForm.theAccess.recipientDisplayName = 'Public';
             $scope.accessForm.theAccess.roleName = 'R';
             $scope.showCollaborationGroup=true;
             $scope.showAccessuser=false;

@@ -16,7 +16,10 @@ var app = angular.module('angularApp', [
     'ngRoute',
     'ngTable',
     'ngSanitize',
-    'ngTouch','ngGrid','ui.bootstrap','angularFileUpload']);
+    'ngTouch',
+    'ngGrid',
+    'ui.bootstrap',
+    'angularFileUpload']);
 
 
 app.config(function ($routeProvider, $httpProvider) {
@@ -128,7 +131,6 @@ app.config(function ($routeProvider, $httpProvider) {
        templateUrl: 'views/publication/view/managePublications.html',
        controller: 'ManagePublicationCtrl'
       })                                                          
-
       .when('/searchPublication', {
         templateUrl: 'views/publication/view/publicationSearch.html',
         controller: 'PublicationSearchCtrl'
@@ -228,8 +230,39 @@ app.config(function ($routeProvider, $httpProvider) {
         .when('/myFavorites', {
             templateUrl: 'views/myFavorites.html',
             controller: 'MyFavoritesCtrl'
+        })
+        .when('/searchUser', {
+            templateUrl: 'views/admin/view/userSearch.html',
+            controller: 'UserSearchCtrl'
         })        
+        .when('/userResults', {
+              templateUrl: 'views/admin/view/userResults.html',
+              controller: 'UserResultsCtrl'
+        })  
+        .when('/saveUser', {
+              templateUrl: 'views/admin/edit/editUser.html',
+              controller: 'EditUserCtrl'
+        })
+        .when('/editUser', {
+              templateUrl: 'views/admin/edit/editUser.html',
+              controller: 'EditUserCtrl'
+        })
+        .when('/resetPwd', {
+              templateUrl: 'views/admin/edit/resetPwd.html',
+              controller: 'EditUserCtrl'
+        }) 
+        .when('/manageUsers', {
+         templateUrl: 'views/admin/view/manageUsers.html',
+         controller: 'ManageUserCtrl'
+        })  
       .otherwise({
         redirectTo: '/'
       });
   });
+
+app.run(['$rootScope','$window','$location',function($rootScope,$window,$location) { 
+	//Google Analytics URL creation to track # (hash) changes
+    $rootScope.$on('$viewContentLoaded', function(event) {
+    	$window.ga('send', 'pageview', { page: $location.url() });
+    });
+}]);

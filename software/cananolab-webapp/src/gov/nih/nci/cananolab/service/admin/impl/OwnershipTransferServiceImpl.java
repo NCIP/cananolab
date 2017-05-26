@@ -28,27 +28,25 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.exception.AdministrationException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.BaseService;
-import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.admin.OwnershipTransferService;
 import gov.nih.nci.cananolab.service.community.CommunityService;
-import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -61,70 +59,76 @@ import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 
 /**
  * Service methods for transfer ownership.
  *
  * @author lethai, pansu
  */
+@Component("ownershipTransferService")
 public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 
-	private static Logger logger = Logger
-			.getLogger(OwnershipTransferServiceImpl.class);
+	private static Logger logger = Logger.getLogger(OwnershipTransferServiceImpl.class);
+	
+	@Autowired
+	private SampleService sampleService;
+	
+	@Autowired
+	private PublicationService publicationService;
+	
+	@Autowired
+	private ProtocolService protocolService;
+	
+	@Autowired
+	private CommunityService communityService;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
 
 	private int transferOwner(SampleService sampleService,
 			List<String> sampleIds, String currentOwner,
 			Boolean currentOwnerIsCurator, String newOwner,
 			Boolean newOwnerIsCurator) throws AdministrationException,
 			NoAccessException {
-		SecurityService securityService = ((SampleServiceLocalImpl) sampleService)
-				.getSecurityService();
-		// user needs to be both curator and admin
-		if (!(securityService.getUserBean().isCurator() && securityService
-				.getUserBean().isAdmin())) {
+		if (!(SpringSecurityUtil.getPrincipal().isCurator() && SpringSecurityUtil.getPrincipal().isAdmin())) {
 			throw new NoAccessException();
 		}
 		int i = 0;
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			for (String sampleId : sampleIds) {
 				try {
 					Sample domain = this.findFullyLoadedSampleById(sampleId);
 					String existingOwner = domain.getCreatedBy();
-					domain.setCreatedBy(newCreatedBy(existingOwner,
-							currentOwner, newOwner));
+					domain.setCreatedBy(newCreatedBy(existingOwner, currentOwner, newOwner));
 					appService.saveOrUpdate(domain);
-					SampleComposition sampleComposition = domain
-							.getSampleComposition();
+					SampleComposition sampleComposition = domain.getSampleComposition();
 					Collection<ChemicalAssociation> chemicalAssociation = new ArrayList<ChemicalAssociation>();
 					Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>();
 					Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
 					Collection<Characterization> characterization = new ArrayList<Characterization>();
 					// poc
-					PointOfContact primaryPOC = domain
-							.getPrimaryPointOfContact();
+					PointOfContact primaryPOC = domain.getPrimaryPointOfContact();
 					if (primaryPOC != null) {
-						primaryPOC.setCreatedBy(newCreatedBy(primaryPOC
-								.getCreatedBy(), currentOwner, newOwner));
+						primaryPOC.setCreatedBy(newCreatedBy(primaryPOC.getCreatedBy(), currentOwner, newOwner));
 						if (primaryPOC.getOrganization() != null) {
-							primaryPOC.getOrganization().setCreatedBy(
-									newCreatedBy(primaryPOC.getOrganization()
-											.getCreatedBy(), currentOwner,
-											newOwner));
+							primaryPOC.getOrganization().setCreatedBy(newCreatedBy(primaryPOC.getOrganization().getCreatedBy(), currentOwner,newOwner));
 						}
 						appService.saveOrUpdate(primaryPOC);
 					}
 					if (domain.getOtherPointOfContactCollection() != null) {
 						for (PointOfContact poc : domain
 								.getOtherPointOfContactCollection()) {
-							poc.setCreatedBy(newCreatedBy(poc.getCreatedBy(),
-									currentOwner, newOwner));
+							poc.setCreatedBy(newCreatedBy(poc.getCreatedBy(), currentOwner, newOwner));
 							if (poc.getOrganization() != null) {
-								poc.getOrganization().setCreatedBy(
-										newCreatedBy(poc.getOrganization()
-												.getCreatedBy(), currentOwner,
-												newOwner));
+								poc.getOrganization().setCreatedBy(newCreatedBy(poc.getOrganization().getCreatedBy(), currentOwner, newOwner));
 							}
 							appService.saveOrUpdate(poc);
 						}
@@ -132,32 +136,21 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 					// composition
 					if (sampleComposition != null) {
 						if (sampleComposition.getFileCollection() != null) {
-							for (File file : sampleComposition
-									.getFileCollection()) {
-								file
-										.setCreatedBy(newCreatedBy(file
-												.getCreatedBy(), currentOwner,
-												newOwner));
+							for (File file : sampleComposition.getFileCollection()) {
+								file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentOwner, newOwner));
 								appService.saveOrUpdate(file);
 							}
 						}
-						chemicalAssociation = sampleComposition
-								.getChemicalAssociationCollection();
-						functionalizingEntity = sampleComposition
-								.getFunctionalizingEntityCollection();
-						nanomaterialEntity = sampleComposition
-								.getNanomaterialEntityCollection();
-						characterization = domain
-								.getCharacterizationCollection();
+						chemicalAssociation = sampleComposition.getChemicalAssociationCollection();
+						functionalizingEntity = sampleComposition.getFunctionalizingEntityCollection();
+						nanomaterialEntity = sampleComposition.getNanomaterialEntityCollection();
+						characterization = domain.getCharacterizationCollection();
 						if (chemicalAssociation != null) {
 							for (ChemicalAssociation ca : chemicalAssociation) {
-								ca.setCreatedBy(newCreatedBy(ca.getCreatedBy(),
-										currentOwner, newOwner));
+								ca.setCreatedBy(newCreatedBy(ca.getCreatedBy(), currentOwner, newOwner));
 								if (ca.getFileCollection() != null) {
 									for (File file : ca.getFileCollection()) {
-										file.setCreatedBy(newCreatedBy(file
-												.getCreatedBy(), currentOwner,
-												newOwner));
+										file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentOwner, newOwner));
 									}
 								}
 								appService.saveOrUpdate(ca);
@@ -165,65 +158,41 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 						}
 						if (functionalizingEntity != null) {
 							for (FunctionalizingEntity fe : functionalizingEntity) {
-								fe.setCreatedBy(newCreatedBy(fe.getCreatedBy(),
-										currentOwner, newOwner));
+								fe.setCreatedBy(newCreatedBy(fe.getCreatedBy(), currentOwner, newOwner));
 								if (fe.getFileCollection() != null) {
 									for (File file : fe.getFileCollection()) {
-										file.setCreatedBy(newCreatedBy(file
-												.getCreatedBy(), currentOwner,
-												newOwner));
+										file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentOwner, newOwner));
 									}
 								}
 								if (fe.getFunctionCollection() != null) {
-									for (Function function : fe
-											.getFunctionCollection()) {
-										function.setCreatedBy(newCreatedBy(
-												function.getCreatedBy(),
-												currentOwner, newOwner));
+									for (Function function : fe.getFunctionCollection()) {
+										function.setCreatedBy(newCreatedBy(function.getCreatedBy(), currentOwner, newOwner));
 									}
-
 								}
 								appService.saveOrUpdate(fe);
 							}
 						}
 						if (nanomaterialEntity != null) {
 							for (NanomaterialEntity ne : nanomaterialEntity) {
-								ne.setCreatedBy(newCreatedBy(ne.getCreatedBy(),
-										currentOwner, newOwner));
+								ne.setCreatedBy(newCreatedBy(ne.getCreatedBy(), currentOwner, newOwner));
 								if (ne.getFileCollection() != null) {
 									for (File file : ne.getFileCollection()) {
-										file.setCreatedBy(newCreatedBy(file
-												.getCreatedBy(), currentOwner,
-												newOwner));
+										file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentOwner, newOwner));
 									}
 								}
 								if (ne.getComposingElementCollection() != null) {
-									for (ComposingElement ce : ne
-											.getComposingElementCollection()) {
-										ce.setCreatedBy(newCreatedBy(ce
-												.getCreatedBy(), currentOwner,
-												newOwner));
+									for (ComposingElement ce : ne.getComposingElementCollection()) {
+										ce.setCreatedBy(newCreatedBy(ce.getCreatedBy(), currentOwner, newOwner));
 										if (ce.getInherentFunctionCollection() != null) {
-											for (Function function : ce
-													.getInherentFunctionCollection()) {
-												function
-														.setCreatedBy(newCreatedBy(
-																function
-																		.getCreatedBy(),
-																currentOwner,
-																newOwner));
+											for (Function function : ce.getInherentFunctionCollection()) {
+												function.setCreatedBy(newCreatedBy(function.getCreatedBy(), currentOwner, newOwner));
 												if (function instanceof TargetingFunction) {
 													TargetingFunction tFunc = (TargetingFunction) function;
-													if (tFunc
-															.getTargetCollection() != null) {
-														for (Target target : tFunc
-																.getTargetCollection()) {
-															target
-																	.setCreatedBy(newCreatedBy(
-																			target
-																					.getCreatedBy(),
-																			currentOwner,
-																			newOwner));
+													if (tFunc.getTargetCollection() != null) {
+														for (Target target : tFunc.getTargetCollection()) {
+															target.setCreatedBy(newCreatedBy(
+																			target.getCreatedBy(),
+																			currentOwner, newOwner));
 														}
 													}
 												}
@@ -237,74 +206,40 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 						// characterization
 						if (characterization != null) {
 							for (Characterization c : characterization) {
-								c.setCreatedBy(newCreatedBy(c.getCreatedBy(),
-										currentOwner, newOwner));
+								c.setCreatedBy(newCreatedBy(c.getCreatedBy(), currentOwner, newOwner));
 								if (c.getExperimentConfigCollection() != null) {
-									for (ExperimentConfig config : c
-											.getExperimentConfigCollection()) {
-										config.setCreatedBy(newCreatedBy(config
-												.getCreatedBy(), currentOwner,
-												newOwner));
+									for (ExperimentConfig config : c.getExperimentConfigCollection()) {
+										config.setCreatedBy(newCreatedBy(config.getCreatedBy(), currentOwner, newOwner));
 										if (config.getTechnique() != null) {
 											config.getTechnique().setCreatedBy(
-													newCreatedBy(config
-															.getTechnique()
-															.getCreatedBy(),
-															currentOwner,
-															newOwner));
+													newCreatedBy(config.getTechnique().getCreatedBy(),
+															currentOwner, newOwner));
 										}
 										if (config.getInstrumentCollection() != null) {
-											for (Instrument instrument : config
-													.getInstrumentCollection()) {
-												instrument
-														.setCreatedBy(newCreatedBy(
-																instrument
-																		.getCreatedBy(),
-																currentOwner,
-																newOwner));
+											for (Instrument instrument : config.getInstrumentCollection()) {
+												instrument.setCreatedBy(newCreatedBy(instrument.getCreatedBy(),
+																currentOwner, newOwner));
 											}
 										}
 										appService.saveOrUpdate(config);
 									}
 								}
 								if (c.getFindingCollection() != null) {
-									for (Finding finding : c
-											.getFindingCollection()) {
-										finding.setCreatedBy(newCreatedBy(
-												finding.getCreatedBy(),
-												currentOwner, newOwner));
+									for (Finding finding : c.getFindingCollection()) {
+										finding.setCreatedBy(newCreatedBy(finding.getCreatedBy(), currentOwner, newOwner));
 										if (finding.getDatumCollection() != null) {
-											for (Datum datum : finding
-													.getDatumCollection()) {
-												datum
-														.setCreatedBy(newCreatedBy(
-																datum
-																		.getCreatedBy(),
-																currentOwner,
-																newOwner));
-												if (datum
-														.getConditionCollection() != null) {
-													for (Condition cond : datum
-															.getConditionCollection()) {
-														cond
-																.setCreatedBy(newCreatedBy(
-																		cond
-																				.getCreatedBy(),
-																		currentOwner,
-																		newOwner));
+											for (Datum datum : finding.getDatumCollection()) {
+												datum.setCreatedBy(newCreatedBy(datum.getCreatedBy(), currentOwner, newOwner));
+												if (datum.getConditionCollection() != null) {
+													for (Condition cond : datum.getConditionCollection()) {
+														cond.setCreatedBy(newCreatedBy(cond.getCreatedBy(), currentOwner, newOwner));
 													}
 												}
 											}
 										}
 										if (finding.getFileCollection() != null) {
-											for (File file : finding
-													.getFileCollection()) {
-												file
-														.setCreatedBy(newCreatedBy(
-																file
-																		.getCreatedBy(),
-																currentOwner,
-																newOwner));
+											for (File file : finding.getFileCollection()) {
+												file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentOwner, newOwner));
 											}
 										}
 										appService.saveOrUpdate(finding);
@@ -315,14 +250,11 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 						}
 					}
 					appService.saveOrUpdate(domain);
-					this.assignAndRemoveAccessForSample(sampleService, domain,
-							currentOwner, currentOwnerIsCurator, newOwner,
-							newOwnerIsCurator);
+					this.assignAndRemoveAccess(domain.getId(), currentOwner, currentOwnerIsCurator, newOwner, newOwnerIsCurator, SecureClassesEnum.SAMPLE.getClazz());
 
 				} catch (Exception e) {
 					i++;
-					String error = "Error transferring ownership for sample: "
-							+ sampleId;
+					String error = "Error transferring ownership for sample: " + sampleId;
 					logger.error(error, e);
 				}
 			}
@@ -334,76 +266,22 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		return i;
 	}
 
-	private AccessibilityBean[] assignAndRemoveAccess(BaseService service,
-			String dataId, String currentOwner, Boolean currentOwnerIsCurator,
-			String newOwner, Boolean newOwnerIsCurator) throws Exception {
-		SecurityService securityService = ((BaseServiceLocalImpl) service)
-				.getSecurityService();
-		List<AccessibilityBean> userAccesses = service
-				.findUserAccessibilities(dataId);
-		List<AccessibilityBean> groupAccesses = service
-				.findGroupAccessibilities(dataId);
-		// an array to store assign and remove accessibility for the data
-		AccessibilityBean[] assignRemoveAccesses = new AccessibilityBean[2];
+	private void assignAndRemoveAccess(Long dataId, String currentOwner, Boolean currentOwnerIsCurator,
+			String newOwner, Boolean newOwnerIsCurator, Class clazz) throws Exception
+	{
+		AccessControlInfo userAccess = springSecurityAclService.fetchAccessControlInfoForObjectForUser(dataId, clazz, currentOwner);
+
 		// ----assign access to the owner
 		// if newOwner is a curator, don't need to assign access to new owner
-		if (newOwnerIsCurator) {
-			assignRemoveAccesses[0] = null;
-		}
-		// if newOwner is not a curator, need to assign user access to new owner
-		else {
-			if (userAccesses != null && !userAccesses.isEmpty()) {
-				assignRemoveAccesses[0] = this
-						.getNewUserAccessFromUserAccesses(userAccesses,
-								currentOwner, newOwner);
-			}
-			if (assignRemoveAccesses[0] == null) {
-				assignRemoveAccesses[0] = this
-						.getNewUserAccessFromGroupAccesses(securityService,
-								groupAccesses, currentOwner, newOwner);
-			}
-		}
-
 		// ---remove access from the owner
-		// if currentOwner is a curator, don't need to remove access from
-		// current owner
-		if (currentOwnerIsCurator) {
-			assignRemoveAccesses[1] = null;
-		} else {
-			// remove currentOwner access if user accesses contains user
-			if (userAccesses != null && !userAccesses.isEmpty()) {
-				for (AccessibilityBean access : userAccesses) {
-					if (access.getUserBean().getLoginName()
-							.equals(currentOwner)) {
-						assignRemoveAccesses[1] = access;
-						break;
-					}
-				}
-			}
-			// if only group accesses don't need to remove.
-			else {
-				assignRemoveAccesses[1] = null;
-			}
+		// if currentOwner is a curator, don't need to remove access from current owner
+		// remove currentOwner access if user accesses contains user
+		if (userAccess != null && !StringUtils.isEmpty(userAccess.getRoleName())) {
+			springSecurityAclService.saveAccessForObject(dataId, clazz, newOwner, true, userAccess.getRoleName());
+			springSecurityAclService.retractAccessToObjectForSid(dataId, clazz, currentOwner);
+			springSecurityAclService.updateObjectOwner(dataId, clazz, newOwner);
 		}
-		return assignRemoveAccesses;
-	}
 
-	// take care of accessibility when ownership has been transfered for Sample.
-	private void assignAndRemoveAccessForSample(SampleService sampleService,
-			Sample sample, String currentOwner, Boolean currentOwnerIsCurator,
-			String newOwner, Boolean newOwnerIsCurator) throws Exception {
-		String dataId = sample.getId().toString();
-		AccessibilityBean[] assignRemoveAccesses = this.assignAndRemoveAccess(
-				sampleService, dataId, currentOwner, currentOwnerIsCurator,
-				newOwner, newOwnerIsCurator);
-		// assign
-		if (assignRemoveAccesses[0] != null) {
-			sampleService.assignAccessibility(assignRemoveAccesses[0], sample);
-		}
-		// remove
-		if (assignRemoveAccesses[1] != null) {
-			sampleService.removeAccessibility(assignRemoveAccesses[1], sample);
-		}
 	}
 
 	private int transferOwner(PublicationService publicationService,
@@ -411,39 +289,29 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 			Boolean currentOwnerIsCurator, String newOwner,
 			Boolean newOwnerIsCurator) throws AdministrationException,
 			NoAccessException {
-		SecurityService securityService = ((PublicationServiceLocalImpl) publicationService)
-				.getSecurityService();
 		// user needs to be both curator and admin
-		if (!(securityService.getUserBean().isCurator() && securityService
-				.getUserBean().isAdmin())) {
+		if (!(SpringSecurityUtil.getPrincipal().isCurator() && SpringSecurityUtil.getPrincipal().isAdmin())) {
 			throw new NoAccessException();
 		}
 		int i = 0;
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			PublicationServiceHelper helper = new PublicationServiceHelper(
-					securityService);
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			PublicationServiceHelper helper = publicationService.getPublicationServiceHelper();
 			for (String publicationId : publicationIds) {
 				try {
-					Publication publication = helper
-							.findPublicationById(publicationId);
-					publication.setCreatedBy(newCreatedBy(publication
-							.getCreatedBy(), currentOwner, newOwner));
+					Publication publication = helper.findPublicationById(publicationId);
+					publication.setCreatedBy(newCreatedBy(publication.getCreatedBy(), currentOwner, newOwner));
 					if (publication.getAuthorCollection() != null) {
 						for (Author author : publication.getAuthorCollection()) {
-							author.setCreatedBy(newCreatedBy(author
-									.getCreatedBy(), currentOwner, newOwner));
+							author.setCreatedBy(newCreatedBy(author.getCreatedBy(), currentOwner, newOwner));
 						}
 					}
 					appService.saveOrUpdate(publication);
-					this.assignAndRemoveAccessForPublication(
-							publicationService, publication, currentOwner,
-							currentOwnerIsCurator, newOwner, newOwnerIsCurator);
+					this.assignAndRemoveAccess(publication.getId(), currentOwner, currentOwnerIsCurator, newOwner,
+							newOwnerIsCurator, SecureClassesEnum.PUBLICATION.getClazz());
 				} catch (Exception e) {
 					i++;
-					String error = "Error transferring ownership for publication: "
-							+ publicationId;
+					String error = "Error transferring ownership for publication: " + publicationId;
 					logger.error(error, e);
 				}
 			}
@@ -455,60 +323,33 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		return i;
 	}
 
-	private void assignAndRemoveAccessForPublication(
-			PublicationService service, Publication publication,
-			String currentOwner, Boolean currentOwnerIsCurator,
-			String newOwner, Boolean newOwnerIsCurator) throws Exception {
-		String dataId = publication.getId().toString();
-		AccessibilityBean[] assignRemoveAccesses = this.assignAndRemoveAccess(
-				service, dataId, currentOwner, currentOwnerIsCurator, newOwner,
-				newOwnerIsCurator);
-		// assign
-		if (assignRemoveAccesses[0] != null) {
-			service.assignAccessibility(assignRemoveAccesses[0], publication);
-		}
-		// remove
-		if (assignRemoveAccesses[1] != null) {
-			service.removeAccessibility(assignRemoveAccesses[1], publication);
-		}
-	}
-
 	private int transferOwner(ProtocolService protocolService,
 			List<String> protocolIds, String currentOwner,
 			Boolean currentOwnerIsCurator, String newOwner,
 			Boolean newOwnerIsCurator) throws AdministrationException,
 			NoAccessException {
-		SecurityService securityService = ((ProtocolServiceLocalImpl) protocolService)
-				.getSecurityService();
 		// user needs to be both curator and admin
-		if (!(securityService.getUserBean().isCurator() && securityService
-				.getUserBean().isAdmin())) {
+		if (!(SpringSecurityUtil.getPrincipal().isCurator() && SpringSecurityUtil.getPrincipal().isAdmin())) {
 			throw new NoAccessException();
 		}
 		int i = 0;
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			ProtocolServiceHelper helper = new ProtocolServiceHelper(
-					securityService);
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			ProtocolServiceHelper helper = protocolService.getHelper();
 			for (String protocolId : protocolIds) {
 				try {
 					Protocol protocol = helper.findProtocolById(protocolId);
-					protocol.setCreatedBy(newCreatedBy(protocol.getCreatedBy(),
-							currentOwner, newOwner));
+					protocol.setCreatedBy(newCreatedBy(protocol.getCreatedBy(), currentOwner, newOwner));
 					if (protocol.getFile() != null) {
-						protocol.getFile().setCreatedBy(
-								newCreatedBy(protocol.getFile().getCreatedBy(),
+						protocol.getFile().setCreatedBy(newCreatedBy(protocol.getFile().getCreatedBy(),
 										currentOwner, newOwner));
 					}
 					appService.saveOrUpdate(protocol);
-					this.assignAndRemoveAccessForProtocol(protocolService,
-							protocol, currentOwner, currentOwnerIsCurator,
-							newOwner, newOwnerIsCurator);
+					this.assignAndRemoveAccess(protocol.getId(), currentOwner, currentOwnerIsCurator, newOwner,
+							newOwnerIsCurator, SecureClassesEnum.PROTOCOL.getClazz());
 				} catch (Exception e) {
 					i++;
-					String error = "Error transferring ownership for protocol: "
-							+ protocolId;
+					String error = "Error transferring ownership for protocol: " + protocolId;
 					logger.error(error, e);
 				}
 			}
@@ -520,34 +361,14 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		return i;
 	}
 
-	private void assignAndRemoveAccessForProtocol(ProtocolService service,
-			Protocol protocol, String currentOwner,
-			Boolean currentOwnerIsCurator, String newOwner,
-			Boolean newOwnerIsCurator) throws Exception {
-		String dataId = protocol.getId().toString();
-		AccessibilityBean[] assignRemoveAccesses = this.assignAndRemoveAccess(
-				service, dataId, currentOwner, currentOwnerIsCurator, newOwner,
-				newOwnerIsCurator);
-		// assign
-		if (assignRemoveAccesses[0] != null) {
-			service.assignAccessibility(assignRemoveAccesses[0], protocol);
-		}
-		// remove
-		if (assignRemoveAccesses[1] != null) {
-			service.removeAccessibility(assignRemoveAccesses[1], protocol);
-		}
-	}
-
 	private int transferOwner(CommunityService communityService,
 			List<String> collaborationGroupIds, String currentOwner,
 			Boolean currentOwnerIsCurator, String newOwner,
 			Boolean newOwnerIsCurator) throws AdministrationException,
-			NoAccessException {
-		SecurityService securityService = ((CommunityServiceLocalImpl) communityService)
-				.getSecurityService();
+			NoAccessException
+	{
 		// user needs to be both curator and admin
-		if (!(securityService.getUserBean().isCurator() && securityService
-				.getUserBean().isAdmin())) {
+		if (!(SpringSecurityUtil.getPrincipal().isCurator() && SpringSecurityUtil.getPrincipal().isAdmin())) {
 			throw new NoAccessException();
 		}
 		int i = 0;
@@ -555,27 +376,11 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 			for (String id : collaborationGroupIds) {
 				try {
 					communityService.assignOwner(id, newOwner);
-					AccessibilityBean[] assignRemoveAccesses = this
-							.assignAndRemoveAccess(
-									communityService,
-									AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-											+ id, currentOwner,
-									currentOwnerIsCurator, newOwner,
-									newOwnerIsCurator);
-					// assign
-					if (assignRemoveAccesses[0] != null) {
-						communityService.assignAccessibility(
-								assignRemoveAccesses[0], id);
-					}
-					// remove
-					if (assignRemoveAccesses[1] != null) {
-						communityService.removeAccessibility(
-								assignRemoveAccesses[1], id);
-					}
+					this.assignAndRemoveAccess(Long.valueOf(id), currentOwner,
+									currentOwnerIsCurator, newOwner, newOwnerIsCurator, SecureClassesEnum.COLLABORATIONGRP.getClazz());
 				} catch (Exception e) {
 					i++;
-					String error = "Error transferring ownership for collaboration group: "
-							+ id;
+					String error = "Error transferring ownership for collaboration group: " + id;
 					logger.error(error, e);
 				}
 			}
@@ -586,43 +391,33 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		return i;
 	}
 
-	public int transferOwner(SecurityService securityService,
-			List<String> dataIds, String dataType, String currentOwner,
-			String newOwner) throws AdministrationException, NoAccessException {
+	public int transferOwner(List<String> dataIds, String dataType, String currentOwner, String newOwner) 
+			throws AdministrationException, NoAccessException
+	{
 		int numFailures = 0;
 		try {
-			BaseService service = null;
-			if (dataType
-					.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_SAMPLE)) {
-				service = new SampleServiceLocalImpl(securityService);
-			} else if (dataType
-					.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_PROTOCOL)) {
-				service = new ProtocolServiceLocalImpl(securityService);
-			} else if (dataType
-					.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_PUBLICATION)) {
-				service = new PublicationServiceLocalImpl(securityService);
-			} else if (dataType
-					.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_GROUP)) {
-				service = new CommunityServiceLocalImpl(securityService);
+			if (dataType.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_SAMPLE)) {
+				numFailures = this.transferOwner(sampleService, dataIds, currentOwner, newOwner);
+			} else if (dataType.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_PROTOCOL)) {
+				numFailures = this.transferOwner(protocolService, dataIds, currentOwner, newOwner);
+			} else if (dataType.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_PUBLICATION)) {
+				numFailures = this.transferOwner(publicationService, dataIds, currentOwner, newOwner);
+			} else if (dataType.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_GROUP)) {
+				numFailures = this.transferOwner(communityService, dataIds, currentOwner, newOwner);
 			} else {
-				throw new AdministrationException(
-						"No such transfer data type is supported.");
+				throw new AdministrationException("No such transfer data type is supported.");
 			}
-			numFailures = this.transferOwner(service, dataIds, currentOwner,
-					newOwner);
 		} catch (Exception e) {
-			String error = "Error in transfering ownership for type "
-					+ dataType;
+			String error = "Error in transfering ownership for type " + dataType;
 			logger.error(error, e);
 			throw new AdministrationException(error, e);
 		}
 		return numFailures;
 	}
 
-	// replace the current owner userAccess userBean with new owner userBean
+	/*// replace the current owner userAccess userBean with new owner userBean
 	// when the loginName match
-	private AccessibilityBean getNewUserAccessFromUserAccesses(
-			List<AccessibilityBean> userAccesses, String currentOwner,
+	private AccessibilityBean getNewUserAccessFromUserAccesses(List<AccessibilityBean> userAccesses, String currentOwner,
 			String newOwner) {
 		for (AccessibilityBean access : userAccesses) {
 			UserBean currentOwnerBean = access.getUserBean();
@@ -636,9 +431,9 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 			}
 		}
 		return null;
-	}
+	}*/
 
-	// replace the current owner groupAccess userBean with new owner userBean
+	/*// replace the current owner groupAccess userBean with new owner userBean
 	// when the loginName match
 	private AccessibilityBean getNewUserAccessFromGroupAccesses(
 			SecurityService securityService,
@@ -671,59 +466,47 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 
 		return null;
-	}
+	}*/
 
-	public int transferOwner(BaseService dataService, List<String> dataIds,
-			String currentOwner, String newOwner)
+	public int transferOwner(BaseService dataService, List<String> dataIds, String currentOwner, String newOwner)
 			throws AdministrationException, NoAccessException {
-		SecurityService securityService = ((BaseServiceLocalImpl) dataService)
-				.getSecurityService();
 		// check whether currentOwner and newOwner are curators
 		boolean currentOwnerIsCurator = false;
 		boolean newOwnerIsCurator = false;
-		if (securityService.isCurator(currentOwner)) {
+		CananoUserDetails currOwnerDetails = (CananoUserDetails) userDetailsService.loadUserByUsername(currentOwner);
+		CananoUserDetails newOwnerDetails = (CananoUserDetails) userDetailsService.loadUserByUsername(newOwner);
+		if (currOwnerDetails != null && currOwnerDetails.isCurator()) {
 			currentOwnerIsCurator = true;
 		}
-		if (securityService.isCurator(newOwner)) {
+		if (newOwnerDetails != null && newOwnerDetails.isCurator()) {
 			newOwnerIsCurator = true;
 		}
 		int numFailures = 0;
 		if (dataService instanceof SampleService) {
 			SampleService sampleService = (SampleService) dataService;
-			numFailures = this.transferOwner(sampleService, dataIds,
-					currentOwner, currentOwnerIsCurator, newOwner,
-					newOwnerIsCurator);
+			numFailures = this.transferOwner(sampleService, dataIds, currentOwner, currentOwnerIsCurator, newOwner, newOwnerIsCurator);
 		} else if (dataService instanceof ProtocolService) {
 			ProtocolService protocolService = (ProtocolService) dataService;
-			numFailures = this.transferOwner(protocolService, dataIds,
-					currentOwner, currentOwnerIsCurator, newOwner,
-					newOwnerIsCurator);
+			numFailures = this.transferOwner(protocolService, dataIds, currentOwner, currentOwnerIsCurator, newOwner, newOwnerIsCurator);
 		} else if (dataService instanceof PublicationService) {
 			PublicationService publicationService = (PublicationService) dataService;
-			numFailures = this.transferOwner(publicationService, dataIds,
-					currentOwner, currentOwnerIsCurator, newOwner,
-					newOwnerIsCurator);
+			numFailures = this.transferOwner(publicationService, dataIds, currentOwner, currentOwnerIsCurator, newOwner, newOwnerIsCurator);
 		} else if (dataService instanceof CommunityService) {
 			CommunityService communityService = (CommunityService) dataService;
-			numFailures = this.transferOwner(communityService, dataIds,
-					currentOwner, currentOwnerIsCurator, newOwner,
-					newOwnerIsCurator);
+			numFailures = this.transferOwner(communityService, dataIds, currentOwner, currentOwnerIsCurator, newOwner, newOwnerIsCurator);
 		} else {
-			throw new AdministrationException(
-					"Not a supported service for transferring ownership");
+			throw new AdministrationException("Not a supported service for transferring ownership");
 		}
 		return numFailures;
 	}
 
-	private String newCreatedBy(String existingOwner, String currentOwner,
-			String newOwner) {
-		// if the existing createdBy is the same as currentOwner, replace with
-		// newOwner
+	private String newCreatedBy(String existingOwner, String currentOwner, String newOwner)
+	{
+		// if the existing createdBy is the same as currentOwner, replace with newOwner
 		if (existingOwner.equals(currentOwner)) {
 			return newOwner;
 		}
-		int copyIndex = existingOwner
-				.indexOf(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		int copyIndex = existingOwner.indexOf(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		// if the existing createdBy is not the same as current owner and
 		// doesn't contain COPY, retain existingOwner
 		if (copyIndex == -1) {
@@ -732,20 +515,18 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		// if the existing createdBy is not the same as current owner but
 		// contains COPY and contains existing createdBy, replace with newOwner
 		if (existingOwner.startsWith(currentOwner)) {
-			String newCreatedBy = existingOwner.replaceFirst(
-					currentOwner + ":", newOwner + ":");
+			String newCreatedBy = existingOwner.replaceFirst(currentOwner + ":", newOwner + ":");
 			return newCreatedBy;
 		}
 		return existingOwner;
 	}
 
-	private Sample findFullyLoadedSampleById(String sampleId) throws Exception {
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+	private Sample findFullyLoadedSampleById(String sampleId) throws Exception
+	{
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		// load composition and characterization separate because of Hibernate
 		// join limitation
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(new Long(sampleId)));
 		Sample sample = null;
 
 		// load composition and characterization separate because of
@@ -753,14 +534,11 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection.organization",
-				FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization", FetchMode.JOIN);
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection.authorCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection.keywordCollection",
-				FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.authorCollection", FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -772,75 +550,44 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 
 		// fully load composition
-		SampleComposition comp = this
-				.loadComposition(sample.getId().toString());
+		SampleComposition comp = this.loadComposition(sample.getId().toString());
 		sample.setSampleComposition(comp);
 
 		// fully load characterizations
-		List<Characterization> chars = this.loadCharacterizations(sample
-				.getId().toString());
+		List<Characterization> chars = this.loadCharacterizations(sample.getId().toString());
 		if (chars != null && !chars.isEmpty()) {
-			sample.setCharacterizationCollection(new HashSet<Characterization>(
-					chars));
+			sample.setCharacterizationCollection(new HashSet<Characterization>(chars));
 		} else {
 			sample.setCharacterizationCollection(null);
 		}
 		return sample;
 	}
 
-	private SampleComposition loadComposition(String sampleId) throws Exception {
+	private SampleComposition loadComposition(String sampleId) throws Exception
+	{
 		SampleComposition composition = null;
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria
-				.forClass(SampleComposition.class);
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(SampleComposition.class);
 		crit.createAlias("sample", "sample");
 		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
 		crit.setFetchMode("nanomaterialEntityCollection", FetchMode.JOIN);
-		crit.setFetchMode("nanomaterialEntityCollection.fileCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"nanomaterialEntityCollection.fileCollection.keywordCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode(
-				"nanomaterialEntityCollection.composingElementCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
-						FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.composingElementCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection", FetchMode.JOIN);
 		crit.setFetchMode("functionalizingEntityCollection", FetchMode.JOIN);
-		crit.setFetchMode("functionalizingEntityCollection.fileCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"functionalizingEntityCollection.fileCollection.keywordCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("functionalizingEntityCollection.functionCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"functionalizingEntityCollection.functionCollection.targetCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("functionalizingEntityCollection.activationMethod",
-				FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.functionCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.functionCollection.targetCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.activationMethod", FetchMode.JOIN);
 		crit.setFetchMode("chemicalAssociationCollection", FetchMode.JOIN);
-		crit.setFetchMode("chemicalAssociationCollection.fileCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"chemicalAssociationCollection.fileCollection.keywordCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("chemicalAssociationCollection.associatedElementA",
-				FetchMode.JOIN);
-		crit.setFetchMode("chemicalAssociationCollection.associatedElementB",
-				FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.associatedElementA", FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.associatedElementB", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -852,14 +599,12 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		return composition;
 	}
 
-	private List<Characterization> loadCharacterizations(String sampleId)
-			throws Exception {
+	private List<Characterization> loadCharacterizations(String sampleId) throws Exception
+	{
 		List<Characterization> chars = new ArrayList<Characterization>();
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria
-				.forClass(Characterization.class);
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class);
 		crit.createAlias("sample", "sample");
 		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
 		// fully load characterization
@@ -869,18 +614,13 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		crit.setFetchMode("protocol.file", FetchMode.JOIN);
 		crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
-		crit.setFetchMode("experimentConfigCollection.technique",
-				FetchMode.JOIN);
-		crit.setFetchMode("experimentConfigCollection.instrumentCollection",
-				FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.technique", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.instrumentCollection", FetchMode.JOIN);
 		crit.setFetchMode("findingCollection", FetchMode.JOIN);
 		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
-		crit.setFetchMode(
-				"findingCollection.datumCollection.conditionCollection",
-				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.datumCollection.conditionCollection", FetchMode.JOIN);
 		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
-				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 

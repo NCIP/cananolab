@@ -1,17 +1,11 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
-import gov.nih.nci.cananolab.domain.common.Author;
-import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
 
 
 public class SimpleSubmitPublicationBean {
@@ -39,15 +33,15 @@ public class SimpleSubmitPublicationBean {
 	Long fileId;
 	String sampleId = "";
 	String sampleNamesStr;
-	List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
-	List<AccessibilityBean> userAccesses =  new ArrayList<AccessibilityBean>();
+	List<AccessControlInfo> groupAccesses = new ArrayList<AccessControlInfo>();
+	List<AccessControlInfo> userAccesses =  new ArrayList<AccessControlInfo>();
 	String protectedData = "";
 	Boolean isPublic = false;
 	Boolean isOwner = false;
 	String ownerName = "";
 	String createdBy = "";
 	Boolean userDeletable = false;
-	private AccessibilityBean theAccess = new AccessibilityBean();
+	private AccessControlInfo theAccess = new AccessControlInfo();
 	String externalUrl = "";
 	String[] sampleNames;
 	List<String> errors;
@@ -85,10 +79,10 @@ public class SimpleSubmitPublicationBean {
 	public void setExternalUrl(String externalUrl) {
 		this.externalUrl = externalUrl;
 	}
-	public AccessibilityBean getTheAccess() {
+	public AccessControlInfo getTheAccess() {
 		return theAccess;
 	}
-	public void setTheAccess(AccessibilityBean theAccess) {
+	public void setTheAccess(AccessControlInfo theAccess) {
 		this.theAccess = theAccess;
 	}
 	public String getSampleTitle() {
@@ -231,16 +225,16 @@ public class SimpleSubmitPublicationBean {
 		this.sampleNamesStr = sampleNamesStr;
 	}
 
-	public List<AccessibilityBean> getGroupAccesses() {
+	public List<AccessControlInfo> getGroupAccesses() {
 		return groupAccesses;
 	}
-	public void setGroupAccesses(List<AccessibilityBean> groupAccesses) {
+	public void setGroupAccesses(List<AccessControlInfo> groupAccesses) {
 		this.groupAccesses = groupAccesses;
 	}
-	public List<AccessibilityBean> getUserAccesses() {
+	public List<AccessControlInfo> getUserAccesses() {
 		return userAccesses;
 	}
-	public void setUserAccesses(List<AccessibilityBean> userAccesses) {
+	public void setUserAccesses(List<AccessControlInfo> userAccesses) {
 		this.userAccesses = userAccesses;
 	}
 	public String getProtectedData() {
@@ -278,51 +272,6 @@ public class SimpleSubmitPublicationBean {
 	}
 	public void setUserDeletable(Boolean userDeletable) {
 		this.userDeletable = userDeletable;
-	}
-	
-
-	public void transferPublicationBeanForEdit(PublicationBean pubBean, HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		authors = new ArrayList<Author>();
-		Publication pub = (Publication) pubBean.getDomainFile();
-		setCategory(pub.getCategory());
-		setStatus(pub.getStatus());
-		setPubMedId(pub.getPubMedId());
-		setDigitalObjectId(pub.getDigitalObjectId());
-		setTitle(pub.getTitle());
-		setJournalName(pub.getJournalName());
-		setYear(pub.getYear());
-		setVolume(pub.getVolume());
-		setStartPage(pub.getStartPage());
-		setEndPage(pub.getEndPage());
-		for(int i=0;i<pubBean.getAuthors().size();i++){
-			
-			Author author = new Author();
-		author.setFirstName(pubBean.getAuthors().get(i).getFirstName());
-		author.setLastName(pubBean.getAuthors().get(i).getLastName());
-		author.setInitial(pubBean.getAuthors().get(i).getInitial());
-		author.setId(pubBean.getAuthors().get(i).getId());
-		authors.add(author);
-		}
-		
-		setKeywordsStr(pubBean.getKeywordsStr());
-		setDescription(pub.getDescription());
-		setResearchAreas(pubBean.getResearchAreas());
-		setUri(pub.getUri());
-		setFileId(pub.getId());
-		setUriExternal(pub.getUriExternal());
-		setSampleNamesStr(pubBean.getSampleNamesStr());
-		setGroupAccesses(pubBean.getGroupAccesses());
-		setUserAccesses(pubBean.getUserAccesses());
-		setIsPublic(pubBean.getPublicStatus());
-		setIsOwner(pubBean.getUserIsOwner());
-		setCreatedBy(pub.getCreatedBy());
-		setUserDeletable(pubBean.getUserDeletable());
-		List<String> otherSampleNamesList = (List<String>) request.getSession().getAttribute("otherSampleNames");
-		setOtherSampleNames(otherSampleNamesList);
-		setReview((Boolean) request.getAttribute("review"));
-		setExternalUrl(pubBean.getExternalUrl());
-		
 	}
 		
 }

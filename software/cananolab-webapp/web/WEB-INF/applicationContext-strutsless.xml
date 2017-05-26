@@ -1,216 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-	http://www.springframework.org/schema/jee
-	http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
-	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
-              
-    <!--  jee:jndi-lookup id="dataSource" jndi-name="jdbc/FormBuilderDS" resource-ref="false" /> 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+						http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+	
+	<context:annotation-config />
+
+	<context:component-scan base-package="gov.nih.nci.cananolab" />
+	
+	<jee:jndi-lookup id="dataSource" jndi-name="java:/caNanoLab"  />
+
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="txManager" />
+	
+	<bean name="publicDataCountJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="gov.nih.nci.cananolab.service.PublicDataCountJob"/>
+        <property name="jobDataMap">
+	        <map>
+	            <entry key="sampleService" value-ref="sampleService" />
+	            <entry key="protocolService" value-ref="protocolService" />
+	            <entry key="publicationService" value-ref="publicationService" />
+	            <entry key="characterizationService" value-ref="characterizationService" />
+	        </map>
+	    </property>
+	    <property name="durability" value="true" />
+    </bean>
     
-    <tx:annotation-driven transaction-manager = "transactionManager" />
-    <tx:annotation-driven proxy-target-class="true"/>
-    -->
+    <bean id="publicDataCountTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+         <!-- see the example of method invoking job above -->
+         <property name="jobDetail" ref="publicDataCountJob"/>
+         <property name="startDelay" value="2000"/>
+         <property name="repeatInterval" value="86400000"/>
+    </bean>
     
-  <!--   <bean id="appContext"
-    	class="gov.nih.nci.cananolab.restful.context.SpringApplicationContext"></bean>--> 
-  
-    <bean id="loginBO"
-		class="gov.nih.nci.cananolab.restful.security.LoginBO">
-	</bean>
+    <bean name="luceneIndexJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="gov.nih.nci.cananolab.service.IndexWriter"/>
+        <property name="jobDataMap">
+	        <map>
+	            <entry key="customSearchEngine" value-ref="customSearchEngine" />
+	        </map>
+	    </property>
+	    <property name="durability" value="true" />
+    </bean>
+    
+    <bean id="luceneIndexTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+         <!-- see the example of method invoking job above -->
+         <property name="jobDetail" ref="luceneIndexJob"/>
+         <property name="startDelay" value="2000"/>
+         <property name="repeatInterval" value="86400000"/>
+    </bean>
 	
-	<bean id="logoutBO"
-		class="gov.nih.nci.cananolab.restful.security.LogoutBO">
-	</bean>
-	
-	<bean id="registerUserBO"
-		class="gov.nih.nci.cananolab.restful.security.RegisterUserBO">
-	</bean>
-	
-	<bean id="tabGenerationBO"
-		class="gov.nih.nci.cananolab.restful.core.TabGenerationBO">
-	</bean>
-	
-	<bean id="searchSampleBO"
-		class="gov.nih.nci.cananolab.restful.sample.SearchSampleBO">
-		<property name="dataAvailabilityService">
-			<ref bean="dataAvailabilityServiceDAO" />
-		</property>
-	</bean>
-	<bean id="sampleBO"
-		class="gov.nih.nci.cananolab.restful.sample.SampleBO">
-		<property name="dataAvailabilityService">
-			<ref bean="dataAvailabilityServiceDAO" />
-		</property>
-		<property name="curationService">
-			<ref bean="curationServiceDAO" />
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobDetails">
+	        <list>
+	            <ref bean="publicDataCountJob" />
+	            <ref bean="luceneIndexJob" />
+	        </list>
+	    </property>
+		<property name="triggers">
+			<list>
+				<ref bean="publicDataCountTrigger" />
+				<ref bean="luceneIndexTrigger" />
+			</list>
 		</property>
 	</bean>
 	
-	<bean id="publicationBO"
-		class="gov.nih.nci.cananolab.restful.publication.PublicationBO">
-		<property name="curationService">
-			<ref bean="curationServiceDAO" />
-		</property>
-	</bean>
-	
-	<bean id="compositionBO"
-		class="gov.nih.nci.cananolab.restful.sample.CompositionBO">
-	</bean>
-	
-	<bean id="characterizationBO"
-		class="gov.nih.nci.cananolab.restful.sample.CharacterizationBO">
-	</bean>
-	
-	<bean id="customPlugInBO"
-		class="gov.nih.nci.cananolab.restful.core.CustomPlugInBO">
-	</bean>
-	
-	<bean id="searchPublicationBO"							
-		class="gov.nih.nci.cananolab.restful.publication.SearchPublicationBO">
-	</bean>
-	
-	<bean id="publicationManager"
-		class="gov.nih.nci.cananolab.restful.publication.PublicationManager">
-	</bean>
-	
-    <bean id="accessibilityManager"
-		class="gov.nih.nci.cananolab.restful.core.AccessibilityManager">
-	</bean>
-	
-	<bean id="searchProtocolBO"							
-		class="gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO">
-	</bean>
-	
-	<bean id="protocolBO"							
-		class="gov.nih.nci.cananolab.restful.protocol.ProtocolBO">
-		<property name="curationService">
-			<ref bean="curationServiceDAO" />
-		</property>
-	</bean>
-	
-	<bean id="workspaceManager"							
-		class="gov.nih.nci.cananolab.restful.workspace.WorkspaceManager">
-		<property name="curationService">
-			<ref bean="curationServiceDAO" />
-		</property>
-		<property name="dataAvailabilityService">
-			<ref bean="dataAvailabilityServiceDAO" />
-		</property>
-	</bean>
-	
-	<bean id="pointOfContactManager"
-		class="gov.nih.nci.cananolab.restful.core.PointOfContactManager">
-	</bean>
-	
-	<bean id="protocolManager"
-		class="gov.nih.nci.cananolab.restful.protocol.ProtocolManager">
-	</bean>
-	
-	<bean id="reviewDataBO"
-		class="gov.nih.nci.cananolab.restful.curation.ReviewDataBO">
-		<property name="curationService">
-			<ref bean="curationServiceDAO" />
-		</property>
-	</bean>
-	
-	<bean id="batchDataAvailabilityBO"
-		class="gov.nih.nci.cananolab.restful.curation.BatchDataAvailabilityBO">
-		<property name="dataAvailabilityService">
-			<ref bean="dataAvailabilityServiceDAO" />
-		</property>
-	</bean>
-	
-	<bean id="manageResultBO"
-		class="gov.nih.nci.cananolab.restful.core.ManageResultBO">
-	</bean>
-	
-	<bean id="nanomaterialEntityBO"
-		class="gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO">
-		<property name="curationService">
-			<ref bean="curationServiceDAO" />
-		</property>
-	</bean>
-	
-	<bean id="characterizationManager"
-		class="gov.nih.nci.cananolab.restful.sample.CharacterizationManager">
-	</bean>
-	
-	<bean id="functionalizingEntityBO"
-		class="gov.nih.nci.cananolab.restful.sample.FunctionalizingEntityBO">
-		<property name="curationService">
-			<ref bean="curationServiceDAO" />
-		</property>
-	</bean>
-	
-	<bean id="chemicalAssociationBO"
-		class="gov.nih.nci.cananolab.restful.sample.ChemicalAssociationBO">
-		<property name="curationService">
-			<ref bean="curationServiceDAO" />
-		</property>
-	</bean>
-	
-	<bean id="compositionFileBO"
-		class="gov.nih.nci.cananolab.restful.sample.CompositionFileBO">
-		<property name="curationService">
-			<ref bean="curationServiceDAO" />
-		</property>
-	</bean>
-	
-	<bean id="experimentConfigManager"
-		class="gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager">
-	</bean>
-	
-	<bean id="characterizationResultManager"
-		class="gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager">
-	</bean>
-	
-	<bean id="compositionManager"
-		class="gov.nih.nci.cananolab.restful.sample.CompositionManager">
-	</bean>
-	
-	<bean id="quartzScheduler"
-		class="gov.nih.nci.cananolab.restful.core.QuartzScheduler">
-		<property name="csmCleanupIntervalInMinutes" value="15" />
-		<property name="publicCountPullIntervalInHours" value="24" />
-		<property name="indexIntervalInHours" value="24" />
-	</bean>
-	
-	
-	<bean id="advancedSampleSearchBO"
-		class="gov.nih.nci.cananolab.restful.sample.AdvancedSampleSearchBO">
-		<property name="curationService">
-			<ref bean="curationServiceDAO" />
-		</property>
-	</bean>
-	
-	<bean id="favoritesBO"
-		class="gov.nih.nci.cananolab.restful.favorites.FavoritesBO">
-		<property name="curationService">
-			<ref bean="curationServiceDAO" />
-		</property>
-	</bean>
-	
-	<bean id="collaborationGroupBO"
-		class="gov.nih.nci.cananolab.restful.community.CollaborationGroupBO">
-	</bean>
-	
-	<bean id="collaborationGroupManger"
-		class="gov.nih.nci.cananolab.restful.community.CollaborationGroupManager">
-	</bean>
-	
-	<bean id="customSearchBO"
-		class="gov.nih.nci.cananolab.restful.customsearch.CustomSearchBO">
-		<property name="curationService">
-			<ref bean="curationServiceDAO" />
-		</property>
-	</bean>
-	
-	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
 

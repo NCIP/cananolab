@@ -8,12 +8,9 @@
 
 package gov.nih.nci.cananolab.service.sample.impl;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.service.common.LongRunningProcess;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.List;
@@ -32,10 +29,8 @@ public class BatchDataAvailabilityProcess extends LongRunningProcess {
 	public static final String BATCH_OPTION3 = "delete all";
 
 	private DataAvailabilityService dataAvailabilityService;
-	private SecurityService securityService;
 	private String batchOption;
-	private Logger logger = Logger
-			.getLogger(BatchDataAvailabilityProcess.class);
+	private Logger logger = Logger.getLogger(BatchDataAvailabilityProcess.class);
 	private List<String> sampleIds = null; // sample Ids that need to run batch
 
 	/**
@@ -47,30 +42,24 @@ public class BatchDataAvailabilityProcess extends LongRunningProcess {
 	 * @param user
 	 * @throws Exception
 	 */
-	public BatchDataAvailabilityProcess(
-			DataAvailabilityService dataAvailabilityService,
-			SecurityService securityService, String batchOption, UserBean user)
-			throws Exception {
+	public BatchDataAvailabilityProcess(SampleService sampleService, DataAvailabilityService dataAvailabilityService, String batchOption) throws Exception
+	{
 		this.dataAvailabilityService = dataAvailabilityService;
-		this.securityService = securityService;
 		this.batchOption = batchOption;
-		SampleService sampleService = new SampleServiceLocalImpl(
-				securityService);
+		
 		logger.info("New data availability batch process is created");
 		// find all sampleIds
 		List<String> allSampleIds = sampleService.findSampleIdsBy("", "", null,
 				null, null, null, null, null, null, null, null);
 		// find sampleIds with existing data availability
-		List<String> dataAvailabilitySampleIds = dataAvailabilityService
-				.findSampleIdsWithDataAvailability(securityService);
+		List<String> dataAvailabilitySampleIds = dataAvailabilityService.findSampleIdsWithDataAvailability();
 		if (batchOption.equals(BATCH_OPTION1)
 				|| batchOption.equals(BATCH_OPTION3)) {
 			sampleIds = allSampleIds;
 		} else {
 			sampleIds = dataAvailabilitySampleIds;
 		}
-		this.processType = ClassUtils
-				.getDisplayName("BatchDataAvailabilityProcess");
+		this.processType = ClassUtils.getDisplayName("BatchDataAvailabilityProcess");
 	}
 
 	/**
@@ -82,16 +71,11 @@ public class BatchDataAvailabilityProcess extends LongRunningProcess {
 	 * @param user
 	 * @throws Exception
 	 */
-	public BatchDataAvailabilityProcess(
-			DataAvailabilityService dataAvailabilityService,
-			SecurityService securityService, List<String> sampleIds,
-			String batchOption, UserBean user) throws Exception {
+	public BatchDataAvailabilityProcess(DataAvailabilityService dataAvailabilityService, List<String> sampleIds,
+			String batchOption) throws Exception {
 		this.dataAvailabilityService = dataAvailabilityService;
-		this.securityService = securityService;
 		this.batchOption = batchOption;
 		this.sampleIds = sampleIds;
-		securityService = new SecurityService(AccessibilityBean.CSM_APP_NAME,
-				user);
 		this.processType = ClassUtils
 				.getDisplayName("BatchDataAvailabilityProcess");
 		logger.info("New data availability batch process is created");
@@ -122,11 +106,9 @@ public class BatchDataAvailabilityProcess extends LongRunningProcess {
 			int numFailures = 0;
 			if (batchOption.equalsIgnoreCase(BATCH_OPTION1)
 					|| batchOption.equalsIgnoreCase(BATCH_OPTION2)) {
-				numFailures = dataAvailabilityService
-						.saveBatchDataAvailability(sampleIds, securityService);
+				numFailures = dataAvailabilityService.saveBatchDataAvailability(sampleIds);
 			} else if (batchOption.equalsIgnoreCase(BATCH_OPTION3)) {
-				numFailures = dataAvailabilityService
-						.deleteBatchDataAvailability(sampleIds, securityService);
+				numFailures = dataAvailabilityService.deleteBatchDataAvailability(sampleIds);
 			}
 			long end = System.currentTimeMillis();
 			long duration = (end - start) / 1000;

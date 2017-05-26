@@ -17,16 +17,14 @@
                     </tr>
                     <tr ng-repeat="indFile in fileTypes">
                         <td>
-                                <table class="summaryViewNoGrid" width="99%" align="center"
-                                       style="background-color:#F5F5f5;">
+                                <table class="summaryViewNoGrid" width="99%" align="center" style="background-color:#F5F5f5;">
                                     <tr>
                                         <td class="cellLabel" width="20%">
                                             Title and Download Link
                                         </td>
                                         <td>
                                             <span ng-if="indFile.ExternalURI">
-                                                    <a
-                                                            ng-href="/caNanoLab/rest/sample/download?fileId={{indFile.fileId}}">
+                                                    <a ng-href="/caNanoLab/rest/sample/download?fileId={{indFile.fileId}}">
                                                             {{indFile.URI}}
                                                     </a>
                                                     &nbsp;[<a class="disclaimerLink" href="/caNanoLab/html/cananoDisclaimer.html" target="new">Disclaimer</a>]

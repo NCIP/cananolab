@@ -8,22 +8,22 @@
 
 package gov.nih.nci.cananolab.restful.community;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.service.GroupService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.community.CommunityService;
-import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 //import org.apache.struts.validator.DynaValidatorForm;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Methods for DWR Ajax
@@ -31,60 +31,48 @@ import org.directwebremoting.WebContextFactory;
  * @author pansu
  *
  */
-public class CollaborationGroupManager {
-	private CommunityService service;
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("collaborationGroupManger")
+public class CollaborationGroupManager
+{
 	private Logger logger = Logger.getLogger(CollaborationGroupManager.class);
-	private SecurityService securityService;
+	
+	@Autowired
+	private CommunityService communityService;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private GroupService groupService;
 
-	private CommunityService getService(HttpServletRequest request) throws Exception {
-		securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
-		service = new CommunityServiceLocalImpl(securityService);
-		return service;
-	}
-
-//	public CollaborationGroupBean resetTheCollaborationGroup() {
-//		DynaValidatorForm collaborationGroupForm = (DynaValidatorForm) (WebContextFactory
-//				.get().getSession().getAttribute("collaborationGroupForm"));
-//		if (collaborationGroupForm == null) {
-//			return null;
-//		}
-//		CollaborationGroupBean group = new CollaborationGroupBean();
-//		collaborationGroupForm.set("group", group);
-//		return group;
-//	}
-//
-	public CollaborationGroupBean getCollaborationGroupById(HttpServletRequest request, String id)
-			throws Exception {
-		
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user == null) {
+	public CollaborationGroupBean getCollaborationGroupById(HttpServletRequest request, String id)throws Exception
+	{
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			return null;
 		}
-		CollaborationGroupBean group = getService(request).findCollaborationGroupById(
-				id);
+		CollaborationGroupBean group = communityService.findCollaborationGroupById(id);
 		request.getSession().setAttribute("group", group);
 		return group;
 	}
 
-	public CollaborationGroupBean addUserAccess(HttpServletRequest request, AccessibilityBean userAccess)
-			throws Exception {
-
+	public CollaborationGroupBean addUserAccess(HttpServletRequest request, AccessControlInfo userAccess) throws Exception
+	{
 		CollaborationGroupBean group = (CollaborationGroupBean) (request.getSession().getAttribute("group"));
-		if(group == null){
+		if (group == null){
 			group = new CollaborationGroupBean();
 		}
 		// check whether user is a valid user
-		getService(request);
-		String userLogin = userAccess.getUserBean().getLoginName();
 		CollaborationGroupBean bogusGroup=new CollaborationGroupBean();
-		if (!securityService.isUserValid(userLogin)) {
+		CananoUserDetails userDetail = (CananoUserDetails) userDetailsService.loadUserByUsername(userAccess.getRecipient());
+		if (userDetail == null)
+		{
 			bogusGroup.setName("!!invalid user");
 			throw new Exception("!!invalid user");
 			//return bogusGroup;
 		}
 		// if the user is already a curator, don't add the user
-		else if (securityService.isCurator(userLogin)) {
+		else if (userDetail.isCurator()) {
 			bogusGroup.setName("!!user is a curator");
 			throw new Exception("!!user is a curator");
 			//return bogusGroup;
@@ -93,45 +81,12 @@ public class CollaborationGroupManager {
 		return group;
 	}
 
-	public CollaborationGroupBean deleteUserAccess(HttpServletRequest request, AccessibilityBean userAccess)
-			throws Exception {
+	public CollaborationGroupBean deleteUserAccess(HttpServletRequest request, AccessControlInfo userAccess) throws Exception
+	{
 		CollaborationGroupBean group = (CollaborationGroupBean) (request.getSession().getAttribute("group"));
 		group.removeUserAccess(userAccess);
+		groupService.removeGroupMember(Long.valueOf(group.getId()), userAccess.getRecipient());
 		return group;
 	}
 
-//	public UserBean[] getMatchedUsers(String groupOwner, String searchStr)
-//			throws Exception {
-//		try {
-//			List<UserBean> matchedUsers = getService(request).findUserBeans(searchStr);
-//			List<UserBean> updatedUsers = new ArrayList<UserBean>(matchedUsers);
-//			// remove current user from the list
-//			WebContext wctx = WebContextFactory.get();
-//			UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-//			updatedUsers.remove(user);
-//			// remove data owner from the list if owner is not the current user
-//			if (!groupOwner.equalsIgnoreCase(user.getLoginName())) {
-//				for (UserBean userBean : matchedUsers) {
-//					if (userBean.getLoginName().equalsIgnoreCase(groupOwner)) {
-//						updatedUsers.remove(userBean);
-//						break;
-//					}
-//				}
-//			}
-//			// exclude curators;
-//			List<String> curators = securityService
-//					.getUserNames(AccessibilityBean.CSM_DATA_CURATOR);
-//			for (UserBean userBean : matchedUsers) {
-//				for (String curator : curators) {
-//					if (userBean.getLoginName().equalsIgnoreCase(curator)) {
-//						updatedUsers.remove(userBean);
-//					}
-//				}
-//			}
-//			return updatedUsers.toArray(new UserBean[updatedUsers.size()]);
-//		} catch (Exception e) {
-//			logger.error("Problem getting matched user login names", e);
-//			return null;
-//		}
-//	}
 }

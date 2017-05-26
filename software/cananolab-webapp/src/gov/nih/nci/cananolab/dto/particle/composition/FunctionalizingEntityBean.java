@@ -134,16 +134,14 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	}
 
 	public FunctionalizingEntity getDomainCopy(String createdBy) {
-		FunctionalizingEntity copy = (FunctionalizingEntity) ClassUtils
-				.deepCopy(domainEntity);
+		FunctionalizingEntity copy = (FunctionalizingEntity) ClassUtils.deepCopy(domainEntity);
 		resetDomainCopy(createdBy, copy);
 		return copy;
 	}
 
 	public void resetDomainCopy(String createdBy, FunctionalizingEntity copy) {
 		// append original ID to assist with chemical association copy
-		copy.setCreatedBy(createdBy + ":"
-				+ Constants.AUTO_COPY_ANNOTATION_PREFIX + ":" + copy.getId());
+		copy.setCreatedBy(createdBy + ":" + Constants.AUTO_COPY_ANNOTATION_PREFIX + ":" + copy.getId());
 		// clear Id
 		copy.setId(null);
 		// because activationMethod can't be shared.

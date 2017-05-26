@@ -1,13 +1,11 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
 
 public class SimpleSubmitProtocolBean {
 
@@ -20,15 +18,15 @@ public class SimpleSubmitProtocolBean {
 	String fileTitle = "";
 	String fileName = "";
 	String fileDescription = "";
-	List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
-	List<AccessibilityBean> userAccesses =  new ArrayList<AccessibilityBean>();
+	List<AccessControlInfo> groupAccesses = new ArrayList<AccessControlInfo>();
+	List<AccessControlInfo> userAccesses =  new ArrayList<AccessControlInfo>();
 	String protectedData = "";
 	Boolean isPublic = false;
 	Boolean isOwner = false;
 	String ownerName = "";
 	String createdBy = "";
 	Date createdDate;
-	AccessibilityBean theAccess;
+	AccessControlInfo theAccess;
 	Boolean userDeletable = false;
 	List<String> errors;
 	Boolean userUpdatable = false;
@@ -92,10 +90,10 @@ public class SimpleSubmitProtocolBean {
 	public void setUserDeletable(Boolean userDeletable) {
 		this.userDeletable = userDeletable;
 	}
-	public AccessibilityBean getTheAccess() {
+	public AccessControlInfo getTheAccess() {
 		return theAccess;
 	}
-	public void setTheAccess(AccessibilityBean theAccess) {
+	public void setTheAccess(AccessControlInfo theAccess) {
 		this.theAccess = theAccess;
 	}
 	public Long getId() {
@@ -153,16 +151,16 @@ public class SimpleSubmitProtocolBean {
 	public void setFileDescription(String fileDescription) {
 		this.fileDescription = fileDescription;
 	}
-	public List<AccessibilityBean> getGroupAccesses() {
+	public List<AccessControlInfo> getGroupAccesses() {
 		return groupAccesses;
 	}
-	public void setGroupAccesses(List<AccessibilityBean> groupAccesses) {
+	public void setGroupAccesses(List<AccessControlInfo> groupAccesses) {
 		this.groupAccesses = groupAccesses;
 	}
-	public List<AccessibilityBean> getUserAccesses() {
+	public List<AccessControlInfo> getUserAccesses() {
 		return userAccesses;
 	}
-	public void setUserAccesses(List<AccessibilityBean> userAccesses) {
+	public void setUserAccesses(List<AccessControlInfo> userAccesses) {
 		this.userAccesses = userAccesses;
 	}
 	public String getProtectedData() {
@@ -195,36 +193,5 @@ public class SimpleSubmitProtocolBean {
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-	public void transferProtocolBeanForEdit(ProtocolBean bean, HttpServletRequest request) {
-		setAbbreviation(bean.getDomain().getAbbreviation());
-		setCreatedBy(bean.getDomain().getCreatedBy());
-		setCreatedDate(bean.getDomain().getCreatedDate());
-		
-		if(bean.getDomain().getFile()!= null){
-		//	setFileDescription(bean.getDomain().getFile().getDescription());
-			setFileId(bean.getDomain().getFile().getId());
-		//	setFileTitle(bean.getDomain().getFile().getTitle());
-			setUri(bean.getDomain().getFile().getUri());
-			setUriExternal(bean.getDomain().getFile().getUriExternal());
-			setFileName(bean.getDomain().getFile().getName());
-			setFileDescription(bean.getDomain().getFile().getDescription());
-			setFileTitle(bean.getDomain().getFile().getTitle());
-		}
-		setGroupAccesses(bean.getGroupAccesses());
-		setUserAccesses(bean.getUserAccesses());
-		setTheAccess(bean.getTheAccess());
-		setId(bean.getDomain().getId());
-		setIsOwner(bean.getUserIsOwner());
-		setIsPublic(bean.getPublicStatus());
-		setName(bean.getDomain().getName());
-		setType(bean.getDomain().getType());
-		setUserDeletable(bean.getUserDeletable());
-		setVersion(bean.getDomain().getVersion());
-		setUserUpdatable(bean.getUserUpdatable());
-		setReview((Boolean) request.getAttribute("review"));
-		setExternalUrl(bean.getFileBean().getExternalUrl());
-
-	}
-	
 	
 }

@@ -1,21 +1,24 @@
 package gov.nih.nci.cananolab.restful.core;
 
-import gov.nih.nci.cananolab.restful.view.SimpleTabsBean;
-import gov.nih.nci.cananolab.service.security.UserBean;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.stereotype.Component;
+
+import gov.nih.nci.cananolab.restful.view.SimpleTabsBean;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+
+@Component("tabGenerationBO")
 public class TabGenerationBO {
 
-	public SimpleTabsBean getTabs(HttpServletRequest httpRequest, String homePage) {
+	public SimpleTabsBean getTabs(HttpServletRequest httpRequest, CananoUserDetails userDetails, String homePage) {
 		
 		List<String[]> tabs = new ArrayList<String[]>();
 		HttpSession session = httpRequest.getSession();
-		UserBean userBean = (session == null)? null : (UserBean)session.getAttribute("user");
 		Object hasResult = (session == null)? null : session.getAttribute("hasResultsWaiting") ;
 		boolean hasResultWaiting = (hasResult == null) ? false : (Boolean)hasResult;
 		homePage = homePage.trim().toLowerCase();
@@ -23,9 +26,9 @@ public class TabGenerationBO {
 		String urlBase = getUrlBase(httpRequest.getRequestURL().toString());
 		
 		SimpleTabsBean tabsBean = new SimpleTabsBean();
-		tabsBean.setUserLoggedIn(userBean != null);
+		tabsBean.setUserLoggedIn(SpringSecurityUtil.isUserLoggedIn());
 		
-		if (userBean == null) { //not logged in
+		if (!SpringSecurityUtil.isUserLoggedIn()) { //not logged in
 			String[] tabWithLink = new String[2];
 			if (homePage.length() == 0 || !homePage.startsWith("true")) {
 				tabWithLink[0] = "HOME";
@@ -46,8 +49,6 @@ public class TabGenerationBO {
 				tabWithLink[0] = "PUBLICATIONS";
 				tabWithLink[1] =  urlBase + "#/managePublications";;
 				tabs.add(tabWithLink);
-				
-				
 			}
 			tabWithLink = new String[2];
 			tabWithLink[0] = "HELP";
@@ -99,7 +100,7 @@ public class TabGenerationBO {
 			tabs.add(tabWithLink);
 			
 			
-			if (userBean.isCurator()) {
+			if (userDetails.isCurator()) {
 				tabWithLink = new String[2];
 				tabWithLink[0] = "CURATION";
 				tabWithLink[1] =  urlBase + "#/manageCuration";
@@ -107,7 +108,7 @@ public class TabGenerationBO {
 			}
 			
 			
-			if (userBean.isCurator() && hasResultWaiting) {
+			if (userDetails.isCurator() && hasResultWaiting) {
 				tabWithLink = new String[2];
 				tabWithLink[0] = "RESULTS";
 				tabWithLink[1] =  urlBase + "#/batchDataResults";
@@ -133,6 +134,14 @@ public class TabGenerationBO {
 //			tabWithLink[0] = "GLOSSARY";
 //			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary";
 //			tabs.add(tabWithLink);
+			
+			if (userDetails.isAdmin())
+			{
+				tabWithLink = new String[2];
+				tabWithLink[0] = "ADMIN";
+				tabWithLink[1] =  urlBase + "#/manageUsers";
+				tabs.add(tabWithLink);
+			}
 			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "LOGOUT";

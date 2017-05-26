@@ -19,9 +19,6 @@ import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -46,11 +43,9 @@ public class InitCharacterizationSetup {
 		return new InitCharacterizationSetup();
 	}
 
-	public void setPOCDropdown(HttpServletRequest request, String sampleId)
+	public void setPOCDropdown(HttpServletRequest request, String sampleId, SampleService sampleService)
 			throws Exception {
-		SampleService service = this.getSampleServiceFromSession(request);
-		List<PointOfContactBean> pocs = service
-				.findPointOfContactsBySampleId(sampleId);
+		List<PointOfContactBean> pocs = sampleService.findPointOfContactsBySampleId(sampleId);
 		request.getSession().setAttribute("samplePointOfContacts", pocs);
 	}
 
@@ -214,23 +209,19 @@ public class InitCharacterizationSetup {
 	}
 
 	public SortedSet<String> getCharNamesByCharType(HttpServletRequest request,
-			String charType) throws Exception {
+			String charType, CharacterizationService characterizationService) throws Exception
+	{
 		if (StringUtils.isEmpty(charType)) {
 			return null;
 		}
 		SortedSet<String> charNames = new TreeSet<String>();
-		String shortClassNameForCharType = ClassUtils
-				.getShortClassNameFromDisplayName(charType);
+		String shortClassNameForCharType = ClassUtils.getShortClassNameFromDisplayName(charType);
 		Class clazz = ClassUtils.getFullClass(shortClassNameForCharType);
 		if (clazz != null) {
-			charNames = InitSetup.getInstance().getDefaultTypesByReflection(
-					request.getSession().getServletContext(),
+			charNames = InitSetup.getInstance().getDefaultTypesByReflection(request.getSession().getServletContext(),
 					"defaultCharTypeChars", clazz.getName());
 		}
-		CharacterizationService service = this
-				.getCharacterizationServiceFromSession(request);
-		List<String> otherCharNames = service
-				.findOtherCharacterizationByAssayCategory(charType);
+		List<String> otherCharNames = characterizationService.findOtherCharacterizationByAssayCategory(charType);
 		if (!otherCharNames.isEmpty()) {
 			charNames.addAll(otherCharNames);
 		}
@@ -239,7 +230,7 @@ public class InitCharacterizationSetup {
 	}
 
 	public List<LabelValueBean> getDecoratedCharNamesByCharType(
-			HttpServletRequest request, String charType) throws Exception {
+			HttpServletRequest request, String charType, CharacterizationService characterizationService) throws Exception {
 		if (StringUtils.isEmpty(charType)) {
 			return null;
 		}
@@ -260,10 +251,7 @@ public class InitCharacterizationSetup {
 				}
 			}
 		}
-		CharacterizationService service = this
-				.getCharacterizationServiceFromSession(request);
-		List<String> otherCharNames = service
-				.findOtherCharacterizationByAssayCategory(charType);
+		List<String> otherCharNames = characterizationService.findOtherCharacterizationByAssayCategory(charType);
 		if (!otherCharNames.isEmpty()) {
 			for (String name : otherCharNames) {
 				if (!charNames.contains(name)) {
@@ -353,28 +341,5 @@ public class InitCharacterizationSetup {
 		}
 		setExperimentConfigDropDowns(request);
 	}
-
-	private SampleService getSampleServiceFromSession(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
-		if (request.getSession().getAttribute("sampleService") != null) {
-			return (SampleService) request.getSession().getAttribute(
-					"sampleService");
-		} else {
-			return new SampleServiceLocalImpl(securityService);
-		}
-	}
-
-	private CharacterizationService getCharacterizationServiceFromSession(
-			HttpServletRequest request) throws Exception {
-		SecurityService securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
-		if (request.getSession().getAttribute("characterizationService") != null) {
-			return (CharacterizationService) request.getSession().getAttribute(
-					"characterizationService");
-		} else {
-			return new CharacterizationServiceLocalImpl(securityService);
-		}
-	}
+	
 }

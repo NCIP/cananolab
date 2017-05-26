@@ -4,6 +4,8 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -194,7 +196,7 @@ public class SimpleFunctionalizingEntityBean {
 		this.description = description;
 	}
 	
-	public void tranferSimpleFunctionalizingBean(FunctionalizingEntityBean bean, HttpServletRequest request) {
+	public void tranferSimpleFunctionalizingBean(FunctionalizingEntityBean bean, HttpServletRequest request, SpringSecurityAclService springSecurityAclService) {
 		domainEntity = new HashMap<Object, Object>();
 		this.setDescription(bean.getDescription());
 		this.setName(bean.getName());
@@ -229,7 +231,8 @@ public class SimpleFunctionalizingEntityBean {
 			fBean.setCreatedBy(files.getDomainFile().getCreatedBy());
 			fBean.setCreatedDate(files.getDomainFile().getCreatedDate());
 			fBean.setTheAccess(files.getTheAccess());
-			fBean.setIsPublic(files.getPublicStatus());
+			boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(this.getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
+			fBean.setIsPublic(isPublic);
 			fileList.add(fBean);
 		}
 		setFileList(fileList);

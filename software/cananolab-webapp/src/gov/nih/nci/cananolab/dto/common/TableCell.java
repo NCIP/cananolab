@@ -11,6 +11,7 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
 
@@ -61,9 +62,9 @@ public class TableCell {
 
 	public TableCell(Condition condition) {
 		this.datumOrCondition = "condition";
-		if (condition.getValue().contains(
+		if (!StringUtils.isEmpty(condition.getValue()) && condition.getValue().contains(
 				Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
-				&& condition.getCreatedBy().contains(
+				&& !StringUtils.isEmpty(condition.getCreatedBy()) && condition.getCreatedBy().contains(
 						Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
 			this.value = "";
 		} else {

@@ -12,10 +12,14 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.restful.SpringApplicationContext;
+import gov.nih.nci.cananolab.restful.core.TabGenerationBO;
 import gov.nih.nci.cananolab.restful.customsearch.bean.ProtocolSearchableFieldsBean;
 import gov.nih.nci.cananolab.restful.customsearch.bean.PublicationSearchableFieldsBean;
 import gov.nih.nci.cananolab.restful.customsearch.bean.SampleSearchableFieldsBean;
-import gov.nih.nci.cananolab.service.BaseServiceHelper;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.service.customsearch.helper.CustomSearchServiceHelper;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
@@ -29,149 +33,127 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
-public class CustomSearchEngine extends BaseServiceHelper {
+@Component("customSearchEngine")
+public class CustomSearchEngine
+{
+	private static Logger logger = Logger.getLogger(CustomSearchEngine.class);
+	
+	private CaNanoLabApplicationService appService;
+	
+	@Autowired
+	private SampleServiceHelper sampleServiceHelper;
+	
+	@Autowired
+	private ProtocolServiceHelper protocolServiceHelper;
+	
+	@Autowired
+	private PublicationServiceHelper publicationServiceHelper;
+	
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
 
-	SampleServiceHelper sampleHelper;
-	ProtocolServiceHelper protocolHelper;
-	PublicationServiceHelper publicationHelper;
-	CaNanoLabApplicationService appService;
-	public List<SampleSearchableFieldsBean> retrieveSamplesForIndexing() {
+	public List<SampleSearchableFieldsBean> retrieveSamplesForIndexing()
+	{
 		List <SampleSearchableFieldsBean> sampleResults = new ArrayList<SampleSearchableFieldsBean>();
 		try {
-			appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			List<String> accessibledata = getAccessibleData();	
-
-			sampleHelper = new SampleServiceHelper();
-
-			List<String> publicSamples = sampleHelper.getAllSamples();
+			appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			
+			List<String> publicSamples = sampleServiceHelper.getAllSamples();
 
 			for (int i = 0; i < publicSamples.size(); i++) {
 				Long id = Long.valueOf(publicSamples.get(i));
 
-//				if (StringUtils.containsIgnoreCase(getAccessibleData(),
-//						publicSamples.get(i))) {
+				//				if (StringUtils.containsIgnoreCase(getAccessibleData(),
+				//						publicSamples.get(i))) {
 
-					DetachedCriteria sampleCriteria = DetachedCriteria
-							.forClass(Sample.class).add(
-									Property.forName("id").eq(id));
+				DetachedCriteria sampleCriteria = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(id));
 
-					sampleCriteria.setFetchMode("primaryPointOfContact",
-							FetchMode.EAGER);
-					sampleCriteria.setFetchMode("sampleComposition",
-							FetchMode.EAGER);
-					sampleCriteria.setFetchMode(
-							"sampleComposition.nanomaterialEntityCollection",
-							FetchMode.EAGER);
-					sampleCriteria
-							.setFetchMode(
-									"sampleComposition.functionalizingEntityCollection",
-									FetchMode.EAGER);
-					sampleCriteria
-							.setFetchMode(
-									"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
-									FetchMode.EAGER);
-					sampleCriteria
-							.setFetchMode(
-									"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-									FetchMode.EAGER);
-					sampleCriteria
-							.setFetchMode(
-									"sampleComposition.functionalizingEntityCollection.functionCollection",
-									FetchMode.EAGER);
-					sampleCriteria.setFetchMode("keywordCollection",
-							FetchMode.EAGER);
-					sampleCriteria.setFetchMode("publicationCollection",
-							FetchMode.EAGER);
-					sampleCriteria.setFetchMode("characterizationCollection",
-							FetchMode.EAGER);
+				sampleCriteria.setFetchMode("primaryPointOfContact", FetchMode.EAGER);
+				sampleCriteria.setFetchMode("sampleComposition", FetchMode.EAGER);
+				sampleCriteria.setFetchMode( "sampleComposition.nanomaterialEntityCollection", FetchMode.EAGER);
+				sampleCriteria.setFetchMode("sampleComposition.functionalizingEntityCollection", FetchMode.EAGER);
+				sampleCriteria.setFetchMode("sampleComposition.nanomaterialEntityCollection.composingElementCollection", FetchMode.EAGER);
+				sampleCriteria.setFetchMode("sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+						FetchMode.EAGER);
+				sampleCriteria.setFetchMode("sampleComposition.functionalizingEntityCollection.functionCollection", FetchMode.EAGER);
+				sampleCriteria.setFetchMode("keywordCollection", FetchMode.EAGER);
+				sampleCriteria.setFetchMode("publicationCollection", FetchMode.EAGER);
+				sampleCriteria.setFetchMode("characterizationCollection", FetchMode.EAGER);
 
-					sampleCriteria
-							.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-					Sample sample = null;
-					List result = appService.query(sampleCriteria);
-					if (!result.isEmpty()) {
-						sample = (Sample) result.get(0);
+				sampleCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+				Sample sample = null;
+				List result = appService.query(sampleCriteria);
+				if (!result.isEmpty()) {
+					sample = (Sample) result.get(0);
+				}
+
+				SampleSearchableFieldsBean sampleFieldsBean = new SampleSearchableFieldsBean();
+				sampleFieldsBean.setSampleId(sample.getId().toString());
+				sampleFieldsBean.setSampleName(sample.getName());
+				sampleFieldsBean.setCreatedDate(sample.getCreatedDate());
+				sampleFieldsBean.setSamplePocName(sample.getPrimaryPointOfContact().getFirstName());
+				Collection<Keyword> keywordCollection = sample.getKeywordCollection();
+				Iterator<Keyword> keywordItr = keywordCollection.iterator();
+				List<String> keywords = new ArrayList<String>();
+				while (keywordItr.hasNext()) {
+					Keyword keywrd = keywordItr.next();
+					keywords.add(keywrd.getName());
+				}
+				sampleFieldsBean.setSampleKeywords(keywords);
+				// sampleFieldsBean.setNanoEntityName(nanoEntityName);
+				SampleComposition sampleComp = null;
+				if (sample.getSampleComposition() != null) {
+					sampleComp = sample.getSampleComposition();
+					Collection<NanomaterialEntity> nanoCollection = null;
+					if (sampleComp.getNanomaterialEntityCollection() != null) {
+						nanoCollection = sampleComp.getNanomaterialEntityCollection();
+					}
+					Iterator<NanomaterialEntity> itr = nanoCollection.iterator();
+					while (itr.hasNext()) {
+						NanomaterialEntity nanoEntity = itr.next();
+						sampleFieldsBean.setNanoEntityDesc(nanoEntity.getDescription());
+						sampleFieldsBean.setNanoEntityName(nanoEntity.getClass().getSimpleName());
 					}
 
-					SampleSearchableFieldsBean sampleFieldsBean = new SampleSearchableFieldsBean();
-					sampleFieldsBean.setSampleId(sample.getId().toString());
-					sampleFieldsBean.setSampleName(sample.getName());
-					sampleFieldsBean.setCreatedDate(sample.getCreatedDate());
-					sampleFieldsBean.setSamplePocName(sample
-							.getPrimaryPointOfContact().getFirstName());
-					Collection<Keyword> keywordCollection = sample
-							.getKeywordCollection();
-					Iterator<Keyword> keywordItr = keywordCollection.iterator();
-					List<String> keywords = new ArrayList<String>();
-					while (keywordItr.hasNext()) {
-						Keyword keywrd = keywordItr.next();
-						keywords.add(keywrd.getName());
+					Collection<FunctionalizingEntity> funcCollection = null;
+					if (sampleComp.getFunctionalizingEntityCollection() != null) {
+						funcCollection = sampleComp.getFunctionalizingEntityCollection();
 					}
-					sampleFieldsBean.setSampleKeywords(keywords);
-					// sampleFieldsBean.setNanoEntityName(nanoEntityName);
-					SampleComposition sampleComp = null;
-					if (sample.getSampleComposition() != null) {
-						sampleComp = sample.getSampleComposition();
-						Collection<NanomaterialEntity> nanoCollection = null;
-						if (sampleComp.getNanomaterialEntityCollection() != null) {
-							nanoCollection = sampleComp
-									.getNanomaterialEntityCollection();
-						}
-						Iterator<NanomaterialEntity> itr = nanoCollection
-								.iterator();
-						while (itr.hasNext()) {
-							NanomaterialEntity nanoEntity = itr.next();
-							sampleFieldsBean.setNanoEntityDesc(nanoEntity
-									.getDescription());
-							sampleFieldsBean.setNanoEntityName(nanoEntity
-									.getClass().getSimpleName());
-						}
-
-						Collection<FunctionalizingEntity> funcCollection = null;
-						if (sampleComp.getFunctionalizingEntityCollection() != null) {
-							funcCollection = sampleComp
-									.getFunctionalizingEntityCollection();
-						}
-						Iterator<FunctionalizingEntity> funcitr = funcCollection
-								.iterator();
-						while (funcitr.hasNext()) {
-							FunctionalizingEntity funcEntity = funcitr.next();
-							sampleFieldsBean.setFuncEntityName(funcEntity
-									.getClass().getSimpleName());
-							if (funcEntity.getFunctionCollection() != null) {
-								Collection functionCollection = funcEntity
-										.getFunctionCollection();
-								Iterator<Function> functionItr = functionCollection
-										.iterator();
-								while (functionItr.hasNext()) {
-									Function function = functionItr.next();
-									sampleFieldsBean.setFunction(function
-											.getClass().getSimpleName());
-								}
+					Iterator<FunctionalizingEntity> funcitr = funcCollection.iterator();
+					while (funcitr.hasNext()) {
+						FunctionalizingEntity funcEntity = funcitr.next();
+						sampleFieldsBean.setFuncEntityName(funcEntity.getClass().getSimpleName());
+						if (funcEntity.getFunctionCollection() != null) {
+							Collection functionCollection = funcEntity.getFunctionCollection();
+							Iterator<Function> functionItr = functionCollection.iterator();
+							while (functionItr.hasNext()) {
+								Function function = functionItr.next();
+								sampleFieldsBean.setFunction(function.getClass().getSimpleName());
 							}
 						}
 					}
+				}
 
-					if (sample.getCharacterizationCollection() != null) {
-						Collection charCollection = sample
-								.getCharacterizationCollection();
+				if (sample.getCharacterizationCollection() != null) {
+					Collection charCollection = sample.getCharacterizationCollection();
 
-						Iterator<Characterization> itr = charCollection
-								.iterator();
-						while (itr.hasNext()) {
-							Characterization charc = itr.next();
-							sampleFieldsBean.setCharacterization(charc
-									.getClass().getSimpleName());
-						}
+					Iterator<Characterization> itr = charCollection.iterator();
+					while (itr.hasNext()) {
+						Characterization charc = itr.next();
+						sampleFieldsBean.setCharacterization(charc.getClass().getSimpleName());
 					}
+				}
 
-					sampleResults.add(sampleFieldsBean);
+				sampleResults.add(sampleFieldsBean);
 				//}
 
 			}
@@ -182,52 +164,44 @@ public class CustomSearchEngine extends BaseServiceHelper {
 		return sampleResults;
 	}
 
-	public List<ProtocolSearchableFieldsBean> retrieveProtocolsForIndexing() {
+	public List<ProtocolSearchableFieldsBean> retrieveProtocolsForIndexing()
+	{
 		List<ProtocolSearchableFieldsBean> protocolResults = new ArrayList<ProtocolSearchableFieldsBean>();
 		try {
-			appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			protocolHelper = new ProtocolServiceHelper();
-
-			List<String> publicProtocols = protocolHelper.getAllProtocols();
-			
+			appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			List<String> publicProtocols = protocolServiceHelper.getAllProtocols();
 
 			for (int i = 0; i < publicProtocols.size(); i++) {
 				Long id = Long.valueOf(publicProtocols.get(i));
-//				if (StringUtils.containsIgnoreCase(getAccessibleData(),
-//						publicProtocols.get(i))) {
+				//				if (StringUtils.containsIgnoreCase(getAccessibleData(),
+				//						publicProtocols.get(i))) {
 
-					DetachedCriteria protocolCriteria = DetachedCriteria
-							.forClass(Protocol.class).add(
-									Property.forName("id").eq(id));
+				DetachedCriteria protocolCriteria = DetachedCriteria.forClass(Protocol.class).add(Property.forName("id").eq(id));
 
-					protocolCriteria.setFetchMode("file", FetchMode.JOIN);
-					protocolCriteria.setFetchMode("file.keywordCollection",
-							FetchMode.JOIN);
-					protocolCriteria
-							.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+				protocolCriteria.setFetchMode("file", FetchMode.JOIN);
+				protocolCriteria.setFetchMode("file.keywordCollection", FetchMode.JOIN);
+				protocolCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
-					Protocol protocol = null;
+				Protocol protocol = null;
 
-					List result = appService.query(protocolCriteria);
-					if (!result.isEmpty()) {
-						protocol = (Protocol) result.get(0);
-					}
-					ProtocolSearchableFieldsBean protocolFieldsBean = new ProtocolSearchableFieldsBean();					
-					protocolFieldsBean.setCreatedDate(protocol.getCreatedDate());
-					protocolFieldsBean.setProtocolId(protocol.getId().toString());
-					protocolFieldsBean.setProtocolName(protocol.getName());
-					File file = protocol.getFile();
-					if(file!=null){
-						if(file.getTitle()!=null)
-							protocolFieldsBean.setProtocolFileName(protocol.getFile()
-								.getTitle());
-						if(file.getDescription()!=null)
-							protocolFieldsBean.setProtocolFileDesc(protocol.getFile().getDescription());
-						if(file.getId()!=null)
-							protocolFieldsBean.setProtocolFileId(protocol.getFile().getId().toString());
-					}
-					protocolResults.add(protocolFieldsBean);
+				List result = appService.query(protocolCriteria);
+				if (!result.isEmpty()) {
+					protocol = (Protocol) result.get(0);
+				}
+				ProtocolSearchableFieldsBean protocolFieldsBean = new ProtocolSearchableFieldsBean();					
+				protocolFieldsBean.setCreatedDate(protocol.getCreatedDate());
+				protocolFieldsBean.setProtocolId(protocol.getId().toString());
+				protocolFieldsBean.setProtocolName(protocol.getName());
+				File file = protocol.getFile();
+				if(file!=null){
+					if(file.getTitle()!=null)
+						protocolFieldsBean.setProtocolFileName(protocol.getFile().getTitle());
+					if(file.getDescription()!=null)
+						protocolFieldsBean.setProtocolFileDesc(protocol.getFile().getDescription());
+					if(file.getId()!=null)
+						protocolFieldsBean.setProtocolFileId(protocol.getFile().getId().toString());
+				}
+				protocolResults.add(protocolFieldsBean);
 				//}
 			}
 		} catch (Exception e) {
@@ -236,92 +210,87 @@ public class CustomSearchEngine extends BaseServiceHelper {
 		return protocolResults;
 	}
 
-	public List<PublicationSearchableFieldsBean> retrievePublicationForIndexing() {
+	public List<PublicationSearchableFieldsBean> retrievePublicationForIndexing()
+	{
 		List<PublicationSearchableFieldsBean> pubResults = new ArrayList<PublicationSearchableFieldsBean>();
 		try {
-			appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			publicationHelper = new PublicationServiceHelper();
-			List<String> publicPublications = publicationHelper
-					.getAllPublications();
+			appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			List<String> publicPublications = publicationServiceHelper.getAllPublications();
 
 			for (int i = 0; i < publicPublications.size(); i++) {
 				Long id = Long.valueOf(publicPublications.get(i));
-//				if (StringUtils.containsIgnoreCase(getAccessibleData(),
-//						publicPublications.get(i))) {
-					DetachedCriteria publicationCrit = DetachedCriteria
-							.forClass(Publication.class).add(
-									Property.forName("id").eq(id));
+				//				if (StringUtils.containsIgnoreCase(getAccessibleData(),
+				//						publicPublications.get(i))) {
+				DetachedCriteria publicationCrit = DetachedCriteria.forClass(Publication.class).add(Property.forName("id").eq(id));
 
-					publicationCrit.setFetchMode("keywordCollection",
-							FetchMode.JOIN);
-					publicationCrit.setFetchMode("authorCollection",
-							FetchMode.JOIN);
+				publicationCrit.setFetchMode("keywordCollection", FetchMode.JOIN);
+				publicationCrit.setFetchMode("authorCollection", FetchMode.JOIN);
 
-					publicationCrit
-							.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+				publicationCrit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
-					Publication pub = null;
+				Publication pub = null;
 
-					List result = appService.query(publicationCrit);
-					if (!result.isEmpty()) {
-						pub = (Publication) result.get(0);
-					}
+				List result = appService.query(publicationCrit);
+				if (!result.isEmpty()) {
+					pub = (Publication) result.get(0);
+				}
+
+				//Getting associated sample names
+
+				String query = "select sample.name, sample.id from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
+						+ id + "'";
+				HQLCriteria crit = new HQLCriteria(query);
+				CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+				List results = appService.query(crit);
+				List<String> sampleNames = new ArrayList<String>();
+				for (int j = 0; j < results.size(); j++) {
+					Object[] row = (Object[]) results.get(j);
+					String sampleName = row[0].toString();
+					String sampleId = row[1].toString();
 					
-					//Getting associated sample names
-					
-					String query = "select sample.name, sample.id from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
-							+ id + "'";
-					HQLCriteria crit = new HQLCriteria(query);
-					CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-							.getApplicationService();
-					List results = appService.query(crit);
-					List<String> sampleNames = new ArrayList<String>();
-					for (int j = 0; j < results.size(); j++) {
-						Object[] row = (Object[]) results.get(j);
-						String sampleName = row[0].toString();
-						String sampleId = row[1].toString();
-						if (StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
-							sampleNames.add(sampleName);
-						} else {
-							logger.debug("User doesn't have access to sample " + sampleName);
-						}
-					}
+					//TODO: revisit later to confirm if this check is needed
+					//why should indexing be based on whether data is public or not
+					/*if (springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) ||
+						springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()))
+					{*/
+						sampleNames.add(sampleName);
+					/*} else {
+						logger.debug("User doesn't have access to sample " + sampleName);
+					}*/
+				}
 
-					PublicationSearchableFieldsBean publicationFieldsBean = new PublicationSearchableFieldsBean();
-					publicationFieldsBean.setCreatedDate(pub.getCreatedDate());
-					publicationFieldsBean.setPublicationId(pub.getId().toString());
-					publicationFieldsBean.setPubTitle(pub.getTitle());
-					publicationFieldsBean.setPubDesc(pub.getDescription());
-					publicationFieldsBean.setSampleName(sampleNames);
-					if(pub.getPubMedId()!=null)
-						publicationFieldsBean.setPubmedId(pub.getPubMedId().toString());
-					publicationFieldsBean.setDoiId(pub.getDigitalObjectId());
+				PublicationSearchableFieldsBean publicationFieldsBean = new PublicationSearchableFieldsBean();
+				publicationFieldsBean.setCreatedDate(pub.getCreatedDate());
+				publicationFieldsBean.setPublicationId(pub.getId().toString());
+				publicationFieldsBean.setPubTitle(pub.getTitle());
+				publicationFieldsBean.setPubDesc(pub.getDescription());
+				publicationFieldsBean.setSampleName(sampleNames);
+				if(pub.getPubMedId()!=null)
+					publicationFieldsBean.setPubmedId(pub.getPubMedId().toString());
+				publicationFieldsBean.setDoiId(pub.getDigitalObjectId());
 
-					if (pub.getAuthorCollection() != null) {
-						Collection authCollection = pub.getAuthorCollection();
-						Iterator<Author> authItr = authCollection.iterator();
-						while (authItr.hasNext()) {
-							Author author = authItr.next();
-							List<String> authors = new ArrayList<String>();
-							authors.add(author.getFirstName());
-							authors.add(author.getLastName());
-							publicationFieldsBean.setAuthors(authors);
-						}
+				if (pub.getAuthorCollection() != null) {
+					Collection authCollection = pub.getAuthorCollection();
+					Iterator<Author> authItr = authCollection.iterator();
+					while (authItr.hasNext()) {
+						Author author = authItr.next();
+						List<String> authors = new ArrayList<String>();
+						authors.add(author.getFirstName());
+						authors.add(author.getLastName());
+						publicationFieldsBean.setAuthors(authors);
 					}
-					if (pub.getKeywordCollection() != null) {
-						Collection pubkeywordCollection = pub
-								.getKeywordCollection();
-						Iterator<Keyword> keyItr = pubkeywordCollection
-								.iterator();
-						while (keyItr.hasNext()) {
-							Keyword pubKeyword = keyItr.next();
-							List<String> pubKeywords = new ArrayList<String>();
-							pubKeywords.add(pubKeyword.getName());
-							publicationFieldsBean.setPubKeywords(pubKeywords);
-						}
+				}
+				if (pub.getKeywordCollection() != null) {
+					Collection pubkeywordCollection = pub.getKeywordCollection();
+					Iterator<Keyword> keyItr = pubkeywordCollection.iterator();
+					while (keyItr.hasNext()) {
+						Keyword pubKeyword = keyItr.next();
+						List<String> pubKeywords = new ArrayList<String>();
+						pubKeywords.add(pubKeyword.getName());
+						publicationFieldsBean.setPubKeywords(pubKeywords);
 					}
-					pubResults.add(publicationFieldsBean);
+				}
+				pubResults.add(publicationFieldsBean);
 				//}
 			}
 		} catch (Exception e) {

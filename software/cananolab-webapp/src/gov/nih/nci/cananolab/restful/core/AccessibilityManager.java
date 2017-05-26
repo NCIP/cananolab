@@ -1,13 +1,9 @@
 package gov.nih.nci.cananolab.restful.core;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.service.BaseService;
-import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.service.UserService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,148 +13,33 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-public class AccessibilityManager {
-	private BaseService service;
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("accessibilityManager")
+public class AccessibilityManager
+{
 	private Logger logger = Logger.getLogger(AccessibilityManager.class);
-	SecurityService securityService;
+	
+	@Autowired
+	private UserService userService;
 
-	private BaseService getService() {
-		WebContext wctx = WebContextFactory.get();
-		securityService = (SecurityService) wctx.getSession().getAttribute(
-				"securityService");
-		service = new BaseServiceLocalImpl(securityService);
-		return service;
-	}
-
-	public AccessibilityBean resetTheAccess(String parentFormName,
-			String parentType) {
-//		DynaValidatorForm accessForm = (DynaValidatorForm) (WebContextFactory
-//				.get().getSession().getAttribute(parentFormName));
-//		if (accessForm == null) {
-//			return null;
-//		}
-//		AccessibilityBean access = new AccessibilityBean();
-//		if (parentType.equalsIgnoreCase("sample")) {
-//			SampleBean sampleBean = (SampleBean) accessForm.get("sampleBean");
-//			sampleBean.setTheAccess(access);
-//		} else if (parentType.equalsIgnoreCase("protocol")) {
-//			ProtocolBean protocolBean = (ProtocolBean) accessForm
-//					.get("protocol");
-//			protocolBean.setTheAccess(access);
-//		} else if (parentType.equalsIgnoreCase("publication")) {
-//			PublicationBean publicationBean = (PublicationBean) accessForm
-//					.get("publication");
-//			publicationBean.setTheAccess(access);
-//		}
-//		return access;
-		
-		return null;
-	}
-
-	public AccessibilityBean getGroupAccess(String parentFormName,
-			String groupName, String parentType, String protectedData)
-			throws Exception {
-//		WebContext wctx = WebContextFactory.get();
-//		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-//		if (user == null) {
-//			return null;
-//		}
-//		AccessibilityBean access = getService().findAccessibilityByGroupName(
-//				groupName, protectedData);
-//		DynaValidatorForm accessForm = (DynaValidatorForm) (WebContextFactory
-//				.get().getSession().getAttribute(parentFormName));
-//		if (accessForm == null) {
-//			return null;
-//		}
-//		if (parentType.equalsIgnoreCase("sample")) {
-//			SampleBean sampleBean = (SampleBean) accessForm.get("sampleBean");
-//			sampleBean.setTheAccess(access);
-//		} else if (parentType.equalsIgnoreCase("protocol")) {
-//			ProtocolBean protocolBean = (ProtocolBean) accessForm
-//					.get("protocol");
-//			protocolBean.setTheAccess(access);
-//		} else if (parentType.equalsIgnoreCase("publication")) {
-//			PublicationBean publicationBean = (PublicationBean) accessForm
-//					.get("publication");
-//			publicationBean.setTheAccess(access);
-//		}
-//		return access;
-		
-		return null;
-	}
-
-	public AccessibilityBean getUserAccess(String parentFormName,
-			String userLoginName, String parentType, String protectedData)
-			throws Exception {
-//		WebContext wctx = WebContextFactory.get();
-//		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-//		if (user == null) {
-//			return null;
-//		}
-//		AccessibilityBean access = getService()
-//				.findAccessibilityByUserLoginName(userLoginName, protectedData);
-//		DynaValidatorForm accessForm = (DynaValidatorForm) (WebContextFactory
-//				.get().getSession().getAttribute(parentFormName));
-//		if (accessForm == null) {
-//			return null;
-//		}
-//		if (parentType.equalsIgnoreCase("sample")) {
-//			SampleBean sampleBean = (SampleBean) accessForm.get("sampleBean");
-//			sampleBean.setTheAccess(access);
-//		} else if (parentType.equalsIgnoreCase("protocol")) {
-//			ProtocolBean protocolBean = (ProtocolBean) accessForm
-//					.get("protocol");
-//			protocolBean.setTheAccess(access);
-//		} else if (parentType.equalsIgnoreCase("publication")) {
-//			PublicationBean publicationBean = (PublicationBean) accessForm
-//					.get("publication");
-//			publicationBean.setTheAccess(access);
-//		}
-//		return access;
-		return null;
-	}
-
-	public Map<String, String> getMatchedUsers(String dataOwner, String searchStr, HttpServletRequest request)
-			throws Exception {
+	public Map<String, String> getMatchedUsers(String dataOwner, String searchStr, HttpServletRequest request) throws Exception
+	{
 		try {
-
-			SecurityService securityService = (SecurityService) request
-					.getSession().getAttribute("securityService");
-			BaseService service = new BaseServiceLocalImpl(securityService);
-			List<UserBean> matchedUsers = service.findUserBeans(
-					searchStr);
-			List<UserBean> updatedUsers = new ArrayList<UserBean>(matchedUsers);
-			// remove current user from the list
-			UserBean user = (UserBean) request.getSession().getAttribute("user");
-			updatedUsers.remove(user);
-
-			// remove data owner from the list if owner is not the current user
-			if (!dataOwner.equalsIgnoreCase(user.getLoginName())) {
-				for (UserBean userBean : matchedUsers) {
-					if (userBean.getLoginName().equalsIgnoreCase(dataOwner)) {
-						updatedUsers.remove(userBean);
-						break;
-					}
-				}
-			}
-			// exclude curators;
-			List<String> curators = securityService
-					.getUserNames(AccessibilityBean.CSM_DATA_CURATOR);
-			for (UserBean userBean : matchedUsers) {
-				for (String curator : curators) {
-					if (userBean.getLoginName().equalsIgnoreCase(curator)) {
-						updatedUsers.remove(userBean);
-					}
-				}
-			}
-
-			//return updatedUsers.toArray(new UserBean[updatedUsers.size()]);
+			List<CananoUserDetails> matchedUsers = userService.loadUsers(searchStr);
 			Map<String, String> userMap = new HashMap<String, String>();
-			for(UserBean bean : updatedUsers){
-				userMap.put(bean.getLoginName(), bean.getLastName() + " " + bean.getFirstName());
+			// add only if not logged in user and not owner of the entity and not curator
+			for (CananoUserDetails currUser: matchedUsers)
+			{
+				if (!currUser.getUsername().equals(SpringSecurityUtil.getLoggedInUserName()) &&
+					!currUser.getUsername().equalsIgnoreCase(dataOwner) && !currUser.isCurator())
+				{
+					userMap.put(currUser.getUsername(), currUser.getLastName() + " " + currUser.getFirstName());
+				}
 			}
 			return userMap;
 		} catch (Exception e) {
@@ -167,32 +48,39 @@ public class AccessibilityManager {
 		}
 	}
 
-	public UserBean[] getUsers(String searchStr)
-			throws Exception {
+	public CananoUserDetails[] getUsers(String searchStr) throws Exception
+	{
 		try {
-			List<UserBean> matchedUsers = getService().findUserBeans(
-					searchStr);
+			List<CananoUserDetails> matchedUsers = userService.loadUsers(searchStr);
 
-			return matchedUsers.toArray(new UserBean[matchedUsers.size()]);
-		} catch (Exception e) {
+			return matchedUsers.toArray(new CananoUserDetails[matchedUsers.size()]);
+		} 
+		catch (Exception e) {
 			logger.error("Problem getting user login names", e);
 			return null;
 		}
 	}
 
-	public String[] getMatchedGroupNames(String searchStr, HttpServletRequest request) throws Exception {
-		try {
-			SecurityService securityService = (SecurityService) request
-					.getSession().getAttribute("securityService");
-			BaseService service = new BaseServiceLocalImpl(securityService);
-			List<String> matchGroupNames = service.findGroupNames(
-					searchStr);
+	public String[] getMatchedGroupNames(String searchStr, HttpServletRequest request) throws Exception
+	{
+		try 
+		{
+			CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+			String upperSearchStr = (!StringUtils.isEmpty(searchStr)) ? searchStr.toUpperCase() : searchStr;
+			List<String> matchGroupNames = new ArrayList<String>();
+			if (userDetails != null)
+				for (String groupName: userDetails.getGroups())
+				{
+					if (groupName.toUpperCase().indexOf(upperSearchStr) >= 0)
+						matchGroupNames.add(groupName);
+				}
 			return matchGroupNames.toArray(new String[matchGroupNames.size()]);
 		} catch (Exception e) {
 			logger.error("Problem getting matched group names", e);
 			return null;
 		}
 	}
+
 }
 
 

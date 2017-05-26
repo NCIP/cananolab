@@ -46,16 +46,16 @@ public interface CharacterizationService extends BaseService {
 	public void saveFinding(FindingBean findingBean)
 			throws CharacterizationException, NoAccessException;
 
-	public FindingBean findFindingById(String findingId)
-			throws CharacterizationException, NoAccessException;
+	/*public FindingBean findFindingById(String findingId)
+			throws CharacterizationException, NoAccessException;*/
 
 	public void deleteFinding(Finding finding)
 			throws CharacterizationException, NoAccessException;
 
-	public void saveExperimentConfig(ExperimentConfigBean experimentConfigBean)
+	public void saveExperimentConfig(String sampleId, ExperimentConfigBean experimentConfigBean)
 			throws ExperimentConfigException, NoAccessException;
 
-	public void deleteExperimentConfig(ExperimentConfig experimentConfig)
+	public void deleteExperimentConfig(String sampleId, ExperimentConfig experimentConfig)
 			throws ExperimentConfigException, NoAccessException;
 
 	/**
@@ -75,6 +75,8 @@ public interface CharacterizationService extends BaseService {
 
 	public int getNumberOfPublicCharacterizations(
 			String characterizationClassName) throws CharacterizationException;
+	
+	public int getNumberOfPublicCharacterizationsForJob(List<String> characterizationClassName) throws CharacterizationException;
 
 	public List<String> findOtherCharacterizationByAssayCategory(
 			String assayCategory) throws CharacterizationException;

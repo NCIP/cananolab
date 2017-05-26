@@ -28,8 +28,7 @@ var app = angular.module('angularApp')
         $scope.accessForm = {};
         $scope.dataType = 'Publication';
         $scope.parentFormName = 'publicationForm';
-        $scope.accessForm.theAcccess = {};
-        $scope.accessForm.theAcccess.userBean = {};
+        $scope.accessForm.theAccess = {};
         $scope.isCurator = groupService.isCurator();
         $scope.groupAccesses = [];
         $scope.userAccesses = [];
@@ -38,13 +37,11 @@ var app = angular.module('angularApp')
         $scope.showCollaborationGroup = true;
         $scope.showAccessuser = false;
         $scope.showAccessSelection = false;
-        $scope.accessForm.theAccess = {};
-        $scope.accessForm.theAccess.groupName = '';
-        $scope.accessForm.theAccess.userBean = {};
-        $scope.accessForm.theAccess.userBean.loginName = '';
+        $scope.accessForm.theAccess.recipient = '';
+        $scope.accessForm.theAccess.recipientDisplayName = '';
         $scope.access = {};
-        $scope.access.groupName = '';
-        $scope.access.loginName = '';
+        $scope.access.recipient = '';
+        $scope.access.recipientDisplayName = '';
         $scope.publicationForm.isPublic = false;
         $scope.accessForm.theAccess.accessBy = 'group';        
         $scope.accessExists = false;
@@ -53,7 +50,7 @@ var app = angular.module('angularApp')
         /* File Variables */
         $scope.usingFlash = FileAPI && FileAPI.upload != null;
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
-      $scope.selectedFileName = '';
+        $scope.selectedFileName = '';
         
         var uploadUrl = '/caNanoLab/rest/core/uploadFile';
         $scope.ie9 = false;
@@ -279,20 +276,28 @@ var app = angular.module('angularApp')
 
             $http({method: 'POST', url: '/caNanoLab/rest/publication/submitPublication',data: $scope.publicationForm}).
                 success(function(data, status, headers, config) {
-                	if (data == "success") {
+                	if (data[0] == "success") {
                 		if ($scope.sampleId != null && $scope.sampleId != '') {
                             $location.search('sampleId', $scope.sampleId).path('/publication').replace();
                         }
                         else {
-                            $location.search('message', 'Publication successfully updated with title "' + $scope.publicationForm.title + '"').path('/message').replace();
+                            //$location.search('message', 'Publication successfully updated with title "' + $scope.publicationForm.title + '"').path('/message').replace();
+                            var msg = 'Publication successfully updated with title "' + $scope.publicationForm.title + '".';
+                            $scope.messages = [msg];
+                            $scope.publicationId = data[1];
+                            $scope.loadPublicationData(); 
                         }
                 	}
-                	else if (data == "retract success") {
+                	else if (data[0] == "retract success") {
                 		if ($scope.sampleId != null && $scope.sampleId != '') {
                             $location.search('sampleId', $scope.sampleId).path('/publication').replace();
                         }
                         else {
-                            $location.search('message', 'Publication successfully saved with title "' + $scope.publicationForm.title + '" and retracted from public access.').path('/message').replace();
+                            //$location.search('message', 'Publication successfully saved with title "' + $scope.publicationForm.title + '" and retracted from public access.').path('/message').replace();
+                        	var msg = 'Publication successfully updated with title "' + $scope.publicationForm.title + '" and retracted from public access.';
+                            $scope.messages = [msg];
+                            $scope.publicationId = data[1];
+                            $scope.loadPublicationData();
                         }
                 	}
                 	else {
@@ -524,12 +529,13 @@ var app = angular.module('angularApp')
         /** Start - Access functions **/
         
         $scope.getCollabGroups = function() {
-            if ($scope.accessForm.theAccess.groupName === undefined || $scope.accessForm.theAccess.groupName === null) {
-                $scope.accessForm.theAccess.groupName = '';
+            if ($scope.accessForm.theAccess.recipient === undefined || $scope.accessForm.theAccess.recipient === null) {
+                $scope.accessForm.theAccess.recipient = '';
+                $scope.accessForm.theAccess.recipientDisplayName = '';
             }
 
             $scope.loader = true;
-            $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.groupName}).
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.recipient}).
                 success(function(data, status, headers, config) {
                     $scope.collabGroups = data;
                     $scope.loader = false;
@@ -547,12 +553,13 @@ var app = angular.module('angularApp')
         };
 
         $scope.getAccessUsers = function() {
-            if ($scope.accessForm.theAccess.userBean.loginName === undefined || $scope.accessForm.theAccess.userBean.loginName === null) {
-                $scope.accessForm.theAccess.userBean.loginName = '';
+            if ($scope.accessForm.theAccess.recipient === undefined || $scope.accessForm.theAccess.recipient === null) {
+                $scope.accessForm.theAccess.recipient = '';
+                $scope.accessForm.theAccess.recipientDisplayName = '';
             }
 
             $scope.loader = true;
-            $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.userBean.loginName}).
+            $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.recipient}).
                 success(function(data, status, headers, config) {
                     $scope.accessUsers = data;
                     $scope.loader = false;
@@ -617,7 +624,8 @@ var app = angular.module('angularApp')
         $scope.editUserAccessSection = function(loginName, userAccess) {
             $scope.addAccess=true;
             $scope.accessForm.theAccess.accessBy='user';
-            $scope.accessForm.theAccess.userBean.loginName=loginName;
+            $scope.accessForm.theAccess.recipient=loginName;
+            $scope.accessForm.theAccess.recipientDisplayName=loginName;
             $scope.showCollaborationGroup=false;
             $scope.showAccessuser=true;
             $scope.showAccessSelection=false;
@@ -632,7 +640,8 @@ var app = angular.module('angularApp')
         $scope.editGroupAccessSection = function(groupName, groupAccess) {
             $scope.addAccess=true;
             $scope.accessForm.theAccess.accessBy='group';
-            $scope.accessForm.theAccess.groupName=groupName;
+            $scope.accessForm.theAccess.recipient=groupName;
+            $scope.accessForm.theAccess.recipientDisplayName=groupName;
             $scope.showCollaborationGroup=true;
             $scope.showAccessuser=false;
             $scope.showAccessSelection=false;
@@ -643,7 +652,7 @@ var app = angular.module('angularApp')
                 }
             }
             
-            if($scope.accessForm.theAccess.groupName == 'Public') {
+            if($scope.accessForm.theAccess.groupName == 'ROLE_ANONYMOUS') {
                 $scope.accessForm.theAccess.accessBy='public';
             }
         }
@@ -710,7 +719,8 @@ var app = angular.module('angularApp')
         };
 
         $scope.selectPublicAccess = function() {
-            $scope.accessForm.theAccess.groupName = 'Public';
+            $scope.accessForm.theAccess.recipient = 'ROLE_ANONYMOUS';
+            $scope.accessForm.theAccess.recipientDisplayName = 'public';
             $scope.accessForm.theAccess.roleName = 'R';
             $scope.showCollaborationGroup=true;
             $scope.showAccessuser=false;

@@ -22,7 +22,7 @@
                     </th>
                     <td align="right" width="3%">
                         <!-- <a href="#submitComposingElement" onclick="javascript:setTheComposingElement(21409029);">Edit</a>&nbsp; -->
-                        <button ng-click="openAddComposingElement();editComposingElement('{{composingElement.id}}');" class="btn btn-primary btn-xxs">Edit</button>&nbsp;
+                        <button ng-click="openAddComposingElement($index);editComposingElement('{{composingElement.id}}');composingElement.expand=!composingElement.expand;" class="btn btn-primary btn-xxs">Edit</button>&nbsp;
                     </td>
                 </tr>
                 <tr>
@@ -71,11 +71,7 @@
                     <td class="cellLabel" colspan="3" height="5"></td>
                 </tr>
 
-                </tbody>
-            </table>
-        </td>
-    </tr>
-    <tr>
+                    <tr ng-if="composingElement.expand">
     <td colspan="2">
 
 
@@ -100,28 +96,28 @@
                         [other]
                     </option>
                 </select>
-				<div ng-if="composingElementForm.type=='other'">
-	                <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
-	                    <tbody>
-	                    <tr>
-	                        <td class="cellLabel">
-	                            <label for="textType" category="">New Composing Element Type:</label>
-	                        </td>
-	                    </tr>
-	                    <tr>
-	                        <td>
-	                            <input type="text" id="textType" ng-model='localForm.otherCategoryText' class="promptbox">
-	                        </td>
-	                    </tr>
-	                    <tr>
-	                        <td style="text-align: right">
-	                            <input type="button" class="promptButton" value="Add" ng-click="composingElementForm.type=localForm.otherCategoryText; composingElementTypes.push(localForm.otherCategoryText);">
-	                            <input type="button" class="promptButton" value="Cancel" ng-click="composingElementForm.type='';">
-	                        </td>
-	                    </tr>
-	                    </tbody>
-	                </table>
-	            </div>
+                <div ng-if="composingElementForm.type=='other'">
+                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                        <tbody>
+                        <tr>
+                            <td class="cellLabel">
+                                <label for="textType" category="">New Composing Element Type:</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" id="textType" ng-model='localForm.otherCategoryText' class="promptbox">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <input type="button" class="promptButton" value="Add" ng-click="composingElementForm.type=localForm.otherCategoryText; composingElementTypes.push(localForm.otherCategoryText);">
+                                <input type="button" class="promptButton" value="Cancel" ng-click="composingElementForm.type='';">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </td>
         <td class="cellLabel">
@@ -177,28 +173,28 @@
                         [other]
                     </option>
                 </select>
-				<div ng-if="composingElementForm.valueUnit=='other'">
-	                <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
-	                    <tbody>
-	                    <tr>
-	                        <td class="cellLabel">
-	                            <label for="textUnit" category="">New Amount Unit:</label>
-	                        </td>
-	                    </tr>
-	                    <tr>
-	                        <td>
-	                            <input type="text" id="textUnit" ng-model='localForm.otherCategoryText' class="promptbox">
-	                        </td>
-	                    </tr>
-	                    <tr>
-	                        <td style="text-align: right">
-	                            <input type="button" class="promptButton" value="Add" ng-click="composingElementForm.valueUnit=localForm.otherCategoryText; composingElementUnits.push(localForm.otherCategoryText);">
-	                            <input type="button" class="promptButton" value="Cancel" ng-click="composingElementForm.valueUnit='';">
-	                        </td>
-	                    </tr>
-	                    </tbody>
-	                </table>
-	            </div>
+                <div ng-if="composingElementForm.valueUnit=='other'">
+                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                        <tbody>
+                        <tr>
+                            <td class="cellLabel">
+                                <label for="textUnit" category="">New Amount Unit:</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" id="textUnit" ng-model='localForm.otherCategoryText' class="promptbox">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <input type="button" class="promptButton" value="Add" ng-click="composingElementForm.valueUnit=localForm.otherCategoryText; composingElementUnits.push(localForm.otherCategoryText);">
+                                <input type="button" class="promptButton" value="Cancel" ng-click="composingElementForm.valueUnit='';">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
         </td>
@@ -220,27 +216,27 @@
                     </option>
                 </select>
                 <div ng-if="composingElementForm.molecularFormulaType=='other'">
-	                <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
-	                    <tbody>
-	                    <tr>
-	                        <td class="cellLabel">
-	                            <label for="textFtype" category="">New Molecular Formula Type:</label>
-	                        </td>
-	                    </tr>
-	                    <tr>
-	                        <td>
-	                            <input type="text" id="textFtype" ng-model='localForm.otherCategoryText' class="promptbox">
-	                        </td>
-	                    </tr>
-	                    <tr>
-	                        <td style="text-align: right">
-	                            <input type="button" class="promptButton" value="Add" ng-click="composingElementForm.molecularFormulaType=localForm.otherCategoryText; molecularFormulaTypes.push(localForm.otherCategoryText);">
-	                            <input type="button" class="promptButton" value="Cancel" ng-click="composingElementForm.molecularFormulaType='';">
-	                        </td>
-	                    </tr>
-	                    </tbody>
-	                </table>
-	            </div>
+                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                        <tbody>
+                        <tr>
+                            <td class="cellLabel">
+                                <label for="textFtype" category="">New Molecular Formula Type:</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" id="textFtype" ng-model='localForm.otherCategoryText' class="promptbox">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <input type="button" class="promptButton" value="Add" ng-click="composingElementForm.molecularFormulaType=localForm.otherCategoryText; molecularFormulaTypes.push(localForm.otherCategoryText);">
+                                <input type="button" class="promptButton" value="Cancel" ng-click="composingElementForm.molecularFormulaType='';">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
         </td>
@@ -321,27 +317,27 @@
                                     </option>
                                  </select>
                                  <div ng-if="theInherentFunction.type=='other'">
-	                                <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
-	                                    <tbody>
-	                                    <tr>
-	                                        <td class="cellLabel">
-	                                            <label for="inhFunction" category="">New Function Type:</label>
-	                                        </td>
-	                                    </tr>
-	                                    <tr>
-	                                        <td>
-	                                            <input type="text" id="inhFunction" ng-model='localForm.otherCategoryText' class="promptbox">
-	                                        </td>
-	                                    </tr>
-	                                    <tr>
-	                                        <td style="text-align: right">
-	                                            <input type="button" class="promptButton" value="Add" ng-click="theInherentFunction.type=localForm.otherCategoryText; functionTypes.push(localForm.otherCategoryText);">
-	                                            <input type="button" class="promptButton" value="Cancel" ng-click="theInherentFunction.type='';">
-	                                        </td>
-	                                    </tr>
-	                                    </tbody>
-	                                </table>
-	                            </div>
+                                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                        <tbody>
+                                        <tr>
+                                            <td class="cellLabel">
+                                                <label for="inhFunction" category="">New Function Type:</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="text" id="inhFunction" ng-model='localForm.otherCategoryText' class="promptbox">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">
+                                                <input type="button" class="promptButton" value="Add" ng-click="theInherentFunction.type=localForm.otherCategoryText; functionTypes.push(localForm.otherCategoryText);">
+                                                <input type="button" class="promptButton" value="Cancel" ng-click="theInherentFunction.type='';">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </td>
                         <td class="cellLabel">
@@ -363,27 +359,27 @@
                                     </option>
                                 </select>
                                 <div ng-if="theInherentFunction.modality=='other'">
-	                                <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
-	                                    <tbody>
-	                                    <tr>
-	                                        <td class="cellLabel">
-	                                            <label for="imgModal" category="">New Imaging Modality:</label>
-	                                        </td>
-	                                    </tr>
-	                                    <tr>
-	                                        <td>
-	                                            <input type="text" id="imgModal" ng-model='localForm.otherCategoryText' class="promptbox">
-	                                        </td>
-	                                    </tr>
-	                                    <tr>
-	                                        <td style="text-align: right">
-	                                            <input type="button" class="promptButton" value="Add" ng-click="theInherentFunction.modality=localForm.otherCategoryText; modalityTypes.push(localForm.otherCategoryText);">
-	                                            <input type="button" class="promptButton" value="Cancel" ng-click="theInherentFunction.modality='';">
-	                                        </td>
-	                                    </tr>
-	                                    </tbody>
-	                                </table>
-	                            </div>
+                                    <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                        <tbody>
+                                        <tr>
+                                            <td class="cellLabel">
+                                                <label for="imgModal" category="">New Imaging Modality:</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="text" id="imgModal" ng-model='localForm.otherCategoryText' class="promptbox">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">
+                                                <input type="button" class="promptButton" value="Add" ng-click="theInherentFunction.modality=localForm.otherCategoryText; modalityTypes.push(localForm.otherCategoryText);">
+                                                <input type="button" class="promptButton" value="Cancel" ng-click="theInherentFunction.modality='';">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
                             </div>
                         </td>
@@ -424,8 +420,8 @@
         </td>
         <td colspan="3">
             <div align="right">
-            	<input type="hidden" ng-model="composingElementForm.createdBy">
-            	<input type="hidden" ng-model="composingElementForm.createdDate">
+                <input type="hidden" ng-model="composingElementForm.createdBy">
+                <input type="hidden" ng-model="composingElementForm.createdDate">
                 <input type="button" value="Save" ng-click="saveComposingElement();">
                 <input type="button" value="Cancel" ng-click="closeAddComposingElement();">
             </div>
@@ -436,5 +432,11 @@
 </div>
 </td>
 </tr>
+
+                </tbody>
+            </table>
+        </td>
+    </tr>
+
 </tbody>
 </table>

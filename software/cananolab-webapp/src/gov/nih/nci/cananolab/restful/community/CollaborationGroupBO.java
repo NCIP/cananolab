@@ -17,11 +17,7 @@ package gov.nih.nci.cananolab.restful.community;
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.restful.bean.SimpleCollaborationGroup;
 import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
-import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.service.community.CommunityService;
-import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -30,10 +26,19 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-
-public class CollaborationGroupBO  extends AbstractDispatchBO {
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("collaborationGroupBO")
+public class CollaborationGroupBO  extends AbstractDispatchBO
+{
 	private Logger logger = Logger.getLogger(CollaborationGroupBO.class);
+	
+	@Autowired
+	private CommunityService communityService;
 
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
@@ -45,8 +50,8 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public void setupNew(HttpServletRequest request)
-			throws Exception {
+	public void setupNew(HttpServletRequest request) throws Exception
+	{
 		request.getSession().setAttribute("group", new CollaborationGroupBean());
 		request.getSession().removeAttribute("openCollaborationGroup");
 //		List<CollaborationGroupBean> beans = getExistingGroups(request);
@@ -55,9 +60,7 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 	}
 
 	public List<CollaborationGroupBean> getExistingGroups(HttpServletRequest request) throws Exception {
-		CommunityService service = setServiceInSession(request);
-		List<CollaborationGroupBean> existingCollaborationGroups = service
-				.findCollaborationGroups();
+		List<CollaborationGroupBean> existingCollaborationGroups = communityService.findCollaborationGroups();
 //		request.setAttribute("existingCollaborationGroups",
 //				existingCollaborationGroups);
 		
@@ -80,32 +83,7 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 		}
 		
 		return simpleGroups;
-			
-		
 	}
-	
-
-//	public ActionForward input(ActionMapping mapping, ActionForm form,
-//			HttpServletRequest request, HttpServletResponse response)
-//			throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		checkOpenForms(theForm, request);
-//		setExistingGroups(request);
-//		return mapping.findForward("setup");
-//	}
-
-//	private void checkOpenForms(DynaValidatorForm theForm,
-//			HttpServletRequest request) throws Exception {
-//		String dispatch = request.getParameter("dispatch");
-//		String browserDispatch = getBrowserDispatch(request);
-//		HttpSession session = request.getSession();
-//		Boolean openCollaborationGroup = false;
-//		if (dispatch.equals("input")) {
-//			openCollaborationGroup = true;
-//			session.setAttribute("openCollaborationGroup",
-//					openCollaborationGroup);
-//		}
-//	}
 
 	/**
 	 * Save or update collaboration group.
@@ -117,12 +95,8 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<CollaborationGroupBean> create(CollaborationGroupBean group,
-			HttpServletRequest request)
-			throws Exception {
-		
-//		CollaborationGroupBean group = (CollaborationGroupBean) theForm
-//				.get("group");
+	public List<CollaborationGroupBean> create(CollaborationGroupBean group, HttpServletRequest request) throws Exception
+	{
 		//double check the groupName for invalid special characters
 		if (!StringUtils.xssValidate(group.getName())) {
 			//ActionMessage error = new ActionMessage("group.name.invalid");
@@ -130,40 +104,24 @@ public class CollaborationGroupBO  extends AbstractDispatchBO {
 //			//saveErrors(request, msgs);
 //			return msgs;
 		}
-		CommunityService service = setServiceInSession(request);
-		service.saveCollaborationGroup(group);
+		communityService.saveCollaborationGroup(group);
 		// update user's groupNames
-		UserBean user = ((CommunityServiceLocalImpl) service).getUser();
-		request.getSession().setAttribute("user", user);
-		
 		List<CollaborationGroupBean> beans = getExistingGroups(request);
 		request.getSession().removeAttribute("group");
 		return beans;
-		//return setupNew(request);
 	}
 
-	private CommunityService setServiceInSession(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-		CommunityService service = new CommunityServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("communityService", service);
-		return service;
-	}
-
-	public List<CollaborationGroupBean> delete(CollaborationGroupBean group,
-			HttpServletRequest request)
-			throws Exception {
-		
+	public List<CollaborationGroupBean> delete(CollaborationGroupBean group, HttpServletRequest request)
+			throws Exception
+	{
 //		CollaborationGroupBean group = (CollaborationGroupBean) theForm
 //				.get("group");
-		CommunityService service = setServiceInSession(request);
-		service.deleteCollaborationGroup(group);
+		communityService.deleteCollaborationGroup(group);
 //		resetToken(request);
 //		return setupNew(request);
 		List<CollaborationGroupBean> beans = getExistingGroups(request);
 		request.getSession().removeAttribute("group");
 		return beans;
 	}
+
 }

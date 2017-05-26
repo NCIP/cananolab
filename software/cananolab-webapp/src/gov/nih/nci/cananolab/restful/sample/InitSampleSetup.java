@@ -11,12 +11,8 @@ package gov.nih.nci.cananolab.restful.sample;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
-import gov.nih.nci.cananolab.service.CSMCleanupJob;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 public class InitSampleSetup {
+	
 	private InitSampleSetup() {
 	}
 
@@ -132,11 +129,9 @@ public class InitSampleSetup {
 		return sortedFormatted;
 	}
 
-	public List<String> getOtherSampleNames(HttpServletRequest request,
-			String sampleId) throws Exception {
-		SampleService service = getServiceFromSession(request);
-		List<String> names = service
-				.findOtherSampleNamesFromSamePrimaryOrganization(sampleId);
+	public List<String> getOtherSampleNames(HttpServletRequest request, String sampleId, SampleService service) throws Exception
+	{
+		List<String> names = service.findOtherSampleNamesFromSamePrimaryOrganization(sampleId);
 		request.getSession().setAttribute("otherSampleNames", names);
 		return names;
 	}
@@ -146,50 +141,25 @@ public class InitSampleSetup {
 				"fileTypes", "file", "type", "otherType", true);
 	}
 
-	public SortedSet<String> getAllOrganizationNames(
-			HttpServletRequest request, UserBean user) throws Exception {
-		SampleService service = getServiceFromSession(request);
-		SortedSet<String> organizationNames = service.getAllOrganizationNames();
-		request.getSession().setAttribute("allOrganizationNames",
-				organizationNames);
-		return organizationNames;
-	}
-
-	public void setPOCDropdowns(HttpServletRequest request) throws Exception {
+	public void setPOCDropdowns(HttpServletRequest request, SampleService service) throws Exception {
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"contactRoles", "point of contact", "role", "otherRole", true);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		getAllOrganizationNames(request, user);
+		SortedSet<String> organizationNames = service.getAllOrganizationNames();
+		request.getSession().setAttribute("allOrganizationNames", organizationNames);
 	}
 
-	public void persistPOCDropdowns(HttpServletRequest request,
-			SampleBean sampleBean) throws Exception {
-		InitSetup.getInstance().persistLookup(request, "point of contact",
-				"role", "otherRole",
-				sampleBean.getThePOC().getDomain().getRole());
-		setPOCDropdowns(request);
+	public void persistPOCDropdowns(HttpServletRequest request, SampleBean sampleBean, SampleService service) throws Exception
+	{
+		InitSetup.getInstance().persistLookup(request, "point of contact", "role", "otherRole", sampleBean.getThePOC().getDomain().getRole());
+		setPOCDropdowns(request, service);
 	}
 
-	private SampleService getServiceFromSession(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
-		if (request.getSession().getAttribute("sampleService") != null) {
-			return (SampleService) request.getSession().getAttribute(
-					"sampleService");
-		} else {
-			return new SampleServiceLocalImpl(securityService);
-		}
-	}
-
-	public void updateCSMCleanupEntriesInContext(Sample sample,
-			HttpServletRequest request) throws Exception {
+/*	public void updateCSMCleanupEntriesInContext(Sample sample, HttpServletRequest request, SampleService service) throws Exception
+	{
 		CSMCleanupJob job = new CSMCleanupJob();
 		Set<String> secureObjects = job.getAllSecureObjectsToRemove();
-		SampleService service = getServiceFromSession(request);
 		List<String> csmEntriesToRemove = service.removeAccesses(sample, true);
 		secureObjects.addAll(csmEntriesToRemove);
-		request.getSession().getServletContext().setAttribute(
-				"allCSMEntriesToRemove", secureObjects);
-	}
+		request.getSession().getServletContext().setAttribute("allCSMEntriesToRemove", secureObjects);
+	}*/
 }

@@ -13,8 +13,6 @@ import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
-import gov.nih.nci.cananolab.domain.function.OtherFunction;
-import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer;
 import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.Function;
@@ -22,7 +20,6 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
@@ -32,13 +29,13 @@ import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionalizingEntityBean;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
-import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -46,11 +43,34 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 //import org.jvnet.hk2.config.Changed.TYPE;
 
-public class FunctionalizingEntityBO extends BaseAnnotationBO {
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("functionalizingEntityBO")
+public class FunctionalizingEntityBO extends BaseAnnotationBO
+{
+	@Autowired
+	private CurationService curationServiceDAO;
+
+	@Autowired
+	private SampleService sampleService;
+
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
+	private CompositionService compositionService;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	public List<String> create(SimpleFunctionalizingEntityBean bean,
 			HttpServletRequest request) throws Exception {
 		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(
@@ -58,7 +78,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 		List<String> msgs = new ArrayList<String>();
 		SampleBean sampleBean = setupSampleById(bean.getSampleId(), request);
 		List<String> otherSampleNames = bean.getOtherSampleNames();
-		this.setServicesInSession(request);
 		msgs = validateInputs(request, msgs, entityBean);
 		if (msgs.size() > 0) {
 			return msgs;
@@ -68,15 +87,13 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 				.persistFunctionalizingEntityDropdowns(request, entityBean);
 
 		// save to other samples (only when user click [Submit] button.)
-		CompositionService compService = (CompositionService) request
-				.getSession().getAttribute("compositionService");
 		SampleBean[] otherSampleBeans = null;
 		if (otherSampleNames != null) {
 			otherSampleBeans = prepareCopy(request, otherSampleNames,
 					sampleBean);
 		}
 		if (otherSampleBeans != null) {
-			compService.copyAndSaveFunctionalizingEntity(entityBean,
+			compositionService.copyAndSaveFunctionalizingEntity(entityBean,
 					sampleBean, otherSampleBeans);
 		}
 
@@ -120,15 +137,12 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 	private List<String> saveEntity(HttpServletRequest request,
 			String sampleId, FunctionalizingEntityBean entityBean)
 			throws Exception {
-		// comp service has already been created
-		CompositionService compService = (CompositionService) request
-				.getSession().getAttribute("compositionService");
 		List<String> msgs = new ArrayList<String>();
 		SampleBean sampleBean = setupSampleById(sampleId, request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 		Boolean newEntity = true;
 		try {
-			entityBean.setupDomainEntity(user.getLoginName());
+			entityBean.setupDomainEntity(userDetails.getUsername());
 			if (entityBean.getDomainEntity().getId() != null) {
 				newEntity = false;
 			}
@@ -147,12 +161,12 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 			return msgs;
 		}
 
-		compService.saveFunctionalizingEntity(sampleBean, entityBean);
+		compositionService.saveFunctionalizingEntity(sampleBean, entityBean);
 		// retract from public if updating an existing public record and not
 		// curator
-		if (!newEntity && !user.isCurator() && sampleBean.getPublicStatus()) {
-			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
-					.toString(), sampleBean.getDomain().getName(), "sample");
+		if (!newEntity && !userDetails.isCurator() && 
+			springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			retractFromPublic(request, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
 			msgs.add(PropertyUtil.getProperty("sample",
 					"message.updateSample.retractFromPublic"));
 		}
@@ -174,7 +188,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 			HttpServletRequest request) throws Exception {
 		FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean();
 		// set up other particles with the same primary point of contact
-		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
 		this.setLookups(request);
 		request.getSession().setAttribute("onloadJavascript",
 				"setEntityInclude('feType', 'functionalizingEntity')");
@@ -192,13 +206,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 				request);
 	}
 
-	public void setupView(CompositionForm form, HttpServletRequest request,
+	//unused code
+	/*public void setupView(CompositionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String entityId = super.validateId(request, "dataId");
-		CompositionService compService = this.setServicesInSession(request);
-
-		FunctionalizingEntityBean entityBean = compService
-				.findFunctionalizingEntityById(entityId);
+		FunctionalizingEntityBean entityBean = compositionService.findFunctionalizingEntityById(entityId);
 		request.setAttribute("functionalizingEntity", entityBean);
 		String detailPage = null;
 		if (entityBean.isWithProperties()) {
@@ -206,23 +218,21 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 					entityBean.getClassName(), "functionalizingEntity");
 		}
 		request.setAttribute("entityDetailPage", detailPage);
-	}
+	}*/
 
 	public SimpleFunctionalizingEntityBean setupUpdate(String sampleId,
 			String dataId, HttpServletRequest request) throws Exception {
-		CompositionService compService = this.setServicesInSession(request);
 		// set up other particles with the same primary point of contact
-		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
 		// dataId = super.validateId(request, "dataId");
-		FunctionalizingEntityBean entityBean = compService
-				.findFunctionalizingEntityById(dataId);
+		FunctionalizingEntityBean entityBean = compositionService.findFunctionalizingEntityById(sampleId, dataId);
 		this.setLookups(request);
 		// clear copy to otherSamples
 		// form.setOtherSamples(new String[0]);
 		checkOpenForms(entityBean, request);
 		request.getSession().setAttribute("sampleId", sampleId);
 		SimpleFunctionalizingEntityBean bean = new SimpleFunctionalizingEntityBean();
-		bean.tranferSimpleFunctionalizingBean(entityBean, request);
+		bean.tranferSimpleFunctionalizingBean(entityBean, request, springSecurityAclService);
 		return bean;
 	}
 
@@ -232,10 +242,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(
 				bean, request);
 		List<String> msgs = new ArrayList<String>();
-		this.setServicesInSession(request);
 		FunctionBean function = entity.getTheFunction();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		function.setupDomainFunction(user.getLoginName(), 0);
+		function.setupDomainFunction(SpringSecurityUtil.getLoggedInUserName(), 0);
 		entity.addFunction(function);
 		// this.addFunction(function, entity.getFunctions());
 		msgs = validateInputs(request, msgs, entity);
@@ -246,10 +254,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 		}
 		this.saveEntity(request, bean.getSampleId(), entity);
 
-		// comp service has already been created
-		CompositionService compService = (CompositionService) request
-				.getSession().getAttribute("compositionService");
-		compService.assignAccesses(function.getDomainFunction());
+		compositionService.assignAccesses(function.getDomainFunction());
 
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
 				.toString());
@@ -292,10 +297,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 			return funcBean;
 		}
 		this.saveEntity(request, bean.getSampleId(), entity);
-		// comp service has already been created
-		CompositionService compService = (CompositionService) request
-				.getSession().getAttribute("compositionService");
-		compService.removeAccesses(entity.getDomainEntity(),
+		compositionService.removeAccesses(entity.getDomainEntity(),
 				function.getDomainFunction());
 		checkOpenForms(entity, request);
 		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId()
@@ -305,19 +307,16 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 	public SimpleFunctionalizingEntityBean saveFile(
 			SimpleFunctionalizingEntityBean bean, HttpServletRequest request)
 			throws Exception {
-		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(
-				bean, request);
-		this.setServicesInSession(request);
+		FunctionalizingEntityBean entity = transferSimpleFunctionalizingEntity(bean, request);
 		FileBean theFile = entity.getTheFile();
 		String sampleId = bean.getSampleId();
 		List<String> msgs = new ArrayList<String>();
 		SampleBean sampleBean = setupSampleById(sampleId, request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
 				+ sampleBean.getDomain().getName() + "/"
 				+ "functionalizingEntity";
-		theFile.setupDomainFile(internalUriPath, user.getLoginName());
+		theFile.setupDomainFile(internalUriPath, SpringSecurityUtil.getLoggedInUserName());
 
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
@@ -348,11 +347,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 			return funcBean;
 		}
 		this.saveEntity(request, sampleId, entity);
-		// comp service has already been created
-		CompositionService compService = (CompositionService) request
-				.getSession().getAttribute("compositionService");
-		compService.assignAccesses(entity.getDomainEntity()
-				.getSampleComposition(), theFile.getDomainFile());
+		compositionService.assignAccesses(entity.getDomainEntity().getSampleComposition(), theFile.getDomainFile());
 
 		request.setAttribute("anchor", "file");
 		request.getSession().removeAttribute("newFileData");
@@ -379,16 +374,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 			return funcBean;
 		}
 		this.saveEntity(request, bean.getSampleId(), entity);
-		// comp service has already been created
-		CompositionService compService = (CompositionService) request
-				.getSession().getAttribute("compositionService");
-		compService.removeAccesses(entity.getDomainEntity()
-				.getSampleComposition(), theFile.getDomainFile());
+		compositionService.removeAccesses(entity.getDomainEntity().getSampleComposition(), theFile.getDomainFile());
 
 		checkOpenForms(entity, request);
 		 
-		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId()
-				.toString(), request);
+		return setupUpdate(bean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
 	}
 
 	// per app scan, can not easily validate in the validation.xml
@@ -465,14 +455,9 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 	public List<String> delete(SimpleFunctionalizingEntityBean bean,
 			HttpServletRequest request) throws Exception {
 		List<String> msgs = new ArrayList<String>();
-		CompositionService compositionService = this
-				.setServicesInSession(request);
-		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(
-				bean, request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		entityBean.setupDomainEntity(user.getLoginName());
-		compositionService.deleteFunctionalizingEntity(entityBean
-				.getDomainEntity());
+		FunctionalizingEntityBean entityBean = transferSimpleFunctionalizingEntity(bean, request);
+		entityBean.setupDomainEntity(SpringSecurityUtil.getLoggedInUserName());
+		compositionService.deleteFunctionalizingEntity(entityBean.getDomainEntity());
 		compositionService.removeAccesses(entityBean.getDomainEntity());
 
 		msgs.add("success");
@@ -498,8 +483,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 		// }
 		// session.setAttribute("openFunction", openFunction);
 
-		InitCompositionSetup.getInstance()
-				.persistFunctionalizingEntityDropdowns(request, entity);
+		InitCompositionSetup.getInstance().persistFunctionalizingEntityDropdowns(request, entity);
 
 		/**
 		 * If user entered customized value selecting [other] on previous page,
@@ -520,20 +504,6 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 			}
 		}
 		request.setAttribute("entityDetailPage", detailPage);
-	}
-
-	private CompositionService setServicesInSession(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-
-		CompositionService compService = new CompositionServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("compositionService", compService);
-		SampleService sampleService = new SampleServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("sampleService", sampleService);
-		return compService;
 	}
 
 	public FunctionalizingEntityBean transferSimpleFunctionalizingEntity(
@@ -683,12 +653,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 		// Managed to get the sampleComposition in the backend to avoid lazy
 		// loading things
 		SampleComposition sampleComp = null;
-		SecurityService securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
-		CompositionServiceHelper helper = new CompositionServiceHelper(
-				securityService);
 		try {
-			sampleComp = helper.findCompositionBySampleId(bean.getSampleId()
+			sampleComp = compositionService.getHelper().findCompositionBySampleId(bean.getSampleId()
 					.toString());
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -809,18 +775,36 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO {
 
 	public FunctionalizingEntityBean setupFunctionalizingEntityForAdvancedSearch(String sampleId,
 			String dataId, HttpServletRequest request) throws Exception {
-		CompositionService compService = this.setServicesInSession(request);
 		// set up other particles with the same primary point of contact
-		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
 		// dataId = super.validateId(request, "dataId");
-		FunctionalizingEntityBean entityBean = compService
-				.findFunctionalizingEntityById(dataId);
+		FunctionalizingEntityBean entityBean = compositionService.findFunctionalizingEntityById(sampleId, dataId);
 		this.setLookups(request);
 		// clear copy to otherSamples
 		// form.setOtherSamples(new String[0]);
 		checkOpenForms(entityBean, request);
-		request.getSession().setAttribute("sampleId", sampleId);
 
 		return entityBean;
 	}
+	
+	@Override
+	public CurationService getCurationServiceDAO() {
+		return curationServiceDAO;
+	}
+
+	@Override
+	public SampleService getSampleService() {
+		return sampleService;
+	}
+
+	@Override
+	public SpringSecurityAclService getSpringSecurityAclService() {
+		return springSecurityAclService;
+	}
+
+	@Override
+	public UserDetailsService getUserDetailsService() {
+		return userDetailsService;
+	}
+	
 }

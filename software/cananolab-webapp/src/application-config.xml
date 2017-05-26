@@ -11,12 +11,12 @@ L-->
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
 
-	<bean name="ApplicationServiceImpl" class="gov.nih.nci.cananolab.system.applicationservice.impl.CaNanoLabApplicationServiceImpl" singleton="true">
+	<bean name="ApplicationServiceImpl" class="gov.nih.nci.cananolab.system.applicationservice.impl.CaNanoLabApplicationServiceImpl">
 		<constructor-arg ref="ClassCache" index="0"></constructor-arg>
 	</bean>
 
 	<!-- Bean Definitions -->
-	<bean name="ClassCache" class="gov.nih.nci.system.util.ClassCache" singleton="true">
+	<bean name="ClassCache" class="gov.nih.nci.system.util.ClassCache">
 		<property name="daoList">
 			<list>
 				<!--  Add any DAO's here -->
@@ -118,15 +118,15 @@ L-->
 		</property>
 	</bean>
 
-	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="true">
+	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="target" ref="ApplicationServiceImpl" />
 		<property name="interfaces" value="gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService" />
-		<property name="interceptorNames">
+		<!-- <property name="interceptorNames">
 			<list>
 				<idref local="TxInterceptor" />
-				<!--<idref local="CLMInterceptor" />-->
+				<idref local="CLMInterceptor" />
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<!--<bean id="CLMInterceptor" class="gov.nih.nci.system.client.proxy.CLMProxy"/>-->

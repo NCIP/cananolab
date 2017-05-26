@@ -8,22 +8,44 @@
 
 package gov.nih.nci.cananolab.service.curation.impl;
 
-import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
-import gov.nih.nci.cananolab.exception.CurationException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.curation.CurationService;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-public class CurationServiceJDBCImpl extends JdbcDaoSupport implements
-		CurationService {
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
+import gov.nih.nci.cananolab.exception.CurationException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.service.curation.CurationService;
+
+//@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("curationServiceDAO")
+public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationService
+{
+	@Autowired
+	private DataSource dataSource;
+	
+	@PostConstruct
+	private void initialize() {
+		setDataSource(dataSource);
+	}
+	
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
 	private static final String REVIEW_STATUS_TABLE = "canano.data_review_status";
 	private static final String REVIEW_STATUS_TABLE_DATA_ID_COL = "data_id";
 	private static final String REVIEW_STATUS_TABLE_DATA_NAME_COL = "data_name";
@@ -69,11 +91,10 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements
 		return dataReviewStatusRowMapper;
 	}
 
-	public List<DataReviewStatusBean> findDataPendingReview(
-			SecurityService securityService) throws CurationException,
-			NoAccessException {
+	public List<DataReviewStatusBean> findDataPendingReview() throws CurationException, NoAccessException
+	{
 		List<DataReviewStatusBean> pendingDataList = null;
-		if (!securityService.getUserBean().isCurator()) {
+		if (!SpringSecurityUtil.getPrincipal().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
@@ -82,8 +103,7 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements
 					+ REVIEW_STATUS_TABLE + " where "
 					+ REVIEW_STATUS_TABLE_STATUS_COL + "=?";
 			Object[] args = { DataReviewStatusBean.PENDING_STATUS };
-			pendingDataList = template.query(sql, args,
-					getDataReviewStatusRowMapper());
+			pendingDataList = template.query(sql, args, getDataReviewStatusRowMapper());
 		} catch (Exception e) {
 			String error = "Error retrieving data review status: ";
 			throw new CurationException(error, e);
@@ -91,20 +111,17 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements
 		return pendingDataList;
 	}
 
-	public DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId,
-			SecurityService securityService) throws CurationException,
-			NoAccessException {
+	public DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId) throws CurationException, NoAccessException
+	{
 		DataReviewStatusBean dataReviewStatusBean = null;
 		try {
 //			if (!securityService.checkCreatePermission(dataId)) {
 //				throw new NoAccessException();
 //			}
 			JdbcTemplate template = this.getJdbcTemplate();
-			String sql = "select " + REVIEW_STATUS_TABLE_ALL_COLS + " from "
-					+ REVIEW_STATUS_TABLE + " where data_id=?";
+			String sql = "select " + REVIEW_STATUS_TABLE_ALL_COLS + " from " + REVIEW_STATUS_TABLE + " where data_id=?";
 			Object[] args = { dataId };
-			List result = template.query(sql, args,
-					getDataReviewStatusRowMapper());
+			List result = template.query(sql, args, getDataReviewStatusRowMapper());
 			for (int i = 0; i < result.size(); i++) {
 				dataReviewStatusBean = (DataReviewStatusBean) result.get(0);
 			}
@@ -145,17 +162,25 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements
 		return status;
 	}
 
-	public void submitDataForReview(DataReviewStatusBean dataReviewStatusBean,
-			SecurityService securityService) throws CurationException,
-			NoAccessException {
-		try {
-			if (!securityService.checkCreatePermission(dataReviewStatusBean
-					.getDataId())) {
+	public void submitDataForReview(DataReviewStatusBean dataReviewStatusBean) throws CurationException, NoAccessException
+	{
+		try
+		{
+			String dataType = dataReviewStatusBean.getDataType();
+			Class clazz = null;
+			if (SecureClassesEnum.SAMPLE.toString().equalsIgnoreCase(dataType))
+				clazz = SecureClassesEnum.SAMPLE.getClazz();
+			else if (SecureClassesEnum.PROTOCOL.toString().equalsIgnoreCase(dataType))
+				clazz = SecureClassesEnum.PROTOCOL.getClazz();
+			else if (SecureClassesEnum.PUBLICATION.toString().equalsIgnoreCase(dataType))
+				clazz = SecureClassesEnum.PUBLICATION.getClazz();
+			
+			if (!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(dataReviewStatusBean.getDataId()), clazz)) {
 				throw new NoAccessException();
 			}
-			DataReviewStatusBean existingBean = findDataReviewStatusBeanByDataId(
-					dataReviewStatusBean.getDataId(), securityService);
-			if (existingBean != null) {
+			DataReviewStatusBean existingBean = findDataReviewStatusBeanByDataId(dataReviewStatusBean.getDataId());
+			if (existingBean != null)
+			{
 				this.updateDataReviewStatusBean(dataReviewStatusBean);
 			} else {
 				this.insertDataReviewStatusBean(dataReviewStatusBean);

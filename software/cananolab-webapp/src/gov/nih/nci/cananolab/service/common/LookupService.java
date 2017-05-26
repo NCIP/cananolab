@@ -32,6 +32,7 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -41,7 +42,6 @@ import org.hibernate.criterion.Property;
  * @author pansu
  *
  */
-
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
 

@@ -1,49 +1,39 @@
 package gov.nih.nci.cananolab.restful.curation;
 
-import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
-import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
-import gov.nih.nci.cananolab.service.curation.CurationService;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.ui.form.ReviewDataForm;
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ReviewDataBO extends AbstractDispatchBO{
-	private CurationService curationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-	public CurationService getCurationService() {
-		return curationService;
-	}
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
+import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
+import gov.nih.nci.cananolab.service.curation.CurationService;
+import gov.nih.nci.cananolab.ui.form.ReviewDataForm;
 
-	public void setCurationService(CurationService curationService) {
-		this.curationService = curationService;
-	}
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("reviewDataBO")
+public class ReviewDataBO extends AbstractDispatchBO
+{
+	@Autowired
+	private CurationService curationServiceDAO;
 
-	public List<DataReviewStatusBean> setupNew(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
+	public List<DataReviewStatusBean> setupNew(HttpServletRequest request) throws Exception
+	{
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		List<DataReviewStatusBean> dataPendingReview = curationService
-				.findDataPendingReview(securityService);
+		List<DataReviewStatusBean> dataPendingReview = curationServiceDAO.findDataPendingReview();
 		request.setAttribute("dataPendingReview", dataPendingReview);
 		//return mapping.findForward("setup");
 		return dataPendingReview;
 	}
 
-	public void input(ReviewDataForm form,
-			HttpServletRequest request)
+	public void input(ReviewDataForm form, HttpServletRequest request)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
 	//	return mapping.findForward("setup");
 	}
-
-	public Boolean canUserExecutePrivateDispatch(UserBean user)
-			throws SecurityException {
-		return user.isCurator();
-	}
+	
 }

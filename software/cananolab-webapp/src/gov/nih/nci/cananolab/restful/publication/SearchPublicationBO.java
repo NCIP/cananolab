@@ -1,17 +1,17 @@
 package gov.nih.nci.cananolab.restful.publication;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.PublicationUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchPublicationBean;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -24,7 +24,30 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public class SearchPublicationBO extends BaseAnnotationBO {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("searchPublicationBO")
+public class SearchPublicationBO extends BaseAnnotationBO
+{
+	@Autowired
+	private CurationService curationServiceDAO;
+
+	@Autowired
+	private SampleService sampleService;
+
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
+	private PublicationService publicationService;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
 	
 	public List search(SearchPublicationForm form,
 			HttpServletRequest request)
@@ -33,8 +56,6 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 		HttpSession session = request.getSession();
 		// get the page number from request
 		int displayPage = getDisplayPage(request);
-		// only on local service to improve performance
-		this.setServiceInSession(request);
 		List<PublicationBean> publicationBeans = null;
 		// retrieve from session if it's not null and not the first page
 		if (session.getAttribute("publicationSearchResults") != null
@@ -60,8 +81,7 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 			messages.add(PropertyUtil.getProperty("publication", "message.searchPublication.noresult"));
 			return messages;
 		}
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user != null) {
+		if (SpringSecurityUtil.isUserLoggedIn()) {
 			loadUserAccess(request, pubBeansPerPage);
 		}
 		//set in sessionScope so user can go back to the result from the sample summary page
@@ -69,21 +89,19 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
 		//set in sessionScope so user can go back to the result from the sample summary page
-		request.getSession()
-				.setAttribute("resultSize",
-						new Integer(publicationBeans.size()));
+		request.getSession().setAttribute("resultSize", new Integer(publicationBeans.size()));
 	//	return mapping.findForward("success");
-		List<SimpleSearchPublicationBean> simplePubBeans = transfertoSimplePubBeans(pubBeansPerPage, user);
+		List<SimpleSearchPublicationBean> simplePubBeans = transfertoSimplePubBeans(pubBeansPerPage);
 		return simplePubBeans;
 	}
 
 	protected List<SimpleSearchPublicationBean> transfertoSimplePubBeans(
-			List<PublicationBean> pubBeansPerPage, UserBean user) {
+			List<PublicationBean> pubBeansPerPage) {
      List<SimpleSearchPublicationBean> simpleBeans = new ArrayList<SimpleSearchPublicationBean>();
 		
 		for (PublicationBean bean : pubBeansPerPage) {
 			SimpleSearchPublicationBean simpleBean = new SimpleSearchPublicationBean();
-			simpleBean.transferSampleBeanForBasicResultView(bean, user);
+			simpleBean.transferSampleBeanForBasicResultView(bean);
 			simpleBeans.add(simpleBean);
 		}
 		
@@ -96,45 +114,24 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 		List<String> publicationIds = new ArrayList<String>();
 
 		for (PublicationBean publicationBean : publicationBeans) {
-			publicationIds.add(publicationBean.getDomainFile().getId()
-					.toString());
-		}
-		SecurityService securityService = getSecurityServiceFromSession(request);
-		Map<String, List<String>> privilegeMap = securityService
-				.getPrivilegeMap(publicationIds);
-		for (PublicationBean publicationBean : publicationBeans) {
-			List<String> privileges = privilegeMap.get(publicationBean
-					.getDomainFile().getId().toString());
-			if (privileges.contains(AccessibilityBean.CSM_UPDATE_PRIVILEGE)) {
-				publicationBean.setUserUpdatable(true);
-			} else {
-				publicationBean.setUserUpdatable(false);
-			}
-			if (privileges.contains(AccessibilityBean.CSM_DELETE_PRIVILEGE)) {
-				publicationBean.setUserDeletable(true);
-			} else {
-				publicationBean.setUserDeletable(false);
-			}
+			Long pubId = publicationBean.getDomainFile().getId();
+			Class clazz = SecureClassesEnum.PUBLICATION.getClazz();
+			publicationBean.setUserUpdatable(springSecurityAclService.currentUserHasWritePermission(pubId, clazz));
+			publicationBean.setUserDeletable(springSecurityAclService.currentUserHasDeletePermission(pubId, clazz));
+			publicationIds.add(pubId.toString());
 		}
 	}
 
 	private List<PublicationBean> getPublicationsPerPage(
 			List<PublicationBean> publicationBeans, int page, int pageSize,
-			HttpServletRequest request) throws Exception {
+			HttpServletRequest request) throws Exception
+	{
 		List<PublicationBean> loadedPublicationBeans = new ArrayList<PublicationBean>();
-		PublicationService service = null;
-		if (request.getSession().getAttribute("publicationService") != null) {
-			service = (PublicationService) request.getSession().getAttribute(
-					"publicationService");
-		} else {
-			service = this.setServiceInSession(request);
-		}
+		
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < publicationBeans.size()) {
-				String publicationId = publicationBeans.get(i).getDomainFile()
-						.getId().toString();
-				PublicationBean pubBean = service.findPublicationById(
-						publicationId, false);
+				String publicationId = publicationBeans.get(i).getDomainFile().getId().toString();
+				PublicationBean pubBean = publicationService.findPublicationById(publicationId, false);
 				if (pubBean != null) {
 					loadedPublicationBeans.add(pubBean);
 				}
@@ -147,7 +144,6 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 			HttpServletRequest request) throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
 		String title = "";
 		// publication type
 		String category = "";
@@ -233,8 +229,7 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 		List<String> otherFunctionTypes = new ArrayList<String>();
 		if (functionTypes != null) {
 			for (int i = 0; i < functionTypes.length; i++) {
-				String className = ClassUtils
-						.getShortClassNameFromDisplayName(functionTypes[i]);
+				String className = ClassUtils.getShortClassNameFromDisplayName(functionTypes[i]);
 				if (className.length() == 0) {
 					className = "OtherFunction";
 					otherFunctionTypes.add(functionTypes[i]);
@@ -246,9 +241,6 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 
 		// Publication
 		List<PublicationBean> publications = new ArrayList<PublicationBean>();
-		PublicationService publicationService = null;
-		publicationService = (PublicationService) (request.getSession()
-				.getAttribute("publicationService"));
 
 		List<String> publicationIds = publicationService.findPublicationIdsBy(
 				title, category, sampleName, researchAreas, keywords, pubMedId,
@@ -276,23 +268,25 @@ public class SearchPublicationBO extends BaseAnnotationBO {
 		return PublicationUtil.reformatLocalSearchDropdownsInSession(request.getSession());
 	}
 
-	public Boolean canUserExecutePrivateDispatch(UserBean user)
-			throws SecurityException {
-		if (user == null) {
-			return false;
-		}
-		return true;
+	@Override
+	public CurationService getCurationServiceDAO() {
+		return curationServiceDAO;
 	}
 
-	private PublicationService setServiceInSession(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-		PublicationService publicationService = new PublicationServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("publicationService",
-				publicationService);
-		return publicationService;
+	@Override
+	public SampleService getSampleService() {
+		return sampleService;
 	}
+
+	@Override
+	public SpringSecurityAclService getSpringSecurityAclService() {
+		return springSecurityAclService;
+	}
+
+	@Override
+	public UserDetailsService getUserDetailsService() {
+		return null;
+	}
+	
 }
 

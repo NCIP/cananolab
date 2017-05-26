@@ -15,27 +15,28 @@ package gov.nih.nci.cananolab.restful.sample;
  */
 
 import gov.nih.nci.cananolab.domain.particle.Sample;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
-import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.Group;
+import gov.nih.nci.cananolab.security.service.GroupService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
-import gov.nih.nci.cananolab.exception.SecurityException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,15 +47,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("searchSampleBO")
 public class SearchSampleBO extends AbstractDispatchBO {
 	private Logger logger = Logger.getLogger(SearchSampleBO.class);
 
-	private DataAvailabilityService dataAvailabilityService;
+	@Autowired
+	private DataAvailabilityService dataAvailabilityServiceDAO;
+	
+	@Autowired
+	private SampleService sampleService;
+	
+	@Autowired
+	private SampleServiceHelper sampleServiceHelper;
+	
+	@Autowired
+	private CharacterizationService characterizationService;
+	
+	@Autowired
+	private GroupService groupService;
 
-	public List search(SearchSampleForm form, HttpServletRequest request) 
-	 throws Exception {
-		
+	public List search(SearchSampleForm form, HttpServletRequest request) throws Exception
+	{
 		List<String> messages = new ArrayList<String>();
 		
 		HttpSession session = request.getSession();
@@ -62,16 +81,11 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		
 		//TODO
 		int displayPage = form.getPage(); ///getDisplayPage(request);
-
-		// use one local impl to improve performance
-		this.setServiceInSession(request);
-
 		List<SampleBean> sampleBeans = new ArrayList<SampleBean>();
 		// retrieve from session if it's not null and not first page
 		if (session.getAttribute("sampleSearchResults") != null
 				&& displayPage > 0) {
-			sampleBeans = new ArrayList<SampleBean>(
-					(List) session.getAttribute("sampleSearchResults"));
+			sampleBeans = new ArrayList<SampleBean>((List) session.getAttribute("sampleSearchResults"));
 		} else {
 			sampleBeans = querySamples(form, request);
 			if (sampleBeans != null && !sampleBeans.isEmpty()) {
@@ -94,8 +108,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 			return messages;
 		}
 		
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user != null) {
+		if (SpringSecurityUtil.isUserLoggedIn()) {
 			loadUserAccess(request, sampleBeansPerPage);
 		}
 		//set in sessionScope so user can go back to the result from the sample summary page
@@ -109,31 +122,77 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		
 		//return mapping.findForward("success");
 		//UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		List<SimpleSearchSampleBean> simpleBeans = transfertoSimpleSampleBeans(sampleBeansPerPage, (UserBean)session.getAttribute("user"));
+		List<SimpleSearchSampleBean> simpleBeans = transfertoSimpleSampleBeans(sampleBeansPerPage);
 		
 		return simpleBeans;
+	}
+	
+	public List<SimpleSearchSampleBean> getSamplesByCollaborationGroup(HttpServletRequest request, Long groupId) throws Exception
+	{
+		Group collabGrp = null;
+		List<SampleBean> sampleList = new ArrayList<SampleBean>();
+		if (groupId != null)
+			collabGrp = groupService.getGroupById(groupId);
+		
+		List<Long> collabGrpSamples = sampleServiceHelper.getSampleAccessibleToACollabGrp(collabGrp.getGroupName());
+		if (collabGrpSamples != null & collabGrpSamples.size() > 0)
+		{
+			for (Long sampleId : collabGrpSamples)
+			{
+				SampleBean sampleBean = sampleService.findSampleById(sampleId + "", false);
+				if (sampleBean != null) {
+					Sample sample = sampleBean.getDomain();
+					// load summary information
+					sampleBean.setCharacterizationClassNames(sampleServiceHelper
+							.getStoredCharacterizationClassNames(sample)
+							.toArray(new String[0]));
+					sampleBean.setFunctionalizingEntityClassNames(sampleServiceHelper
+							.getStoredFunctionalizingEntityClassNames(sample)
+							.toArray(new String[0]));
+					sampleBean.setNanomaterialEntityClassNames(sampleServiceHelper
+							.getStoredNanomaterialEntityClassNames(sample)
+							.toArray(new String[0]));
+					sampleBean.setFunctionClassNames(sampleServiceHelper
+							.getStoredFunctionClassNames(sample).toArray(new String[0]));
+					// get data availability for the samples
+					Set<DataAvailabilityBean> dataAvailability = dataAvailabilityServiceDAO.findDataAvailabilityBySampleId(sampleId + "");
+					// dataAvailabilityMapPerPage.put(sampleId,
+					// dataAvailability);
+					if (!dataAvailability.isEmpty() && dataAvailability.size() > 0)
+					{
+						sampleBean.setDataAvailability(dataAvailability);
+						sampleBean.setHasDataAvailability(true);
+						calculateDataAvailabilityScore(request, sampleBean, dataAvailability);
+					}
+				}
+				sampleList.add(sampleBean);
+			}
+		}
+		List<SimpleSearchSampleBean> searchBeanList = transfertoSimpleSampleBeans(sampleList);
+		if (searchBeanList != null && searchBeanList.size() > 0)
+			Collections.sort(searchBeanList, new Comparators.SimpleSearchSampleBeanComparator());
+		return searchBeanList;
 	}
 	
 	/**
 	 * 
 	 */
-	protected List<SimpleSearchSampleBean> transfertoSimpleSampleBeans(List<SampleBean> sampleBeans,
-			UserBean user) {
+	protected List<SimpleSearchSampleBean> transfertoSimpleSampleBeans(List<SampleBean> sampleBeans)
+	{
 		List<SimpleSearchSampleBean> simpleBeans = new ArrayList<SimpleSearchSampleBean>();
 		
 		for (SampleBean bean : sampleBeans) {
 			
 			SimpleSearchSampleBean simpleBean = new SimpleSearchSampleBean();
-			simpleBean.transferSampleBeanForBasicResultView(bean, user);
+			simpleBean.transferSampleBeanForBasicResultView(bean);
 			simpleBeans.add(simpleBean);
 		}
 		
 		return simpleBeans;
 	}
 
-	private List<SampleBean> querySamples(SearchSampleForm form,
-			HttpServletRequest request) throws Exception {
-		
+	private List<SampleBean> querySamples(SearchSampleForm form, HttpServletRequest request) throws Exception
+	{		
 		HttpSession session = request.getSession();
 		
 		List<SampleBean> sampleBeans = new ArrayList<SampleBean>();
@@ -142,8 +201,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		samplePointOfContact = StringUtils.stripWildcards(samplePointOfContact);
 		//String pocOperand = Constants.STRING_OPERAND_CONTAINS; 
 		String pocOperand = (String) form.getPocOperand();
-		if (pocOperand.equals(Constants.STRING_OPERAND_CONTAINS)
-				&& !StringUtils.isEmpty(samplePointOfContact)) {
+		if (pocOperand.equals(Constants.STRING_OPERAND_CONTAINS) && !StringUtils.isEmpty(samplePointOfContact)) {
 			samplePointOfContact = "*" + samplePointOfContact + "*";
 		}
 		String sampleName = (String) form.getSampleName();
@@ -151,8 +209,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		sampleName = StringUtils.stripWildcards(sampleName);
 		//String nameOperand = Constants.STRING_OPERAND_CONTAINS; //(String) form.getNameOperand();
 		String nameOperand = (String) form.getNameOperand(); 
-		if (nameOperand.equals(Constants.STRING_OPERAND_CONTAINS)
-				&& !StringUtils.isEmpty(sampleName)) {
+		if (nameOperand.equals(Constants.STRING_OPERAND_CONTAINS) && !StringUtils.isEmpty(sampleName)) {
 			sampleName = "*" + sampleName + "*";
 		}
 		String[] nanomaterialEntityTypes = new String[0];
@@ -189,8 +246,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		List<String> nanomaterialEntityClassNames = new ArrayList<String>();
 		List<String> otherNanomaterialEntityTypes = new ArrayList<String>();
 		for (int i = 0; i < nanomaterialEntityTypes.length; i++) {
-			String className = ClassUtils
-					.getShortClassNameFromDisplayName(nanomaterialEntityTypes[i]);
+			String className = ClassUtils.getShortClassNameFromDisplayName(nanomaterialEntityTypes[i]);
 			Class clazz = ClassUtils.getFullClass("nanomaterial." + className);
 			if (clazz == null) {
 				className = "OtherNanomaterialEntity";
@@ -206,8 +262,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		List<String> functionalizingEntityClassNames = new ArrayList<String>();
 		List<String> otherFunctionalizingTypes = new ArrayList<String>();
 		for (int i = 0; i < functionalizingEntityTypes.length; i++) {
-			String className = ClassUtils
-					.getShortClassNameFromDisplayName(functionalizingEntityTypes[i]);
+			String className = ClassUtils.getShortClassNameFromDisplayName(functionalizingEntityTypes[i]);
 			Class clazz = ClassUtils.getFullClass("agentmaterial." + className);
 			if (clazz == null) {
 				className = "OtherFunctionalizingEntity";
@@ -222,8 +277,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		List<String> functionClassNames = new ArrayList<String>();
 		List<String> otherFunctionTypes = new ArrayList<String>();
 		for (int i = 0; i < functionTypes.length; i++) {
-			String className = ClassUtils
-					.getShortClassNameFromDisplayName(functionTypes[i]);
+			String className = ClassUtils.getShortClassNameFromDisplayName(functionTypes[i]);
 			Class clazz = ClassUtils.getFullClass("function." + className);
 			if (clazz == null) {
 				className = "OtherFunction";
@@ -238,8 +292,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		List<String> charaClassNames = new ArrayList<String>();
 		List<String> otherCharacterizationTypes = new ArrayList<String>();
 		for (int i = 0; i < characterizations.length; i++) {
-			String className = ClassUtils
-					.getShortClassNameFromDisplayName(characterizations[i]);
+			String className = ClassUtils.getShortClassNameFromDisplayName(characterizations[i]);
 			if (className.length() == 0 || characterizations[i].startsWith("other") ) {
 				className = "OtherCharacterization";
 				otherCharacterizationTypes.add(characterizations[i]);
@@ -254,9 +307,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 			words = new String[wordList.size()];
 			wordList.toArray(words);
 		}
-		SampleService service = service = (SampleService) request.getSession()
-				.getAttribute("sampleService");
-		List<String> sampleIds = service.findSampleIdsBy(sampleName,
+		List<String> sampleIds = sampleService.findSampleIdsBy(sampleName,
 				samplePointOfContact,
 				nanomaterialEntityClassNames.toArray(new String[0]),
 				otherNanomaterialEntityTypes.toArray(new String[0]),
@@ -274,61 +325,41 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		return sampleBeans;
 	}
 
-	private List<SampleBean> getSamplesPerPage(List<SampleBean> sampleBeans,
-			int page, int pageSize, HttpServletRequest request)
-			throws Exception {
+	private List<SampleBean> getSamplesPerPage(List<SampleBean> sampleBeans, int page, int pageSize, HttpServletRequest request)
+			throws Exception
+	{
 		List<SampleBean> loadedSampleBeans = new ArrayList<SampleBean>();
-		SampleService service = null;
-		if (request.getSession().getAttribute("sampleService") != null) {
-			service = (SampleService) request.getSession().getAttribute(
-					"sampleService");
-		} else {
-			service = this.setServiceInSession(request);
-		}
-		SecurityService securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
-		if (securityService == null) {
-			securityService = new SecurityService(
-					AccessibilityBean.CSM_APP_NAME);
-		}
 		// Map<String, Set<DataAvailabilityBean>> dataAvailabilityMapPerPage =
 		// new HashMap<String, Set<DataAvailabilityBean>>();
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
-				String sampleId = sampleBeans.get(i).getDomain().getId()
-						.toString();
+				String sampleId = sampleBeans.get(i).getDomain().getId().toString();
 
 				//SampleBean sampleBean = service.findSampleBasicById(sampleId, false);
-				SampleBean sampleBean = service.findSampleById(sampleId, false);
+				SampleBean sampleBean = sampleService.findSampleById(sampleId, false);
 				if (sampleBean != null) {
 					Sample sample = sampleBean.getDomain();
-					SampleServiceHelper helper = ((SampleServiceLocalImpl) service)
-							.getHelper();
 					// load summary information
-					sampleBean.setCharacterizationClassNames(helper
+					sampleBean.setCharacterizationClassNames(sampleServiceHelper
 							.getStoredCharacterizationClassNames(sample)
 							.toArray(new String[0]));
-					sampleBean.setFunctionalizingEntityClassNames(helper
+					sampleBean.setFunctionalizingEntityClassNames(sampleServiceHelper
 							.getStoredFunctionalizingEntityClassNames(sample)
 							.toArray(new String[0]));
-					sampleBean.setNanomaterialEntityClassNames(helper
+					sampleBean.setNanomaterialEntityClassNames(sampleServiceHelper
 							.getStoredNanomaterialEntityClassNames(sample)
 							.toArray(new String[0]));
-					sampleBean.setFunctionClassNames(helper
-							.getStoredFunctionClassNames(sample).toArray(
-									new String[0]));
+					sampleBean.setFunctionClassNames(sampleServiceHelper
+							.getStoredFunctionClassNames(sample).toArray(new String[0]));
 					// get data availability for the samples
-					Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
-							.findDataAvailabilityBySampleId(sampleId,
-									securityService);
+					Set<DataAvailabilityBean> dataAvailability = dataAvailabilityServiceDAO.findDataAvailabilityBySampleId(sampleId);
 					// dataAvailabilityMapPerPage.put(sampleId,
 					// dataAvailability);
-					if (!dataAvailability.isEmpty()
-							&& dataAvailability.size() > 0) {
+					if (!dataAvailability.isEmpty() && dataAvailability.size() > 0)
+					{
 						sampleBean.setDataAvailability(dataAvailability);
 						sampleBean.setHasDataAvailability(true);
-						calculateDataAvailabilityScore(request, sampleBean,
-								dataAvailability);
+						calculateDataAvailabilityScore(request, sampleBean, dataAvailability);
 					}
 					loadedSampleBeans.add(sampleBean);
 				}
@@ -339,51 +370,15 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		return loadedSampleBeans;
 	}
 
-	private void loadUserAccess(HttpServletRequest request,
-			List<SampleBean> sampleBeans) throws Exception {
+	private void loadUserAccess(HttpServletRequest request, List<SampleBean> sampleBeans) throws Exception
+	{
 		List<String> sampleIds = new ArrayList<String>();
 		for (SampleBean sampleBean : sampleBeans) {
 			sampleIds.add(sampleBean.getDomain().getId().toString());
 		}
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		for (SampleBean sampleBean : sampleBeans) {
-			if(user.isCurator()){
-				sampleBean.setUserUpdatable(true);
-				sampleBean.setUserDeletable(true);
-			}else{
-				SampleService service = null;
-				if (request.getSession().getAttribute("sampleService") != null) {
-					service = (SampleService) request.getSession().getAttribute(
-							"sampleService");
-				List<String> sampleIdList = service.findSampleIdsByOwner(user.getLoginName());
-        		if((sampleBean.getDomain().getId()!=null)&&(StringUtils.containsIgnoreCase(sampleIdList,
-						sampleBean.getDomain().getId().toString()))){
-        			sampleBean.setUserUpdatable(true);
-    				sampleBean.setUserDeletable(true);
-	            }else{
-	            	sampleBean.setUserUpdatable(false);
-					sampleBean.setUserDeletable(false);
-	            }
-			}
+			sampleService.setUpdateDeleteFlags(sampleBean);
 		}
-		}
-//		SecurityService securityService = getSecurityServiceFromSession(request);
-//		Map<String, List<String>> privilegeMap = securityService
-//				.getPrivilegeMap(sampleIds);
-//		for (SampleBean sampleBean : sampleBeans) {
-//			List<String> privileges = privilegeMap.get(sampleBean.getDomain()
-//					.getId().toString());
-//			if (privileges.contains(AccessibilityBean.CSM_UPDATE_PRIVILEGE)) {
-//				sampleBean.setUserUpdatable(true);
-//			} else {
-//				sampleBean.setUserUpdatable(false);
-//			}
-//			if (privileges.contains(AccessibilityBean.CSM_DELETE_PRIVILEGE)) {
-//				sampleBean.setUserDeletable(true);
-//			} else {
-//				sampleBean.setUserDeletable(false);
-//			}
-//		}
 	}
 
 	public Map<String, List<String>> setup(HttpServletRequest request)
@@ -396,41 +391,14 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		
 	}
 
-	public DataAvailabilityService getDataAvailabilityService() {
-		return dataAvailabilityService;
-	}
-
-	public void setDataAvailabilityService(
-			DataAvailabilityService dataAvailabilityService) {
-		this.dataAvailabilityService = dataAvailabilityService;
-	}
-
 	private void calculateDataAvailabilityScore(HttpServletRequest request, SampleBean sampleBean,
-			Set<DataAvailabilityBean> dataAvailability) {
-
+			Set<DataAvailabilityBean> dataAvailability)
+	{
 		//ServletContext appContext = this.getServlet().getServletContext();
 		ServletContext appContext = request.getSession().getServletContext();
-		SortedSet<String> minchar = (SortedSet<String>) appContext
-				.getAttribute("MINChar");
-		Map<String, String> attributes = (Map<String, String>) appContext
-				.getAttribute("caNano2MINChar");
-		sampleBean.calculateDataAvailabilityScore(dataAvailability, minchar,
-				attributes);
-	}
-
-	private SampleService setServiceInSession(HttpServletRequest request) {
-		try {
-			SecurityService securityService = super
-					.getSecurityServiceFromSession(request);
-			SampleService sampleService = new SampleServiceLocalImpl(
-					securityService);
-			request.getSession().setAttribute("sampleService", sampleService);
-			return sampleService;
-		} catch (SecurityException e) {
-			logger.error("Unable to get SecurityServiceFromSession: " + e.getMessage());
-			return null;
-		}
-		
+		SortedSet<String> minchar = (SortedSet<String>) appContext.getAttribute("MINChar");
+		Map<String, String> attributes = (Map<String, String>) appContext.getAttribute("caNano2MINChar");
+		sampleBean.calculateDataAvailabilityScore(dataAvailability, minchar, attributes);
 	}
 	
 	/**
@@ -440,12 +408,11 @@ public class SearchSampleBO extends AbstractDispatchBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getCharacterizationByType(HttpServletRequest httpRequest, String type) 
-		throws Exception {
-		SortedSet<String> charNames = InitCharacterizationSetup.getInstance()
-				.getCharNamesByCharType(httpRequest,
-						type);
+	public List<String> getCharacterizationByType(HttpServletRequest httpRequest, String type) throws Exception
+	{
+		SortedSet<String> charNames = InitCharacterizationSetup.getInstance().getCharNamesByCharType(httpRequest, type, characterizationService);
 		
 		return new ArrayList<String>(charNames);
 	}
+
 }

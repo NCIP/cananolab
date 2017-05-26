@@ -2,13 +2,9 @@ package gov.nih.nci.cananolab.restful.view;
 
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.restful.util.SecurityUtil;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SimpleSearchProtocolBean {
 
@@ -96,8 +92,7 @@ public class SimpleSearchProtocolBean {
 	public void setFileInfo(String fileInfo) {
 		this.fileInfo = fileInfo;
 	}
-	public void transferProtocolBeanForBasicResultView(ProtocolBean bean,
-			UserBean user) {
+	public void transferProtocolBeanForBasicResultView(ProtocolBean bean) {
 		
 		this.setType(bean.getDomain().getType());
 		this.setViewName(bean.getDomain().getName());

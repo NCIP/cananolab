@@ -13,8 +13,8 @@ app.factory('groupService', function($resource,$http){
 			var x = data;
 			for (var key in x) {
 			  for (var y=0;y<x[key].length;y++) {
-			    if(x[key][y]=='Curator') {
-			    		that.curator = 1;
+			    if (x[key][y] == 'Curator') {
+			    	that.curator = 1;
 			    };
 			  };
 			}

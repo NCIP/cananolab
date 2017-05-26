@@ -8,9 +8,6 @@ import gov.nih.nci.cananolab.restful.customsearch.bean.SampleSearchableFieldsBea
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -23,12 +20,12 @@ import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.DateTools.Resolution;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.document.StringField;
 
-public class IndexBuilder {
-private IndexWriter indexWriter = null;
+public class IndexBuilder
+{
+	private IndexWriter indexWriter = null;
     
     public IndexWriter getIndexWriter(boolean create) throws IOException {
         if (indexWriter == null) {
@@ -161,23 +158,21 @@ private IndexWriter indexWriter = null;
         
     }   
     
-    public void buildIndexes() throws IOException {
+    public void buildIndexes(CustomSearchEngine customSearchEngine) throws IOException {
         //
         // Erase existing index
         //
         getIndexWriter(true);
         
-        CustomSearchEngine searchEngine = new CustomSearchEngine();
-        
-        List<ProtocolSearchableFieldsBean> protocols = searchEngine.retrieveProtocolsForIndexing();
+        List<ProtocolSearchableFieldsBean> protocols = customSearchEngine.retrieveProtocolsForIndexing();
         for(ProtocolSearchableFieldsBean protocolBean : protocols){
         	indexProtocolSearchableFieldsBean(protocolBean);
         }
-        List<PublicationSearchableFieldsBean> publications = searchEngine.retrievePublicationForIndexing();
+        List<PublicationSearchableFieldsBean> publications = customSearchEngine.retrievePublicationForIndexing();
         for(PublicationSearchableFieldsBean publicationBean : publications){
         	indexPublicationSearchableFieldsBean(publicationBean);
         }
-        List<SampleSearchableFieldsBean> samples = searchEngine.retrieveSamplesForIndexing();
+        List<SampleSearchableFieldsBean> samples = customSearchEngine.retrieveSamplesForIndexing();
         for(SampleSearchableFieldsBean sampleBean : samples){
         	indexSampleSearchableFieldsBean(sampleBean);
         }

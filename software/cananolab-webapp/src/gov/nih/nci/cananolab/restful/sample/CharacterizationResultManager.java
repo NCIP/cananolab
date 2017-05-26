@@ -31,6 +31,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Methods for DWR Ajax
@@ -38,6 +41,8 @@ import org.directwebremoting.WebContextFactory;
  * @author pansu, tanq
  *
  */
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("characterizationResultManager")
 public class CharacterizationResultManager {
 	
 	private Logger logger = Logger.getLogger(CharacterizationResultManager.class);

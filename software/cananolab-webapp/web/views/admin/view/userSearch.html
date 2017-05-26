@@ -1,0 +1,50 @@
+<div class="spacer">
+    <div ng-class="{formFocus:loader}">
+    <form autocomplete="off">
+        <table border="0" class="contentTitle" summary="layout" width="100%">
+            <tr>
+                <th align="left" scope="col">User Search</th>
+            </tr>
+        </table><br>
+
+        <table width="100%" align="center" class="submissionView" summary="layout">
+            <tr>
+                <td class="cellLabel" width="120">
+                    <label for="username">Search Name</label>
+                </td>
+                <td>
+                    <table class="invisibleTable" summary="layout">
+                        <tbody><tr>
+                            <td>
+                                <input type="text" name="username" ng-model="searchUserForm.username" size="30" value="" id="username">
+                            </td>
+                        </tr>
+                        </tbody></table>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <table width="100%" class="invisibleTable" summary="layout">
+            <tr>
+                <td align="center">
+            <span class="formMessage"> <em>Note: You can search using Username, First Name or Last Name in the above field.<br />Searching without any parameters returns all users.</em> </span>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <input ng-disabled="loader" type="reset" value="Reset" ng-click="resetForm()"> &nbsp;
+                    <input ng-disabled="loader" type="submit" value="Search" ng-click="doSearch()"> <input ng-disabled="loader" name="dispatch" type="hidden" value="search">
+                    <input ng-disabled="loader" name="page" type="hidden" value="1">
+
+                </td>
+            </tr>
+        </table></form>
+        <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;" ng-if="message">{{message}}</div>
+        <div id="loader" ng-show="loader">
+            <div id="loaderText">
+                Loading
+            </div>
+            <div id="loaderGraphic"></div>
+        </div>
+    </div>
+</div>

@@ -1,31 +1,8 @@
 package gov.nih.nci.cananolab.restful;
 
-import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
-import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
-import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
-import gov.nih.nci.cananolab.restful.context.SpringApplicationContext;
-import gov.nih.nci.cananolab.restful.sample.AdvancedSampleSearchBO;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
-import gov.nih.nci.cananolab.restful.sample.SampleBO;
-import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
-import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.restful.util.SecurityUtil;
-import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchResultView;
-import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
-import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
-import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
-import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
-import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
-
-import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
@@ -38,26 +15,41 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
+import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
+import gov.nih.nci.cananolab.restful.sample.AdvancedSampleSearchBO;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
+import gov.nih.nci.cananolab.restful.sample.SampleBO;
+import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchResultView;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
+import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
+import gov.nih.nci.cananolab.util.Constants;
 
 @Path("/sample")
 public class SampleServices {
-	private Logger logger = Logger.getLogger(SampleServices.class);
+	private static final Logger logger = Logger.getLogger(SampleServices.class);
 	
-//	@Inject
-//	SpringApplicationContext applicationContext;
-	ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext-strutsless.xml");
-
 	@GET
 	@Path("/setup")
 	@Produces ("application/json")
-    public Response setup(@Context HttpServletRequest httpRequest) {
+    public Response setup(@Context HttpServletRequest httpRequest)
+	{
 		logger.debug("In initSetup");		
 		
 		try { 
-			SearchSampleBO searchSampleBO = 
-					(SearchSampleBO) applicationContext.getBean("searchSampleBO");
+			SearchSampleBO searchSampleBO = (SearchSampleBO) SpringApplicationContext.getBean(httpRequest, "searchSampleBO");
 			Map<String, List<String>> dropdownTypeLists = searchSampleBO.setup(httpRequest);
 
 			return Response.ok(dropdownTypeLists).build();
@@ -67,16 +59,13 @@ public class SampleServices {
 		}
 	}
 	
-	
-	
 	@GET
 	@Path("/getCharacterizationByType")
 	@Produces ("application/json")
     public Response getCharacterizationByType(@Context HttpServletRequest httpRequest, 
-    		@DefaultValue("") @QueryParam("type") String type) {
-		
-		SearchSampleBO searchSampleBO = 
-				(SearchSampleBO) applicationContext.getBean("searchSampleBO");
+    		@DefaultValue("") @QueryParam("type") String type)
+	{	
+		SearchSampleBO searchSampleBO = (SearchSampleBO) SpringApplicationContext.getBean(httpRequest, "searchSampleBO");
 		
 		try {
 			List<String> characterizations = searchSampleBO.getCharacterizationByType(httpRequest, type);
@@ -90,11 +79,11 @@ public class SampleServices {
 	@POST
 	@Path("/searchSample")
 	@Produces ("application/json")
-	public Response searchSample(@Context HttpServletRequest httpRequest, SearchSampleForm searchForm ) {
-		
-		try {
-			SearchSampleBO searchSampleBO = 
-					(SearchSampleBO) applicationContext.getBean("searchSampleBO");
+	public Response searchSample(@Context HttpServletRequest httpRequest, SearchSampleForm searchForm )
+	{	
+		try
+		{
+			SearchSampleBO searchSampleBO = (SearchSampleBO) SpringApplicationContext.getBean(httpRequest, "searchSampleBO");
 			
 			List results = searchSampleBO.search(searchForm, httpRequest);
 			
@@ -113,18 +102,16 @@ public class SampleServices {
 					.entity(CommonUtil.wrapErrorMessageInList("Error while searching for samples: " + e.getMessage())).build();
 		}
 	}
-	
-	
-	
+
 	@GET
 	@Path("/view")
 	@Produces ("application/json")
 	 public Response view(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
-		
-		try { 
-			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId)
+	{	
+		try
+		{ 
+			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 
 			SimpleSampleBean sampleBean = sampleBO.summaryView(sampleId,httpRequest);
 			
@@ -133,8 +120,7 @@ public class SampleServices {
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build()
-					:
-						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
+					:Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
 			
 		} catch (Exception e) {
 			//return Response.ok("Error while viewing the search results").build();
@@ -148,12 +134,11 @@ public class SampleServices {
 	@Path("/viewDataAvailability")
 	@Produces ("application/json")
 	 public Response viewDataAvailability(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
-		
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId)
+	{
 		try { 
 
-			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 
 			SimpleSampleBean sampleBean = sampleBO.dataAvailabilityView(sampleId,httpRequest);
 			
@@ -173,10 +158,10 @@ public class SampleServices {
 	@Path("/characterizationView")
 	@Produces ("application/json")
 	 public Response characterizationView(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId)
+	{
 		try { 
-			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			CharacterizationBO characterizationBO = (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 
 			CharacterizationSummaryViewBean charView = characterizationBO.summaryView(sampleId,httpRequest);
 			SimpleCharacterizationSummaryViewBean viewBean = new SimpleCharacterizationSummaryViewBean();
@@ -187,8 +172,7 @@ public class SampleServices {
 			
 			return (finalBean.size() == 0) ? Response.status(Response.Status.NOT_FOUND)
 					.entity(CommonUtil.wrapErrorMessageInList("There is no characterization with your sample.")).build()
-							: 
-							Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true")
+							: Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true")
 							.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 							.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
@@ -207,7 +191,7 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			
 			java.io.File file = characterizationBO.download(fileId, httpRequest);
 			
@@ -226,7 +210,7 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			
 			String result = characterizationBO.download(fileId, httpRequest, httpResponse);
 			return Response.ok(result).build();
@@ -246,12 +230,11 @@ public class SampleServices {
 	
 		try {
 			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 			
 			String result = characterizationBO.summaryExport(sampleId, type, httpRequest, httpResponse);
 			return Response.ok(result).build();
-		} 
-		
+		}
 		catch (Exception ioe) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
@@ -262,22 +245,20 @@ public class SampleServices {
 	@Path("/edit")
 	@Produces("application/json")
 	 public Response edit(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId)
+	{
 		logger.debug("In edit Sample");
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest)) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			logger.info("User not logged in");
-			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 		}
-		SampleBO sampleBO = 
-				(SampleBO) applicationContext.getBean("sampleBO");
+		SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 
 		try {
 			SampleEditGeneralBean sampleBean = sampleBO.summaryEdit(sampleId,httpRequest);
 			return (sampleBean.getErrors().size() == 0) ?
-					Response.ok(sampleBean).build()
-					:
+					Response.ok(sampleBean).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
 		} 
 
@@ -295,12 +276,11 @@ public class SampleServices {
 		
 		SampleEditGeneralBean editBean = null;
 		try {
-			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			editBean = sampleBO.savePointOfContactList(simpleEditBean, httpRequest);
 			List<String> errors = editBean.getErrors();
@@ -326,11 +306,11 @@ public class SampleServices {
 		logger.debug("In saveAccess");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.saveAccess(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();
@@ -352,11 +332,11 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		SampleBO sampleBO = 
-				(SampleBO) applicationContext.getBean("sampleBO");
+				(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest))
+		if (!SpringSecurityUtil.isUserLoggedIn())
 			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+					.entity(Constants.MSG_SESSION_INVALID).build();
 
 		try {
 			SampleEditGeneralBean simpleBean = sampleBO.updateDataAvailability(sampleId.trim(), httpRequest);
@@ -376,12 +356,10 @@ public class SampleServices {
 	public Response updateSample(@Context HttpServletRequest httpRequest, SampleEditGeneralBean simpleEdit) {
 		logger.info("In updateSample");
 		try {
-			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.update(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();
@@ -403,11 +381,11 @@ public class SampleServices {
 		logger.debug("In submitSample");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.submit(simpleEdit, httpRequest);
 			List<String> errors = editBean.getErrors();
@@ -432,11 +410,11 @@ public class SampleServices {
 		logger.debug("In copySample");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			if (simpleEdit.getNewSampleName() == null || simpleEdit.getNewSampleName().length() == 0)
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -463,11 +441,11 @@ public class SampleServices {
 		logger.debug("In deleteSample");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			String msg = sampleBO.delete(sampleId, httpRequest);
 			logger.debug("Delete sample complete: " + msg);
@@ -492,11 +470,11 @@ public class SampleServices {
 		logger.debug("In deleteSampleFromWorkspace");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			String msg = sampleBO.deleteSampleById(sampleId, httpRequest);
 			logger.debug("Delete sample complete: " + msg);
@@ -521,11 +499,11 @@ public class SampleServices {
 		logger.debug("In deleteSample");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.deletePointOfContact(simplePOCBean, httpRequest);
 			List<String> errors = editBean.getErrors();
@@ -548,11 +526,11 @@ public class SampleServices {
 		logger.debug("In deleteDataAvailability");
 		try {
 			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.deleteDataAvailability(simpleSampleBean, httpRequest);
 			List<String> errors = editBean.getErrors();
@@ -574,13 +552,12 @@ public class SampleServices {
 	 public Response submissionSetup(@Context HttpServletRequest httpRequest){
 		logger.debug("In edit Sample");
 		
-		if (! SecurityUtil.isUserLoggedIn(httpRequest)) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			logger.info("User not logged in");
 			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+					.entity(Constants.MSG_SESSION_INVALID).build();
 		}
-		SampleBO sampleBO = 
-				(SampleBO) applicationContext.getBean("sampleBO");
+		SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 
 		try {
 			SampleEditGeneralBean sampleBean = sampleBO.setupNew(httpRequest);
@@ -604,18 +581,14 @@ public class SampleServices {
 		logger.debug("In getSortedSampleNames");
 		try {
 
-			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			List<String> names = sampleBO.getMatchedSampleNames(httpRequest, "");
 			
 			return 	Response.ok(names).build();
-						
-
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -630,12 +603,11 @@ public class SampleServices {
 		logger.debug("In deleteAccess");
 		try {
 
-			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+						.entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SampleEditGeneralBean editBean = sampleBO.deleteAccess(simpleSampleBean, httpRequest);
 			List<String> errors = editBean.getErrors();
@@ -658,12 +630,10 @@ public class SampleServices {
 		logger.debug("In submitForReview");
 		try {
 
-			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 			
-			if (! SecurityUtil.isUserLoggedIn(httpRequest))
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity(SecurityUtil.MSG_SESSION_INVALID).build();
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			String message = sampleBO.submitForReview(httpRequest, reviewBean);
 			
@@ -683,18 +653,17 @@ public class SampleServices {
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 
 			String sampelName = sampleBO.getCurrentSampleNameInSession(httpRequest, sampleId);
 			
 			return 
-					Response.ok(sampelName).header("Access-Control-Allow-Credentials", "true")
+					Response.ok(sampelName)
+/*					.header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-					
-			
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+*/					.build();
 		} catch (Exception e) {
 			//return Response.ok("Error while viewing the search results").build();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -705,12 +674,12 @@ public class SampleServices {
 	@GET
 	@Path("/setupAdvancedSearch")
 	@Produces ("application/json")
-    public Response setupAdvancedSearch(@Context HttpServletRequest httpRequest) {
+    public Response setupAdvancedSearch(@Context HttpServletRequest httpRequest)
+	{
 		logger.debug("In setupAdvancedSearch");		
 		
 		try { 
-			AdvancedSampleSearchBO searchSampleBO = 
-					(AdvancedSampleSearchBO) applicationContext.getBean("advancedSampleSearchBO");
+			AdvancedSampleSearchBO searchSampleBO = (AdvancedSampleSearchBO) SpringApplicationContext.getBean(httpRequest, "advancedSampleSearchBO");
 			
 			Map<String, Object> dropdownTypeLists = searchSampleBO.setup(httpRequest);
 			//AdvancedSampleSearchBean searchBean = searchSampleBO.setup(httpRequest);
@@ -731,7 +700,7 @@ public class SampleServices {
 		
 		try { 
 			CharacterizationManager characterizationMgr = 
-					(CharacterizationManager) applicationContext.getBean("characterizationManager");
+					(CharacterizationManager) SpringApplicationContext.getBean(httpRequest, "characterizationManager");
 			
 			List<LabelValueBean> charOptions = characterizationMgr.getDecoratedCharacterizationOptions(httpRequest, charType);
 					//searchSampleBO.setup(httpRequest);
@@ -753,7 +722,7 @@ public class SampleServices {
 		
 		try { 
 			CharacterizationResultManager characterizationMgr = 
-					(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+					(CharacterizationResultManager) SpringApplicationContext.getBean(httpRequest, "characterizationResultManager");
 			
 			List<LabelValueBean> datumOptions = characterizationMgr.getDecoratedDatumNameOptions(
 					httpRequest, charType, charName, null);
@@ -774,7 +743,7 @@ public class SampleServices {
 		
 		try {
 			CharacterizationResultManager characterizationResultManager = 
-				(CharacterizationResultManager) applicationContext.getBean("characterizationResultManager");
+				(CharacterizationResultManager) SpringApplicationContext.getBean(httpRequest, "characterizationResultManager");
 			
 			List<String> names = characterizationResultManager
 					.getColumnValueUnitOptions(httpRequest, datumName, "", false);
@@ -791,14 +760,13 @@ public class SampleServices {
 	@POST
 	@Path("/searchSampleAdvanced")
 	@Produces ("application/json")
-	public Response searchSampleAdvanced(@Context HttpServletRequest httpRequest, 
-			AdvancedSampleSearchBean searchBean ) {
+	public Response searchSampleAdvanced(@Context HttpServletRequest httpRequest, AdvancedSampleSearchBean searchBean )
+	{
 		
 		logger.debug("In searchSampleAdvanced");
 		
 		try {
-			AdvancedSampleSearchBO searchSampleBO = 
-					(AdvancedSampleSearchBO) applicationContext.getBean("advancedSampleSearchBO");
+			AdvancedSampleSearchBO searchSampleBO = (AdvancedSampleSearchBO) SpringApplicationContext.getBean(httpRequest, "advancedSampleSearchBO");
 			
 			SimpleAdvancedSearchResultView resultView = searchSampleBO.search(httpRequest, searchBean);
 			
@@ -821,12 +789,10 @@ public class SampleServices {
 	@GET
 	@Path("/isSampleEditable")
 	@Produces ("application/json")
-	 public Response isSampleEditable(@Context HttpServletRequest httpRequest, 
-	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+	 public Response isSampleEditable(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId){
 		
 		try { 
-			SampleBO sampleBO = 
-					(SampleBO) applicationContext.getBean("sampleBO");
+			SampleBO sampleBO =	(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 
 			boolean editable = sampleBO.isSampleEditableByCurrentUser(httpRequest, sampleId);
 			
@@ -848,8 +814,7 @@ public class SampleServices {
 	 public Response summaryExport(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse){
 		
 		try { 
-			AdvancedSampleSearchBO searchSampleBO = 
-					(AdvancedSampleSearchBO) applicationContext.getBean("advancedSampleSearchBO");
+			AdvancedSampleSearchBO searchSampleBO = (AdvancedSampleSearchBO) SpringApplicationContext.getBean(httpRequest, "advancedSampleSearchBO");
 			
 			 String result = searchSampleBO.export(httpRequest, httpResponse);
 				

@@ -17,11 +17,10 @@ var app = angular.module('angularApp')
     $scope.newKeyword = "";
     $scope.message = "";
     // Access variables
-    $scope.csmRoleNames = {"R":"read","CURD":"read update delete"};
+    $scope.csmRoleNames = {"R":"READ","RWD":"READ WRITE DELETE"};
     $scope.sampleData.theAccess = {};
     $scope.accessForm = {};
     $scope.accessForm.theAcccess = {};
-    $scope.accessForm.theAcccess.userBean = {};
     $scope.isCurator = groupService.isCurator();
     $scope.groupAccesses = [];
     $scope.userAccesses = [];
@@ -31,14 +30,13 @@ var app = angular.module('angularApp')
     $scope.showAccessuser = false;
     $scope.showAccessSelection = false;
     $scope.accessForm.theAccess = {};
-    $scope.accessForm.theAccess.groupName = '';
-    $scope.accessForm.theAccess.userBean = {};
-    $scope.accessForm.theAccess.userBean.loginName = '';
+    $scope.accessForm.theAccess.recipient = '';
+    $scope.accessForm.theAccess.recipientDisplayName = '';
     $scope.access = {};
-    $scope.access.groupName = '';
-    $scope.access.loginName = '';
+    $scope.access.recipient = '';
+    $scope.access.recipientDisplayName = '';
     $scope.sampleData.isPublic = false;
-    $scope.accessForm.theAccess.accessBy = 'group';        
+    $scope.accessForm.theAccess.accessType = 'group';        
     $scope.accessExists = false;    
 
     var editSampleData = {"editSampleData":{"dirty": false}};
@@ -54,10 +52,15 @@ var app = angular.module('angularApp')
     //goBack
     //Change location if user hits the Back button
     $scope.goBack = function() {
+        if ($rootScope.fromCollab!=undefined && $rootScope.fromCollab) {
+            $rootScope.fromCollab = false;
+            $location.path("/collaborationGroup").replace();
+            return;
+        }
                     console.log($routeParams);
 
-        if ($scope.updateButton=='Submit') {
-            console.log("SUBMIT");
+        if ($scope.updateButton=='Save') {
+            console.log("Save");
             $location.path("/manageSamples").replace();
             $location.search('sampleId', null);
         }
@@ -66,26 +69,26 @@ var app = angular.module('angularApp')
             $location.path("/myWorkspace").replace();
             $location.search('sampleId', null);
             $location.search('fromMyWorkspace', null);
-        }        
+        }
         else {
             if ($scope.isAdvancedSearch) {
-                            console.log("isAdvanced");
-              $location.path("/advancedSampleResults").replace();           
+            	console.log("isAdvanced");
+            	$location.path("/advancedSampleResults").replace();           
             }
             else if ($routeParams.fromFavorites=='true') {
-                            console.log("myFavorites");
-              $location.path("/myFavorites").replace();           
+            	console.log("myFavorites");
+            	$location.path("/myFavorites").replace();           
             }        
             else if ($routeParams.fromKeyword=='true') {
-                            console.log("keywordSearch");
-              $location.path("/keywordSearchResults").replace();           
+            	console.log("keywordSearch");
+            	$location.path("/keywordSearchResults").replace();           
             }         
             else {
-                            console.log("sample Results");
-              $location.path("/sampleResults").replace();           
+            	console.log("sample Results");
+            	$location.path("/sampleResults").replace();           
             }
         }
-            $location.search('sampleId', null);
+        $location.search('sampleId', null);
 
     };
 
@@ -148,7 +151,7 @@ var app = angular.module('angularApp')
     else {
         $scope.editSampleForm = true;
         $scope.loaderText = "Loading";
-        $scope.updateButton = "Submit";
+        $scope.updateButton = "Save";
         $scope.loader = true;
         $http({method: 'GET', url: '/caNanoLab/rest/sample/submissionSetup'}).
             success(function(data, status, headers, config, statusText) {
@@ -241,7 +244,6 @@ var app = angular.module('angularApp')
         });       
     };    
 
-    
     $scope.reset = function() {
         $scope.loader = true;
          $http({method: 'GET', url: '/caNanoLab/rest/sample/submissionSetup'}).
@@ -258,14 +260,6 @@ var app = angular.module('angularApp')
          });
  
     };
-
-    // $scope.reset = function() {
-    //      var orgs = $scope.sampleData.organizationNamesForUser;
-    //      var roles = $scope.sampleData.contactRoles;
-    //      $scope.sampleData = angular.copy($scope.master);
-    //      $scope.sampleData.organizationNamesForUser = orgs;
-    //      $scope.sampleData.contactRoles = roles;
-    // };
 
     $scope.submitSample = function() {
         $scope.loader = true;
@@ -425,12 +419,13 @@ var app = angular.module('angularApp')
     /** Start - Access functions **/
     
     $scope.getCollabGroups = function() {
-        if ($scope.accessForm.theAccess.groupName === undefined || $scope.accessForm.theAccess.groupName === null) {
-            $scope.accessForm.theAccess.groupName = '';
+        if ($scope.accessForm.theAccess.recipient === undefined || $scope.accessForm.theAccess.recipient === null) {
+            $scope.accessForm.theAccess.recipient = '';
+            $scope.accessForm.theAccess.recipientDisplayName = '';
         }
 
         $scope.loader = true;
-        $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.groupName}).
+        $http({method: 'GET', url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.recipient}).
             success(function(data, status, headers, config) {
                 $scope.collabGroups = data;
                 $scope.loader = false;
@@ -446,12 +441,13 @@ var app = angular.module('angularApp')
     };
 
     $scope.getAccessUsers = function() {
-        if ($scope.accessForm.theAccess.userBean.loginName === undefined || $scope.accessForm.theAccess.userBean.loginName === null) {
-            $scope.accessForm.theAccess.userBean.loginName = '';
+        if ($scope.accessForm.theAccess.recipient === undefined || $scope.accessForm.theAccess.recipient === null) {
+            $scope.accessForm.theAccess.recipient = '';
+            $scope.accessForm.theAccess.recipientDisplayName = '';
         }
         
         $scope.loader = true;
-        $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.userBean.loginName}).
+        $http({method: 'GET', url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.recipient}).
             success(function(data, status, headers, config) {
                 $scope.accessUsers = data;
                 $scope.loader = false;
@@ -477,7 +473,7 @@ var app = angular.module('angularApp')
         $scope.addAccess=false;
         $scope.showAddAccessButton=true;
         
-        if( $scope.accessForm.theAccess.accessBy == 'public') {
+        if( $scope.accessForm.theAccess.accessType == 'public') {
             $scope.sampleData.isPublic = true;
         }
 
@@ -503,8 +499,9 @@ var app = angular.module('angularApp')
     
     $scope.editUserAccessSection = function(loginName, userAccess) {
         $scope.addAccess=true;
-        $scope.accessForm.theAccess.accessBy='user';
-        $scope.accessForm.theAccess.userBean.loginName=loginName;
+        $scope.accessForm.theAccess.accessType='user';
+        $scope.accessForm.theAccess.recipient=loginName;
+        $scope.accessForm.theAccess.recipientDisplayName=loginName;
         $scope.showCollaborationGroup=false;
         $scope.showAccessuser=true;
         $scope.showAccessSelection=false;
@@ -518,8 +515,9 @@ var app = angular.module('angularApp')
 
     $scope.editGroupAccessSection = function(groupName, groupAccess) {
         $scope.addAccess=true;
-        $scope.accessForm.theAccess.accessBy='group';
-        $scope.accessForm.theAccess.groupName=groupName;
+        $scope.accessForm.theAccess.accessType='group';
+        $scope.accessForm.theAccess.recipient=groupName;
+        $scope.accessForm.theAccess.recipientDisplayName=groupName;
         $scope.showCollaborationGroup=true;
         $scope.showAccessuser=false;
         $scope.showAccessSelection=false;
@@ -530,8 +528,8 @@ var app = angular.module('angularApp')
             }
         }
         
-        if($scope.accessForm.theAccess.groupName == 'Public') {
-            $scope.accessForm.theAccess.accessBy='public';
+        if($scope.accessForm.theAccess.recipient == 'ROLE_ANONYMOUS') {
+            $scope.accessForm.theAccess.accessType='public';
         }
     }
 
@@ -592,7 +590,8 @@ var app = angular.module('angularApp')
     };
 
     $scope.selectPublicAccess = function() {
-        $scope.accessForm.theAccess.groupName = 'Public';
+        $scope.accessForm.theAccess.recipient = 'ROLE_ANONYMOUS';
+        $scope.accessForm.theAccess.recipientDisplayName = 'Public';
         $scope.accessForm.theAccess.roleName = 'R';
         $scope.showCollaborationGroup=true;
         $scope.showAccessuser=false;

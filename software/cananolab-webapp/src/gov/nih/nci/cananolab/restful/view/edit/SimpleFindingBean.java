@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.Row;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
@@ -58,8 +59,8 @@ public class SimpleFindingBean {
 		transferFilesFromFindingBean(request, findingBean.getFiles());
 	}
 	
-	public void transferToFindingBean(FindingBean findingBean, UserBean user) 
-	throws Exception {
+	public void transferToFindingBean(FindingBean findingBean) throws Exception
+	{
 		Long domainId = findingBean.getDomain().getId();
 		 //TODO: do things differently for new or update?
 		

@@ -8,76 +8,89 @@
 
 package gov.nih.nci.cananolab.dto.common;
 
-import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.util.Constants;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
-public class SecuredDataBean {
-	private List<AccessibilityBean> userAccesses = new ArrayList<AccessibilityBean>();
+import gov.nih.nci.cananolab.security.AccessControlInfo;
 
-	private List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
-
-	private AccessibilityBean theAccess = new AccessibilityBean();
-
-	@JsonIgnore
-	private List<AccessibilityBean> allAccesses = new ArrayList<AccessibilityBean>();
-
-	private Boolean publicStatus = false;
-
-	@JsonIgnore
-	private UserBean user;
-
+public class SecuredDataBean
+{
+	private List<AccessControlInfo> userAccesses = new ArrayList<AccessControlInfo>();
+	private List<AccessControlInfo> groupAccesses = new ArrayList<AccessControlInfo>();
+	
+	private AccessControlInfo theAccess = new AccessControlInfo();
+	
 	protected String createdBy;
-
+	
 	private Boolean userUpdatable = false;
 	private Boolean userDeletable = false;
 	private Boolean userIsOwner = false;
+	
+	private Boolean publicStatus = false;
+	
+	public Boolean getPublicStatus() {
+		return publicStatus;
+	}
+	
+	public void setPublicStatus(Boolean publicStatus)
+	{
+		this.publicStatus = publicStatus;
+	}
 
-	public List<AccessibilityBean> getUserAccesses() {
+	@JsonIgnore
+	private List<AccessControlInfo> allAccesses = new ArrayList<AccessControlInfo>();
+
+	public List<AccessControlInfo> getUserAccesses() {
 		return userAccesses;
 	}
 
-	public void setUserAccesses(List<AccessibilityBean> userAccesses) {
+	public void setUserAccesses(List<AccessControlInfo> userAccesses) {
 		this.userAccesses = userAccesses;
+		allAccesses.addAll(userAccesses);
 	}
 
-	public List<AccessibilityBean> getGroupAccesses() {
+	public void addUserAccess(AccessControlInfo userAccess)
+	{
+		this.userAccesses.add(userAccess);
+	}
+
+	public List<AccessControlInfo> getGroupAccesses() {
 		return groupAccesses;
 	}
 
-	public void setGroupAccesses(List<AccessibilityBean> groupAccesses) {
-
+	public void setGroupAccesses(List<AccessControlInfo> groupAccesses) {
 		this.groupAccesses = groupAccesses;
+		allAccesses.addAll(groupAccesses);
+	}
+	
+	public void addGroupAccess(AccessControlInfo groupAccess)
+	{
+		this.groupAccesses.add(groupAccess);
 	}
 
-	public AccessibilityBean getTheAccess() {
-		return theAccess;
-	}
-
-	public void setTheAccess(AccessibilityBean theAccess) {
-		this.theAccess = theAccess;
-	}
-
-	public List<AccessibilityBean> getAllAccesses() {
-		allAccesses.addAll(getGroupAccesses());
-		allAccesses.addAll(getUserAccesses());
+	public List<AccessControlInfo> getAllAccesses() {
 		return allAccesses;
 	}
 
-	public Boolean getPublicStatus() {
-		publicStatus = this.retrievPublicStatus();
-		return publicStatus;
+	public AccessControlInfo getTheAccess() {
+		return theAccess;
 	}
 
+	public void setTheAccess(AccessControlInfo theAccess) {
+		this.theAccess = theAccess;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
 	public Boolean getUserUpdatable() {
-		if (userAccesses.isEmpty() && groupAccesses.isEmpty()) {
-			return userUpdatable;
-		}
-		userUpdatable = this.retrieveUserUpdatable(user);
 		return userUpdatable;
 	}
 
@@ -86,116 +99,11 @@ public class SecuredDataBean {
 	}
 
 	public Boolean getUserDeletable() {
-		if (userAccesses.isEmpty() && groupAccesses.isEmpty()) {
-			return userDeletable;
-		}
-		userDeletable = this.retrieveUserDeletable(user);
 		return userDeletable;
 	}
 
 	public void setUserDeletable(Boolean userDeletable) {
 		this.userDeletable = userDeletable;
 	}
-
-	public Boolean getUserIsOwner() {
-		userIsOwner = this.retrieveUserIsOwner(user, createdBy);
-		return userIsOwner;
-	}
-
-	private Boolean retrieveUserUpdatable(UserBean user) {
-		if (user == null) {
-			return false;
-		}
-		if (user.isCurator()) {
-			return true;
-		}
-		for (AccessibilityBean access : userAccesses) {
-			if (access.getUserBean().getLoginName().equals(user.getLoginName())
-					&& (access.getRoleName().equals(
-							AccessibilityBean.CSM_CURD_ROLE) || access
-							.getRoleName().equals(
-									AccessibilityBean.CSM_CUR_ROLE))) {
-				return true;
-			}
-		}
-		for (AccessibilityBean access : groupAccesses) {
-			for (String groupName : user.getGroupNames()) {
-				if (access.getGroupName().equals(groupName)
-						&& access.getRoleName().equals(
-								AccessibilityBean.CSM_CURD_ROLE)
-						|| access.getRoleName().equals(
-								AccessibilityBean.CSM_CUR_ROLE)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	private Boolean retrieveUserDeletable(UserBean user) {
-		if (user == null) {
-			return false;
-		}
-		if (user.isCurator()) {
-			return true;
-		}
-		for (AccessibilityBean access : userAccesses) {
-			if (access.getUserBean().getLoginName().equals(user.getLoginName())
-					&& (access.getRoleName().equals(
-							AccessibilityBean.CSM_CURD_ROLE) || access
-							.getRoleName().equals(
-									AccessibilityBean.CSM_DELETE_ROLE))) {
-				return true;
-			}
-		}
-		for (AccessibilityBean access : groupAccesses) {
-			for (String groupName : user.getGroupNames()) {
-				if (access.getGroupName().equals(groupName)
-						&& access.getRoleName().equals(
-								AccessibilityBean.CSM_CURD_ROLE)
-						|| access.getRoleName().equals(
-								AccessibilityBean.CSM_DELETE_ROLE)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	public Boolean retrieveUserIsOwner(UserBean user, String createdBy) {
-		if (user == null || createdBy == null) {
-			return false;
-		}
-		// user is either a curator or the creator of the data
-		// or if the data created from COPY and contains the creator info
-		if (user != null
-				&& (user.getLoginName().equalsIgnoreCase(createdBy)
-						|| createdBy.contains(user.getLoginName() + ":"
-								+ Constants.AUTO_COPY_ANNOTATION_PREFIX) || user
-						.isCurator())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	private Boolean retrievPublicStatus() {
-		for (AccessibilityBean access : groupAccesses) {
-			if (access.getGroupName()
-					.equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void setUser(UserBean user) {
-		this.user = user;
-	}
-
-	public UserBean getUser() {
-		return user;
-	}
+	
 }

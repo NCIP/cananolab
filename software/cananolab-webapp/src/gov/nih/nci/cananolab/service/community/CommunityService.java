@@ -8,14 +8,14 @@
 
 package gov.nih.nci.cananolab.service.community;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import java.util.List;
+
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.exception.CommunityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.service.BaseService;
-
-import java.util.List;
 
 public interface CommunityService extends BaseService {
 	public void saveCollaborationGroup(CollaborationGroupBean collaborationGroup)
@@ -32,17 +32,14 @@ public interface CommunityService extends BaseService {
 			CollaborationGroupBean collaborationGroup)
 			throws CommunityException, NoAccessException;
 
-	public List<String> findCollaborationGroupIdsByOwner(String owner)
-			throws CommunityException;
-
 	public void assignOwner(String collaborationGroupId, String ownerLogin)
 			throws CommunityException, NoAccessException;
 
-	public void assignAccessibility(AccessibilityBean access,
+	public void assignAccessibility(AccessControlInfo access,
 			String collaborationGroupId) throws CommunityException,
 			NoAccessException;
 
-	public void removeAccessibility(AccessibilityBean access,
+	public void removeAccessibility(AccessControlInfo access,
 			String collaborationGroupId) throws CommunityException,
 			NoAccessException;
 }

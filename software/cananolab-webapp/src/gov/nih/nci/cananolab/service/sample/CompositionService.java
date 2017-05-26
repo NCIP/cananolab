@@ -9,6 +9,7 @@
 package gov.nih.nci.cananolab.service.sample;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
@@ -25,6 +26,7 @@ import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseService;
+import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 
 /**
  * Service methods involving composition.
@@ -37,7 +39,7 @@ public interface CompositionService extends BaseService {
 			NanomaterialEntityBean entityBean) throws CompositionException,
 			NoAccessException;
 
-	public NanomaterialEntityBean findNanomaterialEntityById(String entityId)
+	public NanomaterialEntityBean findNanomaterialEntityById(String sampleId, String entityId)
 			throws CompositionException, NoAccessException;
 
 	public void saveFunctionalizingEntity(SampleBean sampleBean,
@@ -51,10 +53,10 @@ public interface CompositionService extends BaseService {
 	public void saveCompositionFile(SampleBean sampleBean, FileBean fileBean)
 			throws CompositionException, NoAccessException;
 
-	public FunctionalizingEntityBean findFunctionalizingEntityById(
+	public FunctionalizingEntityBean findFunctionalizingEntityById(String sampleId,
 			String entityId) throws CompositionException, NoAccessException;
 
-	public ChemicalAssociationBean findChemicalAssociationById(String assocId)
+	public ChemicalAssociationBean findChemicalAssociationById(String sampleId, String assocId)
 			throws CompositionException, NoAccessException;
 
 	public void deleteNanomaterialEntity(NanomaterialEntity entity)
@@ -75,6 +77,8 @@ public interface CompositionService extends BaseService {
 	public void deleteComposition(SampleComposition comp)
 			throws ChemicalAssociationViolationException, CompositionException,
 			NoAccessException;
+	
+	public boolean checkChemicalAssociationBeforeDelete(SampleComposition comp, AssociatedElement assocElement);
 
 	public CompositionBean findCompositionBySampleId(String sampleId)
 			throws CompositionException, NoAccessException;
@@ -133,5 +137,7 @@ public interface CompositionService extends BaseService {
 
 	public void removeAccesses(SampleComposition comp, File file)
 			throws CompositionException, NoAccessException;
+	
+	public CompositionServiceHelper getHelper();
 
 }

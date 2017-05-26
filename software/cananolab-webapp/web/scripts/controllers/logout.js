@@ -2,7 +2,7 @@
 var app = angular.module('angularApp')
 .controller('LogoutCtrl', function ($rootScope, $scope, $location,$http) {
 
- $http({method: 'GET', url: '/caNanoLab/rest/security/logout'}).
+ $http({method: 'GET', url: '/caNanoLab/logout'}).
 		    success(function(data, status, headers, config) {
 		      // this callback will be called asynchronously
 		      // when the response is available
@@ -10,7 +10,8 @@ var app = angular.module('angularApp')
 		      
 		      $scope.message=data;
 		      $rootScope.groups = null;
-		    	 $location.search('message','You are successfully logged out.').path('/').replace();
+		      $rootScope.loggedInUser = '';
+		      $location.path('/login?logout').replace();
 
 		    }).
 		    error(function(data, status, headers, config) {

@@ -166,4 +166,8 @@ public class Constants {
 	public static final int CANANOLAB_AVAILABLE_ENTITY = 30;
 
 	public static final String EXTERNAL_SITE_DISCLAIMER_LINK = " [<a class='disclaimerLink' href='html/cananoDisclaimer.html' target='new'>Disclaimer</a>]";
+	
+	public static String MSG_SESSION_INVALID = "User session invalid. Session may have been expired";
+	
+	public static final String ROLE_PREFIX = "ROLE_";
 }

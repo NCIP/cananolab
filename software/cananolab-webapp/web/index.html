@@ -18,9 +18,14 @@
       <link rel="stylesheet" href="plugins/ng-grid/ng-grid.css">
       <link rel="stylesheet" href="plugins/ng-table/ng-table.min.css">
       <script type="text/javascript" src="javascript/script.js"></script>
-      <script type='text/javascript' src='javascript/script.js'></script>
-      <script type='text/javascript' src='javascript/CountManager.js'></script>
-      <script type='text/javascript' src="javascript/addDropDownOptions.js"></script>
+      <script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+		
+		 ga('create', 'UA-84884440-1', 'auto');
+	</script>
    </head>
    <body style="cursor: default" ng-app="angularApp" ng-controller="TemplateCtrl">
       <div class="container">
@@ -30,19 +35,19 @@
             <tbody>
                <tr>
                   <td colspan="2">
-                     <table class="hdrBG" border="0" cellpadding="0" cellspacing="0" width="100%">
+                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
                            <tr>
                               <td align="left">
                                           <!-- anchor to skip main menu -->
-                                 <a href="#maincontent" style="background-color:#A90101" tabindex="0"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
-                                 <a href="http://www.cancer.gov/"><img alt="National Cancer Institute" src="images/nci.jpg" border="0" height="37" width="283"></a>
+                                 <a href="#maincontent" tabindex="0"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
+                                 <a href="http://www.cancer.gov/"><img alt="National Cancer Institute" src="images/CBIIT-36px-Logo-COLOR_contrast.png" border="0" height="37" width="283"></a>
                               </td>
                               <td>
                                  &nbsp;
                               </td>
                               <td align="right">
-                                 <a href="http://www.cancer.gov/"><img alt="U.S. National Institutes of Health | www.cancer.gov" src="images/nih.jpg" border="0" height="37" width="295"></a>
+                                 <a href="http://www.nih.gov/" target="_blank"><span>U.S. National Institutes of Health</span></a>
                               </td>
                            </tr>
                         </tbody>
@@ -58,7 +63,9 @@
                                  <a href="/caNanoLab/#/" class="link" alt="caNanoLab" title="caNanoLab" description="caNanoLab"></a>
                               </td>
                               <td id="keywordSearch"> 
-                                 <label for="keywordsearch" style="color:white;">Search</label><input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" id="keywordsearch" name="keyword_search_text" role="search">&nbsp;<button class="btn btn-success btn-xs keyword_search" ng-click="doKeywordSearch()" ng-disabled="isSearching" >Search</button>
+                                 <label for="keywordsearch" style="color:white;">Search</label>
+                                 <input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" placeholder="Enter keyword" id="keywordsearch" name="keyword_search_text" role="search">&nbsp;
+                                 <button class="btn btn-success btn-xs keyword_search" ng-click="doKeywordSearch()" ng-disabled="isSearching" >Search</button>
                                  <div ng-show="isSearching" id="searching">Searching</div>
                               </td>
                            </tr>
@@ -87,10 +94,12 @@
                                              <a ng-if="t[0]!='GLOSSARY'&&t[0]!='HELP'" ng-class="{mainMenuLink: t[0]!='HOME', 'mainMenuLink home':t[0]=='HOME'}" href="{{t[1]}}">{{t[0]}}
                                              </a>
                                           </th>
+                                           
 
                                           <td ng-repeat-end><img height="16" alt="menu separator"
                                              src="images/mainMenuSeparator.gif" width="1">
                                           </td>
+
                                           <!--
 <th class="mainMenuItem" onclick="openHelpWindow('https://wiki.nci.nih.gov/x/14CUBg')" scope="row"><a
 class="mainMenuLink" href="#">HELP</a>
@@ -130,8 +139,9 @@ src="images/mainMenuSeparator.gif" width="1">
                               </td>
                               <td class="footerMenuItem" onclick="document.location.href='#'"
                                  height="20">&nbsp;&nbsp;<a class="footerMenuLink"
-                                 href="mailto:ncicb@pop.nci.nih.gov?subject=caNanoLab - cancer Nanotechnology Laboratory Analysis Bench"
-                                 target="new">CONTACT US</a>&nbsp;&nbsp;</td>
+                                 href="mailto:ncicbiit@mail.nih.gov?subject=caNanoLab - cancer Nanotechnology Laboratory Analysis Bench"
+                                 target="new">CONTACT US</a>&nbsp;&nbsp;
+                              </td>
                               <td><img height="16" alt="" src="images/ftrMenuSeparator.gif"
                                  width="1">
                               </td>
@@ -141,29 +151,20 @@ src="images/mainMenuSeparator.gif" width="1">
                                  href="http://www.hhs.gov/Privacy.html" target="new">PRIVACY
                                  NOTICE</a>&nbsp;&nbsp;
                               </td>
+                               <td><img height="16" alt="" src="images/ftrMenuSeparator.gif"
+                                 width="1">
+                              </td>
+                              <td class="footerMenuItem"
+                                 onclick="window.open('http://www.cancer.gov/global/web/policies', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes,location=yes,width=760,height=500,scrollbars=yes,resizable=yes')"
+                                     height="20">&nbsp;&nbsp;<a class="footerMenuLink"
+                                         href="http://www.cancer.gov/global/web/policies" target="new">POLICIES</a>&nbsp;&nbsp;
+                              </td>
                               <td><img height="16" alt="" src="images/ftrMenuSeparator.gif"
                                  width="1">
                               </td>
                               <td class="footerMenuItem" onclick="document.location.href='#'"
                                  height="20">&nbsp;&nbsp;<a class="footerMenuLink"
                                  href="html/cananoDisclaimer.html" target="new">DISCLAIMER</a>&nbsp;&nbsp;
-                              </td>
-                              <td><img height="16" alt="" src="images/ftrMenuSeparator.gif"
-                                 width="1">
-                              </td>
-                              <td class="footerMenuItem"
-                                 onclick="window.open('http://www3.cancer.gov/accessibility/nci508.htm', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes,location=yes,width=760,height=500,scrollbars=yes,resizable=yes')"
-                                 height="20">&nbsp;&nbsp;<a class="footerMenuLink"
-                                 href="http://www3.cancer.gov/accessibility/nci508.htm" target="new">ACCESSIBILITY</a>&nbsp;&nbsp;
-                              </td>
-                              <td><img height="16" alt="" src="images/ftrMenuSeparator.gif"
-                                 width="1">
-                              </td>
-                              <td class="footerMenuItem"
-                                 onclick="window.open('http://ncicb.nci.nih.gov/NCICB/support', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes,location=yes,width=760,height=500,scrollbars=yes,resizable=yes')"
-                                 height="20">&nbsp;&nbsp;<a class="footerMenuLink"
-                                 href="http://ncicb.nci.nih.gov/NCICB/support" target="new">APPLICATION
-                                 SUPPORT</a>&nbsp;&nbsp;
                               </td>
                               <td><img height="16" alt="" src="images/ftrMenuSeparator.gif"
                                  width="1">
@@ -176,25 +177,19 @@ src="images/mainMenuSeparator.gif" width="1">
                </tr>
                <tr>
                   <td colspan="2">
-                     <!-- footer begins -->
+                  <!-- footer begins -->
                      <div id="portal-footer">
                         <div class="footerLinks">
-                           <a href="https://ncicbsupport.nci.nih.gov/" title="Home" tabindex="0">Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://ncicb.nci.nih.gov/NCICB/support" title="Support" tabindex="0">Support</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.cancer.gov/global/web/policies" title="Policies" tabindex="0">Policies</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.cancer.gov/global/web/policies/accessibility" title="Accessibility" tabindex="0">Accessibility</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://cancer.gov/global/viewing-files" target="_blank" title="Viewing Files" tabindex="0">Viewing Files</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.cancer.gov/global/web/policies/foia" title="FOIA" tabindex="0">FOIA</a><br /><br />
-                           <a href="http://www.dhhs.gov/" tabindex="0">Department of Health and Human Services</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.nih.gov/" tabindex="0">National Institutes of Health</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                           <a href="http://www.cancer.gov/" tabindex="0">National Cancer Institute</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.usa.gov/">USA.gov</a>
+                           <a href="http://www.dhhs.gov/" target="_blank" tabindex="0">Department of Health and Human Services</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.nih.gov/" target="_blank" tabindex="0">National Institutes of Health</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                           <a href="http://www.cancer.gov/" target="_blank" tabindex="0">National Cancer Institute</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.usa.gov/" target="_blank">USA.gov</a>
                         </div>
                         <br /><br />
                         NIH...Turning Discovery Into Health<sup>&reg;</sup>
                      </div>
       </div>
       <br>
-      <div class="footerVersion">caNanoLab Release 2.1 Build cananolab-2.1-rc-04</div><br /><br />
+      <div class="footerVersion">caNanoLab Release 2.3.1 Build cananolab-2.3.1-it-07</div><br /><br />
       <!-- footer ends -->
       </td>
       </tr>
@@ -247,6 +242,7 @@ src="images/mainMenuSeparator.gif" width="1">
       <script src="scripts/factories/sampleService.js"></script>
       <script src="scripts/factories/publicationService.js"></script>
       <script src="scripts/factories/protocolService.js"></script>
+      <script src="scripts/factories/userService.js"></script>
       <script src="scripts/factories/keywordService.js"></script>
       <script src="scripts/factories/utils.js"></script>
       <script src="scripts/controllers/main.js"></script>
@@ -292,6 +288,10 @@ src="images/mainMenuSeparator.gif" width="1">
       <script src="scripts/controllers/protocol/view/protocolResults.js"></script>
       <script src="scripts/controllers/protocol/edit/editProtocol.js"></script>
       <script src="scripts/controllers/protocol/view/manageProtocols.js"></script>
+      <script src="scripts/controllers/admin/view/userSearch.js"></script>
+      <script src="scripts/controllers/admin/view/userResults.js"></script>
+      <script src="scripts/controllers/admin/edit/editUser.js"></script>
+      <script src="scripts/controllers/admin/view/manageUsers.js"></script>
       <script src="scripts/controllers/curation/manageCuration.js"></script>
       <script src="scripts/controllers/curation/reviewData.js"></script>
       <script src="scripts/controllers/curation/batchDataAvailability.js"></script>

@@ -15,19 +15,17 @@ import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.CompositionUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleChemicalAssociationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
-import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -47,8 +45,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-public class ChemicalAssociationBO extends BaseAnnotationBO{
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("chemicalAssociationBO")
+public class ChemicalAssociationBO extends BaseAnnotationBO
+{
+	@Autowired
+	private CurationService curationServiceDAO;
+
+	@Autowired
+	private SampleService sampleService;
+
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
+	private CompositionService compositionService;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	public List<String> create(SimpleChemicalAssociationBean bean,
 			HttpServletRequest request)
 			throws Exception {
@@ -62,7 +83,6 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 			return msgs;
 		}
 		
-		this.setServicesInSession(request);
 		saveAssociation(request, bean.getSampleId(), assocBean);
 		msgs.add("success");
 		// save action messages in the session so composition.do know about them
@@ -241,11 +261,8 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 				//Managed to get the sampleComposition in the backend to avoid lazy loading things
 				SampleComposition sampleComp = null;
 				if(bean.getAssociationId()>0){
-				SecurityService securityService = (SecurityService) request
-							.getSession().getAttribute("securityService");
-						CompositionServiceHelper helper = new CompositionServiceHelper(securityService);
-						try {
-							sampleComp = helper.findCompositionBySampleId(bean.getSampleId()
+				try {
+							sampleComp = compositionService.getHelper().findCompositionBySampleId(bean.getSampleId()
 									.toString());
 						} catch (Exception e1) {
 							e1.printStackTrace();
@@ -352,15 +369,13 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		return msgs;
 	}
 
-	public List<String> saveAssociation(HttpServletRequest request,
-			String sampleId, ChemicalAssociationBean assocBean)
+	public List<String> saveAssociation(HttpServletRequest request, String sampleId, ChemicalAssociationBean assocBean)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
 		SampleBean sampleBean = setupSampleById(sampleId, request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Boolean newAssoc = true;
 		try {
-			assocBean.setupDomainAssociation(user.getLoginName());
+			assocBean.setupDomainAssociation(SpringSecurityUtil.getLoggedInUserName());
 			if (assocBean.getDomainAssociation().getId() != null) {
 				newAssoc = false;
 			}
@@ -373,19 +388,17 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 				assocBean.setType(null);
 			}
 		}
-		// comp service already created
-		CompositionService compService = (CompositionService) request
-				.getSession().getAttribute("compositionService");
-		compService.saveChemicalAssociation(sampleBean, assocBean);
+		compositionService.saveChemicalAssociation(sampleBean, assocBean);
 		// retract from public if updating an existing public record and not
 		// curator
-		if (!newAssoc && !user.isCurator() && sampleBean.getPublicStatus()) {
-			retractFromPublic(sampleId, request, sampleBean.getDomain().getId()
-					.toString(), sampleBean.getDomain().getName(), "sample");
+		if (!newAssoc && !SpringSecurityUtil.getPrincipal().isCurator() && 
+			springSecurityAclService.checkObjectPublic(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()))
+		{
+			retractFromPublic(request, sampleBean.getDomain().getId(), 
+							  sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
 			msgs.add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
 		}
-		Boolean hasFunctionalizingEntity = (Boolean) request.getSession()
-				.getAttribute("hasFunctionalizingEntity");
+		Boolean hasFunctionalizingEntity = (Boolean) request.getSession().getAttribute("hasFunctionalizingEntity");
 		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
 				request, assocBean, hasFunctionalizingEntity);
 		return msgs;
@@ -405,9 +418,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 			HttpServletRequest request)
 			throws Exception {
 		ChemicalAssociationBean assocBean = new ChemicalAssociationBean();
-		CompositionService compService = this.setServicesInSession(request);
-		CompositionBean compositionBean = compService
-				.findCompositionBySampleId(sampleId);
+		CompositionBean compositionBean = compositionService.findCompositionBySampleId(sampleId);
 		List<String> errors= new ArrayList<String>();
 		errors = validateComposition(compositionBean, request);
 		if (errors.size()>0) {
@@ -421,8 +432,8 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		return CompositionUtil.reformatLocalSearchDropdownsInSessionForChemicalAssociation(request.getSession());
 	}
 
-	public List<String> validateComposition(CompositionBean compositionBean,
-			HttpServletRequest request) throws Exception {
+	public List<String> validateComposition(CompositionBean compositionBean, HttpServletRequest request) throws Exception
+	{
 		List<String> msgs = new ArrayList<String>();
 		// if no composition return to summary view page
 		if (compositionBean == null) {
@@ -461,21 +472,18 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		}
 		return msgs;
 	}
-
-	public void input(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		ChemicalAssociationBean assocBean = form
-				.getAssoc();
+	
+	//unused code
+	/*public void input(CompositionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
+	{
+		ChemicalAssociationBean assocBean = form.getAssoc();
 		escapeXmlForFileUri(assocBean.getTheFile());
 		prepareEntityLists(assocBean, request);
 		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-		if (user == null) {
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			throw new InvalidSessionException();
 		}
-		Boolean hasFunctionalizingEntities = (Boolean) session
-				.getAttribute("hasFunctionalizingEntity");
+		Boolean hasFunctionalizingEntities = (Boolean) session.getAttribute("hasFunctionalizingEntity");
 		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
 				request, assocBean, hasFunctionalizingEntities);
 
@@ -485,10 +493,10 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 
 		this.checkOpenForms(assocBean, request);
 		//return mapping.findForward("inputForm");
-	}
+	}*/
 
-	private void setLookups(HttpServletRequest request,
-			CompositionBean compositionBean) throws Exception {
+	private void setLookups(HttpServletRequest request, CompositionBean compositionBean) throws Exception
+	{
 		// check whether it has a functionalizing entity
 		boolean hasFunctionalizingEntity = false;
 		if (!compositionBean.getFunctionalizingEntities().isEmpty()) {
@@ -498,41 +506,31 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 				request, hasFunctionalizingEntity);
 		// use BaseCompositionEntityBean for DWR ajax
 		List<BaseCompositionEntityBean> materialEntities = new ArrayList<BaseCompositionEntityBean>();
-		for (NanomaterialEntityBean entityBean : compositionBean
-				.getNanomaterialEntities()) {
+		for (NanomaterialEntityBean entityBean : compositionBean.getNanomaterialEntities()) {
 			if (!entityBean.getComposingElements().isEmpty()) {
 				materialEntities.add(entityBean);
 			}
 		}
-		request.getSession().setAttribute("sampleMaterialEntities",
-				materialEntities);
-		request.getSession().setAttribute("sampleFunctionalizingEntities",
-				compositionBean.getFunctionalizingEntities());
-		request.getSession().setAttribute("hasFunctionalizingEntity",
-				hasFunctionalizingEntity);
+		request.getSession().setAttribute("sampleMaterialEntities", materialEntities);
+		request.getSession().setAttribute("sampleFunctionalizingEntities", compositionBean.getFunctionalizingEntities());
+		request.getSession().setAttribute("hasFunctionalizingEntity", hasFunctionalizingEntity);
 	}
 
-	public void prepareEntityLists(ChemicalAssociationBean assocBean,
-			HttpServletRequest request) throws Exception {
+	public void prepareEntityLists(String sampleId, ChemicalAssociationBean assocBean, HttpServletRequest request) throws Exception
+	{
 		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-		CompositionService service = new CompositionServiceLocalImpl();
 		// associated element A
 		List<BaseCompositionEntityBean> entityListA = null;
 		List<ComposingElementBean> ceListA = new ArrayList<ComposingElementBean>();
-		if (assocBean.getAssociatedElementA().getCompositionType().equals(
-				"nanomaterial entity")) {
+		if (assocBean.getAssociatedElementA().getCompositionType().equals("nanomaterial entity")) {
 			entityListA = new ArrayList<BaseCompositionEntityBean>(
-					(List<BaseCompositionEntityBean>) session
-							.getAttribute("sampleMaterialEntities"));
+					(List<BaseCompositionEntityBean>) session.getAttribute("sampleMaterialEntities"));
 			// get composing elements
-			NanomaterialEntityBean entityBean = service
-					.findNanomaterialEntityById(assocBean
+			NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(sampleId, assocBean
 							.getAssociatedElementA().getEntityId());
 			ceListA = entityBean.getComposingElements();
 		} else {
-			entityListA = new ArrayList<BaseCompositionEntityBean>(
-					(List<BaseCompositionEntityBean>) session
+			entityListA = new ArrayList<BaseCompositionEntityBean>((List<BaseCompositionEntityBean>) session
 							.getAttribute("sampleFunctionalizingEntities"));
 		}
 		session.setAttribute("ceListA", ceListA);
@@ -540,60 +538,48 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		// associated element B
 		List<BaseCompositionEntityBean> entityListB = null;
 		List<ComposingElementBean> ceListB = new ArrayList<ComposingElementBean>();
-		if (assocBean.getAssociatedElementB().getCompositionType().equals(
-				"nanomaterial entity")) {
+		if (assocBean.getAssociatedElementB().getCompositionType().equals("nanomaterial entity")) {
 			entityListB = new ArrayList<BaseCompositionEntityBean>(
-					(List<BaseCompositionEntityBean>) session
-							.getAttribute("sampleMaterialEntities"));
+					(List<BaseCompositionEntityBean>) session.getAttribute("sampleMaterialEntities"));
 			// get composing elements
-			NanomaterialEntityBean entityBean = service
-					.findNanomaterialEntityById(assocBean
-							.getAssociatedElementB().getEntityId());
+			NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(sampleId, assocBean.getAssociatedElementB().getEntityId());
 			ceListB = entityBean.getComposingElements();
 		} else {
 			entityListB = new ArrayList<BaseCompositionEntityBean>(
-					(List<BaseCompositionEntityBean>) session
-							.getAttribute("sampleFunctionalizingEntities"));
+					(List<BaseCompositionEntityBean>) session.getAttribute("sampleFunctionalizingEntities"));
 		}
 		session.setAttribute("ceListB", ceListB);
 		session.setAttribute("entityListB", entityListB);
 	}
 
-	public SimpleChemicalAssociationBean setupUpdate(String sampleId, String assocId,
-			HttpServletRequest request)
+	public SimpleChemicalAssociationBean setupUpdate(String sampleId, String assocId, HttpServletRequest request)
 			throws Exception {
 		// set up compositionBean required to set up drop-down
-		CompositionService compService = this.setServicesInSession(request);
-		CompositionBean compositionBean = compService
-				.findCompositionBySampleId(sampleId);
+		CompositionBean compositionBean = compositionService.findCompositionBySampleId(sampleId);
 		setLookups(request, compositionBean);
 		//String assocId = super.validateId(request, "dataId");
-		ChemicalAssociationBean assocBean = compService
-				.findChemicalAssociationById(assocId);
-		prepareEntityLists(assocBean, request);
+		ChemicalAssociationBean assocBean = compositionService.findChemicalAssociationById(sampleId, assocId);
+		prepareEntityLists(sampleId, assocBean, request);
 		//theForm.set("assoc", assocBean);
 		this.checkOpenForms(assocBean, request);
 	//	return mapping.findForward("inputForm");
 		request.getSession().setAttribute("sampleId", sampleId);
 		SimpleChemicalAssociationBean chemBean = new SimpleChemicalAssociationBean();
-		chemBean.trasferToSimpleChemicalAssociation(assocBean, request);
+		chemBean.trasferToSimpleChemicalAssociation(assocBean, request, springSecurityAclService);
 		return chemBean;
 	}
 
-	public SimpleChemicalAssociationBean saveFile(SimpleChemicalAssociationBean bean,
-			HttpServletRequest request)
+	public SimpleChemicalAssociationBean saveFile(SimpleChemicalAssociationBean bean, HttpServletRequest request)
 			throws Exception {
 		ChemicalAssociationBean assoc = transferChemicalAssociationBean(bean, request);
 		FileBean theFile = assoc.getTheFile();
 		List<String> msgs = new ArrayList<String>();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		this.setServicesInSession(request);
 		SampleBean sampleBean = setupSampleById(bean.getSampleId(), request);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
 				+ sampleBean.getDomain().getName() + "/"
 				+ "chemicalAssociation";
-		theFile.setupDomainFile(internalUriPath, user.getLoginName());
+		theFile.setupDomainFile(internalUriPath, SpringSecurityUtil.getLoggedInUserName());
 		
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
@@ -626,18 +612,13 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		// save the association
 		saveAssociation(request, bean.getSampleId(), assoc);
 		// comp service has already been created
-		CompositionService compService = (CompositionService) request
-				.getSession().getAttribute("compositionService");
-		compService.assignAccesses(assoc.getDomainAssociation()
-				.getSampleComposition(), theFile.getDomainFile());
+		compositionService.assignAccesses(assoc.getDomainAssociation().getSampleComposition(), theFile.getDomainFile());
 
 		request.setAttribute("anchor", "file");
 		this.checkOpenForms(assoc, request);
-		 request.getSession().removeAttribute("newFileData");
-		request.setAttribute("dataId", assoc.getDomainAssociation().getId()
-				.toString());
-		return setupUpdate(bean.getSampleId(), assoc.getDomainAssociation().getId()
-				.toString(), request);
+		request.getSession().removeAttribute("newFileData");
+		request.setAttribute("dataId", assoc.getDomainAssociation().getId().toString());
+		return setupUpdate(bean.getSampleId(), assoc.getDomainAssociation().getId().toString(), request);
 	}
 
 	public SimpleChemicalAssociationBean removeFile(SimpleChemicalAssociationBean bean,
@@ -651,10 +632,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		// save the association
 		saveAssociation(request, bean.getSampleId(), assoc);
 		// comp service has already been created
-		CompositionService compService = (CompositionService) request
-				.getSession().getAttribute("compositionService");
-		compService.removeAccesses(assoc.getDomainAssociation()
-				.getSampleComposition(), theFile.getDomainFile());
+		compositionService.removeAccesses(assoc.getDomainAssociation().getSampleComposition(), theFile.getDomainFile());
 
 		this.checkOpenForms(assoc, request);
 	//	return mapping.findForward("inputForm");
@@ -662,26 +640,22 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 				.toString(), request);
 	}
 
-	public List<String> delete(SimpleChemicalAssociationBean bean,
-			HttpServletRequest request)
+	public List<String> delete(SimpleChemicalAssociationBean bean, HttpServletRequest request)
 			throws Exception {
 		
 		List<String> msgs = new ArrayList<String>();
 		ChemicalAssociationBean assocBean = transferChemicalAssociationBean(bean, request);
 
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		assocBean.setupDomainAssociation(user.getLoginName());
+		assocBean.setupDomainAssociation(SpringSecurityUtil.getLoggedInUserName());
 
-		CompositionService compService = this.setServicesInSession(request);
-		compService.deleteChemicalAssociation(assocBean.getDomainAssociation());
+		compositionService.deleteChemicalAssociation(assocBean.getDomainAssociation());
 		// TODO remove accessibility
 
 		msgs.add("success");
 		return msgs;
 	}
 
-	private void checkOpenForms(ChemicalAssociationBean assoc,
-			HttpServletRequest request) {
+	private void checkOpenForms(ChemicalAssociationBean assoc, HttpServletRequest request) {
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();
@@ -718,19 +692,26 @@ public class ChemicalAssociationBO extends BaseAnnotationBO{
 		}
 	}
 
-	private CompositionService setServicesInSession(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-
-		CompositionService compService = new CompositionServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("compositionService", compService);
-		SampleService sampleService = new SampleServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("sampleService", sampleService);
-		return compService;
+	@Override
+	public CurationService getCurationServiceDAO() {
+		return this.curationServiceDAO;
 	}
+
+	@Override
+	public SampleService getSampleService() {
+		return this.sampleService;
+	}
+
+	@Override
+	public SpringSecurityAclService getSpringSecurityAclService() {
+		return springSecurityAclService;
+	}
+
+	@Override
+	public UserDetailsService getUserDetailsService() {
+		return userDetailsService;
+	}
+	
 }
 
 

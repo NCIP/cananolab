@@ -50,16 +50,14 @@ public class InitSetup {
 	 * @return
 	 * @throws BaseException
 	 */
-	public Map<String, Map<String, SortedSet<String>>> getDefaultLookupTable(
-			ServletContext appContext) throws BaseException {
+	public Map<String, Map<String, SortedSet<String>>> getDefaultLookupTable(ServletContext appContext) throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = null;
 		if (appContext.getAttribute("defaultLookupTable") == null) {
 			defaultLookupTable = LookupService.findAllLookups();
 			appContext.setAttribute("defaultLookupTable", defaultLookupTable);
 		} else {
 			defaultLookupTable = new HashMap<String, Map<String, SortedSet<String>>>(
-					(Map<? extends String, Map<String, SortedSet<String>>>) appContext
-							.getAttribute("defaultLookupTable"));
+					(Map<? extends String, Map<String, SortedSet<String>>>) appContext.getAttribute("defaultLookupTable"));
 		}
 		return defaultLookupTable;
 	}
@@ -77,8 +75,7 @@ public class InitSetup {
 	public Map<String, String> getLookupByName(ServletContext appContext,
 			String contextAttribute, String name) throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(appContext);
-		Map<String, SortedSet<String>> lookupByNameMap = defaultLookupTable
-				.get(name);
+		Map<String, SortedSet<String>> lookupByNameMap = defaultLookupTable.get(name);
 		Map<String, String> lookupMap = new HashMap<String, String>();
 		Set<String> keySet = lookupByNameMap.keySet();
 		for (String key : keySet) {
@@ -127,8 +124,7 @@ public class InitSetup {
 	 * @return
 	 * @throws BaseException
 	 */
-	public SortedSet<String> getDefaultAndOtherTypesByLookup(
-			HttpServletRequest request, String sessionAttribute,
+	public SortedSet<String> getDefaultAndOtherTypesByLookup(HttpServletRequest request, String sessionAttribute,
 			String lookupName, String lookupAttribute,
 			String otherTypeAttribute, boolean updateSession)
 			throws BaseException {
@@ -160,11 +156,11 @@ public class InitSetup {
 	public SortedSet<String> getOtherTypesByLookup(HttpServletRequest request,
 			String sessionAttribute, String lookupName,
 			String otherTypeAttribute, boolean updateSession)
-			throws BaseException {
+			throws BaseException
+	{
 		SortedSet<String> types = null;
 		if (updateSession) {
-			types = LookupService.findLookupValues(lookupName,
-					otherTypeAttribute);
+			types = LookupService.findLookupValues(lookupName, otherTypeAttribute);
 			request.getSession().setAttribute(sessionAttribute, types);
 		} else {
 			types = new TreeSet<String>((SortedSet<? extends String>) (request
@@ -185,10 +181,10 @@ public class InitSetup {
 	 */
 	public SortedSet<String> getDefaultTypesByReflection(
 			ServletContext appContext, String contextAttribute,
-			String fullParentClassName) throws Exception {
+			String fullParentClassName) throws Exception
+	{
 		SortedSet<String> types = new TreeSet<String>();
-		List<String> classNames = ClassUtils
-				.getChildClassNames(fullParentClassName);
+		List<String> classNames = ClassUtils.getChildClassNames(fullParentClassName);
 		for (String name : classNames) {
 			if (!name.contains("Other")) {
 				String shortClassName = ClassUtils.getShortClassName(name);
@@ -217,8 +213,8 @@ public class InitSetup {
 			HttpServletRequest request, String contextAttributeForDefaults,
 			String sessionAttribute, String fullParentClassName,
 			String otherFullParentClassName, boolean updateSession)
-			throws Exception {
-
+			throws Exception
+	{
 		ServletContext appContext = request.getSession().getServletContext();
 		SortedSet<String> defaultTypes = getDefaultTypesByReflection(
 				appContext, contextAttributeForDefaults, fullParentClassName);
@@ -233,8 +229,7 @@ public class InitSetup {
 					System.out.println("DefaultType: " + ite.next());
 			}
 			
-			SortedSet<String> otherTypes = LookupService
-					.getAllOtherObjectTypes(otherFullParentClassName);
+			SortedSet<String> otherTypes = LookupService.getAllOtherObjectTypes(otherFullParentClassName);
 			
 			if (otherTypes != null && contextAttributeForDefaults.equals("defaultFunctionalizingEntityTypes")) {
 				Iterator<String> ite = otherTypes.iterator();
@@ -259,27 +254,6 @@ public class InitSetup {
 		return types;
 	}
 
-//	public String getFileUriFromFormFile(FormFile file, String folderType,
-//			String sampleName, String submitType) {
-//		if (file != null && !StringUtils.isEmpty(file.getFileName())) {
-//			String prefix = folderType;
-//
-//			if (!StringUtils.isEmpty(sampleName)
-//					&& !StringUtils.isEmpty(submitType)
-//					&& folderType.equals(Constants.FOLDER_PARTICLE)) {
-//				prefix += "/" + sampleName + "/";
-//				prefix += StringUtils
-//						.getOneWordLowerCaseFirstLetter(submitType);
-//			}
-//			String timestamp = DateUtils.convertDateToString(new Date(),
-//					"yyyyMMdd_HH-mm-ss-SSS");
-//
-//			return prefix + "/" + timestamp + "_" + file.getFileName();
-//		} else {
-//			return null;
-//		}
-//	}
-
 	// check whether the value is already stored in context
 	private Boolean isLookupInContext(HttpServletRequest request,
 			String lookupName, String attribute, String otherAttribute,
@@ -295,8 +269,7 @@ public class InitSetup {
 		} else {
 			SortedSet<String> otherValues = null;
 			if (defaultLookupTable.get(lookupName) != null) {
-				otherValues = defaultLookupTable.get(lookupName).get(
-						otherAttribute);
+				otherValues = defaultLookupTable.get(lookupName).get(otherAttribute);
 			}
 			if (otherValues != null && otherValues.contains(value)) {
 				return true;
@@ -324,19 +297,16 @@ public class InitSetup {
 	}
 
 	public List<LabelValueBean> getDefaultAndOtherTypesByLookupAsOptions(
-	
 			String lookupName, String lookupAttribute, String otherTypeAttribute)
 			throws Exception {
 		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
-		SortedSet<String> defaultValues = LookupService.findLookupValues(
-				lookupName, lookupAttribute);
+		SortedSet<String> defaultValues = LookupService.findLookupValues(lookupName, lookupAttribute);
 		// annotate the label of the default ones with *s.
 		for (String name : defaultValues) {
 			LabelValueBean lv = new LabelValueBean(name, name);
 			lvBeans.add(lv);
 		}
-		SortedSet<String> otherValues = LookupService.findLookupValues(
-				lookupName, otherTypeAttribute);
+		SortedSet<String> otherValues = LookupService.findLookupValues(lookupName, otherTypeAttribute);
 		for (String name : otherValues) {
 			LabelValueBean lv = new LabelValueBean("[" + name + "]", name);
 			lvBeans.add(lv);
@@ -357,8 +327,7 @@ public class InitSetup {
 			lvBeans.add(lv);
 		}
 
-		SortedSet<String> otherTypes = LookupService
-				.getAllOtherObjectTypes(otherFullParentClassName);
+		SortedSet<String> otherTypes = LookupService.getAllOtherObjectTypes(otherFullParentClassName);
 		if (otherTypes != null) {
 			for (String type : otherTypes) {
 				LabelValueBean lv = new LabelValueBean("[" + type + "]", type);
@@ -374,15 +343,7 @@ public class InitSetup {
 				new LabelValueBean("false", "0") };
 		appContext.setAttribute("booleanOptions", booleanOptions);
 
-//		LabelValueBean[] stringOperands = new LabelValueBean[] {
-//				new LabelValueBean(Constants.STRING_OPERAND_CONTAINS,
-//						Constants.STRING_OPERAND_CONTAINS),
-//				new LabelValueBean(Constants.STRING_OPERAND_EQUALS,
-//						Constants.STRING_OPERAND_EQUALS) };
-//		appContext.setAttribute("stringOperands", stringOperands);
-
-		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean(
-				"equals", "is") };
+		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean("equals", "is") };
 		appContext.setAttribute("booleanOperands", booleanOperands);
 
 		List<LabelValueBean> numberOperands = new ArrayList<LabelValueBean>();
@@ -390,13 +351,8 @@ public class InitSetup {
 		numberOperands.add( new LabelValueBean(">", ">"));
 		numberOperands.add(new LabelValueBean(">=", ">="));
 		numberOperands.add(new LabelValueBean("<=", "<="));
-		
-		
-			
-		appContext.setAttribute("numberOperands", numberOperands);
 
-//		appContext.setAttribute("allCompositionSections",
-//				CompositionBean.ALL_COMPOSITION_SECTIONS);
+		appContext.setAttribute("numberOperands", numberOperands);
 
 		// register page
 		LabelValueBean[] titleOperands = new LabelValueBean[] {
@@ -406,13 +362,6 @@ public class InitSetup {
 				new LabelValueBean("Miss", "Miss"),
 				new LabelValueBean("Ms.", "Ms.") };
 		appContext.setAttribute("titleOperands", titleOperands);
-
-//		LabelValueBean[] csmRoleNames = new LabelValueBean[] {
-//				new LabelValueBean(AccessibilityBean.R_ROLE_DISPLAY_NAME,
-//						AccessibilityBean.CSM_READ_ROLE),
-//				new LabelValueBean(AccessibilityBean.CURD_ROLE_DISPLAY_NAME,
-//						AccessibilityBean.CSM_CURD_ROLE) };
-//		appContext.setAttribute("csmRoleNames", csmRoleNames);
 	}
 	
 	public void setPublicCountInContext(ServletContext appContext) {

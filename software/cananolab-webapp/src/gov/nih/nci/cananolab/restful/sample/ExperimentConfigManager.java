@@ -8,17 +8,6 @@
 
 package gov.nih.nci.cananolab.restful.sample;
 
-import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
-import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.exception.BaseException;
-import gov.nih.nci.cananolab.exception.ExperimentConfigException;
-import gov.nih.nci.cananolab.restful.core.InitSetup;
-import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
-import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
@@ -27,6 +16,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
+import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.exception.ExperimentConfigException;
+import gov.nih.nci.cananolab.restful.core.InitSetup;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 /**
  * Methods for DWR Ajax
@@ -34,15 +33,10 @@ import org.directwebremoting.WebContextFactory;
  * @author pansu, tanq
  *
  */
-public class ExperimentConfigManager {
-	private CharacterizationServiceHelper helper;
-
-	private CharacterizationServiceHelper getHelper() {
-		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		helper = new CharacterizationServiceHelper(user);
-		return helper;
-	}
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("experimentConfigManager")
+public class ExperimentConfigManager
+{
 
 	public ExperimentConfigBean resetTheExperimentConfig() {
 //		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory

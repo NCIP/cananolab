@@ -15,13 +15,11 @@ import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionExporter;
-import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -33,7 +31,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class CompositionBO extends BaseAnnotationBO {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
+@Component("compositionBO")
+public class CompositionBO extends BaseAnnotationBO
+{
+	@Autowired
+	private CompositionService compositionService;
+	
+	@Autowired
+	private CurationService curationServiceDAO;
+
+	@Autowired
+	private SampleService sampleService;
+
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
 
 	/**
 	 * Handle Composition Summary Edit request.
@@ -185,12 +206,10 @@ public class CompositionBO extends BaseAnnotationBO {
 		session.removeAttribute("theSample");
 
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = form.getSampleId();  //Sting(SampleConstants.SAMPLE_ID);
-		CompositionService service = this.setServicesInSession(request);
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 
-		CompositionBean compBean = service.findCompositionBySampleId(sampleId);
+		CompositionBean compBean = compositionService.findCompositionBySampleId(sampleId);
 		form.setComp(compBean);
 
 		// Save result bean in session for later use - export/print.
@@ -258,30 +277,34 @@ public class CompositionBO extends BaseAnnotationBO {
 		}
 	}
 
-	private CompositionService setServicesInSession(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-
-		CompositionService compService = new CompositionServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("compositionService", compService);
-		SampleService sampleService = new SampleServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("sampleService", sampleService);
-		return compService;
-	}
-
 	public java.io.File download(String fileId, HttpServletRequest request)
 			throws Exception {
-		CompositionService service = setServicesInSession(request);
-		return downloadImage(service, fileId, request);
+		return downloadImage(compositionService, fileId, request);
 	}
 	public String download(String fileId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		CompositionService service = setServicesInSession(request);
-	//	BaseService service = setServicesInSession(request);
-		return downloadFile(service, fileId, request, response);
+		return downloadFile(compositionService, fileId, request, response);
 	}
+
+	@Override
+	public CurationService getCurationServiceDAO() {
+		return this.curationServiceDAO;
+	}
+
+	@Override
+	public SampleService getSampleService() {
+		return this.sampleService;
+	}
+
+	@Override
+	public SpringSecurityAclService getSpringSecurityAclService() {
+		return springSecurityAclService;
+	}
+
+	@Override
+	public UserDetailsService getUserDetailsService() {
+		return userDetailsService;
+	}
+	
 }

@@ -23,10 +23,12 @@ import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.BaseServiceHelper;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.dao.AclDao;
+import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -61,6 +63,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Helper class providing implementations of search methods needed for both
@@ -69,21 +73,18 @@ import org.hibernate.transform.Transformers;
  * @author pansu, tanq
  * 
  */
-public class SampleServiceHelper extends BaseServiceHelper {
+@Component("sampleServiceHelper")
+public class SampleServiceHelper
+{
 	private static Logger logger = Logger.getLogger(SampleServiceHelper.class);
-
-	public SampleServiceHelper() {
-		super();
-	}
-
-	public SampleServiceHelper(UserBean user) {
-		super(user);
-	}
-
-	public SampleServiceHelper(SecurityService securityService) {
-		super(securityService);
-	}
-
+	
+	@Autowired
+	private AclDao aclDao;
+	
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
+	
+	
 	public List<String> findSampleIdsBy(String sampleName,
 			String samplePointOfContact, String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
@@ -339,14 +340,17 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			crit.add(disjunction);
 		}
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		
 		List results = appService.query(crit);
+		
+		int resSize = results.size();
+		/*
+		 * We will look only though the maximum amount of allowed records to avoid Exceptions
+		 */
+		int maxCount = appService.getMaxRecordsCount();
 		Set<Sample> samples = new HashSet<Sample>();
-		List<String> accessibleData = getAccessibleData();
-		for(int i = 0; i < results.size(); i++){
-			
+		for(int i = 0; (i < resSize) && (i < maxCount); i++){
 			try {
 				/*
 				 * There is a bug when searching with keyword "tes", where the following line
@@ -357,16 +361,15 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				Object[] row = (Object[]) results.get(i);
 
 				Long sampleId = (Long) row[0];
-				if (StringUtils.containsIgnoreCase(accessibleData,
-						sampleId.toString())) {
+				if (springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) ||
+					springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()))  {
 					Sample sample = new Sample();
 					sample.setId(sampleId);
 					sample.setName((String) row[1]);
 					sample.setCreatedDate((Date) row[2]);
 					samples.add(sample);
 				} else {
-					logger.debug("User doesn't have access to sample of ID: "
-							+ sampleId);
+					logger.debug("User doesn't have access to sample of ID: " + sampleId);
 				}
 
 			} catch (ClassCastException e) {
@@ -379,13 +382,11 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		// Collections.sort(orderedSamples,
 		// Collections.reverseOrder(new Comparators.SampleDateComparator()));
 
-		Collections
-				.sort(orderedSamples, new Comparators.SampleDateComparator());
+		Collections.sort(orderedSamples, new Comparators.SampleDateComparator());
 
 		for (Sample sample : orderedSamples) {
 			sampleIds.add(sample.getId().toString());
 		}
-		
 
 		return sampleIds;
 	}
@@ -398,21 +399,17 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	 * @param sample
 	 * @return
 	 */
-	public SortedSet<String> getStoredFunctionalizingEntityClassNames(
-			Sample sample) {
+	public SortedSet<String> getStoredFunctionalizingEntityClassNames( Sample sample) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
 
-		if (sample.getSampleComposition() != null
-				&& sample.getSampleComposition()
-						.getFunctionalizingEntityCollection() != null) {
-			for (FunctionalizingEntity entity : sample.getSampleComposition()
-					.getFunctionalizingEntityCollection()) {
+		SampleComposition samComposition = sample.getSampleComposition();
+		if (samComposition != null && samComposition.getFunctionalizingEntityCollection() != null) {
+			for (FunctionalizingEntity entity : samComposition.getFunctionalizingEntityCollection())
+			{
 				if (entity instanceof OtherFunctionalizingEntity) {
-					storedEntities.add(((OtherFunctionalizingEntity) entity)
-							.getType());
+					storedEntities.add(((OtherFunctionalizingEntity) entity).getType());
 				} else {
-					storedEntities.add(ClassUtils.getShortClassName(entity
-							.getClass().getCanonicalName()));
+					storedEntities.add(ClassUtils.getShortClassName(entity.getClass().getCanonicalName()));
 				}
 			}
 		}
@@ -505,8 +502,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		return storedEntities;
 	}
 
-	public SortedSet<String> getStoredChemicalAssociationClassNames(
-			Sample sample) {
+	public SortedSet<String> getStoredChemicalAssociationClassNames(Sample sample) {
 		SortedSet<String> storedAssocs = new TreeSet<String>();
 		if (sample.getSampleComposition() != null
 				&& sample.getSampleComposition()
@@ -577,28 +573,26 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
-			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
-					.getId().toString())) {
-				throw new NoAccessException("User has no access to the sample "
-						+ sampleName);
+			if (!springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()) &&
+				!springSecurityAclService.currentUserHasWritePermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+				throw new NoAccessException("User has no access to the sample " + sampleName);
 			}
 		}
 		return sample;
 	}
 
-	public List<Keyword> findKeywordsBySampleId(String sampleId)
-			throws Exception {
+	public List<Keyword> findKeywordsBySampleId(String sampleId) throws Exception
+	{
 		// check whether user has access to the sample
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
-			throw new NoAccessException(
-					"User doesn't have access to the sample.");
+		
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User doesn't have access to the sample : " + sampleId);
 		}
 		List<Keyword> keywords = new ArrayList<Keyword>();
 
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(new Long(sampleId)));
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		List result = appService.query(crit);
 		Sample sample = null;
@@ -609,14 +603,13 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		return keywords;
 	}
 
-	public PointOfContact findPrimaryPointOfContactBySampleId(String sampleId)
-			throws Exception {
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
-			throw new NoAccessException("User has no access to the sample "
-					+ sampleId);
+	public PointOfContact findPrimaryPointOfContactBySampleId(String sampleId) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to the sample " + sampleId);
 		}
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Property.forName("id").eq(new Long(sampleId)));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
@@ -631,11 +624,10 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		return poc;
 	}
 
-	public List<PointOfContact> findOtherPointOfContactsBySampleId(
-			String sampleId) throws Exception {
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
-			throw new NoAccessException("User has no access to the sample "
-					+ sampleId);
+	public List<PointOfContact> findOtherPointOfContactsBySampleId(String sampleId) throws Exception {
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to the sample " + sampleId);
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -658,16 +650,16 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		return pointOfContacts;
 	}
 
-	public Sample findSampleById(String sampleId) throws Exception {
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
-			throw new NoAccessException("User has no access to the sample "
-					+ sampleId);
+	public Sample findSampleById(String sampleId) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to the sample " + sampleId);
 		}
 		
 		logger.debug("===============Finding a sample by id: " + System.currentTimeMillis());
 		Sample sample = null;
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Property.forName("id").eq(new Long(sampleId)));
@@ -706,9 +698,9 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	
 	
 	public Sample findSampleBasicById(String sampleId) throws Exception {
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
-			throw new NoAccessException("User has no access to the sample "
-					+ sampleId);
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to the sample " + sampleId);
 		}
 		Sample sample = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
@@ -725,45 +717,45 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		}
 		return sample;
 	}
-
-	public int getNumberOfPublicSamples() throws Exception {
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List<String> publicData = appService.getAllPublicData();
-		HQLCriteria crit = new HQLCriteria(
-				"select id from gov.nih.nci.cananolab.domain.particle.Sample");
-		List results = appService.query(crit);
-		List<String> publicIds = new ArrayList<String>();
-		for(int i = 0; i< results.size(); i++){
-			String id = (String) results.get(i).toString();
-			if (StringUtils.containsIgnoreCase(publicData, id)) {
-				publicIds.add(id);
-			}
-		}
-		return publicIds.size();
+	
+	public int getNumberOfPublicSamplesForJob() throws Exception
+	{
+		List<Long> publicData = aclDao.getIdsOfClassForSid(SecureClassesEnum.SAMPLE.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
+		int cnt = (publicData != null) ? publicData.size() : 0;
+		return cnt;
 	}
 
-	public int getNumberOfPublicSampleSources() throws Exception {
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List<String> publicData = appService.getAllPublicData();
+	public int getNumberOfPublicSampleSources() throws Exception
+	{
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		
+		Set<Organization> publicOrgs = new HashSet<Organization>();
+		
 		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
 		crit.setFetchMode("organization", FetchMode.JOIN);
 		List results = appService.query(crit);
 		// get organizations associated with public point of contacts
-		List<PointOfContact> publicPOCs = new ArrayList<PointOfContact>();
-		for(int i = 0; i< results.size(); i++){
+		for(int i = 0; i< results.size(); i++)
+		{
 			PointOfContact poc = (PointOfContact) results.get(i);
-			if (StringUtils.containsIgnoreCase(publicData, poc.getId()
-					.toString())) {
-				publicPOCs.add(poc);
-			}
+			if (springSecurityAclService.checkObjectPublic(poc.getId(), SecureClassesEnum.POC.getClazz()))
+				publicOrgs.add(poc.getOrganization());
 		}
-		Set<Organization> publicOrgs = new HashSet<Organization>();
-		for (PointOfContact poc : publicPOCs) {
-			publicOrgs.add(poc.getOrganization());
-		}
+
 		return publicOrgs.size();
+	}
+
+	public int getNumberOfPublicSampleSourcesForJob() throws Exception
+	{
+		List<Long> publicData = aclDao.getIdsOfClassForSid(SecureClassesEnum.ORG.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
+		int cnt = (publicData != null) ? publicData.size() : 0;
+		return cnt;
+	}
+	
+	public List<Long> getSampleAccessibleToACollabGrp(String groupName)
+	{
+		List<Long> collabGroupSamples = aclDao.getIdsOfClassForSid(SecureClassesEnum.SAMPLE.getClazz().getName(), groupName);
+		return collabGroupSamples;
 	}
 
 	public String[] getSampleViewStrs(Sample sample) {
@@ -798,13 +790,11 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		return columns.toArray(new String[0]);
 	}
 
-	public Integer[] convertToFunctionalizingEntityClassOrderNumber(
-			String[] classNames) {
+	public Integer[] convertToFunctionalizingEntityClassOrderNumber(String[] classNames) {
 		Integer[] orderNumbers = new Integer[classNames.length];
 		int i = 0;
 		for (String name : classNames) {
-			orderNumbers[i] = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
-					.get(name);
+			orderNumbers[i] = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.get(name);
 			i++;
 		}
 		return orderNumbers;
@@ -830,8 +820,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class)
-				.add(Property.forName("id").eq(new Long(pocId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class).add(Property.forName("id").eq(new Long(pocId)));
 		crit.setFetchMode("organization", FetchMode.JOIN);
 		List results = appService.query(crit);
 		for(int i = 0; i < results.size(); i++){
@@ -842,9 +831,9 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 	public List<PointOfContact> findPointOfContactsBySampleId(String sampleId)
 			throws Exception {
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
-			throw new NoAccessException("User has no access to the sample "
-					+ sampleId);
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to the sample " + sampleId);
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -878,21 +867,18 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	 * @throws Exception
 	 */
 	public List<String> findSampleNamesBy(String nameStr) throws Exception {
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
 		if (!StringUtils.isEmpty(nameStr)) {
 			// split nameStr to multiple words if needed
 			List<String> nameStrs = StringUtils.parseToWords(nameStr, "\n");
 			if (nameStrs.size() == 1) {
-				crit.add(Restrictions
-						.ilike("name", nameStr, MatchMode.ANYWHERE));
+				crit.add(Restrictions.ilike("name", nameStr, MatchMode.ANYWHERE));
 			} else {
 				Disjunction disjunction = Restrictions.disjunction();
 				for (String str : nameStrs) {
-					Criterion strCrit = Restrictions.ilike("name", str,
-							MatchMode.ANYWHERE);
+					Criterion strCrit = Restrictions.ilike("name", str, MatchMode.ANYWHERE);
 					disjunction.add(strCrit);
 				}
 				crit.add(disjunction);
@@ -902,12 +888,11 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		List<String> sampleNames = new ArrayList<String>();
 		for(int i = 0; i < results.size(); i++){
 			Sample sample = (Sample) results.get(i);
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), sample
-					.getId().toString())) {
+			if (springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz())) {
 				sampleNames.add(sample.getName());
 			} else {
-				logger.debug("User doesn't have access to sample of name: "
-						+ sample.getName());
+				logger.debug("User doesn't have access to sample of name: " + sample.getName());
 			}
 		}
 		return sampleNames;
@@ -930,11 +915,11 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			Object[] row = (Object[]) results.get(i);
 			String name = row[0].toString();
 			String id = row[1].toString();
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
+			if (//springSecurityAclService.currentUserHasReadPermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz())) {
 				otherSamples.add(name);
 			} else {
-				logger.debug("User doesn't have access to sample of name: "
-						+ name);
+				logger.debug("User doesn't have access to sample of name: " + name);
 			}
 		}
 		return otherSamples;
@@ -983,10 +968,10 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				.getApplicationService();
 
 		List results = appService.query(crit);
-		List<String> accessibleData = getAccessibleData();
 		for(int i = 0; i < results.size(); i++){
 			String id = results.get(i).toString();
-			if (StringUtils.containsIgnoreCase(accessibleData, id)) {
+			if (springSecurityAclService.currentUserHasReadPermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz())) {
 				sampleIds.add(id);
 			} else {
 				logger.debug("User doesn't have access to sample of ID: " + id);

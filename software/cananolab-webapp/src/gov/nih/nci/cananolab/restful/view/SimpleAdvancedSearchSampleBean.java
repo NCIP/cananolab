@@ -40,8 +40,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		this.columns = columns;
 	}
 
-	public void transferAdvancedSampleBeanForResultView(AdvancedSampleBean sampleBean,
-			UserBean user, AdvancedSampleSearchBean searchBean, List<LabelValueBean> colNames) {
+	public void transferAdvancedSampleBeanForResultView(AdvancedSampleBean sampleBean, AdvancedSampleSearchBean searchBean, List<LabelValueBean> colNames) {
 
 		if (sampleBean == null)
 			return;

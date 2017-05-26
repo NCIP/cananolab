@@ -22,9 +22,8 @@ import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.BaseServiceHelper;
-import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -56,6 +55,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Helper class providing implementations of advanced sample search methods
@@ -64,21 +65,13 @@ import org.hibernate.criterion.Subqueries;
  * @author pansu
  * 
  */
-public class AdvancedSampleServiceHelper extends BaseServiceHelper {
-	private static Logger logger = Logger
-			.getLogger(AdvancedSampleServiceHelper.class);
+@Component("advancedSampleServiceHelper")
+public class AdvancedSampleServiceHelper
+{
+	private static Logger logger = Logger.getLogger(AdvancedSampleServiceHelper.class);
 
-	public AdvancedSampleServiceHelper() {
-		super();
-	}
-
-	public AdvancedSampleServiceHelper(UserBean user) {
-		super(user);
-	}
-
-	public AdvancedSampleServiceHelper(SecurityService securityService) {
-		super(securityService);
-	}
+	@Autowired
+	private SpringSecurityAclService springSecurityAclService;
 	
 	/**
 	 * Find sample names based on advanced search parameters
@@ -191,13 +184,12 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		//filter out redundant ones and non-accessible ones
 		List<String>filteredSampleIds=new ArrayList<String>();
 		for (String sampleId: sampleIds) {
-			if (!filteredSampleIds.contains(sampleId)
-					&& StringUtils.containsIgnoreCase(getAccessibleData(),
-							sampleId)) {
+			if (!filteredSampleIds.contains(sampleId) && 
+				(springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) ||
+				 springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()))) {
 				filteredSampleIds.add(sampleId);
 			} else { // ignore no access exception
-				logger.debug("User doesn't have access to sample with id "
-						+ sampleId);
+				logger.debug("User doesn't have access to sample with id " + sampleId);
 			}
 		}
 		return filteredSampleIds;
@@ -376,10 +368,10 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		
 		Iterator<String> ite = sampleIdNameMap.keySet().iterator();
 		while (ite.hasNext()) {
-			String sampleId = ite.next();
-			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
-				logger.debug("User doesn't have access to sample with id "
-						+ sampleId);
+			Long sampleId = Long.valueOf(ite.next());
+			if (!springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) &&
+				!springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) { 
+				logger.debug("User doesn't have access to sample with id " + sampleId);
 				ite.remove();
 			}
 		}
@@ -409,10 +401,10 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
-			String sampleId, AdvancedSampleSearchBean searchBean)
-			throws Exception {
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(String sampleId, AdvancedSampleSearchBean searchBean) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 			throw new NoAccessException();
 		}
 		// load sample first with point of contact info and function info and
